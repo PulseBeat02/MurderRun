@@ -1,11 +1,8 @@
 package io.github.pulsebeat02.murderrun.map;
 
 import io.github.pulsebeat02.murderrun.MurderGame;
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.map.event.GameEventManager;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
-import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
 
 public final class MurderMap {
 
@@ -25,13 +22,13 @@ public final class MurderMap {
     this.spawnParts();
   }
 
-  public void stop() {
+  public void shutdown() {
     this.unregisterEvents();
     this.stopExecutors();
   }
 
   private void stopExecutors() {
-    this.carPartManager.shutdown();
+    this.carPartManager.shutdownExecutor();
   }
 
   private void unregisterEvents() {

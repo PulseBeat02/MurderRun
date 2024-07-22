@@ -12,129 +12,106 @@ import java.util.stream.Collectors;
 
 public final class PlayerManager {
 
-  // TODO: Handle player log outs, when Player instance is bad, etc
-
   private final MurderGame game;
   private final PlayerDeathManager deathManager;
-  private final List<Player> participants;
+  private final Map<UUID, GamePlayer> lookupMap;
 
-  private Map<UUID, GamePlayer> lookupMap;
-  private Collection<GamePlayer> dead;
-  private Collection<Murderer> murderers;
-  private Collection<InnocentPlayer> innocentPlayers;
-
-  public PlayerManager(final MurderGame game, final Collection<Player> participants) {
+  public PlayerManager(final MurderGame game) {
     this.game = game;
     this.deathManager = new PlayerDeathManager(game);
-    this.participants = participants;
+    this.lookupMap = new WeakHashMap<>();
   }
 
-  private Collection<Player> createWeakHashSet(final Collection<Player> collection) {
-    Collections.newSetFromMap(
-            new WeakHashMap<Object, Boolean>()
-    );
-  }
-
-  public void start() {
-    this.lookupMap = new HashMap<>();
-    this.dead = new HashSet<>();
-    this.murderers = this.chooseMurderers();
-    this.innocentPlayers = this.chooseInnocents();
-    this.deathManager.start();
+  public void start(final Collection<Player> murderers, final Collection<Player> participants) {
+    this.assignPlayerRoles(murderers, participants);
+    this.setupAllPlayers();
   }
 
   public void shutdown() {
-    this.deathManager.shutdown();
+    this.resetAllPlayers();
+    this.deathManager.shutdownExecutor();
   }
 
-  public void resetAllPlayers() {
-    final GameConfiguration configuration = this.game.getConfiguration();
-    final Location location = configuration.getLobbySpawn();
-    for (final Player player : this.participants) {
-      player.clearActivePotionEffects();
-      player.getInventory().clear();
-      player.setGameMode(GameMode.SURVIVAL);
-      player.teleport(location);
+  private void setupAllPlayers() {
+    for (final GamePlayer player : this.getParticipants()) {
+      player.onMatchStart();
     }
   }
 
-  private Collection<Murderer> chooseMurderers() {
-    Collections.shuffle(this.participants);
-    final GameConfiguration configuration = this.game.getConfiguration();
-    final int count = configuration.getMurdererCount();
-    final Set<Murderer> set = new HashSet<>();
-    for (int i = 0; i < count; i++) {
-      final Player player = this.participants.get(i);
+  private void resetAllPlayers() {
+    for (final GamePlayer player : this.getParticipants()) {
+      player.onMatchReset();
+    }
+  }
+
+  private void assignPlayerRoles(
+      final Collection<Player> murderers, final Collection<Player> participants) {
+    this.createMurderers(murderers);
+    this.createInnocents(murderers, participants);
+  }
+
+  private void createMurderers(final Collection<Player> murderers) {
+    for (final Player player : murderers) {
       final UUID uuid = player.getUniqueId();
       final Murderer murderer = new Murderer(this.game, uuid);
-      set.add(murderer);
       this.lookupMap.put(uuid, murderer);
     }
-    return set;
   }
 
-  private Collection<InnocentPlayer> chooseInnocents() {
-    final Set<InnocentPlayer> set = new HashSet<>();
-    for (final Player player : this.participants) {
+  private void createInnocents(
+      final Collection<Player> murderers, final Collection<Player> participants) {
+    final Set<UUID> uuids = this.createMurdererUuids(murderers);
+    for (final Player player : participants) {
       final UUID uuid = player.getUniqueId();
-      final boolean check = this.isMurderer(uuid);
-      if (check) {
+      if (uuids.contains(uuid)) {
         continue;
       }
       final InnocentPlayer innocent = new InnocentPlayer(this.game, uuid);
-      set.add(innocent);
       this.lookupMap.put(uuid, innocent);
     }
-    return set;
   }
 
-  private boolean isMurderer(final UUID uuid) {
-    for (final Murderer murderer : this.murderers) {
-      final UUID check = murderer.getUuid();
-      if (uuid == check) {
-        return true;
-      }
-    }
-    return false;
+  private Set<UUID> createMurdererUuids(final Collection<Player> murderers) {
+    return murderers.stream().map(Player::getUniqueId).collect(Collectors.toSet());
   }
 
   public Optional<GamePlayer> lookupPlayer(final UUID uuid) {
     return Optional.ofNullable(this.lookupMap.get(uuid));
   }
 
-  public List<Player> getParticipants() {
-    return this.participants;
+  public Collection<GamePlayer> getParticipants() {
+    return this.lookupMap.values();
   }
 
   public Collection<Murderer> getMurderers() {
-    return this.murderers;
+    return this.lookupMap.values().stream()
+        .filter(player -> player instanceof Murderer)
+        .map(murderer -> (Murderer) murderer)
+        .collect(Collectors.toSet());
   }
 
   public Collection<InnocentPlayer> getInnocentPlayers() {
-    return this.innocentPlayers;
-  }
-
-  public void addDeadPlayer(final GamePlayer player) {
-    this.dead.add(player);
-  }
-
-  public void resurrectDeadPlayer(final GamePlayer player) {
-    this.dead.remove(player);
+    return this.lookupMap.values().stream()
+        .filter(player -> player instanceof InnocentPlayer)
+        .map(murderer -> (InnocentPlayer) murderer)
+        .collect(Collectors.toSet());
   }
 
   public MurderGame getGame() {
     return this.game;
   }
 
-  public Map<UUID, GamePlayer> getLookupMap() {
-    return this.lookupMap;
-  }
-
   public Collection<GamePlayer> getDead() {
-    return this.dead;
+    return this.lookupMap.values().stream()
+        .filter(player -> !player.isAlive())
+        .collect(Collectors.toSet());
   }
 
   public PlayerDeathManager getDeathManager() {
     return this.deathManager;
+  }
+
+  public void removePlayer(final UUID uuid) {
+    this.lookupMap.remove(uuid);
   }
 }

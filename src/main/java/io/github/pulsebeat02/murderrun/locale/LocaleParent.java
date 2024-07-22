@@ -42,6 +42,10 @@ public interface LocaleParent {
     return () -> translatable(key, GOLD);
   }
 
+  static NullComponent<Sender> title(final String key) {
+    return () -> translatable(key, GOLD);
+  }
+
   static NullComponent<Sender> info(final String key) {
     return () -> format(translatable(key, GOLD));
   }

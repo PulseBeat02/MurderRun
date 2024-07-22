@@ -19,7 +19,7 @@ public final class ItemStackUtils {
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final NamespacedKey key = MurderRun.getKey();
     final String data = container.get(key, PersistentDataType.STRING);
-    final String check = CarPartItemStack.getPdcId();
+    final String check = CarPartItemStack.getPDCId();
     return !(data == null || !data.equals(check));
   }
 }

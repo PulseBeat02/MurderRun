@@ -33,11 +33,7 @@ public final class PlayerDeathManager {
     this.service = Executors.newScheduledThreadPool(8);
   }
 
-  public void start() {
-    this.spawnParticles();
-  }
-
-  public void shutdown() {
+  public void shutdownExecutor() {
     this.service.shutdown();
   }
 
@@ -78,10 +74,12 @@ public final class PlayerDeathManager {
     stand.setItem(EquipmentSlot.FEET, boots);
   }
 
-  private void announcePlayerDeath() {
+  private void announcePlayerDeath(final Player dead) {
     final PlayerManager manager = this.game.getPlayerManager();
-    for (final Player player : manager.getParticipants()) {
-      player.showTitle(title(Locale.PLAYER_DEATH.build(player.getName()), empty()));
+    final String name = dead.getName();
+    for (final GamePlayer gamePlayer : manager.getParticipants()) {
+      final Player player = gamePlayer.getPlayer();
+      player.showTitle(title(Locale.PLAYER_DEATH.build(name), empty()));
     }
   }
 
@@ -94,10 +92,10 @@ public final class PlayerDeathManager {
     this.setArmorStandRotations(stand);
     this.setArmorStandGear(player, stand);
 
-    this.announcePlayerDeath();
+    this.announcePlayerDeath(player);
   }
 
-  private void spawnParticles() {
+  public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
     this.service.scheduleAtFixedRate(
         () -> manager.getDead().forEach(this::spawnParticleOnCorpse), 0, 1, TimeUnit.SECONDS);
@@ -109,7 +107,7 @@ public final class PlayerDeathManager {
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
     final BlockData data = Material.RED_CONCRETE.createBlockData();
-    world.spawnParticle(Particle.BLOCK, clone, 10, 0.5, 0.5, 0.5);
+    world.spawnParticle(Particle.BLOCK, clone, 10, 0.5, 0.5, 0.5, data);
   }
 
   public static ItemStack createArmorPiece(final Material leatherPiece) {

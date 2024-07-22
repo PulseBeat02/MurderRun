@@ -86,7 +86,7 @@ public final class CarPartItemStack {
     this.location = location;
   }
 
-  public static String getPdcId() {
+  public static String getPDCId() {
     return PDC_ID;
   }
 }

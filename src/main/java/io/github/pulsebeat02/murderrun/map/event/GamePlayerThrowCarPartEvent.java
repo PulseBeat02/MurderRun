@@ -66,8 +66,8 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private void checkGameEnd(final int count, final int goal) {
     if (count == goal) {
+      this.announceInnocentVictory();
       this.game.finishGame();
-      return;
     }
   }
 
@@ -94,9 +94,19 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
   private void announceCarPartRetrieval(final int count, final int goal) {
     final int remaining = goal - count;
     final PlayerManager manager = this.game.getPlayerManager();
-    for (final Player player : manager.getParticipants()) {
+    for (final GamePlayer gamePlayer : manager.getParticipants()) {
+      final Player player = gamePlayer.getPlayer();
       player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
       player.showTitle(title(Locale.CAR_PART_RETRIEVAL.build(remaining), empty()));
+    }
+  }
+
+  private void announceInnocentVictory() {
+    final PlayerManager manager = this.game.getPlayerManager();
+    for (final GamePlayer gamePlayer : manager.getParticipants()) {
+      final Player player = gamePlayer.getPlayer();
+      player.playSound(player.getLocation(), Sound.ENTITY_CAT_PURR, 1, 1);
+      player.showTitle(title(Locale.INNOCENT_VICTORY.build(), empty()));
     }
   }
 }

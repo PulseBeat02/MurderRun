@@ -22,7 +22,9 @@ public final class GameEventManager {
         Set.of(
             new GamePlayerDeathEvent(this.game),
             new GamePlayerPickupCarPartEvent(this.game),
-            new GamePlayerThrowCarPartEvent(this.game));
+            new GamePlayerThrowCarPartEvent(this.game),
+            new GamePlayerLeaveEvent(this.game),
+            new GamePlayerHungerEvent(this.game));
   }
 
   public void registerEvents() {

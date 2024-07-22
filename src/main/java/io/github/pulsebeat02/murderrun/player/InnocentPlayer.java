@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.player;
 
 import io.github.pulsebeat02.murderrun.MurderGame;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 
 import java.util.UUID;
@@ -16,6 +17,13 @@ public final class InnocentPlayer extends GamePlayer {
   @Override
   public void onPlayerAttemptPickupPartEvent(final PlayerAttemptPickupItemEvent event) {
     this.setHasCarPart(true);
+  }
+
+  @Override
+  public void onMatchStart() {
+    super.onMatchStart();
+    final Player player = getPlayer();
+    player.setWalkSpeed(0.3f);
   }
 
   public boolean hasCarPart() {

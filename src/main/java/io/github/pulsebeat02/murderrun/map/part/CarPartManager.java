@@ -31,7 +31,7 @@ public final class CarPartManager {
     this.spawnParticles();
   }
 
-  public void shutdown() {
+  public void shutdownExecutor() {
     this.service.shutdown();
   }
 

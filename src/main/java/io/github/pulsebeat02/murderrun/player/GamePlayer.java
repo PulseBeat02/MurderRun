@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.player;
 
 import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -22,9 +23,27 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
 
   public abstract void onPlayerAttemptPickupPartEvent(final PlayerAttemptPickupItemEvent event);
 
+  public void onMatchStart() {
+    final Player player = this.getPlayer();
+    player.setHealth(20f);
+    player.setFoodLevel(20);
+  }
+
+  public void onMatchReset() {
+    final GameConfiguration configuration = this.game.getConfiguration();
+    final Location location = configuration.getLobbySpawn();
+    final Player player = this.getPlayer();
+    player.clearActivePotionEffects();
+    player.getInventory().clear();
+    player.setGameMode(GameMode.SURVIVAL);
+    player.teleport(location);
+    player.setHealth(20f);
+    player.setFoodLevel(20);
+    player.setWalkSpeed(0.2f);
+  }
+
   public void markDeath() {
     this.setAlive(false);
-    this.addToGraveyard();
     this.startDeathSequence();
   }
 
@@ -32,11 +51,6 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
     final PlayerManager manager = this.game.getPlayerManager();
     final PlayerDeathManager death = manager.getDeathManager();
     death.initiateDeathSequence(this);
-  }
-
-  private void addToGraveyard() {
-    final PlayerManager manager = this.game.getPlayerManager();
-    manager.addDeadPlayer(this);
   }
 
   public UUID getUuid() {
