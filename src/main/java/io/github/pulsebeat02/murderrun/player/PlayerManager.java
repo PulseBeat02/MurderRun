@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.player;
 
+import io.github.pulsebeat02.murderrun.MurderGame;
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -11,14 +12,14 @@ public final class PlayerManager {
 
   // TODO: Handle player log outs, when Player instance is bad, etc
 
-  private final GameConfiguration configuration;
+  private final MurderGame game;
   private final Map<UUID, GamePlayer> lookupMap;
   private final List<Player> participants;
   private final Collection<Murderer> murderers;
   private final Collection<InnocentPlayer> innocentPlayers;
 
-  public PlayerManager(final GameConfiguration configuration, final List<Player> participants) {
-    this.configuration = configuration;
+  public PlayerManager(final MurderGame game, final List<Player> participants) {
+    this.game = game;
     this.participants = participants;
     this.lookupMap = new HashMap<>();
     this.murderers = this.chooseMurderers();
@@ -26,7 +27,8 @@ public final class PlayerManager {
   }
 
   public void resetAllPlayers() {
-    final Location location = this.configuration.getSpawn();
+    final GameConfiguration configuration = this.game.getConfiguration();
+    final Location location = configuration.getSpawn();
     for (final Player player : this.participants) {
       player.clearActivePotionEffects();
       player.getInventory().clear();
@@ -37,12 +39,13 @@ public final class PlayerManager {
 
   private Collection<Murderer> chooseMurderers() {
     Collections.shuffle(this.participants);
-    final int count = this.configuration.getMurdererCount();
+    final GameConfiguration configuration = this.game.getConfiguration();
+    final int count = configuration.getMurdererCount();
     final Set<Murderer> set = new HashSet<>();
     for (int i = 0; i < count; i++) {
       final Player player = this.participants.get(i);
       final UUID uuid = player.getUniqueId();
-      final Murderer murderer = new Murderer(uuid);
+      final Murderer murderer = new Murderer(this.game, uuid);
       set.add(murderer);
       this.lookupMap.put(uuid, murderer);
     }
@@ -57,7 +60,7 @@ public final class PlayerManager {
       if (check) {
         continue;
       }
-      final InnocentPlayer innocent = new InnocentPlayer(uuid);
+      final InnocentPlayer innocent = new InnocentPlayer(this.game, uuid);
       set.add(innocent);
       this.lookupMap.put(uuid, innocent);
     }
@@ -76,10 +79,6 @@ public final class PlayerManager {
 
   public Optional<GamePlayer> lookupPlayer(final UUID uuid) {
     return Optional.ofNullable(this.lookupMap.get(uuid));
-  }
-
-  public GameConfiguration getConfiguration() {
-    return this.configuration;
   }
 
   public List<Player> getParticipants() {

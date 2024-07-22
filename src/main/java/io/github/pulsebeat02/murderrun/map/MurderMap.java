@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.map;
 import io.github.pulsebeat02.murderrun.MurderGame;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
-import io.github.pulsebeat02.murderrun.map.part.CarPartEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 
@@ -11,7 +10,7 @@ public final class MurderMap {
 
   private final MurderGame game;
   private final CarPartManager carPartManager;
-  private CarPartEvents event;
+  private MapEvents event;
 
   public MurderMap(final MurderGame game) {
     this.game = game;
@@ -40,7 +39,7 @@ public final class MurderMap {
 
   private void registerEvents() {
     final MurderRun run = this.game.getPlugin();
-    this.event = new CarPartEvents(this.game);
+    this.event = new MapEvents(this.game);
     Bukkit.getPluginManager().registerEvents(this.event, run);
   }
 
