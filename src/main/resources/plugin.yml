@@ -1,0 +1,4 @@
+name: MurderRun
+version: '${version}'
+main: io.github.pulsebeat02.murderrun.MurderRun
+api-version: '1.21'
