@@ -17,6 +17,7 @@ public final class MurderRun extends JavaPlugin {
   - Add World Resetting
   - Add Commands (Villagers, Setting Game Configuration)
   - Add Villager Trading System and Currency
+  - Make Utility Methods for Sound Playback and Title Showing
 
    */
 
