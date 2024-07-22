@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;

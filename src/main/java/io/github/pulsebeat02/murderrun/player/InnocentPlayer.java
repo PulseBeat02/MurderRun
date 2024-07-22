@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.player;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 
@@ -22,7 +22,7 @@ public final class InnocentPlayer extends GamePlayer {
   @Override
   public void onMatchStart() {
     super.onMatchStart();
-    final Player player = getPlayer();
+    final Player player = this.getPlayer();
     player.setWalkSpeed(0.3f);
   }
 

@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
@@ -37,7 +37,6 @@ public final class GamePlayerDeathEvent implements Listener {
     }
     final GamePlayer gamePlayer = optional.get();
     gamePlayer.markDeath();
-
     if (this.allInnocentDead()) {
       this.announceMurdererVictory();
       this.game.finishGame();

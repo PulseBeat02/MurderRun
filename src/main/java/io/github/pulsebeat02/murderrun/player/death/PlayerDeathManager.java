@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.player.death;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;

@@ -1,10 +1,8 @@
 package io.github.pulsebeat02.murderrun.player;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
-import io.github.pulsebeat02.murderrun.config.GameConfiguration;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.player.death.MurdererLocationManager;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -14,22 +12,48 @@ public final class PlayerManager {
 
   private final MurderGame game;
   private final PlayerDeathManager deathManager;
+  private final MurdererLocationManager murdererLocationManager;
+
   private final Map<UUID, GamePlayer> lookupMap;
+  private Collection<GamePlayer> cachedDeadPlayers;
+  private Collection<Murderer> cachedMurderers;
+  private Collection<InnocentPlayer> cachedInnocentPlayers;
 
   public PlayerManager(final MurderGame game) {
     this.game = game;
     this.deathManager = new PlayerDeathManager(game);
+    this.murdererLocationManager = new MurdererLocationManager(game);
     this.lookupMap = new WeakHashMap<>();
   }
 
   public void start(final Collection<Player> murderers, final Collection<Player> participants) {
     this.assignPlayerRoles(murderers, participants);
     this.setupAllPlayers();
+    this.resetCachedPlayers();
+    this.murdererLocationManager.spawnParticles();
   }
 
   public void shutdown() {
     this.resetAllPlayers();
     this.deathManager.shutdownExecutor();
+    this.murdererLocationManager.shutdownExecutor();
+  }
+
+  public void resetCachedPlayers() {
+    this.cachedMurderers =
+        this.lookupMap.values().stream()
+            .filter(player -> player instanceof Murderer)
+            .map(murderer -> (Murderer) murderer)
+            .collect(Collectors.toSet());
+    this.cachedDeadPlayers =
+        this.lookupMap.values().stream()
+            .filter(player -> !player.isAlive())
+            .collect(Collectors.toSet());
+    this.cachedInnocentPlayers =
+        this.lookupMap.values().stream()
+            .filter(player -> player instanceof InnocentPlayer)
+            .map(murderer -> (InnocentPlayer) murderer)
+            .collect(Collectors.toSet());
   }
 
   private void setupAllPlayers() {
@@ -84,17 +108,11 @@ public final class PlayerManager {
   }
 
   public Collection<Murderer> getMurderers() {
-    return this.lookupMap.values().stream()
-        .filter(player -> player instanceof Murderer)
-        .map(murderer -> (Murderer) murderer)
-        .collect(Collectors.toSet());
+    return this.cachedMurderers;
   }
 
   public Collection<InnocentPlayer> getInnocentPlayers() {
-    return this.lookupMap.values().stream()
-        .filter(player -> player instanceof InnocentPlayer)
-        .map(murderer -> (InnocentPlayer) murderer)
-        .collect(Collectors.toSet());
+    return this.cachedInnocentPlayers;
   }
 
   public MurderGame getGame() {
@@ -102,9 +120,7 @@ public final class PlayerManager {
   }
 
   public Collection<GamePlayer> getDead() {
-    return this.lookupMap.values().stream()
-        .filter(player -> !player.isAlive())
-        .collect(Collectors.toSet());
+    return this.cachedDeadPlayers;
   }
 
   public PlayerDeathManager getDeathManager() {

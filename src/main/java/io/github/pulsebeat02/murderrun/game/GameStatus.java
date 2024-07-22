@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun;
+package io.github.pulsebeat02.murderrun.game;
 
 public enum GameStatus {
     NOT_STARTED,

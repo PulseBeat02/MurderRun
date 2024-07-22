@@ -1,12 +1,13 @@
 package io.github.pulsebeat02.murderrun.map.part;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.SplittableRandom;
@@ -63,7 +64,7 @@ public final class CarPartManager {
     final Location location = stack.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
-    world.spawnParticle(Particle.EFFECT, clone, 10, 0.5, 0.5, 0.5);
+    world.spawnParticle(Particle.ENTITY_EFFECT, clone, 10, 0.5, 0.5, 0.5, Color.YELLOW);
   }
 
   public MurderMap getMap() {

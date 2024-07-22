@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,5 +23,6 @@ public final class GamePlayerLeaveEvent implements Listener {
     final Player player = event.getPlayer();
     final UUID uuid = player.getUniqueId();
     manager.removePlayer(uuid);
+    manager.resetCachedPlayers();
   }
 }

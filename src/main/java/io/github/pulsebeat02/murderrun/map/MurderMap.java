@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.map;
 
-import io.github.pulsebeat02.murderrun.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.map.event.GameEventManager;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 
