@@ -14,7 +14,6 @@ public final class MurderRun extends JavaPlugin {
 
   - Add Innocent Traps for Survival
   - Add Murderer Abilities for Killing
-  - Add Sounds (murderer sword break sound, player death sound, countdown sound, start sound, etc)
   - Add World Resetting
   - Add Commands (Villagers, Setting Game Configuration)
   - Add Villager Trading System and Currency

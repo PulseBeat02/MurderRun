@@ -5,7 +5,13 @@ import team.unnamed.creative.sound.Sound;
 import java.io.IOException;
 
 public enum FXSound {
-  ROUND_START("round_start");
+  COUNTDOWN("countdown"),
+  CHAINSAW("chainsaw"),
+  DEATH_1("death_1"),
+  DEATH_2("death_2"),
+  DEATH_3("death_3"),
+  RELEASED_1("released_1"),
+  RELEASED_2("released_2");
 
   private final Sound sound;
 
