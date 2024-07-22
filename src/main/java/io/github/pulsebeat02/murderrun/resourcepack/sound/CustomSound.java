@@ -1,10 +1,9 @@
-package io.github.pulsebeat02.murderrun.resourcepack;
+package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.sound.Sound;
-import team.unnamed.creative.texture.Texture;
 
 import java.io.IOException;
 import java.io.InputStream;

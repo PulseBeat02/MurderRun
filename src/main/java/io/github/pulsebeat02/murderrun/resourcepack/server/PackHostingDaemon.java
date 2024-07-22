@@ -1,13 +1,11 @@
 package io.github.pulsebeat02.murderrun.resourcepack.server;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.resourcepack.ServerResourcepack;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.server.ResourcePackServer;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -15,7 +13,7 @@ import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executors;
 
-public final class HTTPServer {
+public final class PackHostingDaemon {
 
   private static final ServerResourcepack PACK;
 
@@ -26,12 +24,12 @@ public final class HTTPServer {
   private final int port;
   private final ResourcePackServer server;
 
-  public HTTPServer(final int port) throws IOException, NoSuchAlgorithmException {
+  public PackHostingDaemon(final int port) {
     this.port = port;
     this.server = this.buildServer();
   }
 
-  public ResourcePackServer buildServer() throws IOException, NoSuchAlgorithmException {
+  public ResourcePackServer buildServer() {
     final Path path = PACK.getPath();
     try (final InputStream stream = Files.newInputStream(path)) {
       final Writable writable = Writable.copyInputStream(stream);
@@ -42,6 +40,8 @@ public final class HTTPServer {
           .pack(pack)
           .executor(Executors.newFixedThreadPool(8))
           .build();
+    } catch (final IOException | NoSuchAlgorithmException e) {
+      throw new AssertionError(e);
     }
   }
 

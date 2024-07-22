@@ -1,4 +1,18 @@
-name: MurderRun
-version: '${version}'
-main: io.github.pulsebeat02.murderrun.MurderRun
-api-version: '1.21'
+{
+  "name": "MurderRun",
+  "version": "1.21-v1.0.0",
+  "description": "Ssundee's Murder Run",
+  "authors": [
+    "PulseBeat02"
+  ],
+  "api-version": "1.21",
+  "main": "io.github.pulsebeat02.murderrun.MurderRun",
+  "libraries": [
+    "com.moandjiezana.toml:toml4j:0.7.2",
+    "me.devnatan:inventory-framework-platform-bukkit:3.0.10-SNAPSHOT",
+    "me.lucko:commodore:2.2",
+    "team.unnamed:creative-api:1.7.3",
+    "team.unnamed:creative-serializer-minecraft:1.7.3",
+    "team.unnamed:creative-server:1.7.3"
+  ]
+}

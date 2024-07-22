@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.map;
+package io.github.pulsebeat02.murderrun.map.part;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.Locale;
@@ -18,9 +18,11 @@ import java.util.SplittableRandom;
 public final class CarPart {
 
   private static final SplittableRandom RANDOM;
+  private static final String PDC_ID;
 
   static {
     RANDOM = new SplittableRandom();
+    PDC_ID = "car_part";
   }
 
   private final ItemStack stack;
@@ -72,11 +74,11 @@ public final class CarPart {
   private void tagData(final ItemMeta meta) {
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final NamespacedKey key = MurderRun.getKey();
-    container.set(key, PersistentDataType.STRING, "car_part");
+    container.set(key, PersistentDataType.STRING, PDC_ID);
   }
 
   private int randomizeTexture() {
-    return RANDOM.nextInt(4);
+    return RANDOM.nextInt(1, 8);
   }
 
   public ItemStack getStack() {
@@ -89,5 +91,9 @@ public final class CarPart {
 
   public void setLocation(final Location location) {
     this.location = location;
+  }
+
+  public static String getPdcId() {
+    return PDC_ID;
   }
 }

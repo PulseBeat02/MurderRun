@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'io.github.pulsebeat02'
@@ -18,10 +19,22 @@ repositories {
 }
 
 dependencies {
-compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
+    compileOnly "com.mojang:brigadier:1.0.18"
+    compileOnly "com.mojang:authlib:1.5.26"
+
+    compileOnly "com.moandjiezana.toml:toml4j:0.7.2"
+    compileOnly "me.devnatan:inventory-framework-platform-bukkit:3.0.10-SNAPSHOT"
+    compileOnly "me.lucko:commodore:2.2"
+    compileOnly("team.unnamed:creative-api:1.7.3")
+    compileOnly("team.unnamed:creative-serializer-minecraft:1.7.3")
+    compileOnly("team.unnamed:creative-server:1.7.3")
+    implementation "org.bstats:bstats-bukkit:3.0.2"
+    implementation "net.kyori:adventure-api:4.17.0"
+    implementation "net.kyori:adventure-platform-bukkit:4.3.3"
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -31,9 +44,21 @@ java {
     }
 }
 
+tasks.compileJava {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
 tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
         options.release.set(targetJavaVersion)
+    }
+}
+
+sourceSets {
+    main {
+        java { srcDir("src/main/java") }
+        resources { srcDir("src/main/resources") }
     }
 }
 
@@ -44,4 +69,10 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    archiveFileName = "${project.name}-${project.version}-BUKKIT.jar"
+    relocate('net.kyori', 'io.github.pulsebeat02.murderrun.lib.kyori')
+    relocate('org.bstats', 'io.github.pulsebeat02.murderrun.lib.bstats')
 }

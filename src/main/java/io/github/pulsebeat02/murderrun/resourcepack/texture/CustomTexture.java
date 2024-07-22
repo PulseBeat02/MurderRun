@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.resourcepack;
+package io.github.pulsebeat02.murderrun.resourcepack.texture;
 
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import net.kyori.adventure.key.Key;
