@@ -8,6 +8,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
 
+  /*
+
+  TODO:
+
+  - Add Innocent Traps for Survival
+  - Add Murderer Abilities for Killing
+  - Add Sounds (murderer sword break sound, player death sound, countdown sound, start sound, etc)
+  - Add Ending to Game
+  - Add Commands (Villagers, Setting Game Configuration)
+  - Add Beginning Phase (teleport innocents, start 1 minute timer before releasing murderer)
+  - Add Villager Trading System and Currency
+  - Adjust Movement Speed
+
+   */
+
+
   private static NamespacedKey KEY;
 
   private PluginConfiguration configuration;

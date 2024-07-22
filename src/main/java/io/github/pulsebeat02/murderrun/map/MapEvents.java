@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -86,6 +87,7 @@ public final class MapEvents implements Listener {
     final int remaining = goal - this.carPartCount;
     final PlayerManager manager = this.game.getPlayerManager();
     for (final Player player : manager.getParticipants()) {
+      player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
       player.showTitle(title(Locale.CAR_PART_RETRIEVAL.build(remaining), empty()));
     }
 
