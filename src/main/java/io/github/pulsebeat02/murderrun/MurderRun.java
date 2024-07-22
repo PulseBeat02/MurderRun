@@ -20,6 +20,7 @@ public final class MurderRun extends JavaPlugin {
   - Add Beginning Phase (teleport innocents, start 1 minute timer before releasing murderer)
   - Add Villager Trading System and Currency
   - Adjust Movement Speed
+  - Add Particles
 
    */
 

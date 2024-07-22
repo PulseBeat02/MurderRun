@@ -12,7 +12,7 @@ public final class ModelHandler {
 
   public ModelHandler() {}
 
-  public Model diamondModel() {
+  public Model customItemModelGenerator() {
     final List<ItemOverride> list = new ArrayList<>();
     final ItemTexture[] textures = ItemTexture.values();
     for (final ItemTexture texture : textures) {

@@ -2,33 +2,54 @@ package io.github.pulsebeat02.murderrun.player;
 
 import io.github.pulsebeat02.murderrun.MurderGame;
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
+import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class PlayerManager {
 
   // TODO: Handle player log outs, when Player instance is bad, etc
 
   private final MurderGame game;
-  private final Map<UUID, GamePlayer> lookupMap;
+  private final PlayerDeathManager deathManager;
   private final List<Player> participants;
-  private final Collection<Murderer> murderers;
-  private final Collection<InnocentPlayer> innocentPlayers;
 
-  public PlayerManager(final MurderGame game, final List<Player> participants) {
+  private Map<UUID, GamePlayer> lookupMap;
+  private Collection<GamePlayer> dead;
+  private Collection<Murderer> murderers;
+  private Collection<InnocentPlayer> innocentPlayers;
+
+  public PlayerManager(final MurderGame game, final Collection<Player> participants) {
     this.game = game;
+    this.deathManager = new PlayerDeathManager(game);
     this.participants = participants;
+  }
+
+  private Collection<Player> createWeakHashSet(final Collection<Player> collection) {
+    Collections.newSetFromMap(
+            new WeakHashMap<Object, Boolean>()
+    );
+  }
+
+  public void start() {
     this.lookupMap = new HashMap<>();
+    this.dead = new HashSet<>();
     this.murderers = this.chooseMurderers();
     this.innocentPlayers = this.chooseInnocents();
+    this.deathManager.start();
+  }
+
+  public void shutdown() {
+    this.deathManager.shutdown();
   }
 
   public void resetAllPlayers() {
     final GameConfiguration configuration = this.game.getConfiguration();
-    final Location location = configuration.getSpawn();
+    final Location location = configuration.getLobbySpawn();
     for (final Player player : this.participants) {
       player.clearActivePotionEffects();
       player.getInventory().clear();
@@ -91,5 +112,29 @@ public final class PlayerManager {
 
   public Collection<InnocentPlayer> getInnocentPlayers() {
     return this.innocentPlayers;
+  }
+
+  public void addDeadPlayer(final GamePlayer player) {
+    this.dead.add(player);
+  }
+
+  public void resurrectDeadPlayer(final GamePlayer player) {
+    this.dead.remove(player);
+  }
+
+  public MurderGame getGame() {
+    return this.game;
+  }
+
+  public Map<UUID, GamePlayer> getLookupMap() {
+    return this.lookupMap;
+  }
+
+  public Collection<GamePlayer> getDead() {
+    return this.dead;
+  }
+
+  public PlayerDeathManager getDeathManager() {
+    return this.deathManager;
   }
 }

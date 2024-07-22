@@ -9,7 +9,8 @@ public final class GameConfiguration {
   private Location firstCorner;
   private Location secondCorner;
   private Location truckLocation;
-  private Location spawn;
+  private Location lobbySpawn;
+  private Location mapSpawn;
 
   public GameConfiguration() {}
 
@@ -53,7 +54,19 @@ public final class GameConfiguration {
     this.truckLocation = truckLocation;
   }
 
-  public Location getSpawn() {
-    return this.spawn;
+  public Location getLobbySpawn() {
+    return this.lobbySpawn;
+  }
+
+  public void setLobbySpawn(final Location lobbySpawn) {
+    this.lobbySpawn = lobbySpawn;
+  }
+
+  public Location getMapSpawn() {
+    return this.mapSpawn;
+  }
+
+  public void setMapSpawn(final Location mapSpawn) {
+    this.mapSpawn = mapSpawn;
   }
 }

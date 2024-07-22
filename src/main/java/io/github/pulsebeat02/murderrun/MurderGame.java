@@ -1,6 +1,8 @@
 package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
+
+import java.util.Collection;
 import java.util.List;
 
 import io.github.pulsebeat02.murderrun.map.MurderMap;
@@ -22,17 +24,19 @@ public final class MurderGame {
     this.status = GameStatus.NOT_STARTED;
   }
 
-  public void startGame(final List<Player> participants) {
+  public void startGame(final Collection<Player> participants) {
     this.status = GameStatus.IN_PROGRESS;
     this.configuration = new GameConfiguration();
-    this.playerManager = new PlayerManager(this.configuration, participants);
+    this.playerManager = new PlayerManager(this, participants);
     this.map.start();
+    this.playerManager.start();
   }
 
   public void finishGame() {
     this.status = GameStatus.FINISHED;
     this.map.stop();
     this.playerManager.resetAllPlayers();
+    this.playerManager.shutdown();
   }
 
   public GameConfiguration getConfiguration() {
