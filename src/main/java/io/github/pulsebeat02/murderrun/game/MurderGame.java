@@ -12,29 +12,32 @@ import org.bukkit.entity.Player;
 public final class MurderGame {
 
   private final MurderRun plugin;
-  private final MurderMap murderMap;
-  private final GameSettings configuration;
-  private final PlayerManager playerManager;
-  private final GamePreparationManager preparationManager;
-  private final GameEndManager endManager;
-  private final TimeManager timeManager;
+  private MurderMap murderMap;
+  private GameSettings configuration;
+  private PlayerManager playerManager;
+  private GamePreparationManager preparationManager;
+  private GameEndManager endManager;
+  private TimeManager timeManager;
   private final UUID gameID;
   private GameStatus status;
 
   public MurderGame(final MurderRun plugin) {
     this.plugin = plugin;
-    this.murderMap = new MurderMap(this);
-    this.playerManager = new PlayerManager(this);
-    this.configuration = new GameSettings();
-    this.preparationManager = new GamePreparationManager(this);
-    this.endManager = new GameEndManager(this);
-    this.timeManager = new TimeManager();
     this.status = GameStatus.NOT_STARTED;
     this.gameID = UUID.randomUUID();
   }
 
-  public void startGame(final Collection<Player> murderers, final Collection<Player> participants) {
+  public void startGame(
+      final GameSettings settings,
+      final Collection<Player> murderers,
+      final Collection<Player> participants) {
     this.status = GameStatus.IN_PROGRESS;
+    this.configuration = settings;
+    this.murderMap = new MurderMap(this);
+    this.playerManager = new PlayerManager(this);
+    this.preparationManager = new GamePreparationManager(this);
+    this.endManager = new GameEndManager(this);
+    this.timeManager = new TimeManager();
     this.murderMap.start();
     this.playerManager.start(murderers, participants);
     this.preparationManager.start();

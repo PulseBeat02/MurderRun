@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.map.part;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import net.kyori.adventure.text.Component;
@@ -16,8 +15,7 @@ import java.util.UUID;
 
 public final class CarPartItemStack {
 
-  private static final NamespacedKey CAR_PART_ID = new NamespacedKey("murder_run", "id");
-  private static final String PDC_ID = "car_part";
+  private static final NamespacedKey CAR_PART_ID = new NamespacedKey("murder_run", "car-part-uuid");
 
   private final String uuid;
   private final ItemStack stack;
@@ -70,8 +68,6 @@ public final class CarPartItemStack {
 
   private void tagData(final ItemMeta meta) {
     final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final NamespacedKey key = MurderRun.getKey();
-    container.set(key, PersistentDataType.STRING, PDC_ID);
     container.set(CAR_PART_ID, PersistentDataType.STRING, this.uuid);
   }
 
@@ -85,10 +81,6 @@ public final class CarPartItemStack {
 
   public void setLocation(final Location location) {
     this.location = location;
-  }
-
-  public static String getPDCId() {
-    return PDC_ID;
   }
 
   public String getUuid() {

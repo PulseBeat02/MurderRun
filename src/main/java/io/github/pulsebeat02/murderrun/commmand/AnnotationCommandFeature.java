@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.annotations.AnnotationParser;
 
-public interface AnnotationFeature {
+public interface AnnotationCommandFeature {
 
-  void registerFeature(MurderRun plugin, AnnotationParser<CommandSender> parser);
+  void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser);
 }

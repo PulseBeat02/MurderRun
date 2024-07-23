@@ -24,7 +24,7 @@ public final class InnocentPlayer extends GamePlayer {
   public void onMatchStart() {
     super.onMatchStart();
     final Player player = this.getPlayer();
-    player.setWalkSpeed(0.3f);
+    player.setWalkSpeed(0.25f);
     player.setGameMode(GameMode.ADVENTURE);
   }
 

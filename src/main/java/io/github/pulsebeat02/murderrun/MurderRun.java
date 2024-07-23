@@ -1,11 +1,11 @@
 package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
+import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.config.PluginConfiguration;
 import io.github.pulsebeat02.murderrun.data.ArenaDataManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
-import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
@@ -16,31 +16,39 @@ public final class MurderRun extends JavaPlugin {
 
   - Add Innocent Traps for Survival
   - Add Murderer Traps for Killing
-  - Add Commands (Villagers, Setting Game Configuration)
-  - Add Villager Trading System and Currency
+  - Add Commands (Villager Spawns, Setting Game Configuration)
+  - Add Villager Trades for Traps
 
    */
-
-  private static NamespacedKey KEY;
 
   private PluginConfiguration configuration;
   private AudienceHandler audience;
   private PackHostingDaemon daemon;
   private ArenaDataManager arenaDataManager;
   private MurderArenaManager arenaManager;
+  private AnnotationParserHandler commandHandler;
 
   @Override
   public void onEnable() {
-    KEY = new NamespacedKey(this, "data");
     this.readPluginData();
     this.startHostingDaemon();
-    this.audience = new AudienceHandler(this);
+    this.registerCommmands();
+    this.registerAudienceHandler();
   }
 
   @Override
   public void onDisable() {
     this.writePluginData();
     this.stopHostingDaemon();
+  }
+
+  private void registerAudienceHandler() {
+    this.audience = new AudienceHandler(this);
+  }
+
+  private void registerCommmands() {
+    this.commandHandler = new AnnotationParserHandler(this);
+    this.commandHandler.registerCommands();
   }
 
   private void stopHostingDaemon() {
@@ -66,10 +74,6 @@ public final class MurderRun extends JavaPlugin {
     this.configuration.serialize();
   }
 
-  public static NamespacedKey getKey() {
-    return KEY;
-  }
-
   public PluginConfiguration getConfiguration() {
     return this.configuration;
   }
@@ -88,5 +92,9 @@ public final class MurderRun extends JavaPlugin {
 
   public ArenaDataManager getArenaDataManager() {
     return this.arenaDataManager;
+  }
+
+  public AnnotationParserHandler getCommandHandler() {
+    return this.commandHandler;
   }
 }

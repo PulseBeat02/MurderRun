@@ -23,6 +23,7 @@ dependencies {
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.11.0'
     compileOnly('com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.11.0') { transitive = false }
     compileOnly 'org.incendo:cloud-annotations:2.0.0-rc.2'
+    compileOnly 'org.incendo:cloud-paper:2.0.0-beta.8'
 
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'net.kyori:adventure-api:4.17.0'

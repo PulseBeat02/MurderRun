@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.utils;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -17,9 +16,8 @@ public final class ItemStackUtils {
   public static boolean isCarPart(final ItemStack stack) {
     final ItemMeta meta = stack.getItemMeta();
     final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final NamespacedKey key = MurderRun.getKey();
-    final String data = container.get(key, PersistentDataType.STRING);
-    final String check = CarPartItemStack.getPDCId();
-    return !(data == null || !data.equals(check));
+    final NamespacedKey key = CarPartItemStack.getCarPartKey();
+    final String id = container.get(key, PersistentDataType.STRING);
+    return id != null;
   }
 }

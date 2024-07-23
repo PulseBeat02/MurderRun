@@ -99,4 +99,29 @@ public interface LocaleParent {
       sender.sendMessage(format(this.build(arg0, arg1)));
     }
   }
+
+  static <T, U, V> TriComponent<Sender, T, U, V> info(
+      final String key,
+      final Function<T, String> function1,
+      final Function<U, String> function2,
+      final Function<V, String> function3) {
+    return (argument1, argument2, argument3) ->
+        format(
+            info0(
+                key,
+                List.of(
+                    text(createFinalText(argument1, function1), AQUA),
+                    text(createFinalText(argument2, function2), AQUA),
+                    text(createFinalText(argument3, function3), AQUA))));
+  }
+
+  @FunctionalInterface
+  interface TriComponent<S extends Sender, A0, A1, A2> {
+
+    Component build(A0 arg0, A1 arg1, A2 arg2);
+
+    default void send(final S sender, final A0 arg0, final A1 arg1, final A2 arg2) {
+      sender.sendMessage(format(this.build(arg0, arg1, arg2)));
+    }
+  }
 }

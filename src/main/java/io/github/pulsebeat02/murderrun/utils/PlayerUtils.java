@@ -1,8 +1,15 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -19,5 +26,17 @@ public final class PlayerUtils {
     final UUID uuid = player.getUniqueId();
     final PlayerManager manager = game.getPlayerManager();
     return manager.lookupPlayer(uuid);
+  }
+
+  public static boolean checkIfPlayer(final MurderRun plugin, final CommandSender sender) {
+    if (!(sender instanceof Player)) {
+      final AudienceHandler handler = plugin.getAudience();
+      final BukkitAudiences audiences = handler.retrieve();
+      final Audience audience = audiences.sender(sender);
+      final Component message = Locale.PLAYER_CHECK.build();
+      audience.sendMessage(message);
+      return false;
+    }
+    return true;
   }
 }

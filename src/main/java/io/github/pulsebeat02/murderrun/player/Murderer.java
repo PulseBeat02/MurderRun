@@ -24,7 +24,7 @@ public final class Murderer extends GamePlayer {
     super.onMatchStart();
     final PotionEffect effect = new PotionEffect(PotionEffectType.HASTE, Integer.MAX_VALUE, 127);
     final Player player = this.getPlayer();
-    player.setWalkSpeed(0.4f);
+    player.setWalkSpeed(0.3f);
     player.setGameMode(GameMode.SURVIVAL);
     player.addPotionEffect(effect);
   }
