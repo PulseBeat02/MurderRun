@@ -59,6 +59,8 @@ public final class CarPartManager {
         () -> this.parts.forEach(this::spawnParticleOnPart), 0, 1, TimeUnit.SECONDS);
   }
 
+
+  // TODO: fix it will keep spawning particles after picked up
   private void spawnParticleOnPart(final CarPartItemStack stack) {
     final Location location = stack.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
