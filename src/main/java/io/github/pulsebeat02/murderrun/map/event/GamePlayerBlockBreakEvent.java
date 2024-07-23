@@ -4,6 +4,9 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
@@ -26,9 +29,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
   private void onBlockBreakEvent(final BlockBreakEvent event) {
 
     final Player player = event.getPlayer();
-    final UUID uuid = player.getUniqueId();
-    final PlayerManager manager = this.game.getPlayerManager();
-    final Optional<GamePlayer> optional = manager.lookupPlayer(uuid);
+    final Optional<GamePlayer> optional = PlayerUtils.checkIfValidPlayer(this.game, player);
     if (optional.isEmpty()) {
       return;
     }
@@ -36,11 +37,8 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     final GamePlayer murderer = optional.get();
     final Location murdererLocation = player.getLocation();
     if (murderer instanceof Murderer) {
-      final String key = "murder_run:chainsaw";
-      for (final GamePlayer gamePlayer : manager.getParticipants()) {
-        final Player pl = gamePlayer.getPlayer();
-        pl.playSound(murdererLocation, key, SoundCategory.AMBIENT, 1, 1);
-      }
+      AdventureUtils.playSoundForAllParticipantsAtLocation(
+          this.game, murdererLocation, FXSound.CHAINSAW);
     }
   }
 }

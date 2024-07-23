@@ -14,9 +14,11 @@ public enum FXSound {
   RELEASED_2("released_2");
 
   private final Sound sound;
+  private final String id;
 
-  FXSound(final String name) {
-    this.sound = this.loadSound(name);
+  FXSound(final String id) {
+    this.sound = this.loadSound(id);
+    this.id = id;
   }
 
   private Sound loadSound(final String name) {
@@ -29,5 +31,9 @@ public enum FXSound {
 
   public Sound getSound() {
     return this.sound;
+  }
+
+  public String getId() {
+    return this.id;
   }
 }

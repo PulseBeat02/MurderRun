@@ -15,11 +15,7 @@ import java.util.concurrent.Executors;
 
 public final class PackHostingDaemon {
 
-  private static final ServerResourcepack PACK;
-
-  static {
-    PACK = new ServerResourcepack();
-  }
+  private static final ServerResourcepack PACK = new ServerResourcepack();
 
   private final int port;
   private final ResourcePackServer server;

@@ -14,7 +14,7 @@ public interface LocaleParent {
   TranslationManager MANAGER = new TranslationManager();
 
   NullComponent<Sender> PREFIX =
-      () -> text().color(RED).append(text('['), text("Murder Run", GOLD), text(']')).build();
+      () -> text().color(RED).append(text('['), text("Murder Run", AQUA), text(']')).build();
 
   static NullComponent<Sender> error(final String key) {
     return () -> MANAGER.render(translatable(key, RED));
@@ -22,16 +22,6 @@ public interface LocaleParent {
 
   static <T> UniComponent<Sender, T> error(final String key, final Function<T, String> function) {
     return argument -> error0(key, List.of(text(createFinalText(argument, function), AQUA)));
-  }
-
-  static <T, U> BiComponent<Sender, T, U> error(
-      final String key, final Function<T, String> function1, final Function<U, String> function2) {
-    return (argument1, argument2) ->
-        error0(
-            key,
-            List.of(
-                text(createFinalText(argument1, function1), AQUA),
-                text(createFinalText(argument2, function2), AQUA)));
   }
 
   static NullComponent<Sender> itemLore(final String key) {
@@ -42,8 +32,13 @@ public interface LocaleParent {
     return () -> translatable(key, GOLD);
   }
 
-  static NullComponent<Sender> title(final String key) {
-    return () -> translatable(key, GOLD);
+  static NullComponent<Sender> title(final String key, final NamedTextColor color) {
+    return () -> translatable(key, color);
+  }
+
+  static <T> UniComponent<Sender, T> title(
+      final String key, final Function<T, String> function, final NamedTextColor argColor) {
+    return argument -> info0(key, List.of(text(createFinalText(argument, function), argColor)));
   }
 
   static NullComponent<Sender> info(final String key) {
@@ -52,25 +47,6 @@ public interface LocaleParent {
 
   static <T> UniComponent<Sender, T> info(final String key, final Function<T, String> function) {
     return argument -> format(info0(key, List.of(text(createFinalText(argument, function), AQUA))));
-  }
-
-  static <T> UniComponent<Sender, T> title(final String key, final Function<T, String> function) {
-    return argument -> info0(key, List.of(text(createFinalText(argument, function), AQUA)));
-  }
-
-  static <T, U, V> TriComponent<Sender, T, U, V> info(
-      final String key,
-      final Function<T, String> function1,
-      final Function<U, String> function2,
-      final Function<V, String> function3) {
-    return (argument1, argument2, argument3) ->
-        format(
-            info0(
-                key,
-                List.of(
-                    text(createFinalText(argument1, function1), AQUA),
-                    text(createFinalText(argument2, function2), AQUA),
-                    text(createFinalText(argument3, function3), AQUA))));
   }
 
   static Component info0(final String key, final List<Component> arguments) {
@@ -121,16 +97,6 @@ public interface LocaleParent {
 
     default void send(final S sender, final A0 arg0, final A1 arg1) {
       sender.sendMessage(format(this.build(arg0, arg1)));
-    }
-  }
-
-  @FunctionalInterface
-  interface TriComponent<S extends Sender, A0, A1, A2> {
-
-    Component build(A0 arg0, A1 arg1, A2 arg2);
-
-    default void send(final S sender, final A0 arg0, final A1 arg1, final A2 arg2) {
-      sender.sendMessage(format(this.build(arg0, arg1, arg2)));
     }
   }
 }

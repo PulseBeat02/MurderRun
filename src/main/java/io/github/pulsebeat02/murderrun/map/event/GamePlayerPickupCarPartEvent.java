@@ -4,7 +4,10 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
+import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
@@ -31,13 +34,21 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
     }
 
     final UUID owner = item.getOwner();
-    final PlayerManager manager = this.game.getPlayerManager();
-    final Optional<GamePlayer> player = manager.lookupPlayer(owner);
-    if (player.isEmpty()) {
+    if (owner == null) {
       return;
     }
 
-    final GamePlayer gamePlayer = player.get();
+    final Player player = Bukkit.getPlayer(owner);
+    if (player == null) {
+      return;
+    }
+
+    final Optional<GamePlayer> optional = PlayerUtils.checkIfValidPlayer(this.game, player);
+    if (optional.isEmpty()) {
+      return;
+    }
+
+    final GamePlayer gamePlayer = optional.get();
     gamePlayer.onPlayerAttemptPickupPartEvent(event);
   }
 }

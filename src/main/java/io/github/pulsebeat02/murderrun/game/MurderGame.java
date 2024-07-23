@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
@@ -16,6 +17,8 @@ public final class MurderGame {
   private final GameConfiguration configuration;
   private final PlayerManager playerManager;
   private final GamePreparationManager preparationManager;
+  private final GameEndManager endManager;
+  private final UUID gameID;
 
   private GameStatus status;
 
@@ -25,7 +28,9 @@ public final class MurderGame {
     this.playerManager = new PlayerManager(this);
     this.configuration = new GameConfiguration();
     this.preparationManager = new GamePreparationManager(this);
+    this.endManager = new GameEndManager(this);
     this.status = GameStatus.NOT_STARTED;
+    this.gameID = UUID.randomUUID();
   }
 
   public void startGame(final Collection<Player> murderers, final Collection<Player> participants) {
@@ -35,8 +40,9 @@ public final class MurderGame {
     this.preparationManager.start();
   }
 
-  public void finishGame() {
+  public void finishGame(final GameWinCode code) {
     this.status = GameStatus.FINISHED;
+    this.endManager.start(code);
     this.murderMap.shutdown();
     this.playerManager.shutdown();
   }
@@ -55,5 +61,21 @@ public final class MurderGame {
 
   public MurderRun getPlugin() {
     return this.plugin;
+  }
+
+  public MurderMap getMurderMap() {
+    return this.murderMap;
+  }
+
+  public GamePreparationManager getPreparationManager() {
+    return this.preparationManager;
+  }
+
+  public GameEndManager getEndManager() {
+    return this.endManager;
+  }
+
+  public UUID getGameID() {
+    return this.gameID;
   }
 }

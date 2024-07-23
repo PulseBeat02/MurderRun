@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.map.part;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
@@ -11,11 +12,9 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
-import java.util.SplittableRandom;
 
 public final class CarPartItemStack {
 
-  private static final SplittableRandom RANDOM = new SplittableRandom();
   private static final String PDC_ID = "car_part";
 
   private final ItemStack stack;
@@ -52,7 +51,7 @@ public final class CarPartItemStack {
   }
 
   private void changeProperties(final ItemMeta meta) {
-    final int id = this.randomizeTexture();
+    final int id = RandomUtils.generateInt(1, 7);
     meta.displayName(Locale.CAR_PART_NAME.build());
     meta.setCustomModelData(id);
   }
@@ -68,10 +67,6 @@ public final class CarPartItemStack {
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final NamespacedKey key = MurderRun.getKey();
     container.set(key, PersistentDataType.STRING, PDC_ID);
-  }
-
-  private int randomizeTexture() {
-    return RANDOM.nextInt(1, 8);
   }
 
   public ItemStack getStack() {

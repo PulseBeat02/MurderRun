@@ -1,12 +1,15 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
+import io.github.pulsebeat02.murderrun.game.GameWinCode;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Item;
@@ -66,8 +69,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private void checkGameEnd(final int count, final int goal) {
     if (count == goal) {
-      this.announceInnocentVictory();
-      this.game.finishGame();
+      this.game.finishGame(GameWinCode.INNOCENTS);
     }
   }
 
@@ -93,20 +95,9 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private void announceCarPartRetrieval(final int count, final int goal) {
     final int remaining = goal - count;
-    final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
-      player.showTitle(title(Locale.CAR_PART_RETRIEVAL.build(remaining), empty()));
-    }
-  }
-
-  private void announceInnocentVictory() {
-    final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      player.playSound(player.getLocation(), Sound.ENTITY_CAT_PURR, 1, 1);
-      player.showTitle(title(Locale.INNOCENT_VICTORY.build(), empty()));
-    }
+    final Component title = Locale.CAR_PART_RETRIEVAL.build(remaining);
+    final Component subtitle = empty();
+    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
+    AdventureUtils.playSoundForAllParticipants(this.game, Sound.BLOCK_ANVIL_USE);
   }
 }

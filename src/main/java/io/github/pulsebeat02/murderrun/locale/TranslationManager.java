@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.locale;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
@@ -13,13 +14,8 @@ import net.kyori.adventure.translation.TranslationRegistry;
 
 public final class TranslationManager {
 
-  private static final java.util.Locale DEFAULT_LOCALE;
-  private static final Key ADVENTURE_KEY;
-
-  static {
-    DEFAULT_LOCALE = java.util.Locale.ENGLISH;
-    ADVENTURE_KEY = Key.key("murder_run", "main");
-  }
+  private static final java.util.Locale DEFAULT_LOCALE = Locale.ENGLISH;
+  private static final Key ADVENTURE_KEY = Key.key("murder_run", "main");
 
   private final TranslationRegistry registry;
 
@@ -44,7 +40,8 @@ public final class TranslationManager {
   }
 
   private PropertyResourceBundle getBundle() {
-    try (final Reader reader = ResourceUtils.getResourceAsReader("locale/murder_run_en.properties")) {
+    try (final Reader reader =
+        ResourceUtils.getResourceAsReader("locale/murder_run_en.properties")) {
       return new PropertyResourceBundle(reader);
     } catch (final IOException e) {
       throw new RuntimeException(e);

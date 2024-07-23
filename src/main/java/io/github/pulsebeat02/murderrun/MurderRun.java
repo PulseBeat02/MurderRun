@@ -13,11 +13,12 @@ public final class MurderRun extends JavaPlugin {
   TODO:
 
   - Add Innocent Traps for Survival
-  - Add Murderer Abilities for Killing
+  - Add Murderer Traps for Killing
   - Add World Resetting
   - Add Commands (Villagers, Setting Game Configuration)
   - Add Villager Trading System and Currency
-  - Make Utility Methods for Sound Playback and Title Showing
+  - Fix Titles Locales
+  - Add config file for ports and resourcepack url
 
    */
 

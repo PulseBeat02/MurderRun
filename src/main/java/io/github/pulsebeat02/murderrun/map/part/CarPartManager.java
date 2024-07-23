@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.map.part;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -10,7 +11,6 @@ import org.bukkit.World;
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.SplittableRandom;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -39,16 +39,13 @@ public final class CarPartManager {
   private void randomizeSpawnLocations() {
     final MurderGame game = this.map.getGame();
     final GameConfiguration configuration = game.getConfiguration();
-    final SplittableRandom random = new SplittableRandom();
     final Location first = configuration.getFirstCorner();
     final Location second = configuration.getSecondCorner();
     final World world = first.getWorld();
     final int parts = configuration.getCarPartCount();
     for (int i = 0; i < parts; i++) {
-      final double x = first.getX() + (second.getX() - first.getX()) * random.nextDouble();
-      final double y = first.getY() + (second.getY() - first.getY()) * random.nextDouble();
-      final double z = first.getZ() + (second.getZ() - first.getZ()) * random.nextDouble();
-      final Location location = new Location(world, x, y, z);
+      final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
+      final Location location = new Location(world, coords[0], 320, coords[1]);
       final CarPartItemStack part = new CarPartItemStack(location);
       part.spawn();
       this.parts.add(part);

@@ -5,20 +5,22 @@ import io.github.pulsebeat02.murderrun.config.GameConfiguration;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.SplittableRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.kyori.adventure.text.Component.empty;
-import static net.kyori.adventure.title.Title.title;
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 public final class GamePreparationManager {
-
-  private static final SplittableRandom RANDOM = new SplittableRandom();
 
   private final MurderGame game;
 
@@ -35,18 +37,46 @@ public final class GamePreparationManager {
   private void runFutureTask() {
     final MurderRun plugin = this.game.getPlugin();
     final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.scheduleSyncDelayedTask(plugin, this::countDownAudio, 114 * 20);
-    scheduler.scheduleSyncDelayedTask(plugin, this::futureTask, 120 * 20);
+    final Countdown countdown = new Countdown();
+    countdown.runTaskTimer(plugin, 0, 20);
+  }
+
+  public class Countdown extends BukkitRunnable {
+
+    private final AtomicInteger secondsLeft;
+
+    public Countdown() {
+      this.secondsLeft = new AtomicInteger(121);
+    }
+
+    @Override
+    public void run() {
+      final int seconds = this.secondsLeft.decrementAndGet();
+      switch (seconds) {
+        case 5 -> {
+          GamePreparationManager.this.countDownAudio();
+          GamePreparationManager.this.announceCountdown(5);
+        }
+        case 4 -> GamePreparationManager.this.announceCountdown(4);
+        case 3 -> GamePreparationManager.this.announceCountdown(3);
+        case 2 -> GamePreparationManager.this.announceCountdown(2);
+        case 1 -> GamePreparationManager.this.announceCountdown(1);
+        case 0 -> {
+          GamePreparationManager.this.futureTask();
+          this.cancel();
+        }
+      }
+    }
+  }
+
+  private void announceCountdown(final int seconds) {
+    final Component title = text(seconds, RED);
+    final Component subtitle = empty();
+    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
   }
 
   private void countDownAudio() {
-    final String key = "murder_run:countdown";
-    final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      final Location location = player.getLocation();
-      player.playSound(location, key, SoundCategory.MASTER, 1, 1);
-    }
+    AdventureUtils.playSoundForAllParticipants(this.game, FXSound.COUNTDOWN);
   }
 
   private void futureTask() {
@@ -69,41 +99,29 @@ public final class GamePreparationManager {
     final GameConfiguration configuration = this.game.getConfiguration();
     final Location spawnLocation = configuration.getMapSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer innocent : manager.getMurderers()) {
-      final Player player = innocent.getPlayer();
+    for (final GamePlayer murderer : manager.getMurderers()) {
+      final Player player = murderer.getPlayer();
       player.teleport(spawnLocation);
     }
   }
 
   private void announceHidePhase() {
-    final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      player.showTitle(title(Locale.INNOCENT_PREPERATION.build(), empty()));
-    }
+    final Component title = Locale.INNOCENT_PREPERATION.build();
+    final Component subtitle = empty();
+    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
   }
 
   private void announceReleasePhase() {
-    final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      player.showTitle(title(Locale.MURDERER_RELEASED.build(), empty()));
-    }
+    final Component title = Locale.MURDERER_RELEASED.build();
+    final Component subtitle = empty();
+    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
   }
 
   private void playReleaseSoundEffect() {
-    final String[] sounds = new String[] {"murder_run:released_1", "murder_run:released_2"};
-    final int index = this.generateRandomIndex(0, 2);
-    final String key = sounds[index];
-    final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      final Location location = player.getLocation();
-      player.playSound(location, key, SoundCategory.AMBIENT, 1, 1);
-    }
+    AdventureUtils.playSoundForAllParticipants(this.game, FXSound.RELEASED_1, FXSound.RELEASED_2);
   }
 
-  private int generateRandomIndex(final int min, final int max) {
-    return RANDOM.nextInt(min, max);
+  public MurderGame getGame() {
+    return this.game;
   }
 }

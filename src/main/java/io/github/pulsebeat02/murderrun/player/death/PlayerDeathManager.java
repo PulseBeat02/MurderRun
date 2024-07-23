@@ -4,7 +4,9 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.papermc.paper.math.Rotations;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.ArmorStand;
@@ -75,12 +77,10 @@ public final class PlayerDeathManager {
   }
 
   private void announcePlayerDeath(final Player dead) {
-    final PlayerManager manager = this.game.getPlayerManager();
     final String name = dead.getName();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      player.showTitle(title(Locale.PLAYER_DEATH.build(name), empty()));
-    }
+    final Component title = Locale.PLAYER_DEATH.build(name);
+    final Component subtitle = empty();
+    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
   }
 
   public void initiateDeathSequence(final GamePlayer gamePlayer) {

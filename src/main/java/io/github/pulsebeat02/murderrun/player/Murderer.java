@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.player;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 
@@ -21,5 +22,6 @@ public final class Murderer extends GamePlayer {
     super.onMatchStart();
     final Player player = this.getPlayer();
     player.setWalkSpeed(0.4f);
+    player.setGameMode(GameMode.SURVIVAL);
   }
 }
