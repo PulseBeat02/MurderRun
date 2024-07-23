@@ -2,9 +2,13 @@ package io.github.pulsebeat02.murderrun.player.death;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.map.MurderMap;
+import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
+import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.papermc.paper.math.Rotations;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -15,6 +19,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -92,8 +97,24 @@ public final class PlayerDeathManager {
     this.setArmorStandRotations(stand);
     this.setArmorStandGear(player, stand);
     this.announcePlayerDeath(player);
+    this.summonCarParts(player);
+  }
 
-   // TODO: Summon car parts when player dies
+  private void summonCarParts(final Player player) {
+    final PlayerInventory inventory = player.getInventory();
+    final ItemStack[] slots = inventory.getContents();
+    for (final ItemStack slot : slots) {
+      if (!ItemStackUtils.isCarPart(slot)) {
+        continue;
+      }
+      final MurderMap map = this.game.getMurderMap();
+      final CarPartManager manager = map.getCarPartManager();
+      final CarPartItemStack stack = manager.getCarPartItemStack(slot);
+      final Location death = player.getLastDeathLocation();
+      stack.setPickedUp(false);
+      stack.setLocation(death);
+      stack.spawn();
+    }
   }
 
   public void spawnParticles() {

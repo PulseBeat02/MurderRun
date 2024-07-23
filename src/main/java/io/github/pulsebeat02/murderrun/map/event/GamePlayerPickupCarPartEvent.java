@@ -1,6 +1,9 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.map.MurderMap;
+import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
+import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
@@ -51,5 +54,10 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
 
     final GamePlayer gamePlayer = optional.get();
     gamePlayer.onPlayerAttemptPickupPartEvent(event);
+
+    final MurderMap map = this.game.getMurderMap();
+    final CarPartManager manager = map.getCarPartManager();
+    final CarPartItemStack carPartItemStack = manager.getCarPartItemStack(stack);
+    carPartItemStack.setPickedUp(true);
   }
 }

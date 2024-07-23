@@ -12,15 +12,20 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
+import java.util.UUID;
 
 public final class CarPartItemStack {
 
+  private static final NamespacedKey CAR_PART_ID = new NamespacedKey("murder_run", "id");
   private static final String PDC_ID = "car_part";
 
+  private final String uuid;
   private final ItemStack stack;
   private Location location;
+  private boolean pickedUp;
 
   public CarPartItemStack(final Location location) {
+    this.uuid = UUID.randomUUID().toString();
     this.location = location;
     this.stack = this.createItemStack();
   }
@@ -67,6 +72,7 @@ public final class CarPartItemStack {
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final NamespacedKey key = MurderRun.getKey();
     container.set(key, PersistentDataType.STRING, PDC_ID);
+    container.set(CAR_PART_ID, PersistentDataType.STRING, this.uuid);
   }
 
   public ItemStack getStack() {
@@ -83,5 +89,21 @@ public final class CarPartItemStack {
 
   public static String getPDCId() {
     return PDC_ID;
+  }
+
+  public String getUuid() {
+    return this.uuid;
+  }
+
+  public static NamespacedKey getCarPartKey() {
+    return CAR_PART_ID;
+  }
+
+  public boolean isPickedUp() {
+    return this.pickedUp;
+  }
+
+  public void setPickedUp(final boolean pickedUp) {
+    this.pickedUp = pickedUp;
   }
 }
