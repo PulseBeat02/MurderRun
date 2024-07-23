@@ -1,6 +1,8 @@
 package io.github.pulsebeat02.murderrun;
 
+import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
 import io.github.pulsebeat02.murderrun.config.PluginConfiguration;
+import io.github.pulsebeat02.murderrun.data.ArenaDataManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
 import org.bukkit.NamespacedKey;
@@ -14,11 +16,9 @@ public final class MurderRun extends JavaPlugin {
 
   - Add Innocent Traps for Survival
   - Add Murderer Traps for Killing
-  - Add World Resetting
   - Add Commands (Villagers, Setting Game Configuration)
   - Add Villager Trading System and Currency
   - Fix Titles Locales
-  - Add config file for ports and resourcepack url
 
    */
 
@@ -27,17 +27,45 @@ public final class MurderRun extends JavaPlugin {
   private PluginConfiguration configuration;
   private AudienceHandler audience;
   private PackHostingDaemon daemon;
+  private ArenaDataManager arenaDataManager;
+  private MurderArenaManager arenaManager;
 
   @Override
   public void onEnable() {
     KEY = new NamespacedKey(this, "data");
-    this.configuration = new PluginConfiguration(this);
+    this.readPluginData();
+    this.startHostingDaemon();
     this.audience = new AudienceHandler(this);
-    this.daemon = new PackHostingDaemon(this.configuration.getPort());
   }
 
   @Override
-  public void onDisable() {}
+  public void onDisable() {
+    this.writePluginData();
+    this.stopHostingDaemon();
+  }
+
+  private void stopHostingDaemon() {
+    this.daemon.stop();
+  }
+
+  private void startHostingDaemon() {
+    final String hostName = this.configuration.getHostName();
+    final int port = this.configuration.getPort();
+    this.daemon = new PackHostingDaemon(hostName, port);
+    this.daemon.start();
+  }
+
+  private void readPluginData() {
+    this.configuration = new PluginConfiguration(this);
+    this.arenaDataManager = new ArenaDataManager(this);
+    this.arenaManager = this.arenaDataManager.deserialize();
+    this.configuration.deserialize();
+  }
+
+  private void writePluginData() {
+    this.arenaDataManager.serialize(this.arenaManager);
+    this.configuration.serialize();
+  }
 
   public static NamespacedKey getKey() {
     return KEY;
@@ -53,5 +81,13 @@ public final class MurderRun extends JavaPlugin {
 
   public PackHostingDaemon getDaemon() {
     return this.daemon;
+  }
+
+  public MurderArenaManager getArenaManager() {
+    return this.arenaManager;
+  }
+
+  public ArenaDataManager getArenaDataManager() {
+    return this.arenaDataManager;
   }
 }

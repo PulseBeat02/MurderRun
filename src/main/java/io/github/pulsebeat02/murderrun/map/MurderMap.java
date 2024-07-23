@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.map;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.map.event.GameEventManager;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 
 public final class MurderMap {
 
@@ -25,6 +26,11 @@ public final class MurderMap {
   public void shutdown() {
     this.unregisterEvents();
     this.stopExecutors();
+    this.resetWorld();
+  }
+
+  private void resetWorld() {
+
   }
 
   private void stopExecutors() {

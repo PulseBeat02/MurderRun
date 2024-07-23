@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
@@ -20,7 +21,7 @@ public final class GamePlayerHungerEvent implements Listener {
     this.game = game;
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   private void onHungerDeplete(final FoodLevelChangeEvent event) {
 
     final HumanEntity entity = event.getEntity();

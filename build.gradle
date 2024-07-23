@@ -8,27 +8,21 @@ version = '1.21-v1.0.0'
 
 repositories {
     mavenCentral()
-    maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
-    }
-    maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
+    maven { url = "https://repo.papermc.io/repository/maven-public/" }
+    maven { url = "https://oss.sonatype.org/content/groups/public/" }
+    maven { url = uri("https://maven.enginehub.org/repo/") }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
-    compileOnly "com.mojang:brigadier:1.0.18"
-    compileOnly "com.mojang:authlib:1.5.26"
-
     compileOnly "com.moandjiezana.toml:toml4j:0.7.2"
-    compileOnly "me.devnatan:inventory-framework-platform-bukkit:3.0.10-SNAPSHOT"
-    compileOnly "me.lucko:commodore:2.2"
-    compileOnly("team.unnamed:creative-api:1.7.3")
-    compileOnly("team.unnamed:creative-serializer-minecraft:1.7.3")
-    compileOnly("team.unnamed:creative-server:1.7.3")
+    compileOnly "me.devnatan:inventory-framework-platform-bukkit:3.1.0-rc"
+    compileOnly "team.unnamed:creative-api:1.7.3"
+    compileOnly "team.unnamed:creative-serializer-minecraft:1.7.3"
+    compileOnly "team.unnamed:creative-server:1.7.3"
+    compileOnly "com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.11.0"
+    compileOnly ("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.11.0") { transitive = false }
+
     implementation "org.bstats:bstats-bukkit:3.0.2"
     implementation "net.kyori:adventure-api:4.17.0"
     implementation "net.kyori:adventure-platform-bukkit:4.3.3"

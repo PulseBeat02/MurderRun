@@ -17,10 +17,12 @@ public final class PackHostingDaemon {
 
   private static final ServerResourcepack PACK = new ServerResourcepack();
 
+  private final String hostName;
   private final int port;
   private final ResourcePackServer server;
 
-  public PackHostingDaemon(final int port) {
+  public PackHostingDaemon(final String hostName, final int port) {
+    this.hostName = hostName;
     this.port = port;
     this.server = this.buildServer();
   }
@@ -32,7 +34,7 @@ public final class PackHostingDaemon {
       final String hash = ResourceUtils.createPackHash(path);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, hash);
       return ResourcePackServer.server()
-          .address("127.0.0.1", this.port)
+          .address(this.hostName, this.port)
           .pack(pack)
           .executor(Executors.newFixedThreadPool(8))
           .build();

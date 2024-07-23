@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +25,7 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
     this.game = game;
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerPickupItem(final PlayerAttemptPickupItemEvent event) {
 
     final Item item = event.getItem();

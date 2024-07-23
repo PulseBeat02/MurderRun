@@ -1,8 +1,9 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
+import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.game.GameWinCode;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.config.GameConfiguration;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
@@ -15,6 +16,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +26,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.kyori.adventure.text.Component.empty;
-import static net.kyori.adventure.title.Title.title;
 
 public final class GamePlayerThrowCarPartEvent implements Listener {
 
@@ -37,7 +38,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     this.carPartCount = new AtomicInteger(0);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerThrowItem(final PlayerDropItemEvent event) {
 
     final Item item = event.getItemDrop();
@@ -46,8 +47,9 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
       return;
     }
 
-    final GameConfiguration configuration = this.game.getConfiguration();
-    final Location truckLocation = configuration.getTruckLocation();
+    final GameSettings configuration = this.game.getSettings();
+    final MurderArena arena = configuration.getArena();
+    final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
     final double distSquared = itemLocation.distanceSquared(truckLocation);
     if (distSquared > 16) {

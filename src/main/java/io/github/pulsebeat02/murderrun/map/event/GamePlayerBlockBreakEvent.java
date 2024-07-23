@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
@@ -25,7 +26,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     this.game = game;
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   private void onBlockBreakEvent(final BlockBreakEvent event) {
 
     final Player player = event.getPlayer();

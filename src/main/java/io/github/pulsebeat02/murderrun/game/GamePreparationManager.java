@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.config.GameConfiguration;
+import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
@@ -86,8 +86,9 @@ public final class GamePreparationManager {
   }
 
   private void teleportInnocentPlayers() {
-    final GameConfiguration configuration = this.game.getConfiguration();
-    final Location spawnLocation = configuration.getMapSpawn();
+    final GameSettings configuration = this.game.getSettings();
+    final MurderArena arena = configuration.getArena();
+    final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
     for (final GamePlayer innocent : manager.getInnocentPlayers()) {
       final Player player = innocent.getPlayer();
@@ -96,8 +97,9 @@ public final class GamePreparationManager {
   }
 
   private void teleportMurderers() {
-    final GameConfiguration configuration = this.game.getConfiguration();
-    final Location spawnLocation = configuration.getMapSpawn();
+    final GameSettings configuration = this.game.getSettings();
+    final MurderArena arena = configuration.getArena();
+    final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
     for (final GamePlayer murderer : manager.getMurderers()) {
       final Player player = murderer.getPlayer();

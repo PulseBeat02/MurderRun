@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.player;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.config.GameConfiguration;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -30,7 +30,7 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
   }
 
   public void onMatchReset() {
-    final GameConfiguration configuration = this.game.getConfiguration();
+    final GameSettings configuration = this.game.getSettings();
     final Location location = configuration.getLobbySpawn();
     final Player player = this.getPlayer();
     player.clearActivePotionEffects();

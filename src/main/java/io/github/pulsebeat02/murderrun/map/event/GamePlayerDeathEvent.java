@@ -13,15 +13,12 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
-
-import static net.kyori.adventure.text.Component.empty;
-import static net.kyori.adventure.title.Title.title;
 
 public final class GamePlayerDeathEvent implements Listener {
 
@@ -31,7 +28,7 @@ public final class GamePlayerDeathEvent implements Listener {
     this.game = game;
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerDeath(final PlayerDeathEvent event) {
     final Player player = event.getEntity();
     final Optional<GamePlayer> optional = PlayerUtils.checkIfValidPlayer(this.game, player);

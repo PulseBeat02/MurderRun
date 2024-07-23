@@ -127,7 +127,7 @@ public final class PlayerManager {
     return this.deathManager;
   }
 
-  public void removePlayer(final UUID uuid) {
-    this.lookupMap.remove(uuid);
+  public GamePlayer removePlayer(final UUID uuid) {
+    return this.lookupMap.remove(uuid);
   }
 }

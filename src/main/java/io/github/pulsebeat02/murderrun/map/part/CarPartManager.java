@@ -1,7 +1,8 @@
 package io.github.pulsebeat02.murderrun.map.part;
 
+import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.config.GameConfiguration;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
@@ -38,9 +39,10 @@ public final class CarPartManager {
 
   private void randomizeSpawnLocations() {
     final MurderGame game = this.map.getGame();
-    final GameConfiguration configuration = game.getConfiguration();
-    final Location first = configuration.getFirstCorner();
-    final Location second = configuration.getSecondCorner();
+    final GameSettings configuration = game.getSettings();
+    final MurderArena arena = configuration.getArena();
+    final Location first = arena.getFirstCorner();
+    final Location second = arena.getSecondCorner();
     final World world = first.getWorld();
     final int parts = configuration.getCarPartCount();
     for (int i = 0; i < parts; i++) {
