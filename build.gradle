@@ -16,12 +16,12 @@ repositories {
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
     compileOnly "com.moandjiezana.toml:toml4j:0.7.2"
-    compileOnly "me.devnatan:inventory-framework-platform-bukkit:3.1.0-rc"
     compileOnly "team.unnamed:creative-api:1.7.3"
     compileOnly "team.unnamed:creative-serializer-minecraft:1.7.3"
     compileOnly "team.unnamed:creative-server:1.7.3"
     compileOnly "com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.11.0"
     compileOnly ("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.11.0") { transitive = false }
+    compileOnly "org.incendo:cloud-annotations:2.0.0-rc.2"
 
     implementation "org.bstats:bstats-bukkit:3.0.2"
     implementation "net.kyori:adventure-api:4.17.0"

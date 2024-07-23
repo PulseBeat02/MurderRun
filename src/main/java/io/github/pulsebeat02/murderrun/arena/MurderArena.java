@@ -2,8 +2,6 @@ package io.github.pulsebeat02.murderrun.arena;
 
 import org.bukkit.Location;
 
-import java.nio.file.Path;
-
 public final class MurderArena {
 
   private final MurderArenaSchematic schematic;

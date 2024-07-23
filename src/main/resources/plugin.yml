@@ -10,9 +10,9 @@
   "depend": ["FastAsyncWorldEdit"],
   "libraries": [
     "com.moandjiezana.toml:toml4j:0.7.2",
-    "me.devnatan:inventory-framework-platform-bukkit:3.1.0-rc",
     "team.unnamed:creative-api:1.7.3",
     "team.unnamed:creative-serializer-minecraft:1.7.3",
-    "team.unnamed:creative-server:1.7.3"
+    "team.unnamed:creative-server:1.7.3",
+    "org.incendo:cloud-annotations:2.0.0-rc.2"
   ]
 }
