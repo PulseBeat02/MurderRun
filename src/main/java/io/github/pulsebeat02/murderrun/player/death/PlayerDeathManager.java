@@ -91,8 +91,9 @@ public final class PlayerDeathManager {
     final ArmorStand stand = this.summonArmorStand(player);
     this.setArmorStandRotations(stand);
     this.setArmorStandGear(player, stand);
-
     this.announcePlayerDeath(player);
+
+   // TODO: Summon car parts when player dies
   }
 
   public void spawnParticles() {

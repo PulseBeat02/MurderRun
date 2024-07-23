@@ -36,7 +36,6 @@ public final class GamePreparationManager {
 
   private void runFutureTask() {
     final MurderRun plugin = this.game.getPlugin();
-    final BukkitScheduler scheduler = Bukkit.getScheduler();
     final Countdown countdown = new Countdown();
     countdown.runTaskTimer(plugin, 0, 20);
   }
@@ -83,6 +82,12 @@ public final class GamePreparationManager {
     this.teleportMurderers();
     this.announceReleasePhase();
     this.playReleaseSoundEffect();
+    this.startTimer();
+  }
+
+  private void startTimer() {
+    final TimeManager manager = this.game.getTimeManager();
+    manager.startTimer();
   }
 
   private void teleportInnocentPlayers() {

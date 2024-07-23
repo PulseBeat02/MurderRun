@@ -31,6 +31,7 @@ public final class PlayerManager {
     this.setupAllPlayers();
     this.resetCachedPlayers();
     this.murdererLocationManager.spawnParticles();
+    this.deathManager.spawnParticles();
   }
 
   public void shutdown() {

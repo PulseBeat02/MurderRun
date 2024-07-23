@@ -21,14 +21,36 @@ public final class GameEndManager {
   public void start(final GameWinCode winCode) {
     final MurderRun plugin = this.game.getPlugin();
     final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.scheduleSyncDelayedTask(plugin, () -> this.initiateEndingSequence(winCode), 3 * 20);
+    scheduler.scheduleSyncDelayedTask(plugin, () -> this.initiateEndingSequence(winCode), 2 * 20);
   }
 
   private void initiateEndingSequence(final GameWinCode winCode) {
+    this.stopTimer();
     switch (winCode) {
-      case INNOCENTS -> this.announceInnocentVictory();
+      case INNOCENTS -> {
+        this.announceInnocentVictory();
+        this.invalidateTimer();
+      }
       case MURDERERS -> this.announceMurdererVictory();
     }
+    this.announceMurdererTime();
+  }
+
+  private void announceMurdererTime() {
+    final TimeManager manager = this.game.getTimeManager();
+    final long timeElapsed = manager.getElapsedTime();
+    final Component message = Locale.MURDERER_TIME.build(timeElapsed);
+    AdventureUtils.sendMessageToAllParticipants(this.game, message);
+  }
+
+  private void invalidateTimer() {
+    final TimeManager manager = this.game.getTimeManager();
+    manager.invalidateElapsedTime();
+  }
+
+  private void stopTimer() {
+    final TimeManager manager = this.game.getTimeManager();
+    manager.stopTimer();
   }
 
   private void announceInnocentVictory() {

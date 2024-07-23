@@ -17,8 +17,8 @@ public final class MurderGame {
   private final PlayerManager playerManager;
   private final GamePreparationManager preparationManager;
   private final GameEndManager endManager;
+  private final TimeManager timeManager;
   private final UUID gameID;
-
   private GameStatus status;
 
   public MurderGame(final MurderRun plugin) {
@@ -28,6 +28,7 @@ public final class MurderGame {
     this.configuration = new GameSettings();
     this.preparationManager = new GamePreparationManager(this);
     this.endManager = new GameEndManager(this);
+    this.timeManager = new TimeManager();
     this.status = GameStatus.NOT_STARTED;
     this.gameID = UUID.randomUUID();
   }
@@ -76,5 +77,9 @@ public final class MurderGame {
 
   public UUID getGameID() {
     return this.gameID;
+  }
+
+  public TimeManager getTimeManager() {
+    return this.timeManager;
   }
 }

@@ -18,7 +18,7 @@ public final class MurderRun extends JavaPlugin {
   - Add Murderer Traps for Killing
   - Add Commands (Villagers, Setting Game Configuration)
   - Add Villager Trading System and Currency
-  - Fix Titles Locales
+  - Drop car part if innocent died
 
    */
 

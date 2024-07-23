@@ -1,9 +1,13 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -67,6 +71,18 @@ public final class AdventureUtils {
     for (final GamePlayer gamePlayer : manager.getParticipants()) {
       final Player player = gamePlayer.getPlayer();
       player.showTitle(title(title, subtitle));
+    }
+  }
+
+  public static void sendMessageToAllParticipants(final MurderGame game, final Component message) {
+    final MurderRun plugin = game.getPlugin();
+    final AudienceHandler handler = plugin.getAudience();
+    final BukkitAudiences audiences = handler.retrieve();
+    final PlayerManager manager = game.getPlayerManager();
+    for (final GamePlayer gamePlayer : manager.getParticipants()) {
+      final Player player = gamePlayer.getPlayer();
+      final Audience audience = audiences.player(player);
+      audience.sendMessage(message);
     }
   }
 }
