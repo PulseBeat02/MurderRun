@@ -3,12 +3,10 @@ package io.github.pulsebeat02.murderrun.map.event;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.Murderer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import org.bukkit.Location;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public final class GamePlayerBlockBreakEvent implements Listener {
 

@@ -10,11 +10,13 @@ public final class MurderMap {
   private final MurderGame game;
   private final CarPartManager carPartManager;
   private final GameEventManager eventManager;
+  private final MapResetManager resetManager;
 
   public MurderMap(final MurderGame game) {
     this.game = game;
     this.carPartManager = new CarPartManager(this);
     this.eventManager = new GameEventManager(this);
+    this.resetManager = new MapResetManager(this);
   }
 
   public void start() {
@@ -30,7 +32,7 @@ public final class MurderMap {
   }
 
   private void resetWorld() {
-
+    this.resetManager.resetMap();
   }
 
   private void stopExecutors() {
