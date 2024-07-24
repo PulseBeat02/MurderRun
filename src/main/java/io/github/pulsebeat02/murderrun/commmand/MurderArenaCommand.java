@@ -42,32 +42,21 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("Lists all created arenas")
-  @Command("murder arena list")
-  public void listArenas(final CommandSender sender) {
-
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-
+  @Command(value = "murder arena list", requiredSender = Player.class)
+  public void listArenas(final Player sender) {
     final MurderArenaManager manager = this.plugin.getArenaManager();
     final Map<String, MurderArena> arenas = manager.getArenas();
     final List<String> keys = new ArrayList<>(arenas.keySet());
-    final Player player = (Player) sender;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message = Locale.ARENA_LIST.build(keys);
     audience.sendMessage(message);
   }
 
   @CommandDescription("Creates an arena with the specified settings")
-  @Command("murder arena create")
-  public void createArena(final CommandSender sender) {
+  @Command(value = "murder arena create", requiredSender = Player.class)
+  public void createArena(final Player sender) {
 
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-
-    final Player player = (Player) sender;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     if (this.first == null || this.second == null) {
       final Component message = Locale.ARENA_CORNER_ERROR.build();
       audience.sendMessage(message);
@@ -103,71 +92,51 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("Sets the name of the arena")
-  @Command("murder arena set name <string>")
-  public void setName(final CommandSender sender, @Quoted final String name) {
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-    final Player player = (Player) sender;
+  @Command(value = "murder arena set name <string>", requiredSender = Player.class)
+  public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message = Locale.ARENA_NAME.build(name);
     audience.sendMessage(message);
   }
 
   @CommandDescription("Sets the spawn location of the arena")
-  @Command("murder arena set spawn")
-  public void setSpawn(final CommandSender sender) {
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-    final Player player = (Player) sender;
-    final Location location = player.getLocation();
+  @Command(value = "murder arena set spawn", requiredSender = Player.class)
+  public void setSpawn(final Player sender) {
+    final Location location = sender.getLocation();
     this.spawn = location;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_SPAWN, location);
     audience.sendMessage(message);
   }
 
   @CommandDescription("Sets the truck location of the arena")
-  @Command("murder arena set truck")
-  public void setTruck(final CommandSender sender) {
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-    final Player player = (Player) sender;
-    final Location location = player.getLocation();
+  @Command(value = "murder arena set truck", requiredSender = Player.class)
+  public void setTruck(final Player sender) {
+    final Location location = sender.getLocation();
     this.truck = location;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_TRUCK, location);
     audience.sendMessage(message);
   }
 
   @CommandDescription("Sets the first corner location of the arena")
-  @Command("murder arena set first-corner")
-  public void setFirstCorner(final CommandSender sender) {
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-    final Player player = (Player) sender;
-    final Location location = player.getLocation();
+  @Command(value = "murder arena set first-corner", requiredSender = Player.class)
+  public void setFirstCorner(final Player sender) {
+    final Location location = sender.getLocation();
     this.first = location;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message =
         AdventureUtils.createLocationComponent(Locale.ARENA_FIRST_CORNER, location);
     audience.sendMessage(message);
   }
 
   @CommandDescription("Sets the second corner location of the arena")
-  @Command("murder arena set second-corner")
-  public void setSecondCorner(final CommandSender sender) {
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-    final Player player = (Player) sender;
-    final Location location = player.getLocation();
+  @Command(value = "murder arena set second-corner", requiredSender = Player.class)
+  public void setSecondCorner(final Player sender) {
+    final Location location = sender.getLocation();
     this.second = location;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message =
         AdventureUtils.createLocationComponent(Locale.ARENA_SECOND_CORNER, location);
     audience.sendMessage(message);

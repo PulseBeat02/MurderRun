@@ -21,6 +21,10 @@ public final class MurderArenaManager {
     this.arenas.put(name, arena);
   }
 
+  public MurderArena getArena(final String name) {
+    return arenas.get(name);
+  }
+
   public void removeArena(final String name) {
     this.arenas.remove(name);
   }

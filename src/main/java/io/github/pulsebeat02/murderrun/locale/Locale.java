@@ -44,4 +44,26 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> LOBBY_SPAWN_ERROR = info("murder_run.command.lobby.set.spawn_error");
   NullComponent<Sender> LOBBY_BUILT = info("murder_run.command.lobby.create");
   UniComponent<Sender, List<String>> LOBBY_LIST = info("murder_run.command.lobby.list", null);
+
+  NullComponent<Sender> GAME_LEFT = info("murder_run.command.game.leave");
+  NullComponent<Sender> GAME_CREATED = info("murder_run.command.game.create");
+  UniComponent<Sender, String> GAME_OWNER_INVITE = info("murder_run.command.game.owner_invite", null);
+  UniComponent<Sender, String> GAME_PLAYER_INVITE = info("murder_run.command.game.player_invite", null);
+  NullComponent<Sender> GAME_CANCEL = info("murder_run.command.game.cancel");
+  UniComponent<Sender, String> GAME_SET_MURDERER = info("murder_run.command.game.set.murderer", null);
+  UniComponent<Sender, String> GAME_SET_INNOCENT = info("murder_run.command.game.set.innocent", null);
+  UniComponent<Sender, Integer> GAME_SET_CAR_PART_COUNT = info("murder_run.command.game.set.car_part_count", null);
+  UniComponent<Sender, String> GAME_OWNER_KICK = info("murder_run.command.game.owner_kick", null);
+  NullComponent<Sender> GAME_PLAYER_KICK = info("murder_run.command.game.player_kick");
+  UniComponent<Sender, List<String>> GAME_LIST = info("murder_run.command.game.list", null);
+  UniComponent<Sender, String> GAME_JOIN = info("murder_run.command.game.join", null);
+
+  NullComponent<Sender> GAME_ARENA_ERROR = error("murder_run.command.game.arena_error");
+  NullComponent<Sender> GAME_LOBBY_ERROR = error("murder_run.command.game.lobby_error");
+  NullComponent<Sender> GAME_LEAVE_ERROR = error("murder_run.command.game.leave_error");
+  NullComponent<Sender> GAME_CREATE_ERROR = error("murder_run.command.game.create_error");
+  NullComponent<Sender> GAME_NOT_OWNER_ERROR = error("murder_run.command.game.owner_error");
+  NullComponent<Sender> GAME_INVALID_ERROR = error("murder_run.command.game.no_game_error");
+  NullComponent<Sender> GAME_JOIN_ERROR = error("murder_run.command.game.join_error");
+  NullComponent<Sender> GAME_INVALID_INVITE_ERROR = error("murder_run.command.game.invalid_invite_error");
 }

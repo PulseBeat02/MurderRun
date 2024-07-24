@@ -33,7 +33,7 @@ public final class MurderHelpCommand implements AnnotationCommandFeature {
         MinecraftHelp.create("/murder help", this.manager, this.bukkitAudiences::sender);
   }
 
-  @CommandDescription("Opens the help menu for the player")
+  @CommandDescription("Opens the help menu for the sender")
   @Command("murder help [query]")
   public void commandHelp(
       final CommandSender sender, @Argument(value = "query") @Greedy final String query) {

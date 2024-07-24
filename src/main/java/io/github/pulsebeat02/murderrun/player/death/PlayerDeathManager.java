@@ -85,7 +85,7 @@ public final class PlayerDeathManager {
   }
 
   private void announcePlayerDeath(final Player dead) {
-    final String name = dead.getName();
+    final String name = dead.getDisplayName();
     final Component title = Locale.PLAYER_DEATH.build(name);
     final Component subtitle = empty();
     AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);

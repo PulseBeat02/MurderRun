@@ -48,6 +48,20 @@ public final class MurderGameManager {
     this.setResourcepack(player);
   }
 
+  public void removeParticipantFromLobby(final Player player) {
+    this.murderers.remove(player);
+    this.participants.remove(player);
+    this.clearInventory(player);
+  }
+
+  private void clearInventory(final Player player) {
+    final PlayerInventory inventory = player.getInventory();
+    final ItemStack[] slots = inventory.getContents();
+    for (final ItemStack slot : slots) {
+      inventory.remove(slot);
+    }
+  }
+
   private void setResourcepack(final Player player) {
     try {
       final PackHostingDaemon daemon = this.plugin.getDaemon();
@@ -91,6 +105,11 @@ public final class MurderGameManager {
     this.giveSpecialSword(murderer);
   }
 
+  public void setPlayerToInnocent(final Player innocent) {
+    this.removeParticipantFromLobby(innocent);
+    this.addParticipantToLobby(innocent);
+  }
+
   private void giveSpecialSword(final Player player) {
 
     final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
@@ -120,5 +139,13 @@ public final class MurderGameManager {
 
   public MurderSettings getSettings() {
     return this.settings;
+  }
+
+  public Collection<Player> getMurderers() {
+    return this.murderers;
+  }
+
+  public Collection<Player> getParticipants() {
+    return this.participants;
   }
 }

@@ -6,7 +6,6 @@ import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -38,32 +37,21 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("Lists all created lobbies")
-  @Command("murder lobby list")
-  public void listLobbies(final CommandSender sender) {
-
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-
+  @Command(value = "murder lobby list", requiredSender = Player.class)
+  public void listLobbies(final Player sender) {
     final MurderLobbyManager manager = this.plugin.getLobbyManager();
     final Map<String, MurderLobby> arenas = manager.getLobbies();
     final List<String> keys = new ArrayList<>(arenas.keySet());
-    final Player player = (Player) sender;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message = Locale.LOBBY_LIST.build(keys);
     audience.sendMessage(message);
   }
 
   @CommandDescription("Creates an arena with the specified settings")
-  @Command("murder lobby create")
-  public void createLobby(final CommandSender sender) {
+  @Command(value = "murder lobby create", requiredSender = Player.class)
+  public void createLobby(final Player sender) {
 
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-
-    final Player player = (Player) sender;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     if (this.spawn == null) {
       final Component message = Locale.LOBBY_SPAWN_ERROR.build();
       audience.sendMessage(message);
@@ -86,28 +74,20 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("Sets the name of the lobby")
-  @Command("murder lobby set name <string>")
-  public void setName(final CommandSender sender, @Quoted final String name) {
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-    final Player player = (Player) sender;
+  @Command(value = "murder lobby set name <string>", requiredSender = Player.class)
+  public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message = Locale.LOBBY_NAME.build(name);
     audience.sendMessage(message);
   }
 
   @CommandDescription("Sets the spawn location of the lobby")
-  @Command("murder lobby set spawn")
-  public void setSpawn(final CommandSender sender) {
-    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
-      return;
-    }
-    final Player player = (Player) sender;
-    final Location location = player.getLocation();
+  @Command(value = "murder lobby set spawn", requiredSender = Player.class)
+  public void setSpawn(final Player sender) {
+    final Location location = sender.getLocation();
     this.spawn = location;
-    final Audience audience = this.audiences.player(player);
+    final Audience audience = this.audiences.player(sender);
     final Component message = AdventureUtils.createLocationComponent(Locale.LOBBY_SPAWN, location);
     audience.sendMessage(message);
   }

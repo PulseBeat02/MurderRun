@@ -22,6 +22,10 @@ public final class MurderLobbyManager {
     this.lobbies.remove(name);
   }
 
+  public MurderLobby getLobby(final String name) {
+    return this.lobbies.get(name);
+  }
+
   public Map<String, MurderLobby> getLobbies() {
     return this.lobbies;
   }
