@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game;
 
-public enum GameStatus {
+public enum MurderStatus {
     NOT_STARTED,
     IN_PROGRESS,
     FINISHED

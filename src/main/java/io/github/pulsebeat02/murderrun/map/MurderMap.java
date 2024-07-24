@@ -3,20 +3,19 @@ package io.github.pulsebeat02.murderrun.map;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.map.event.GameEventManager;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 
 public final class MurderMap {
 
   private final MurderGame game;
   private final CarPartManager carPartManager;
   private final GameEventManager eventManager;
-  private final MapResetManager resetManager;
+  private final MurderMapResetManager resetManager;
 
   public MurderMap(final MurderGame game) {
     this.game = game;
     this.carPartManager = new CarPartManager(this);
     this.eventManager = new GameEventManager(this);
-    this.resetManager = new MapResetManager(this);
+    this.resetManager = new MurderMapResetManager(this);
   }
 
   public void start() {

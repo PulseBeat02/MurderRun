@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.map;
 
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
-import io.github.pulsebeat02.murderrun.game.GameSettings;
+import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
@@ -12,11 +12,11 @@ import org.bukkit.util.BoundingBox;
 
 import java.util.Collection;
 
-public final class MapResetManager {
+public final class MurderMapResetManager {
 
   private final MurderMap map;
 
-  public MapResetManager(final MurderMap map) {
+  public MurderMapResetManager(final MurderMap map) {
     this.map = map;
   }
 
@@ -27,7 +27,7 @@ public final class MapResetManager {
 
   private void killExistingEntities() {
     final MurderGame game = this.map.getGame();
-    final GameSettings settings = game.getSettings();
+    final MurderSettings settings = game.getSettings();
     final MurderArena arena = settings.getArena();
     final Location first = arena.getFirstCorner();
     final Location second = arena.getSecondCorner();

@@ -10,21 +10,21 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import static net.kyori.adventure.text.Component.empty;
 
-public final class GameEndManager {
+public final class MurderEndManager {
 
   private final MurderGame game;
 
-  public GameEndManager(final MurderGame game) {
+  public MurderEndManager(final MurderGame game) {
     this.game = game;
   }
 
-  public void start(final GameWinCode winCode) {
+  public void start(final MurderWinCode winCode) {
     final MurderRun plugin = this.game.getPlugin();
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.scheduleSyncDelayedTask(plugin, () -> this.initiateEndingSequence(winCode), 2 * 20);
   }
 
-  private void initiateEndingSequence(final GameWinCode winCode) {
+  private void initiateEndingSequence(final MurderWinCode winCode) {
     this.stopTimer();
     switch (winCode) {
       case INNOCENTS -> {
@@ -37,19 +37,19 @@ public final class GameEndManager {
   }
 
   private void announceMurdererTime() {
-    final TimeManager manager = this.game.getTimeManager();
+    final MurderTimeManager manager = this.game.getTimeManager();
     final long timeElapsed = manager.getElapsedTime();
-    final Component message = Locale.FINAL_TIMME.build(timeElapsed);
+    final Component message = Locale.FINAL_TIME.build(timeElapsed);
     AdventureUtils.sendMessageToAllParticipants(this.game, message);
   }
 
   private void invalidateTimer() {
-    final TimeManager manager = this.game.getTimeManager();
+    final MurderTimeManager manager = this.game.getTimeManager();
     manager.invalidateElapsedTime();
   }
 
   private void stopTimer() {
-    final TimeManager manager = this.game.getTimeManager();
+    final MurderTimeManager manager = this.game.getTimeManager();
     manager.stopTimer();
   }
 

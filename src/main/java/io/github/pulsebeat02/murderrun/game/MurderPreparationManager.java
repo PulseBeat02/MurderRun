@@ -18,11 +18,11 @@ import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
-public final class GamePreparationManager {
+public final class MurderPreparationManager {
 
   private final MurderGame game;
 
-  public GamePreparationManager(final MurderGame game) {
+  public MurderPreparationManager(final MurderGame game) {
     this.game = game;
   }
 
@@ -51,15 +51,15 @@ public final class GamePreparationManager {
       final int seconds = this.secondsLeft.decrementAndGet();
       switch (seconds) {
         case 5 -> {
-          GamePreparationManager.this.countDownAudio();
-          GamePreparationManager.this.announceCountdown(5);
+          MurderPreparationManager.this.countDownAudio();
+          MurderPreparationManager.this.announceCountdown(5);
         }
-        case 4 -> GamePreparationManager.this.announceCountdown(4);
-        case 3 -> GamePreparationManager.this.announceCountdown(3);
-        case 2 -> GamePreparationManager.this.announceCountdown(2);
-        case 1 -> GamePreparationManager.this.announceCountdown(1);
+        case 4 -> MurderPreparationManager.this.announceCountdown(4);
+        case 3 -> MurderPreparationManager.this.announceCountdown(3);
+        case 2 -> MurderPreparationManager.this.announceCountdown(2);
+        case 1 -> MurderPreparationManager.this.announceCountdown(1);
         case 0 -> {
-          GamePreparationManager.this.futureTask();
+          MurderPreparationManager.this.futureTask();
           this.cancel();
         }
       }
@@ -84,12 +84,12 @@ public final class GamePreparationManager {
   }
 
   private void startTimer() {
-    final TimeManager manager = this.game.getTimeManager();
+    final MurderTimeManager manager = this.game.getTimeManager();
     manager.startTimer();
   }
 
   private void teleportInnocentPlayers() {
-    final GameSettings configuration = this.game.getSettings();
+    final MurderSettings configuration = this.game.getSettings();
     final MurderArena arena = configuration.getArena();
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
@@ -100,7 +100,7 @@ public final class GamePreparationManager {
   }
 
   private void teleportMurderers() {
-    final GameSettings configuration = this.game.getSettings();
+    final MurderSettings configuration = this.game.getSettings();
     final MurderArena arena = configuration.getArena();
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();

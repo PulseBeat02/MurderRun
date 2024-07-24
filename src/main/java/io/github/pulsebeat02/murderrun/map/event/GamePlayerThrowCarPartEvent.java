@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
-import io.github.pulsebeat02.murderrun.game.GameWinCode;
+import io.github.pulsebeat02.murderrun.game.MurderWinCode;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.GameSettings;
+import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
@@ -47,7 +47,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
       return;
     }
 
-    final GameSettings configuration = this.game.getSettings();
+    final MurderSettings configuration = this.game.getSettings();
     final MurderArena arena = configuration.getArena();
     final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
@@ -76,7 +76,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private void checkGameEnd(final int leftOver) {
     if (leftOver == 0) {
-      this.game.finishGame(GameWinCode.INNOCENTS);
+      this.game.finishGame(MurderWinCode.INNOCENTS);
     }
   }
 

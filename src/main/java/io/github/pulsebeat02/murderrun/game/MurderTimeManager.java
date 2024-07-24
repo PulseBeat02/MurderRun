@@ -1,12 +1,12 @@
 package io.github.pulsebeat02.murderrun.game;
 
-public final class TimeManager {
+public final class MurderTimeManager {
 
   private long startTime;
   private long endTime;
   private long elapsedTime;
 
-  public TimeManager() {}
+  public MurderTimeManager() {}
 
   public void startTimer() {
     this.startTime = System.currentTimeMillis();

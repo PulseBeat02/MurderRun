@@ -18,7 +18,12 @@ public final class AnnotationParserHandler {
   public AnnotationParserHandler(final MurderRun plugin) {
     final CommandManager<CommandSender> manager = this.getCommmandManager(plugin);
     this.plugin = plugin;
-    this.features = List.of(new MurderArenaCommand());
+    this.features =
+        List.of(
+            new MurderArenaCommand(),
+            new MurderLobbyCommand(),
+            new MurderHelpCommand(),
+            new MurderGameCommand());
     this.parser = new AnnotationParser<>(manager, CommandSender.class);
   }
 

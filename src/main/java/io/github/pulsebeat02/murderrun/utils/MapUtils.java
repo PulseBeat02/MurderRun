@@ -15,7 +15,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.arena.MurderArenaSchematic;
-import io.github.pulsebeat02.murderrun.game.GameSettings;
+import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
 import org.bukkit.Bukkit;
@@ -65,7 +65,7 @@ public final class MapUtils {
 
   public static void resetMap(final MurderMap map) {
     final MurderGame game = map.getGame();
-    final GameSettings settings = game.getSettings();
+    final MurderSettings settings = game.getSettings();
     final MurderArena arena = settings.getArena();
     final MurderArenaSchematic schematic = arena.getSchematic();
     final BlockVector3 vector3 = schematic.getOrigin();

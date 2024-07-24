@@ -1,16 +1,16 @@
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
-import io.github.pulsebeat02.murderrun.lobby.GameLobby;
+import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 
-public final class GameSettings {
+public final class MurderSettings {
 
   private MurderArena arena;
-  private GameLobby lobby;
+  private MurderLobby lobby;
   private int murdererCount;
   private int carPartCount;
 
-  public GameSettings() {}
+  public MurderSettings() {}
 
   public int getMurdererCount() {
     return this.murdererCount;
@@ -28,11 +28,11 @@ public final class GameSettings {
     this.carPartCount = carPartCount;
   }
 
-  public GameLobby getLobby() {
+  public MurderLobby getLobby() {
     return this.lobby;
   }
 
-  public void setLobby(final GameLobby lobbySpawn) {
+  public void setLobby(final MurderLobby lobbySpawn) {
     this.lobby = lobbySpawn;
   }
 

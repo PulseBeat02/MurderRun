@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-public final class GameLobby {
+public final class MurderLobby {
 
   private final Location lobbySpawn;
   private final Collection<VillagerLobbyTrader> traders;
 
-  public GameLobby(final Location lobbySpawn) {
+  public MurderLobby(final Location lobbySpawn) {
     this.lobbySpawn = lobbySpawn;
     this.traders = new HashSet<>();
   }

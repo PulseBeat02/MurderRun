@@ -3,7 +3,9 @@ package io.github.pulsebeat02.murderrun;
 import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.config.PluginConfiguration;
-import io.github.pulsebeat02.murderrun.data.ArenaDataManager;
+import io.github.pulsebeat02.murderrun.data.MurderArenaDataManager;
+import io.github.pulsebeat02.murderrun.data.MurderLobbyDataManager;
+import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
 import org.bstats.bukkit.Metrics;
@@ -17,7 +19,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Add Innocent Traps for Survival
   - Add Murderer Traps for Killing
-  - Add Commands (Villager Spawns, Setting Game Configuration)
+  - Add Commands (Villager Spawns, Setting Game Configuration, Help Command)
   - Add Villager Trades for Traps
 
    */
@@ -25,8 +27,10 @@ public final class MurderRun extends JavaPlugin {
   private PluginConfiguration configuration;
   private AudienceHandler audience;
   private PackHostingDaemon daemon;
-  private ArenaDataManager arenaDataManager;
+  private MurderArenaDataManager murderArenaDataManager;
+  private MurderLobbyDataManager murderLobbyDataManager;
   private MurderArenaManager arenaManager;
+  private MurderLobbyManager lobbyManager;
   private AnnotationParserHandler commandHandler;
   private Metrics metrics;
 
@@ -41,7 +45,7 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    this.writePluginData();
+    this.updatePluginData();
     this.stopHostingDaemon();
     this.shutdownMetrics();
   }
@@ -76,13 +80,16 @@ public final class MurderRun extends JavaPlugin {
 
   private void readPluginData() {
     this.configuration = new PluginConfiguration(this);
-    this.arenaDataManager = new ArenaDataManager(this);
-    this.arenaManager = this.arenaDataManager.deserialize();
+    this.murderArenaDataManager = new MurderArenaDataManager(this);
+    this.murderLobbyDataManager = new MurderLobbyDataManager(this);
+    this.arenaManager = this.murderArenaDataManager.deserialize();
+    this.lobbyManager = this.murderLobbyDataManager.deserialize();
     this.configuration.deserialize();
   }
 
-  private void writePluginData() {
-    this.arenaDataManager.serialize(this.arenaManager);
+  public void updatePluginData() {
+    this.murderArenaDataManager.serialize(this.arenaManager);
+    this.murderLobbyDataManager.serialize(this.lobbyManager);
     this.configuration.serialize();
   }
 
@@ -102,11 +109,23 @@ public final class MurderRun extends JavaPlugin {
     return this.arenaManager;
   }
 
-  public ArenaDataManager getArenaDataManager() {
-    return this.arenaDataManager;
+  public MurderArenaDataManager getArenaDataManager() {
+    return this.murderArenaDataManager;
   }
 
   public AnnotationParserHandler getCommandHandler() {
     return this.commandHandler;
+  }
+
+  public MurderLobbyDataManager getLobbyDataManager() {
+    return this.murderLobbyDataManager;
+  }
+
+  public MurderLobbyManager getLobbyManager() {
+    return this.lobbyManager;
+  }
+
+  public Metrics getMetrics() {
+    return this.metrics;
   }
 }

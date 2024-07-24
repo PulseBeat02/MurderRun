@@ -1,16 +1,13 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
-import io.github.pulsebeat02.murderrun.game.GameWinCode;
+import io.github.pulsebeat02.murderrun.game.MurderWinCode;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,7 +36,7 @@ public final class GamePlayerDeathEvent implements Listener {
     gamePlayer.markDeath();
     this.playDeathSoundEffect();
     if (this.allInnocentDead()) {
-      this.game.finishGame(GameWinCode.MURDERERS);
+      this.game.finishGame(MurderWinCode.MURDERERS);
     }
   }
 

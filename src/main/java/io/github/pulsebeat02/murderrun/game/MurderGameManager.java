@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.lobby.GameLobby;
+import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
@@ -31,14 +31,14 @@ public final class MurderGameManager {
   private final MurderGame game;
   private final Collection<Player> murderers;
   private final Collection<Player> participants;
-  private final GameSettings settings;
+  private final MurderSettings settings;
 
   public MurderGameManager(final MurderRun plugin) {
     this.plugin = plugin;
     this.game = new MurderGame(plugin);
     this.murderers = new HashSet<>();
     this.participants = new HashSet<>();
-    this.settings = new GameSettings();
+    this.settings = new MurderSettings();
   }
 
   public void addParticipantToLobby(final Player player) {
@@ -73,7 +73,7 @@ public final class MurderGameManager {
   }
 
   private void teleportPlayerToLobby(final Player player) {
-    final GameLobby lobby = this.settings.getLobby();
+    final MurderLobby lobby = this.settings.getLobby();
     final Location spawn = lobby.getLobbySpawn();
     player.teleport(spawn);
   }
@@ -118,7 +118,7 @@ public final class MurderGameManager {
     return this.game;
   }
 
-  public GameSettings getSettings() {
+  public MurderSettings getSettings() {
     return this.settings;
   }
 }

@@ -1,11 +1,11 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.locale.LocaleParent;
-import io.github.pulsebeat02.murderrun.locale.Sender;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -15,6 +15,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
+import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.annotations.Permission;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public final class MurderArenaCommand implements AnnotationCommandFeature {
 
@@ -34,6 +40,24 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
+  @CommandDescription("Lists all created arenas")
+  @Command("murder arena list")
+  public void listArenas(final CommandSender sender) {
+
+    if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
+      return;
+    }
+
+    final MurderArenaManager manager = this.plugin.getArenaManager();
+    final Map<String, MurderArena> arenas = manager.getArenas();
+    final List<String> keys = new ArrayList<>(arenas.keySet());
+    final Player player = (Player) sender;
+    final Audience audience = this.audiences.player(player);
+    final Component message = Locale.ARENA_LIST.build(keys);
+    audience.sendMessage(message);
+  }
+
+  @CommandDescription("Creates an arena with the specified settings")
   @Command("murder arena create")
   public void createArena(final CommandSender sender) {
 
@@ -71,12 +95,15 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final MurderArenaManager manager = this.plugin.getArenaManager();
     manager.addArena(this.name, corners, this.spawn, this.truck);
 
-    final Component message = Locale.ARENA_BUILT_ARENA.build();
+    final Component message = Locale.ARENA_BUILT.build();
     audience.sendMessage(message);
+
+    this.plugin.updatePluginData();
   }
 
+  @CommandDescription("Sets the name of the arena")
   @Command("murder arena set name <string>")
-  public void setSpawn(final CommandSender sender, final String name) {
+  public void setName(final CommandSender sender, final String name) {
     if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
       return;
     }
@@ -87,6 +114,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
+  @CommandDescription("Sets the spawn location of the arena")
   @Command("murder arena set spawn")
   public void setSpawn(final CommandSender sender) {
     if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
@@ -96,10 +124,11 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.spawn = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.ARENA_SPAWN, location);
+    final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_SPAWN, location);
     audience.sendMessage(message);
   }
 
+  @CommandDescription("Sets the truck location of the arena")
   @Command("murder arena set truck")
   public void setTruck(final CommandSender sender) {
     if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
@@ -109,10 +138,11 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.truck = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.ARENA_TRUCK, location);
+    final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_TRUCK, location);
     audience.sendMessage(message);
   }
 
+  @CommandDescription("Sets the first corner location of the arena")
   @Command("murder arena set first-corner")
   public void setFirstCorner(final CommandSender sender) {
     if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
@@ -122,10 +152,12 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.first = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.ARENA_FIRST_CORNER, location);
+    final Component message =
+        AdventureUtils.createLocationComponent(Locale.ARENA_FIRST_CORNER, location);
     audience.sendMessage(message);
   }
 
+  @CommandDescription("Sets the second corner location of the arena")
   @Command("murder arena set second-corner")
   public void setSecondCorner(final CommandSender sender) {
     if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
@@ -135,16 +167,8 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.second = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.ARENA_SECOND_CORNER, location);
+    final Component message =
+        AdventureUtils.createLocationComponent(Locale.ARENA_SECOND_CORNER, location);
     audience.sendMessage(message);
-  }
-
-  private Component createLocationMessage(
-      final LocaleParent.TriComponent<Sender, Integer, Integer, Integer> function,
-      final Location location) {
-    final int x = location.getBlockX();
-    final int y = location.getBlockY();
-    final int z = location.getBlockZ();
-    return function.build(x, y, z);
   }
 }

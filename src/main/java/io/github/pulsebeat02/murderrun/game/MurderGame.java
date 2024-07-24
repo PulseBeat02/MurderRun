@@ -13,44 +13,51 @@ public final class MurderGame {
 
   private final MurderRun plugin;
   private MurderMap murderMap;
-  private GameSettings configuration;
+  private MurderSettings configuration;
   private PlayerManager playerManager;
-  private GamePreparationManager preparationManager;
-  private GameEndManager endManager;
-  private TimeManager timeManager;
+  private MurderPreparationManager preparationManager;
+  private MurderEndManager endManager;
+  private MurderTimeManager murderTimeManager;
   private final UUID gameID;
-  private GameStatus status;
+  private MurderStatus status;
 
   public MurderGame(final MurderRun plugin) {
     this.plugin = plugin;
-    this.status = GameStatus.NOT_STARTED;
+    this.status = MurderStatus.NOT_STARTED;
     this.gameID = UUID.randomUUID();
   }
 
   public void startGame(
-      final GameSettings settings,
+      final MurderSettings settings,
       final Collection<Player> murderers,
       final Collection<Player> participants) {
-    this.status = GameStatus.IN_PROGRESS;
+    this.status = MurderStatus.IN_PROGRESS;
     this.configuration = settings;
+    this.setMurdererCount(murderers);
     this.murderMap = new MurderMap(this);
     this.playerManager = new PlayerManager(this);
-    this.preparationManager = new GamePreparationManager(this);
-    this.endManager = new GameEndManager(this);
-    this.timeManager = new TimeManager();
+    this.preparationManager = new MurderPreparationManager(this);
+    this.endManager = new MurderEndManager(this);
+    this.murderTimeManager = new MurderTimeManager();
     this.murderMap.start();
     this.playerManager.start(murderers, participants);
     this.preparationManager.start();
   }
 
-  public void finishGame(final GameWinCode code) {
-    this.status = GameStatus.FINISHED;
+  private void setMurdererCount(final Collection<Player> murderers) {
+    final MurderSettings settings = this.getSettings();
+    final int count = murderers.size();
+    settings.setMurdererCount(count);
+  }
+
+  public void finishGame(final MurderWinCode code) {
+    this.status = MurderStatus.FINISHED;
     this.endManager.start(code);
     this.playerManager.shutdown();
     this.murderMap.shutdown();
   }
 
-  public GameSettings getSettings() {
+  public MurderSettings getSettings() {
     return this.configuration;
   }
 
@@ -58,7 +65,7 @@ public final class MurderGame {
     return this.playerManager;
   }
 
-  public GameStatus getStatus() {
+  public MurderStatus getStatus() {
     return this.status;
   }
 
@@ -70,11 +77,11 @@ public final class MurderGame {
     return this.murderMap;
   }
 
-  public GamePreparationManager getPreparationManager() {
+  public MurderPreparationManager getPreparationManager() {
     return this.preparationManager;
   }
 
-  public GameEndManager getEndManager() {
+  public MurderEndManager getEndManager() {
     return this.endManager;
   }
 
@@ -82,7 +89,7 @@ public final class MurderGame {
     return this.gameID;
   }
 
-  public TimeManager getTimeManager() {
-    return this.timeManager;
+  public MurderTimeManager getTimeManager() {
+    return this.murderTimeManager;
   }
 }

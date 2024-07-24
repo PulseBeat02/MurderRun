@@ -14,6 +14,7 @@
     "team.unnamed:creative-serializer-minecraft:1.7.3",
     "team.unnamed:creative-server:1.7.3",
     "org.incendo:cloud-annotations:2.0.0-rc.2",
-    "org.incendo:cloud-paper:2.0.0-beta.8"
+    "org.incendo:cloud-paper:2.0.0-beta.8",
+    "org.incendo:cloud-minecraft-extras:2.0.0-beta.8"
   ]
 }

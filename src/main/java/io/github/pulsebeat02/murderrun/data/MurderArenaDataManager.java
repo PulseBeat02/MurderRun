@@ -12,11 +12,11 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public final class ArenaDataManager {
+public final class MurderArenaDataManager {
 
   private final Path arenaJson;
 
-  public ArenaDataManager(final MurderRun run) {
+  public MurderArenaDataManager(final MurderRun run) {
     final File file = run.getDataFolder();
     final Path path = file.toPath();
     this.arenaJson = path.resolve("arenas.json");

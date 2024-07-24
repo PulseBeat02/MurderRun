@@ -3,6 +3,8 @@ package io.github.pulsebeat02.murderrun.utils;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import io.github.pulsebeat02.murderrun.locale.LocaleParent;
+import io.github.pulsebeat02.murderrun.locale.Sender;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
@@ -24,6 +26,15 @@ public final class AdventureUtils {
 
   private AdventureUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static Component createLocationComponent(
+          final LocaleParent.TriComponent<Sender, Integer, Integer, Integer> function,
+          final Location location) {
+    final int x = location.getBlockX();
+    final int y = location.getBlockY();
+    final int z = location.getBlockZ();
+    return function.build(x, y, z);
   }
 
   public static String serializeComponentToLegacy(final Component component) {
