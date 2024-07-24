@@ -19,8 +19,9 @@ public final class MurderRun extends JavaPlugin {
 
   - Add Innocent Traps for Survival
   - Add Murderer Traps for Killing
-  - Add Commands (Villager Spawns)
   - Add Villager Trades for Traps
+
+  - Deep Debugging
 
    */
 

@@ -66,4 +66,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> GAME_INVALID_ERROR = error("murder_run.command.game.no_game_error");
   NullComponent<Sender> GAME_JOIN_ERROR = error("murder_run.command.game.join_error");
   NullComponent<Sender> GAME_INVALID_INVITE_ERROR = error("murder_run.command.game.invalid_invite_error");
+
+  NullComponent<Sender> VILLAGER_SPAWN = info("murder_run.command.villager");
 }
