@@ -6,8 +6,8 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleParent.*;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 public interface Locale extends LocaleParent {
-  NullComponent<Sender> CAR_PART_ITEM_NAME = itemName("murder_run.item.car_part.name");
-  NullComponent<Sender> CAR_PART_ITEM_LORE = itemLore("murder_run.item.car_part.lore");
+  NullComponent<Sender> CAR_PART_ITEM_NAME = name("murder_run.item.car_part.name", GOLD);
+  NullComponent<Sender> CAR_PART_ITEM_LORE = lore("murder_run.item.car_part.lore", GRAY);
   UniComponent<Sender, Integer> CAR_PART_ITEM_RETRIEVAL =
       title("murder_run.game.item.car_part.retrieval", null, AQUA);
 
@@ -17,7 +17,7 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> MURDERER_VICTORY = title("murder_run.game.murderer_victory", RED);
   UniComponent<Sender, Long> FINAL_TIME = info("murder_run.game.time", null);
 
-  UniComponent<Sender, String> PLAYER_DEATH = title("murder_run.game.death", null, AQUA);
+  UniComponent<Sender, String> PLAYER_DEATH = title("murder_run.game.death", null, GOLD);
   NullComponent<Sender> RESOURCEPACK_PROMPT = info("murder_run.resourcepack");
 
   NullComponent<Sender> NOT_PLAYER = error("murder_run.command.console");
@@ -68,4 +68,8 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> GAME_INVALID_INVITE_ERROR = error("murder_run.command.game.invalid_invite_error");
 
   NullComponent<Sender> VILLAGER_SPAWN = info("murder_run.command.villager");
+
+  NullComponent<Sender> GLOW_TRAP_NAME = name("murder_run.game.trap.glow.name", GOLD);
+  NullComponent<Sender> GLOW_TRAP_LORE = lore("murder_run.game.trap.glow.name", GRAY);
+  NullComponent<Sender> GLOW_TRAP_ACTIVATE = title("murder_run.game.trap.glow.activate", GOLD);
 }

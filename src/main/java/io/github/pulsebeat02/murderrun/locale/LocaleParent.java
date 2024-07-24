@@ -20,16 +20,12 @@ public interface LocaleParent {
     return () -> MANAGER.render(translatable(key, RED));
   }
 
-  static <T> UniComponent<Sender, T> error(final String key, final Function<T, String> function) {
-    return argument -> error0(key, List.of(text(createFinalText(argument, function), AQUA)));
+  static NullComponent<Sender> lore(final String key, final NamedTextColor color) {
+    return () -> translatable(key, color);
   }
 
-  static NullComponent<Sender> itemLore(final String key) {
-    return () -> translatable(key, GRAY);
-  }
-
-  static NullComponent<Sender> itemName(final String key) {
-    return () -> translatable(key, GOLD);
+  static NullComponent<Sender> name(final String key, final NamedTextColor color) {
+    return () -> translatable(key, color);
   }
 
   static NullComponent<Sender> title(final String key, final NamedTextColor color) {
@@ -51,10 +47,6 @@ public interface LocaleParent {
 
   static Component info0(final String key, final List<Component> arguments) {
     return internal0(key, GOLD, arguments);
-  }
-
-  static Component error0(final String key, final List<Component> arguments) {
-    return internal0(key, RED, arguments);
   }
 
   static Component internal0(

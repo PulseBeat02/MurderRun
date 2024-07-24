@@ -1,11 +1,10 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.lobby.VillagerLobbyTrader;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.trap.MurderTrap;
+import io.github.pulsebeat02.murderrun.trap.GameTrap;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -44,7 +43,7 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String trapName : args) {
-      final MurderTrap trap = MurderTrap.get(trapName);
+      final GameTrap trap = GameTrap.get(trapName);
       if (trap != null) {
         final ItemStack ingredient = trap.getCost();
         final ItemStack reward = trap.getStack();
@@ -64,6 +63,6 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
   @Suggestions("traps")
   public Stream<String> suggestTrades(
       final CommandContext<CommandSender> context, final String input) {
-    return Arrays.stream(MurderTrap.values()).map(MurderTrap::name);
+    return Arrays.stream(GameTrap.values()).map(GameTrap::name);
   }
 }
