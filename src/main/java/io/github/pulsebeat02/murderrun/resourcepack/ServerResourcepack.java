@@ -49,6 +49,7 @@ public final class ServerResourcepack {
   private void addModels(final ResourcePack pack) {
     final ModelHandler handler = new ModelHandler();
     pack.model(handler.customItemModelGenerator());
+    pack.model(handler.customItemModelGenerator());
   }
 
   private void zipPack(final ResourcePack pack) {

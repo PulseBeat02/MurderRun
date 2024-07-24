@@ -19,8 +19,6 @@ public final class MurderRun extends JavaPlugin {
   - Add Murderer Traps for Killing
   - Add Commands (Villager Spawns, Setting Game Configuration)
   - Add Villager Trades for Traps
-  - Give Murderer Sword
-  - Make Textures Transparent
 
    */
 

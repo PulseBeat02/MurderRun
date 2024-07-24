@@ -12,9 +12,12 @@ import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -85,6 +88,22 @@ public final class MurderGameManager {
 
   public void setPlayerToMurderer(final Player murderer) {
     this.murderers.add(murderer);
+    this.giveSpecialSword(murderer);
+  }
+
+  private void giveSpecialSword(final Player player) {
+
+    final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
+    final ItemMeta meta = stack.getItemMeta();
+    final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
+    final AttributeModifier modifer =
+        new AttributeModifier("generic.attackDamage", 8, AttributeModifier.Operation.ADD_NUMBER);
+    meta.setCustomModelData(1);
+    meta.addAttributeModifier(attribute, modifer);
+    stack.setItemMeta(meta);
+
+    final PlayerInventory inventory = player.getInventory();
+    inventory.addItem(stack);
   }
 
   public void startGame() {
