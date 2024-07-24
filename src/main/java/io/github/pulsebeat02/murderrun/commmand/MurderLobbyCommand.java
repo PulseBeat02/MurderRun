@@ -13,6 +13,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
@@ -86,7 +87,7 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
 
   @CommandDescription("Sets the name of the lobby")
   @Command("murder lobby set name <string>")
-  public void setName(final CommandSender sender, final String name) {
+  public void setName(final CommandSender sender, @Quoted final String name) {
     if (PlayerUtils.checkIfPlayer(this.plugin, sender)) {
       return;
     }

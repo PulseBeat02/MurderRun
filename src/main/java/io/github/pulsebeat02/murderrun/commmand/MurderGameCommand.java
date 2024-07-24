@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
+import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
@@ -38,8 +39,8 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   @Command("murder game create <string> <string>")
   public void createGame(
       final CommandSender sender,
-      @Argument(suggestions = "arena-suggestions") final String arena,
-      @Argument(suggestions = "lobby-suggestions") final String lobby) {}
+      @Argument(suggestions = "arena-suggestions") @Quoted final String arena,
+      @Argument(suggestions = "lobby-suggestions") @Quoted final String lobby) {}
 
   @CommandDescription("Cancels the game, resetting the map and players")
   @Command("murder game cancel")
