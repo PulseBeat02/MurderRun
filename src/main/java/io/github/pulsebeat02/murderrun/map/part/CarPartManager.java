@@ -78,7 +78,7 @@ public final class CarPartManager {
     final Location location = stack.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
-    world.spawnParticle(Particle.ENTITY_EFFECT, clone, 10, 0.5, 0.5, 0.5, Color.YELLOW);
+    world.spawnParticle(Particle.REDSTONE, clone, 10, 0.5, 0.5, 0.5, Color.YELLOW);
   }
 
   public MurderMap getMap() {

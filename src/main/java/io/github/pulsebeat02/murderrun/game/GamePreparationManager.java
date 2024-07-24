@@ -8,11 +8,9 @@ import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -113,13 +111,13 @@ public final class GamePreparationManager {
   }
 
   private void announceHidePhase() {
-    final Component title = Locale.INNOCENT_PREPERATION.build();
+    final Component title = Locale.PREPARATION_PHASE.build();
     final Component subtitle = empty();
     AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
   }
 
   private void announceReleasePhase() {
-    final Component title = Locale.MURDERER_RELEASED.build();
+    final Component title = Locale.RELEASE_PHASE.build();
     final Component subtitle = empty();
     AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
   }

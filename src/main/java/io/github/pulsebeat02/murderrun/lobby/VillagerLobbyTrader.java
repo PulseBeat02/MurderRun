@@ -26,9 +26,8 @@ public final class VillagerLobbyTrader {
       villager.setAI(false);
       villager.setInvulnerable(true);
       villager.setGravity(false);
-      villager.setProfession(Villager.Profession.CLERIC);
+      villager.setProfession(Villager.Profession.NONE);
       villager.setAdult();
-      villager.setRestocksToday(Integer.MAX_VALUE);
       villager.setCanPickupItems(false);
       villager.setVillagerLevel(5);
       villager.setRecipes(this.trades);

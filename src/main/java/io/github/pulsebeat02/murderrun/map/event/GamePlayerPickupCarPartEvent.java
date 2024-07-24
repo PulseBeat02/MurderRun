@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
@@ -29,7 +29,11 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onPlayerPickupItem(final PlayerAttemptPickupItemEvent event) {
+  public void onPlayerPickupItem(final EntityPickupItemEvent event) {
+
+    if (!(event.getEntity() instanceof Player)) {
+      return;
+    }
 
     final Item item = event.getItem();
     final ItemStack stack = item.getItemStack();

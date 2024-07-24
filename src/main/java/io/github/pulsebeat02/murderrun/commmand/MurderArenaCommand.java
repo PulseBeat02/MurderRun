@@ -44,25 +44,25 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Player player = (Player) sender;
     final Audience audience = this.audiences.player(player);
     if (this.first == null || this.second == null) {
-      final Component message = Locale.CORNER_ERROR.build();
+      final Component message = Locale.ARENA_CORNER_ERROR.build();
       audience.sendMessage(message);
       return;
     }
 
     if (this.spawn == null) {
-      final Component message = Locale.SPAWN_ERROR.build();
+      final Component message = Locale.ARENA_SPAWN_ERROR.build();
       audience.sendMessage(message);
       return;
     }
 
     if (this.truck == null) {
-      final Component message = Locale.TRUCK_ERROR.build();
+      final Component message = Locale.ARENA_TRUCK_ERROR.build();
       audience.sendMessage(message);
       return;
     }
 
     if (this.name == null) {
-      final Component message = Locale.NAME_ERROR.build();
+      final Component message = Locale.ARENA_NAME_ERROR.build();
       audience.sendMessage(message);
       return;
     }
@@ -71,7 +71,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final MurderArenaManager manager = this.plugin.getArenaManager();
     manager.addArena(this.name, corners, this.spawn, this.truck);
 
-    final Component message = Locale.BUILT_ARENA.build();
+    final Component message = Locale.ARENA_BUILT_ARENA.build();
     audience.sendMessage(message);
   }
 
@@ -83,7 +83,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Player player = (Player) sender;
     this.name = name;
     final Audience audience = this.audiences.player(player);
-    final Component message = Locale.SET_NAME.build(name);
+    final Component message = Locale.ARENA_NAME.build(name);
     audience.sendMessage(message);
   }
 
@@ -96,7 +96,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.spawn = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.SET_SPAWN, location);
+    final Component message = this.createLocationMessage(Locale.ARENA_SPAWN, location);
     audience.sendMessage(message);
   }
 
@@ -109,7 +109,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.truck = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.SET_TRUCK, location);
+    final Component message = this.createLocationMessage(Locale.ARENA_TRUCK, location);
     audience.sendMessage(message);
   }
 
@@ -122,7 +122,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.first = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.SET_FIRST_CORNER, location);
+    final Component message = this.createLocationMessage(Locale.ARENA_FIRST_CORNER, location);
     audience.sendMessage(message);
   }
 
@@ -135,7 +135,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     final Location location = player.getLocation();
     this.second = location;
     final Audience audience = this.audiences.player(player);
-    final Component message = this.createLocationMessage(Locale.SET_SECOND_CORNER, location);
+    final Component message = this.createLocationMessage(Locale.ARENA_SECOND_CORNER, location);
     audience.sendMessage(message);
   }
 

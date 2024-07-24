@@ -8,7 +8,9 @@ import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -18,8 +20,14 @@ import static net.kyori.adventure.title.Title.title;
 
 public final class AdventureUtils {
 
+  private static final LegacyComponentSerializer SERIALIZER = BukkitComponentSerializer.legacy();
+
   private AdventureUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static String serializeComponentToLegacy(final Component component) {
+    return SERIALIZER.serialize(component);
   }
 
   public static void playSoundForAllParticipants(final MurderGame game, final FXSound... keys) {
@@ -67,10 +75,14 @@ public final class AdventureUtils {
 
   public static void showTitleForAllParticipants(
       final MurderGame game, final Component title, final Component subtitle) {
+    final MurderRun plugin = game.getPlugin();
+    final AudienceHandler handler = plugin.getAudience();
+    final BukkitAudiences audiences = handler.retrieve();
     final PlayerManager manager = game.getPlayerManager();
     for (final GamePlayer gamePlayer : manager.getParticipants()) {
       final Player player = gamePlayer.getPlayer();
-      player.showTitle(title(title, subtitle));
+      final Audience audience = audiences.player(player);
+      audience.showTitle(title(title, subtitle));
     }
   }
 

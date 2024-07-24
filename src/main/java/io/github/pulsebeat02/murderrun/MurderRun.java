@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.config.PluginConfiguration;
 import io.github.pulsebeat02.murderrun.data.ArenaDataManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
@@ -18,6 +19,8 @@ public final class MurderRun extends JavaPlugin {
   - Add Murderer Traps for Killing
   - Add Commands (Villager Spawns, Setting Game Configuration)
   - Add Villager Trades for Traps
+  - Give Murderer Sword
+  - Make Textures Transparent
 
    */
 
@@ -27,6 +30,7 @@ public final class MurderRun extends JavaPlugin {
   private ArenaDataManager arenaDataManager;
   private MurderArenaManager arenaManager;
   private AnnotationParserHandler commandHandler;
+  private Metrics metrics;
 
   @Override
   public void onEnable() {
@@ -34,12 +38,22 @@ public final class MurderRun extends JavaPlugin {
     this.startHostingDaemon();
     this.registerCommmands();
     this.registerAudienceHandler();
+    this.enableBStats();
   }
 
   @Override
   public void onDisable() {
     this.writePluginData();
     this.stopHostingDaemon();
+    this.shutdownMetrics();
+  }
+
+  private void shutdownMetrics() {
+    this.metrics.shutdown();
+  }
+
+  private void enableBStats() {
+    this.metrics = new Metrics(this, 22728);
   }
 
   private void registerAudienceHandler() {

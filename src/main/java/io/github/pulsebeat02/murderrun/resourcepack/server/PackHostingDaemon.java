@@ -20,6 +20,8 @@ public final class PackHostingDaemon {
   private final String hostName;
   private final int port;
   private final ResourcePackServer server;
+  private String url;
+  private String hash;
 
   public PackHostingDaemon(final String hostName, final int port) {
     this.hostName = hostName;
@@ -31,8 +33,9 @@ public final class PackHostingDaemon {
     final Path path = PACK.getPath();
     try (final InputStream stream = Files.newInputStream(path)) {
       final Writable writable = Writable.copyInputStream(stream);
-      final String hash = ResourceUtils.createPackHash(path);
-      final BuiltResourcePack pack = BuiltResourcePack.of(writable, hash);
+      this.url = "http://" + this.hostName + ":" + this.port;
+      this.hash = ResourceUtils.createPackHash(path);
+      final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);
       return ResourcePackServer.server()
           .address(this.hostName, this.port)
           .pack(pack)
@@ -49,5 +52,13 @@ public final class PackHostingDaemon {
 
   public void stop() {
     this.server.stop(0);
+  }
+
+  public String getUrl() {
+    return this.url;
+  }
+
+  public String getHash() {
+    return this.hash;
   }
 }

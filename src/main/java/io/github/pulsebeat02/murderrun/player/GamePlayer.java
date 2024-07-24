@@ -4,9 +4,10 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.lobby.GameLobby;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
+import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import org.bukkit.*;
 import org.bukkit.entity.*;
-import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
     this.alive = true;
   }
 
-  public abstract void onPlayerAttemptPickupPartEvent(final PlayerAttemptPickupItemEvent event);
+  public abstract void onPlayerAttemptPickupPartEvent(final EntityPickupItemEvent event);
 
   public void onMatchStart() {
     final Player player = this.getPlayer();
@@ -35,7 +36,7 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
     final GameLobby lobby = configuration.getLobby();
     final Location location = lobby.getLobbySpawn();
     final Player player = this.getPlayer();
-    player.clearActivePotionEffects();
+    PlayerUtils.removeAllPotionEffects(player);
     player.getInventory().clear();
     player.setGameMode(GameMode.SURVIVAL);
     player.teleport(location);

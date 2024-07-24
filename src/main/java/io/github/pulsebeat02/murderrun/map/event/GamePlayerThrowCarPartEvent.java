@@ -27,7 +27,6 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.kyori.adventure.text.Component.empty;
 
@@ -102,7 +101,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
   }
 
   private void announceCarPartRetrieval(final int leftOver) {
-    final Component title = Locale.CAR_PART_RETRIEVAL.build(leftOver);
+    final Component title = Locale.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
     final Component subtitle = empty();
     AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
     AdventureUtils.playSoundForAllParticipants(this.game, Sound.BLOCK_ANVIL_USE);

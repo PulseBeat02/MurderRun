@@ -33,10 +33,14 @@ public final class PlayerUtils {
       final AudienceHandler handler = plugin.getAudience();
       final BukkitAudiences audiences = handler.retrieve();
       final Audience audience = audiences.sender(sender);
-      final Component message = Locale.PLAYER_CHECK.build();
+      final Component message = Locale.NOT_PLAYER.build();
       audience.sendMessage(message);
       return false;
     }
     return true;
+  }
+
+  public static void removeAllPotionEffects(final Player player) {
+    player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
   }
 }

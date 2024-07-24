@@ -23,7 +23,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.util.EulerAngle;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,11 +39,16 @@ public final class MapUtils {
   static {
     final PluginManager manager = Bukkit.getPluginManager();
     final Plugin plugin = requireNonNull(manager.getPlugin("MurderRun"));
-    PARENT_FOLDER = plugin.getDataPath();
+    final File folder = plugin.getDataFolder();
+    PARENT_FOLDER = folder.toPath();
   }
 
   private MapUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static EulerAngle toEulerAngle(final int x, final int y, final int z) {
+    return new EulerAngle(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z));
   }
 
   public static double[] generateFriendlyRandomXZ(final Location first, final Location second) {

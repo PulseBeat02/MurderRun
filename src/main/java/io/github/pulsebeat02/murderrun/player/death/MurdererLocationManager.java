@@ -47,7 +47,7 @@ public final class MurdererLocationManager {
       }
       final Location clone = murdererLocation.clone().add(0, 1, 0);
       final World world = clone.getWorld();
-      world.spawnParticle(Particle.ENTITY_EFFECT, clone, 10, 1, 1, 1, Color.WHITE);
+      world.spawnParticle(Particle.REDSTONE, clone, 10, 1, 1, 1, Color.WHITE);
     }
   }
 

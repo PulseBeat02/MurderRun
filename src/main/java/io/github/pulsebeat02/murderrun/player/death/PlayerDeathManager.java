@@ -9,7 +9,7 @@ import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
-import io.papermc.paper.math.Rotations;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
@@ -17,12 +17,14 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -64,21 +66,22 @@ public final class PlayerDeathManager {
   }
 
   private void setArmorStandRotations(final ArmorStand stand) {
-    stand.setHeadRotations(Rotations.ofDegrees(306, 0, 0));
-    stand.setBodyRotations(Rotations.ofDegrees(283, 0, 0));
-    stand.setLeftArmRotations(Rotations.ofDegrees(250, 0, 0));
-    stand.setRightArmRotations(Rotations.ofDegrees(250, 360, 30));
+    stand.setHeadPose(MapUtils.toEulerAngle(300, 0, 0));
+    stand.setBodyPose(MapUtils.toEulerAngle(280, 0, 0));
+    stand.setLeftArmPose(MapUtils.toEulerAngle(250, 0, 0));
+    stand.setRightArmPose(MapUtils.toEulerAngle(250, 360, 30));
   }
 
   private void setArmorStandGear(final Player player, final ArmorStand stand) {
+    final EntityEquipment equipment = stand.getEquipment();
     final ItemStack head = this.getHeadItemStack(player);
     final ItemStack chest = createArmorPiece(Material.LEATHER_CHESTPLATE);
     final ItemStack legs = createArmorPiece(Material.LEATHER_LEGGINGS);
     final ItemStack boots = createArmorPiece(Material.LEATHER_BOOTS);
-    stand.setItem(EquipmentSlot.HEAD, head);
-    stand.setItem(EquipmentSlot.BODY, chest);
-    stand.setItem(EquipmentSlot.LEGS, legs);
-    stand.setItem(EquipmentSlot.FEET, boots);
+    equipment.setHelmet(head);
+    equipment.setChestplate(chest);
+    equipment.setLeggings(legs);
+    equipment.setBoots(boots);
   }
 
   private void announcePlayerDeath(final Player dead) {
@@ -94,10 +97,16 @@ public final class PlayerDeathManager {
     this.setGameMode(player);
 
     final ArmorStand stand = this.summonArmorStand(player);
+    this.customizeArmorStand(stand);
     this.setArmorStandRotations(stand);
     this.setArmorStandGear(player, stand);
     this.announcePlayerDeath(player);
     this.summonCarParts(player);
+  }
+
+  private void customizeArmorStand(final ArmorStand stand) {
+    stand.setInvulnerable(true);
+    stand.setGravity(false);
   }
 
   private void summonCarParts(final Player player) {
@@ -129,7 +138,7 @@ public final class PlayerDeathManager {
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
     final BlockData data = Material.RED_CONCRETE.createBlockData();
-    world.spawnParticle(Particle.BLOCK, clone, 10, 0.5, 0.5, 0.5, data);
+    world.spawnParticle(Particle.BLOCK_DUST, clone, 10, 0.5, 0.5, 0.5, data);
   }
 
   public static ItemStack createArmorPiece(final Material leatherPiece) {

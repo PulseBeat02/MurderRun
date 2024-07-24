@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -16,7 +17,9 @@ public final class ArenaDataManager {
   private final Path arenaJson;
 
   public ArenaDataManager(final MurderRun run) {
-    this.arenaJson = run.getDataPath().resolve("arenas.json");
+    final File file = run.getDataFolder();
+    final Path path = file.toPath();
+    this.arenaJson = path.resolve("arenas.json");
   }
 
   private void createFolders() throws IOException {

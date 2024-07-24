@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.map.part;
 
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -36,7 +37,6 @@ public final class CarPartItemStack {
 
   private void customizeItemEntity(final Item item) {
     item.setUnlimitedLifetime(true);
-    item.setWillAge(false);
   }
 
   private ItemStack createItemStack() {
@@ -54,15 +54,19 @@ public final class CarPartItemStack {
   }
 
   private void changeProperties(final ItemMeta meta) {
+    final Component component = Locale.CAR_PART_ITEM_NAME.build();
+    final String raw = AdventureUtils.serializeComponentToLegacy(component);
     final int id = RandomUtils.generateInt(1, 7);
-    meta.displayName(Locale.CAR_PART_NAME.build());
+    meta.setDisplayName(raw);
     meta.setCustomModelData(id);
   }
 
   private void setLore(final ItemMeta meta) {
     if (!meta.hasLore()) {
-      final List<Component> components = List.of(Locale.CAR_PART_LORE.build());
-      meta.lore(components);
+      final List<Component> components = List.of(Locale.CAR_PART_ITEM_LORE.build());
+      final List<String> lore =
+          components.stream().map(AdventureUtils::serializeComponentToLegacy).toList();
+      meta.setLore(lore);
     }
   }
 

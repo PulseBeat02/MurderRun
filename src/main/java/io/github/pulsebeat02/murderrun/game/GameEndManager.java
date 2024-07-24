@@ -39,7 +39,7 @@ public final class GameEndManager {
   private void announceMurdererTime() {
     final TimeManager manager = this.game.getTimeManager();
     final long timeElapsed = manager.getElapsedTime();
-    final Component message = Locale.MURDERER_TIME.build(timeElapsed);
+    final Component message = Locale.FINAL_TIMME.build(timeElapsed);
     AdventureUtils.sendMessageToAllParticipants(this.game, message);
   }
 
