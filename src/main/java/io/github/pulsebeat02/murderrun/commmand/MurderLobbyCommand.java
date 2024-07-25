@@ -42,44 +42,48 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     final MurderLobbyManager manager = this.plugin.getLobbyManager();
     final Map<String, MurderLobby> arenas = manager.getLobbies();
     final List<String> keys = new ArrayList<>(arenas.keySet());
-    final Audience audience = this.audiences.player(sender);
     final Component message = Locale.LOBBY_LIST.build(keys);
-    audience.sendMessage(message);
+    this.sendSuccessMessage(sender, message);
   }
 
   @CommandDescription("Creates an arena with the specified settings")
   @Command(value = "murder lobby create", requiredSender = Player.class)
   public void createLobby(final Player sender) {
-
     final Audience audience = this.audiences.player(sender);
-    if (this.spawn == null) {
-      final Component message = Locale.LOBBY_SPAWN_ERROR.build();
-      audience.sendMessage(message);
+    if (this.handleNullSpawn(audience) || this.handleNullName(audience)) {
       return;
     }
+    final MurderLobbyManager manager = this.plugin.getLobbyManager();
+    manager.addLobby(this.name, this.spawn);
+    final Component message = Locale.LOBBY_BUILT.build();
+    this.sendSuccessMessage(sender, message);
+    this.plugin.updatePluginData();
+  }
 
+  private boolean handleNullName(final Audience audience) {
     if (this.name == null) {
       final Component message = Locale.LOBBY_NAME_ERROR.build();
       audience.sendMessage(message);
-      return;
+      return true;
     }
+    return false;
+  }
 
-    final MurderLobbyManager manager = this.plugin.getLobbyManager();
-    manager.addLobby(this.name, this.spawn);
-
-    final Component message = Locale.LOBBY_BUILT.build();
-    audience.sendMessage(message);
-
-    this.plugin.updatePluginData();
+  private boolean handleNullSpawn(final Audience audience) {
+    if (this.spawn == null) {
+      final Component message = Locale.LOBBY_SPAWN_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
   }
 
   @CommandDescription("Sets the name of the lobby")
   @Command(value = "murder lobby set name <string>", requiredSender = Player.class)
   public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
-    final Audience audience = this.audiences.player(sender);
     final Component message = Locale.LOBBY_NAME.build(name);
-    audience.sendMessage(message);
+    this.sendSuccessMessage(sender, message);
   }
 
   @CommandDescription("Sets the spawn location of the lobby")
@@ -87,8 +91,12 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
   public void setSpawn(final Player sender) {
     final Location location = sender.getLocation();
     this.spawn = location;
-    final Audience audience = this.audiences.player(sender);
     final Component message = AdventureUtils.createLocationComponent(Locale.LOBBY_SPAWN, location);
-    audience.sendMessage(message);
+    this.sendSuccessMessage(sender, message);
+  }
+
+  private void sendSuccessMessage(final Player player, final Component component) {
+    final Audience audience = this.audiences.player(player);
+    audience.sendMessage(component);
   }
 }

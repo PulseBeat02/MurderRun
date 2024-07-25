@@ -20,8 +20,7 @@ public final class MurderEndManager {
 
   public void start(final MurderWinCode winCode) {
     final MurderRun plugin = this.game.getPlugin();
-    final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.scheduleSyncDelayedTask(plugin, () -> this.initiateEndingSequence(winCode), 2 * 20);
+    this.initiateEndingSequence(winCode);
   }
 
   private void initiateEndingSequence(final MurderWinCode winCode) {

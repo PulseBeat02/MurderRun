@@ -34,11 +34,7 @@ public final class GamePlayerLeaveEvent implements Listener {
     }
 
     player.setHealth(0f);
-    final MurderRun plugin = this.game.getPlugin();
-    Bukkit.getScheduler().runTaskLater(plugin, () -> this.discharge(manager, player), 20L);
-  }
 
-  private void discharge(final PlayerManager manager, final Player player) {
     final UUID uuid = player.getUniqueId();
     manager.removePlayer(uuid);
     manager.resetCachedPlayers();

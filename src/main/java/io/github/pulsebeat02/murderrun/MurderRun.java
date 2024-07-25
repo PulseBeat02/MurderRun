@@ -7,6 +7,8 @@ import io.github.pulsebeat02.murderrun.data.MurderArenaDataManager;
 import io.github.pulsebeat02.murderrun.data.MurderLobbyDataManager;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
+import io.github.pulsebeat02.murderrun.reflect.NMSUtils;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,6 +39,7 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    this.registerNMS();
     this.readPluginData();
     this.startHostingDaemon();
     this.registerCommmands();
@@ -49,6 +52,10 @@ public final class MurderRun extends JavaPlugin {
     this.updatePluginData();
     this.stopHostingDaemon();
     this.shutdownMetrics();
+  }
+
+  private void registerNMS() {
+    NMSHandler.init();
   }
 
   private void shutdownMetrics() {

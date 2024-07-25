@@ -52,26 +52,15 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
       @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
       @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName) {
     final Audience audience = this.audiences.player(sender);
-    final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (data != null) {
-      final Component message = Locale.GAME_CREATE_ERROR.build();
-      audience.sendMessage(message);
+    if (this.checkIfAlreadyInGame(audience, sender)
+        || this.checkIfArenaValid(audience, arenaName)
+        || this.checkIfLobbyValid(audience, lobbyName)) {
       return;
     }
     final MurderArenaManager arenaManager = this.plugin.getArenaManager();
-    final MurderArena arena = arenaManager.getArena(arenaName);
-    if (arena == null) {
-      final Component message = Locale.GAME_ARENA_ERROR.build();
-      audience.sendMessage(message);
-      return;
-    }
     final MurderLobbyManager lobbyManager = this.plugin.getLobbyManager();
+    final MurderArena arena = arenaManager.getArena(arenaName);
     final MurderLobby lobby = lobbyManager.getLobby(lobbyName);
-    if (lobby == null) {
-      final Component message = Locale.GAME_LOBBY_ERROR.build();
-      audience.sendMessage(message);
-      return;
-    }
     final MurderGameManager manager = new MurderGameManager(this.plugin);
     manager.addParticipantToLobby(sender);
     final MurderSettings settings = manager.getSettings();
@@ -81,12 +70,44 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
+  private boolean checkIfAlreadyInGame(final Audience audience, final Player sender) {
+    final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
+    if (data != null) {
+      final Component message = Locale.GAME_CREATE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean checkIfArenaValid(final Audience audience, final String arenaName) {
+    final MurderArenaManager arenaManager = this.plugin.getArenaManager();
+    final MurderArena arena = arenaManager.getArena(arenaName);
+    if (arena == null) {
+      final Component message = Locale.GAME_ARENA_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean checkIfLobbyValid(final Audience audience, final String lobbyName) {
+    final MurderLobbyManager lobbyManager = this.plugin.getLobbyManager();
+    final MurderLobby lobby = lobbyManager.getLobby(lobbyName);
+    if (lobby == null) {
+      final Component message = Locale.GAME_LOBBY_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
   @CommandDescription("Cancels the game, resetting the map and players")
   @Command(value = "murder game cancel", requiredSender = Player.class)
   public void cancelGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data) || !this.checkIfOwner(audience, data)) {
+    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
       return;
     }
     final MurderGameManager manager = data.first();
@@ -107,7 +128,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   public void invitePlayer(final Player sender, final Player invite) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data) || !this.checkIfOwner(audience, data)) {
+    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
       return;
     }
     final String senderDisplayName = sender.getDisplayName();
@@ -127,17 +148,11 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   public void joinGame(final Player sender, final Player owner) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (data != null) {
-      final Component message = Locale.GAME_JOIN_ERROR.build();
-      audience.sendMessage(message);
+    if (this.checkIfAlreadyInGame(audience, data)
+        || this.checkIfNotInvited(audience, sender, owner)) {
       return;
     }
     final Collection<Player> invitations = this.invites.get(sender);
-    if (!invitations.contains(owner)) {
-      final Component message = Locale.GAME_INVALID_INVITE_ERROR.build();
-      audience.sendMessage(message);
-      return;
-    }
     final Pair<MurderGameManager, Boolean> ownerData = this.games.get(owner);
     final MurderGameManager manager = ownerData.first();
     manager.addParticipantToLobby(sender);
@@ -151,27 +166,51 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
     }
   }
 
+  private boolean checkIfNotInvited(
+      final Audience audience, final Player sender, final Player owner) {
+    final Collection<Player> invitations = this.invites.get(sender);
+    if (!invitations.contains(owner)) {
+      final Component message = Locale.GAME_INVALID_INVITE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean checkIfAlreadyInGame(
+      final Audience audience, final Pair<MurderGameManager, Boolean> data) {
+    if (data != null) {
+      final Component message = Locale.GAME_JOIN_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
   @CommandDescription("Lists all players in the current game")
   @Command(value = "murder game list", requiredSender = Player.class)
   public void listPlayers(final Player sender) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data)) {
+    if (this.checkIfInNoGame(audience, data)) {
       return;
     }
     final MurderGameManager manager = data.first();
+    final List<String> names = this.constructPlayerList(manager);
+    final Component message = Locale.GAME_LIST.build(names);
+    audience.sendMessage(message);
+  }
+
+  private List<String> constructPlayerList(final MurderGameManager manager) {
     final Collection<Player> participants = manager.getParticipants();
     final Collection<Player> murderers = manager.getMurderers();
     final List<String> names = new ArrayList<>();
     for (final Player player : participants) {
       String name = player.getDisplayName();
-      if (murderers.contains(player)) {
-        name += " (Murderer)";
-      }
+      name += murderers.contains(player) ? " (Killer)" : "";
       names.add(name);
     }
-    final Component message = Locale.GAME_LIST.build(names);
-    audience.sendMessage(message);
+    return names;
   }
 
   @CommandDescription("Kicks a player from your game lobby")
@@ -179,7 +218,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   public void kickPlayer(final Player sender, final Player kick) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data) || !this.checkIfOwner(audience, data)) {
+    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
       return;
     }
     final MurderGameManager manager = data.first();
@@ -198,13 +237,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   public void leaveGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data)) {
-      return;
-    }
-    final boolean owner = data.second();
-    if (owner) {
-      final Component message = Locale.GAME_LEAVE_ERROR.build();
-      audience.sendMessage(message);
+    if (this.checkIfInNoGame(audience, data) || this.checkIfOwnerOfCurrentGame(audience, data)) {
       return;
     }
     final MurderGameManager manager = data.first();
@@ -214,12 +247,23 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
+  private boolean checkIfOwnerOfCurrentGame(
+      final Audience audience, final Pair<MurderGameManager, Boolean> data) {
+    final boolean owner = data.second();
+    if (owner) {
+      final Component message = Locale.GAME_LEAVE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
   @CommandDescription("Sets a player to be murderer")
   @Command(value = "murder game set <player> murderer", requiredSender = Player.class)
   public void setMurderer(final Player sender, final Player murderer) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data) || !this.checkIfOwner(audience, data)) {
+    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
       return;
     }
     final String name = murderer.getDisplayName();
@@ -234,7 +278,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   public void setInnocent(final Player sender, final Player innocent) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data) || !this.checkIfOwner(audience, data)) {
+    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
       return;
     }
     final String name = innocent.getDisplayName();
@@ -249,7 +293,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   public void setCarPartCount(final Player sender, final int count) {
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (!this.checkIfInAnyGame(audience, data) || !this.checkIfOwner(audience, data)) {
+    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
       return;
     }
     final MurderGameManager manager = data.first();
@@ -259,25 +303,25 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
-  private boolean checkIfOwner(
+  private boolean checkIfNotOwner(
       final Audience audience, final Pair<MurderGameManager, Boolean> pair) {
     final boolean owner = pair.second();
     if (!owner) {
       final Component message = Locale.GAME_NOT_OWNER_ERROR.build();
       audience.sendMessage(message);
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
-  private boolean checkIfInAnyGame(
+  private boolean checkIfInNoGame(
       final Audience audience, final Pair<MurderGameManager, Boolean> pair) {
     if (pair == null) {
       final Component message = Locale.GAME_INVALID_ERROR.build();
       audience.sendMessage(message);
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   @Suggestions("arena-suggestions")

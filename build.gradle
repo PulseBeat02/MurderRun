@@ -6,6 +6,7 @@ plugins {
 
 group = 'io.github.pulsebeat02'
 version = '1.21-v1.0.0'
+description = 'MurderRun'
 
 repositories {
     mavenCentral()
@@ -24,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
     compileOnly 'com.moandjiezana.toml:toml4j:0.7.2'
     compileOnly 'team.unnamed:creative-api:1.7.3'
     compileOnly 'team.unnamed:creative-serializer-minecraft:1.7.3'
@@ -34,6 +35,9 @@ dependencies {
     compileOnly 'org.incendo:cloud-annotations:2.0.0-rc.2'
     compileOnly 'org.incendo:cloud-paper:2.0.0-beta.8'
     compileOnly 'org.incendo:cloud-minecraft-extras:2.0.0-beta.8'
+
+    implementation project(':nms-api')
+    implementation project(':v1_21')
 
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'net.kyori:adventure-api:4.17.0'

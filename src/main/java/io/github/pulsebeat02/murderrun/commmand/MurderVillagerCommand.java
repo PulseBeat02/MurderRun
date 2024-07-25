@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.lobby.VillagerLobbyTrader;
+import io.github.pulsebeat02.murderrun.lobby.VillagerTrade;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.trap.GameTrap;
@@ -41,23 +42,31 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
       final Player sender,
       @Argument(value = "args", suggestions = "traps") @Default("") final String[] args) {
     final Location location = sender.getLocation();
+    final List<MerchantRecipe> recipes = this.parseRecipeOptions(args);
+    final VillagerLobbyTrader trader = new VillagerLobbyTrader(location, recipes);
+    trader.spawnVillager();
+    this.sendSuccessMessage(sender, Locale.VILLAGER_SPAWN.build());
+  }
+
+  private void sendSuccessMessage(final Player player, final Component component) {
+    final Audience audience = this.audiences.player(player);
+    audience.sendMessage(component);
+  }
+
+  private List<MerchantRecipe> parseRecipeOptions(final String[] args) {
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String trapName : args) {
-      final GameTrap trap = GameTrap.get(trapName);
-      if (trap != null) {
-        final ItemStack ingredient = trap.getCost();
-        final ItemStack reward = trap.getStack();
+      final VillagerTrade trade = VillagerTrade.get(trapName);
+      if (trade != null) {
+        final ItemStack ingredient = trade.getCost();
+        final ItemStack reward = trade.getStack();
         final List<ItemStack> ingredients = List.of(ingredient);
         final MerchantRecipe recipe = new MerchantRecipe(reward, Integer.MAX_VALUE);
         recipe.setIngredients(ingredients);
         recipes.add(recipe);
       }
     }
-    final VillagerLobbyTrader trader = new VillagerLobbyTrader(location, recipes);
-    trader.spawnVillager();
-    final Component message = Locale.VILLAGER_SPAWN.build();
-    final Audience audience = this.audiences.player(sender);
-    audience.sendMessage(message);
+    return recipes;
   }
 
   @Suggestions("traps")

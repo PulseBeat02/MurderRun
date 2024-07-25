@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.json.adapters;
 
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
+import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
 import org.bukkit.inventory.ItemStack;
 import com.google.gson.*;
 import org.bukkit.util.io.BukkitObjectInputStream;
@@ -12,7 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-@Deprecated
 public final class ItemStackAdapter
     implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
 
@@ -20,32 +20,18 @@ public final class ItemStackAdapter
   public ItemStack deserialize(
       final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
       throws JsonParseException {
-    try {
-      final String data = json.getAsString();
-      final ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decode(data));
-      final BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
-      final ItemStack item;
-      item = (ItemStack) dataInput.readObject();
-      dataInput.close();
-      return item;
-    } catch (final IOException | ClassNotFoundException e) {
-      throw new AssertionError(e);
-    }
+    final String data = json.getAsString();
+    final byte[] bytes = Base64Coder.decode(data);
+    return NMSHandler.NMS_UTILS.fromByteArray(bytes);
   }
 
   @Override
   public JsonElement serialize(
       final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
     final Gson gson = GsonProvider.getGson();
-    try {
-      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      final BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
-      dataOutput.writeObject(src);
-      dataOutput.close();
-      final String data = new String(Base64Coder.encode(outputStream.toByteArray()));
-      return gson.toJsonTree(data);
-    } catch (final Exception e) {
-      throw new AssertionError(e);
-    }
+    final byte[] bytes = NMSHandler.NMS_UTILS.toByteArray(src);
+    final char[] base64 = Base64Coder.encode(bytes);
+    final String data = new String(base64);
+    return gson.toJsonTree(data);
   }
 }

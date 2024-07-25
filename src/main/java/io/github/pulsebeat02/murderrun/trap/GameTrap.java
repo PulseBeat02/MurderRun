@@ -10,10 +10,6 @@ import java.util.stream.Stream;
 public enum GameTrap {
   ;
 
-  private static final Map<String, GameTrap> LOOKUP_TABLE =
-      Stream.of(GameTrap.values())
-          .collect(Collectors.toMap(Enum::name, UnaryOperator.identity()));
-
   private final ItemStack cost;
   private final ItemStack stack;
 
@@ -28,9 +24,5 @@ public enum GameTrap {
 
   public ItemStack getStack() {
     return this.stack;
-  }
-
-  public static GameTrap get(final String name) {
-    return LOOKUP_TABLE.get(name.toLowerCase());
   }
 }
