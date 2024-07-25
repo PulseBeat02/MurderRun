@@ -3,8 +3,12 @@ package io.github.pulsebeat02.murderrun.resourcepack;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ModelHandler;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
+import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import team.unnamed.creative.ResourcePack;
+import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
 
 public final class ServerResourcepack {
@@ -28,7 +32,13 @@ public final class ServerResourcepack {
   }
 
   private void customizeMetaData(final ResourcePack pack) {
-    pack.packMeta(34, "Assets for Murder Run Plugin");
+    try {
+      final InputStream stream = ResourceUtils.getResourceAsStream("assets/textures/pack.png");
+      pack.packMeta(34, "Assets for Murder Run Plugin");
+      pack.icon(Writable.copyInputStream(stream));
+    } catch (final IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private void addTextures(final ResourcePack pack) {

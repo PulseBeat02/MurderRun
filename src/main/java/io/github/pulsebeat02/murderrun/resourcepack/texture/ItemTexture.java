@@ -8,9 +8,7 @@ public enum ItemTexture {
   CAR_PART_2("car_part_2", 2),
   CAR_PART_3("car_part_3", 3),
   CAR_PART_4("car_part_4", 4),
-  CAR_PART_5("car_part_5", 5),
-  CAR_PART_6("car_part_6", 6),
-  CAR_PART_7("car_part_7", 7);
+  CAR_PART_5("car_part_5", 5);
 
   private final Texture texture;
   private final int customModelDataId;

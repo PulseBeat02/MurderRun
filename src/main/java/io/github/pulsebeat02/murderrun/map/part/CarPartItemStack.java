@@ -59,7 +59,7 @@ public final class CarPartItemStack {
   private void changeProperties(final ItemMeta meta) {
     final Component component = Locale.CAR_PART_ITEM_NAME.build();
     final String raw = AdventureUtils.serializeComponentToLegacy(component);
-    final int id = RandomUtils.generateInt(1, 7);
+    final int id = RandomUtils.generateInt(1, 6);
     meta.setDisplayName(raw);
     meta.setCustomModelData(id);
   }
