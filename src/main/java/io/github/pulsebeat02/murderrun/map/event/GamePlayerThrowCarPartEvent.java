@@ -13,6 +13,7 @@ import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -66,12 +67,24 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
     final int leftOver = carPartItemStackMap.size();
     this.announceCarPartRetrieval(leftOver);
+    this.setBossBar(leftOver);
     this.checkGameEnd(leftOver);
 
     final Player thrower = event.getPlayer();
     if (!this.checkIfPlayerStillHasCarPart(thrower)) {
       this.setPlayerCarPartStatus(thrower);
     }
+  }
+
+  private void setBossBar(final int leftOver) {
+    final MurderSettings settings = this.game.getSettings();
+    final int parts = settings.getCarPartCount();
+    final int collected = parts - leftOver;
+    final Component name = Locale.BOSS_BAR.build(collected, parts);
+    final float progress = 0f;
+    final BossBar.Color color = BossBar.Color.GREEN;
+    final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
+    AdventureUtils.showBossBarForAllParticipants(this.game, name, progress, color, overlay);
   }
 
   private void checkGameEnd(final int leftOver) {

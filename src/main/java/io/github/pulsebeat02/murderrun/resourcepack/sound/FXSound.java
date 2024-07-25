@@ -7,11 +7,11 @@ import java.io.IOException;
 public enum FXSound {
   COUNTDOWN("countdown"),
   CHAINSAW("chainsaw"),
-  DEATH_1("death_1"),
-  DEATH_2("death_2"),
-  DEATH_3("death_3"),
+  DEATH("death"),
   RELEASED_1("released_1"),
-  RELEASED_2("released_2");
+  RELEASED_2("released_2"),
+  LOSS("loss"),
+  WIN("win");
 
   private final Sound sound;
   private final String id;

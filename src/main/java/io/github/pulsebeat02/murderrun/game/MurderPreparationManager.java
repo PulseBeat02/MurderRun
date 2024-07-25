@@ -7,11 +7,14 @@ import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static net.kyori.adventure.text.Component.empty;
@@ -29,6 +32,7 @@ public final class MurderPreparationManager {
   public void start() {
     this.teleportInnocentPlayers();
     this.announceHidePhase();
+    this.setBossBar();
     this.runFutureTask();
   }
 
@@ -63,6 +67,26 @@ public final class MurderPreparationManager {
           this.cancel();
         }
       }
+      MurderPreparationManager.this.setTimeRemaining(seconds);
+    }
+  }
+
+  private void setBossBar() {
+    final MurderSettings settings = this.game.getSettings();
+    final int parts = settings.getCarPartCount();
+    final Component name = Locale.BOSS_BAR.build(0, parts);
+    final float progress = 0f;
+    final BossBar.Color color = BossBar.Color.GREEN;
+    final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
+    AdventureUtils.showBossBarForAllParticipants(this.game, name, progress, color, overlay);
+  }
+
+  private void setTimeRemaining(final int time) {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final Collection<GamePlayer> participants = manager.getParticipants();
+    for (final GamePlayer gamePlayer : participants) {
+      final Player player = gamePlayer.getPlayer();
+      player.setLevel(time);
     }
   }
 

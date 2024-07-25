@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -53,16 +54,22 @@ public final class MurderEndManager {
   }
 
   private void announceInnocentVictory() {
-    final Component title = Locale.INNOCENT_VICTORY.build();
+    final Component innocentMessage = Locale.INNOCENT_VICTORY_INNOCENT.build();
+    final Component murdererMessage = Locale.INNOCENT_VICTORY_MURDERER.build();
     final Component subtitle = empty();
-    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
-    AdventureUtils.playSoundForAllParticipants(this.game, Sound.ENTITY_CAT_PURR);
+    AdventureUtils.showTitleForAllInnocents(this.game, innocentMessage, subtitle);
+    AdventureUtils.showTitleForAllMurderers(this.game, murdererMessage, subtitle);
+    AdventureUtils.playSoundForAllInnocents(this.game, FXSound.WIN);
+    AdventureUtils.playSoundForAllMurderers(this.game, FXSound.LOSS);
   }
 
   private void announceMurdererVictory() {
-    final Component title = Locale.MURDERER_VICTORY.build();
+    final Component innocentMessage = Locale.MURDERER_VICTORY_INNOCENT.build();
+    final Component murdererMessage = Locale.MURDERER_VICTORY_MURDERER.build();
     final Component subtitle = empty();
-    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
-    AdventureUtils.playSoundForAllParticipants(this.game, Sound.ENTITY_CAT_HISS);
+    AdventureUtils.showTitleForAllInnocents(this.game, innocentMessage, subtitle);
+    AdventureUtils.showTitleForAllMurderers(this.game, murdererMessage, subtitle);
+    AdventureUtils.playSoundForAllInnocents(this.game, FXSound.LOSS);
+    AdventureUtils.playSoundForAllMurderers(this.game, FXSound.WIN);
   }
 }

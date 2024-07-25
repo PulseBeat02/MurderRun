@@ -47,7 +47,6 @@ public final class GamePlayerDeathEvent implements Listener {
   }
 
   private void playDeathSoundEffect() {
-    AdventureUtils.playSoundForAllParticipants(
-        this.game, FXSound.DEATH_1, FXSound.DEATH_2, FXSound.DEATH_3);
+    AdventureUtils.playSoundForAllParticipants(this.game, FXSound.DEATH);
   }
 }
