@@ -16,7 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class MurderPreparationManager {
@@ -31,7 +33,18 @@ public final class MurderPreparationManager {
     this.teleportInnocentPlayers();
     this.announceHidePhase();
     this.setBossBar();
+    this.clearNetherStars();
     this.runFutureTask();
+  }
+
+  private void clearNetherStars() {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final Collection<GamePlayer> participants = manager.getParticipants();
+    for (final GamePlayer gamePlayer : participants) {
+      final Player player = gamePlayer.getPlayer();
+      final PlayerInventory inventory = player.getInventory();
+      inventory.remove(Material.NETHER_STAR);
+    }
   }
 
   private void teleportInnocentPlayers() {

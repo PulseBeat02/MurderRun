@@ -54,7 +54,7 @@ public final class PlayerDeathManager {
   public void initiateDeathSequence(final GamePlayer gamePlayer) {
 
     final Player player = gamePlayer.getPlayer();
-    this.setGameMode(player);
+    this.preparePlayer(player);
 
     final ArmorStand stand = this.summonArmorStand(player);
     this.customizeArmorStand(stand);
@@ -64,8 +64,10 @@ public final class PlayerDeathManager {
     this.summonCarParts(player);
   }
 
-  private void setGameMode(final Player player) {
+  private void preparePlayer(final Player player) {
     player.setGameMode(GameMode.SPECTATOR);
+    final PlayerInventory inventory = player.getInventory();
+    inventory.clear();
   }
 
   private ArmorStand summonArmorStand(final Player player) {
