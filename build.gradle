@@ -35,6 +35,7 @@ dependencies {
     compileOnly 'org.incendo:cloud-annotations:2.0.0-rc.2'
     compileOnly 'org.incendo:cloud-paper:2.0.0-beta.8'
     compileOnly 'org.incendo:cloud-minecraft-extras:2.0.0-beta.8'
+    compileOnly 'me.lucko:commodore:1.9'
 
     implementation project(':nms-api')
     implementation project(':v1_21')
