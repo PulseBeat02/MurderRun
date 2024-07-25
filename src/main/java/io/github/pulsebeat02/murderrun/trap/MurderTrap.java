@@ -21,8 +21,18 @@ public abstract sealed class MurderTrap permits SurvivorTrap, KillerTrap {
     this.stack = this.constructItemStack();
   }
 
+  public abstract ItemStack constructItemStack();
+
   public static NamespacedKey getPDCKey() {
     return KEY;
+  }
+
+  public ItemStack getStack() {
+    return this.stack;
+  }
+
+  public String getName() {
+    return this.name;
   }
 
   public void scheduleTask(final Runnable runnable, final long delay) {
@@ -31,8 +41,6 @@ public abstract sealed class MurderTrap permits SurvivorTrap, KillerTrap {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.runTaskLater(plugin, runnable, delay);
   }
-
-  public abstract ItemStack constructItemStack();
 
   public abstract void onDropEvent(final PlayerDropItemEvent event);
 

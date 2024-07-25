@@ -1,12 +1,10 @@
 package io.github.pulsebeat02.murderrun.lobby;
 
-import io.github.pulsebeat02.murderrun.trap.GameTrap;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.Map;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.bukkit.inventory.ItemStack;
 
 public enum VillagerTrade {
   ;
@@ -23,15 +21,15 @@ public enum VillagerTrade {
     this.stack = stack;
   }
 
+  public static VillagerTrade get(final String name) {
+    return LOOKUP_TABLE.get(name.toLowerCase());
+  }
+
   public ItemStack getCost() {
     return this.cost;
   }
 
   public ItemStack getStack() {
     return this.stack;
-  }
-
-  public static VillagerTrade get(final String name) {
-    return LOOKUP_TABLE.get(name.toLowerCase());
   }
 }

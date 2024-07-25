@@ -3,6 +3,8 @@ package io.github.pulsebeat02.murderrun.map.part;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import java.util.List;
+import java.util.UUID;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
@@ -10,9 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.List;
-import java.util.UUID;
 
 public final class CarPartItemStack {
 
@@ -29,16 +28,6 @@ public final class CarPartItemStack {
     this.stack = this.createItemStack();
   }
 
-  public void spawn() {
-    final World world = this.location.getWorld();
-    final Item item = world.dropItemNaturally(this.location, this.stack);
-    this.customizeItemEntity(item);
-  }
-
-  private void customizeItemEntity(final Item item) {
-    item.setUnlimitedLifetime(true);
-  }
-
   private ItemStack createItemStack() {
     final ItemStack stack = new ItemStack(Material.DIAMOND);
     final ItemMeta meta = this.customize(stack.getItemMeta());
@@ -53,12 +42,9 @@ public final class CarPartItemStack {
     return meta;
   }
 
-  private void changeProperties(final ItemMeta meta) {
-    final Component component = Locale.CAR_PART_ITEM_NAME.build();
-    final String raw = AdventureUtils.serializeComponentToLegacy(component);
-    final int id = RandomUtils.generateInt(1, 7);
-    meta.setDisplayName(raw);
-    meta.setCustomModelData(id);
+  private void tagData(final ItemMeta meta) {
+    final PersistentDataContainer container = meta.getPersistentDataContainer();
+    container.set(CAR_PART_ID, PersistentDataType.STRING, this.uuid);
   }
 
   private void setLore(final ItemMeta meta) {
@@ -70,9 +56,26 @@ public final class CarPartItemStack {
     }
   }
 
-  private void tagData(final ItemMeta meta) {
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
-    container.set(CAR_PART_ID, PersistentDataType.STRING, this.uuid);
+  private void changeProperties(final ItemMeta meta) {
+    final Component component = Locale.CAR_PART_ITEM_NAME.build();
+    final String raw = AdventureUtils.serializeComponentToLegacy(component);
+    final int id = RandomUtils.generateInt(1, 7);
+    meta.setDisplayName(raw);
+    meta.setCustomModelData(id);
+  }
+
+  public static NamespacedKey getCarPartKey() {
+    return CAR_PART_ID;
+  }
+
+  public void spawn() {
+    final World world = this.location.getWorld();
+    final Item item = world.dropItemNaturally(this.location, this.stack);
+    this.customizeItemEntity(item);
+  }
+
+  private void customizeItemEntity(final Item item) {
+    item.setUnlimitedLifetime(true);
   }
 
   public ItemStack getStack() {
@@ -89,10 +92,6 @@ public final class CarPartItemStack {
 
   public String getUuid() {
     return this.uuid;
-  }
-
-  public static NamespacedKey getCarPartKey() {
-    return CAR_PART_ID;
   }
 
   public boolean isPickedUp() {

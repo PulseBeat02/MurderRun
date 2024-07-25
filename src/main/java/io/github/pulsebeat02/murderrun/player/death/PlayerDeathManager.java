@@ -1,5 +1,8 @@
 package io.github.pulsebeat02.murderrun.player.death;
 
+import static net.kyori.adventure.text.Component.empty;
+import static net.kyori.adventure.title.Title.title;
+
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
@@ -10,6 +13,9 @@ import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
@@ -18,19 +24,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import static net.kyori.adventure.text.Component.empty;
-import static net.kyori.adventure.title.Title.title;
 
 public final class PlayerDeathManager {
 
@@ -46,6 +43,27 @@ public final class PlayerDeathManager {
     this.service.shutdown();
   }
 
+  public MurderGame getGame() {
+    return this.game;
+  }
+
+  public ScheduledExecutorService getService() {
+    return this.service;
+  }
+
+  public void initiateDeathSequence(final GamePlayer gamePlayer) {
+
+    final Player player = gamePlayer.getPlayer();
+    this.setGameMode(player);
+
+    final ArmorStand stand = this.summonArmorStand(player);
+    this.customizeArmorStand(stand);
+    this.setArmorStandRotations(stand);
+    this.setArmorStandGear(player, stand);
+    this.announcePlayerDeath(player);
+    this.summonCarParts(player);
+  }
+
   private void setGameMode(final Player player) {
     player.setGameMode(GameMode.SPECTATOR);
   }
@@ -57,12 +75,9 @@ public final class PlayerDeathManager {
     return (ArmorStand) entity;
   }
 
-  private ItemStack getHeadItemStack(final Player player) {
-    final ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-    final SkullMeta meta = (SkullMeta) head.getItemMeta();
-    meta.setOwningPlayer(player);
-    head.setItemMeta(meta);
-    return head;
+  private void customizeArmorStand(final ArmorStand stand) {
+    stand.setInvulnerable(true);
+    stand.setGravity(false);
   }
 
   private void setArmorStandRotations(final ArmorStand stand) {
@@ -91,24 +106,6 @@ public final class PlayerDeathManager {
     AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
   }
 
-  public void initiateDeathSequence(final GamePlayer gamePlayer) {
-
-    final Player player = gamePlayer.getPlayer();
-    this.setGameMode(player);
-
-    final ArmorStand stand = this.summonArmorStand(player);
-    this.customizeArmorStand(stand);
-    this.setArmorStandRotations(stand);
-    this.setArmorStandGear(player, stand);
-    this.announcePlayerDeath(player);
-    this.summonCarParts(player);
-  }
-
-  private void customizeArmorStand(final ArmorStand stand) {
-    stand.setInvulnerable(true);
-    stand.setGravity(false);
-  }
-
   private void summonCarParts(final Player player) {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack[] slots = inventory.getContents();
@@ -126,6 +123,22 @@ public final class PlayerDeathManager {
     }
   }
 
+  private ItemStack getHeadItemStack(final Player player) {
+    final ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+    final SkullMeta meta = (SkullMeta) head.getItemMeta();
+    meta.setOwningPlayer(player);
+    head.setItemMeta(meta);
+    return head;
+  }
+
+  public static ItemStack createArmorPiece(final Material leatherPiece) {
+    final ItemStack item = new ItemStack(leatherPiece);
+    final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+    meta.setColor(Color.RED);
+    item.setItemMeta(meta);
+    return item;
+  }
+
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
     this.service.scheduleAtFixedRate(
@@ -138,14 +151,6 @@ public final class PlayerDeathManager {
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
     final BlockData data = Material.RED_CONCRETE.createBlockData();
-    world.spawnParticle(Particle.BLOCK_DUST, clone, 10, 0.5, 0.5, 0.5, data);
-  }
-
-  public static ItemStack createArmorPiece(final Material leatherPiece) {
-    final ItemStack item = new ItemStack(leatherPiece);
-    final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-    meta.setColor(Color.RED);
-    item.setItemMeta(meta);
-    return item;
+    world.spawnParticle(Particle.BLOCK, clone, 10, 0.5, 0.5, 0.5, data);
   }
 }

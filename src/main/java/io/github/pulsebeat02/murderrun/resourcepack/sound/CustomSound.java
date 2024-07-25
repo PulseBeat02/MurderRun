@@ -1,12 +1,11 @@
 package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import java.io.IOException;
+import java.io.InputStream;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.sound.Sound;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class CustomSound {
 
@@ -22,6 +21,14 @@ public class CustomSound {
     final String path = String.format("assets/sounds/%s.ogg", namespace);
     final InputStream stream = ResourceUtils.getResourceAsStream(path);
     return Writable.copyInputStream(stream);
+  }
+
+  public Key getKey() {
+    return this.key;
+  }
+
+  public Writable getData() {
+    return this.data;
   }
 
   public Sound build() {

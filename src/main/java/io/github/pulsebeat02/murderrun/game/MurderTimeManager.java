@@ -21,7 +21,27 @@ public final class MurderTimeManager {
     this.elapsedTime = Integer.MAX_VALUE;
   }
 
+  public long getStartTime() {
+    return this.startTime;
+  }
+
+  public void setStartTime(final long startTime) {
+    this.startTime = startTime;
+  }
+
+  public long getEndTime() {
+    return this.endTime;
+  }
+
+  public void setEndTime(final long endTime) {
+    this.endTime = endTime;
+  }
+
   public long getElapsedTime() {
     return this.elapsedTime;
+  }
+
+  public void setElapsedTime(final long elapsedTime) {
+    this.elapsedTime = elapsedTime;
   }
 }

@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.data.MurderLobbyDataManager;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
-import io.github.pulsebeat02.murderrun.reflect.NMSUtils;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,9 +21,7 @@ public final class MurderRun extends JavaPlugin {
   - Add Innocent Traps for Survival
   - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
-  - Set command description / help command with Locale
-
-  - Deep Debugging
+  - Deep debugging before first run
 
    */
 
@@ -39,52 +36,24 @@ public final class MurderRun extends JavaPlugin {
   private Metrics metrics;
 
   @Override
-  public void onEnable() {
-    this.registerNMS();
-    this.readPluginData();
-    this.startHostingDaemon();
-    this.registerCommmands();
-    this.registerAudienceHandler();
-    this.enableBStats();
-  }
-
-  @Override
   public void onDisable() {
     this.updatePluginData();
     this.stopHostingDaemon();
     this.shutdownMetrics();
   }
 
+  @Override
+  public void onEnable() {
+    this.registerNMS();
+    this.readPluginData();
+    this.startHostingDaemon();
+    this.registerCommands();
+    this.registerAudienceHandler();
+    this.enableBStats();
+  }
+
   private void registerNMS() {
     NMSHandler.init();
-  }
-
-  private void shutdownMetrics() {
-    this.metrics.shutdown();
-  }
-
-  private void enableBStats() {
-    this.metrics = new Metrics(this, 22728);
-  }
-
-  private void registerAudienceHandler() {
-    this.audience = new AudienceHandler(this);
-  }
-
-  private void registerCommmands() {
-    this.commandHandler = new AnnotationParserHandler(this);
-    this.commandHandler.registerCommands();
-  }
-
-  private void stopHostingDaemon() {
-    this.daemon.stop();
-  }
-
-  private void startHostingDaemon() {
-    final String hostName = this.configuration.getHostName();
-    final int port = this.configuration.getPort();
-    this.daemon = new PackHostingDaemon(hostName, port);
-    this.daemon.start();
   }
 
   private void readPluginData() {
@@ -96,10 +65,38 @@ public final class MurderRun extends JavaPlugin {
     this.configuration.deserialize();
   }
 
+  private void startHostingDaemon() {
+    final String hostName = this.configuration.getHostName();
+    final int port = this.configuration.getPort();
+    this.daemon = new PackHostingDaemon(hostName, port);
+    this.daemon.start();
+  }
+
+  private void registerCommands() {
+    this.commandHandler = new AnnotationParserHandler(this);
+    this.commandHandler.registerCommands();
+  }
+
+  private void registerAudienceHandler() {
+    this.audience = new AudienceHandler(this);
+  }
+
+  private void enableBStats() {
+    this.metrics = new Metrics(this, 22728);
+  }
+
   public void updatePluginData() {
     this.murderArenaDataManager.serialize(this.arenaManager);
     this.murderLobbyDataManager.serialize(this.lobbyManager);
     this.configuration.serialize();
+  }
+
+  private void stopHostingDaemon() {
+    this.daemon.stop();
+  }
+
+  private void shutdownMetrics() {
+    this.metrics.shutdown();
   }
 
   public PluginConfiguration getConfiguration() {

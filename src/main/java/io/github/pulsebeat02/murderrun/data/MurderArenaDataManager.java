@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -22,10 +21,8 @@ public final class MurderArenaDataManager {
     this.arenaJson = path.resolve("arenas.json");
   }
 
-  private void createFolders() throws IOException {
-    final Path parent = this.arenaJson.getParent();
-    Files.createDirectories(parent);
-    Files.createFile(this.arenaJson);
+  public Path getArenaJson() {
+    return this.arenaJson;
   }
 
   public void serialize(final MurderArenaManager manager) {
@@ -36,6 +33,12 @@ public final class MurderArenaDataManager {
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
+  }
+
+  private void createFolders() throws IOException {
+    final Path parent = this.arenaJson.getParent();
+    Files.createDirectories(parent);
+    Files.createFile(this.arenaJson);
   }
 
   public MurderArenaManager deserialize() {

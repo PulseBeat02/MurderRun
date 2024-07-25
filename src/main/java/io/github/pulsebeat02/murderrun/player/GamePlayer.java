@@ -5,11 +5,10 @@ import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import java.util.UUID;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-
-import java.util.UUID;
 
 public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
 
@@ -29,6 +28,10 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
     final Player player = this.getPlayer();
     player.setHealth(20f);
     player.setFoodLevel(20);
+  }
+
+  public Player getPlayer() {
+    return Bukkit.getPlayer(this.uuid);
   }
 
   public void onMatchReset() {
@@ -52,18 +55,8 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
     this.startDeathSequence();
   }
 
-  private void startDeathSequence() {
-    final PlayerManager manager = this.game.getPlayerManager();
-    final PlayerDeathManager death = manager.getDeathManager();
-    death.initiateDeathSequence(this);
-  }
-
   public UUID getUuid() {
     return this.uuid;
-  }
-
-  public Player getPlayer() {
-    return Bukkit.getPlayer(this.uuid);
   }
 
   public boolean isAlive() {
@@ -72,6 +65,12 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
 
   public void setAlive(final boolean alive) {
     this.alive = alive;
+  }
+
+  private void startDeathSequence() {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final PlayerDeathManager death = manager.getDeathManager();
+    death.initiateDeathSequence(this);
   }
 
   public MurderGame getGame() {

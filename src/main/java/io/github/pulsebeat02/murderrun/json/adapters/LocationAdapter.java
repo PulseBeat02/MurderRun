@@ -1,11 +1,10 @@
 package io.github.pulsebeat02.murderrun.json.adapters;
 
 import com.google.gson.*;
+import java.lang.reflect.Type;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-
-import java.lang.reflect.Type;
 
 public final class LocationAdapter implements JsonDeserializer<Location>, JsonSerializer<Location> {
 

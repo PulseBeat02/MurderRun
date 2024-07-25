@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static net.kyori.adventure.text.Component.translatable;
+
 import io.github.pulsebeat02.murderrun.locale.LocaleParent;
 import net.kyori.adventure.text.Component;
-
-import static net.kyori.adventure.text.Component.translatable;
 
 public final class CommandUtils {
 

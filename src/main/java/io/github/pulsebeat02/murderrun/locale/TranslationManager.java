@@ -1,12 +1,11 @@
 package io.github.pulsebeat02.murderrun.locale;
 
+import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
-
-import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -16,7 +15,6 @@ public final class TranslationManager {
 
   private static final java.util.Locale DEFAULT_LOCALE = Locale.ENGLISH;
   private static final Key ADVENTURE_KEY = Key.key("murder_run", "main");
-
   private final TranslationRegistry registry;
 
   public TranslationManager() {
@@ -30,13 +28,13 @@ public final class TranslationManager {
     this.addGlobalRegistry();
   }
 
-  private void addGlobalRegistry() {
-    GlobalTranslator.translator().addSource(this.registry);
-  }
-
   private void registerLocale() {
     final ResourceBundle bundle = this.getBundle();
     this.registry.registerAll(DEFAULT_LOCALE, bundle, false);
+  }
+
+  private void addGlobalRegistry() {
+    GlobalTranslator.translator().addSource(this.registry);
   }
 
   private PropertyResourceBundle getBundle() {
@@ -46,6 +44,10 @@ public final class TranslationManager {
     } catch (final IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public TranslationRegistry getRegistry() {
+    return this.registry;
   }
 
   public Component render(final Component component) {

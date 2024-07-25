@@ -3,10 +3,9 @@ package io.github.pulsebeat02.murderrun.player;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.death.MurdererLocationManager;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
-import org.bukkit.entity.Player;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import org.bukkit.entity.Player;
 
 public final class PlayerManager {
 
@@ -34,10 +33,16 @@ public final class PlayerManager {
     this.deathManager.spawnParticles();
   }
 
-  public void shutdown() {
-    this.resetAllPlayers();
-    this.deathManager.shutdownExecutor();
-    this.murdererLocationManager.shutdownExecutor();
+  private void assignPlayerRoles(
+      final Collection<Player> murderers, final Collection<Player> participants) {
+    this.createMurderers(murderers);
+    this.createInnocents(murderers, participants);
+  }
+
+  private void setupAllPlayers() {
+    for (final GamePlayer player : this.getParticipants()) {
+      player.onMatchStart();
+    }
   }
 
   public void resetCachedPlayers() {
@@ -55,24 +60,6 @@ public final class PlayerManager {
             .filter(player -> player instanceof InnocentPlayer)
             .map(murderer -> (InnocentPlayer) murderer)
             .collect(Collectors.toSet());
-  }
-
-  private void setupAllPlayers() {
-    for (final GamePlayer player : this.getParticipants()) {
-      player.onMatchStart();
-    }
-  }
-
-  private void resetAllPlayers() {
-    for (final GamePlayer player : this.getParticipants()) {
-      player.onMatchReset();
-    }
-  }
-
-  private void assignPlayerRoles(
-      final Collection<Player> murderers, final Collection<Player> participants) {
-    this.createMurderers(murderers);
-    this.createInnocents(murderers, participants);
   }
 
   private void createMurderers(final Collection<Player> murderers) {
@@ -96,16 +83,28 @@ public final class PlayerManager {
     }
   }
 
+  public Collection<GamePlayer> getParticipants() {
+    return this.lookupMap.values();
+  }
+
   private Set<UUID> createMurdererUuids(final Collection<Player> murderers) {
     return murderers.stream().map(Player::getUniqueId).collect(Collectors.toSet());
   }
 
-  public Optional<GamePlayer> lookupPlayer(final UUID uuid) {
-    return Optional.ofNullable(this.lookupMap.get(uuid));
+  public void shutdown() {
+    this.resetAllPlayers();
+    this.deathManager.shutdownExecutor();
+    this.murdererLocationManager.shutdownExecutor();
   }
 
-  public Collection<GamePlayer> getParticipants() {
-    return this.lookupMap.values();
+  private void resetAllPlayers() {
+    for (final GamePlayer player : this.getParticipants()) {
+      player.onMatchReset();
+    }
+  }
+
+  public Optional<GamePlayer> lookupPlayer(final UUID uuid) {
+    return Optional.ofNullable(this.lookupMap.get(uuid));
   }
 
   public Collection<Murderer> getMurderers() {

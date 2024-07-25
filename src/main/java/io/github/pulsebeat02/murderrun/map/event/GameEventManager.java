@@ -1,15 +1,14 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
+import java.util.Collection;
+import java.util.Set;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
-
-import java.util.Collection;
-import java.util.Set;
 
 public final class GameEventManager {
 
@@ -26,6 +25,14 @@ public final class GameEventManager {
             new GamePlayerLeaveEvent(this.game),
             new GamePlayerHungerEvent(this.game),
             new GamePlayerBlockDropEvent(this.game));
+  }
+
+  public MurderGame getGame() {
+    return this.game;
+  }
+
+  public Collection<Listener> getEvents() {
+    return this.events;
   }
 
   public void registerEvents() {

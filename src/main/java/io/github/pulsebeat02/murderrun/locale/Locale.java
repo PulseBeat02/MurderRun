@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.locale;
 
-import java.util.List;
-
 import static io.github.pulsebeat02.murderrun.locale.LocaleParent.*;
 import static net.kyori.adventure.text.format.NamedTextColor.*;
+
+import java.util.List;
 
 public interface Locale extends LocaleParent {
   NullComponent<Sender> CAR_PART_ITEM_NAME = colored("murder_run.item.car_part.name", GOLD);
@@ -13,10 +13,14 @@ public interface Locale extends LocaleParent {
 
   NullComponent<Sender> PREPARATION_PHASE = colored("murder_run.game.survivor_preparation", GOLD);
   NullComponent<Sender> RELEASE_PHASE = colored("murder_run.game.murderer_released", RED);
-  NullComponent<Sender> INNOCENT_VICTORY_INNOCENT = colored("murder_run.game.innocent_victory_innocent", GREEN);
-  NullComponent<Sender> INNOCENT_VICTORY_MURDERER = colored("murder_run.game.innocent_victory_murderer", RED);
-  NullComponent<Sender> MURDERER_VICTORY_INNOCENT = colored("murder_run.game.murderer_victory_innocent", RED);
-  NullComponent<Sender> MURDERER_VICTORY_MURDERER = colored("murder_run.game.murderer_victory_murderer", GREEN);
+  NullComponent<Sender> INNOCENT_VICTORY_INNOCENT =
+      colored("murder_run.game.innocent_victory_innocent", GREEN);
+  NullComponent<Sender> INNOCENT_VICTORY_MURDERER =
+      colored("murder_run.game.innocent_victory_murderer", RED);
+  NullComponent<Sender> MURDERER_VICTORY_INNOCENT =
+      colored("murder_run.game.murderer_victory_innocent", RED);
+  NullComponent<Sender> MURDERER_VICTORY_MURDERER =
+      colored("murder_run.game.murderer_victory_murderer", GREEN);
 
   UniComponent<Sender, Long> FINAL_TIME = info("murder_run.game.time", null);
   BiComponent<Sender, Integer, Integer> BOSS_BAR =

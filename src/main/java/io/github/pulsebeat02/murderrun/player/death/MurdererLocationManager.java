@@ -4,16 +4,15 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
 import java.awt.*;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 public final class MurdererLocationManager {
 
@@ -47,8 +46,16 @@ public final class MurdererLocationManager {
       }
       final Location clone = murdererLocation.clone().add(0, 1, 0);
       final World world = clone.getWorld();
-      world.spawnParticle(Particle.REDSTONE, clone, 10, 1, 1, 1, Color.WHITE);
+      world.spawnParticle(Particle.DUST, clone, 10, 1, 1, 1, Color.WHITE);
     }
+  }
+
+  public MurderGame getGame() {
+    return this.game;
+  }
+
+  public ScheduledExecutorService getService() {
+    return this.service;
   }
 
   public void shutdownExecutor() {

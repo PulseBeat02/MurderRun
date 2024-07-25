@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import java.util.Optional;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,14 +14,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import java.util.Optional;
-
 public final class GamePlayerBlockBreakEvent implements Listener {
 
   private final MurderGame game;
 
   public GamePlayerBlockBreakEvent(final MurderGame game) {
     this.game = game;
+  }
+
+  public MurderGame getGame() {
+    return this.game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

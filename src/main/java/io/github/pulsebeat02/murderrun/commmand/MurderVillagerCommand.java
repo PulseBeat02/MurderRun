@@ -6,6 +6,10 @@ import io.github.pulsebeat02.murderrun.lobby.VillagerTrade;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.trap.GameTrap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -17,11 +21,6 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.incendo.cloud.annotations.*;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 
 public final class MurderVillagerCommand implements AnnotationCommandFeature {
 
@@ -36,7 +35,7 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @CommandDescription("Creates a villager that sells traps")
+  @CommandDescription("murder_run.command.villager.spawn.info")
   @Command(value = "murder villager spawn [args]", requiredSender = Player.class)
   public void createMerchant(
       final Player sender,
@@ -46,11 +45,6 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
     final VillagerLobbyTrader trader = new VillagerLobbyTrader(location, recipes);
     trader.spawnVillager();
     this.sendSuccessMessage(sender, Locale.VILLAGER_SPAWN.build());
-  }
-
-  private void sendSuccessMessage(final Player player, final Component component) {
-    final Audience audience = this.audiences.player(player);
-    audience.sendMessage(component);
   }
 
   private List<MerchantRecipe> parseRecipeOptions(final String[] args) {
@@ -67,6 +61,27 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
       }
     }
     return recipes;
+  }
+
+  private void sendSuccessMessage(final Player player, final Component component) {
+    final Audience audience = this.audiences.player(player);
+    audience.sendMessage(component);
+  }
+
+  public MurderRun getPlugin() {
+    return this.plugin;
+  }
+
+  public void setPlugin(final MurderRun plugin) {
+    this.plugin = plugin;
+  }
+
+  public BukkitAudiences getAudiences() {
+    return this.audiences;
+  }
+
+  public void setAudiences(final BukkitAudiences audiences) {
+    this.audiences = audiences;
   }
 
   @Suggestions("traps")

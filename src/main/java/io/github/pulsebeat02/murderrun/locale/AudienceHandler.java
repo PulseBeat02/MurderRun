@@ -23,14 +23,14 @@ public final class AudienceHandler {
     return this.audience;
   }
 
-  public void console(final Component component) {
-    this.checkStatus();
-    this.audience.console().sendMessage(component);
-  }
-
   private void checkStatus() {
     if (this.audience == null) {
       throw new AssertionError("Tried to access Adventure when the plugin was disabled!");
     }
+  }
+
+  public void console(final Component component) {
+    this.checkStatus();
+    this.audience.console().sendMessage(component);
   }
 }

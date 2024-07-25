@@ -2,21 +2,18 @@ package io.github.pulsebeat02.murderrun.resourcepack.server;
 
 import io.github.pulsebeat02.murderrun.resourcepack.ServerResourcepack;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
-import team.unnamed.creative.BuiltResourcePack;
-import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.server.ResourcePackServer;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executors;
+import team.unnamed.creative.BuiltResourcePack;
+import team.unnamed.creative.base.Writable;
+import team.unnamed.creative.server.ResourcePackServer;
 
 public final class PackHostingDaemon {
-
   private static final ServerResourcepack PACK = new ServerResourcepack();
-
   private final String hostName;
   private final int port;
   private final ResourcePackServer server;
@@ -46,6 +43,18 @@ public final class PackHostingDaemon {
     }
   }
 
+  public String getHostName() {
+    return this.hostName;
+  }
+
+  public int getPort() {
+    return this.port;
+  }
+
+  public ResourcePackServer getServer() {
+    return this.server;
+  }
+
   public void start() {
     this.server.start();
   }
@@ -58,7 +67,15 @@ public final class PackHostingDaemon {
     return this.url;
   }
 
+  public void setUrl(final String url) {
+    this.url = url;
+  }
+
   public String getHash() {
     return this.hash;
+  }
+
+  public void setHash(final String hash) {
+    this.hash = hash;
   }
 }

@@ -1,12 +1,11 @@
 package io.github.pulsebeat02.murderrun.resourcepack;
 
 import io.github.pulsebeat02.murderrun.resourcepack.model.ModelHandler;
-import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
+import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
+import java.nio.file.Path;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
-
-import java.nio.file.Path;
 
 public final class ServerResourcepack {
 
@@ -39,17 +38,17 @@ public final class ServerResourcepack {
     }
   }
 
+  private void addModels(final ResourcePack pack) {
+    final ModelHandler handler = new ModelHandler();
+    pack.model(handler.customItemModelGenerator());
+    pack.model(handler.customItemModelGenerator());
+  }
+
   private void addSounds(final ResourcePack pack) {
     final FXSound[] sounds = FXSound.values();
     for (final FXSound sound : sounds) {
       pack.sound(sound.getSound());
     }
-  }
-
-  private void addModels(final ResourcePack pack) {
-    final ModelHandler handler = new ModelHandler();
-    pack.model(handler.customItemModelGenerator());
-    pack.model(handler.customItemModelGenerator());
   }
 
   private void zipPack(final ResourcePack pack) {

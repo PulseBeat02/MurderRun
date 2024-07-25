@@ -1,12 +1,12 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static java.util.Objects.requireNonNull;
 
 public final class ResourceUtils {
 
@@ -14,12 +14,12 @@ public final class ResourceUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static InputStream getResourceAsStream(final String name) {
-    return requireNonNull(ResourceUtils.class.getClassLoader().getResourceAsStream(name));
-  }
-
   public static Reader getResourceAsReader(final String name) {
     return new BufferedReader(new InputStreamReader(getResourceAsStream(name)));
+  }
+
+  public static InputStream getResourceAsStream(final String name) {
+    return requireNonNull(ResourceUtils.class.getClassLoader().getResourceAsStream(name));
   }
 
   public static String getFilename(final String url) {

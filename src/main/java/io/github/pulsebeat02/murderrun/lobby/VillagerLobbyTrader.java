@@ -1,13 +1,12 @@
 package io.github.pulsebeat02.murderrun.lobby;
 
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.MerchantRecipe;
-
-import java.util.List;
 
 public final class VillagerLobbyTrader {
 
@@ -17,6 +16,14 @@ public final class VillagerLobbyTrader {
   public VillagerLobbyTrader(final Location location, final List<MerchantRecipe> trades) {
     this.location = location;
     this.trades = trades;
+  }
+
+  public Location getLocation() {
+    return this.location;
+  }
+
+  public List<MerchantRecipe> getTrades() {
+    return this.trades;
   }
 
   public void spawnVillager() {

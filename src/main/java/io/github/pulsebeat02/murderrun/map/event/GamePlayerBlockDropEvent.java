@@ -3,13 +3,12 @@ package io.github.pulsebeat02.murderrun.map.event;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import java.util.Optional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDropItemEvent;
-
-import java.util.Optional;
 
 public final class GamePlayerBlockDropEvent implements Listener {
 
@@ -17,6 +16,10 @@ public final class GamePlayerBlockDropEvent implements Listener {
 
   public GamePlayerBlockDropEvent(final MurderGame game) {
     this.game = game;
+  }
+
+  public MurderGame getGame() {
+    return this.game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

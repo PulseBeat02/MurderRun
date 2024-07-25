@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -22,10 +21,8 @@ public final class MurderLobbyDataManager {
     this.lobbyJson = path.resolve("lobbies.json");
   }
 
-  private void createFolders() throws IOException {
-    final Path parent = this.lobbyJson.getParent();
-    Files.createDirectories(parent);
-    Files.createFile(this.lobbyJson);
+  public Path getLobbyJson() {
+    return this.lobbyJson;
   }
 
   public void serialize(final MurderLobbyManager manager) {
@@ -36,6 +33,12 @@ public final class MurderLobbyDataManager {
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
+  }
+
+  private void createFolders() throws IOException {
+    final Path parent = this.lobbyJson.getParent();
+    Files.createDirectories(parent);
+    Files.createFile(this.lobbyJson);
   }
 
   public MurderLobbyManager deserialize() {

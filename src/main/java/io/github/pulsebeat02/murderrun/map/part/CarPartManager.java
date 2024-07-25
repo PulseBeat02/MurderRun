@@ -5,6 +5,12 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -13,13 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public final class CarPartManager {
 
@@ -36,10 +35,6 @@ public final class CarPartManager {
   public void spawnParts() {
     this.randomizeSpawnLocations();
     this.spawnParticles();
-  }
-
-  public void shutdownExecutor() {
-    this.service.shutdown();
   }
 
   private void randomizeSpawnLocations() {
@@ -75,7 +70,11 @@ public final class CarPartManager {
     final Location location = stack.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
-    world.spawnParticle(Particle.REDSTONE, clone, 10, 0.5, 0.5, 0.5, Color.YELLOW);
+    world.spawnParticle(Particle.DUST, clone, 10, 0.5, 0.5, 0.5, Color.YELLOW);
+  }
+
+  public void shutdownExecutor() {
+    this.service.shutdown();
   }
 
   public MurderMap getMap() {

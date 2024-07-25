@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 
 public final class NMSHandler {
 
-  public static NMSUtils NMS_UTILS;
+  public static final NMSUtils NMS_UTILS;
   private static final String VERSION;
 
   static {
@@ -17,6 +17,10 @@ public final class NMSHandler {
     } catch (final Exception e) {
       throw new AssertionError(e);
     }
+  }
+
+  public static NMSUtils getNmsUtils() {
+    return NMS_UTILS;
   }
 
   private static NMSUtils getNMSUtils() throws Exception {

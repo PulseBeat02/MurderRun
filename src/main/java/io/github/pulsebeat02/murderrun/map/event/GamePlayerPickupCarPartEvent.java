@@ -5,9 +5,10 @@ import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import java.util.Optional;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -17,15 +18,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Optional;
-import java.util.UUID;
-
 public final class GamePlayerPickupCarPartEvent implements Listener {
 
   private final MurderGame game;
 
   public GamePlayerPickupCarPartEvent(final MurderGame game) {
     this.game = game;
+  }
+
+  public MurderGame getGame() {
+    return this.game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

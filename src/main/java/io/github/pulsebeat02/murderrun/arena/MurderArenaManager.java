@@ -1,10 +1,9 @@
 package io.github.pulsebeat02.murderrun.arena;
 
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
-import org.bukkit.Location;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.Location;
 
 public final class MurderArenaManager {
 
@@ -22,7 +21,7 @@ public final class MurderArenaManager {
   }
 
   public MurderArena getArena(final String name) {
-    return arenas.get(name);
+    return this.arenas.get(name);
   }
 
   public void removeArena(final String name) {

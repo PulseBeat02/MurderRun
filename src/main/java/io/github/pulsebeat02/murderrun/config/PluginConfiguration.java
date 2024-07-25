@@ -15,6 +15,10 @@ public final class PluginConfiguration {
     this.port = 7270;
   }
 
+  public MurderRun getPlugin() {
+    return this.plugin;
+  }
+
   public void deserialize() {
     this.plugin.saveDefaultConfig();
     final FileConfiguration config = this.plugin.getConfig();
@@ -33,7 +37,15 @@ public final class PluginConfiguration {
     return this.hostName;
   }
 
+  public void setHostName(final String hostName) {
+    this.hostName = hostName;
+  }
+
   public int getPort() {
     return this.port;
+  }
+
+  public void setPort(final int port) {
+    this.port = port;
   }
 }

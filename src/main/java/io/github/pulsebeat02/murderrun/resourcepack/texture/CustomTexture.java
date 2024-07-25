@@ -1,12 +1,11 @@
 package io.github.pulsebeat02.murderrun.resourcepack.texture;
 
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import java.io.IOException;
+import java.io.InputStream;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.texture.Texture;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public final class CustomTexture {
 
@@ -22,6 +21,14 @@ public final class CustomTexture {
     final String path = String.format("assets/textures/%s.png", namespace);
     final InputStream stream = ResourceUtils.getResourceAsStream(path);
     return Writable.copyInputStream(stream);
+  }
+
+  public Key getKey() {
+    return this.key;
+  }
+
+  public Writable getData() {
+    return this.data;
   }
 
   public Texture build() {

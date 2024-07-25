@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -15,22 +17,19 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.arena.MurderArenaSchematic;
-import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.EulerAngle;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import static java.util.Objects.requireNonNull;
 
 public final class MapUtils {
 
@@ -103,17 +102,6 @@ public final class MapUtils {
     }
   }
 
-  private static Path performSchematicWrite(final Clipboard clipboard, final String name) {
-    final Path file = PARENT_FOLDER.resolve(name);
-    try (final ClipboardWriter writer =
-        BuiltInClipboardFormat.FAST.getWriter(Files.newOutputStream(file))) {
-      writer.write(clipboard);
-    } catch (final IOException e) {
-      throw new AssertionError(e);
-    }
-    return file;
-  }
-
   private static Clipboard performForwardExtentCopy(final Location[] corners) {
     final CuboidRegion region = createRegion(corners);
     final BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
@@ -125,6 +113,17 @@ public final class MapUtils {
       Operations.complete(forwardExtentCopy);
       return clipboard;
     }
+  }
+
+  private static Path performSchematicWrite(final Clipboard clipboard, final String name) {
+    final Path file = PARENT_FOLDER.resolve(name);
+    try (final ClipboardWriter writer =
+        BuiltInClipboardFormat.FAST.getWriter(Files.newOutputStream(file))) {
+      writer.write(clipboard);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
+    return file;
   }
 
   private static CuboidRegion createRegion(final Location[] corners) {

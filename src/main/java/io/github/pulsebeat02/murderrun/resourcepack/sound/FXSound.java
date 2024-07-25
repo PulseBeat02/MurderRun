@@ -1,8 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
-import team.unnamed.creative.sound.Sound;
-
 import java.io.IOException;
+import team.unnamed.creative.sound.Sound;
 
 public enum FXSound {
   COUNTDOWN("countdown"),

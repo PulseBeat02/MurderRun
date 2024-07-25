@@ -5,10 +5,9 @@ import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.trap.SurvivorTrap;
+import java.util.Collection;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
-
-import java.util.Collection;
 
 public final class GlowTrap extends SurvivorTrap {
 

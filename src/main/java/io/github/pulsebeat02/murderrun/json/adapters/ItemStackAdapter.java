@@ -1,17 +1,11 @@
 package io.github.pulsebeat02.murderrun.json.adapters;
 
+import com.google.gson.*;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
-import org.bukkit.inventory.ItemStack;
-import com.google.gson.*;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
-import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
+import org.bukkit.inventory.ItemStack;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public final class ItemStackAdapter
     implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {

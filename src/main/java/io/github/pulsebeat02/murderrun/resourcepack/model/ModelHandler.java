@@ -2,12 +2,11 @@ package io.github.pulsebeat02.murderrun.resourcepack.model;
 
 import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
 import io.github.pulsebeat02.murderrun.resourcepack.texture.WeaponTexture;
+import java.util.ArrayList;
+import java.util.List;
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.model.*;
 import team.unnamed.creative.texture.Texture;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class ModelHandler {
 

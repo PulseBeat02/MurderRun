@@ -2,11 +2,6 @@ package io.github.pulsebeat02.murderrun.trap;
 
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public enum GameTrap {
   ;
 

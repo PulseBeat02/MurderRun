@@ -1,9 +1,11 @@
 package io.github.pulsebeat02.murderrun.map.event;
 
+import static net.kyori.adventure.text.Component.empty;
+
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
-import io.github.pulsebeat02.murderrun.game.MurderWinCode;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.MurderSettings;
+import io.github.pulsebeat02.murderrun.game.MurderWinCode;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
@@ -13,6 +15,8 @@ import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
+import java.util.Map;
+import java.util.UUID;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -26,17 +30,16 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.Map;
-import java.util.UUID;
-
-import static net.kyori.adventure.text.Component.empty;
-
 public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private final MurderGame game;
 
   public GamePlayerThrowCarPartEvent(final MurderGame game) {
     this.game = game;
+  }
+
+  public MurderGame getGame() {
+    return this.game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -76,6 +79,13 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     }
   }
 
+  private void announceCarPartRetrieval(final int leftOver) {
+    final Component title = Locale.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
+    final Component subtitle = empty();
+    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
+    AdventureUtils.playSoundForAllParticipants(this.game, Sound.BLOCK_ANVIL_USE);
+  }
+
   private void setBossBar(final int leftOver) {
     final MurderSettings settings = this.game.getSettings();
     final int parts = settings.getCarPartCount();
@@ -93,15 +103,6 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     }
   }
 
-  private void setPlayerCarPartStatus(final Player thrower) {
-    final PlayerManager manager = this.game.getPlayerManager();
-    final UUID uuid = thrower.getUniqueId();
-    final GamePlayer player = manager.lookupPlayer(uuid).orElseThrow();
-    if (player instanceof final InnocentPlayer innocent) {
-      innocent.setHasCarPart(false);
-    }
-  }
-
   private boolean checkIfPlayerStillHasCarPart(final Player thrower) {
     final PlayerInventory inventory = thrower.getInventory();
     final ItemStack[] contents = inventory.getContents();
@@ -113,10 +114,12 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     return false;
   }
 
-  private void announceCarPartRetrieval(final int leftOver) {
-    final Component title = Locale.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
-    final Component subtitle = empty();
-    AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
-    AdventureUtils.playSoundForAllParticipants(this.game, Sound.BLOCK_ANVIL_USE);
+  private void setPlayerCarPartStatus(final Player thrower) {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final UUID uuid = thrower.getUniqueId();
+    final GamePlayer player = manager.lookupPlayer(uuid).orElseThrow();
+    if (player instanceof final InnocentPlayer innocent) {
+      innocent.setHasCarPart(false);
+    }
   }
 }

@@ -1,7 +1,6 @@
 package io.github.pulsebeat02.murderrun.arena;
 
 import com.sk89q.worldedit.math.BlockVector3;
-
 import java.nio.file.Path;
 
 public final class MurderArenaSchematic {

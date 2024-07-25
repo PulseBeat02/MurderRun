@@ -1,8 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.texture;
 
-import team.unnamed.creative.texture.Texture;
-
 import java.io.IOException;
+import team.unnamed.creative.texture.Texture;
 
 public enum ItemTexture {
   CAR_PART_1("car_part_1", 1),

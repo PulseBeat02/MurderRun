@@ -1,9 +1,8 @@
 package io.github.pulsebeat02.murderrun.lobby;
 
-import org.bukkit.Location;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.Location;
 
 public final class MurderLobbyManager {
 

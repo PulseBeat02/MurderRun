@@ -18,10 +18,28 @@ public final class MurderMap {
     this.resetManager = new MurderMapResetManager(this);
   }
 
+  public GameEventManager getEventManager() {
+    return this.eventManager;
+  }
+
+  public MurderMapResetManager getResetManager() {
+    return this.resetManager;
+  }
+
   public void start() {
     this.resetMap();
     this.registerEvents();
     this.spawnParts();
+  }
+
+  private void resetMap() {}
+
+  private void registerEvents() {
+    this.eventManager.registerEvents();
+  }
+
+  private void spawnParts() {
+    this.carPartManager.spawnParts();
   }
 
   public void shutdown() {
@@ -30,26 +48,16 @@ public final class MurderMap {
     this.resetWorld();
   }
 
-  private void resetWorld() {
-    this.resetManager.resetMap();
+  private void unregisterEvents() {
+    this.eventManager.unregisterEvents();
   }
 
   private void stopExecutors() {
     this.carPartManager.shutdownExecutor();
   }
 
-  private void unregisterEvents() {
-    this.eventManager.unregisterEvents();
-  }
-
-  private void resetMap() {}
-
-  private void spawnParts() {
-    this.carPartManager.spawnParts();
-  }
-
-  private void registerEvents() {
-    this.eventManager.registerEvents();
+  private void resetWorld() {
+    this.resetManager.resetMap();
   }
 
   public MurderGame getGame() {

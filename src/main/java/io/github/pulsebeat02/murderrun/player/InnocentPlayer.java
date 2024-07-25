@@ -1,16 +1,10 @@
 package io.github.pulsebeat02.murderrun.player;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.MurderSettings;
-import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.text.Component;
+import java.util.UUID;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-
-import java.util.UUID;
 
 public final class InnocentPlayer extends GamePlayer {
 
@@ -33,11 +27,11 @@ public final class InnocentPlayer extends GamePlayer {
     player.setGameMode(GameMode.ADVENTURE);
   }
 
-  public boolean hasCarPart() {
-    return this.carPart;
-  }
-
   public void setHasCarPart(final boolean hasCarPart) {
     this.carPart = hasCarPart;
+  }
+
+  public boolean hasCarPart() {
+    return this.carPart;
   }
 }

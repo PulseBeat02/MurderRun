@@ -3,10 +3,11 @@ package io.github.pulsebeat02.murderrun.trap;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import java.util.Collection;
+import java.util.List;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -14,9 +15,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Collection;
-import java.util.List;
 
 public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
@@ -36,6 +34,22 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
     this.itemName = itemName;
     this.itemLore = itemLore;
     this.announcement = announcement;
+  }
+
+  public Component getAnnouncement() {
+    return this.announcement;
+  }
+
+  public Component getItemLore() {
+    return this.itemLore;
+  }
+
+  public Component getItemName() {
+    return this.itemName;
+  }
+
+  public Material getMaterial() {
+    return this.material;
   }
 
   @Override

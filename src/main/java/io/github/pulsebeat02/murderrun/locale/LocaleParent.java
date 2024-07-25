@@ -30,7 +30,6 @@ public interface LocaleParent {
         MANAGER.render(translatable(key, color, text(argument.toString()).color(argColor)));
   }
 
-
   static <T, U> BiComponent<Sender, T, U> colored(
       final String key,
       final NamedTextColor color,
@@ -55,16 +54,12 @@ public interface LocaleParent {
                 text(createFinalText(argument2, function2), AQUA)));
   }
 
-  static NullComponent<Sender> info(final String key) {
-    return () -> format(translatable(key, GOLD));
-  }
-
-  static <T> UniComponent<Sender, T> info(final String key, final Function<T, String> function) {
-    return argument -> format(info0(key, List.of(text(createFinalText(argument, function), AQUA))));
-  }
-
   static Component info0(final String key, final List<Component> arguments) {
     return internal0(key, GOLD, arguments);
+  }
+
+  static <T> String createFinalText(final T argument, final Function<T, String> function) {
+    return function == null ? argument.toString() : function.apply(argument);
   }
 
   static Component internal0(
@@ -72,52 +67,16 @@ public interface LocaleParent {
     return MANAGER.render(translatable(key, color, arguments));
   }
 
-  static <T> String createFinalText(final T argument, final Function<T, String> function) {
-    return function == null ? argument.toString() : function.apply(argument);
+  static NullComponent<Sender> info(final String key) {
+    return () -> format(translatable(key, GOLD));
   }
 
   static Component format(final Component message) {
     return MANAGER.render(join(separator(space()), PREFIX.build(), message));
   }
 
-  @FunctionalInterface
-  interface NullComponent<S extends Sender> {
-
-    Component build();
-
-    default void send(final S sender) {
-      sender.sendMessage(format(this.build()));
-    }
-  }
-
-  @FunctionalInterface
-  interface UniComponent<S extends Sender, A0> {
-
-    Component build(A0 arg0);
-
-    default void send(final S sender, final A0 arg0) {
-      sender.sendMessage(format(this.build(arg0)));
-    }
-  }
-
-  @FunctionalInterface
-  interface BiComponent<S extends Sender, A0, A1> {
-
-    Component build(A0 arg0, A1 arg1);
-
-    default void send(final S sender, final A0 arg0, final A1 arg1) {
-      sender.sendMessage(format(this.build(arg0, arg1)));
-    }
-  }
-
-  @FunctionalInterface
-  interface TriComponent<S extends Sender, A0, A1, A2> {
-
-    Component build(A0 arg0, A1 arg1, A2 arg2);
-
-    default void send(final S sender, final A0 arg0, final A1 arg1, final A2 arg2) {
-      sender.sendMessage(format(this.build(arg0, arg1, arg2)));
-    }
+  static <T> UniComponent<Sender, T> info(final String key, final Function<T, String> function) {
+    return argument -> format(info0(key, List.of(text(createFinalText(argument, function), AQUA))));
   }
 
   static <T, U, V> TriComponent<Sender, T, U, V> info(
@@ -133,5 +92,45 @@ public interface LocaleParent {
                     text(createFinalText(argument1, function1), AQUA),
                     text(createFinalText(argument2, function2), AQUA),
                     text(createFinalText(argument3, function3), AQUA))));
+  }
+
+  @FunctionalInterface
+  interface NullComponent<S extends Sender> {
+
+    default void send(final S sender) {
+      sender.sendMessage(format(this.build()));
+    }
+
+    Component build();
+  }
+
+  @FunctionalInterface
+  interface UniComponent<S extends Sender, A0> {
+
+    default void send(final S sender, final A0 arg0) {
+      sender.sendMessage(format(this.build(arg0)));
+    }
+
+    Component build(A0 arg0);
+  }
+
+  @FunctionalInterface
+  interface BiComponent<S extends Sender, A0, A1> {
+
+    default void send(final S sender, final A0 arg0, final A1 arg1) {
+      sender.sendMessage(format(this.build(arg0, arg1)));
+    }
+
+    Component build(A0 arg0, A1 arg1);
+  }
+
+  @FunctionalInterface
+  interface TriComponent<S extends Sender, A0, A1, A2> {
+
+    default void send(final S sender, final A0 arg0, final A1 arg1, final A2 arg2) {
+      sender.sendMessage(format(this.build(arg0, arg1, arg2)));
+    }
+
+    Component build(A0 arg0, A1 arg1, A2 arg2);
   }
 }

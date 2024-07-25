@@ -6,6 +6,9 @@ import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -16,10 +19,6 @@ import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public final class MurderLobbyCommand implements AnnotationCommandFeature {
 
@@ -36,7 +35,7 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @CommandDescription("Lists all created lobbies")
+  @CommandDescription("murder_run.command.lobby.list.info")
   @Command(value = "murder lobby list", requiredSender = Player.class)
   public void listLobbies(final Player sender) {
     final MurderLobbyManager manager = this.plugin.getLobbyManager();
@@ -46,7 +45,12 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     this.sendSuccessMessage(sender, message);
   }
 
-  @CommandDescription("Creates an arena with the specified settings")
+  private void sendSuccessMessage(final Player player, final Component component) {
+    final Audience audience = this.audiences.player(player);
+    audience.sendMessage(component);
+  }
+
+  @CommandDescription("murder_run.command.lobby.create.info")
   @Command(value = "murder lobby create", requiredSender = Player.class)
   public void createLobby(final Player sender) {
     final Audience audience = this.audiences.player(sender);
@@ -60,15 +64,6 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     this.plugin.updatePluginData();
   }
 
-  private boolean handleNullName(final Audience audience) {
-    if (this.name == null) {
-      final Component message = Locale.LOBBY_NAME_ERROR.build();
-      audience.sendMessage(message);
-      return true;
-    }
-    return false;
-  }
-
   private boolean handleNullSpawn(final Audience audience) {
     if (this.spawn == null) {
       final Component message = Locale.LOBBY_SPAWN_ERROR.build();
@@ -78,7 +73,16 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("Sets the name of the lobby")
+  private boolean handleNullName(final Audience audience) {
+    if (this.name == null) {
+      final Component message = Locale.LOBBY_NAME_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
+  @CommandDescription("murder_run.command.lobby.set.name.info")
   @Command(value = "murder lobby set name <string>", requiredSender = Player.class)
   public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
@@ -86,7 +90,27 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     this.sendSuccessMessage(sender, message);
   }
 
-  @CommandDescription("Sets the spawn location of the lobby")
+  public MurderRun getPlugin() {
+    return this.plugin;
+  }
+
+  public void setPlugin(final MurderRun plugin) {
+    this.plugin = plugin;
+  }
+
+  public BukkitAudiences getAudiences() {
+    return this.audiences;
+  }
+
+  public void setAudiences(final BukkitAudiences audiences) {
+    this.audiences = audiences;
+  }
+
+  public Location getSpawn() {
+    return this.spawn;
+  }
+
+  @CommandDescription("murder_run.command.lobby.set.spawn.info")
   @Command(value = "murder lobby set spawn", requiredSender = Player.class)
   public void setSpawn(final Player sender) {
     final Location location = sender.getLocation();
@@ -95,8 +119,15 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     this.sendSuccessMessage(sender, message);
   }
 
-  private void sendSuccessMessage(final Player player, final Component component) {
-    final Audience audience = this.audiences.player(player);
-    audience.sendMessage(component);
+  public void setSpawn(final Location spawn) {
+    this.spawn = spawn;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
   }
 }

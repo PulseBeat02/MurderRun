@@ -1,15 +1,12 @@
 package io.github.pulsebeat02.murderrun.game;
 
+import static net.kyori.adventure.text.Component.empty;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.scheduler.BukkitScheduler;
-
-import static net.kyori.adventure.text.Component.empty;
 
 public final class MurderEndManager {
 
@@ -36,18 +33,6 @@ public final class MurderEndManager {
     this.announceMurdererTime();
   }
 
-  private void announceMurdererTime() {
-    final MurderTimeManager manager = this.game.getTimeManager();
-    final long timeElapsed = manager.getElapsedTime();
-    final Component message = Locale.FINAL_TIME.build(timeElapsed);
-    AdventureUtils.sendMessageToAllParticipants(this.game, message);
-  }
-
-  private void invalidateTimer() {
-    final MurderTimeManager manager = this.game.getTimeManager();
-    manager.invalidateElapsedTime();
-  }
-
   private void stopTimer() {
     final MurderTimeManager manager = this.game.getTimeManager();
     manager.stopTimer();
@@ -63,6 +48,11 @@ public final class MurderEndManager {
     AdventureUtils.playSoundForAllMurderers(this.game, FXSound.LOSS);
   }
 
+  private void invalidateTimer() {
+    final MurderTimeManager manager = this.game.getTimeManager();
+    manager.invalidateElapsedTime();
+  }
+
   private void announceMurdererVictory() {
     final Component innocentMessage = Locale.MURDERER_VICTORY_INNOCENT.build();
     final Component murdererMessage = Locale.MURDERER_VICTORY_MURDERER.build();
@@ -71,5 +61,16 @@ public final class MurderEndManager {
     AdventureUtils.showTitleForAllMurderers(this.game, murdererMessage, subtitle);
     AdventureUtils.playSoundForAllInnocents(this.game, FXSound.LOSS);
     AdventureUtils.playSoundForAllMurderers(this.game, FXSound.WIN);
+  }
+
+  private void announceMurdererTime() {
+    final MurderTimeManager manager = this.game.getTimeManager();
+    final long timeElapsed = manager.getElapsedTime();
+    final Component message = Locale.FINAL_TIME.build(timeElapsed);
+    AdventureUtils.sendMessageToAllParticipants(this.game, message);
+  }
+
+  public MurderGame getGame() {
+    return this.game;
   }
 }

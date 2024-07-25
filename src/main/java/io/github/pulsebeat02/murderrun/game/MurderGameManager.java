@@ -5,6 +5,11 @@ import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.resource.ResourcePackInfo;
@@ -18,12 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
 
 public final class MurderGameManager {
 
@@ -41,11 +40,29 @@ public final class MurderGameManager {
     this.settings = new MurderSettings();
   }
 
-  public void addParticipantToLobby(final Player player) {
-    this.participants.add(player);
-    this.teleportPlayerToLobby(player);
-    this.addCurrency(player);
-    this.setResourcepack(player);
+  public void setPlayerToMurderer(final Player murderer) {
+    this.murderers.add(murderer);
+    this.giveSpecialSword(murderer);
+  }
+
+  private void giveSpecialSword(final Player player) {
+
+    final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
+    final ItemMeta meta = stack.getItemMeta();
+    final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
+    final AttributeModifier modifer =
+        new AttributeModifier("generic.attackDamage", 8, AttributeModifier.Operation.ADD_NUMBER);
+    meta.setCustomModelData(1);
+    meta.addAttributeModifier(attribute, modifer);
+    stack.setItemMeta(meta);
+
+    final PlayerInventory inventory = player.getInventory();
+    inventory.addItem(stack);
+  }
+
+  public void setPlayerToInnocent(final Player innocent) {
+    this.removeParticipantFromLobby(innocent);
+    this.addParticipantToLobby(innocent);
   }
 
   public void removeParticipantFromLobby(final Player player) {
@@ -54,11 +71,32 @@ public final class MurderGameManager {
     this.clearInventory(player);
   }
 
+  public void addParticipantToLobby(final Player player) {
+    this.participants.add(player);
+    this.teleportPlayerToLobby(player);
+    this.addCurrency(player);
+    this.setResourcepack(player);
+  }
+
   private void clearInventory(final Player player) {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack[] slots = inventory.getContents();
     for (final ItemStack slot : slots) {
       inventory.remove(slot);
+    }
+  }
+
+  private void teleportPlayerToLobby(final Player player) {
+    final MurderLobby lobby = this.settings.getLobby();
+    final Location spawn = lobby.getLobbySpawn();
+    player.teleport(spawn);
+  }
+
+  private void addCurrency(final Player player) {
+    final PlayerInventory inventory = player.getInventory();
+    final ItemStack stack = new ItemStack(Material.NETHER_STAR, 64);
+    for (int i = 0; i < 6; i++) {
+      inventory.addItem(stack);
     }
   }
 
@@ -84,45 +122,6 @@ public final class MurderGameManager {
     } catch (final URISyntaxException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  private void teleportPlayerToLobby(final Player player) {
-    final MurderLobby lobby = this.settings.getLobby();
-    final Location spawn = lobby.getLobbySpawn();
-    player.teleport(spawn);
-  }
-
-  private void addCurrency(final Player player) {
-    final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = new ItemStack(Material.NETHER_STAR, 64);
-    for (int i = 0; i < 6; i++) {
-      inventory.addItem(stack);
-    }
-  }
-
-  public void setPlayerToMurderer(final Player murderer) {
-    this.murderers.add(murderer);
-    this.giveSpecialSword(murderer);
-  }
-
-  public void setPlayerToInnocent(final Player innocent) {
-    this.removeParticipantFromLobby(innocent);
-    this.addParticipantToLobby(innocent);
-  }
-
-  private void giveSpecialSword(final Player player) {
-
-    final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
-    final ItemMeta meta = stack.getItemMeta();
-    final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
-    final AttributeModifier modifer =
-        new AttributeModifier("generic.attackDamage", 8, AttributeModifier.Operation.ADD_NUMBER);
-    meta.setCustomModelData(1);
-    meta.addAttributeModifier(attribute, modifer);
-    stack.setItemMeta(meta);
-
-    final PlayerInventory inventory = player.getInventory();
-    inventory.addItem(stack);
   }
 
   public void startGame() {
