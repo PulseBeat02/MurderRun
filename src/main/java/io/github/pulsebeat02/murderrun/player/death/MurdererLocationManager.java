@@ -44,7 +44,7 @@ public final class MurdererLocationManager {
       if (location.distanceSquared(murdererLocation) > 16) {
         continue;
       }
-      final Location clone = murdererLocation.clone().add(0, 1, 0);
+      final Location clone = location.clone().add(0, 1, 0);
       final World world = clone.getWorld();
       world.spawnParticle(Particle.DUST, clone, 10, 1, 1, 1, Color.WHITE);
     }
