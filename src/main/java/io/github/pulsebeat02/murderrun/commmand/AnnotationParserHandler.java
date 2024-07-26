@@ -33,7 +33,8 @@ public final class AnnotationParserHandler {
     this.parser = this.getAnnotationParser();
   }
 
-  private LegacyPaperCommandManager<CommandSender> getCommandManager(final MurderRun plugin) {
+  private LegacyPaperCommandManager<CommandSender> getCommandManager(
+      @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
     final LegacyPaperCommandManager<CommandSender> manager =
         LegacyPaperCommandManager.createNative(plugin, ExecutionCoordinator.simpleCoordinator());
     final AudienceHandler handler = this.plugin.getAudience();
@@ -46,7 +47,8 @@ public final class AnnotationParserHandler {
     return manager;
   }
 
-  private AnnotationParser<CommandSender> getAnnotationParser() {
+  private AnnotationParser<CommandSender> getAnnotationParser(
+      @UnderInitialization AnnotationParserHandler this) {
     final AnnotationParser<CommandSender> parser =
         new AnnotationParser<>(this.manager, CommandSender.class);
     parser.descriptionMapper(RichDescription::translatable);

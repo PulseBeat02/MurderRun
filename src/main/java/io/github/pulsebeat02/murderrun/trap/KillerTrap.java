@@ -48,7 +48,7 @@ public abstract non-sealed class KillerTrap extends MurderTrap {
   Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
   Brigette - Shield Bash: Bashing ground stuns survivors
   Red Arrow: Places a red beacon above any survivor nearby
-  
+
 
   */
 

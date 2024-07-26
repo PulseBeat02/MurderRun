@@ -3,9 +3,8 @@ package io.github.pulsebeat02.murderrun.arena;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.Location;
-
 import javax.annotation.Nullable;
+import org.bukkit.Location;
 
 public final class MurderArenaManager {
 

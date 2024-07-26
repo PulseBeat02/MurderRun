@@ -31,6 +31,14 @@ public final class PluginConfiguration {
     this.port = config.getInt("server.port");
   }
 
+  public String getHostName() {
+    return this.hostName;
+  }
+
+  public void setHostName(final String hostName) {
+    this.hostName = hostName;
+  }
+
   private String getHostName(final FileConfiguration config) {
     final String value = config.getString("server.host-name");
     return value == null ? this.getFallBackHostName() : value;
@@ -54,14 +62,6 @@ public final class PluginConfiguration {
     config.set("server.host-name", this.hostName);
     config.set("server.port", this.port);
     this.plugin.saveConfig();
-  }
-
-  public String getHostName() {
-    return this.hostName;
-  }
-
-  public void setHostName(final String hostName) {
-    this.hostName = hostName;
   }
 
   public int getPort() {

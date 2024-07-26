@@ -16,6 +16,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
@@ -106,16 +108,16 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
    */
 
-  private final Material material;
-  private final Component itemName;
-  private final Component itemLore;
+  private final @NonNull Material material;
+  private final @NonNull Component itemName;
+  private final @NonNull Component itemLore;
   private final Component announcement;
 
   public SurvivorTrap(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
+      final @NonNull String name,
+      final @NonNull Material material,
+      final @NonNull Component itemName,
+      final @NonNull Component itemLore,
       final Component announcement) {
     super(name);
     this.material = material;
@@ -141,7 +143,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   }
 
   @Override
-  public ItemStack constructItemStack() {
+  public ItemStack constructItemStack(@UnderInitialization SurvivorTrap this) {
     final String name = AdventureUtils.serializeComponentToLegacy(this.itemName);
     final String rawLore = AdventureUtils.serializeComponentToLegacy(this.itemLore);
     final List<String> lore = List.of(rawLore);

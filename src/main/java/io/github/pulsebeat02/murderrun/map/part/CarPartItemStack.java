@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.map.part;
 
-import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
+import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.List;
@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class CarPartItemStack {
 
@@ -27,18 +29,21 @@ public final class CarPartItemStack {
     this.stack = this.createItemStack();
   }
 
-  private ItemStack createItemStack() {
+  private ItemStack createItemStack(@UnderInitialization CarPartItemStack this) {
     final ItemStack stack = new ItemStack(Material.DIAMOND);
-    final ItemMeta meta = this.customize(stack.getItemMeta());
+    final ItemMeta meta = stack.getItemMeta();
+    if (meta == null) {
+      throw new AssertionError("Unable to create car part!");
+    }
+    this.customize(meta);
     stack.setItemMeta(meta);
     return stack;
   }
 
-  private ItemMeta customize(final ItemMeta meta) {
+  private void customize(@Initialized CarPartItemStack this, final ItemMeta meta) {
     this.tagData(meta);
     this.setLore(meta);
     this.changeProperties(meta);
-    return meta;
   }
 
   private void tagData(final ItemMeta meta) {

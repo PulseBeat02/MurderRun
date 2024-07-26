@@ -8,13 +8,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executors;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.server.ResourcePackServer;
 
 public final class PackHostingDaemon {
   private static final ServerResourcepack PACK = new ServerResourcepack();
-  private final String hostName;
+  private @NonNull final String hostName;
   private final int port;
   private final ResourcePackServer server;
   private String url;
@@ -26,7 +28,7 @@ public final class PackHostingDaemon {
     this.server = this.buildServer();
   }
 
-  public ResourcePackServer buildServer() {
+  public ResourcePackServer buildServer(@UnderInitialization PackHostingDaemon this) {
     final Path path = PACK.getPath();
     try (final InputStream stream = Files.newInputStream(path)) {
       final Writable writable = Writable.copyInputStream(stream);

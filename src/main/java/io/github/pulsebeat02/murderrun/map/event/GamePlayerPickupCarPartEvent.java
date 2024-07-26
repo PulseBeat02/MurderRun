@@ -64,6 +64,9 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
     final MurderMap map = this.game.getMurderMap();
     final CarPartManager manager = map.getCarPartManager();
     final CarPartItemStack carPartItemStack = manager.getCarPartItemStack(stack);
+    if (carPartItemStack == null) {
+      throw new AssertionError("Unable to retrieve car part from game!");
+    }
     carPartItemStack.setPickedUp(true);
   }
 }

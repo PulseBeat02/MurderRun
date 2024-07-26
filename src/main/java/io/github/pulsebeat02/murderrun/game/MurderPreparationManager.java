@@ -37,16 +37,6 @@ public final class MurderPreparationManager {
     this.runFutureTask();
   }
 
-  private void clearNetherStars() {
-    final PlayerManager manager = this.game.getPlayerManager();
-    final Collection<GamePlayer> participants = manager.getParticipants();
-    for (final GamePlayer gamePlayer : participants) {
-      final Player player = gamePlayer.getPlayer();
-      final PlayerInventory inventory = player.getInventory();
-      inventory.remove(Material.NETHER_STAR);
-    }
-  }
-
   private void teleportInnocentPlayers() {
     final MurderSettings configuration = this.game.getSettings();
     final MurderArena arena = configuration.getArena();
@@ -72,6 +62,16 @@ public final class MurderPreparationManager {
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
     AdventureUtils.showBossBarForAllParticipants(this.game, name, progress, color, overlay);
+  }
+
+  private void clearNetherStars() {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final Collection<GamePlayer> participants = manager.getParticipants();
+    for (final GamePlayer gamePlayer : participants) {
+      final Player player = gamePlayer.getPlayer();
+      final PlayerInventory inventory = player.getInventory();
+      inventory.remove(Material.NETHER_STAR);
+    }
   }
 
   private void runFutureTask() {

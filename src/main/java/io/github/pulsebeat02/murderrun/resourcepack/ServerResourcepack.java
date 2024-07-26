@@ -7,6 +7,8 @@ import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
@@ -21,7 +23,7 @@ public final class ServerResourcepack {
     this.path = Path.of("murder-run-pack.zip");
   }
 
-  private ResourcePack build() {
+  private ResourcePack build(@UnderInitialization ServerResourcepack this) {
     final ResourcePack pack = ResourcePack.resourcePack();
     this.customizeMetaData(pack);
     this.addTextures(pack);
@@ -31,7 +33,7 @@ public final class ServerResourcepack {
     return pack;
   }
 
-  private void customizeMetaData(final ResourcePack pack) {
+  private void customizeMetaData(@Initialized ServerResourcepack this, final ResourcePack pack) {
     try {
       final InputStream stream = ResourceUtils.getResourceAsStream("assets/textures/pack.png");
       pack.packMeta(34, "Assets for Murder Run Plugin");
@@ -41,27 +43,27 @@ public final class ServerResourcepack {
     }
   }
 
-  private void addTextures(final ResourcePack pack) {
+  private void addTextures(@Initialized ServerResourcepack this, final ResourcePack pack) {
     final ItemTexture[] textures = ItemTexture.values();
     for (final ItemTexture texture : textures) {
       pack.texture(texture.getTexture());
     }
   }
 
-  private void addModels(final ResourcePack pack) {
+  private void addModels(@Initialized ServerResourcepack this, final ResourcePack pack) {
     final ModelHandler handler = new ModelHandler();
     pack.model(handler.customItemModelGenerator());
     pack.model(handler.customItemModelGenerator());
   }
 
-  private void addSounds(final ResourcePack pack) {
+  private void addSounds(@Initialized ServerResourcepack this, final ResourcePack pack) {
     final FXSound[] sounds = FXSound.values();
     for (final FXSound sound : sounds) {
       pack.sound(sound.getSound());
     }
   }
 
-  private void zipPack(final ResourcePack pack) {
+  private void zipPack(@Initialized ServerResourcepack this, final ResourcePack pack) {
     MinecraftResourcePackWriter.minecraft().writeToZipFile(this.path, pack);
   }
 

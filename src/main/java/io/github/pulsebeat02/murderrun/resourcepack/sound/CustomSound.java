@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import net.kyori.adventure.key.Key;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.sound.Sound;
 
@@ -17,7 +18,8 @@ public class CustomSound {
     this.data = this.getSoundStream(namespace);
   }
 
-  private Writable getSoundStream(final String namespace) throws IOException {
+  private Writable getSoundStream(@UnderInitialization CustomSound this, final String namespace)
+      throws IOException {
     final String path = String.format("assets/sounds/%s.ogg", namespace);
     final InputStream stream = ResourceUtils.getResourceAsStream(path);
     return Writable.copyInputStream(stream);

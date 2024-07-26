@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class PlayerDeathManager {
 
@@ -124,7 +125,13 @@ public final class PlayerDeathManager {
       final MurderMap map = this.game.getMurderMap();
       final CarPartManager manager = map.getCarPartManager();
       final CarPartItemStack stack = manager.getCarPartItemStack(slot);
+      if (stack == null) {
+        throw new AssertionError("Unable to retrieve car part from game!");
+      }
       final Location death = player.getLastDeathLocation();
+      if (death == null) {
+        throw new AssertionError("Player didn't die! Fake death error?");
+      }
       stack.setPickedUp(false);
       stack.setLocation(death);
       stack.spawn();

@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class CarPartManager {
 
@@ -93,13 +94,13 @@ public final class CarPartManager {
     this.parts.remove(uuid);
   }
 
-  public CarPartItemStack getCarPartItemStack(final ItemStack stack) {
+  public @Nullable CarPartItemStack getCarPartItemStack(final ItemStack stack) {
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
       throw new AssertionError("Unable to get car part!");
     }
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final String uuid = container.get(NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING);
-    return this.parts.get(uuid);
+    return uuid == null ? null : this.parts.get(uuid);
   }
 }

@@ -31,7 +31,11 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
   }
 
   public Player getPlayer() {
-    return Bukkit.getPlayer(this.uuid);
+    final Player player = Bukkit.getPlayer(this.uuid);
+    if (player == null) {
+      throw new AssertionError("Unable to retrieve player from uuid!");
+    }
+    return player;
   }
 
   public void onMatchReset() {

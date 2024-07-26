@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemStackUtils {
 
@@ -17,11 +18,7 @@ public final class ItemStackUtils {
     return getData(stack, NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING) != null;
   }
 
-  public static boolean isSword(final ItemStack stack) {
-    return getData(stack, NamespacedKeys.SPECIAL_SWORD, PersistentDataType.BOOLEAN) != null;
-  }
-
-  private static <P, C> C getData(
+  private static <P, C> @Nullable C getData(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<P, C> type) {
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
@@ -29,5 +26,9 @@ public final class ItemStackUtils {
     }
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     return container.get(key, type);
+  }
+
+  public static boolean isSword(final ItemStack stack) {
+    return getData(stack, NamespacedKeys.SPECIAL_SWORD, PersistentDataType.BOOLEAN) != null;
   }
 }

@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class GamePlayerBlockBreakEvent implements Listener {
 

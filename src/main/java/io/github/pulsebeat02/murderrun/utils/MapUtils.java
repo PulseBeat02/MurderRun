@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.utils;
 
-import static java.util.Objects.requireNonNull;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -37,7 +36,10 @@ public final class MapUtils {
 
   static {
     final PluginManager manager = Bukkit.getPluginManager();
-    final Plugin plugin = requireNonNull(manager.getPlugin("MurderRun"));
+    final Plugin plugin = manager.getPlugin("MurderRun");
+    if (plugin == null) {
+      throw new AssertionError("Unable to retrieve plugin class!");
+    }
     final File folder = plugin.getDataFolder();
     PARENT_FOLDER = folder.toPath();
   }
@@ -133,6 +135,9 @@ public final class MapUtils {
     final Location first = corners[0];
     final Location second = corners[1];
     final World world = first.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
     final BlockVector3 firstCorner = toBlockVector3(first);
     final BlockVector3 secondCorner = toBlockVector3(second);
     final com.sk89q.worldedit.world.World instance = BukkitAdapter.adapt(world);

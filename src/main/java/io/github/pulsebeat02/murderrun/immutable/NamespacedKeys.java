@@ -9,16 +9,19 @@ import org.bukkit.plugin.PluginManager;
 public final class NamespacedKeys {
 
   private static final Plugin PLUGIN;
+  public static final NamespacedKey SPECIAL_SWORD = createKey("sword");
+  public static final NamespacedKey CAR_PART_UUID = createKey("car-part-uuid");
+  public static final NamespacedKey TRAP_KEY_NAME = createKey("trap");
 
   static {
     final Server server = Bukkit.getServer();
     final PluginManager manager = server.getPluginManager();
-    PLUGIN = manager.getPlugin("murder_run");
+    final Plugin plugin = manager.getPlugin("MurderRun");
+    if (plugin == null) {
+      throw new AssertionError("Unable to retrieve plugin class!");
+    }
+    PLUGIN = plugin;
   }
-
-  public static final NamespacedKey SPECIAL_SWORD = createKey("sword");
-  public static final NamespacedKey CAR_PART_UUID = createKey("car-part-uuid");
-  public static final NamespacedKey TRAP_KEY_NAME = createKey("trap");
 
   private static NamespacedKey createKey(final String key) {
     return new NamespacedKey(PLUGIN, key);

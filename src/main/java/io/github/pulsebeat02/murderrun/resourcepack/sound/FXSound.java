@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
 import java.io.IOException;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.sound.Sound;
 
 public enum FXSound {
@@ -20,7 +21,7 @@ public enum FXSound {
     this.id = id;
   }
 
-  private Sound loadSound(final String name) {
+  private Sound loadSound(@UnderInitialization FXSound this, final String name) {
     try {
       return new CustomSound(name).build();
     } catch (final IOException e) {

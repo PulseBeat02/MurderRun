@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import net.kyori.adventure.key.Key;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.texture.Texture;
 
@@ -17,7 +18,8 @@ public final class CustomTexture {
     this.data = this.getTextureStream(namespace);
   }
 
-  private Writable getTextureStream(final String namespace) throws IOException {
+  private Writable getTextureStream(@UnderInitialization CustomTexture this, final String namespace)
+      throws IOException {
     final String path = String.format("assets/textures/%s.png", namespace);
     final InputStream stream = ResourceUtils.getResourceAsStream(path);
     return Writable.copyInputStream(stream);

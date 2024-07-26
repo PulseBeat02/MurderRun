@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PlayerManager {
 
@@ -127,7 +128,7 @@ public final class PlayerManager {
     return this.deathManager;
   }
 
-  public GamePlayer removePlayer(final UUID uuid) {
+  public @Nullable GamePlayer removePlayer(final UUID uuid) {
     return this.lookupMap.remove(uuid);
   }
 }

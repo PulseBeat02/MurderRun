@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.utils;
 
-import static java.util.Objects.requireNonNull;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +17,11 @@ public final class ResourceUtils {
   }
 
   public static InputStream getResourceAsStream(final String name) {
-    final InputStream stream = ResourceUtils.class.getClassLoader().getResourceAsStream(name);
+    final ClassLoader loader = ResourceUtils.class.getClassLoader();
+    if (loader == null) {
+      throw new AssertionError("Unable to access plugin JAR resources!");
+    }
+    final InputStream stream = loader.getResourceAsStream(name);
     if (stream == null) {
       throw new AssertionError(String.format("Unable to access %s", name));
     }

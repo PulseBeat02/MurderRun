@@ -5,6 +5,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public enum VillagerTrade {
   ;
@@ -21,7 +22,7 @@ public enum VillagerTrade {
     this.stack = stack;
   }
 
-  public static VillagerTrade get(final String name) {
+  public static @Nullable VillagerTrade get(final String name) {
     return LOOKUP_TABLE.get(name.toLowerCase());
   }
 

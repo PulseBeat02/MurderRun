@@ -1,9 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.texture;
 
 import java.io.IOException;
-
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
-import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import team.unnamed.creative.texture.Texture;
 
 public enum WeaponTexture {
@@ -17,7 +15,7 @@ public enum WeaponTexture {
     this.customModelDataId = customModelDataId;
   }
 
-  private Texture loadModel(final String name) {
+  private Texture loadModel(@UnderInitialization WeaponTexture this, final String name) {
     try {
       return new CustomTexture(name).build();
     } catch (final IOException e) {

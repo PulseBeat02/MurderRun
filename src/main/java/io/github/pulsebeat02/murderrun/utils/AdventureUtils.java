@@ -22,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class AdventureUtils {
 
@@ -40,7 +41,7 @@ public final class AdventureUtils {
     return function.build(x, y, z);
   }
 
-  public static String serializeComponentToLegacy(final Component component) {
+  public static @NonNull String serializeComponentToLegacy(final Component component) {
     return SERIALIZER.serialize(component);
   }
 

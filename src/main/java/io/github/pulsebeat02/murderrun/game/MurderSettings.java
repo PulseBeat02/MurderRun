@@ -10,7 +10,12 @@ public final class MurderSettings {
   private int murdererCount;
   private int carPartCount;
 
-  public MurderSettings() {}
+  public MurderSettings() {
+    this.arena = null;
+    this.lobby = null;
+    this.murdererCount = 1;
+    this.carPartCount = 3;
+  }
 
   public int getMurdererCount() {
     return this.murdererCount;

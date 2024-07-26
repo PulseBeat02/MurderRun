@@ -6,6 +6,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 import java.util.function.Function;
 import net.kyori.adventure.text.Component;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface LocaleParent {
 
@@ -18,12 +19,25 @@ public interface LocaleParent {
     return () -> format(MANAGER.render(translatable(key)));
   }
 
-  static <T> UniComponent<Sender, T> direct(final String key, final Function<T, String> function) {
+  static Component format(final Component message) {
+    return join(separator(space()), PREFIX.build(), message);
+  }
+
+  static <T> UniComponent<Sender, T> direct(
+      final String key, final @Nullable Function<T, String> function) {
     return (arg) -> format(MANAGER.render(translatable(key, createFinalText(arg, function))));
   }
 
+  static <T> Component createFinalText(
+      final T argument, final @Nullable Function<T, String> function) {
+    final String text = argument == null ? "" : argument.toString();
+    return text(function == null ? text : function.apply(argument));
+  }
+
   static <T, U> BiComponent<Sender, T, U> direct(
-      final String key, final Function<T, String> function1, final Function<U, String> function2) {
+      final String key,
+      final @Nullable Function<T, String> function1,
+      final @Nullable Function<U, String> function2) {
     return (arg1, arg2) ->
         format(
             MANAGER.render(
@@ -33,9 +47,9 @@ public interface LocaleParent {
 
   static <T, U, V> TriComponent<Sender, T, U, V> direct(
       final String key,
-      final Function<T, String> function1,
-      final Function<U, String> function2,
-      final Function<V, String> function3) {
+      final @Nullable Function<T, String> function1,
+      final @Nullable Function<U, String> function2,
+      final @Nullable Function<V, String> function3) {
     return (arg1, arg2, arg3) ->
         format(
             MANAGER.render(
@@ -44,15 +58,6 @@ public interface LocaleParent {
                     createFinalText(arg1, function1),
                     createFinalText(arg2, function2),
                     createFinalText(arg3, function3))));
-  }
-
-  static <T> Component createFinalText(final T argument, final Function<T, String> function) {
-    final String text = argument == null ? "" : argument.toString();
-    return text(function == null ? text : function.apply(argument));
-  }
-
-  static Component format(final Component message) {
-    return join(separator(space()), PREFIX.build(), message);
   }
 
   @FunctionalInterface
