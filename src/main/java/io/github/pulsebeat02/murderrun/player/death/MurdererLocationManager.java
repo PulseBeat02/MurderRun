@@ -12,8 +12,6 @@ import java.util.concurrent.TimeUnit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class MurdererLocationManager {
 
@@ -27,21 +25,17 @@ public final class MurdererLocationManager {
 
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
+
     this.service.scheduleAtFixedRate(
-        () -> manager.getMurderers().forEach(this::spawnParticlesWhenClose),
-        0,
-        1,
-        TimeUnit.SECONDS);
+        () -> manager.applyToAllMurderers(this::spawnParticlesWhenClose), 0, 1, TimeUnit.SECONDS);
   }
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
-    final Player murderer = murdererPlayer.getPlayer();
-    final Location murdererLocation = (@NonNull Location) murderer.getLocation();
+    final Location murdererLocation = murdererPlayer.getLocation();
     final PlayerManager manager = this.game.getPlayerManager();
     final Collection<InnocentPlayer> innocentPlayers = manager.getInnocentPlayers();
     for (final InnocentPlayer innocentPlayer : innocentPlayers) {
-      final Player player = innocentPlayer.getPlayer();
-      final Location location = (@NonNull Location) player.getLocation();
+      final Location location = innocentPlayer.getLocation();
       if (location.distanceSquared(murdererLocation) > 16) {
         continue;
       }

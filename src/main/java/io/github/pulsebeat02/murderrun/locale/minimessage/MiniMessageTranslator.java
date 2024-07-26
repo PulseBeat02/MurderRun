@@ -2,12 +2,12 @@ package io.github.pulsebeat02.murderrun.locale.minimessage;
 
 import java.text.MessageFormat;
 import java.util.Locale;
-import java.util.Objects;
 import javax.annotation.Nullable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.Translator;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public abstract class MiniMessageTranslator implements Translator {
 
@@ -18,16 +18,18 @@ public abstract class MiniMessageTranslator implements Translator {
   }
 
   public MiniMessageTranslator(final MiniMessage miniMessage) {
-    this.miniMessage = Objects.requireNonNull(miniMessage, "miniMessage");
+    this.miniMessage = miniMessage;
   }
 
   @Override
-  public @Nullable final MessageFormat translate(final String key, final Locale locale) {
+  public @Nullable final MessageFormat translate(
+      final @NonNull String key, final @NonNull Locale locale) {
     return null;
   }
 
   @Override
-  public @Nullable Component translate(final TranslatableComponent component, final Locale locale) {
+  public @Nullable Component translate(
+      final TranslatableComponent component, final @NonNull Locale locale) {
     final String miniMessageString = this.getMiniMessageString(component.key(), locale);
 
     if (miniMessageString == null) {
@@ -36,12 +38,12 @@ public abstract class MiniMessageTranslator implements Translator {
 
     final Component resultingComponent;
 
-    if (component.args().isEmpty()) {
+    if (component.arguments().isEmpty()) {
       resultingComponent = MiniMessage.miniMessage().deserialize(miniMessageString);
     } else {
       resultingComponent =
           MiniMessage.miniMessage()
-              .deserialize(miniMessageString, new ArgumentTag(component.args()));
+              .deserialize(miniMessageString, new ArgumentTag(component.arguments()));
     }
 
     if (component.children().isEmpty()) {

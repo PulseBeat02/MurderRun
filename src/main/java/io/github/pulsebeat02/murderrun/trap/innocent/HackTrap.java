@@ -6,7 +6,6 @@ import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -29,14 +28,13 @@ public final class HackTrap extends SurvivorTrap {
   @Override
   public void activate(final MurderGame game, final Murderer murderer) {
     super.activate(game, murderer);
-    final Player player = murderer.getPlayer();
-    final ItemStack stack = this.removeSwordItemStack(player);
+    final ItemStack stack = this.removeSwordItemStack(murderer);
     if (stack != null) {
-      this.scheduleTask(() -> this.giveSwordBack(player, stack), 20 * 10);
+      this.scheduleTask(() -> this.giveSwordBack(murderer, stack), 20 * 10);
     }
   }
 
-  private @Nullable ItemStack removeSwordItemStack(final Player player) {
+  private @Nullable ItemStack removeSwordItemStack(final Murderer player) {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack[] slots = inventory.getContents();
     ItemStack find = null;
@@ -50,7 +48,7 @@ public final class HackTrap extends SurvivorTrap {
     return find;
   }
 
-  private void giveSwordBack(final Player player, final ItemStack stack) {
+  private void giveSwordBack(final Murderer player, final ItemStack stack) {
     final PlayerInventory inventory = player.getInventory();
     if (stack != null) {
       inventory.addItem(stack);

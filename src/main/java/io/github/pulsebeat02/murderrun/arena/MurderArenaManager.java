@@ -3,8 +3,10 @@ package io.github.pulsebeat02.murderrun.arena;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
 import org.bukkit.Location;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public final class MurderArenaManager {
 
@@ -31,5 +33,9 @@ public final class MurderArenaManager {
 
   public Map<String, MurderArena> getArenas() {
     return this.arenas;
+  }
+
+  public Set<@KeyFor("this.arenas") String> getArenaNames() {
+    return this.arenas.keySet();
   }
 }

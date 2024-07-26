@@ -1,28 +1,17 @@
 package io.github.pulsebeat02.murderrun.utils;
 
-import static net.kyori.adventure.title.Title.title;
-
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.LocaleParent;
 import io.github.pulsebeat02.murderrun.locale.Sender;
-import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
-import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class AdventureUtils {
 
@@ -48,11 +37,8 @@ public final class AdventureUtils {
   public static void playSoundForAllParticipants(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      final Location location = (@NonNull Location) player.getLocation();
-      player.playSound(location, key, SoundCategory.MASTER, 1, 1);
-    }
+    manager.applyToAllParticipants(
+        player -> player.playSound(player.getLocation(), key, SoundCategory.MASTER, 1, 1));
   }
 
   private static String getRandomKey(final FXSound... keys) {
@@ -65,11 +51,8 @@ public final class AdventureUtils {
   public static void playSoundForAllParticipants(final MurderGame game, final Sound... keys) {
     final Sound key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      final Location location = (@NonNull Location) player.getLocation();
-      player.playSound(location, key, SoundCategory.MASTER, 1, 1);
-    }
+    manager.applyToAllParticipants(
+        player -> player.playSound(player.getLocation(), key, SoundCategory.MASTER, 1, 1));
   }
 
   private static Sound getRandomKey(final Sound... keys) {
@@ -81,82 +64,52 @@ public final class AdventureUtils {
   public static void playSoundForAllMurderers(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
-    for (final Murderer gamePlayer : manager.getMurderers()) {
-      final Player player = gamePlayer.getPlayer();
-      final Location location = (@NonNull Location) player.getLocation();
-      player.playSound(location, key, SoundCategory.MASTER, 1, 1);
-    }
+    manager.applyToAllDead(
+        player -> {
+          final Location location = player.getLocation();
+          player.playSound(location, key, SoundCategory.MASTER, 1, 1);
+        });
   }
 
   public static void playSoundForAllInnocents(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
-    for (final InnocentPlayer gamePlayer : manager.getInnocentPlayers()) {
-      final Player player = gamePlayer.getPlayer();
-      final Location location = (@NonNull Location) player.getLocation();
-      player.playSound(location, key, SoundCategory.MASTER, 1, 1);
-    }
+    manager.applyToAllInnocents(
+        innocent -> {
+          final Location location = innocent.getLocation();
+          innocent.playSound(location, key, SoundCategory.MASTER, 1, 1);
+        });
   }
 
   public static void playSoundForAllParticipantsAtLocation(
       final MurderGame game, final Location origin, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      player.playSound(origin, key, SoundCategory.MASTER, 1, 1);
-    }
+    manager.applyToAllParticipants(
+        player -> player.playSound(origin, key, SoundCategory.MASTER, 1, 1));
   }
 
   public static void showTitleForAllParticipants(
       final MurderGame game, final Component title, final Component subtitle) {
-    final MurderRun plugin = game.getPlugin();
-    final AudienceHandler handler = plugin.getAudience();
-    final BukkitAudiences audiences = handler.retrieve();
     final PlayerManager manager = game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      final Audience audience = audiences.player(player);
-      audience.showTitle(title(title, subtitle));
-    }
+    manager.applyToAllParticipants(player -> player.showTitle(title, subtitle));
   }
 
   public static void showTitleForAllMurderers(
       final MurderGame game, final Component title, final Component subtitle) {
-    final MurderRun plugin = game.getPlugin();
-    final AudienceHandler handler = plugin.getAudience();
-    final BukkitAudiences audiences = handler.retrieve();
     final PlayerManager manager = game.getPlayerManager();
-    for (final Murderer gamePlayer : manager.getMurderers()) {
-      final Player player = gamePlayer.getPlayer();
-      final Audience audience = audiences.player(player);
-      audience.showTitle(title(title, subtitle));
-    }
+    manager.applyToAllMurderers(murderer -> murderer.showTitle(title, subtitle));
   }
 
   public static void showTitleForAllInnocents(
       final MurderGame game, final Component title, final Component subtitle) {
-    final MurderRun plugin = game.getPlugin();
-    final AudienceHandler handler = plugin.getAudience();
-    final BukkitAudiences audiences = handler.retrieve();
     final PlayerManager manager = game.getPlayerManager();
-    for (final InnocentPlayer gamePlayer : manager.getInnocentPlayers()) {
-      final Player player = gamePlayer.getPlayer();
-      final Audience audience = audiences.player(player);
-      audience.showTitle(title(title, subtitle));
-    }
+    manager.applyToAllInnocents(innocent -> innocent.showTitle(title, subtitle));
   }
 
   public static void sendMessageToAllParticipants(final MurderGame game, final Component message) {
-    final MurderRun plugin = game.getPlugin();
-    final AudienceHandler handler = plugin.getAudience();
-    final BukkitAudiences audiences = handler.retrieve();
     final PlayerManager manager = game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      final Audience audience = audiences.player(player);
-      audience.sendMessage(message);
-    }
+    manager.applyToAllParticipants(player -> player.sendMessage(message));
   }
 
   public static void showBossBarForAllParticipants(
@@ -165,15 +118,7 @@ public final class AdventureUtils {
       final float progress,
       final BossBar.Color color,
       final BossBar.Overlay overlay) {
-    final BossBar bar = BossBar.bossBar(name, progress, color, overlay);
-    final MurderRun plugin = game.getPlugin();
-    final AudienceHandler handler = plugin.getAudience();
-    final BukkitAudiences audiences = handler.retrieve();
     final PlayerManager manager = game.getPlayerManager();
-    for (final GamePlayer gamePlayer : manager.getParticipants()) {
-      final Player player = gamePlayer.getPlayer();
-      final Audience audience = audiences.player(player);
-      audience.showBossBar(bar);
-    }
+    manager.applyToAllParticipants(player -> player.showBossBar(name, progress, color, overlay));
   }
 }

@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.death.MurdererLocationManager;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -41,9 +42,7 @@ public final class PlayerManager {
   }
 
   private void setupAllPlayers() {
-    for (final GamePlayer player : this.getParticipants()) {
-      player.onMatchStart();
-    }
+    this.applyToAllParticipants(GamePlayer::onMatchStart);
   }
 
   public void resetCachedPlayers() {
@@ -84,12 +83,16 @@ public final class PlayerManager {
     }
   }
 
-  public Collection<GamePlayer> getParticipants() {
-    return this.lookupMap.values();
+  public void applyToAllParticipants(final Consumer<GamePlayer> consumer) {
+    this.getParticipants().forEach(consumer);
   }
 
   private Set<UUID> createMurdererUuids(final Collection<Player> murderers) {
     return murderers.stream().map(Player::getUniqueId).collect(Collectors.toSet());
+  }
+
+  public Collection<GamePlayer> getParticipants() {
+    return this.lookupMap.values();
   }
 
   public void shutdown() {
@@ -99,29 +102,39 @@ public final class PlayerManager {
   }
 
   private void resetAllPlayers() {
-    for (final GamePlayer player : this.getParticipants()) {
-      player.onMatchReset();
-    }
+    this.applyToAllParticipants(GamePlayer::onMatchReset);
   }
 
-  public Optional<GamePlayer> lookupPlayer(final UUID uuid) {
-    return Optional.ofNullable(this.lookupMap.get(uuid));
-  }
-
-  public Collection<Murderer> getMurderers() {
-    return this.cachedMurderers;
+  public void applyToAllInnocents(final Consumer<InnocentPlayer> consumer) {
+    this.getInnocentPlayers().forEach(consumer);
   }
 
   public Collection<InnocentPlayer> getInnocentPlayers() {
     return this.cachedInnocentPlayers;
   }
 
-  public MurderGame getGame() {
-    return this.game;
+  public void applyToAllMurderers(final Consumer<Murderer> consumer) {
+    this.getMurderers().forEach(consumer);
+  }
+
+  public Collection<Murderer> getMurderers() {
+    return this.cachedMurderers;
+  }
+
+  public void applyToAllDead(final Consumer<GamePlayer> consumer) {
+    this.getDead().forEach(consumer);
   }
 
   public Collection<GamePlayer> getDead() {
     return this.cachedDeadPlayers;
+  }
+
+  public Optional<GamePlayer> lookupPlayer(final UUID uuid) {
+    return Optional.ofNullable(this.lookupMap.get(uuid));
+  }
+
+  public MurderGame getGame() {
+    return this.game;
   }
 
   public PlayerDeathManager getDeathManager() {

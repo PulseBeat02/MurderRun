@@ -1,13 +1,13 @@
 package io.github.pulsebeat02.murderrun.locale.minimessage;
 
 import java.util.List;
-import java.util.Objects;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.minimessage.Context;
 import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class ArgumentTag implements TagResolver {
 
@@ -17,11 +17,12 @@ public class ArgumentTag implements TagResolver {
   private final List<? extends ComponentLike> argumentComponents;
 
   public ArgumentTag(final List<? extends ComponentLike> argumentComponents) {
-    this.argumentComponents = Objects.requireNonNull(argumentComponents, "argumentComponents");
+    this.argumentComponents = argumentComponents;
   }
 
   @Override
-  public Tag resolve(final String name, final ArgumentQueue arguments, final Context ctx)
+  public Tag resolve(
+      final @NonNull String name, final ArgumentQueue arguments, final @NonNull Context ctx)
       throws ParsingException {
     final int index =
         arguments

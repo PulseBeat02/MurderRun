@@ -41,7 +41,7 @@ public final class MurderSettings {
     return this.lobby;
   }
 
-  public void setLobby(final MurderLobby lobbySpawn) {
+  public void setLobby(final @Nullable MurderLobby lobbySpawn) {
     this.lobby = lobbySpawn;
   }
 
@@ -52,7 +52,7 @@ public final class MurderSettings {
     return this.arena;
   }
 
-  public void setArena(final MurderArena arena) {
+  public void setArena(final @Nullable MurderArena arena) {
     this.arena = arena;
   }
 }

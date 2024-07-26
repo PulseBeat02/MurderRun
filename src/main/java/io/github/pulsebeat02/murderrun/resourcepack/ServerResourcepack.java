@@ -7,9 +7,7 @@ import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import org.checkerframework.checker.initialization.qual.Initialized;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
@@ -20,8 +18,8 @@ public final class ServerResourcepack {
   private final Path path;
 
   public ServerResourcepack() {
-    this.pack = this.build();
     this.path = Path.of("murder-run-pack.zip");
+    this.pack = this.build();
   }
 
   private ResourcePack build(@UnderInitialization ServerResourcepack this) {
@@ -34,7 +32,8 @@ public final class ServerResourcepack {
     return pack;
   }
 
-  private void customizeMetaData(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
+  private void customizeMetaData(
+      @UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     try {
       final InputStream stream = ResourceUtils.getResourceAsStream("assets/textures/pack.png");
       pack.packMeta(34, "Assets for Murder Run Plugin");
@@ -65,6 +64,9 @@ public final class ServerResourcepack {
   }
 
   private void zipPack(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
+    if (this.path == null) {
+      throw new AssertionError("Failed to zip the server resource pack!");
+    }
     MinecraftResourcePackWriter.minecraft().writeToZipFile(this.path, pack);
   }
 

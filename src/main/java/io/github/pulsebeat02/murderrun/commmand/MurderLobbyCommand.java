@@ -15,12 +15,12 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 
+@SuppressWarnings("nullness")
 public final class MurderLobbyCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
@@ -114,7 +114,7 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.lobby.set.spawn.info")
   @Command(value = "murder lobby set spawn", requiredSender = Player.class)
   public void setSpawn(final Player sender) {
-    final Location location = (@NonNull Location) sender.getLocation();
+    final Location location = sender.getLocation();
     this.spawn = location;
     final Component message = AdventureUtils.createLocationComponent(Locale.LOBBY_SPAWN, location);
     this.sendSuccessMessage(sender, message);

@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.game;
 
 import static net.kyori.adventure.text.Component.empty;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
@@ -17,7 +16,6 @@ public final class MurderEndManager {
   }
 
   public void start(final MurderWinCode winCode) {
-    final MurderRun plugin = this.game.getPlugin();
     this.initiateEndingSequence(winCode);
   }
 

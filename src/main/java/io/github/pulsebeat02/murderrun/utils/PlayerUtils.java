@@ -35,7 +35,8 @@ public final class PlayerUtils {
     player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
   }
 
-  public static void setGlowColor(final Player player, final ChatColor color) {
+  public static void setGlowColor(final GamePlayer gamePlayer, final ChatColor color) {
+    final Player player = gamePlayer.getPlayer();
     final ScoreboardManager manager = Bukkit.getScoreboardManager();
     if (manager == null) {
       throw new AssertionError("Unable to access main scoreboard!");
@@ -50,7 +51,8 @@ public final class PlayerUtils {
     player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0));
   }
 
-  public static void removeGlow(final Player player) {
+  public static void removeGlow(final GamePlayer gamePlayer) {
+    final Player player = gamePlayer.getPlayer();
     player.removePotionEffect(PotionEffectType.GLOWING);
     final Team team = GLOW_TEAMS.get(player);
     if (team == null) {

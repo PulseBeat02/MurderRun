@@ -7,18 +7,14 @@ import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class MurderPreparationManager {
@@ -42,10 +38,7 @@ public final class MurderPreparationManager {
     final MurderArena arena = configuration.getArena();
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer innocent : manager.getInnocentPlayers()) {
-      final Player player = innocent.getPlayer();
-      player.teleport(spawnLocation);
-    }
+    manager.applyToAllInnocents(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
   }
 
   private void announceHidePhase() {
@@ -66,12 +59,7 @@ public final class MurderPreparationManager {
 
   private void clearNetherStars() {
     final PlayerManager manager = this.game.getPlayerManager();
-    final Collection<GamePlayer> participants = manager.getParticipants();
-    for (final GamePlayer gamePlayer : participants) {
-      final Player player = gamePlayer.getPlayer();
-      final PlayerInventory inventory = player.getInventory();
-      inventory.remove(Material.NETHER_STAR);
-    }
+    manager.applyToAllParticipants(player -> player.getInventory().remove(Material.NETHER_STAR));
   }
 
   private void runFutureTask() {
@@ -82,11 +70,7 @@ public final class MurderPreparationManager {
 
   private void setTimeRemaining(final int time) {
     final PlayerManager manager = this.game.getPlayerManager();
-    final Collection<GamePlayer> participants = manager.getParticipants();
-    for (final GamePlayer gamePlayer : participants) {
-      final Player player = gamePlayer.getPlayer();
-      player.setLevel(time);
-    }
+    manager.applyToAllParticipants(player -> player.setXpLevel(time));
   }
 
   private void announceCountdown(final int seconds) {
@@ -111,10 +95,7 @@ public final class MurderPreparationManager {
     final MurderArena arena = configuration.getArena();
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
-    for (final GamePlayer murderer : manager.getMurderers()) {
-      final Player player = murderer.getPlayer();
-      player.teleport(spawnLocation);
-    }
+    manager.applyToAllDead(murderer -> murderer.teleport(spawnLocation));
   }
 
   private void announceReleasePhase() {

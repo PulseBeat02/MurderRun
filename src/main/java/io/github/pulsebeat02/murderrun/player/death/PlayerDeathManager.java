@@ -1,7 +1,6 @@
 package io.github.pulsebeat02.murderrun.player.death;
 
 import static net.kyori.adventure.text.Component.empty;
-import static net.kyori.adventure.title.Title.title;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
@@ -28,7 +27,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class PlayerDeathManager {
 
@@ -57,7 +55,7 @@ public final class PlayerDeathManager {
     final Player player = gamePlayer.getPlayer();
     this.preparePlayer(player);
 
-    final ArmorStand stand = this.summonArmorStand(player);
+    final ArmorStand stand = this.summonArmorStand(gamePlayer);
     this.customizeArmorStand(stand);
     this.setArmorStandRotations(stand);
     this.setArmorStandGear(player, stand);
@@ -71,8 +69,8 @@ public final class PlayerDeathManager {
     inventory.clear();
   }
 
-  private ArmorStand summonArmorStand(final Player player) {
-    final Location location = (@NonNull Location) player.getLocation();
+  private ArmorStand summonArmorStand(final GamePlayer player) {
+    final Location location = player.getLocation();
     final World world = location.getWorld();
     if (world == null) {
       throw new AssertionError("Location doesn't have World attached to it!");
@@ -163,12 +161,11 @@ public final class PlayerDeathManager {
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
     this.service.scheduleAtFixedRate(
-        () -> manager.getDead().forEach(this::spawnParticleOnCorpse), 0, 1, TimeUnit.SECONDS);
+        () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 1, TimeUnit.SECONDS);
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {
-    final Player player = gamePlayer.getPlayer();
-    final Location location = player.getLastDeathLocation();
+    final Location location = gamePlayer.getDeathLocation();
     if (location == null) {
       throw new AssertionError("Player didn't die! Fake death error?");
     }

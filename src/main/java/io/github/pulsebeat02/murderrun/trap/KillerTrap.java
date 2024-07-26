@@ -1,5 +1,8 @@
 package io.github.pulsebeat02.murderrun.trap;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
+
 public abstract non-sealed class KillerTrap extends MurderTrap {
 
   /*
@@ -49,10 +52,14 @@ public abstract non-sealed class KillerTrap extends MurderTrap {
   Brigette - Shield Bash: Bashing ground stuns survivors
   Red Arrow: Places a red beacon above any survivor nearby
 
-
   */
 
-  public KillerTrap(final String name) {
-    super(name);
+  public KillerTrap(
+      final String name,
+      final Material material,
+      final Component itemName,
+      final Component itemLore,
+      final Component announcement) {
+    super(name, material, itemName, itemLore, announcement);
   }
 }

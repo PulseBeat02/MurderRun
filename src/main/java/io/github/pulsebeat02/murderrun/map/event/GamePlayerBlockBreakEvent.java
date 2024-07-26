@@ -13,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class GamePlayerBlockBreakEvent implements Listener {
 
@@ -37,7 +36,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     }
 
     final GamePlayer murderer = optional.get();
-    final Location murdererLocation = (@NonNull Location) player.getLocation();
+    final Location murdererLocation = murderer.getLocation();
     if (murderer instanceof Murderer) {
       AdventureUtils.playSoundForAllParticipantsAtLocation(
           this.game, murdererLocation, FXSound.CHAINSAW);

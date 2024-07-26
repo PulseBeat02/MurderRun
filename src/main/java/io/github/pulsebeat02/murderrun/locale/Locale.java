@@ -1,7 +1,6 @@
 package io.github.pulsebeat02.murderrun.locale;
 
 import static io.github.pulsebeat02.murderrun.locale.LocaleParent.*;
-import static net.kyori.adventure.text.format.NamedTextColor.*;
 
 import java.util.List;
 

@@ -2,8 +2,10 @@ package io.github.pulsebeat02.murderrun.lobby;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
 import org.bukkit.Location;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public final class MurderLobbyManager {
 
@@ -28,5 +30,9 @@ public final class MurderLobbyManager {
 
   public Map<String, MurderLobby> getLobbies() {
     return this.lobbies;
+  }
+
+  public Set<@KeyFor("this.lobbies") String> getLobbyNames() {
+    return this.lobbies.keySet();
   }
 }

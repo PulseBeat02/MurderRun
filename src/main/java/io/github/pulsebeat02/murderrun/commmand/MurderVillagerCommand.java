@@ -18,11 +18,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.annotations.*;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
+@SuppressWarnings("nullness")
 public final class MurderVillagerCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
@@ -40,8 +40,8 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
   @Command(value = "murder villager spawn [args]", requiredSender = Player.class)
   public void createMerchant(
       final Player sender,
-      @Argument(value = "args", suggestions = "traps") @Default("") final String[] args) {
-    final Location location = (@NonNull Location) sender.getLocation();
+      @Argument(value = "args", suggestions = "traps") @Default("0") final String[] args) {
+    final Location location = sender.getLocation();
     final List<MerchantRecipe> recipes = this.parseRecipeOptions(args);
     final VillagerLobbyTrader trader = new VillagerLobbyTrader(location, recipes);
     trader.spawnVillager();

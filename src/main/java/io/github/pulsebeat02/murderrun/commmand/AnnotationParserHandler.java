@@ -7,14 +7,12 @@ import java.util.List;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.RichDescription;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
-import org.jetbrains.annotations.NotNull;
 
 public final class AnnotationParserHandler {
 
@@ -24,7 +22,6 @@ public final class AnnotationParserHandler {
   private final AnnotationParser<CommandSender> parser;
 
   public AnnotationParserHandler(final MurderRun plugin) {
-    this.manager = this.getCommandManager(plugin);
     this.plugin = plugin;
     this.features =
         List.of(
@@ -32,29 +29,46 @@ public final class AnnotationParserHandler {
             new MurderLobbyCommand(),
             new MurderHelpCommand(),
             new MurderGameCommand());
+    this.manager = this.getCommandManager();
     this.parser = this.getAnnotationParser();
   }
 
-  private LegacyPaperCommandManager<CommandSender> getCommandManager(
-      @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
-    final LegacyPaperCommandManager<CommandSender> manager =
-        LegacyPaperCommandManager.createNative(plugin, ExecutionCoordinator.simpleCoordinator());
+  private CommandManager<CommandSender> getCommandManager(
+      @UnderInitialization AnnotationParserHandler this) {
+    final CommandManager<CommandSender> manager = this.createBasicManager();
     final AudienceHandler handler = this.plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
     MinecraftExceptionHandler.create(audiences::sender)
         .defaultInvalidSenderHandler()
         .decorator(message -> Locale.NOT_PLAYER.build())
         .registerTo(manager);
-    manager.registerBrigadier();
     return manager;
   }
 
   private AnnotationParser<CommandSender> getAnnotationParser(
       @UnderInitialization AnnotationParserHandler this) {
+    if (this.manager == null) {
+      throw new AssertionError("Annotation command manager is null!");
+    }
+    if (this.plugin == null) {
+      throw new AssertionError("MurderRun has been unloaded!");
+    }
     final AnnotationParser<CommandSender> parser =
         new AnnotationParser<>(this.manager, CommandSender.class);
     parser.descriptionMapper(RichDescription::translatable);
     return parser;
+  }
+
+  private CommandManager<CommandSender> createBasicManager(
+      @UnderInitialization AnnotationParserHandler this) {
+    if (this.plugin == null) {
+      throw new AssertionError("MurderRun has been unloaded!");
+    }
+    final LegacyPaperCommandManager<CommandSender> manager =
+        LegacyPaperCommandManager.createNative(
+            this.plugin, ExecutionCoordinator.simpleCoordinator());
+    manager.registerBrigadier();
+    return manager;
   }
 
   public MurderRun getPlugin() {

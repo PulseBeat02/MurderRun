@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.TranslationRegistry;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class MurderTranslator extends MiniMessageTranslator {
 
@@ -22,7 +23,7 @@ public final class MurderTranslator extends MiniMessageTranslator {
   }
 
   @Override
-  public Key name() {
+  public @NonNull Key name() {
     return this.key;
   }
 }

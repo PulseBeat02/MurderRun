@@ -123,7 +123,7 @@ checkerFramework {
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile).tap {
         configureEach {
-            options.compilerArgs << "-Xmaxerrs" << "400"
+            options.compilerArgs << "-Xmaxerrs" << "500"
         }
     }
 }

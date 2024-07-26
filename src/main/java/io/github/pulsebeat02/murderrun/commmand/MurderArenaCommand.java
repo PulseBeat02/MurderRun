@@ -15,12 +15,12 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 
+@SuppressWarnings("nullness")
 public final class MurderArenaCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
@@ -147,7 +147,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.arena.set.spawn.info")
   @Command(value = "murder arena set spawn", requiredSender = Player.class)
   public void setSpawn(final Player sender) {
-    final Location location = (@NonNull Location) sender.getLocation();
+    final Location location = sender.getLocation();
     this.spawn = location;
     final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_SPAWN, location);
     this.sendSuccessMessage(sender, message);
@@ -168,7 +168,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.arena.set.truck.info")
   @Command(value = "murder arena set truck", requiredSender = Player.class)
   public void setTruck(final Player sender) {
-    final Location location = (@NonNull Location) sender.getLocation();
+    final Location location = sender.getLocation();
     this.truck = location;
     final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_TRUCK, location);
     this.sendSuccessMessage(sender, message);
@@ -193,17 +193,17 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.arena.set.first_corner.info")
   @Command(value = "murder arena set first-corner", requiredSender = Player.class)
   public void setFirstCorner(final Player sender) {
-    final Location location = (@NonNull Location) sender.getLocation();
+    final Location location = sender.getLocation();
     this.first = location;
     final Component message =
         AdventureUtils.createLocationComponent(Locale.ARENA_FIRST_CORNER, location);
     this.sendSuccessMessage(sender, message);
   }
 
-  @CommandDescription("")
-  @Command(value = "murder_run.command.arena.set.second_corner.info", requiredSender = Player.class)
+  @CommandDescription("murder_run.command.arena.set.second_corner.info")
+  @Command(value = "murder arena set second-corner", requiredSender = Player.class)
   public void setSecondCorner(final Player sender) {
-    final Location location = (@NonNull Location) sender.getLocation();
+    final Location location = sender.getLocation();
     this.second = location;
     final Component message =
         AdventureUtils.createLocationComponent(Locale.ARENA_SECOND_CORNER, location);

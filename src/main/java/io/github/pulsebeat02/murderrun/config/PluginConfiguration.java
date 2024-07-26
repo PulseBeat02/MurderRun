@@ -27,16 +27,8 @@ public final class PluginConfiguration {
   public void deserialize() {
     this.plugin.saveDefaultConfig();
     final FileConfiguration config = this.plugin.getConfig();
-    this.hostName = this.getHostName();
+    this.hostName = this.getHostName(config);
     this.port = config.getInt("server.port");
-  }
-
-  public String getHostName() {
-    return this.hostName;
-  }
-
-  public void setHostName(final String hostName) {
-    this.hostName = hostName;
   }
 
   private String getHostName(final FileConfiguration config) {
@@ -46,7 +38,7 @@ public final class PluginConfiguration {
 
   private String getFallBackHostName() {
     try {
-      final URI uri = URI.create("http://checkip.amazonaws.com");
+      final URI uri = URI.create("https://checkip.amazonaws.com");
       final URL ip = uri.toURL();
       try (final BufferedReader in = new BufferedReader(new InputStreamReader(ip.openStream()))) {
         final String line = in.readLine();
@@ -55,6 +47,14 @@ public final class PluginConfiguration {
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
+  }
+
+  public String getHostName() {
+    return this.hostName;
+  }
+
+  public void setHostName(final String hostName) {
+    this.hostName = hostName;
   }
 
   public void serialize() {
