@@ -21,7 +21,6 @@ public final class MurderRun extends JavaPlugin {
   - Add Innocent Traps for Survival
   - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
-  - Deep debugging before first run https://github.com/kelloggm/checkerframework-gradle-plugin
 
    */
 
