@@ -65,6 +65,9 @@ public final class CarPartItemStack {
 
   public void spawn() {
     final World world = this.location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
     final Item item = world.dropItemNaturally(this.location, this.stack);
     this.customizeItemEntity(item);
   }

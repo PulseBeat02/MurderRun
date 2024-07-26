@@ -37,7 +37,12 @@ public final class LocationAdapter implements JsonDeserializer<Location>, JsonSe
       final Type type,
       final JsonSerializationContext jsonSerializationContext) {
     final JsonObject obj = new JsonObject();
-    obj.addProperty("world", location.getWorld().getName());
+    final World world = location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
+    final String name = world.getName();
+    obj.addProperty("world", name);
     obj.addProperty("x", location.getX());
     obj.addProperty("y", location.getY());
     obj.addProperty("z", location.getZ());

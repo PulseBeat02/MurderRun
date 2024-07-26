@@ -25,6 +25,7 @@ public final class MurderMapResetManager {
   }
 
   private void killExistingEntities() {
+
     final MurderGame game = this.map.getGame();
     final MurderSettings settings = game.getSettings();
     final MurderArena arena = settings.getArena();
@@ -32,6 +33,10 @@ public final class MurderMapResetManager {
     final Location second = arena.getSecondCorner();
     final BoundingBox box = BoundingBox.of(first, second);
     final World world = first.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
+
     final Collection<Entity> entities = world.getNearbyEntities(box);
     for (final Entity entity : entities) {
       if (entity instanceof Player) {

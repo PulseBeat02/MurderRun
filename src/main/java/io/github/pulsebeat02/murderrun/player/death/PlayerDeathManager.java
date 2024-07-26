@@ -73,6 +73,9 @@ public final class PlayerDeathManager {
   private ArmorStand summonArmorStand(final Player player) {
     final Location location = player.getLocation();
     final World world = location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
     final Entity entity = world.spawnEntity(location, EntityType.ARMOR_STAND);
     return (ArmorStand) entity;
   }
@@ -91,6 +94,9 @@ public final class PlayerDeathManager {
 
   private void setArmorStandGear(final Player player, final ArmorStand stand) {
     final EntityEquipment equipment = stand.getEquipment();
+    if (equipment == null) {
+      throw new AssertionError("Unable to set ArmorStand equipment!");
+    }
     final ItemStack head = this.getHeadItemStack(player);
     final ItemStack chest = createArmorPiece(Material.LEATHER_CHESTPLATE);
     final ItemStack legs = createArmorPiece(Material.LEATHER_LEGGINGS);
@@ -128,6 +134,9 @@ public final class PlayerDeathManager {
   private ItemStack getHeadItemStack(final Player player) {
     final ItemStack head = new ItemStack(Material.PLAYER_HEAD);
     final SkullMeta meta = (SkullMeta) head.getItemMeta();
+    if (meta == null) {
+      throw new AssertionError("Unable to create player head!");
+    }
     meta.setOwningPlayer(player);
     head.setItemMeta(meta);
     return head;
@@ -136,6 +145,9 @@ public final class PlayerDeathManager {
   public static ItemStack createArmorPiece(final Material leatherPiece) {
     final ItemStack item = new ItemStack(leatherPiece);
     final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+    if (meta == null) {
+      throw new AssertionError("Unable to dye leather armor!");
+    }
     meta.setColor(Color.RED);
     item.setItemMeta(meta);
     return item;
@@ -150,8 +162,14 @@ public final class PlayerDeathManager {
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {
     final Player player = gamePlayer.getPlayer();
     final Location location = player.getLastDeathLocation();
+    if (location == null) {
+      throw new AssertionError("Player didn't die! Fake death error?");
+    }
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
     final BlockData data = Material.RED_CONCRETE.createBlockData();
     world.spawnParticle(Particle.BLOCK, clone, 10, 0.5, 0.5, 0.5, data);
   }

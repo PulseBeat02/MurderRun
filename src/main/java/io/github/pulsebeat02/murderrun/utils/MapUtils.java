@@ -86,6 +86,9 @@ public final class MapUtils {
   private static Clipboard loadSchematic(final MurderArenaSchematic schematic) {
     final Path path = schematic.getSchematicPath();
     final ClipboardFormat format = ClipboardFormats.findByFile(path.toFile());
+    if (format == null) {
+      throw new AssertionError(String.format("Schematic %s is corrupted or doesn't exist!", path));
+    }
     try (final ClipboardReader reader = format.getReader(Files.newInputStream(path))) {
       return reader.read();
     } catch (final IOException e) {

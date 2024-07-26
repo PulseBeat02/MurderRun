@@ -47,7 +47,8 @@ public interface LocaleParent {
   }
 
   static <T> Component createFinalText(final T argument, final Function<T, String> function) {
-    return text(function == null ? argument.toString() : function.apply(argument));
+    final String text = argument == null ? "" : argument.toString();
+    return text(function == null ? text : function.apply(argument));
   }
 
   static Component format(final Component message) {

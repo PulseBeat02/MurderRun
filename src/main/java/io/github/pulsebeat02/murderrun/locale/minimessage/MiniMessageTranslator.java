@@ -7,8 +7,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.Translator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 public abstract class MiniMessageTranslator implements Translator {
 
@@ -18,22 +18,19 @@ public abstract class MiniMessageTranslator implements Translator {
     this(MiniMessage.miniMessage());
   }
 
-  public MiniMessageTranslator(final @NotNull MiniMessage miniMessage) {
+  public MiniMessageTranslator(final MiniMessage miniMessage) {
     this.miniMessage = Objects.requireNonNull(miniMessage, "miniMessage");
   }
 
-  protected abstract @Nullable String getMiniMessageString(
-      final @NotNull String key, final @NotNull Locale locale);
+  protected abstract String getMiniMessageString(final String key, final Locale locale);
 
   @Override
-  public final @Nullable MessageFormat translate(
-      final @NotNull String key, final @NotNull Locale locale) {
+  public @Nullable final MessageFormat translate(final String key, final Locale locale) {
     return null;
   }
 
   @Override
-  public @Nullable Component translate(
-      final @NotNull TranslatableComponent component, final @NotNull Locale locale) {
+  public @Nullable Component translate(final TranslatableComponent component, final Locale locale) {
     final String miniMessageString = this.getMiniMessageString(component.key(), locale);
 
     if (miniMessageString == null) {

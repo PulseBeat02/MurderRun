@@ -3,8 +3,8 @@ package io.github.pulsebeat02.murderrun.map.part;
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.MurderSettings;
-import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
+import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.awt.*;
 import java.util.HashMap;
@@ -70,6 +70,9 @@ public final class CarPartManager {
     final Location location = stack.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
     final World world = clone.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
     world.spawnParticle(Particle.DUST, clone, 10, 0.5, 0.5, 0.5, Color.YELLOW);
   }
 
@@ -92,6 +95,9 @@ public final class CarPartManager {
 
   public CarPartItemStack getCarPartItemStack(final ItemStack stack) {
     final ItemMeta meta = stack.getItemMeta();
+    if (meta == null) {
+      throw new AssertionError("Unable to get car part!");
+    }
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final String uuid = container.get(NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING);
     return this.parts.get(uuid);

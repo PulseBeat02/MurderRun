@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.locale.Locale;
 import java.util.List;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.execution.ExecutionCoordinator;
@@ -21,7 +22,7 @@ public final class AnnotationParserHandler {
   private final AnnotationParser<CommandSender> parser;
 
   public AnnotationParserHandler(final MurderRun plugin) {
-    this.manager = this.getCommmandManager(plugin);
+    this.manager = this.getCommandManager(plugin);
     this.plugin = plugin;
     this.features =
         List.of(
@@ -32,7 +33,7 @@ public final class AnnotationParserHandler {
     this.parser = this.getAnnotationParser();
   }
 
-  private LegacyPaperCommandManager<CommandSender> getCommmandManager(final MurderRun plugin) {
+  private LegacyPaperCommandManager<CommandSender> getCommandManager(final MurderRun plugin) {
     final LegacyPaperCommandManager<CommandSender> manager =
         LegacyPaperCommandManager.createNative(plugin, ExecutionCoordinator.simpleCoordinator());
     final AudienceHandler handler = this.plugin.getAudience();

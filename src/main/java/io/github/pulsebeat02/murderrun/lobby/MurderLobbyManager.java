@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Location;
 
+import javax.annotation.Nullable;
+
 public final class MurderLobbyManager {
 
   private final Map<String, MurderLobby> lobbies;
@@ -21,7 +23,7 @@ public final class MurderLobbyManager {
     this.lobbies.remove(name);
   }
 
-  public MurderLobby getLobby(final String name) {
+  public @Nullable MurderLobby getLobby(final String name) {
     return this.lobbies.get(name);
   }
 

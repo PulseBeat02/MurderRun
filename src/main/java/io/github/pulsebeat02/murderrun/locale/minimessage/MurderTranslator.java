@@ -1,10 +1,9 @@
 package io.github.pulsebeat02.murderrun.locale.minimessage;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.TranslationRegistry;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class MurderTranslator extends MiniMessageTranslator {
 
@@ -17,13 +16,13 @@ public final class MurderTranslator extends MiniMessageTranslator {
   }
 
   @Override
-  protected @Nullable String getMiniMessageString(
-      @NotNull final String key, @NotNull final Locale locale) {
-    return this.registry.translate(key, locale).toPattern();
+  protected String getMiniMessageString(final String key, final Locale locale) {
+    final MessageFormat format = this.registry.translate(key, locale);
+    return format == null ? "" : format.toPattern();
   }
 
   @Override
-  public @NotNull Key name() {
+  public Key name() {
     return this.key;
   }
 }

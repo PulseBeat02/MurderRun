@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Location;
 
+import javax.annotation.Nullable;
+
 public final class MurderArenaManager {
 
   private final Map<String, MurderArena> arenas;
@@ -20,7 +22,7 @@ public final class MurderArenaManager {
     this.arenas.put(name, arena);
   }
 
-  public MurderArena getArena(final String name) {
+  public @Nullable MurderArena getArena(final String name) {
     return this.arenas.get(name);
   }
 

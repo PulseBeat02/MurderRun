@@ -2,7 +2,10 @@ plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'xyz.jpenilla.run-paper' version '2.3.0'
+    id 'org.checkerframework' version '0.6.42'
 }
+
+apply plugin: 'org.checkerframework'
 
 group = 'io.github.pulsebeat02'
 version = '1.21-v1.0.0'
@@ -21,6 +24,7 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
     compileOnly 'team.unnamed:creative-api:1.7.3'
+    compileOnly 'team.unnamed:creative-serializer-minecraft:1.7.3'
     compileOnly 'team.unnamed:creative-server:1.7.3'
     compileOnly 'com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.11.0'
     compileOnly('com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.11.0') { transitive = false }
@@ -83,4 +87,40 @@ processResources {
 shadowJar {
     archiveFileName = '${project.name}-${project.version}-BUKKIT.jar'
     relocate('org.bstats', 'io.github.pulsebeat02.murderrun.lib.bstats')
+}
+
+checkerFramework {
+    // Didn't use the following checks:
+    // Internationalization Format String Checker
+    // Property File Checker
+    // Internationalization Checker
+    // GUI Effect Checker
+    // Units Checker
+    // Signedness Checker
+    // Reflection Checker
+    checkers = [
+            'org.checkerframework.checker.nullness.NullnessChecker',
+            'org.checkerframework.checker.optional.OptionalChecker',
+            'org.checkerframework.checker.interning.InterningChecker',
+            'org.checkerframework.checker.calledmethods.CalledMethodsChecker',
+            'org.checkerframework.checker.resourceleak.ResourceLeakChecker',
+            'org.checkerframework.checker.fenum.FenumChecker',
+            'org.checkerframework.checker.tainting.TaintingChecker',
+            'org.checkerframework.checker.lock.LockChecker',
+            'org.checkerframework.checker.index.IndexChecker',
+            'org.checkerframework.checker.regex.RegexChecker',
+            'org.checkerframework.checker.formatter.FormatterChecker',
+            'org.checkerframework.checker.signature.SignatureChecker',
+            'org.checkerframework.framework.util.PurityChecker',
+            'org.checkerframework.common.value.ValueChecker',
+            'org.checkerframework.common.aliasing.AliasingChecker'
+    ]
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << "-Xmaxerrs" << "400"
+        }
+    }
 }

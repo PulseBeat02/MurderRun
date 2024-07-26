@@ -28,11 +28,10 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
-
   Portal Trap -- teleports trap to killer
   Bear Trap -- makes killer stuck and slowed for 10s
   Spasm Trap -- makes killer freak out alternating their head up and down
-  Rewind -- rewinds player 5 seconds
+  Rewind -- rewinds player 5 seconds (must use circular buffer)
   Murderer Rewind -- rewinds murderer 5 seconds
   Resurrection Stone -- resurrects a dead player
   Corpus Warp -- teleports to the nearest corpse
@@ -148,6 +147,9 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
     final List<String> lore = List.of(rawLore);
     final ItemStack stack = new ItemStack(this.material);
     final ItemMeta meta = stack.getItemMeta();
+    if (meta == null) {
+      throw new AssertionError("Unable to construct trap!");
+    }
     meta.setDisplayName(name);
     meta.setLore(lore);
     stack.setItemMeta(meta);

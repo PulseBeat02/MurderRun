@@ -28,6 +28,9 @@ public final class VillagerLobbyTrader {
 
   public void spawnVillager() {
     final World world = this.location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
     final Entity entity = world.spawnEntity(this.location, EntityType.VILLAGER);
     if (entity instanceof final Villager villager) {
       villager.setAI(false);

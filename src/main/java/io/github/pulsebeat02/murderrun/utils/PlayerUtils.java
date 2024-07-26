@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 public final class PlayerUtils {
@@ -35,7 +36,11 @@ public final class PlayerUtils {
   }
 
   public static void setGlowColor(final Player player, final ChatColor color) {
-    final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    final ScoreboardManager manager = Bukkit.getScoreboardManager();
+    if (manager == null) {
+      throw new AssertionError("Unable to access main scoreboard!");
+    }
+    final Scoreboard scoreboard = manager.getMainScoreboard();
     final UUID glowID = UUID.randomUUID();
     final String name = String.format("color-%s", glowID);
     final Team team = scoreboard.registerNewTeam(name);
@@ -47,7 +52,11 @@ public final class PlayerUtils {
 
   public static void removeGlow(final Player player) {
     player.removePotionEffect(PotionEffectType.GLOWING);
-    GLOW_TEAMS.get(player).unregister();
+    final Team team = GLOW_TEAMS.get(player);
+    if (team == null) {
+      return;
+    }
+    team.unregister();
     GLOW_TEAMS.remove(player);
   }
 }

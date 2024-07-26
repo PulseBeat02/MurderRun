@@ -52,11 +52,15 @@ public final class MurderGameManager {
 
     final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
     final ItemMeta meta = stack.getItemMeta();
+    if (meta == null) {
+      throw new AssertionError("Unable to create murderer's sword!");
+    }
+
     final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
-    final AttributeModifier modifer =
+    final AttributeModifier modifier =
         new AttributeModifier("generic.attackDamage", 8, AttributeModifier.Operation.ADD_NUMBER);
     meta.setCustomModelData(1);
-    meta.addAttributeModifier(attribute, modifer);
+    meta.addAttributeModifier(attribute, modifier);
 
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     container.set(NamespacedKeys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true);

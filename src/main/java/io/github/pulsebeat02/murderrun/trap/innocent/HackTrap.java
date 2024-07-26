@@ -30,7 +30,7 @@ public final class HackTrap extends SurvivorTrap {
     super.activate(game, murderer);
     final Player player = murderer.getPlayer();
     final ItemStack stack = this.removeSwordItemStack(player);
-    this.scheduleTask(() -> this.giveSwordBack(player, stack), 20 * 5);
+    this.scheduleTask(() -> this.giveSwordBack(player, stack), 20 * 10);
   }
 
   private void giveSwordBack(final Player player, final ItemStack stack) {

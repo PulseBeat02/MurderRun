@@ -29,6 +29,6 @@ public final class GlowTrap extends SurvivorTrap {
     super.activate(game, murderer);
     final Player player = murderer.getPlayer();
     PlayerUtils.setGlowColor(player, ChatColor.RED);
-    this.scheduleTask(() -> PlayerUtils.removeGlow(player), 20 * 5);
+    this.scheduleTask(() -> PlayerUtils.removeGlow(player), 20 * 10);
   }
 }

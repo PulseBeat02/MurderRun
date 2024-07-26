@@ -37,6 +37,9 @@ public final class MurderArenaDataManager {
 
   private void createFolders() throws IOException {
     final Path parent = this.arenaJson.getParent();
+    if (parent == null) {
+      throw new AssertionError("Unable to get parent folder!");
+    }
     Files.createDirectories(parent);
     Files.createFile(this.arenaJson);
   }

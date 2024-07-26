@@ -46,6 +46,9 @@ public final class MurdererLocationManager {
       }
       final Location clone = location.clone().add(0, 1, 0);
       final World world = clone.getWorld();
+      if (world == null) {
+        throw new AssertionError("Location doesn't have World attached to it!");
+      }
       world.spawnParticle(Particle.DUST, clone, 10, 1, 1, 1, Color.WHITE);
     }
   }

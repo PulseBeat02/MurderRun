@@ -19,7 +19,11 @@ public final class ResourceUtils {
   }
 
   public static InputStream getResourceAsStream(final String name) {
-    return requireNonNull(ResourceUtils.class.getClassLoader().getResourceAsStream(name));
+    final InputStream stream = ResourceUtils.class.getClassLoader().getResourceAsStream(name);
+    if (stream == null) {
+      throw new AssertionError(String.format("Unable to access %s", name));
+    }
+    return stream;
   }
 
   public static String getFilename(final String url) {

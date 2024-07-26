@@ -8,8 +8,6 @@ import net.kyori.adventure.text.minimessage.ParsingException;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ArgumentTag implements TagResolver {
 
@@ -18,15 +16,12 @@ public class ArgumentTag implements TagResolver {
 
   private final List<? extends ComponentLike> argumentComponents;
 
-  public ArgumentTag(final @NotNull List<? extends ComponentLike> argumentComponents) {
+  public ArgumentTag(final List<? extends ComponentLike> argumentComponents) {
     this.argumentComponents = Objects.requireNonNull(argumentComponents, "argumentComponents");
   }
 
   @Override
-  public @Nullable Tag resolve(
-      final @NotNull String name,
-      final @NotNull ArgumentQueue arguments,
-      final @NotNull Context ctx)
+  public Tag resolve(final String name, final ArgumentQueue arguments, final Context ctx)
       throws ParsingException {
     final int index =
         arguments
@@ -40,7 +35,7 @@ public class ArgumentTag implements TagResolver {
   }
 
   @Override
-  public boolean has(final @NotNull String name) {
+  public boolean has(final String name) {
     return name.equals(NAME) || name.equals(NAME_1);
   }
 }
