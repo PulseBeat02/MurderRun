@@ -2,11 +2,12 @@ package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class MurderSettings {
 
-  private MurderArena arena;
-  private MurderLobby lobby;
+  private @Nullable MurderArena arena;
+  private @Nullable MurderLobby lobby;
   private int murdererCount;
   private int carPartCount;
 
@@ -34,6 +35,9 @@ public final class MurderSettings {
   }
 
   public MurderLobby getLobby() {
+    if (this.lobby == null) {
+      throw new AssertionError("Lobby wasn't created in game settings!");
+    }
     return this.lobby;
   }
 
@@ -42,6 +46,9 @@ public final class MurderSettings {
   }
 
   public MurderArena getArena() {
+    if (this.arena == null) {
+      throw new AssertionError("Arena wasn't created in game settings!");
+    }
     return this.arena;
   }
 

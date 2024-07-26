@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.map.event.GameEventManager;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class MurderMap {
 
@@ -14,9 +15,9 @@ public final class MurderMap {
 
   public MurderMap(final MurderGame game) {
     this.game = game;
-    this.carPartManager = new CarPartManager(this);
-    this.eventManager = new GameEventManager(this);
-    this.resetManager = new MurderMapResetManager(this);
+    this.carPartManager = (@Initialized CarPartManager) new CarPartManager(this);
+    this.eventManager = (@Initialized GameEventManager) new GameEventManager(this);
+    this.resetManager = (@Initialized MurderMapResetManager) new MurderMapResetManager(this);
   }
 
   public GameEventManager getEventManager() {

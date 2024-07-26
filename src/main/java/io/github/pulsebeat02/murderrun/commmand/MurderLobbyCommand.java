@@ -114,7 +114,7 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.lobby.set.spawn.info")
   @Command(value = "murder lobby set spawn", requiredSender = Player.class)
   public void setSpawn(final Player sender) {
-    final Location location = sender.getLocation();
+    final Location location = (@NonNull Location) sender.getLocation();
     this.spawn = location;
     final Component message = AdventureUtils.createLocationComponent(Locale.LOBBY_SPAWN, location);
     this.sendSuccessMessage(sender, message);

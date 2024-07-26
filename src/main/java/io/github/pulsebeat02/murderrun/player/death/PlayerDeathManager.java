@@ -72,7 +72,7 @@ public final class PlayerDeathManager {
   }
 
   private ArmorStand summonArmorStand(final Player player) {
-    final Location location = player.getLocation();
+    final Location location = (@NonNull Location) player.getLocation();
     final World world = location.getWorld();
     if (world == null) {
       throw new AssertionError("Location doesn't have World attached to it!");

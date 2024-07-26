@@ -41,7 +41,7 @@ public final class AdventureUtils {
     return function.build(x, y, z);
   }
 
-  public static @NonNull String serializeComponentToLegacy(final Component component) {
+  public static String serializeComponentToLegacy(final Component component) {
     return SERIALIZER.serialize(component);
   }
 
@@ -50,7 +50,7 @@ public final class AdventureUtils {
     final PlayerManager manager = game.getPlayerManager();
     for (final GamePlayer gamePlayer : manager.getParticipants()) {
       final Player player = gamePlayer.getPlayer();
-      final Location location = player.getLocation();
+      final Location location = (@NonNull Location) player.getLocation();
       player.playSound(location, key, SoundCategory.MASTER, 1, 1);
     }
   }
@@ -67,7 +67,7 @@ public final class AdventureUtils {
     final PlayerManager manager = game.getPlayerManager();
     for (final GamePlayer gamePlayer : manager.getParticipants()) {
       final Player player = gamePlayer.getPlayer();
-      final Location location = player.getLocation();
+      final Location location = (@NonNull Location) player.getLocation();
       player.playSound(location, key, SoundCategory.MASTER, 1, 1);
     }
   }
@@ -83,7 +83,7 @@ public final class AdventureUtils {
     final PlayerManager manager = game.getPlayerManager();
     for (final Murderer gamePlayer : manager.getMurderers()) {
       final Player player = gamePlayer.getPlayer();
-      final Location location = player.getLocation();
+      final Location location = (@NonNull Location) player.getLocation();
       player.playSound(location, key, SoundCategory.MASTER, 1, 1);
     }
   }
@@ -93,7 +93,7 @@ public final class AdventureUtils {
     final PlayerManager manager = game.getPlayerManager();
     for (final InnocentPlayer gamePlayer : manager.getInnocentPlayers()) {
       final Player player = gamePlayer.getPlayer();
-      final Location location = player.getLocation();
+      final Location location = (@NonNull Location) player.getLocation();
       player.playSound(location, key, SoundCategory.MASTER, 1, 1);
     }
   }

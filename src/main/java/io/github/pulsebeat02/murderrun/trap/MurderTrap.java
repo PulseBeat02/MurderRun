@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.trap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.Murderer;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -10,7 +11,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
-public abstract sealed class MurderTrap permits SurvivorTrap, KillerTrap {
+public abstract sealed class MurderTrap implements Listener permits SurvivorTrap, KillerTrap {
 
   private final ItemStack stack;
   private final String name;

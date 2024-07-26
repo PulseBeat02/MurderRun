@@ -36,12 +36,12 @@ public final class MurdererLocationManager {
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
     final Player murderer = murdererPlayer.getPlayer();
-    final Location murdererLocation = murderer.getLocation();
+    final Location murdererLocation = (@NonNull Location) murderer.getLocation();
     final PlayerManager manager = this.game.getPlayerManager();
     final Collection<InnocentPlayer> innocentPlayers = manager.getInnocentPlayers();
     for (final InnocentPlayer innocentPlayer : innocentPlayers) {
       final Player player = innocentPlayer.getPlayer();
-      final Location location = player.getLocation();
+      final Location location = (@NonNull Location) player.getLocation();
       if (location.distanceSquared(murdererLocation) > 16) {
         continue;
       }

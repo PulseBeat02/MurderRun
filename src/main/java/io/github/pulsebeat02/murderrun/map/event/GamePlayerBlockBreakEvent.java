@@ -37,7 +37,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     }
 
     final GamePlayer murderer = optional.get();
-    final Location murdererLocation = player.getLocation();
+    final Location murdererLocation = (@NonNull Location) player.getLocation();
     if (murderer instanceof Murderer) {
       AdventureUtils.playSoundForAllParticipantsAtLocation(
           this.game, murdererLocation, FXSound.CHAINSAW);

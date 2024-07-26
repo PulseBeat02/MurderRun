@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.checkerframework.checker.initialization.qual.Initialized;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class CarPartItemStack {
@@ -40,18 +39,20 @@ public final class CarPartItemStack {
     return stack;
   }
 
-  private void customize(@Initialized CarPartItemStack this, final ItemMeta meta) {
+  private void customize(@UnderInitialization CarPartItemStack this, final ItemMeta meta) {
     this.tagData(meta);
     this.setLore(meta);
     this.changeProperties(meta);
   }
 
-  private void tagData(final ItemMeta meta) {
+  private void tagData(@UnderInitialization CarPartItemStack this, final ItemMeta meta) {
     final PersistentDataContainer container = meta.getPersistentDataContainer();
-    container.set(NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING, this.uuid);
+    if (this.uuid != null) {
+      container.set(NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING, this.uuid);
+    }
   }
 
-  private void setLore(final ItemMeta meta) {
+  private void setLore(@UnderInitialization CarPartItemStack this, final ItemMeta meta) {
     if (!meta.hasLore()) {
       final List<Component> components = List.of(Locale.CAR_PART_ITEM_LORE.build());
       final List<String> lore =
@@ -60,7 +61,7 @@ public final class CarPartItemStack {
     }
   }
 
-  private void changeProperties(final ItemMeta meta) {
+  private void changeProperties(@UnderInitialization CarPartItemStack this, final ItemMeta meta) {
     final Component component = Locale.CAR_PART_ITEM_NAME.build();
     final String raw = AdventureUtils.serializeComponentToLegacy(component);
     final int id = RandomUtils.generateInt(1, 6);

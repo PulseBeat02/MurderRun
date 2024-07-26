@@ -41,7 +41,7 @@ public final class MurderVillagerCommand implements AnnotationCommandFeature {
   public void createMerchant(
       final Player sender,
       @Argument(value = "args", suggestions = "traps") @Default("") final String[] args) {
-    final Location location = sender.getLocation();
+    final Location location = (@NonNull Location) sender.getLocation();
     final List<MerchantRecipe> recipes = this.parseRecipeOptions(args);
     final VillagerLobbyTrader trader = new VillagerLobbyTrader(location, recipes);
     trader.spawnVillager();

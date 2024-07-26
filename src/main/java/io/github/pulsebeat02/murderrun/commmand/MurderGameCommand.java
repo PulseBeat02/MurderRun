@@ -17,8 +17,8 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
@@ -59,8 +59,8 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
     }
     final MurderArenaManager arenaManager = this.plugin.getArenaManager();
     final MurderLobbyManager lobbyManager = this.plugin.getLobbyManager();
-    final MurderArena arena = arenaManager.getArena(arenaName);
-    final MurderLobby lobby = lobbyManager.getLobby(lobbyName);
+    final MurderArena arena = (@NonNull MurderArena) arenaManager.getArena(arenaName);
+    final MurderLobby lobby = (@NonNull MurderLobby) lobbyManager.getLobby(lobbyName);
     final MurderGameManager manager = new MurderGameManager(this.plugin);
     manager.addParticipantToLobby(sender);
     final MurderSettings settings = manager.getSettings();
@@ -187,7 +187,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
     final String senderDisplayName = sender.getDisplayName();
     final String inviteDisplayName = invite.getDisplayName();
     this.invites.computeIfAbsent(invite, k -> new HashSet<>());
-    final Collection<Player> outgoing = this.invites.get(invite);
+    final Collection<Player> outgoing = (@NonNull Collection<Player>) this.invites.get(invite);
     outgoing.add(sender);
     final Component owner = Locale.GAME_OWNER_INVITE.build(inviteDisplayName);
     final Component player = Locale.GAME_PLAYER_INVITE.build(senderDisplayName);
@@ -206,7 +206,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
       return;
     }
     final Collection<Player> invitations = this.invites.get(sender);
-    final Pair<MurderGameManager, Boolean> ownerData = this.games.get(owner);
+    final Pair<MurderGameManager, Boolean> ownerData = (@NonNull Pair<MurderGameManager, Boolean>) this.games.get(owner);
     final MurderGameManager manager = ownerData.first();
     manager.addParticipantToLobby(sender);
     invitations.remove(sender);
@@ -357,14 +357,14 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @Suggestions("arena-suggestions")
-  public Stream<String> arenaSuggestions(
+  public Stream<@KeyFor("manager.getArenas()") String> arenaSuggestions(
       final CommandContext<CommandSender> context, final String input) {
     final MurderArenaManager manager = this.plugin.getArenaManager();
     return manager.getArenas().keySet().stream();
   }
 
   @Suggestions("lobby-suggestions")
-  public Stream<String> lobbySuggestions(
+  public Stream<@KeyFor("manager.getLobbies()") String> lobbySuggestions(
       final CommandContext<CommandSender> context, final String input) {
     final MurderLobbyManager manager = this.plugin.getLobbyManager();
     return manager.getLobbies().keySet().stream();

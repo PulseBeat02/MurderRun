@@ -115,6 +115,9 @@ checkerFramework {
             'org.checkerframework.common.value.ValueChecker',
             'org.checkerframework.common.aliasing.AliasingChecker'
     ]
+    extraJavacArgs = [
+            '-AsuppressWarnings=uninitialized'
+    ]
 }
 
 gradle.projectsEvaluated {

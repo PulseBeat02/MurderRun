@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import org.checkerframework.checker.initialization.qual.Initialized;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
@@ -33,7 +34,7 @@ public final class ServerResourcepack {
     return pack;
   }
 
-  private void customizeMetaData(@Initialized ServerResourcepack this, final ResourcePack pack) {
+  private void customizeMetaData(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     try {
       final InputStream stream = ResourceUtils.getResourceAsStream("assets/textures/pack.png");
       pack.packMeta(34, "Assets for Murder Run Plugin");
@@ -43,27 +44,27 @@ public final class ServerResourcepack {
     }
   }
 
-  private void addTextures(@Initialized ServerResourcepack this, final ResourcePack pack) {
+  private void addTextures(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     final ItemTexture[] textures = ItemTexture.values();
     for (final ItemTexture texture : textures) {
       pack.texture(texture.getTexture());
     }
   }
 
-  private void addModels(@Initialized ServerResourcepack this, final ResourcePack pack) {
+  private void addModels(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     final ModelHandler handler = new ModelHandler();
     pack.model(handler.customItemModelGenerator());
     pack.model(handler.customItemModelGenerator());
   }
 
-  private void addSounds(@Initialized ServerResourcepack this, final ResourcePack pack) {
+  private void addSounds(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     final FXSound[] sounds = FXSound.values();
     for (final FXSound sound : sounds) {
       pack.sound(sound.getSound());
     }
   }
 
-  private void zipPack(@Initialized ServerResourcepack this, final ResourcePack pack) {
+  private void zipPack(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     MinecraftResourcePackWriter.minecraft().writeToZipFile(this.path, pack);
   }
 

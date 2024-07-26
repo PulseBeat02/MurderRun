@@ -147,7 +147,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.arena.set.spawn.info")
   @Command(value = "murder arena set spawn", requiredSender = Player.class)
   public void setSpawn(final Player sender) {
-    final Location location = sender.getLocation();
+    final Location location = (@NonNull Location) sender.getLocation();
     this.spawn = location;
     final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_SPAWN, location);
     this.sendSuccessMessage(sender, message);
@@ -168,7 +168,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.arena.set.truck.info")
   @Command(value = "murder arena set truck", requiredSender = Player.class)
   public void setTruck(final Player sender) {
-    final Location location = sender.getLocation();
+    final Location location = (@NonNull Location) sender.getLocation();
     this.truck = location;
     final Component message = AdventureUtils.createLocationComponent(Locale.ARENA_TRUCK, location);
     this.sendSuccessMessage(sender, message);
@@ -193,7 +193,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.arena.set.first_corner.info")
   @Command(value = "murder arena set first-corner", requiredSender = Player.class)
   public void setFirstCorner(final Player sender) {
-    final Location location = sender.getLocation();
+    final Location location = (@NonNull Location) sender.getLocation();
     this.first = location;
     final Component message =
         AdventureUtils.createLocationComponent(Locale.ARENA_FIRST_CORNER, location);
@@ -203,7 +203,7 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("")
   @Command(value = "murder_run.command.arena.set.second_corner.info", requiredSender = Player.class)
   public void setSecondCorner(final Player sender) {
-    final Location location = sender.getLocation();
+    final Location location = (@NonNull Location) sender.getLocation();
     this.second = location;
     final Component message =
         AdventureUtils.createLocationComponent(Locale.ARENA_SECOND_CORNER, location);

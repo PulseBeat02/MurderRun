@@ -16,7 +16,7 @@ import team.unnamed.creative.server.ResourcePackServer;
 
 public final class PackHostingDaemon {
   private static final ServerResourcepack PACK = new ServerResourcepack();
-  private @NonNull final String hostName;
+  private final String hostName;
   private final int port;
   private final ResourcePackServer server;
   private String url;
@@ -36,7 +36,7 @@ public final class PackHostingDaemon {
       this.hash = ResourceUtils.createPackHash(path);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);
       return ResourcePackServer.server()
-          .address(this.hostName, this.port)
+          .address(this.url, this.port)
           .pack(pack)
           .executor(Executors.newFixedThreadPool(8))
           .build();

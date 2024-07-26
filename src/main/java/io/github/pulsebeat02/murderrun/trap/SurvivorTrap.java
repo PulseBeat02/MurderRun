@@ -92,8 +92,8 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Fortnite Building -- build stairs, walls, floors
   Jack-Jack - Laser Eyes -- shooting survivor makes them faster, murderer burns them
   Violet - Force Field Rift -- hold killer place with a forcefield that increases in strength longer item is on ground
-  Geiger Counter -- tells you how close the killer is and how much danger you are in
-  Blind Charge Trap -- blinds killer if come close, unbreakable
+  Killer Tracker -- tells you how close the killer is and how much danger you are in
+  Flashlight -- blinds killer if come close, every 5 seconds
   Launch Pad -- spawns launch pad that launches you into the air
   Impulse Grenade -- causes all players to be launched away
   Zarya - Gravitron Surge -- creates a rift in the sky and sucks player
@@ -108,16 +108,16 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
    */
 
-  private final @NonNull Material material;
-  private final @NonNull Component itemName;
-  private final @NonNull Component itemLore;
+  private final Material material;
+  private final Component itemName;
+  private final Component itemLore;
   private final Component announcement;
 
   public SurvivorTrap(
-      final @NonNull String name,
-      final @NonNull Material material,
-      final @NonNull Component itemName,
-      final @NonNull Component itemLore,
+      final String name,
+      final Material material,
+      final Component itemName,
+      final Component itemLore,
       final Component announcement) {
     super(name);
     this.material = material;
