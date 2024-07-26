@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.MurderSettings;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
+import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.awt.*;
 import java.util.HashMap;
@@ -12,7 +13,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
@@ -93,8 +93,7 @@ public final class CarPartManager {
   public CarPartItemStack getCarPartItemStack(final ItemStack stack) {
     final ItemMeta meta = stack.getItemMeta();
     final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final NamespacedKey key = CarPartItemStack.getCarPartKey();
-    final String uuid = container.get(key, PersistentDataType.STRING);
+    final String uuid = container.get(NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING);
     return this.parts.get(uuid);
   }
 }

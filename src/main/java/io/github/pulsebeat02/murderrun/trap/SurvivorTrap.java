@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.Collection;
@@ -20,14 +21,17 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
   /*
 
+  SURVIVOR TRAPS ALREADY IMPLEMENTED:
+
+  Glow Trap -- makes killer glow
+  Hack Trap -- removes sword
+
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
-  Hack Trap -- removes sword
+
   Portal Trap -- teleports trap to killer
-  Glow Trap -- makes killer glow
-  Noob Trap -- ?
   Bear Trap -- makes killer stuck and slowed for 10s
-  Spasm -- makes killer freak out alternating their head up and down
+  Spasm Trap -- makes killer freak out alternating their head up and down
   Rewind -- rewinds player 5 seconds
   Murderer Rewind -- rewinds murderer 5 seconds
   Resurrection Stone -- resurrects a dead player
@@ -39,7 +43,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Med Bot -- constant heal pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
-  Instant Healing Potion -- instantly heal health
+  Medkit -- instantly heal health
   Jump Scare Trap -- jump scares if killer gets too close
   Smoke Trap -- makes killer dizzy, blind and slowed
   Diamond Armor -- gear
@@ -98,7 +102,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Porta-Fort -- spawns a portafort
   Distorter -- fills killer screen with annoying particles until destroyed
   Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
-  Demonetized Trap -- if killer steps on it they are sent to a room full of youtube police
+  Demonetized -- if activated then youtube police spawns on killer
   Jetpack -- you can fly temporarily
 
    */
@@ -151,7 +155,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   }
 
   @Override
-  public void activate(final MurderGame game) {
+  public void activate(final MurderGame game, final Murderer murderer) {
     if (this.announcement == null) {
       return;
     }

@@ -70,7 +70,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> GAME_PLAYER_KICK = direct("murder_run.command.game.player_kick");
   UniComponent<Sender, List<String>> GAME_LIST = direct("murder_run.command.game.list", null);
   UniComponent<Sender, String> GAME_JOIN = direct("murder_run.command.game.join", null);
-
   NullComponent<Sender> GAME_ARENA_ERROR = direct("murder_run.command.game.arena_error");
   NullComponent<Sender> GAME_LOBBY_ERROR = direct("murder_run.command.game.lobby_error");
   NullComponent<Sender> GAME_LEAVE_ERROR = direct("murder_run.command.game.leave_error");
@@ -86,4 +85,8 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> GLOW_TRAP_NAME = direct("murder_run.game.trap.glow.name");
   NullComponent<Sender> GLOW_TRAP_LORE = direct("murder_run.game.trap.glow.lore");
   NullComponent<Sender> GLOW_TRAP_ACTIVATE = direct("murder_run.game.trap.glow.activate");
+
+  NullComponent<Sender> HACK_TRAP_NAME = direct("murder_run.game.trap.hack.name");
+  NullComponent<Sender> HACK_TRAP_LORE = direct("murder_run.game.trap.hack.lore");
+  NullComponent<Sender> HACK_TRAP_ACTIVATE = direct("murder_run.game.trap.hack.activate");
 }

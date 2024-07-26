@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.trap;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.player.Murderer;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -11,8 +12,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public abstract sealed class MurderTrap permits SurvivorTrap, KillerTrap {
 
-  private static final NamespacedKey KEY = new NamespacedKey("murder_run", "trap");
-
   private final ItemStack stack;
   private final String name;
 
@@ -22,10 +21,6 @@ public abstract sealed class MurderTrap permits SurvivorTrap, KillerTrap {
   }
 
   public abstract ItemStack constructItemStack();
-
-  public static NamespacedKey getPDCKey() {
-    return KEY;
-  }
 
   public ItemStack getStack() {
     return this.stack;
@@ -44,5 +39,5 @@ public abstract sealed class MurderTrap permits SurvivorTrap, KillerTrap {
 
   public abstract void onDropEvent(final PlayerDropItemEvent event);
 
-  public abstract void activate(final MurderGame game);
+  public abstract void activate(final MurderGame game, final Murderer murderer);
 }

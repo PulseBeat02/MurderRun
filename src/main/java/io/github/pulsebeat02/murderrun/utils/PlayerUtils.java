@@ -3,11 +3,21 @@ package io.github.pulsebeat02.murderrun.utils;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.WeakHashMap;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public final class PlayerUtils {
+
+  private static final Map<Player, Team> GLOW_TEAMS = new WeakHashMap<>();
 
   private PlayerUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -22,5 +32,22 @@ public final class PlayerUtils {
 
   public static void removeAllPotionEffects(final Player player) {
     player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+  }
+
+  public static void setGlowColor(final Player player, final ChatColor color) {
+    final Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+    final UUID glowID = UUID.randomUUID();
+    final String name = String.format("color-%s", glowID);
+    final Team team = scoreboard.registerNewTeam(name);
+    team.setColor(color);
+    team.addEntry(player.getDisplayName());
+    GLOW_TEAMS.put(player, team);
+    player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0));
+  }
+
+  public static void removeGlow(final Player player) {
+    player.removePotionEffect(PotionEffectType.GLOWING);
+    GLOW_TEAMS.get(player).unregister();
+    GLOW_TEAMS.remove(player);
   }
 }

@@ -3,10 +3,11 @@ package io.github.pulsebeat02.murderrun.trap.innocent;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.Murderer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.trap.SurvivorTrap;
-import java.util.Collection;
+import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class GlowTrap extends SurvivorTrap {
@@ -24,15 +25,10 @@ public final class GlowTrap extends SurvivorTrap {
   public void onDropEvent(final PlayerDropItemEvent event) {}
 
   @Override
-  public void activate(final MurderGame game) {
-    super.activate(game);
-    final PlayerManager manager = game.getPlayerManager();
-    final Collection<Murderer> murderers = manager.getMurderers();
-    this.scheduleTask(() -> this.setGlowing(murderers, true), 10);
-    this.scheduleTask(() -> this.setGlowing(murderers, false), 20 * 5);
-  }
-
-  private void setGlowing(final Collection<Murderer> murderers, final boolean glow) {
-    murderers.stream().map(Murderer::getPlayer).forEach(player -> player.setGlowing(glow));
+  public void activate(final MurderGame game, final Murderer murderer) {
+    super.activate(game, murderer);
+    final Player player = murderer.getPlayer();
+    PlayerUtils.setGlowColor(player, ChatColor.RED);
+    this.scheduleTask(() -> PlayerUtils.removeGlow(player), 20 * 5);
   }
 }

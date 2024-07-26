@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,6 +24,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public final class MurderGameManager {
 
@@ -54,6 +57,10 @@ public final class MurderGameManager {
         new AttributeModifier("generic.attackDamage", 8, AttributeModifier.Operation.ADD_NUMBER);
     meta.setCustomModelData(1);
     meta.addAttributeModifier(attribute, modifer);
+
+    final PersistentDataContainer container = meta.getPersistentDataContainer();
+    container.set(NamespacedKeys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true);
+    
     stack.setItemMeta(meta);
 
     final PlayerInventory inventory = player.getInventory();

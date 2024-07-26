@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.map.part;
 
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.List;
@@ -14,8 +15,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class CarPartItemStack {
-
-  private static final NamespacedKey CAR_PART_ID = new NamespacedKey("murder_run", "car-part-uuid");
 
   private final String uuid;
   private final ItemStack stack;
@@ -44,7 +43,7 @@ public final class CarPartItemStack {
 
   private void tagData(final ItemMeta meta) {
     final PersistentDataContainer container = meta.getPersistentDataContainer();
-    container.set(CAR_PART_ID, PersistentDataType.STRING, this.uuid);
+    container.set(NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING, this.uuid);
   }
 
   private void setLore(final ItemMeta meta) {
@@ -62,10 +61,6 @@ public final class CarPartItemStack {
     final int id = RandomUtils.generateInt(1, 6);
     meta.setDisplayName(raw);
     meta.setCustomModelData(id);
-  }
-
-  public static NamespacedKey getCarPartKey() {
-    return CAR_PART_ID;
   }
 
   public void spawn() {

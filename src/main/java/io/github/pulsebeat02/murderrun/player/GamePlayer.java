@@ -48,6 +48,7 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
     player.setWalkSpeed(0.2f);
     player.setExp(0);
     player.setLevel(0);
+    player.setSaturation(Float.MAX_VALUE);
   }
 
   public void markDeath() {

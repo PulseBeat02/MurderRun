@@ -24,7 +24,8 @@ public final class GameEventManager {
             new GamePlayerThrowCarPartEvent(this.game),
             new GamePlayerLeaveEvent(this.game),
             new GamePlayerHungerEvent(this.game),
-            new GamePlayerBlockDropEvent(this.game));
+            new GamePlayerBlockDropEvent(this.game),
+            new GamePlayerRegenEvent(this.game));
   }
 
   public MurderGame getGame() {
