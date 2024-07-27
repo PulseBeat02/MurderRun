@@ -12,7 +12,11 @@ group = 'io.github.pulsebeat02'
 version = '1.21-v1.0.0'
 description = 'MurderRun'
 
+assemble.dependsOn(shadowJar);
+assemble.dependsOn(spotlessApply)
+
 repositories {
+    mavenLocal()
     mavenCentral()
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
@@ -32,15 +36,11 @@ dependencies {
     compileOnly 'org.incendo:cloud-annotations:2.0.0-rc.2'
     compileOnly 'org.incendo:cloud-paper:2.0.0-beta.8'
     compileOnly 'org.incendo:cloud-minecraft-extras:2.0.0-beta.8'
-    compileOnly 'net.kyori:adventure-api:4.17.0'
-    compileOnly 'net.kyori:adventure-api:4.17.0'
-    compileOnly 'net.kyori:adventure-platform-bukkit:4.3.3'
-
     implementation project(':nms-api')
     implementation project(':v1_21')
     implementation 'org.bstats:bstats-bukkit:3.0.2'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    implementation 'net.kyori:adventure-api:4.17.0'
+    implementation 'net.kyori:adventure-platform-bukkit:4.3.3'
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.21:3.95.1'
     testImplementation 'team.unnamed:creative-api:1.7.3'
     testImplementation 'team.unnamed:creative-serializer-minecraft:1.7.3'
@@ -91,16 +91,13 @@ processResources {
 }
 
 shadowJar {
-    relocate('org.bstats', 'io.github.pulsebeat02.murderrun.lib.bstats')
+    relocate('org.bstats', 'io.github.pulsebeat02.murderrun.lib.org.bstats')
+    relocate('net.kyori', 'io.github.pulsebeat02.murderrun.lib.net.kyori')
 }
 
 checkerFramework {
-    checkers = [
-            'org.checkerframework.checker.nullness.NullnessChecker',
-    ]
-    extraJavacArgs = [
-            '-AsuppressWarnings=uninitialized'
-    ]
+    checkers = [ 'org.checkerframework.checker.nullness.NullnessChecker' ]
+    extraJavacArgs = [ '-AsuppressWarnings=uninitialized' ]
 }
 
 spotless {
@@ -108,10 +105,3 @@ spotless {
         palantirJavaFormat('2.47.0').style("GOOGLE")
     }
 }
-
-test {
-    useJUnit()
-}
-
-assemble.dependsOn(shadowJar);
-assemble.dependsOn(spotlessApply)
