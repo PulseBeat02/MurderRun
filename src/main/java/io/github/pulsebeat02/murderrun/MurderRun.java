@@ -30,7 +30,6 @@ public final class MurderRun extends JavaPlugin {
   - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
 
-  - Create Test Cases for Plugin
    */
 
   private PluginConfiguration configuration;

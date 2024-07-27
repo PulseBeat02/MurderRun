@@ -28,7 +28,8 @@ public final class NMSHandler {
   }
 
   private static Class<?> getNMSUtilsClass() throws ClassNotFoundException {
-    return Class.forName("io.github.pulsebeat02.murderrun.reflect.%s.NMSUtilsImpl".formatted(VERSION));
+    return Class.forName(
+        "io.github.pulsebeat02.murderrun.reflect.%s.NMSUtilsImpl".formatted(VERSION));
   }
 
   public static String getVersion() {

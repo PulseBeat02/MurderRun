@@ -8,14 +8,5 @@
   "api-version": "1.21",
   "main": "io.github.pulsebeat02.murderrun.MurderRun",
   "depend": [ "WorldEdit" ],
-  "softdepend": [ "WorldEditTickSpreader" ],
-  "libraries": [
-    "team.unnamed:creative-api:1.7.3",
-    "team.unnamed:creative-serializer-minecraft:1.7.3",
-    "team.unnamed:creative-server:1.7.3",
-    "org.incendo:cloud-annotations:2.0.0-rc.2",
-    "org.incendo:cloud-paper:2.0.0-beta.8",
-    "org.incendo:cloud-minecraft-extras:2.0.0-beta.8",
-    "me.lucko:commodore:1.9"
-  ]
+  "softdepend": [ "WorldEditTickSpreader" ]
 }

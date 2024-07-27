@@ -1,11 +1,6 @@
 package io.github.pulsebeat02.murderrun.config;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.checkerframework.common.value.qual.IntRange;
 
@@ -17,7 +12,7 @@ public final class PluginConfiguration {
 
   public PluginConfiguration(final MurderRun plugin) {
     this.plugin = plugin;
-    this.hostName = "127.0.0.1";
+    this.hostName = "localhost";
     this.port = 7270;
   }
 
@@ -39,20 +34,7 @@ public final class PluginConfiguration {
 
   private String getHostName(final FileConfiguration config) {
     final String value = config.getString("server.host-name");
-    return value == null ? this.getFallBackHostName() : value;
-  }
-
-  private String getFallBackHostName() {
-    try {
-      final URI uri = URI.create("https://checkip.amazonaws.com");
-      final URL ip = uri.toURL();
-      try (final BufferedReader br = new BufferedReader(new InputStreamReader(ip.openStream()))) {
-        final String line = br.readLine();
-        return line == null ? this.hostName : line;
-      }
-    } catch (final IOException e) {
-      throw new AssertionError(e);
-    }
+    return value == null ? "localhost" : value;
   }
 
   public String getHostName() {

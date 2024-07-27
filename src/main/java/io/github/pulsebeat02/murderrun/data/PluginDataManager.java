@@ -36,22 +36,27 @@ public abstract class PluginDataManager<T> {
     }
   }
 
-  private void createFolders() throws IOException {
+  private void createFolders() {
 
     final Path parent = this.json.getParent();
     if (parent == null) {
       throw new AssertionError("Failed to retrieve parent folder!");
     }
 
-    Files.createDirectories(parent);
-    if (Files.notExists(this.json)) {
-      Files.createFile(this.json);
+    try {
+      Files.createDirectories(parent);
+      if (Files.notExists(this.json)) {
+        Files.createFile(this.json);
+        Files.write(this.json, "{}".getBytes());
+      }
+    } catch (final IOException e) {
+      throw new AssertionError(e);
     }
   }
 
   public T deserialize() {
+    this.createFolders();
     try (final Reader reader = Files.newBufferedReader(this.json)) {
-      this.createFolders();
       final Gson gson = GsonProvider.getGson();
       return gson.fromJson(reader, this.clazz);
     } catch (final IOException e) {
