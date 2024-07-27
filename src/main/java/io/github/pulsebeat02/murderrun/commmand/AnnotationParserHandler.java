@@ -101,6 +101,7 @@ public final class AnnotationParserHandler {
   }
 
   public void registerCommands() {
+    this.features.forEach(this.parser::parse);
     this.features.forEach(feature -> feature.registerFeature(this.plugin, this.parser));
   }
 }
