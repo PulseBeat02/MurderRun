@@ -12,8 +12,8 @@ public interface LocaleParent {
 
   TranslationManager MANAGER = new TranslationManager();
 
-  NullComponent<Sender> PREFIX =
-      () -> text().color(RED).append(text('['), text("Murder Run", AQUA), text(']')).build();
+  NullComponent<Sender> PREFIX = () ->
+      text().color(RED).append(text('['), text("Murder Run", AQUA), text(']')).build();
 
   static NullComponent<Sender> direct(final String key) {
     return () -> format(MANAGER.render(translatable(key)));
@@ -38,11 +38,8 @@ public interface LocaleParent {
       final String key,
       final @Nullable Function<T, String> function1,
       final @Nullable Function<U, String> function2) {
-    return (arg1, arg2) ->
-        format(
-            MANAGER.render(
-                translatable(
-                    key, createFinalText(arg1, function1), createFinalText(arg2, function2))));
+    return (arg1, arg2) -> format(MANAGER.render(
+        translatable(key, createFinalText(arg1, function1), createFinalText(arg2, function2))));
   }
 
   static <T, U, V> TriComponent<Sender, T, U, V> direct(
@@ -50,14 +47,11 @@ public interface LocaleParent {
       final @Nullable Function<T, String> function1,
       final @Nullable Function<U, String> function2,
       final @Nullable Function<V, String> function3) {
-    return (arg1, arg2, arg3) ->
-        format(
-            MANAGER.render(
-                translatable(
-                    key,
-                    createFinalText(arg1, function1),
-                    createFinalText(arg2, function2),
-                    createFinalText(arg3, function3))));
+    return (arg1, arg2, arg3) -> format(MANAGER.render(translatable(
+        key,
+        createFinalText(arg1, function1),
+        createFinalText(arg2, function2),
+        createFinalText(arg3, function3))));
   }
 
   @FunctionalInterface

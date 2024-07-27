@@ -14,6 +14,7 @@ import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.RichDescription;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
 
+@SuppressWarnings("nullness")
 public final class AnnotationParserHandler {
 
   private final MurderRun plugin;
@@ -23,19 +24,22 @@ public final class AnnotationParserHandler {
 
   public AnnotationParserHandler(final MurderRun plugin) {
     this.plugin = plugin;
-    this.features =
-        List.of(
-            new MurderArenaCommand(),
-            new MurderLobbyCommand(),
-            new MurderHelpCommand(),
-            new MurderGameCommand(),
-            new MurderVillagerCommand());
+    this.features = List.of(
+        new MurderArenaCommand(),
+        new MurderLobbyCommand(),
+        new MurderHelpCommand(),
+        new MurderGameCommand(),
+        new MurderVillagerCommand());
     this.manager = this.getCommandManager();
     this.parser = this.getAnnotationParser();
   }
 
   private CommandManager<CommandSender> getCommandManager(
       @UnderInitialization AnnotationParserHandler this) {
+
+    if (this.plugin == null) {
+      throw new AssertionError("MurderRun has been unloaded!");
+    }
 
     final CommandManager<CommandSender> manager = this.createBasicManager();
     final AudienceHandler handler = this.plugin.getAudience();
@@ -73,9 +77,8 @@ public final class AnnotationParserHandler {
       throw new AssertionError("MurderRun has been unloaded!");
     }
 
-    final LegacyPaperCommandManager<CommandSender> manager =
-        LegacyPaperCommandManager.createNative(
-            this.plugin, ExecutionCoordinator.simpleCoordinator());
+    final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(
+        this.plugin, ExecutionCoordinator.simpleCoordinator());
     manager.registerBrigadier();
 
     return manager;

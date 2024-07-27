@@ -64,21 +64,19 @@ public final class AdventureUtils {
   public static void playSoundForAllMurderers(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllDead(
-        player -> {
-          final Location location = player.getLocation();
-          player.playSound(location, key, SoundCategory.MASTER, 1, 1);
-        });
+    manager.applyToAllDead(player -> {
+      final Location location = player.getLocation();
+      player.playSound(location, key, SoundCategory.MASTER, 1, 1);
+    });
   }
 
   public static void playSoundForAllInnocents(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(
-        innocent -> {
-          final Location location = innocent.getLocation();
-          innocent.playSound(location, key, SoundCategory.MASTER, 1, 1);
-        });
+    manager.applyToAllInnocents(innocent -> {
+      final Location location = innocent.getLocation();
+      innocent.playSound(location, key, SoundCategory.MASTER, 1, 1);
+    });
   }
 
   public static void playSoundForAllParticipantsAtLocation(

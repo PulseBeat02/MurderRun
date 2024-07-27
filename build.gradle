@@ -1,8 +1,9 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'io.github.goooler.shadow' version '8.1.8'
     id 'xyz.jpenilla.run-paper' version '2.3.0'
     id 'org.checkerframework' version '0.6.42'
+    id 'com.diffplug.spotless' version '7.0.0.BETA1'
 }
 
 apply plugin: 'org.checkerframework'
@@ -54,18 +55,16 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
+    options.release.set(targetJavaVersion)
 }
 
-tasks {
-    runServer {
-        downloadPlugins {
-            modrinth('fastasyncworldedit', '2.11.0')
-        }
-        minecraftVersion('1.21')
+runServer {
+    downloadPlugins {
+
+        modrinth('worldedit', '7.3.5')
+        modrinth('wets', '0.0.3')
     }
+    minecraftVersion('1.21')
 }
 
 sourceSets {
@@ -76,54 +75,36 @@ sourceSets {
 }
 
 processResources {
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    rename('plugin.json', 'plugin.yml')
+
     def props = [version: version]
     inputs.properties props
     filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
+    filesMatching('plugin.json') {
         expand props
     }
 }
 
 shadowJar {
-    archiveFileName = '${project.name}-${project.version}-BUKKIT.jar'
     relocate('org.bstats', 'io.github.pulsebeat02.murderrun.lib.bstats')
 }
 
 checkerFramework {
-    // Didn't use the following checks:
-    // Internationalization Format String Checker
-    // Property File Checker
-    // Internationalization Checker
-    // GUI Effect Checker
-    // Units Checker
-    // Signedness Checker
-    // Reflection Checker
     checkers = [
             'org.checkerframework.checker.nullness.NullnessChecker',
-            'org.checkerframework.checker.optional.OptionalChecker',
-            'org.checkerframework.checker.interning.InterningChecker',
-            'org.checkerframework.checker.calledmethods.CalledMethodsChecker',
-            'org.checkerframework.checker.resourceleak.ResourceLeakChecker',
-            'org.checkerframework.checker.fenum.FenumChecker',
-            'org.checkerframework.checker.tainting.TaintingChecker',
-            'org.checkerframework.checker.lock.LockChecker',
-            'org.checkerframework.checker.index.IndexChecker',
-            'org.checkerframework.checker.regex.RegexChecker',
-            'org.checkerframework.checker.formatter.FormatterChecker',
-            'org.checkerframework.checker.signature.SignatureChecker',
-            'org.checkerframework.framework.util.PurityChecker',
-            'org.checkerframework.common.value.ValueChecker',
-            'org.checkerframework.common.aliasing.AliasingChecker'
     ]
     extraJavacArgs = [
             '-AsuppressWarnings=uninitialized'
     ]
 }
 
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile).tap {
-        configureEach {
-            options.compilerArgs << "-Xmaxerrs" << "500"
-        }
+spotless {
+    java {
+        palantirJavaFormat('2.47.0').style("GOOGLE")
     }
 }
+
+assemble.dependsOn(shadowJar);
+assemble.dependsOn(spotlessApply)

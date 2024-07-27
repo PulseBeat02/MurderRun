@@ -18,7 +18,7 @@ public final class NamespacedKeys {
     final PluginManager manager = server.getPluginManager();
     final Plugin plugin = manager.getPlugin("MurderRun");
     if (plugin == null) {
-      throw new AssertionError("Unable to retrieve plugin class!");
+      throw new AssertionError("Failed to retrieve plugin class!");
     }
     PLUGIN = plugin;
   }

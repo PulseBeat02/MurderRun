@@ -7,13 +7,13 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.checkerframework.checker.index.qual.NonNegative;
+import org.checkerframework.common.value.qual.IntRange;
 
 public final class PluginConfiguration {
 
   private final MurderRun plugin;
   private String hostName;
-  private @NonNegative int port;
+  private @IntRange(from = 1, to = 65535) int port;
 
   public PluginConfiguration(final MurderRun plugin) {
     this.plugin = plugin;
@@ -34,7 +34,7 @@ public final class PluginConfiguration {
 
   private int getPortServerPort(final FileConfiguration config) {
     final int value = config.getInt("server.port");
-    return value == 0 ? this.port : value;
+    return value < 1 || value > 65535 ? this.port : value;
   }
 
   private String getHostName(final FileConfiguration config) {

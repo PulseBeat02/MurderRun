@@ -58,10 +58,9 @@ public final class CarPartManager {
 
   private void spawnParticles() {
     this.service.scheduleAtFixedRate(
-        () ->
-            this.parts.values().stream()
-                .filter(part -> !part.isPickedUp())
-                .forEach(this::spawnParticleOnPart),
+        () -> this.parts.values().stream()
+            .filter(part -> !part.isPickedUp())
+            .forEach(this::spawnParticleOnPart),
         0,
         1,
         TimeUnit.SECONDS);
@@ -97,7 +96,7 @@ public final class CarPartManager {
   public @Nullable CarPartItemStack getCarPartItemStack(final ItemStack stack) {
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
-      throw new AssertionError("Unable to get car part!");
+      throw new AssertionError("Failed to retrieve car part from game!");
     }
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final String uuid = container.get(NamespacedKeys.CAR_PART_UUID, PersistentDataType.STRING);

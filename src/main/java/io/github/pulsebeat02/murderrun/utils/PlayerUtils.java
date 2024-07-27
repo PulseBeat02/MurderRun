@@ -39,7 +39,7 @@ public final class PlayerUtils {
     final Player player = gamePlayer.getPlayer();
     final ScoreboardManager manager = Bukkit.getScoreboardManager();
     if (manager == null) {
-      throw new AssertionError("Unable to access main scoreboard!");
+      throw new AssertionError("Failed to access the main scoreboard!");
     }
     final Scoreboard scoreboard = manager.getMainScoreboard();
     final UUID glowID = UUID.randomUUID();

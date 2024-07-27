@@ -50,7 +50,7 @@ public abstract sealed class MurderTrap implements Listener permits SurvivorTrap
     final ItemStack stack = new ItemStack(this.material);
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
-      throw new AssertionError("Unable to construct trap!");
+      throw new AssertionError("Failed to construct ItemStack for trap!");
     }
     meta.setDisplayName(name);
     meta.setLore(lore);
@@ -87,7 +87,7 @@ public abstract sealed class MurderTrap implements Listener permits SurvivorTrap
     final Plugin plugin = manager.getPlugin("MurderRun");
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     if (plugin == null) {
-      throw new AssertionError("Unable to retrieve plugin class!");
+      throw new AssertionError("Failed to retrieve plugin class!");
     }
     scheduler.runTaskLater(plugin, runnable, delay);
   }

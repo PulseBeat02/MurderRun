@@ -24,11 +24,10 @@ public class ArgumentTag implements TagResolver {
   public Tag resolve(
       final @NonNull String name, final ArgumentQueue arguments, final @NonNull Context ctx)
       throws ParsingException {
-    final int index =
-        arguments
-            .popOr("No argument number provided")
-            .asInt()
-            .orElseThrow(() -> ctx.newException("Invalid argument number", arguments));
+    final int index = arguments
+        .popOr("No argument number provided")
+        .asInt()
+        .orElseThrow(() -> ctx.newException("Invalid argument number", arguments));
     if (index < 0 || index >= this.argumentComponents.size()) {
       throw ctx.newException("Invalid argument number", arguments);
     }

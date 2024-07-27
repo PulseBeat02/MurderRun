@@ -24,6 +24,9 @@ public abstract class PluginDataManager<T> {
   }
 
   public void serialize(final T manager) {
+    if (manager == null) {
+      throw new AssertionError("Failed to serialize data manager!");
+    }
     try (final Writer writer = Files.newBufferedWriter(this.json)) {
       this.createFolders();
       final Gson gson = GsonProvider.getGson();
@@ -37,7 +40,7 @@ public abstract class PluginDataManager<T> {
 
     final Path parent = this.json.getParent();
     if (parent == null) {
-      throw new AssertionError("Unable to get parent folder!");
+      throw new AssertionError("Failed to retrieve parent folder!");
     }
 
     Files.createDirectories(parent);

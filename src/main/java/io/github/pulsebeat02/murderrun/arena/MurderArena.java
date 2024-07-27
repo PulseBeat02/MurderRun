@@ -1,12 +1,13 @@
 package io.github.pulsebeat02.murderrun.arena;
 
 import org.bukkit.Location;
+import org.checkerframework.common.value.qual.MinLen;
 
 public final class MurderArena {
 
   private final MurderArenaSchematic schematic;
   private final String name;
-  private final Location[] corners;
+  private final @MinLen(2) Location[] corners;
   private final Location spawn;
   private final Location truck;
 
@@ -21,6 +22,14 @@ public final class MurderArena {
     this.corners = corners;
     this.spawn = spawn;
     this.truck = truck;
+    this.checkArray();
+  }
+
+  private void checkArray() {
+    final int length = this.corners.length;
+    if (length < 2) {
+      throw new AssertionError("Not enough corners! Two required for map");
+    }
   }
 
   public String getName() {

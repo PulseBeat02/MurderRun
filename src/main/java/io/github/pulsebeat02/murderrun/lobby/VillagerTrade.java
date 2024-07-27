@@ -10,9 +10,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public enum VillagerTrade {
   ;
 
-  private static final Map<String, VillagerTrade> LOOKUP_TABLE =
-      Stream.of(VillagerTrade.values())
-          .collect(Collectors.toMap(Enum::name, UnaryOperator.identity()));
+  private static final Map<String, VillagerTrade> LOOKUP_TABLE = Stream.of(VillagerTrade.values())
+      .collect(Collectors.toMap(Enum::name, UnaryOperator.identity()));
 
   private final ItemStack cost;
   private final ItemStack stack;

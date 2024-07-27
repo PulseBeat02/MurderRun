@@ -17,15 +17,14 @@ public final class GameEventManager {
 
   public GameEventManager(final MurderMap map) {
     this.game = map.getGame();
-    this.events =
-        Set.of(
-            new GamePlayerDeathEvent(this.game),
-            new GamePlayerPickupCarPartEvent(this.game),
-            new GamePlayerThrowCarPartEvent(this.game),
-            new GamePlayerLeaveEvent(this.game),
-            new GamePlayerHungerEvent(this.game),
-            new GamePlayerBlockDropEvent(this.game),
-            new GamePlayerRegenEvent(this.game));
+    this.events = Set.of(
+        new GamePlayerDeathEvent(this.game),
+        new GamePlayerPickupCarPartEvent(this.game),
+        new GamePlayerThrowCarPartEvent(this.game),
+        new GamePlayerLeaveEvent(this.game),
+        new GamePlayerHungerEvent(this.game),
+        new GamePlayerBlockDropEvent(this.game),
+        new GamePlayerRegenEvent(this.game));
   }
 
   public MurderGame getGame() {

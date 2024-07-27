@@ -7,7 +7,6 @@ import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
@@ -23,51 +22,49 @@ public final class ServerResourcepack {
   }
 
   public void build() {
-    final ResourcePack pack = ResourcePack.resourcePack();
-    this.customizeMetaData(pack);
-    this.addTextures(pack);
-    this.addModels(pack);
-    this.addSounds(pack);
-    this.zipPack(pack);
-    this.pack = pack;
+    this.pack = ResourcePack.resourcePack();
+    this.customizeMetaData();
+    this.addTextures();
+    this.addModels();
+    this.addSounds();
+    this.zipPack();
   }
 
-  private void customizeMetaData(
-      @UnderInitialization ServerResourcepack this, final ResourcePack pack) {
+  private void customizeMetaData() {
     try {
       final InputStream stream = ResourceUtils.getResourceAsStream("assets/textures/pack.png");
-      pack.packMeta(34, "Server resources for Murder Run Plugin");
-      pack.icon(Writable.copyInputStream(stream));
+      this.pack.packMeta(34, "Server resources for Murder Run Plugin");
+      this.pack.icon(Writable.copyInputStream(stream));
     } catch (final IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private void addTextures(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
+  private void addTextures() {
     final ItemTexture[] textures = ItemTexture.values();
     for (final ItemTexture texture : textures) {
-      pack.texture(texture.getTexture());
+      this.pack.texture(texture.getTexture());
     }
   }
 
-  private void addModels(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
+  private void addModels() {
     final ModelHandler handler = new ModelHandler();
-    pack.model(handler.customItemModelGenerator());
-    pack.model(handler.customSwordGenerator());
+    this.pack.model(handler.customItemModelGenerator());
+    this.pack.model(handler.customSwordGenerator());
   }
 
-  private void addSounds(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
+  private void addSounds() {
     final FXSound[] sounds = FXSound.values();
     for (final FXSound sound : sounds) {
-      pack.sound(sound.getSound());
+      this.pack.sound(sound.getSound());
     }
   }
 
-  private void zipPack(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
+  private void zipPack() {
     if (this.path == null) {
       throw new AssertionError("Failed to zip the server resource pack!");
     }
-    MinecraftResourcePackWriter.minecraft().writeToZipFile(this.path, pack);
+    MinecraftResourcePackWriter.minecraft().writeToZipFile(this.path, this.pack);
   }
 
   public ResourcePack getPack() {

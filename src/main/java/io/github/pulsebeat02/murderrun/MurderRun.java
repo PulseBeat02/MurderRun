@@ -31,7 +31,6 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Create Test Cases for Plugin
-  - Edit HelpCommand Locale
   - Add Murder Game Start Command
 
    */
@@ -71,8 +70,7 @@ public final class MurderRun extends JavaPlugin {
   private void dependencyCheck() {
     final PluginManager manager = Bukkit.getPluginManager();
     final boolean we = manager.isPluginEnabled("WorldEdit");
-    final boolean fawe = manager.isPluginEnabled("FastAsyncWorldEdit");
-    if (!(fawe || we)) {
+    if (!we) {
       final Component error = Locale.PLUGIN_DEPENDENCY_ERROR.build();
       this.sendConsoleMessage(error);
       manager.disablePlugin(this);

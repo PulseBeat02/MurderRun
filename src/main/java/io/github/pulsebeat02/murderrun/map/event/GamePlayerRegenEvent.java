@@ -14,11 +14,10 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 
 public final class GamePlayerRegenEvent implements Listener {
 
-  private static final Set<EntityRegainHealthEvent.RegainReason> REASONS =
-      Set.of(
-          EntityRegainHealthEvent.RegainReason.SATIATED,
-          EntityRegainHealthEvent.RegainReason.REGEN,
-          EntityRegainHealthEvent.RegainReason.EATING);
+  private static final Set<EntityRegainHealthEvent.RegainReason> REASONS = Set.of(
+      EntityRegainHealthEvent.RegainReason.SATIATED,
+      EntityRegainHealthEvent.RegainReason.REGEN,
+      EntityRegainHealthEvent.RegainReason.EATING);
 
   private final MurderGame game;
 

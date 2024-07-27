@@ -53,7 +53,7 @@ public final class MurderGameManager {
     final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
-      throw new AssertionError("Unable to create murderer's sword!");
+      throw new AssertionError("Failed to create murderer's sword!");
     }
 
     final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
@@ -123,12 +123,11 @@ public final class MurderGameManager {
       final Audience audience = audiences.player(player);
       final Component message = Locale.RESOURCEPACK_PROMPT.build();
       final ResourcePackInfo info = ResourcePackInfo.resourcePackInfo(id, uri, hash);
-      final ResourcePackRequest request =
-          ResourcePackRequest.resourcePackRequest()
-              .packs(info)
-              .required(true)
-              .prompt(message)
-              .asResourcePackRequest();
+      final ResourcePackRequest request = ResourcePackRequest.resourcePackRequest()
+          .packs(info)
+          .required(true)
+          .prompt(message)
+          .asResourcePackRequest();
       audience.sendResourcePacks(request);
     } catch (final URISyntaxException e) {
       throw new RuntimeException(e);

@@ -19,7 +19,7 @@ public final class HackTrap extends SurvivorTrap {
         Material.EMERALD_BLOCK,
         Locale.HACK_TRAP_NAME.build(),
         Locale.HACK_TRAP_LORE.build(),
-        Locale.HACK_TRAP_NAME.build());
+        Locale.HACK_TRAP_ACTIVATE.build());
   }
 
   @Override

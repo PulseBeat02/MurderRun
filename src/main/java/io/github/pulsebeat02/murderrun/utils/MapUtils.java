@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
@@ -37,7 +38,7 @@ public final class MapUtils {
     final PluginManager manager = Bukkit.getPluginManager();
     final Plugin plugin = manager.getPlugin("MurderRun");
     if (plugin == null) {
-      throw new AssertionError("Unable to retrieve plugin class!");
+      throw new AssertionError("Failed to retrieve plugin class!");
     }
     final File folder = plugin.getDataFolder();
     PARENT_FOLDER = folder.toPath();
@@ -69,18 +70,18 @@ public final class MapUtils {
     final MurderArena arena = settings.getArena();
     final MurderArenaSchematic schematic = arena.getSchematic();
     final BlockVector3 vector3 = schematic.getOrigin();
-    try (final Clipboard clipboard = loadSchematic(schematic)) {
-      final Region region = clipboard.getRegion();
-      final com.sk89q.worldedit.world.World world = region.getWorld();
-      try (final EditSession session = WorldEdit.getInstance().newEditSession(world)) {
-        final Operation operation =
-            new ClipboardHolder(clipboard)
-                .createPaste(session)
-                .to(vector3)
-                .ignoreAirBlocks(false)
-                .build();
-        Operations.complete(operation);
-      }
+    final Clipboard clipboard = loadSchematic(schematic);
+    final Region region = clipboard.getRegion();
+    final com.sk89q.worldedit.world.World world = region.getWorld();
+    try (final EditSession session = WorldEdit.getInstance().newEditSession(world)) {
+      final Operation operation = new ClipboardHolder(clipboard)
+          .createPaste(session)
+          .to(vector3)
+          .ignoreAirBlocks(false)
+          .build();
+      Operations.complete(operation);
+    } catch (final WorldEditException e) {
+      throw new AssertionError(e);
     }
   }
 
@@ -99,14 +100,18 @@ public final class MapUtils {
 
   public static MurderArenaSchematic copyAndCreateSchematic(
       final String name, final Location[] corners) {
-    try (final Clipboard clipboard = performForwardExtentCopy(corners)) {
+    try {
+      final Clipboard clipboard = performForwardExtentCopy(corners);
       final Path path = performSchematicWrite(clipboard, name);
       final BlockVector3 origin = clipboard.getOrigin();
       return new MurderArenaSchematic(path, origin);
+    } catch (final WorldEditException e) {
+      throw new AssertionError(e);
     }
   }
 
-  private static Clipboard performForwardExtentCopy(final Location[] corners) {
+  private static Clipboard performForwardExtentCopy(final Location[] corners)
+      throws WorldEditException {
     final CuboidRegion region = createRegion(corners);
     final BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     final com.sk89q.worldedit.world.World world = region.getWorld();
@@ -122,7 +127,7 @@ public final class MapUtils {
   private static Path performSchematicWrite(final Clipboard clipboard, final String name) {
     final Path file = PARENT_FOLDER.resolve(name);
     try (final ClipboardWriter writer =
-        BuiltInClipboardFormat.FAST.getWriter(Files.newOutputStream(file))) {
+        BuiltInClipboardFormat.MCEDIT_SCHEMATIC.getWriter(Files.newOutputStream(file))) {
       writer.write(clipboard);
     } catch (final IOException e) {
       throw new AssertionError(e);

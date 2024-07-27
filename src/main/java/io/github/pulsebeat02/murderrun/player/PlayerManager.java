@@ -46,20 +46,17 @@ public final class PlayerManager {
   }
 
   public void resetCachedPlayers() {
-    this.cachedMurderers =
-        this.lookupMap.values().stream()
-            .filter(player -> player instanceof Murderer)
-            .map(murderer -> (Murderer) murderer)
-            .collect(Collectors.toSet());
-    this.cachedDeadPlayers =
-        this.lookupMap.values().stream()
-            .filter(player -> !player.isAlive())
-            .collect(Collectors.toSet());
-    this.cachedInnocentPlayers =
-        this.lookupMap.values().stream()
-            .filter(player -> player instanceof InnocentPlayer)
-            .map(murderer -> (InnocentPlayer) murderer)
-            .collect(Collectors.toSet());
+    this.cachedMurderers = this.lookupMap.values().stream()
+        .filter(player -> player instanceof Murderer)
+        .map(murderer -> (Murderer) murderer)
+        .collect(Collectors.toSet());
+    this.cachedDeadPlayers = this.lookupMap.values().stream()
+        .filter(player -> !player.isAlive())
+        .collect(Collectors.toSet());
+    this.cachedInnocentPlayers = this.lookupMap.values().stream()
+        .filter(player -> player instanceof InnocentPlayer)
+        .map(murderer -> (InnocentPlayer) murderer)
+        .collect(Collectors.toSet());
   }
 
   private void createMurderers(final Collection<Player> murderers) {

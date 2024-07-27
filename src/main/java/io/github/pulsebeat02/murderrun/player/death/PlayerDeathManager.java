@@ -94,7 +94,7 @@ public final class PlayerDeathManager {
   private void setArmorStandGear(final Player player, final ArmorStand stand) {
     final EntityEquipment equipment = stand.getEquipment();
     if (equipment == null) {
-      throw new AssertionError("Unable to set ArmorStand equipment!");
+      throw new AssertionError("Failed to set ArmorStand equipment!");
     }
     final ItemStack head = this.getHeadItemStack(player);
     final ItemStack chest = createArmorPiece(Material.LEATHER_CHESTPLATE);
@@ -124,7 +124,7 @@ public final class PlayerDeathManager {
       final CarPartManager manager = map.getCarPartManager();
       final CarPartItemStack stack = manager.getCarPartItemStack(slot);
       if (stack == null) {
-        throw new AssertionError("Unable to retrieve car part from game!");
+        throw new AssertionError("Failed to retrieve car part from game!");
       }
       final Location death = player.getLastDeathLocation();
       if (death == null) {
@@ -140,7 +140,7 @@ public final class PlayerDeathManager {
     final ItemStack head = new ItemStack(Material.PLAYER_HEAD);
     final SkullMeta meta = (SkullMeta) head.getItemMeta();
     if (meta == null) {
-      throw new AssertionError("Unable to create player head!");
+      throw new AssertionError("Failed to create Player head!");
     }
     meta.setOwningPlayer(player);
     head.setItemMeta(meta);
@@ -151,7 +151,7 @@ public final class PlayerDeathManager {
     final ItemStack item = new ItemStack(leatherPiece);
     final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
     if (meta == null) {
-      throw new AssertionError("Unable to dye leather armor!");
+      throw new AssertionError("Failed to dye leather armor!");
     }
     meta.setColor(Color.RED);
     item.setItemMeta(meta);

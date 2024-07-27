@@ -32,7 +32,7 @@ public final class CarPartItemStack {
     final ItemStack stack = new ItemStack(Material.DIAMOND);
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
-      throw new AssertionError("Unable to create car part!");
+      throw new AssertionError("Failed to create car part!");
     }
     this.customize(meta);
     stack.setItemMeta(meta);

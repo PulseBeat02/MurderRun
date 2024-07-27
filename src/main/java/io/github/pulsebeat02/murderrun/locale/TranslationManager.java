@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class TranslationManager {
 
@@ -19,12 +20,14 @@ public final class TranslationManager {
   private static final Key ADVENTURE_KEY = Key.key("murder_run", "main");
 
   private final TranslationRegistry registry;
+  private final ResourceBundle bundle;
   private final MurderTranslator translator;
 
   public TranslationManager() {
     this.registry = TranslationRegistry.create(ADVENTURE_KEY);
     this.registry.defaultLocale(DEFAULT_LOCALE);
     this.translator = new MurderTranslator(ADVENTURE_KEY, this.registry);
+    this.bundle = this.getBundle();
     this.registerTranslations();
   }
 
@@ -34,21 +37,24 @@ public final class TranslationManager {
   }
 
   private void registerLocale() {
-    final ResourceBundle bundle = this.getBundle();
-    this.registry.registerAll(DEFAULT_LOCALE, bundle, false);
+    this.registry.registerAll(DEFAULT_LOCALE, this.bundle, false);
   }
 
   private void addGlobalRegistry() {
     GlobalTranslator.translator().addSource(this.translator);
   }
 
-  private PropertyResourceBundle getBundle() {
+  private PropertyResourceBundle getBundle(@UnderInitialization TranslationManager this) {
     try (final Reader reader =
         ResourceUtils.getResourceAsReader("locale/murder_run_en.properties")) {
       return new PropertyResourceBundle(reader);
     } catch (final IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public String getProperty(final String key) {
+    return this.bundle.getString(key);
   }
 
   public TranslationRegistry getRegistry() {

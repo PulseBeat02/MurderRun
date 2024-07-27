@@ -19,11 +19,11 @@ public final class ResourceUtils {
   public static InputStream getResourceAsStream(final String name) {
     final ClassLoader loader = ResourceUtils.class.getClassLoader();
     if (loader == null) {
-      throw new AssertionError("Unable to access plugin JAR resources!");
+      throw new AssertionError(String.format("Failed to access %s", name));
     }
     final InputStream stream = loader.getResourceAsStream(name);
     if (stream == null) {
-      throw new AssertionError(String.format("Unable to access %s", name));
+      throw new AssertionError(String.format("Failed to access %s", name));
     }
     return stream;
   }

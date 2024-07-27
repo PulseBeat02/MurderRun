@@ -40,12 +40,11 @@ public final class PackHostingDaemon {
       this.url = String.format("http://%s:%s", this.hostName, this.port);
       this.hash = ResourceUtils.createPackHash(path);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);
-      this.server =
-          ResourcePackServer.server()
-              .address(this.url, this.port)
-              .pack(pack)
-              .executor(Executors.newFixedThreadPool(8))
-              .build();
+      this.server = ResourcePackServer.server()
+          .address(this.url, this.port)
+          .pack(pack)
+          .executor(Executors.newFixedThreadPool(8))
+          .build();
     } catch (final IOException | NoSuchAlgorithmException e) {
       throw new AssertionError(e);
     }

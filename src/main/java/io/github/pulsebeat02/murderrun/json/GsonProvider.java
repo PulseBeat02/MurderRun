@@ -7,10 +7,9 @@ import io.github.pulsebeat02.murderrun.json.adapters.BlockVector3Adapter;
 import io.github.pulsebeat02.murderrun.json.adapters.ItemStackAdapter;
 import io.github.pulsebeat02.murderrun.json.adapters.LocationAdapter;
 import io.github.pulsebeat02.murderrun.json.adapters.PathAdapter;
+import java.nio.file.Path;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
-
-import java.nio.file.Path;
 
 public final class GsonProvider {
 
