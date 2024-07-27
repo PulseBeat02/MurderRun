@@ -26,7 +26,6 @@ public interface Locale extends LocaleParent {
 
   UniComponent<Sender, Long> FINAL_TIME = direct("murder_run.game.time", null);
   BiComponent<Sender, Integer, Integer> BOSS_BAR = direct("murder_run.game.boss_bar", null, null);
-
   UniComponent<Sender, String> PLAYER_DEATH = direct("murder_run.game.death", null);
   NullComponent<Sender> RESOURCEPACK_PROMPT = direct("murder_run.resourcepack");
 

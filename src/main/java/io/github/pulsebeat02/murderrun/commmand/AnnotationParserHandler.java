@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotations.AnnotationParser;
+import org.incendo.cloud.exception.InvalidCommandSenderException;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.RichDescription;
@@ -45,8 +46,8 @@ public final class AnnotationParserHandler {
     final AudienceHandler handler = this.plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
     MinecraftExceptionHandler.create(audiences::sender)
-        .defaultInvalidSenderHandler()
-        .decorator(message -> Locale.NOT_PLAYER.build())
+        .defaultHandlers()
+        .handler(InvalidCommandSenderException.class, (sender, e) -> Locale.NOT_PLAYER.build())
         .registerTo(manager);
 
     return manager;
@@ -101,7 +102,7 @@ public final class AnnotationParserHandler {
   }
 
   public void registerCommands() {
-    this.features.forEach(this.parser::parse);
     this.features.forEach(feature -> feature.registerFeature(this.plugin, this.parser));
+    this.features.forEach(this.parser::parse);
   }
 }
