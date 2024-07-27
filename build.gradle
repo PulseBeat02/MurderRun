@@ -41,6 +41,10 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'net.kyori:adventure-api:4.17.0'
     implementation 'net.kyori:adventure-platform-bukkit:4.3.3'
+
+    // this shouldn't be here... but minimessage package isn't included when shading without this line?!
+    implementation 'net.kyori:adventure-text-minimessage:4.17.0'
+
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.21:3.95.1'
     testImplementation 'team.unnamed:creative-api:1.7.3'
     testImplementation 'team.unnamed:creative-serializer-minecraft:1.7.3'
@@ -96,8 +100,8 @@ shadowJar {
 }
 
 checkerFramework {
-    checkers = [ 'org.checkerframework.checker.nullness.NullnessChecker' ]
-    extraJavacArgs = [ '-AsuppressWarnings=uninitialized' ]
+    checkers = ['org.checkerframework.checker.nullness.NullnessChecker']
+    extraJavacArgs = ['-AsuppressWarnings=uninitialized']
 }
 
 spotless {

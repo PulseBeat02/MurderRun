@@ -26,7 +26,7 @@ public final class PluginConfiguration {
   }
 
   public void deserialize() {
-    this.plugin.saveDefaultConfig();
+    this.plugin.saveConfig();
     final FileConfiguration config = this.plugin.getConfig();
     this.hostName = this.getHostName(config);
     this.port = this.getPortServerPort(config);
