@@ -5,6 +5,9 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleParent.*;
 import java.util.List;
 
 public interface Locale extends LocaleParent {
+  NullComponent<Sender> PLUGIN_ENABLE = direct("murder_run.plugin.enable");
+  NullComponent<Sender> PLUGIN_DEPENDENCY_ERROR = direct("murder_run.plugin.dependency");
+  NullComponent<Sender> PLUGIN_DISABLE = direct("murder_run.plugin.disable");
   NullComponent<Sender> CAR_PART_ITEM_NAME = direct("murder_run.item.car_part.name");
   NullComponent<Sender> CAR_PART_ITEM_LORE = direct("murder_run.item.car_part.lore");
   UniComponent<Sender, Integer> CAR_PART_ITEM_RETRIEVAL =

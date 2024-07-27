@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.CommandManager;
@@ -10,6 +11,7 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.minecraft.extras.AudienceProvider;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 
 public final class MurderHelpCommand implements AnnotationCommandFeature {
@@ -29,8 +31,12 @@ public final class MurderHelpCommand implements AnnotationCommandFeature {
   }
 
   private void setupHelp() {
-    this.minecraftHelp =
-        MinecraftHelp.create("/murder help", this.manager, this.bukkitAudiences::sender);
+    MinecraftHelp.<CommandSender>builder()
+            .commandManager(this.manager)
+            .audienceProvider(this.bukkitAudiences::sender)
+            .commandPrefix("/murder help")
+            .messages()
+
   }
 
   public CommandManager<CommandSender> getManager() {

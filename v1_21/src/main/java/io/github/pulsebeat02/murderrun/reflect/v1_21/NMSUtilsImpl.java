@@ -15,7 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
-public class NMSImpl implements NMSUtils {
+public class NMSUtilsImpl implements NMSUtils {
 
   @Override
   public byte[] toByteArray(final ItemStack item) {

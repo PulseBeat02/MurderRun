@@ -7,7 +7,7 @@
   ],
   "api-version": "1.21",
   "main": "io.github.pulsebeat02.murderrun.MurderRun",
-  "depend": [ "FastAsyncWorldEdit" ],
+  "depend": [ "WorldEdit" ],
   "libraries": [
     "team.unnamed:creative-api:1.7.3",
     "team.unnamed:creative-serializer-minecraft:1.7.3",

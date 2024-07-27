@@ -7,12 +7,20 @@ import io.github.pulsebeat02.murderrun.data.MurderArenaDataManager;
 import io.github.pulsebeat02.murderrun.data.MurderLobbyDataManager;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
+
+  private static final int BSTATS_SERVER_ID = 22728;
 
   /*
 
@@ -21,6 +29,10 @@ public final class MurderRun extends JavaPlugin {
   - Add Innocent Traps for Survival
   - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
+
+  - Create Test Cases for Plugin
+  - Edit HelpCommand Locale
+  - Add Murder Game Start Command
 
    */
 
@@ -36,19 +48,45 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    this.sendConsoleMessage(Locale.PLUGIN_DISABLE.build());
+    this.dependencyCheck();
     this.updatePluginData();
     this.stopHostingDaemon();
     this.shutdownMetrics();
+    this.shutdownAudience();
   }
 
   @Override
   public void onEnable() {
+    this.registerAudienceHandler();
+    this.sendConsoleMessage(Locale.PLUGIN_ENABLE.build());
+    this.dependencyCheck();
     this.registerNMS();
     this.readPluginData();
     this.startHostingDaemon();
     this.registerCommands();
-    this.registerAudienceHandler();
     this.enableBStats();
+  }
+
+  private void dependencyCheck() {
+    final PluginManager manager = Bukkit.getPluginManager();
+    final boolean we = manager.isPluginEnabled("WorldEdit");
+    final boolean fawe = manager.isPluginEnabled("FastAsyncWorldEdit");
+    if (!(fawe || we)) {
+      final Component error = Locale.PLUGIN_DEPENDENCY_ERROR.build();
+      this.sendConsoleMessage(error);
+      manager.disablePlugin(this);
+    }
+  }
+
+  private void sendConsoleMessage(final Component component) {
+    final BukkitAudiences audiences = this.audience.retrieve();
+    final Audience console = audiences.console();
+    console.sendMessage(component);
+  }
+
+  private void shutdownAudience() {
+    this.audience.shutdown();
   }
 
   private void registerNMS() {
@@ -59,15 +97,16 @@ public final class MurderRun extends JavaPlugin {
     this.configuration = new PluginConfiguration(this);
     this.murderArenaDataManager = new MurderArenaDataManager(this);
     this.murderLobbyDataManager = new MurderLobbyDataManager(this);
+    this.configuration.deserialize();
     this.arenaManager = this.murderArenaDataManager.deserialize();
     this.lobbyManager = this.murderLobbyDataManager.deserialize();
-    this.configuration.deserialize();
   }
 
   private void startHostingDaemon() {
     final String hostName = this.configuration.getHostName();
     final int port = this.configuration.getPort();
     this.daemon = new PackHostingDaemon(hostName, port);
+    this.daemon.buildServer();
     this.daemon.start();
   }
 
@@ -81,7 +120,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void enableBStats() {
-    this.metrics = new Metrics(this, 22728);
+    this.metrics = new Metrics(this, BSTATS_SERVER_ID);
   }
 
   public void updatePluginData() {

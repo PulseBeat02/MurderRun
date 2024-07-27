@@ -23,7 +23,8 @@ public enum FXSound {
 
   private Sound loadSound(@UnderInitialization FXSound this, final String name) {
     try {
-      return new CustomSound(name).build();
+      final CustomSound ogg = new CustomSound(name);
+      return ogg.build();
     } catch (final IOException e) {
       throw new AssertionError(String.format("Failed to load sound %s.ogg!", name), e);
     }

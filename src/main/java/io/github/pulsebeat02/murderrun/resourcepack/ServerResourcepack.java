@@ -14,29 +14,29 @@ import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
 
 public final class ServerResourcepack {
 
-  private final ResourcePack pack;
   private final Path path;
+
+  private ResourcePack pack;
 
   public ServerResourcepack() {
     this.path = Path.of("murder-run-pack.zip");
-    this.pack = this.build();
   }
 
-  private ResourcePack build(@UnderInitialization ServerResourcepack this) {
+  public void build() {
     final ResourcePack pack = ResourcePack.resourcePack();
     this.customizeMetaData(pack);
     this.addTextures(pack);
     this.addModels(pack);
     this.addSounds(pack);
     this.zipPack(pack);
-    return pack;
+    this.pack = pack;
   }
 
   private void customizeMetaData(
       @UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     try {
       final InputStream stream = ResourceUtils.getResourceAsStream("assets/textures/pack.png");
-      pack.packMeta(34, "Assets for Murder Run Plugin");
+      pack.packMeta(34, "Server resources for Murder Run Plugin");
       pack.icon(Writable.copyInputStream(stream));
     } catch (final IOException e) {
       throw new RuntimeException(e);
@@ -53,7 +53,7 @@ public final class ServerResourcepack {
   private void addModels(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {
     final ModelHandler handler = new ModelHandler();
     pack.model(handler.customItemModelGenerator());
-    pack.model(handler.customItemModelGenerator());
+    pack.model(handler.customSwordGenerator());
   }
 
   private void addSounds(@UnderInitialization ServerResourcepack this, final ResourcePack pack) {

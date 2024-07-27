@@ -17,8 +17,8 @@ import org.incendo.cloud.paper.LegacyPaperCommandManager;
 public final class AnnotationParserHandler {
 
   private final MurderRun plugin;
-  private final CommandManager<CommandSender> manager;
   private final List<AnnotationCommandFeature> features;
+  private final CommandManager<CommandSender> manager;
   private final AnnotationParser<CommandSender> parser;
 
   public AnnotationParserHandler(final MurderRun plugin) {
@@ -28,13 +28,15 @@ public final class AnnotationParserHandler {
             new MurderArenaCommand(),
             new MurderLobbyCommand(),
             new MurderHelpCommand(),
-            new MurderGameCommand());
+            new MurderGameCommand(),
+            new MurderVillagerCommand());
     this.manager = this.getCommandManager();
     this.parser = this.getAnnotationParser();
   }
 
   private CommandManager<CommandSender> getCommandManager(
       @UnderInitialization AnnotationParserHandler this) {
+
     final CommandManager<CommandSender> manager = this.createBasicManager();
     final AudienceHandler handler = this.plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
@@ -42,32 +44,40 @@ public final class AnnotationParserHandler {
         .defaultInvalidSenderHandler()
         .decorator(message -> Locale.NOT_PLAYER.build())
         .registerTo(manager);
+
     return manager;
   }
 
   private AnnotationParser<CommandSender> getAnnotationParser(
       @UnderInitialization AnnotationParserHandler this) {
+
     if (this.manager == null) {
       throw new AssertionError("Annotation command manager is null!");
     }
+
     if (this.plugin == null) {
       throw new AssertionError("MurderRun has been unloaded!");
     }
+
     final AnnotationParser<CommandSender> parser =
         new AnnotationParser<>(this.manager, CommandSender.class);
     parser.descriptionMapper(RichDescription::translatable);
+
     return parser;
   }
 
   private CommandManager<CommandSender> createBasicManager(
       @UnderInitialization AnnotationParserHandler this) {
+
     if (this.plugin == null) {
       throw new AssertionError("MurderRun has been unloaded!");
     }
+
     final LegacyPaperCommandManager<CommandSender> manager =
         LegacyPaperCommandManager.createNative(
             this.plugin, ExecutionCoordinator.simpleCoordinator());
     manager.registerBrigadier();
+
     return manager;
   }
 

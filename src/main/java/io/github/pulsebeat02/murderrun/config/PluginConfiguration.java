@@ -7,12 +7,13 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.checkerframework.checker.index.qual.NonNegative;
 
 public final class PluginConfiguration {
 
   private final MurderRun plugin;
   private String hostName;
-  private int port;
+  private @NonNegative int port;
 
   public PluginConfiguration(final MurderRun plugin) {
     this.plugin = plugin;
@@ -28,7 +29,12 @@ public final class PluginConfiguration {
     this.plugin.saveDefaultConfig();
     final FileConfiguration config = this.plugin.getConfig();
     this.hostName = this.getHostName(config);
-    this.port = config.getInt("server.port");
+    this.port = this.getPortServerPort(config);
+  }
+
+  private int getPortServerPort(final FileConfiguration config) {
+    final int value = config.getInt("server.port");
+    return value == 0 ? this.port : value;
   }
 
   private String getHostName(final FileConfiguration config) {
@@ -40,9 +46,9 @@ public final class PluginConfiguration {
     try {
       final URI uri = URI.create("https://checkip.amazonaws.com");
       final URL ip = uri.toURL();
-      try (final BufferedReader in = new BufferedReader(new InputStreamReader(ip.openStream()))) {
-        final String line = in.readLine();
-        return line == null ? "127.0.0.1" : line;
+      try (final BufferedReader br = new BufferedReader(new InputStreamReader(ip.openStream()))) {
+        final String line = br.readLine();
+        return line == null ? this.hostName : line;
       }
     } catch (final IOException e) {
       throw new AssertionError(e);

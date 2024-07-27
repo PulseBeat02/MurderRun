@@ -8,37 +8,44 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executors;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.server.ResourcePackServer;
 
 public final class PackHostingDaemon {
-  private static final ServerResourcepack PACK = new ServerResourcepack();
+
+  private static final ServerResourcepack PACK;
+
+  static {
+    PACK = new ServerResourcepack();
+    PACK.build();
+  }
+
   private final String hostName;
   private final int port;
-  private final ResourcePackServer server;
+
+  private ResourcePackServer server;
   private String url;
   private String hash;
 
   public PackHostingDaemon(final String hostName, final int port) {
     this.hostName = hostName;
     this.port = port;
-    this.server = this.buildServer();
   }
 
-  public ResourcePackServer buildServer(@UnderInitialization PackHostingDaemon this) {
+  public void buildServer() {
     final Path path = PACK.getPath();
     try (final InputStream stream = Files.newInputStream(path)) {
       final Writable writable = Writable.copyInputStream(stream);
-      this.url = "http://" + this.hostName + ":" + this.port;
+      this.url = String.format("http://%s:%s", this.hostName, this.port);
       this.hash = ResourceUtils.createPackHash(path);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);
-      return ResourcePackServer.server()
-          .address(this.url, this.port)
-          .pack(pack)
-          .executor(Executors.newFixedThreadPool(8))
-          .build();
+      this.server =
+          ResourcePackServer.server()
+              .address(this.url, this.port)
+              .pack(pack)
+              .executor(Executors.newFixedThreadPool(8))
+              .build();
     } catch (final IOException | NoSuchAlgorithmException e) {
       throw new AssertionError(e);
     }
