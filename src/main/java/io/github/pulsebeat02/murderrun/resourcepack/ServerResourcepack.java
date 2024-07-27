@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
@@ -18,7 +19,11 @@ public final class ServerResourcepack {
   private ResourcePack pack;
 
   public ServerResourcepack() {
-    this.path = Path.of("murder-run-pack.zip");
+    try {
+      this.path = Files.createTempFile("murder-run-pack", ".zip");
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
   }
 
   public void build() {

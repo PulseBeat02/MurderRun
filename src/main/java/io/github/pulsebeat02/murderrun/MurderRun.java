@@ -31,8 +31,6 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Create Test Cases for Plugin
-  - Add Murder Game Start Command
-
    */
 
   private PluginConfiguration configuration;

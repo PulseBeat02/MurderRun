@@ -40,7 +40,11 @@ dependencies {
     implementation project(':v1_21')
     implementation 'org.bstats:bstats-bukkit:3.0.2'
 
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.21:3.95.1'
+    testImplementation 'team.unnamed:creative-api:1.7.3'
+    testImplementation 'team.unnamed:creative-serializer-minecraft:1.7.3'
+    testImplementation 'team.unnamed:creative-server:1.7.3'
 }
 
 def targetJavaVersion = 21
@@ -60,9 +64,8 @@ tasks.withType(JavaCompile).configureEach {
 
 runServer {
     downloadPlugins {
-
-        modrinth('worldedit', '7.3.5')
-        modrinth('wets', '0.0.3')
+        url('https://cdn.modrinth.com/data/S0GwusT4/versions/lPHdbL5F/WETS-0.0.3-bukkit.jar')
+        url('https://cdn.modrinth.com/data/1u6JkXh5/versions/Jo76t1oi/worldedit-bukkit-7.3.5.jar')
     }
     minecraftVersion('1.21')
 }
@@ -104,6 +107,10 @@ spotless {
     java {
         palantirJavaFormat('2.47.0').style("GOOGLE")
     }
+}
+
+test {
+    useJUnit()
 }
 
 assemble.dependsOn(shadowJar);

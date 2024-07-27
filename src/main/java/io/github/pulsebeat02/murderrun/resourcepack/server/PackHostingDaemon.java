@@ -41,7 +41,7 @@ public final class PackHostingDaemon {
       this.hash = ResourceUtils.createPackHash(path);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);
       this.server = ResourcePackServer.server()
-          .address(this.url, this.port)
+          .address(this.hostName, this.port)
           .pack(pack)
           .executor(Executors.newFixedThreadPool(8))
           .build();
