@@ -13,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotation.specifier.Greedy;
 import org.incendo.cloud.annotations.AnnotationParser;
-import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
@@ -31,7 +30,6 @@ public final class MurderHelpCommand implements AnnotationCommandFeature {
     this.bukkitAudiences = handler.retrieve();
     this.manager = parser.manager();
     this.setupHelp();
-    parser.parse(this);
   }
 
   private Map<String, String> constructHelpMap() {
@@ -99,8 +97,7 @@ public final class MurderHelpCommand implements AnnotationCommandFeature {
 
   @CommandDescription("murder_run.command.help.info")
   @Command("murder help [query]")
-  public void commandHelp(
-      final CommandSender sender, @Argument(value = "query") @Greedy final String query) {
+  public void commandHelp(final CommandSender sender, @Greedy final String query) {
     this.minecraftHelp.queryCommands(query == null ? "" : query, sender);
   }
 }

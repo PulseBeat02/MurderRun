@@ -44,24 +44,24 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    this.sendConsoleMessage(Locale.PLUGIN_DISABLE.build());
     this.dependencyCheck();
     this.updatePluginData();
     this.stopHostingDaemon();
     this.shutdownMetrics();
     this.shutdownAudience();
+    this.sendConsoleMessage(Locale.PLUGIN_DISABLE.build());
   }
 
   @Override
   public void onEnable() {
     this.registerAudienceHandler();
-    this.sendConsoleMessage(Locale.PLUGIN_ENABLE.build());
     this.dependencyCheck();
     this.registerNMS();
     this.readPluginData();
     this.startHostingDaemon();
     this.registerCommands();
     this.enableBStats();
+    this.sendConsoleMessage(Locale.PLUGIN_ENABLE.build());
   }
 
   private void dependencyCheck() {

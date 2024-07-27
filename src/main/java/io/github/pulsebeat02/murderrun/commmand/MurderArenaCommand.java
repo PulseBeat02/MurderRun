@@ -17,7 +17,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
-import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 
@@ -110,8 +109,8 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.arena.set.name.info")
-  @Command(value = "murder arena set name <string>", requiredSender = Player.class)
-  public void setName(final Player sender, @Argument(value = "string") @Quoted final String name) {
+  @Command(value = "murder arena set name <name>", requiredSender = Player.class)
+  public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
     final Component message = Locale.ARENA_NAME.build(name);
     this.sendSuccessMessage(sender, message);

@@ -76,7 +76,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.game.create.info")
-  @Command(value = "murder game create <string> <string>", requiredSender = Player.class)
+  @Command(value = "murder game create <arenaName> <lobbyName>", requiredSender = Player.class)
   public void createGame(
       final Player sender,
       @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
@@ -215,7 +215,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.game.invite.info")
-  @Command(value = "murder game invite <player>", requiredSender = Player.class)
+  @Command(value = "murder game invite <invite>", requiredSender = Player.class)
   public void invitePlayer(final Player sender, final Player invite) {
 
     final Audience audience = this.audiences.player(sender);
@@ -239,7 +239,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.game.join.info")
-  @Command(value = "murder game join <player>", requiredSender = Player.class)
+  @Command(value = "murder game join <owner>", requiredSender = Player.class)
   public void joinGame(final Player sender, final Player owner) {
 
     final Audience audience = this.audiences.player(sender);
@@ -315,7 +315,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.game.kick.info")
-  @Command(value = "murder game kick <player>", requiredSender = Player.class)
+  @Command(value = "murder game kick <kick>", requiredSender = Player.class)
   public void kickPlayer(final Player sender, final Player kick) {
 
     final Audience audience = this.audiences.player(sender);
@@ -366,7 +366,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.game.set.murderer.info")
-  @Command(value = "murder game set <player> murderer", requiredSender = Player.class)
+  @Command(value = "murder game set murderer <murderer>", requiredSender = Player.class)
   public void setMurderer(final Player sender, final Player murderer) {
 
     final Audience audience = this.audiences.player(sender);
@@ -384,7 +384,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.game.set.innocent.info")
-  @Command(value = "murder game set <player> innocent", requiredSender = Player.class)
+  @Command(value = "murder game set innocent <innocent>", requiredSender = Player.class)
   public void setInnocent(final Player sender, final Player innocent) {
 
     final Audience audience = this.audiences.player(sender);
@@ -402,7 +402,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   }
 
   @CommandDescription("murder_run.command.game.set.car_part_count.info")
-  @Command(value = "murder game set car-par-count <int>", requiredSender = Player.class)
+  @Command(value = "murder game set car-part-count <count>", requiredSender = Player.class)
   public void setCarPartCount(final Player sender, final int count) {
 
     final Audience audience = this.audiences.player(sender);

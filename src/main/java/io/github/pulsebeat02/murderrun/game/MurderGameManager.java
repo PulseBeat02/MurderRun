@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -57,8 +58,8 @@ public final class MurderGameManager {
     }
 
     final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
-    final AttributeModifier modifier =
-        new AttributeModifier("generic.attackDamage", 8, AttributeModifier.Operation.ADD_NUMBER);
+    final AttributeModifier modifier = new AttributeModifier(
+        attribute.getKey(), 8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ANY);
     meta.setCustomModelData(1);
     meta.addAttributeModifier(attribute, modifier);
 
