@@ -13,7 +13,7 @@ public interface LocaleParent {
   TranslationManager MANAGER = new TranslationManager();
 
   NullComponent<Sender> PREFIX = () ->
-      text().color(RED).append(text('['), text("Murder Run", AQUA), text(']')).build();
+      text().color(GOLD).append(text('['), text("Murder Run", RED), text(']')).build();
 
   static NullComponent<Sender> direct(final String key) {
     return () -> format(MANAGER.render(translatable(key)));

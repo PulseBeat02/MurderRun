@@ -10,6 +10,7 @@ public final class MurderMap {
   private CarPartManager carPartManager;
   private GameEventManager eventManager;
   private MurderMapResetManager resetManager;
+  private TruckManager truckManager;
 
   public MurderMap(final MurderGame game) {
     this.game = game;
@@ -33,6 +34,7 @@ public final class MurderMap {
     this.carPartManager = new CarPartManager(this);
     this.eventManager = new GameEventManager(this);
     this.resetManager = new MurderMapResetManager(this);
+    this.truckManager = new TruckManager(this);
   }
 
   private void registerEvents() {
@@ -55,6 +57,7 @@ public final class MurderMap {
 
   private void stopExecutors() {
     this.carPartManager.shutdownExecutor();
+    this.truckManager.shutdownExecutor();
   }
 
   private void resetWorld() {
@@ -67,5 +70,9 @@ public final class MurderMap {
 
   public CarPartManager getCarPartManager() {
     return this.carPartManager;
+  }
+
+  public TruckManager getTruckManager() {
+    return this.truckManager;
   }
 }

@@ -11,8 +11,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class ArgumentTag implements TagResolver {
 
-  private static final String NAME = "argument";
-  private static final String NAME_1 = "arg";
+  private static final String NAME = "arg";
 
   private final List<? extends ComponentLike> argumentComponents;
 
@@ -36,6 +35,6 @@ public class ArgumentTag implements TagResolver {
 
   @Override
   public boolean has(final String name) {
-    return name.equals(NAME) || name.equals(NAME_1);
+    return name.equals(NAME);
   }
 }

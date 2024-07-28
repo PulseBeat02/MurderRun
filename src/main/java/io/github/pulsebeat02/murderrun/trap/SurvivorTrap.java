@@ -20,7 +20,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Rewind -- rewinds player 5 seconds (must use circular buffer)
   Murderer Rewind -- rewinds murderer 5 seconds
   Resurrection Stone -- resurrects a dead player
-  Corpus Warp -- teleports to the nearest corpse
+  Corpus Warp -- teleports to the nearest dead player
   Ghosting -- become a ghost after death
   Excavator -- destroy 10 blocks
   Distort Trap -- spawn guardians all over murderer until trap destroyed
@@ -28,7 +28,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Med Bot -- constant heal pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
-  Medkit -- instantly heal health
+  Med Kit -- instantly heal health
   Jump Scare Trap -- jump scares if killer gets too close
   Smoke Trap -- makes killer dizzy, blind and slowed
   Diamond Armor -- gear

@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import java.util.*;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -23,8 +24,6 @@ import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.type.tuple.Pair;
-
-import java.util.*;
 
 @SuppressWarnings("nullness")
 public final class MurderGameCommand implements AnnotationCommandFeature {
@@ -221,7 +220,9 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
 
     final Audience audience = this.audiences.player(sender);
     final Pair<MurderGameManager, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data) || this.checkIfNotSamePlayer(audience, sender, invite)) {
+    if (this.checkIfInNoGame(audience, data)
+        || this.checkIfNotOwner(audience, data)
+        || this.checkIfNotSamePlayer(audience, sender, invite)) {
       return;
     }
 
@@ -239,7 +240,8 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
     invited.sendMessage(player);
   }
 
-  private boolean checkIfNotSamePlayer(final Audience audience, final Player sender, final Player invite) {
+  private boolean checkIfNotSamePlayer(
+      final Audience audience, final Player sender, final Player invite) {
     if (sender == invite) {
       final Component message = Locale.GAME_INVITE_ERROR.build();
       audience.sendMessage(message);

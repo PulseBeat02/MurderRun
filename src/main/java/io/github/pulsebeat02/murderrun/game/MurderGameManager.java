@@ -65,6 +65,7 @@ public final class MurderGameManager {
 
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     container.set(NamespacedKeys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true);
+    container.set(NamespacedKeys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true);
 
     stack.setItemMeta(meta);
 

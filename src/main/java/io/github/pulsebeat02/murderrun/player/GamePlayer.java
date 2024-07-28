@@ -40,6 +40,7 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
 
   public void onMatchStart() {
     final Player player = this.getPlayer();
+    player.setGameMode(GameMode.ADVENTURE);
     player.setHealth(20f);
     player.setFoodLevel(20);
   }

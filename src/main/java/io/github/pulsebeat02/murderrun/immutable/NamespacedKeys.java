@@ -12,6 +12,7 @@ public final class NamespacedKeys {
   public static final NamespacedKey SPECIAL_SWORD = createKey("sword");
   public static final NamespacedKey CAR_PART_UUID = createKey("car-part-uuid");
   public static final NamespacedKey TRAP_KEY_NAME = createKey("trap");
+  public static final NamespacedKey CAN_BREAK_BLOCKS = createKey("can-break-blocks");
 
   static {
     final Server server = Bukkit.getServer();

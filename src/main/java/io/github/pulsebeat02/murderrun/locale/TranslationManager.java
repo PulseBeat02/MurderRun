@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.locale;
 
+import static net.kyori.adventure.text.Component.empty;
+
 import io.github.pulsebeat02.murderrun.locale.minimessage.MurderTranslator;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
@@ -11,7 +13,6 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.translation.GlobalTranslator;
-import net.kyori.adventure.translation.TranslationRegistry;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class TranslationManager {
@@ -19,28 +20,12 @@ public final class TranslationManager {
   private static final java.util.Locale DEFAULT_LOCALE = Locale.ENGLISH;
   private static final Key ADVENTURE_KEY = Key.key("murder_run", "main");
 
-  private final TranslationRegistry registry;
   private final ResourceBundle bundle;
   private final MurderTranslator translator;
 
   public TranslationManager() {
-    this.registry = TranslationRegistry.create(ADVENTURE_KEY);
-    this.registry.defaultLocale(DEFAULT_LOCALE);
-    this.translator = new MurderTranslator(ADVENTURE_KEY, this.registry);
     this.bundle = this.getBundle();
-    this.registerTranslations();
-  }
-
-  private void registerTranslations() {
-    this.registerLocale();
-    this.addGlobalRegistry();
-  }
-
-  private void registerLocale() {
-    this.registry.registerAll(DEFAULT_LOCALE, this.bundle, false);
-  }
-
-  private void addGlobalRegistry() {
+    this.translator = new MurderTranslator(ADVENTURE_KEY, this.bundle);
     GlobalTranslator.translator().addSource(this.translator);
   }
 
@@ -57,11 +42,8 @@ public final class TranslationManager {
     return this.bundle.getString(key);
   }
 
-  public TranslationRegistry getRegistry() {
-    return this.registry;
-  }
-
   public Component render(final TranslatableComponent component) {
-    return GlobalTranslator.render(component, DEFAULT_LOCALE);
+    final Component translated = this.translator.translate(component, DEFAULT_LOCALE);
+    return translated == null ? empty() : translated;
   }
 }

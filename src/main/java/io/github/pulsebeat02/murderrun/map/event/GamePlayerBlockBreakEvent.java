@@ -5,14 +5,18 @@ import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public final class GamePlayerBlockBreakEvent implements Listener {
 
@@ -30,6 +34,12 @@ public final class GamePlayerBlockBreakEvent implements Listener {
   private void onBlockBreakEvent(final BlockBreakEvent event) {
 
     final Player player = event.getPlayer();
+    final PlayerInventory inventory = player.getInventory();
+    final ItemStack hand = inventory.getItemInMainHand();
+    if (!ItemStackUtils.canBreakMapBlocks(hand)) {
+      return;
+    }
+
     final Optional<GamePlayer> optional = PlayerUtils.checkIfValidPlayer(this.game, player);
     if (optional.isEmpty()) {
       return;
@@ -41,5 +51,10 @@ public final class GamePlayerBlockBreakEvent implements Listener {
       AdventureUtils.playSoundForAllParticipantsAtLocation(
           this.game, murdererLocation, FXSound.CHAINSAW);
     }
+
+    event.setCancelled(true);
+
+    final Block block = event.getBlock();
+    block.breakNaturally();
   }
 }
