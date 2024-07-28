@@ -18,6 +18,8 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Jump Scare Trap -- jump scares if killer gets too close
   Smoke Trap -- makes killer dizzy, blind and slowed
   Med Kit -- instantly heal health
+  Diamond Armor -- gear
+  Excavator -- destroy 10 blocks
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -26,12 +28,10 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Murderer Rewind -- rewinds murderer 5 seconds
   Resurrection Stone -- resurrects a dead player
   Ghosting -- become a ghost after death
-  Excavator -- destroy 10 blocks
   Horcrux -- respawn after death
   Med Bot -- constant heal pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
-  Diamond Armor -- gear
   Levitation Trap -- sends the killer into the sky temporarily
   Cage Trap -- traps the killer in a cage
   Blind Trap -- blinds the killer who steps on it

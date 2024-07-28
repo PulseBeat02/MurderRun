@@ -20,8 +20,8 @@ public final class BearTrap extends SurvivorTrap {
     }
 
     @Override
-    public void activate(final MurderGame game, final GamePlayer murderer) {
-        super.activate(game, murderer);
+    public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+        super.onTrapActivate(game, murderer);
         murderer.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 127));
         murderer.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20, -1));
     }

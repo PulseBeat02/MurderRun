@@ -185,7 +185,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> MED_KIT_TRAP_LORE = direct("murder_run.game.trap.med_kit.lore");
   NullComponent<Sender> JUMP_SCARE_TRAP_LORE = direct("murder_run.game.trap.jump_scare.lore");
   NullComponent<Sender> SMOKE_TRAP_LORE = direct("murder_run.game.trap.smoke.lore");
-  NullComponent<Sender> DIAMOND_ARMOR_TRAP_LORE = direct("murder_run.game.trap.diamond_armor.lore");
   NullComponent<Sender> LEVITATION_TRAP_LORE = direct("murder_run.game.trap.levitation.lore");
   NullComponent<Sender> CAGE_TRAP_LORE = direct("murder_run.game.trap.cage.lore");
   NullComponent<Sender> BLIND_TRAP_LORE = direct("murder_run.game.trap.blind.lore");
@@ -288,5 +287,8 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> MED_BOT_TRAP_DEACTIVATE = direct("murder_run.game.trap.med_bot.deactivate");
   NullComponent<Sender> PARASITE_TRAP_DEACTIVATE = direct("murder_run.game.trap.parasite.deactivate");
   NullComponent<Sender> DISTORTER_TRAP_DEACTIVATE = direct("murder_run.game.trap.distorter.deactivate");
-
+  NullComponent<Sender> SURVIVOR_HELMET = direct("murder_run.game.trap.helmet");
+  NullComponent<Sender> SURVIVOR_CHESTPLATE = direct("murder_run.game.trap.chestplate");
+  NullComponent<Sender> SURVIVOR_LEGGINGS = direct("murder_run.game.trap.leggings");
+  NullComponent<Sender> SURVIVOR_BOOTS = direct("murder_run.game.trap.boots");
 }

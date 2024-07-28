@@ -21,8 +21,8 @@ public final class GlowTrap extends SurvivorTrap {
   }
 
   @Override
-  public void activate(final MurderGame game, final GamePlayer murderer) {
-    super.activate(game, murderer);
+  public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+    super.onTrapActivate(game, murderer);
     PlayerUtils.setGlowColor(murderer, ChatColor.RED);
     SchedulingUtils.scheduleTask(() -> PlayerUtils.removeGlow(murderer), 7 * 20);
   }

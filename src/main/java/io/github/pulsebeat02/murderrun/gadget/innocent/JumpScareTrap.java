@@ -27,8 +27,8 @@ public final class JumpScareTrap extends SurvivorTrap {
     }
 
     @Override
-    public void activate(final MurderGame game, final GamePlayer murderer) {
-        super.activate(game, murderer);
+    public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+        super.onTrapActivate(game, murderer);
         final Location location = murderer.getLocation();
         final ItemStack before = this.setPumpkinItemStack(murderer);
         murderer.playSound(location, FXSound.JUMP_SCARE.getSoundName(), SoundCategory.MASTER, 1, 1);

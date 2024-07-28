@@ -23,8 +23,8 @@ public final class HackTrap extends SurvivorTrap {
   }
 
   @Override
-  public void activate(final MurderGame game, final GamePlayer murderer) {
-    super.activate(game, murderer);
+  public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+    super.onTrapActivate(game, murderer);
     final ItemStack stack = this.removeSwordItemStack(murderer);
     if (stack != null) {
       SchedulingUtils.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20);

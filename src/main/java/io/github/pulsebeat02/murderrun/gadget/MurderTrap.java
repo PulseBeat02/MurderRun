@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public abstract sealed class MurderTrap extends MurderGadget permits SurvivorTrap, KillerTrap {
 
@@ -25,9 +26,11 @@ public abstract sealed class MurderTrap extends MurderGadget permits SurvivorTra
         return this.announcement;
     }
 
+    public void onRightClickEvent(final MurderGame game, final PlayerInteractEvent event) {}
+
     public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {}
 
-    public void activate(final MurderGame game, final GamePlayer activee) {
+    public void onTrapActivate(final MurderGame game, final GamePlayer activee) {
         if (this.announcement == null) {
             return;
         }
