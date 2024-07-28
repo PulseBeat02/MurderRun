@@ -84,6 +84,7 @@ public interface Locale extends LocaleParent {
       direct("murder_run.command.game.invalid_invite_error");
   NullComponent<Sender> GAME_LOW_PLAYER_COUNT_ERROR =
       direct("murder_run.command.game.low_player_count_error");
+  NullComponent<Sender> GAME_INVITE_ERROR = direct("murder_run.command.game.invite_error");
 
   NullComponent<Sender> VILLAGER_SPAWN = direct("murder_run.command.villager");
 
