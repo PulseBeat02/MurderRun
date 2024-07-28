@@ -1,11 +1,11 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.gadget.GameTrap;
 import io.github.pulsebeat02.murderrun.lobby.VillagerLobbyTrader;
 import io.github.pulsebeat02.murderrun.lobby.VillagerTrade;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.gadget.GameTrap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

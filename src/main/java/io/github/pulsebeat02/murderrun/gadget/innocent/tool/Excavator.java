@@ -8,15 +8,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public final class Excavator extends MurderGadget {
 
-    public Excavator() {
-        super("Excavator", Material.DIAMOND_PICKAXE, Locale.EXCAVATOR_TRAP_NAME.build(), Locale.EXCAVATOR_TRAP_LORE.build(), stack -> {
-            final ItemMeta meta = stack.getItemMeta();
-            if (meta instanceof final Damageable damageable) {
-                final int max = damageable.getMaxDamage();
-                final int damage = max - 9;
-                damageable.setDamage(damage);
-            }
-            stack.setItemMeta(meta);
+  public Excavator() {
+    super(
+        "excavator",
+        Material.DIAMOND_PICKAXE,
+        Locale.EXCAVATOR_TRAP_NAME.build(),
+        Locale.EXCAVATOR_TRAP_LORE.build(),
+        stack -> {
+          final ItemMeta meta = stack.getItemMeta();
+          if (meta instanceof final Damageable damageable) {
+            final int max = damageable.getMaxDamage();
+            final int damage = max - 9;
+            damageable.setDamage(damage);
+          }
+          stack.setItemMeta(meta);
         });
-    }
+  }
 }

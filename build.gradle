@@ -71,6 +71,8 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs.add("-parameters")
     options.encoding = 'UTF-8'
     options.release.set(targetJavaVersion)
+    options.fork = true
+    options.forkOptions.setMemoryMaximumSize("4g")
 }
 
 runServer {

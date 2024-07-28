@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.gadget.innocent;
 
+import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ public final class HackTrap extends SurvivorTrap {
 
   public HackTrap() {
     super(
-        "Hack Trap",
+        "hack",
         Material.EMERALD_BLOCK,
         Locale.HACK_TRAP_NAME.build(),
         Locale.HACK_TRAP_LORE.build(),

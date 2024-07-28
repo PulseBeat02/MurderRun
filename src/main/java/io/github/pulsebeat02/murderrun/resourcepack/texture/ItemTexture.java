@@ -19,8 +19,8 @@ public enum ItemTexture {
   }
 
   private Texture loadModel(@UnderInitialization ItemTexture this, final String name) {
-      final CustomTexture tex = new CustomTexture(name);
-      return tex.build();
+    final CustomTexture tex = new CustomTexture(name);
+    return tex.build();
   }
 
   public Texture getTexture() {

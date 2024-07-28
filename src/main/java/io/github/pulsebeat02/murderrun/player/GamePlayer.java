@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.player;
 
+import static net.kyori.adventure.title.Title.title;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.MurderSettings;
@@ -7,6 +9,9 @@ import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -19,12 +24,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
-import static net.kyori.adventure.title.Title.title;
 
 public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
 
@@ -91,7 +90,13 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
     this.spawnParticle(particle, location, count, 0, 0, 0);
   }
 
-  public void spawnParticle(final Particle particle, final Location location, final int count, final double offSetX, final double offSetY, final double offSetZ) {
+  public void spawnParticle(
+      final Particle particle,
+      final Location location,
+      final int count,
+      final double offSetX,
+      final double offSetY,
+      final double offSetZ) {
     final Player player = this.getPlayer();
     player.spawnParticle(particle, location, count, offSetX, offSetY, offSetZ);
   }

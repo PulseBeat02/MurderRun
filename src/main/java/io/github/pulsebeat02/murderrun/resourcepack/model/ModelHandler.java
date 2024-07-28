@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.resourcepack.model;
 
 import io.github.pulsebeat02.murderrun.resourcepack.texture.CustomTexture;
 import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
-
 import java.util.ArrayList;
 import java.util.List;
 import net.kyori.adventure.key.Key;
@@ -50,9 +49,9 @@ public final class ModelHandler {
     final ItemOverride override = ItemOverride.of(key, predicate);
     final List<ItemOverride> list = List.of(override);
     return Model.model()
-            .key(Key.key("item/carved_pumpkin"))
-            .parent(Key.key("item/generated"))
-            .overrides(list)
-            .build();
+        .key(Key.key("item/carved_pumpkin"))
+        .parent(Key.key("item/generated"))
+        .overrides(list)
+        .build();
   }
 }

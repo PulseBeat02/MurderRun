@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.gadget.innocent;
 
+import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import org.bukkit.ChatColor;
@@ -13,7 +13,7 @@ public final class GlowTrap extends SurvivorTrap {
 
   public GlowTrap() {
     super(
-        "Glow Trap",
+        "glow",
         Material.GLOWSTONE,
         Locale.GLOW_TRAP_NAME.build(),
         Locale.GLOW_TRAP_LORE.build(),

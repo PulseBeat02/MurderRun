@@ -1,12 +1,11 @@
 package io.github.pulsebeat02.murderrun.player;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.UUID;
 
 public final class Murderer extends GamePlayer {
   public Murderer(final MurderGame game, final UUID uuid) {

@@ -5,7 +5,7 @@ import org.bukkit.Material;
 
 public final class SurvivorChestplate extends SurvivorGear {
 
-    public SurvivorChestplate() {
-        super("Survivor Chestplate", Material.DIAMOND_CHESTPLATE, Locale.SURVIVOR_CHESTPLATE.build());
-    }
+  public SurvivorChestplate() {
+    super("survivor_chestplate", Material.DIAMOND_CHESTPLATE, Locale.SURVIVOR_CHESTPLATE.build());
+  }
 }

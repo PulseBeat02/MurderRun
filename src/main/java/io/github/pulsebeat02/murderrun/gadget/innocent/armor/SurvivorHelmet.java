@@ -5,7 +5,7 @@ import org.bukkit.Material;
 
 public final class SurvivorHelmet extends SurvivorGear {
 
-    public SurvivorHelmet() {
-        super("Survivor Helmet", Material.DIAMOND_HELMET, Locale.SURVIVOR_HELMET.build());
-    }
+  public SurvivorHelmet() {
+    super("survivor_helmet", Material.DIAMOND_HELMET, Locale.SURVIVOR_HELMET.build());
+  }
 }
