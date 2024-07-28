@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.commmand;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.List;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
@@ -14,6 +13,8 @@ import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.RichDescription;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
+
+import java.util.List;
 
 @SuppressWarnings("nullness")
 public final class AnnotationParserHandler {
@@ -102,7 +103,9 @@ public final class AnnotationParserHandler {
   }
 
   public void registerCommands() {
-    this.features.forEach(feature -> feature.registerFeature(this.plugin, this.parser));
-    this.features.forEach(this.parser::parse);
+    this.features.forEach(feature -> {
+      feature.registerFeature(this.plugin, this.parser);
+      this.parser.parse(feature);
+    });
   }
 }
