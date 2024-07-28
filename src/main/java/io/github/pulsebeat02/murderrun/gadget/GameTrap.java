@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.trap;
+package io.github.pulsebeat02.murderrun.gadget;
 
 import org.bukkit.inventory.ItemStack;
 

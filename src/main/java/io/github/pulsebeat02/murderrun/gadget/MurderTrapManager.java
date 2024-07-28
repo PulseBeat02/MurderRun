@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.trap;
+package io.github.pulsebeat02.murderrun.gadget;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 

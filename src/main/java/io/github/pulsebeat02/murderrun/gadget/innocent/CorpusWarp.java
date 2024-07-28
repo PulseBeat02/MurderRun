@@ -1,12 +1,14 @@
-package io.github.pulsebeat02.murderrun.trap.innocent;
+package io.github.pulsebeat02.murderrun.gadget.innocent;
 
+import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.trap.SurvivorTrap;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
@@ -41,6 +43,7 @@ public final class CorpusWarp extends SurvivorTrap {
                 return;
             }
             player.teleport(location);
+            target.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
         }
     }
 }

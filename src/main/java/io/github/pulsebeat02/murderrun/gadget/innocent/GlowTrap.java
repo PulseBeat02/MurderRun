@@ -1,15 +1,13 @@
-package io.github.pulsebeat02.murderrun.trap.innocent;
+package io.github.pulsebeat02.murderrun.gadget.innocent;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.Murderer;
-import io.github.pulsebeat02.murderrun.trap.SurvivorTrap;
+import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class GlowTrap extends SurvivorTrap {
 
