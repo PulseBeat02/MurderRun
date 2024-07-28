@@ -30,8 +30,8 @@ public final class MurderRun extends JavaPlugin {
   - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
 
-  - Fix Commands for Console not Working
   - Fix Locale (not parsing {0}, etc arguments)
+  - Spawn Particle Effects on Truck
 
    */
 

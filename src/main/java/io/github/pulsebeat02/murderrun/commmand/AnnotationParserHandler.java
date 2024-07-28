@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotations.AnnotationParser;
+import org.incendo.cloud.brigadier.BrigadierSetting;
 import org.incendo.cloud.exception.InvalidCommandSenderException;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
@@ -81,7 +82,7 @@ public final class AnnotationParserHandler {
 
     final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(
         this.plugin, ExecutionCoordinator.simpleCoordinator());
-    manager.registerBrigadier();
+    manager.registerLegacyPaperBrigadier();
 
     return manager;
   }
