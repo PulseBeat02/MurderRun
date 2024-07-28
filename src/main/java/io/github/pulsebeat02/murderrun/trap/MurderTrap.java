@@ -1,10 +1,14 @@
 package io.github.pulsebeat02.murderrun.trap;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.Murderer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
@@ -82,19 +87,9 @@ public abstract sealed class MurderTrap implements Listener permits SurvivorTrap
     return this.name;
   }
 
-  public void scheduleTask(final Runnable runnable, final long delay) {
-    final PluginManager manager = Bukkit.getPluginManager();
-    final Plugin plugin = manager.getPlugin("MurderRun");
-    final BukkitScheduler scheduler = Bukkit.getScheduler();
-    if (plugin == null) {
-      throw new AssertionError("Failed to retrieve plugin class!");
-    }
-    scheduler.runTaskLater(plugin, runnable, delay);
-  }
+  public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {}
 
-  public void onDropEvent(final PlayerDropItemEvent event) {}
-
-  public void activate(final MurderGame game, final Murderer murderer) {
+  public void activate(final MurderGame game, final GamePlayer activee) {
     if (this.announcement == null) {
       return;
     }

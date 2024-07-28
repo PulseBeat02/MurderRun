@@ -11,19 +11,19 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
   Glow Trap -- makes killer glow
   Hack Trap -- removes sword
+  Bear Trap -- makes killer stuck and slowed for 10s
+  Corpus Warp -- teleports to a dead player
+  Distort Trap -- spawn guardians all over murderer until trap destroyed
+  Spasm Trap -- makes killer freak out alternating their head up and down
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
   Portal Trap -- teleports trap to killer
-  Bear Trap -- makes killer stuck and slowed for 10s
-  Spasm Trap -- makes killer freak out alternating their head up and down
   Rewind -- rewinds player 5 seconds (must use circular buffer)
   Murderer Rewind -- rewinds murderer 5 seconds
   Resurrection Stone -- resurrects a dead player
-  Corpus Warp -- teleports to the nearest dead player
   Ghosting -- become a ghost after death
   Excavator -- destroy 10 blocks
-  Distort Trap -- spawn guardians all over murderer until trap destroyed
   Horcrux -- respawn after death
   Med Bot -- constant heal pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration

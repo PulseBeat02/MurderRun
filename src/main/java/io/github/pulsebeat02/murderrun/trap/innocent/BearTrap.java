@@ -1,31 +1,28 @@
 package io.github.pulsebeat02.murderrun.trap.innocent;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.player.Murderer;
+import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.trap.SurvivorTrap;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public final class BearTrap extends SurvivorTrap {
-
-
 
     public BearTrap() {
         super(
                 "Bear Trap",
-                Material.BROWN_CONCRETE,
-                null, null, null);
+                Material.IRON_TRAPDOOR,
+                Locale.BEAR_TRAP_NAME.build(),
+                Locale.BEAR_TRAP_LORE.build(),
+                Locale.BEAR_TRAP_ACTIVATE.build());
     }
 
     @Override
-    public void onDropEvent(final PlayerDropItemEvent event) {}
-
-    @Override
-    public void activate(final MurderGame game, final Murderer murderer) {
+    public void activate(final MurderGame game, final GamePlayer murderer) {
         super.activate(game, murderer);
-        PlayerUtils.setGlowColor(murderer, ChatColor.RED);
-        this.scheduleTask(() -> PlayerUtils.removeGlow(murderer), 20 * 10);
+        murderer.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 127));
+        murderer.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20, -1));
     }
 }

@@ -247,6 +247,7 @@ public interface Locale extends LocaleParent {
 
   NullComponent<Sender> GLOW_TRAP_ACTIVATE = direct("murder_run.game.trap.glow.activate");
   NullComponent<Sender> HACK_TRAP_ACTIVATE = direct("murder_run.game.trap.hack.activate");
+  NullComponent<Sender> BEAR_TRAP_ACTIVATE = direct("murder_run.game.trap.bear.activate");
   NullComponent<Sender> PORTAL_TRAP_ACTIVATE = direct("murder_run.game.trap.portal.activate");
   NullComponent<Sender> SPASM_TRAP_ACTIVATE = direct("murder_run.game.trap.spasm.activate");
   NullComponent<Sender> RESURRECTION_STONE_TRAP_ACTIVATE = direct("murder_run.game.trap.resurrection_stone.activate");
@@ -282,7 +283,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> VIOLET_FORCE_FIELD_RIFT_TRAP_ACTIVATE = direct("murder_run.game.trap.violet_force_field_rift.activate");
   NullComponent<Sender> ZARYA_GRAVITRON_SURGE_TRAP_ACTIVATE = direct("murder_run.game.trap.zarya_gravitron_surge.activate");
   NullComponent<Sender> SHOCKWAVE_TRAP_ACTIVATE = direct("murder_run.game.trap.shockwave.activate");
-  NullComponent<Sender> DISTORTER_TRAP_ACTIVATE = direct("murder_run.game.trap.distorter.activate");
   NullComponent<Sender> CLICKBAIT_TRAP_ACTIVATE = direct("murder_run.game.trap.clickbait.activate");
   NullComponent<Sender> DEMONETIZED_TRAP_ACTIVATE = direct("murder_run.game.trap.demonetized.activate");
   NullComponent<Sender> MED_BOT_TRAP_DEACTIVATE = direct("murder_run.game.trap.med_bot.deactivate");

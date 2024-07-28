@@ -2,11 +2,11 @@ package io.github.pulsebeat02.murderrun.trap.innocent;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.player.Murderer;
+import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
+import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import org.bukkit.Material;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -23,18 +23,15 @@ public final class HackTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onDropEvent(final PlayerDropItemEvent event) {}
-
-  @Override
-  public void activate(final MurderGame game, final Murderer murderer) {
+  public void activate(final MurderGame game, final GamePlayer murderer) {
     super.activate(game, murderer);
     final ItemStack stack = this.removeSwordItemStack(murderer);
     if (stack != null) {
-      this.scheduleTask(() -> this.giveSwordBack(murderer, stack), 20 * 10);
+      SchedulingUtils.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20);
     }
   }
 
-  private @Nullable ItemStack removeSwordItemStack(final Murderer player) {
+  private @Nullable ItemStack removeSwordItemStack(final GamePlayer player) {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack[] slots = inventory.getContents();
     ItemStack find = null;
@@ -48,7 +45,7 @@ public final class HackTrap extends SurvivorTrap {
     return find;
   }
 
-  private void giveSwordBack(final Murderer player, final ItemStack stack) {
+  private void giveSwordBack(final GamePlayer player, final ItemStack stack) {
     final PlayerInventory inventory = player.getInventory();
     if (stack != null) {
       inventory.addItem(stack);
