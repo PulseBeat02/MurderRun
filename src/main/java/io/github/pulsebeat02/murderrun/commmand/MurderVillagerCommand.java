@@ -22,7 +22,7 @@ import org.incendo.cloud.annotations.*;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
-@SuppressWarnings("nullness")
+
 public final class MurderVillagerCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;

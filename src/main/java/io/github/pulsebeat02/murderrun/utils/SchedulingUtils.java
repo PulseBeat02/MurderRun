@@ -32,7 +32,7 @@ public final class SchedulingUtils {
   public static void scheduleRepeatingTaskDuration(
       final Runnable runnable, final long delay, final long period, final long duration) {
 
-    final long count = duration / period;
+    final long count = (duration + period - 1) / period; // ensures that we round up by 1
     final class CustomRunnable extends BukkitRunnable {
 
       final AtomicLong time = new AtomicLong(count);

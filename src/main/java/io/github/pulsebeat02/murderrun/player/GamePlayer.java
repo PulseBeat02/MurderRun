@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -104,6 +105,11 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
   public void addPotionEffect(final PotionEffect effect) {
     final Player player = this.getPlayer();
     player.addPotionEffect(effect);
+  }
+
+  public void removePotionEffect(final PotionEffectType type) {
+    final Player player = this.getPlayer();
+    player.removePotionEffect(type);
   }
 
   public void markDeath() {

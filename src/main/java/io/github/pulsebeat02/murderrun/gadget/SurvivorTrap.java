@@ -20,6 +20,10 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Med Kit -- instantly heal health
   Diamond Armor -- gear
   Excavator -- destroy 10 blocks
+  Levitation Trap -- sends the killer into the sky temporarily
+  Cage Trap -- traps the killer in a cage
+  Blind Trap -- blinds the killer who steps on it
+  Haunt Trap -- covers killers screen with freaky effects
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -32,10 +36,6 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Med Bot -- constant heal pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
-  Levitation Trap -- sends the killer into the sky temporarily
-  Cage Trap -- traps the killer in a cage
-  Blind Trap -- blinds the killer who steps on it
-  Haunt Trap -- covers killers screen with freaky effects
   Neck Snap Trap -- snaps killer neck to always look up
   Deadringer -- fake player death, fake kill them and then they become invulnerable
   Star Trap -- buffs all survivors with speed, resistance, and regneration when hit

@@ -20,7 +20,6 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 
-@SuppressWarnings("nullness")
 public final class MurderLobbyCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;

@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.gadget.innocent;
+package io.github.pulsebeat02.murderrun.gadget.innocent.utility;
 
 import io.github.pulsebeat02.murderrun.gadget.MurderGadget;
 import io.github.pulsebeat02.murderrun.locale.Locale;

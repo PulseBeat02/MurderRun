@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,6 +46,12 @@ public final class GamePlayerBlockBreakEvent implements Listener {
       return;
     }
 
+    final Block block = event.getBlock();
+    final Material material = block.getType();
+    if (material == Material.BEDROCK) {
+      return;
+    }
+
     final GamePlayer murderer = optional.get();
     final Location murdererLocation = murderer.getLocation();
     if (murderer instanceof Murderer) {
@@ -53,8 +60,6 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     }
 
     event.setCancelled(true);
-
-    final Block block = event.getBlock();
     block.breakNaturally();
   }
 }

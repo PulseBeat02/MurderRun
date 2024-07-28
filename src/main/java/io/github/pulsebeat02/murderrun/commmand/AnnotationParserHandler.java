@@ -16,35 +16,31 @@ import org.incendo.cloud.minecraft.extras.MinecraftExceptionHandler;
 import org.incendo.cloud.minecraft.extras.RichDescription;
 import org.incendo.cloud.paper.LegacyPaperCommandManager;
 
-@SuppressWarnings("nullness")
 public final class AnnotationParserHandler {
 
-  private final MurderRun plugin;
   private final List<AnnotationCommandFeature> features;
   private final CommandManager<CommandSender> manager;
   private final AnnotationParser<CommandSender> parser;
 
   public AnnotationParserHandler(final MurderRun plugin) {
-    if (plugin == null) {
-      throw new AssertionError("MurderRun has been unloaded!");
-    }
-    this.plugin = plugin;
     this.features = List.of(
         new MurderArenaCommand(),
         new MurderLobbyCommand(),
         new MurderHelpCommand(),
         new MurderGameCommand(),
         new MurderVillagerCommand());
-    this.manager = this.getCommandManager();
+    this.manager = this.getCommandManager(plugin);
     this.parser = this.getAnnotationParser();
   }
 
+  @SuppressWarnings("nullness")
   private CommandManager<CommandSender> getCommandManager(
-      @UnderInitialization AnnotationParserHandler this) {
+      @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
 
-    final CommandManager<CommandSender> manager = this.createBasicManager();
-    final AudienceHandler handler = this.plugin.getAudience();
+    final CommandManager<CommandSender> manager = this.createBasicManager(plugin);
+    final AudienceHandler handler = plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
+
     MinecraftExceptionHandler.create(audiences::sender)
         .defaultHandlers()
         .handler(InvalidCommandSenderException.class, (sender, e) -> Locale.NOT_PLAYER.build())
@@ -68,19 +64,15 @@ public final class AnnotationParserHandler {
   }
 
   private CommandManager<CommandSender> createBasicManager(
-      @UnderInitialization AnnotationParserHandler this) {
+      @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
 
     final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(
-        this.plugin, ExecutionCoordinator.simpleCoordinator());
+        plugin, ExecutionCoordinator.simpleCoordinator());
     if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
       manager.registerLegacyPaperBrigadier();
     }
 
     return manager;
-  }
-
-  public MurderRun getPlugin() {
-    return this.plugin;
   }
 
   public CommandManager<CommandSender> getManager() {
@@ -95,9 +87,9 @@ public final class AnnotationParserHandler {
     return this.parser;
   }
 
-  public void registerCommands() {
+  public void registerCommands(final MurderRun plugin) {
     this.features.forEach(feature -> {
-      feature.registerFeature(this.plugin, this.parser);
+      feature.registerFeature(plugin, this.parser);
       this.parser.parse(feature);
     });
   }

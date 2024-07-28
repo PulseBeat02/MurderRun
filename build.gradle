@@ -120,7 +120,7 @@ shadowJar {
 
 checkerFramework {
     checkers = ['org.checkerframework.checker.nullness.NullnessChecker']
-    extraJavacArgs = ['-AsuppressWarnings=uninitialized']
+    extraJavacArgs = ['-AsuppressWarnings=uninitialized', '-Astubs=%s/checker-framework/OfflinePlayer.astub'.formatted(projectDir)]
 }
 
 spotless {

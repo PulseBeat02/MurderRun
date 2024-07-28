@@ -109,7 +109,7 @@ public final class MurderRun extends JavaPlugin {
 
   private void registerCommands() {
     this.commandHandler = new AnnotationParserHandler(this);
-    this.commandHandler.registerCommands();
+    this.commandHandler.registerCommands(this);
   }
 
   private void registerAudienceHandler() {

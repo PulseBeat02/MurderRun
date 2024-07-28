@@ -1,0 +1,12 @@
+package org.bukkit;
+
+import org.bukkit.permissions.ServerOperator;
+import org.bukkit.entity.AnimalTamer;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+public interface OfflinePlayer extends ServerOperator, AnimalTamer, ConfigurationSerializable {
+
+  @NonNull
+  public Location getLocation();
+}
