@@ -30,7 +30,7 @@ public final class MurderMap {
     this.spawnParts();
   }
 
-  public void createManagers() {
+  private void createManagers() {
     this.carPartManager = new CarPartManager(this);
     this.eventManager = new GameEventManager(this);
     this.resetManager = new MurderMapResetManager(this);
@@ -43,6 +43,7 @@ public final class MurderMap {
 
   private void spawnParts() {
     this.carPartManager.spawnParts();
+    this.truckManager.spawnParticles();
   }
 
   public void shutdown() {

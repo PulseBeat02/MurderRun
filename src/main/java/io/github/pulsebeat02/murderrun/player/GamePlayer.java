@@ -88,8 +88,12 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
   }
 
   public void spawnParticle(final Particle particle, final Location location, final int count) {
+    this.spawnParticle(particle, location, count, 0, 0, 0);
+  }
+
+  public void spawnParticle(final Particle particle, final Location location, final int count, final double offSetX, final double offSetY, final double offSetZ) {
     final Player player = this.getPlayer();
-    player.spawnParticle(particle, location, count);
+    player.spawnParticle(particle, location, count, offSetX, offSetY, offSetZ);
   }
 
   public void addPotionEffect(final PotionEffect effect) {

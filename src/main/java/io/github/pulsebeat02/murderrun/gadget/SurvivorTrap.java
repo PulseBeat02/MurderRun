@@ -15,6 +15,9 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Corpus Warp -- teleports to a dead player
   Distort Trap -- spawn guardians all over murderer until trap destroyed
   Spasm Trap -- makes killer freak out alternating their head up and down
+  Jump Scare Trap -- jump scares if killer gets too close
+  Smoke Trap -- makes killer dizzy, blind and slowed
+  Med Kit -- instantly heal health
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -28,9 +31,6 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Med Bot -- constant heal pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
-  Med Kit -- instantly heal health
-  Jump Scare Trap -- jump scares if killer gets too close
-  Smoke Trap -- makes killer dizzy, blind and slowed
   Diamond Armor -- gear
   Levitation Trap -- sends the killer into the sky temporarily
   Cage Trap -- traps the killer in a cage
@@ -89,6 +89,8 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
   Demonetized -- if activated then youtube police spawns on killer
   Jetpack -- you can fly temporarily
+
+  Also add speed, resistance, and regeneration pendants
 
    */
 

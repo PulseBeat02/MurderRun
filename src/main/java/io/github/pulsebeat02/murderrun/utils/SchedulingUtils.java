@@ -32,21 +32,22 @@ public final class SchedulingUtils {
 
     public static void scheduleRepeatingTaskDuration(final Runnable runnable, final long delay, final long period, final long duration) {
 
+        final long count = duration / period;
         final class CustomRunnable extends BukkitRunnable {
 
-            final AtomicLong time = new AtomicLong(duration);
+            final AtomicLong time = new AtomicLong(count);
 
             @Override
             public void run() {
                 runnable.run();
-                final long raw = time.decrementAndGet();
+                final long raw = this.time.decrementAndGet();
                 if (raw <= 0) {
                     this.cancel();
                 }
             }
         }
 
-        CustomRunnable custom = new CustomRunnable();
+        final CustomRunnable custom = new CustomRunnable();
         custom.runTaskTimer(PLUGIN, delay, period);
 
     }

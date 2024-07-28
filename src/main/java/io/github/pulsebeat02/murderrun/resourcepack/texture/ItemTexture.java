@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.resourcepack.texture;
 
-import java.io.IOException;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.texture.Texture;
 
@@ -20,12 +19,8 @@ public enum ItemTexture {
   }
 
   private Texture loadModel(@UnderInitialization ItemTexture this, final String name) {
-    try {
       final CustomTexture tex = new CustomTexture(name);
       return tex.build();
-    } catch (final IOException e) {
-      throw new AssertionError(String.format("Failed to load texture %s.png!", name), e);
-    }
   }
 
   public Texture getTexture() {

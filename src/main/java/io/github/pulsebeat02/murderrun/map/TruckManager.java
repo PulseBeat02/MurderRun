@@ -34,6 +34,7 @@ public final class TruckManager {
       throw new AssertionError("Location doesn't have World attached to it!");
     }
     world.spawnParticle(Particle.LAVA, truck, 10, 0.5, 0.5, 0.5);
+    world.spawnParticle(Particle.SMOKE, truck, 10, 0.5, 0.5, 0.5);
   }
 
   public void shutdownExecutor() {

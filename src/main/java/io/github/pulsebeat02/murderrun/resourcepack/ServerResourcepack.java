@@ -56,6 +56,7 @@ public final class ServerResourcepack {
     final ModelHandler handler = new ModelHandler();
     this.pack.model(handler.customItemModelGenerator());
     this.pack.model(handler.customSwordGenerator());
+    this.pack.model(handler.customJumpScareGenerator());
   }
 
   private void addSounds() {
