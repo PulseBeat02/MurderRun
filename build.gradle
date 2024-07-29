@@ -12,9 +12,6 @@ group = 'io.github.pulsebeat02'
 version = '1.21-v1.0.0'
 description = 'MurderRun'
 
-assemble.dependsOn(shadowJar);
-assemble.dependsOn(spotlessApply)
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -67,6 +64,11 @@ java {
     }
 }
 
+assemble {
+    dependsOn 'spotlessApply'
+    dependsOn 'shadowJar'
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs.add("-parameters")
     options.encoding = 'UTF-8'
@@ -77,8 +79,8 @@ tasks.withType(JavaCompile).configureEach {
 
 runServer {
     downloadPlugins {
-        url('https://cdn.modrinth.com/data/S0GwusT4/versions/lPHdbL5F/WETS-0.0.3-bukkit.jar')
-        url('https://cdn.modrinth.com/data/1u6JkXh5/versions/Jo76t1oi/worldedit-bukkit-7.3.5.jar')
+        url 'https://cdn.modrinth.com/data/S0GwusT4/versions/lPHdbL5F/WETS-0.0.3-bukkit.jar'
+        url 'https://cdn.modrinth.com/data/1u6JkXh5/versions/Jo76t1oi/worldedit-bukkit-7.3.5.jar'
     }
     minecraftVersion('1.21')
 }
@@ -91,10 +93,8 @@ sourceSets {
 }
 
 processResources {
-
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     rename('plugin.json', 'plugin.yml')
-
     def props = [version: version]
     inputs.properties props
     filteringCharset 'UTF-8'
@@ -104,14 +104,12 @@ processResources {
 }
 
 shadowJar {
-
     relocate('org.bstats', 'io.github.pulsebeat02.murderrun.lib.org.bstats')
     relocate('net.kyori', 'io.github.pulsebeat02.murderrun.lib.net.kyori')
     relocate('team.unnamed', 'io.github.pulsebeat02.murderrun.lib.team.unnamed')
     relocate('org.incendo', 'io.github.pulsebeat02.murderrun.lib.org.incendo')
     relocate('me.lucko', "io.github.pulsebeat02.murderrun.lib.me.lucko")
     relocate('io.leangen', "io.github.pulsebeat02.murderrun.lib.io.leangen")
-
     dependencies {
         exclude(dependency('com.google.code.gson:gson:.*'))
         exclude(dependency('com.mojang:brigadier:.*'))
@@ -120,7 +118,8 @@ shadowJar {
 
 checkerFramework {
     checkers = ['org.checkerframework.checker.nullness.NullnessChecker']
-    extraJavacArgs = ['-AsuppressWarnings=uninitialized', '-Astubs=%s/checker-framework/OfflinePlayer.astub'.formatted(projectDir)]
+    extraJavacArgs = ['-AsuppressWarnings=uninitialized',
+                      '-Astubs=%s/checker-framework/OfflinePlayer.astub'.formatted(projectDir)]
 }
 
 spotless {
