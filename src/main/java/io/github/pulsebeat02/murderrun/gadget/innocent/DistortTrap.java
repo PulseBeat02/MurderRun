@@ -23,8 +23,7 @@ public final class DistortTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
-    SchedulingUtils.scheduleRepeatingTaskDuration(
-        () -> this.spawnParticle(murderer), 0, 5, 7 * 20);
+    SchedulingUtils.scheduleRepeatingTaskDuration(() -> this.spawnParticle(murderer), 0, 5, 7 * 20);
   }
 
   public void spawnParticle(final GamePlayer murderer) {

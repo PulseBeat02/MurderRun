@@ -33,7 +33,7 @@ public final class PackHostingDaemon {
     this.port = port;
   }
 
-  public void buildServer() {
+  public void buildPack() {
     final Path path = PACK.getPath();
     try (final InputStream stream = Files.newInputStream(path)) {
       final Writable writable = Writable.copyInputStream(stream);

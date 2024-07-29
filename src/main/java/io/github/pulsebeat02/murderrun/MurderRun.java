@@ -30,7 +30,7 @@ public final class MurderRun extends JavaPlugin {
   - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
 
-  - make traps have particle effects
+  - Make traps have particle effects
 
    */
 
@@ -103,7 +103,7 @@ public final class MurderRun extends JavaPlugin {
     final String hostName = this.configuration.getHostName();
     final int port = this.configuration.getPort();
     this.daemon = new PackHostingDaemon(hostName, port);
-    this.daemon.buildServer();
+    this.daemon.buildPack();
     this.daemon.start();
   }
 

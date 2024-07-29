@@ -9,6 +9,8 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -19,6 +21,7 @@ import org.bukkit.scoreboard.Team;
 public final class PlayerUtils {
 
   private static final Map<Player, Team> GLOW_TEAMS = new WeakHashMap<>();
+  private static final Map<UUID, WorldBorder> WORLD_BORDERS = new WeakHashMap<>();
 
   private PlayerUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -60,5 +63,28 @@ public final class PlayerUtils {
     }
     team.unregister();
     GLOW_TEAMS.remove(player);
+  }
+
+  public static void addFakeWorldBorderEffect(final GamePlayer gamePlayer) {
+    final Player player = gamePlayer.getPlayer();
+    final World world = player.getWorld();
+    final UUID id = world.getUID();
+    WORLD_BORDERS.computeIfAbsent(id, ignore -> {
+      final WorldBorder worldBorder = world.getWorldBorder();
+      final WorldBorder fakeBorder = Bukkit.createWorldBorder();
+      fakeBorder.setCenter(worldBorder.getCenter());
+      fakeBorder.setDamageAmount(worldBorder.getDamageAmount());
+      fakeBorder.setDamageBuffer(worldBorder.getDamageBuffer());
+      fakeBorder.setSize(worldBorder.getSize());
+      fakeBorder.setWarningDistance(Integer.MAX_VALUE);
+      fakeBorder.setWarningTime(worldBorder.getWarningTime());
+      player.setWorldBorder(fakeBorder);
+      return fakeBorder;
+    });
+  }
+
+  public static void removeFakeWorldBorderEffect(final GamePlayer gamePlayer) {
+    final Player player = gamePlayer.getPlayer();
+    player.setWorldBorder(null);
   }
 }

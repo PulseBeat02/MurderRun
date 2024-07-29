@@ -66,8 +66,8 @@ public final class AnnotationParserHandler {
   private CommandManager<CommandSender> createBasicManager(
       @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
 
-    final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(
-        plugin, ExecutionCoordinator.simpleCoordinator());
+    final LegacyPaperCommandManager<CommandSender> manager =
+        LegacyPaperCommandManager.createNative(plugin, ExecutionCoordinator.simpleCoordinator());
     if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
       manager.registerLegacyPaperBrigadier();
     }

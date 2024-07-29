@@ -1,14 +1,13 @@
 package io.github.pulsebeat02.murderrun.locale.minimessage;
 
+import java.text.MessageFormat;
+import java.util.Locale;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.Translator;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.text.MessageFormat;
-import java.util.Locale;
 
 public abstract class MiniMessageTranslator implements Translator {
 
@@ -24,7 +23,7 @@ public abstract class MiniMessageTranslator implements Translator {
 
   @Override
   public @Nullable MessageFormat translate(
-      final @NonNull  String key,  final @NonNull Locale locale) {
+      final @NonNull String key, final @NonNull Locale locale) {
     return null;
   }
 

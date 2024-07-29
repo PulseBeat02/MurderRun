@@ -14,13 +14,17 @@ public final class CustomTexture {
   private final Writable data;
 
   public CustomTexture(final String namespace) {
-    this.key = Key.key("murder_run", namespace);
+    this(Key.key("murder_run", namespace), namespace);
+  }
+
+  public CustomTexture(final Key key, final String namespace) {
+    this.key = key;
     this.data = this.getTextureStream(namespace);
   }
 
   private Writable getTextureStream(
       @UnderInitialization CustomTexture this, final String namespace) {
-    final String path = String.format("assets/textures/%s.png", namespace);
+    final String path = String.format("assets/textures/%s", namespace);
     try (final InputStream stream = ResourceUtils.getResourceAsStream(path)) {
       return Writable.copyInputStream(stream);
     } catch (final IOException e) {

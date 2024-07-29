@@ -30,7 +30,7 @@ public final class ModelHandler {
   }
 
   public Model customSwordGenerator() {
-    final Texture texture = new CustomTexture("sword").build();
+    final Texture texture = new CustomTexture("sword.png").build();
     final ItemPredicate predicate = ItemPredicate.customModelData(1);
     final Key key = texture.key();
     final ItemOverride override = ItemOverride.of(key, predicate);
@@ -42,16 +42,8 @@ public final class ModelHandler {
         .build();
   }
 
-  public Model customJumpScareGenerator() {
-    final Texture texture = new CustomTexture("jump_scare").build();
-    final ItemPredicate predicate = ItemPredicate.customModelData(1);
-    final Key key = texture.key();
-    final ItemOverride override = ItemOverride.of(key, predicate);
-    final List<ItemOverride> list = List.of(override);
-    return Model.model()
-        .key(Key.key("item/carved_pumpkin"))
-        .parent(Key.key("item/generated"))
-        .overrides(list)
+  public Texture customJumpScareGenerator() {
+    return new CustomTexture(Key.key("minecraft", "misc/pumpkinblur.png"), "pumpkinblur.png")
         .build();
   }
 }

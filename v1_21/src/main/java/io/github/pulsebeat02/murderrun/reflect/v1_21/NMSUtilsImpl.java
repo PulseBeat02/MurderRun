@@ -4,9 +4,6 @@ import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
 import io.github.pulsebeat02.murderrun.reflect.NMSUtils;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import net.minecraft.core.IRegistryCustom;
 import net.minecraft.nbt.*;
 import net.minecraft.server.MinecraftServer;
@@ -14,6 +11,10 @@ import net.minecraft.util.datafix.fixes.DataConverterTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class NMSUtilsImpl implements NMSUtils {
 
