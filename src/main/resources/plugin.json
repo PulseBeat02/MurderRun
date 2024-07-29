@@ -8,6 +8,6 @@
   "api-version": "1.21",
   "main": "io.github.pulsebeat02.murderrun.MurderRun",
   "prefix": "Murder Run",
-  "depend": [ "WorldEdit" ],
+  "depend": [ "WorldEdit", "Citizens" ],
   "softdepend": [ "WorldEditTickSpreader" ]
 }

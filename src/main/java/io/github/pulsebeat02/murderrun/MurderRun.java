@@ -20,153 +20,153 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
 
-  private static final int BSTATS_SERVER_ID = 22728;
+    private static final int BSTATS_SERVER_ID = 22728;
 
-  /*
+    /*
 
-  TODO:
+    TODO:
 
-  - Add Innocent Traps for Survival
-  - Add Murderer Traps for Killing
-  - Add Villager Trades for Traps
+    - Add Innocent Traps for Survival
+    - Add Murderer Traps for Killing
+    - Add Villager Trades for Traps
 
-  - Make traps have particle effects
+    - Make traps have particle effects
 
-   */
+     */
 
-  private PluginConfiguration configuration;
-  private AudienceHandler audience;
-  private PackHostingDaemon daemon;
-  private MurderArenaDataManager murderArenaDataManager;
-  private MurderLobbyDataManager murderLobbyDataManager;
-  private MurderArenaManager arenaManager;
-  private MurderLobbyManager lobbyManager;
-  private AnnotationParserHandler commandHandler;
-  private Metrics metrics;
+    private PluginConfiguration configuration;
+    private AudienceHandler audience;
+    private PackHostingDaemon daemon;
+    private MurderArenaDataManager murderArenaDataManager;
+    private MurderLobbyDataManager murderLobbyDataManager;
+    private MurderArenaManager arenaManager;
+    private MurderLobbyManager lobbyManager;
+    private AnnotationParserHandler commandHandler;
+    private Metrics metrics;
 
-  @Override
-  public void onDisable() {
-    this.dependencyCheck();
-    this.updatePluginData();
-    this.stopHostingDaemon();
-    this.shutdownMetrics();
-    this.shutdownAudience();
-    this.sendConsoleMessage(Locale.PLUGIN_DISABLE.build());
-  }
-
-  @Override
-  public void onEnable() {
-    this.registerAudienceHandler();
-    this.dependencyCheck();
-    this.registerNMS();
-    this.readPluginData();
-    this.startHostingDaemon();
-    this.registerCommands();
-    this.enableBStats();
-    this.sendConsoleMessage(Locale.PLUGIN_ENABLE.build());
-  }
-
-  private void dependencyCheck() {
-    final PluginManager manager = Bukkit.getPluginManager();
-    final boolean we = manager.isPluginEnabled("WorldEdit");
-    if (!we) {
-      final Component error = Locale.PLUGIN_DEPENDENCY_ERROR.build();
-      this.sendConsoleMessage(error);
-      manager.disablePlugin(this);
+    @Override
+    public void onDisable() {
+        this.dependencyCheck();
+        this.updatePluginData();
+        this.stopHostingDaemon();
+        this.shutdownMetrics();
+        this.shutdownAudience();
+        this.sendConsoleMessage(Locale.PLUGIN_DISABLE.build());
     }
-  }
 
-  private void sendConsoleMessage(final Component component) {
-    final BukkitAudiences audiences = this.audience.retrieve();
-    final Audience console = audiences.console();
-    console.sendMessage(component);
-  }
+    @Override
+    public void onEnable() {
+        this.registerAudienceHandler();
+        this.dependencyCheck();
+        this.registerNMS();
+        this.readPluginData();
+        this.startHostingDaemon();
+        this.registerCommands();
+        this.enableBStats();
+        this.sendConsoleMessage(Locale.PLUGIN_ENABLE.build());
+    }
 
-  private void shutdownAudience() {
-    this.audience.shutdown();
-  }
+    private void dependencyCheck() {
+        final PluginManager manager = Bukkit.getPluginManager();
+        final boolean loaded = manager.isPluginEnabled("WorldEdit") && manager.isPluginEnabled("citizens");
+        if (!loaded) {
+            final Component error = Locale.PLUGIN_DEPENDENCY_ERROR.build();
+            this.sendConsoleMessage(error);
+            manager.disablePlugin(this);
+        }
+    }
 
-  private void registerNMS() {
-    NMSHandler.init();
-  }
+    private void sendConsoleMessage(final Component component) {
+        final BukkitAudiences audiences = this.audience.retrieve();
+        final Audience console = audiences.console();
+        console.sendMessage(component);
+    }
 
-  private void readPluginData() {
-    this.configuration = new PluginConfiguration(this);
-    this.murderArenaDataManager = new MurderArenaDataManager(this);
-    this.murderLobbyDataManager = new MurderLobbyDataManager(this);
-    this.configuration.deserialize();
-    this.arenaManager = this.murderArenaDataManager.deserialize();
-    this.lobbyManager = this.murderLobbyDataManager.deserialize();
-  }
+    private void shutdownAudience() {
+        this.audience.shutdown();
+    }
 
-  private void startHostingDaemon() {
-    final String hostName = this.configuration.getHostName();
-    final int port = this.configuration.getPort();
-    this.daemon = new PackHostingDaemon(hostName, port);
-    this.daemon.buildPack();
-    this.daemon.start();
-  }
+    private void registerNMS() {
+        NMSHandler.init();
+    }
 
-  private void registerCommands() {
-    this.commandHandler = new AnnotationParserHandler(this);
-    this.commandHandler.registerCommands(this);
-  }
+    private void readPluginData() {
+        this.configuration = new PluginConfiguration(this);
+        this.murderArenaDataManager = new MurderArenaDataManager(this);
+        this.murderLobbyDataManager = new MurderLobbyDataManager(this);
+        this.configuration.deserialize();
+        this.arenaManager = this.murderArenaDataManager.deserialize();
+        this.lobbyManager = this.murderLobbyDataManager.deserialize();
+    }
 
-  private void registerAudienceHandler() {
-    this.audience = new AudienceHandler(this);
-  }
+    private void startHostingDaemon() {
+        final String hostName = this.configuration.getHostName();
+        final int port = this.configuration.getPort();
+        this.daemon = new PackHostingDaemon(hostName, port);
+        this.daemon.buildPack();
+        this.daemon.start();
+    }
 
-  private void enableBStats() {
-    this.metrics = new Metrics(this, BSTATS_SERVER_ID);
-  }
+    private void registerCommands() {
+        this.commandHandler = new AnnotationParserHandler(this);
+        this.commandHandler.registerCommands(this);
+    }
 
-  public void updatePluginData() {
-    this.murderArenaDataManager.serialize(this.arenaManager);
-    this.murderLobbyDataManager.serialize(this.lobbyManager);
-    this.configuration.serialize();
-  }
+    private void registerAudienceHandler() {
+        this.audience = new AudienceHandler(this);
+    }
 
-  private void stopHostingDaemon() {
-    this.daemon.stop();
-  }
+    private void enableBStats() {
+        this.metrics = new Metrics(this, BSTATS_SERVER_ID);
+    }
 
-  private void shutdownMetrics() {
-    this.metrics.shutdown();
-  }
+    public void updatePluginData() {
+        this.murderArenaDataManager.serialize(this.arenaManager);
+        this.murderLobbyDataManager.serialize(this.lobbyManager);
+        this.configuration.serialize();
+    }
 
-  public PluginConfiguration getConfiguration() {
-    return this.configuration;
-  }
+    private void stopHostingDaemon() {
+        this.daemon.stop();
+    }
 
-  public AudienceHandler getAudience() {
-    return this.audience;
-  }
+    private void shutdownMetrics() {
+        this.metrics.shutdown();
+    }
 
-  public PackHostingDaemon getDaemon() {
-    return this.daemon;
-  }
+    public PluginConfiguration getConfiguration() {
+        return this.configuration;
+    }
 
-  public MurderArenaManager getArenaManager() {
-    return this.arenaManager;
-  }
+    public AudienceHandler getAudience() {
+        return this.audience;
+    }
 
-  public MurderArenaDataManager getArenaDataManager() {
-    return this.murderArenaDataManager;
-  }
+    public PackHostingDaemon getDaemon() {
+        return this.daemon;
+    }
 
-  public AnnotationParserHandler getCommandHandler() {
-    return this.commandHandler;
-  }
+    public MurderArenaManager getArenaManager() {
+        return this.arenaManager;
+    }
 
-  public MurderLobbyDataManager getLobbyDataManager() {
-    return this.murderLobbyDataManager;
-  }
+    public MurderArenaDataManager getArenaDataManager() {
+        return this.murderArenaDataManager;
+    }
 
-  public MurderLobbyManager getLobbyManager() {
-    return this.lobbyManager;
-  }
+    public AnnotationParserHandler getCommandHandler() {
+        return this.commandHandler;
+    }
 
-  public Metrics getMetrics() {
-    return this.metrics;
-  }
+    public MurderLobbyDataManager getLobbyDataManager() {
+        return this.murderLobbyDataManager;
+    }
+
+    public MurderLobbyManager getLobbyManager() {
+        return this.lobbyManager;
+    }
+
+    public Metrics getMetrics() {
+        return this.metrics;
+    }
 }
