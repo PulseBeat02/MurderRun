@@ -12,7 +12,8 @@ public enum FXSound {
   RELEASED_2("released_2"),
   LOSS("loss"),
   WIN("win"),
-  JUMP_SCARE("jump_scare");
+  JUMP_SCARE("jump_scare"),
+  FART("fart");
 
   private final Sound sound;
   private final String id;

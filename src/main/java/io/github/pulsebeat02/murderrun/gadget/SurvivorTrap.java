@@ -24,6 +24,15 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Cage Trap -- traps the killer in a cage
   Blind Trap -- blinds the killer who steps on it
   Haunt Trap -- covers killers screen with freaky effects
+  Neck Snap Trap -- snaps killer neck to always look up
+  Star Trap -- buffs all survivors with speed, resistance, and regeneration when hit
+  Spawn Trap -- sends killer back to spawn
+  Freeze Trap -- freezes killer into place
+  Burrow Trap -- sends killer underground temporarily
+  Ghost Trap -- makes all survivors invisible temporarily
+  Pony Trap -- summons a fast horse
+  Firework Trap -- shoots off fireworks when triggered
+  Fart Trap -- plays fart sound, gives killer nausea, slowness
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -36,16 +45,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Med Bot -- constant heal pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
-  Neck Snap Trap -- snaps killer neck to always look up
   Deadringer -- fake player death, fake kill them and then they become invulnerable
-  Star Trap -- buffs all survivors with speed, resistance, and regneration when hit
-  Spawn Trap -- sends killer back to spawn
-  Freeze Trap -- freezes killer into place
-  Burrow Trap -- sends killer underground temporarily
-  Ghost Trap -- makes all survivors invisible temporarily
-  Pony Trap -- summons a fast horse
-  Firework Trap -- shoots off fireworks when triggered
-  Fart Trap -- plays fart sound, gives killer nausea, slowness
   Trap Vest -- if survivor uses it and dies, explodes all remaining traps on ground
   Random Trap -- gets a random trap
   Magnet Mode -- makes all trap activation range 3 times larger

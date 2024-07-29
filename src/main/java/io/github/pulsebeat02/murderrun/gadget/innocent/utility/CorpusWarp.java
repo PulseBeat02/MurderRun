@@ -21,7 +21,7 @@ public final class CorpusWarp extends MurderGadget {
   public CorpusWarp() {
     super(
         "corpus_warp",
-        Material.SKELETON_SKULL,
+        Material.PURPLE_STAINED_GLASS,
         Locale.CORPUS_WARP_TRAP_NAME.build(),
         Locale.CORPUS_WARP_TRAP_LORE.build());
   }

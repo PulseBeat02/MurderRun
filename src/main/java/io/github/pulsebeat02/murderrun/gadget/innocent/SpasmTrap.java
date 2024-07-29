@@ -42,8 +42,7 @@ public final class SpasmTrap extends SurvivorTrap {
 
   public Location getProperLocation(final GamePlayer murderer, final boolean up) {
     final Location location = murderer.getLocation();
-    final Location clone = location.clone();
-    clone.setDirection(up ? UP : DOWN);
-    return clone;
+    location.setDirection(up ? UP : DOWN);
+    return location;
   }
 }

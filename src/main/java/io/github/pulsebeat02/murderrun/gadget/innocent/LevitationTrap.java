@@ -26,14 +26,13 @@ public final class LevitationTrap extends SurvivorTrap {
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
     final Player player = murderer.getPlayer();
-    final Location original = murderer.getLocation();
-    final Location clone = original.clone();
-    clone.add(0, 10, 0);
+    final Location location = murderer.getLocation();
+    location.add(0, 10, 0);
     player.setGravity(false);
-    player.teleport(clone);
-    SchedulingUtils.scheduleTask(() -> this.teleportBack(player, clone), 20 * 7);
+    player.teleport(location);
+    SchedulingUtils.scheduleTask(() -> this.teleportBack(player, location), 20 * 7);
     SchedulingUtils.scheduleRepeatingTaskDuration(
-        () -> this.spawnPortalParticles(original), 0, 10, 20 * 7);
+        () -> this.spawnPortalParticles(location), 0, 10, 20 * 7);
   }
 
   public void spawnPortalParticles(final Location location) {

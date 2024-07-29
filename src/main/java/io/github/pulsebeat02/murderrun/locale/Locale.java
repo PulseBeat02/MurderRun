@@ -332,4 +332,5 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> SURVIVOR_CHESTPLATE = direct("murder_run.game.trap.chestplate");
   NullComponent<Sender> SURVIVOR_LEGGINGS = direct("murder_run.game.trap.leggings");
   NullComponent<Sender> SURVIVOR_BOOTS = direct("murder_run.game.trap.boots");
+  NullComponent<Sender> PONY_TRAP_ACTIVATE = direct("murder_run.game.trap.pony.activate");
 }
