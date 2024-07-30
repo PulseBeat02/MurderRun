@@ -21,6 +21,7 @@ repositories {
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://maven.citizensnpcs.co/repo' }
 }
 
 dependencies {
@@ -30,6 +31,9 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
     compileOnly 'com.sk89q.worldedit:worldedit-core:7.3.0'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.3.0'
+    compileOnly('net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT') {
+        exclude group: '*', module: '*'
+    }
 
     implementation project(':nms-api')
     implementation project(':v1_21')

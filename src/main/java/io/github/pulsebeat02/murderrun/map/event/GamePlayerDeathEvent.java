@@ -37,6 +37,7 @@ public final class GamePlayerDeathEvent implements Listener {
     }
     final GamePlayer gamePlayer = optional.get();
     gamePlayer.markDeath();
+    event.setKeepInventory(false);
     this.playDeathSoundEffect();
     if (this.allInnocentDead()) {
       this.game.finishGame(MurderWinCode.MURDERERS);
