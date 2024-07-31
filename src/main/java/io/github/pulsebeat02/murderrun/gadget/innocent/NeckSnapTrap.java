@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
@@ -25,10 +25,11 @@ public final class NeckSnapTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
-    SchedulingUtils.scheduleRepeatingTaskDuration(() -> this.setHeadUp(murderer), 0, 5, 7 * 20);
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatingTaskDuration(() -> this.setHeadUp(murderer), 0, 5, 7 * 20);
   }
 
-  public void setHeadUp(final GamePlayer player) {
+  private void setHeadUp(final GamePlayer player) {
     final Location location = player.getLocation();
     location.setDirection(UP);
     player.teleport(location);

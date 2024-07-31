@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -23,7 +23,7 @@ public final class StarTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllInnocents(player -> {
       player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5, 2));
       player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 5, 2));

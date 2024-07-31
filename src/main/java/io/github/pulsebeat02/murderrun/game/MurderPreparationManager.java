@@ -7,7 +7,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.RED;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,7 +37,7 @@ public final class MurderPreparationManager {
     final MurderSettings configuration = this.game.getSettings();
     final MurderArena arena = configuration.getArena();
     final Location spawnLocation = arena.getSpawn();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllInnocents(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
   }
 
@@ -58,7 +58,7 @@ public final class MurderPreparationManager {
   }
 
   private void clearNetherStars() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllParticipants(player -> player.getInventory().remove(Material.NETHER_STAR));
   }
 
@@ -69,7 +69,7 @@ public final class MurderPreparationManager {
   }
 
   private void setTimeRemaining(final int time) {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllParticipants(player -> player.setXpLevel(time));
   }
 
@@ -94,7 +94,7 @@ public final class MurderPreparationManager {
     final MurderSettings configuration = this.game.getSettings();
     final MurderArena arena = configuration.getArena();
     final Location spawnLocation = arena.getSpawn();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllDead(murderer -> murderer.teleport(spawnLocation));
   }
 

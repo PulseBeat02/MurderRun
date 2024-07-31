@@ -4,8 +4,8 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -26,8 +26,9 @@ public final class HackTrap extends SurvivorTrap {
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
     final ItemStack stack = this.removeSwordItemStack(murderer);
+    final MurderGameScheduler scheduler = game.getScheduler();
     if (stack != null) {
-      SchedulingUtils.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20);
+      scheduler.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20);
     }
   }
 

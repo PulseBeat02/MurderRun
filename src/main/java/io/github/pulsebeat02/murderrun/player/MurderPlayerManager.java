@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class PlayerManager {
+public final class MurderPlayerManager {
 
   private final MurderGame game;
   private final PlayerDeathManager deathManager;
@@ -20,7 +20,7 @@ public final class PlayerManager {
   private Collection<Murderer> cachedMurderers;
   private Collection<InnocentPlayer> cachedInnocentPlayers;
 
-  public PlayerManager(final MurderGame game) {
+  public MurderPlayerManager(final MurderGame game) {
     this.game = game;
     this.deathManager = new PlayerDeathManager(game);
     this.murdererLocationManager = new MurdererLocationManager(game);

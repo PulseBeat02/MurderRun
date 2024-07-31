@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import java.util.ArrayList;
 import java.util.List;
 import net.kyori.adventure.sound.Sound.Source;
@@ -37,11 +37,12 @@ public final class CageTrap extends SurvivorTrap {
     final Block top = block.getRelative(0, 2, 0);
     final List<Material> history = this.replaceAndSaveOriginalState(east, west, north, south, top);
     murderer.playSound(location, Sound.BLOCK_ANVIL_USE, Source.MASTER, 1f, 1f);
-    SchedulingUtils.scheduleTask(
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(
         () -> this.replaceWithOriginal(history, east, west, north, south, top), 7 * 20);
   }
 
-  public void replaceWithOriginal(final List<Material> history, final Block... blocks) {
+  private void replaceWithOriginal(final List<Material> history, final Block... blocks) {
     for (int i = 0; i < history.size(); i++) {
       final Material material = history.get(i);
       final Block block = blocks[i];
@@ -49,7 +50,7 @@ public final class CageTrap extends SurvivorTrap {
     }
   }
 
-  public List<Material> replaceAndSaveOriginalState(final Block... blocks) {
+  private List<Material> replaceAndSaveOriginalState(final Block... blocks) {
     final List<Material> list = new ArrayList<>();
     for (final Block block : blocks) {
       final Material type = block.getType();

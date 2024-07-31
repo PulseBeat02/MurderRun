@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -23,7 +23,8 @@ public final class DistortTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
-    SchedulingUtils.scheduleRepeatingTaskDuration(() -> this.spawnParticle(murderer), 0, 5, 7 * 20);
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatingTaskDuration(() -> this.spawnParticle(murderer), 0, 5, 7 * 20);
   }
 
   public void spawnParticle(final GamePlayer murderer) {

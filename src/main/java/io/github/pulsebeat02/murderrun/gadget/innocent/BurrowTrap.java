@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,10 +29,11 @@ public final class BurrowTrap extends SurvivorTrap {
     clone.subtract(0, 50, 0);
     player.setGravity(false);
     player.teleport(clone);
-    SchedulingUtils.scheduleTask(() -> this.setBackDefault(player, location), 20 * 7);
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(() -> this.setBackDefault(player, location), 20 * 7);
   }
 
-  public void setBackDefault(final Player player, final Location original) {
+  private void setBackDefault(final Player player, final Location original) {
     player.teleport(original);
     player.setGravity(true);
   }

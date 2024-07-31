@@ -7,14 +7,10 @@ import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
+import java.util.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -38,17 +34,17 @@ public final class TrapSniffer extends MurderGadget {
   public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
     super.onDropEvent(game, event);
 
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
     gamePlayer.sendMessage(Locale.TRAP_SNIFFER_TRAP_ACTIVATE.build());
     this.glowItemStates.computeIfAbsent(gamePlayer, fun -> new HashSet<>());
 
-    SchedulingUtils.scheduleTaskUntilCondition(
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(
         () -> manager.applyToAllMurderers(murderer -> this.handleTrapSniffing(game, gamePlayer)),
         0,
-        2 * 20,
-        game::isFinished);
+        2 * 20);
   }
 
   public void handleTrapSniffing(final MurderGame game, final GamePlayer innocent) {
@@ -62,6 +58,9 @@ public final class TrapSniffer extends MurderGadget {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();
       final Set<Item> set = this.glowItemStates.get(innocent);
+      if (set == null) {
+        throw new AssertionError("Couldn't get player's glow states!");
+      }
       if (origin.distanceSquared(location) <= 36) {
         set.add(entity);
         NMSHandler.NMS_UTILS.sendGlowPacket(player, entity);

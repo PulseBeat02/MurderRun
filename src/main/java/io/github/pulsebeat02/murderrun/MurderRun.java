@@ -5,11 +5,15 @@ import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.config.PluginConfiguration;
 import io.github.pulsebeat02.murderrun.data.MurderArenaDataManager;
 import io.github.pulsebeat02.murderrun.data.MurderLobbyDataManager;
+import io.github.pulsebeat02.murderrun.gadget.MurderGadgetManager;
+import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.TranslationManager;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -31,7 +35,7 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Make traps have particle effects
-  - Make only one instance of each trap
+  - Handle game gadgets
 
    */
 
@@ -63,8 +67,16 @@ public final class MurderRun extends JavaPlugin {
     this.readPluginData();
     this.startHostingDaemon();
     this.registerCommands();
+    this.registerLookUpMaps();
     this.enableBStats();
     this.sendConsoleMessage(Locale.PLUGIN_ENABLE.build());
+  }
+
+  private void registerLookUpMaps() {
+    TranslationManager.init(this);
+    MapUtils.init(this);
+    NamespacedKeys.init(this);
+    MurderGadgetManager.init(this);
   }
 
   private void dependencyCheck() {

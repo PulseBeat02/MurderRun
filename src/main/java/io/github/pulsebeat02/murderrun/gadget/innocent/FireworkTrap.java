@@ -5,8 +5,8 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.*;
@@ -34,11 +34,12 @@ public final class FireworkTrap extends SurvivorTrap {
       throw new AssertionError("Failed to spawn fireworks!");
     }
 
-    SchedulingUtils.scheduleRepeatingTaskDuration(
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatingTaskDuration(
         () -> this.spawnFirework(location, world), 0, 5, 5 * 20);
   }
 
-  public void spawnFirework(final Location location, final World world) {
+  private void spawnFirework(final Location location, final World world) {
     world.spawn(location, Firework.class, firework -> {
       firework.setShotAtAngle(false);
       final FireworkMeta meta = firework.getFireworkMeta();
@@ -48,7 +49,7 @@ public final class FireworkTrap extends SurvivorTrap {
     });
   }
 
-  public FireworkEffect generateRandomFireworkEffect() {
+  private FireworkEffect generateRandomFireworkEffect() {
     final List<Color> primary = this.generateRandomColors();
     final List<Color> fade = this.generateRandomColors();
     return FireworkEffect.builder()
@@ -59,7 +60,7 @@ public final class FireworkTrap extends SurvivorTrap {
         .build();
   }
 
-  public ImmutableList<Color> generateRandomColors() {
+  private ImmutableList<Color> generateRandomColors() {
     final int count = RandomUtils.generateInt(4);
     final List<Color> list = new ArrayList<>(count);
     for (int i = 0; i < count; i++) {

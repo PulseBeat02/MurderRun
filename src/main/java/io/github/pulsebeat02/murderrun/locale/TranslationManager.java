@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.locale;
 
 import static net.kyori.adventure.text.Component.empty;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.minimessage.MurderTranslator;
 import io.github.pulsebeat02.murderrun.utils.FileUtils;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
@@ -17,9 +18,6 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.translation.GlobalTranslator;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class TranslationManager {
@@ -27,14 +25,10 @@ public final class TranslationManager {
   private static final java.util.Locale DEFAULT_LOCALE = Locale.ENGLISH;
   private static final Key ADVENTURE_KEY = Key.key("murder_run", "main");
   private static final String PROPERTIES_PATH = "locale/murder_run_en.properties";
-  private static final Plugin PLUGIN;
 
-  static {
-    final PluginManager manager = Bukkit.getPluginManager();
-    final Plugin plugin = manager.getPlugin("MurderRun");
-    if (plugin == null) {
-      throw new AssertionError("Failed to retrieve plugin class!");
-    }
+  private static MurderRun PLUGIN;
+
+  public static void init(final MurderRun plugin) {
     PLUGIN = plugin;
   }
 

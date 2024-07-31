@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.gadget;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.List;
 import java.util.function.Consumer;
@@ -10,6 +11,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -33,17 +36,18 @@ public abstract class MurderGadget {
       final Component itemLore,
       final @Nullable Consumer<ItemStack> consumer) {
     this.name = name;
-    this.gadget = this.constructItemStack(material, itemName, itemLore, consumer);
+    this.gadget = this.constructItemStack(name, material, itemName, itemLore, consumer);
   }
 
   public ItemStack constructItemStack(
       @UnderInitialization MurderGadget this,
+      final String pdcName,
       final Material material,
       final Component itemName,
       final Component itemLore,
       final @Nullable Consumer<ItemStack> consumer) {
 
-    if (itemName == null || itemLore == null || material == null) {
+    if (pdcName == null || itemName == null || itemLore == null || material == null) {
       throw new AssertionError("Failed to create ItemStack for trap!");
     }
 
@@ -55,6 +59,9 @@ public abstract class MurderGadget {
     if (meta == null) {
       throw new AssertionError("Failed to construct ItemStack for trap!");
     }
+
+    final PersistentDataContainer container = meta.getPersistentDataContainer();
+    container.set(NamespacedKeys.TRAP_KEY_NAME, PersistentDataType.STRING, pdcName);
 
     meta.setDisplayName(name);
     meta.setLore(lore);

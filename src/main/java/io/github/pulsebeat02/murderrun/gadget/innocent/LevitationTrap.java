@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -30,12 +30,13 @@ public final class LevitationTrap extends SurvivorTrap {
     location.add(0, 10, 0);
     player.setGravity(false);
     player.teleport(location);
-    SchedulingUtils.scheduleTask(() -> this.teleportBack(player, location), 20 * 7);
-    SchedulingUtils.scheduleRepeatingTaskDuration(
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(() -> this.teleportBack(player, location), 20 * 7);
+    scheduler.scheduleRepeatingTaskDuration(
         () -> this.spawnPortalParticles(location), 0, 10, 20 * 7);
   }
 
-  public void spawnPortalParticles(final Location location) {
+  private void spawnPortalParticles(final Location location) {
     final World world = location.getWorld();
     if (world == null) {
       throw new AssertionError("Failed to spawn portal particles!");
@@ -43,7 +44,7 @@ public final class LevitationTrap extends SurvivorTrap {
     world.spawnParticle(Particle.DRAGON_BREATH, location, 10, 0.5, 0.5, 0.5);
   }
 
-  public void teleportBack(final Player player, final Location clone) {
+  private void teleportBack(final Player player, final Location clone) {
     player.teleport(clone);
     player.setGravity(false);
   }

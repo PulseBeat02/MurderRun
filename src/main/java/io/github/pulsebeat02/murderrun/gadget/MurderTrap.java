@@ -4,7 +4,7 @@ import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 
@@ -28,7 +28,7 @@ public abstract sealed class MurderTrap extends MurderGadget permits SurvivorTra
 
   public void onTrapActivate(final MurderGame game, final GamePlayer activee) {
     if (this.announcement != null) {
-      final PlayerManager manager = game.getPlayerManager();
+      final MurderPlayerManager manager = game.getPlayerManager();
       manager.applyToAllParticipants(player -> player.showTitle(this.announcement, empty()));
     }
   }

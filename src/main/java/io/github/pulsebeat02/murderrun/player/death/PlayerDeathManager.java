@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.map.MurderMap;
 import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
@@ -159,7 +159,7 @@ public final class PlayerDeathManager {
   }
 
   public void spawnParticles() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     this.service.scheduleAtFixedRate(
         () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 1, TimeUnit.SECONDS);
   }

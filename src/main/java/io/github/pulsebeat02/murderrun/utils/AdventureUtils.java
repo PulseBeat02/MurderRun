@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.utils;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.LocaleParent;
 import io.github.pulsebeat02.murderrun.locale.Sender;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -38,7 +38,7 @@ public final class AdventureUtils {
   public static void playSoundForAllParticipants(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final Key id = Key.key(key);
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(
         player -> player.playSound(player.getLocation(), id, Source.MASTER, 1f, 1f));
   }
@@ -52,7 +52,7 @@ public final class AdventureUtils {
 
   public static void playSoundForAllParticipants(final MurderGame game, final Sound... keys) {
     final Sound key = getRandomKey(keys);
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(
         player -> player.playSound(player.getLocation(), key, Source.MASTER, 1f, 1f));
   }
@@ -66,7 +66,7 @@ public final class AdventureUtils {
   public static void playSoundForAllMurderers(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final Key id = Key.key(key);
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllDead(player -> {
       final Location location = player.getLocation();
       player.playSound(location, id, Source.MASTER, 1f, 1f);
@@ -76,7 +76,7 @@ public final class AdventureUtils {
   public static void playSoundForAllInnocents(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final Key id = Key.key(key);
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllInnocents(innocent -> {
       final Location location = innocent.getLocation();
       innocent.playSound(location, id, Source.MASTER, 1f, 1f);
@@ -87,30 +87,30 @@ public final class AdventureUtils {
       final MurderGame game, final Location origin, final FXSound... keys) {
     final String key = getRandomKey(keys);
     final Key id = Key.key(key);
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(player -> player.playSound(origin, id, Source.MASTER, 1f, 1f));
   }
 
   public static void showTitleForAllParticipants(
       final MurderGame game, final Component title, final Component subtitle) {
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(player -> player.showTitle(title, subtitle));
   }
 
   public static void showTitleForAllMurderers(
       final MurderGame game, final Component title, final Component subtitle) {
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllMurderers(murderer -> murderer.showTitle(title, subtitle));
   }
 
   public static void showTitleForAllInnocents(
       final MurderGame game, final Component title, final Component subtitle) {
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllInnocents(innocent -> innocent.showTitle(title, subtitle));
   }
 
   public static void sendMessageToAllParticipants(final MurderGame game, final Component message) {
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(player -> player.sendMessage(message));
   }
 
@@ -120,7 +120,7 @@ public final class AdventureUtils {
       final float progress,
       final BossBar.Color color,
       final BossBar.Overlay overlay) {
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(player -> player.showBossBar(name, progress, color, overlay));
   }
 }

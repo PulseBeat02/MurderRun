@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.MurderGadget;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +28,7 @@ public final class FriendWarp extends MurderGadget {
   public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
     super.onDropEvent(game, event);
     final Player player = event.getPlayer();
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     final Collection<InnocentPlayer> innocents = manager.getInnocentPlayers();
     final List<InnocentPlayer> copy = new ArrayList<>(innocents);
     Collections.shuffle(copy);

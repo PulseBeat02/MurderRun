@@ -5,10 +5,10 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.player.Murderer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -47,7 +47,7 @@ public final class Camera extends MurderGadget {
   public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
     super.onDropEvent(game, event);
 
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     final Collection<InnocentPlayer> players = manager.getInnocentPlayers();
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
@@ -58,12 +58,12 @@ public final class Camera extends MurderGadget {
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
 
-    SchedulingUtils.scheduleTaskUntilCondition(
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(
         () -> manager.applyToAllMurderers(
             murderer -> this.handleGlowMurderer(murderer, entity, players)),
         0,
-        3 * 20,
-        game::isFinished);
+        3 * 20);
   }
 
   public void handleGlowMurderer(
@@ -73,7 +73,7 @@ public final class Camera extends MurderGadget {
     if (PlayerUtils.canEntitySeePlayer(entity, murderer, 64d)) {
       this.glowPlayers.add(murderer);
       PlayerUtils.setGlowColor(murderer, ChatColor.RED, higher);
-      setLookDirection(murderer, entity);
+      this.setLookDirection(murderer, entity);
     } else if (this.glowPlayers.contains(murderer)) {
       this.glowPlayers.remove(murderer);
       PlayerUtils.removeGlow(murderer, higher);

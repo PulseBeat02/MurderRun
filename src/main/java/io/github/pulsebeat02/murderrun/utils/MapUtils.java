@@ -14,6 +14,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.arena.MurderArena;
 import io.github.pulsebeat02.murderrun.arena.MurderArenaSchematic;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
@@ -23,23 +24,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.EulerAngle;
 
 public final class MapUtils {
 
-  private static final Path PARENT_FOLDER;
+  private static Path PARENT_FOLDER;
 
-  static {
-    final PluginManager manager = Bukkit.getPluginManager();
-    final Plugin plugin = manager.getPlugin("MurderRun");
-    if (plugin == null) {
-      throw new AssertionError("Failed to retrieve plugin class!");
-    }
+  public static void init(final MurderRun plugin) {
     final File folder = plugin.getDataFolder();
     PARENT_FOLDER = folder.toPath();
   }

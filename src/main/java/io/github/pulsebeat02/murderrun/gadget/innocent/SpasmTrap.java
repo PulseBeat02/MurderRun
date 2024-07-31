@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,19 +32,19 @@ public final class SpasmTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
-    SchedulingUtils.scheduleRepeatingTaskDuration(
-        () -> this.alternateHead(murderer), 0, 10, 7 * 20);
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatingTaskDuration(() -> this.alternateHead(murderer), 0, 10, 7 * 20);
   }
 
-  public void alternateHead(final GamePlayer murderer) {
-    final AtomicBoolean atomic = this.states.computeIfAbsent(murderer,
-        fun -> new AtomicBoolean(false));
+  private void alternateHead(final GamePlayer murderer) {
+    final AtomicBoolean atomic =
+        this.states.computeIfAbsent(murderer, fun -> new AtomicBoolean(false));
     final boolean up = atomic.get();
     final Location location = this.getProperLocation(murderer, up);
     murderer.teleport(location);
   }
 
-  public Location getProperLocation(final GamePlayer murderer, final boolean up) {
+  private Location getProperLocation(final GamePlayer murderer, final boolean up) {
     final Location location = murderer.getLocation();
     location.setDirection(up ? UP : DOWN);
     return location;

@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.player.death;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import java.awt.*;
 import java.util.Collection;
 import java.util.concurrent.Executors;
@@ -24,7 +24,7 @@ public final class MurdererLocationManager {
   }
 
   public void spawnParticles() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
 
     this.service.scheduleAtFixedRate(
         () -> manager.applyToAllMurderers(this::spawnParticlesWhenClose), 0, 1, TimeUnit.SECONDS);
@@ -32,7 +32,7 @@ public final class MurdererLocationManager {
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
     final Location murdererLocation = murdererPlayer.getLocation();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     final Collection<InnocentPlayer> innocentPlayers = manager.getInnocentPlayers();
     for (final InnocentPlayer innocentPlayer : innocentPlayers) {
       final Location location = innocentPlayer.getLocation();

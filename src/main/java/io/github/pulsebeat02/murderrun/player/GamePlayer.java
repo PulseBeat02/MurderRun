@@ -223,7 +223,7 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
   }
 
   private void startDeathSequence() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     final PlayerDeathManager death = manager.getDeathManager();
     death.initiateDeathSequence(this);
   }

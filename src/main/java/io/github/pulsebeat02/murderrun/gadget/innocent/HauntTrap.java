@@ -4,8 +4,8 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -27,16 +27,18 @@ public final class HauntTrap extends SurvivorTrap {
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
     murderer.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 20 * 7, 10));
-    SchedulingUtils.scheduleRepeatingTaskDuration(
-        () -> this.createSpookyEffect(murderer), 0, 14, 7 * 20);
+    final MurderGameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatingTaskDuration(
+        () -> this.createSpookyEffect(game, murderer), 0, 14, 7 * 20);
   }
 
-  public void createSpookyEffect(final GamePlayer gamePlayer) {
+  private void createSpookyEffect(final MurderGame game, final GamePlayer gamePlayer) {
     final Location location = gamePlayer.getLocation();
+    final MurderGameScheduler scheduler = game.getScheduler();
     gamePlayer.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 20, 10));
     gamePlayer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1);
     PlayerUtils.addFakeWorldBorderEffect(gamePlayer);
-    SchedulingUtils.scheduleTask(
+    scheduler.scheduleTask(
         () -> {
           gamePlayer.removePotionEffect(PotionEffectType.DARKNESS);
           PlayerUtils.removeFakeWorldBorderEffect(gamePlayer);

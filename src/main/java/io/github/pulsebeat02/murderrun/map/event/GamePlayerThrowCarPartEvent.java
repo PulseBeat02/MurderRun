@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.map.part.CarPartItemStack;
 import io.github.pulsebeat02.murderrun.map.part.CarPartManager;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import java.util.Map;
@@ -118,7 +118,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
   }
 
   private void setPlayerCarPartStatus(final Player thrower) {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     final GamePlayer player = manager.lookupPlayer(thrower).orElseThrow();
     if (player instanceof final InnocentPlayer innocent) {
       innocent.setHasCarPart(false);

@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
 import java.util.Collection;
 import java.util.Map;
@@ -39,7 +39,7 @@ public final class PlayerUtils {
 
   public static Optional<GamePlayer> checkIfValidPlayer(
       final MurderGame game, final Player player) {
-    final PlayerManager manager = game.getPlayerManager();
+    final MurderPlayerManager manager = game.getPlayerManager();
     return manager.lookupPlayer(player);
   }
 

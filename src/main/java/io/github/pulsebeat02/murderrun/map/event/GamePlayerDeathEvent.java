@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.MurderWinCode;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
@@ -49,7 +49,7 @@ public final class GamePlayerDeathEvent implements Listener {
   }
 
   private boolean allInnocentDead() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final MurderPlayerManager manager = this.game.getPlayerManager();
     final Collection<InnocentPlayer> players = manager.getInnocentPlayers();
     return players.stream().noneMatch(GamePlayer::isAlive);
   }

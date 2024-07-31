@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
-import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,18 +32,19 @@ public final class JumpScareTrap extends SurvivorTrap {
     super.onTrapActivate(game, murderer);
     final Location location = murderer.getLocation();
     final ItemStack before = this.setPumpkinItemStack(murderer);
+    final MurderGameScheduler scheduler = game.getScheduler();
     murderer.playSound(location, FXSound.JUMP_SCARE, Source.MASTER, 1f, 1f);
     murderer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1));
     murderer.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
-    SchedulingUtils.scheduleTask(() -> this.setBackHelmet(murderer, before), 2 * 20);
+    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), 2 * 20);
   }
 
-  public void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {
+  private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {
     final PlayerInventory inventory = player.getInventory();
     inventory.setHelmet(before);
   }
 
-  public @Nullable ItemStack setPumpkinItemStack(final GamePlayer player) {
+  private @Nullable ItemStack setPumpkinItemStack(final GamePlayer player) {
 
     final ItemStack stack = new ItemStack(Material.CARVED_PUMPKIN);
     final ItemMeta meta = stack.getItemMeta();

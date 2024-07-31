@@ -37,7 +37,7 @@ public final class Decoy extends MurderGadget {
     npc.spawn(location);
   }
 
-  public void customizeNPC(final Player player, final NPC npc) {
+  private void customizeNPC(final Player player, final NPC npc) {
 
     final PlayerInventory inventory = player.getInventory();
     final Equipment equipment = npc.getOrAddTrait(Equipment.class);

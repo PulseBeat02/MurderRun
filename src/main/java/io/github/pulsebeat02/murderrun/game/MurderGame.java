@@ -2,7 +2,8 @@ package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.map.MurderMap;
-import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
+import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
 import java.util.Collection;
 import java.util.UUID;
 import org.bukkit.entity.Player;
@@ -13,10 +14,11 @@ public final class MurderGame {
   private final UUID gameID;
   private MurderMap murderMap;
   private MurderSettings configuration;
-  private PlayerManager playerManager;
+  private MurderPlayerManager murderPlayerManager;
   private MurderPreparationManager preparationManager;
   private MurderEndManager endManager;
   private MurderTimeManager murderTimeManager;
+  private MurderGameScheduler scheduler;
   private MurderStatus status;
 
   public MurderGame(final MurderRun plugin) {
@@ -48,13 +50,14 @@ public final class MurderGame {
     this.status = MurderStatus.IN_PROGRESS;
     this.configuration = settings;
     this.setMurdererCount(murderers);
+    this.scheduler = new MurderGameScheduler(this);
     this.murderMap = new MurderMap(this);
-    this.playerManager = new PlayerManager(this);
+    this.murderPlayerManager = new MurderPlayerManager(this);
     this.preparationManager = new MurderPreparationManager(this);
     this.endManager = new MurderEndManager(this);
     this.murderTimeManager = new MurderTimeManager();
     this.murderMap.start();
-    this.playerManager.start(murderers, participants);
+    this.murderPlayerManager.start(murderers, participants);
     this.preparationManager.start();
   }
 
@@ -71,16 +74,16 @@ public final class MurderGame {
   public void finishGame(final MurderWinCode code) {
     this.status = MurderStatus.FINISHED;
     this.endManager.start(code);
-    this.playerManager.shutdown();
+    this.murderPlayerManager.shutdown();
     this.murderMap.shutdown();
   }
 
-  public PlayerManager getPlayerManager() {
-    return this.playerManager;
+  public MurderPlayerManager getPlayerManager() {
+    return this.murderPlayerManager;
   }
 
-  public void setPlayerManager(final PlayerManager playerManager) {
-    this.playerManager = playerManager;
+  public void setPlayerManager(final MurderPlayerManager murderPlayerManager) {
+    this.murderPlayerManager = murderPlayerManager;
   }
 
   public MurderStatus getStatus() {
@@ -128,6 +131,10 @@ public final class MurderGame {
   }
 
   public boolean isFinished() {
-    return status == MurderStatus.FINISHED;
+    return this.status == MurderStatus.FINISHED;
+  }
+
+  public MurderGameScheduler getScheduler() {
+    return this.scheduler;
   }
 }
