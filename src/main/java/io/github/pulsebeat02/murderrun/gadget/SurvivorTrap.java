@@ -47,33 +47,35 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
   Portal Trap -- teleports trap to killer
+
   Rewind -- rewinds player 5 seconds (must use circular buffer)
   Murderer Rewind -- rewinds murderer 5 seconds
-  Resurrection Stone -- resurrects a dead player
   Ghosting -- become a ghost after death
   Horcrux -- respawn after death
-  Med Bot -- constant he al pool in area
+  Med Bot -- constant the al pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
+  Tracker -- if used near killer you can always see them
+  Life Insurance -- if killer gets close, you teleport away (1 time use)
+  Ice-Skatin -- spawns a boat that has ice underneath it
+  Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
+  Jeb Trap -- places herd of rainbow sheep
+  Bush -- you become a bush for 10s
+
+  Resurrection Stone -- resurrects a dead player
   Supply Drop -- get a various assortment of traps
   Deadringer -- fake player death, fake kill them and then they become invulnerable
   Trap Vest -- if survivor uses it and dies, explodes all remaining traps on ground
   Random Trap -- gets a random trap
   Magnet Mode -- makes all trap activation range 3 times larger
   Translocator -- one use teleporter, (becomes lever to warp)
-  Tracker -- if used near killer you can always see them
   Taglock Needle -- voodoo puppet
   Smoke Bomb -- if activated smoke bomb causes survivor invis
   Flashbang -- stuns
   Blast Off -- sends the killer into a rocket into space
   Drone -- roots you to the ground, but allows you to fly above and look
   Some Cake in Vegas -- Sends killer to gamble for a random debuff
-  Life Insurance -- if killer gets close, you teleport away (1 time use)
   Cryo-Freeze -- creates a huge ice dome around you
-  Ice-Skatin -- spawns a boat that has ice underneath it
-  Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Mind Control -- controls player mind
-  Jeb Trap -- places herd of rainbow sheep
-  Bush -- you become a bush for 10s
   Fortnite Building -- build stairs, walls, floors
   Jack-Jack - Laser Eyes -- shooting survivor makes them faster, murderer burns them
   Violet - Force Field Rift -- hold killer place with a forcefield that increases in strength longer item is on ground

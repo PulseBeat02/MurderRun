@@ -10,7 +10,8 @@ import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import org.bukkit.ChatColor;
@@ -21,7 +22,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class SixthSense extends MurderGadget {
 
-  private final Set<GamePlayer> glowPlayers;
+  private final Map<GamePlayer, Set<GamePlayer>> glowPlayerStates;
 
   public SixthSense() {
     super(
@@ -29,7 +30,7 @@ public final class SixthSense extends MurderGadget {
         Material.ENDER_PEARL,
         Locale.SIXTH_SENSE_TRAP_NAME.build(),
         Locale.SIXTH_SENSE_TRAP_LORE.build());
-    this.glowPlayers = Collections.newSetFromMap(new WeakHashMap<>());
+    this.glowPlayerStates = new WeakHashMap<>();
   }
 
   @Override
@@ -41,26 +42,28 @@ public final class SixthSense extends MurderGadget {
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
     gamePlayer.sendMessage(Locale.SIXTH_SENSE_TRAP_ACTIVATE.build());
+    this.glowPlayerStates.computeIfAbsent(gamePlayer, fun -> new HashSet<>());
 
     SchedulingUtils.scheduleTaskUntilCondition(
         () -> manager.applyToAllMurderers(
-            murderer -> this.handleGlowMurderer(murderer, player, players)),
+            murderer -> this.handleGlowMurderer(murderer, gamePlayer, players)),
         0,
         2 * 20,
         game::isFinished);
   }
 
-  public void handleGlowMurderer(
-      final Murderer murderer, final Player innocent, final Collection<InnocentPlayer> innocents) {
+  private void handleGlowMurderer(
+      final Murderer murderer, final GamePlayer innocent, final Collection<InnocentPlayer> innocents) {
     final Collection<GamePlayer> higher =
         innocents.stream().map(player -> (GamePlayer) player).toList();
     final Location location = innocent.getLocation();
     final Location other = murderer.getLocation();
+    final Set<GamePlayer> visible = this.glowPlayerStates.get(innocent);
     if (location.distanceSquared(other) <= 64) {
-      this.glowPlayers.add(murderer);
+      visible.add(murderer);
       PlayerUtils.setGlowColor(murderer, ChatColor.RED, higher);
-    } else if (this.glowPlayers.contains(murderer)) {
-      this.glowPlayers.remove(murderer);
+    } else if (visible.contains(murderer)) {
+      this.glowPlayerStates.remove(murderer);
       PlayerUtils.removeGlow(murderer, higher);
     }
   }

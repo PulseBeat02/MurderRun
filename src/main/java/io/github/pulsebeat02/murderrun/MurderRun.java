@@ -31,6 +31,7 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Make traps have particle effects
+  - Make only one instance of each trap
 
    */
 

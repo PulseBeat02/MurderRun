@@ -23,6 +23,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.util.Vector;
 
 public final class Camera extends MurderGadget {
 
@@ -55,6 +56,8 @@ public final class Camera extends MurderGadget {
     npc.spawn(location);
 
     final Entity entity = npc.getEntity();
+    entity.setInvulnerable(true);
+
     SchedulingUtils.scheduleTaskUntilCondition(
         () -> manager.applyToAllMurderers(
             murderer -> this.handleGlowMurderer(murderer, entity, players)),
@@ -70,10 +73,19 @@ public final class Camera extends MurderGadget {
     if (PlayerUtils.canEntitySeePlayer(entity, murderer, 64d)) {
       this.glowPlayers.add(murderer);
       PlayerUtils.setGlowColor(murderer, ChatColor.RED, higher);
+      setLookDirection(murderer, entity);
     } else if (this.glowPlayers.contains(murderer)) {
       this.glowPlayers.remove(murderer);
       PlayerUtils.removeGlow(murderer, higher);
     }
+  }
+
+  public void setLookDirection(final Murderer murderer, final Entity entity) {
+    final Location origin = entity.getLocation();
+    final Location look = murderer.getLocation();
+    final Vector direction = look.getDirection().subtract(origin.toVector());
+    origin.setDirection(direction);
+    entity.teleport(origin);
   }
 
   public void customizeNPC(final NPC npc) {

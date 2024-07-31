@@ -5,6 +5,8 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,7 +17,7 @@ public final class SpasmTrap extends SurvivorTrap {
   private static final Vector UP = new Vector(0, 1, 0);
   private static final Vector DOWN = new Vector(0, -1, 0);
 
-  private final AtomicBoolean state;
+  private final Map<GamePlayer, AtomicBoolean> states;
 
   public SpasmTrap() {
     super(
@@ -24,7 +26,7 @@ public final class SpasmTrap extends SurvivorTrap {
         Locale.SPASM_TRAP_NAME.build(),
         Locale.SPASM_TRAP_LORE.build(),
         Locale.SPASM_TRAP_ACTIVATE.build());
-    this.state = new AtomicBoolean(true);
+    this.states = new WeakHashMap<>();
   }
 
   @Override
@@ -35,7 +37,9 @@ public final class SpasmTrap extends SurvivorTrap {
   }
 
   public void alternateHead(final GamePlayer murderer) {
-    final boolean up = this.state.get();
+    final AtomicBoolean atomic = this.states.computeIfAbsent(murderer,
+        fun -> new AtomicBoolean(false));
+    final boolean up = atomic.get();
     final Location location = this.getProperLocation(murderer, up);
     murderer.teleport(location);
   }
