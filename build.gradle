@@ -71,6 +71,7 @@ java {
 
 assemble {
     dependsOn 'spotlessApply'
+    dependsOn ':v1_21:remap'
     dependsOn 'shadowJar'
 }
 
@@ -119,6 +120,7 @@ shadowJar {
         exclude(dependency('com.google.code.gson:gson:.*'))
         exclude(dependency('com.mojang:brigadier:.*'))
     }
+
 }
 
 checkerFramework {
