@@ -60,6 +60,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Jeb Trap -- places herd of rainbow sheep
   Bush -- you become a bush for 10s
+  Demonetized -- if activated then youtube police spawns on killer
 
   Resurrection Stone -- resurrects a dead player
   Supply Drop -- get a various assortment of traps
@@ -84,13 +85,12 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Launch Pad -- spawns launch pad that launches you into the air
   Impulse Grenade -- causes all players to be launched away
   Zarya - Gravitron Surge -- creates a rift in the sky and sucks player
-  Lucio - Crank it UP! --
+  Lucio - Crank it UP! -- ??
   Shockwave -- sets off massive blast flinging all players
   Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
   Porta-Fort -- spawns a portafort
   Distorter -- fills killer screen with annoying particles until destroyed
   Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
-  Demonetized -- if activated then youtube police spawns on killer
   Jetpack -- you can fly temporarily
 
    */
