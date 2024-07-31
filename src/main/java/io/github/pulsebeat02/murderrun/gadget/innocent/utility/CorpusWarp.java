@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -41,7 +42,7 @@ public final class CorpusWarp extends MurderGadget {
         return;
       }
       player.teleport(location);
-      target.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
+      target.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, Source.MASTER, 1f, 1f);
     }
   }
 }

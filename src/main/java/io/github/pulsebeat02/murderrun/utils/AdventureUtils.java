@@ -6,7 +6,9 @@ import io.github.pulsebeat02.murderrun.locale.Sender;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
+import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
@@ -36,9 +38,10 @@ public final class AdventureUtils {
 
   public static void playSoundForAllParticipants(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
+    final Key id = Key.key(key);
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(
-        player -> player.playSound(player.getLocation(), key, SoundCategory.MASTER, 1, 1));
+        player -> player.playSound(player.getLocation(), id, Source.MASTER, 1f, 1f));
   }
 
   private static String getRandomKey(final FXSound... keys) {
@@ -52,7 +55,7 @@ public final class AdventureUtils {
     final Sound key = getRandomKey(keys);
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(
-        player -> player.playSound(player.getLocation(), key, SoundCategory.MASTER, 1, 1));
+        player -> player.playSound(player.getLocation(), key, Source.MASTER, 1f, 1f));
   }
 
   private static Sound getRandomKey(final Sound... keys) {
@@ -63,28 +66,31 @@ public final class AdventureUtils {
 
   public static void playSoundForAllMurderers(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
+    final Key id = Key.key(key);
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllDead(player -> {
       final Location location = player.getLocation();
-      player.playSound(location, key, SoundCategory.MASTER, 1, 1);
+      player.playSound(location, id, Source.MASTER, 1f, 1f);
     });
   }
 
   public static void playSoundForAllInnocents(final MurderGame game, final FXSound... keys) {
     final String key = getRandomKey(keys);
+    final Key id = Key.key(key);
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllInnocents(innocent -> {
       final Location location = innocent.getLocation();
-      innocent.playSound(location, key, SoundCategory.MASTER, 1, 1);
+      innocent.playSound(location, id, Source.MASTER, 1f, 1f);
     });
   }
 
   public static void playSoundForAllParticipantsAtLocation(
       final MurderGame game, final Location origin, final FXSound... keys) {
     final String key = getRandomKey(keys);
+    final Key id = Key.key(key);
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(
-        player -> player.playSound(origin, key, SoundCategory.MASTER, 1, 1));
+        player -> player.playSound(origin, id, Source.MASTER, 1f, 1f));
   }
 
   public static void showTitleForAllParticipants(

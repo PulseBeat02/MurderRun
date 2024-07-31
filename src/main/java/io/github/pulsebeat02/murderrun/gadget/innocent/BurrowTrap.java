@@ -11,29 +11,29 @@ import org.bukkit.entity.Player;
 
 public final class BurrowTrap extends SurvivorTrap {
 
-    public BurrowTrap() {
-        super(
-                "burrow",
-                Material.DIRT,
-                Locale.BURROW_TRAP_NAME.build(),
-                Locale.BURROW_TRAP_LORE.build(),
-                Locale.BURROW_TRAP_ACTIVATE.build());
-    }
+  public BurrowTrap() {
+    super(
+        "burrow",
+        Material.DIRT,
+        Locale.BURROW_TRAP_NAME.build(),
+        Locale.BURROW_TRAP_LORE.build(),
+        Locale.BURROW_TRAP_ACTIVATE.build());
+  }
 
-    @Override
-    public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-        super.onTrapActivate(game, murderer);
-        final Player player = murderer.getPlayer();
-        final Location location = murderer.getLocation();
-        final Location clone = location.clone();
-        clone.subtract(0, 50, 0);
-        player.setGravity(false);
-        player.teleport(clone);
-        SchedulingUtils.scheduleTask(() -> this.setBackDefault(player, location), 20 * 7);
-    }
+  @Override
+  public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+    super.onTrapActivate(game, murderer);
+    final Player player = murderer.getPlayer();
+    final Location location = murderer.getLocation();
+    final Location clone = location.clone();
+    clone.subtract(0, 50, 0);
+    player.setGravity(false);
+    player.teleport(clone);
+    SchedulingUtils.scheduleTask(() -> this.setBackDefault(player, location), 20 * 7);
+  }
 
-    public void setBackDefault(final Player player, final Location original) {
-        player.teleport(original);
-        player.setGravity(true);
-    }
+  public void setBackDefault(final Player player, final Location original) {
+    player.teleport(original);
+    player.setGravity(true);
+  }
 }

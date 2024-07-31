@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.player;
 
+import  static net.kyori.adventure.title.Title.title;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.MurderSettings;
@@ -8,9 +10,14 @@ import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.player.death.PlayerDeathManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.boss.KeyedBossBar;
@@ -21,12 +28,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
-import static net.kyori.adventure.title.Title.title;
 
 public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
 
@@ -182,31 +183,31 @@ public abstract sealed class GamePlayer permits InnocentPlayer, Murderer {
   }
 
   public void playSound(
-          final Location location,
-          final FXSound key,
-          final SoundCategory category,
-          final int volume,
-          final int pitch) {
-    this.playSound(location, key.getSoundName(), category, volume, pitch);
+      final Location location,
+      final FXSound key,
+      final Source category,
+      final float volume,
+      final float pitch) {
+    this.playSound(location, key.getSound().key(), category, volume, pitch);
   }
 
   public void playSound(
       final Location location,
-      final String key,
-      final SoundCategory category,
-      final int volume,
-      final int pitch) {
-    final Player player = this.getPlayer();
-    player.playSound(location, key, category, volume, pitch);
+      final Key key,
+      final Source category,
+      final float volume,
+      final float pitch) {
+    final Audience audience = this.getAudience();
+    audience.playSound(net.kyori.adventure.sound.Sound.sound(key, category, volume, pitch));
   }
 
   public void playSound(
       final Location location,
-      final Sound key,
-      final SoundCategory category,
-      final int volume,
-      final int pitch) {
-    this.playSound(location, key.getKey().toString(), category, volume, pitch);
+      final org.bukkit.Sound key,
+      final Source category,
+      final float volume,
+      final float pitch) {
+    this.playSound(location, Key.key(key.getKey().toString()), category, volume, pitch);
   }
 
   public UUID getUuid() {

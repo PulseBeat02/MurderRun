@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
 import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -36,7 +37,7 @@ public final class CageTrap extends SurvivorTrap {
     final Block south = block.getRelative(BlockFace.SOUTH);
     final Block top = block.getRelative(0, 2, 0);
     final List<Material> history = this.replaceAndSaveOriginalState(east, west, north, south, top);
-    murderer.playSound(location, Sound.BLOCK_ANVIL_USE, SoundCategory.MASTER, 1, 1);
+    murderer.playSound(location, Sound.BLOCK_ANVIL_USE, Source.MASTER, 1f, 1f);
     SchedulingUtils.scheduleTask(
         () -> this.replaceWithOriginal(history, east, west, north, south, top), 7 * 20);
   }

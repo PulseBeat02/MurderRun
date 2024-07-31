@@ -11,22 +11,22 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class GhostTrap extends SurvivorTrap {
 
-    public GhostTrap() {
-        super(
-                "ghost",
-                Material.WHITE_WOOL,
-                Locale.GHOST_TRAP_NAME.build(),
-                Locale.GHOST_TRAP_LORE.build(),
-                Locale.GHOST_TRAP_ACTIVATE.build());
-    }
+  public GhostTrap() {
+    super(
+        "ghost",
+        Material.WHITE_WOOL,
+        Locale.GHOST_TRAP_NAME.build(),
+        Locale.GHOST_TRAP_LORE.build(),
+        Locale.GHOST_TRAP_ACTIVATE.build());
+  }
 
-    @Override
-    public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-        super.onTrapActivate(game, murderer);
-        final PlayerManager manager = game.getPlayerManager();
-        manager.applyToAllInnocents(player -> {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10 * 20, 1));
-        });
-    }
+  @Override
+  public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+    super.onTrapActivate(game, murderer);
+    final PlayerManager manager = game.getPlayerManager();
+    manager.applyToAllInnocents(player -> {
+      player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1));
+      player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10 * 20, 1));
+    });
+  }
 }

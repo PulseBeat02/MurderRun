@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
@@ -32,7 +33,7 @@ public final class JumpScareTrap extends SurvivorTrap {
     super.onTrapActivate(game, murderer);
     final Location location = murderer.getLocation();
     final ItemStack before = this.setPumpkinItemStack(murderer);
-    murderer.playSound(location, FXSound.JUMP_SCARE.getSoundName(), SoundCategory.MASTER, 1, 1);
+    murderer.playSound(location, FXSound.JUMP_SCARE, Source.MASTER, 1f, 1f);
     murderer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1));
     murderer.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
     SchedulingUtils.scheduleTask(() -> this.setBackHelmet(murderer, before), 2 * 20);

@@ -11,22 +11,22 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FreezeTrap extends SurvivorTrap {
 
-    public FreezeTrap() {
-        super(
-                "freeze",
-                Material.PACKED_ICE,
-                Locale.FREEZE_TRAP_NAME.build(),
-                Locale.FREEZE_TRAP_LORE.build(),
-                Locale.FREEZE_TRAP_ACTIVATE.build());
-    }
+  public FreezeTrap() {
+    super(
+        "freeze",
+        Material.PACKED_ICE,
+        Locale.FREEZE_TRAP_NAME.build(),
+        Locale.FREEZE_TRAP_LORE.build(),
+        Locale.FREEZE_TRAP_ACTIVATE.build());
+  }
 
-    @Override
-    public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-        super.onTrapActivate(game, murderer);
-        final Player player = murderer.getPlayer();
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, Integer.MAX_VALUE));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20,  Integer.MAX_VALUE));
-        player.setFreezeTicks(7 * 20);
-    }
+  @Override
+  public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+    super.onTrapActivate(game, murderer);
+    final Player player = murderer.getPlayer();
+    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, Integer.MAX_VALUE));
+    player.addPotionEffect(
+        new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20, Integer.MAX_VALUE));
+    player.setFreezeTicks(7 * 20);
+  }
 }
-

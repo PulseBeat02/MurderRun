@@ -33,6 +33,12 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Pony Trap -- summons a fast horse
   Firework Trap -- shoots off fireworks when triggered
   Fart Trap -- plays fart sound, gives killer nausea, slowness
+  Decoy -- place fake player with name
+  Friend Warp -- teleport to a random survivor
+  Cloak -- all player usernames hidden for 30s
+  Shield -- low durability take extra hits when held
+  /TP ME AWAY FROM HERE -- teleports you to a random spot on the map
+  Speed Pendant - adds speed pendant
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -42,7 +48,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Resurrection Stone -- resurrects a dead player
   Ghosting -- become a ghost after death
   Horcrux -- respawn after death
-  Med Bot -- constant heal pool in area
+  Med Bot -- constant he al pool in area
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
   Deadringer -- fake player death, fake kill them and then they become invulnerable
@@ -52,14 +58,9 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Translocator -- one use teleporter, (becomes lever to warp)
   Tracker -- if used near killer you can always see them
   Taglock Needle -- voodoo puppet
-  Decoy -- place fake player with nae
   Smoke Bomb -- if activated smoke bomb causes survivor invis
-  Friend Warp -- teleport to a random survivor
   Flashbang -- stuns
   Camera -- if killer within range glow
-  Cloak -- all player usernames hidden for 30s
-  Shield -- low durability take extra hits when held
-  /TP ME AWAY FROM HERE -- teleports you to a random spot on the map
   Sixth Sense -- if killer is near makes them glow
   Blast Off -- sends the killer into a rocket into space
   Drone -- roots you to the ground, but allows you to fly above and look
@@ -89,8 +90,6 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
   Demonetized -- if activated then youtube police spawns on killer
   Jetpack -- you can fly temporarily
-
-  Also add speed, resistance, and regeneration pendants
 
    */
 

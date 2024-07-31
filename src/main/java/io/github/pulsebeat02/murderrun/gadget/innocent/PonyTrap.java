@@ -15,35 +15,35 @@ import org.bukkit.inventory.ItemStack;
 
 public final class PonyTrap extends SurvivorTrap {
 
-    public PonyTrap() {
-        super(
-                "pony",
-                Material.HORSE_SPAWN_EGG,
-                Locale.PONY_TRAP_NAME.build(),
-                Locale.PONY_TRAP_LORE.build(),
-                Locale.PONY_TRAP_ACTIVATE.build());
+  public PonyTrap() {
+    super(
+        "pony",
+        Material.HORSE_SPAWN_EGG,
+        Locale.PONY_TRAP_NAME.build(),
+        Locale.PONY_TRAP_LORE.build(),
+        Locale.PONY_TRAP_ACTIVATE.build());
+  }
+
+  @Override
+  public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+    super.onTrapActivate(game, murderer);
+
+    final Location location = murderer.getLocation();
+    final World world = location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Failed to spawn pony!");
     }
 
-    @Override
-    public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-        super.onTrapActivate(game, murderer);
+    final Horse horse = (Horse) world.spawnEntity(location, EntityType.HORSE);
+    horse.setTamed(true);
+    horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
+    horse.setJumpStrength(2);
+    horse.setAdult();
 
-        final Location location = murderer.getLocation();
-        final World world = location.getWorld();
-        if (world == null) {
-            throw new AssertionError("Failed to spawn pony!");
-        }
-
-        final Horse horse = (Horse) world.spawnEntity(location, EntityType.HORSE);
-        horse.setTamed(true);
-        horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
-        horse.setJumpStrength(2);
-        horse.setAdult();
-
-        final AttributeInstance attribute = horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
-        if (attribute == null) {
-            throw new AssertionError("Couldn't modify pony speed!");
-        }
-        attribute.setBaseValue(0.5);
+    final AttributeInstance attribute = horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+    if (attribute == null) {
+      throw new AssertionError("Couldn't modify pony speed!");
     }
+    attribute.setBaseValue(0.5);
+  }
 }

@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.data;
 import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
+import io.github.pulsebeat02.murderrun.utils.FileUtils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -37,18 +38,9 @@ public abstract class PluginDataManager<T> {
   }
 
   private void createFolders() {
-
-    final Path parent = this.json.getParent();
-    if (parent == null) {
-      throw new AssertionError("Failed to retrieve parent folder!");
-    }
-
     try {
-      Files.createDirectories(parent);
-      if (Files.notExists(this.json)) {
-        Files.createFile(this.json);
-        Files.write(this.json, "{}".getBytes());
-      }
+      FileUtils.createFile(this.json);
+      Files.write(this.json, "{}".getBytes());
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

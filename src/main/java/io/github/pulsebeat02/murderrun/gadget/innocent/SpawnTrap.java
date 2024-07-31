@@ -11,20 +11,20 @@ import org.bukkit.Material;
 
 public final class SpawnTrap extends SurvivorTrap {
 
-    public SpawnTrap() {
-        super(
-                "spawn",
-                Material.AMETHYST_SHARD,
-                Locale.SPAWN_TRAP_NAME.build(),
-                Locale.SPAWN_TRAP_LORE.build(),
-                Locale.SPAWN_TRAP_ACTIVATE.build());
-    }
+  public SpawnTrap() {
+    super(
+        "spawn",
+        Material.AMETHYST_SHARD,
+        Locale.SPAWN_TRAP_NAME.build(),
+        Locale.SPAWN_TRAP_LORE.build(),
+        Locale.SPAWN_TRAP_ACTIVATE.build());
+  }
 
-    @Override
-    public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-        final MurderSettings settings = game.getSettings();
-        final MurderArena arena = settings.getArena();
-        final Location spawn = arena.getSpawn();
-        murderer.teleport(spawn);
-    }
+  @Override
+  public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
+    final MurderSettings settings = game.getSettings();
+    final MurderArena arena = settings.getArena();
+    final Location spawn = arena.getSpawn();
+    murderer.teleport(spawn);
+  }
 }

@@ -17,10 +17,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.Team.Option;
+import org.bukkit.scoreboard.Team.OptionStatus;
 
 public final class PlayerUtils {
 
   private static final Map<Player, Team> GLOW_TEAMS = new WeakHashMap<>();
+  private static final Map<Player, Team> HIDE_NAME_TAG_TEAMS = new WeakHashMap<>();
   private static final Map<UUID, WorldBorder> WORLD_BORDERS = new WeakHashMap<>();
 
   private PlayerUtils() {
@@ -86,5 +89,31 @@ public final class PlayerUtils {
   public static void removeFakeWorldBorderEffect(final GamePlayer gamePlayer) {
     final Player player = gamePlayer.getPlayer();
     player.setWorldBorder(null);
+  }
+
+  public static void hideNameTag(final GamePlayer gamePlayer) {
+    final Player player = gamePlayer.getPlayer();
+    final ScoreboardManager manager = Bukkit.getScoreboardManager();
+    if (manager == null) {
+      throw new AssertionError("Failed to access the main scoreboard!");
+    }
+    final Scoreboard scoreboard = manager.getMainScoreboard();
+    final UUID hideID = UUID.randomUUID();
+    final String name = String.format("hide-name-tag-%s", hideID);
+    final Team team = scoreboard.registerNewTeam(name);
+    team.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
+    team.addEntry(player.getDisplayName());
+    HIDE_NAME_TAG_TEAMS.put(player, team);
+    player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0));
+  }
+
+  public static void showNameTag(final GamePlayer gamePlayer) {
+    final Player player = gamePlayer.getPlayer();
+    final Team team = HIDE_NAME_TAG_TEAMS.get(player);
+    if (team == null) {
+      return;
+    }
+    team.unregister();
+    HIDE_NAME_TAG_TEAMS.remove(player);
   }
 }

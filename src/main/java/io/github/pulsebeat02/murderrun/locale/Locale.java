@@ -178,6 +178,9 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> CLICKBAIT_TRAP_NAME = direct("murder_run.game.trap.clickbait.name");
   NullComponent<Sender> DEMONETIZED_TRAP_NAME = direct("murder_run.game.trap.demonetized.name");
   NullComponent<Sender> JETPACK_TRAP_NAME = direct("murder_run.game.trap.jetpack.name");
+  NullComponent<Sender> SPEED_PENDANT_NAME = direct("murder_run.game.trap.speed_pendant.name");
+  NullComponent<Sender> RESISTANCE_PENDANT_NAME = direct("murder_run.game.trap.resistance_pendant.name");
+  NullComponent<Sender> REGENERATION_PENDANT_NAME = direct("murder_run.game.trap.regeneration_pendant.name");
 
   NullComponent<Sender> GLOW_TRAP_LORE = direct("murder_run.game.trap.glow.lore");
   NullComponent<Sender> HACK_TRAP_LORE = direct("murder_run.game.trap.hack.lore");
