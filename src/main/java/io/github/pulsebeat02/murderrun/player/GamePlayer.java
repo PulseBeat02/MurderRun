@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.player;
 
-import  static net.kyori.adventure.title.Title.title;
+import static net.kyori.adventure.title.Title.title;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;

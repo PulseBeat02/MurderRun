@@ -16,20 +16,15 @@ public final class SpeedPendant extends MurderGadget {
 
   public SpeedPendant() {
     super(
-        "speed_pendant",
-        Material.WHITE_DYE,
-        Locale.SPEED_PENDANT_NAME.build(),
-        empty(),
-        stack -> {
-
+        "speed_pendant", Material.WHITE_DYE, Locale.SPEED_PENDANT_NAME.build(), empty(), stack -> {
           final ItemMeta meta = stack.getItemMeta();
           if (meta == null) {
             throw new AssertionError("Failed to create speed pendant!");
           }
 
           final NamespacedKey key = Attribute.GENERIC_MOVEMENT_SPEED.getKey();
-          final AttributeModifier modifier = new AttributeModifier(key, 0.2, Operation.ADD_NUMBER,
-              EquipmentSlotGroup.ANY);
+          final AttributeModifier modifier =
+              new AttributeModifier(key, 0.2, Operation.ADD_NUMBER, EquipmentSlotGroup.ANY);
           meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier);
         });
   }

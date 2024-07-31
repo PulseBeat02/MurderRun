@@ -4,7 +4,6 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import java.util.Optional;
-import java.util.UUID;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,9 +31,8 @@ public final class GamePlayerHungerEvent implements Listener {
       return;
     }
 
-    final UUID uuid = player.getUniqueId();
     final PlayerManager manager = this.game.getPlayerManager();
-    final Optional<GamePlayer> optional = manager.lookupPlayer(uuid);
+    final Optional<GamePlayer> optional = manager.lookupPlayer(player);
     if (optional.isEmpty()) {
       return;
     }

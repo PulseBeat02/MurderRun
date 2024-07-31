@@ -4,8 +4,11 @@ import io.github.pulsebeat02.murderrun.gadget.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.player.InnocentPlayer;
+import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import java.util.Collection;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -23,7 +26,11 @@ public final class GlowTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
-    PlayerUtils.setGlowColor(murderer, ChatColor.RED);
-    SchedulingUtils.scheduleTask(() -> PlayerUtils.removeGlow(murderer), 7 * 20);
+    final PlayerManager manager = game.getPlayerManager();
+    final Collection<InnocentPlayer> players = manager.getInnocentPlayers();
+    final Collection<GamePlayer> higher =
+        players.stream().map(player -> (GamePlayer) player).toList();
+    PlayerUtils.setGlowColor(murderer, ChatColor.RED, higher);
+    SchedulingUtils.scheduleTask(() -> PlayerUtils.removeGlow(murderer, higher), 7 * 20);
   }
 }

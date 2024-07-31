@@ -6,12 +6,14 @@ import io.github.pulsebeat02.murderrun.locale.Locale;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import net.citizensnpcs.api.trait.trait.Equipment.EquipmentSlot;
 import net.citizensnpcs.trait.MirrorTrait;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class Decoy extends MurderGadget {
@@ -38,16 +40,33 @@ public final class Decoy extends MurderGadget {
   public void customizeNPC(final Player player, final NPC npc) {
 
     final PlayerInventory inventory = player.getInventory();
-    npc.getOrAddTrait(Equipment.class).set(Equipment.EquipmentSlot.HELMET, inventory.getHelmet());
-    npc.getOrAddTrait(Equipment.class)
-        .set(Equipment.EquipmentSlot.CHESTPLATE, inventory.getChestplate());
-    npc.getOrAddTrait(Equipment.class)
-        .set(Equipment.EquipmentSlot.LEGGINGS, inventory.getLeggings());
-    npc.getOrAddTrait(Equipment.class).set(Equipment.EquipmentSlot.BOOTS, inventory.getBoots());
+    final Equipment equipment = npc.getOrAddTrait(Equipment.class);
+
+    equipment.set(
+        Equipment.EquipmentSlot.HELMET, this.equipArmorSlot(EquipmentSlot.HELMET, inventory));
+    equipment.set(
+        Equipment.EquipmentSlot.CHESTPLATE,
+        this.equipArmorSlot(EquipmentSlot.CHESTPLATE, inventory));
+    equipment.set(
+        Equipment.EquipmentSlot.LEGGINGS, this.equipArmorSlot(EquipmentSlot.LEGGINGS, inventory));
+    equipment.set(
+        Equipment.EquipmentSlot.BOOTS, this.equipArmorSlot(EquipmentSlot.BOOTS, inventory));
     npc.setUseMinecraftAI(true);
 
-    final MirrorTrait trait = npc.getOrAddTrait(MirrorTrait.class);
-    trait.isMirroring(player);
-    trait.setMirrorName(true);
+    final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);
+    mirror.isMirroring(player);
+    mirror.setMirrorName(true);
+  }
+
+  private ItemStack equipArmorSlot(final EquipmentSlot slot, final PlayerInventory inventory) {
+    final ItemStack stack =
+        switch (slot) {
+          case HELMET -> inventory.getHelmet();
+          case CHESTPLATE -> inventory.getChestplate();
+          case LEGGINGS -> inventory.getLeggings();
+          case BOOTS -> inventory.getBoots();
+          default -> null;
+        };
+    return stack == null ? new ItemStack(Material.AIR) : stack;
   }
 }

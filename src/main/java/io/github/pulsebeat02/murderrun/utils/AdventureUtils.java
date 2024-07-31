@@ -13,7 +13,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
 
 public final class AdventureUtils {
 
@@ -89,8 +88,7 @@ public final class AdventureUtils {
     final String key = getRandomKey(keys);
     final Key id = Key.key(key);
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllParticipants(
-        player -> player.playSound(origin, id, Source.MASTER, 1f, 1f));
+    manager.applyToAllParticipants(player -> player.playSound(origin, id, Source.MASTER, 1f, 1f));
   }
 
   public static void showTitleForAllParticipants(

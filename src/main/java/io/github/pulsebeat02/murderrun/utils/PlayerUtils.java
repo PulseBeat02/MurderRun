@@ -3,14 +3,19 @@ package io.github.pulsebeat02.murderrun.utils;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.WeakHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -19,6 +24,8 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
 
 public final class PlayerUtils {
 
@@ -32,21 +39,23 @@ public final class PlayerUtils {
 
   public static Optional<GamePlayer> checkIfValidPlayer(
       final MurderGame game, final Player player) {
-    final UUID uuid = player.getUniqueId();
     final PlayerManager manager = game.getPlayerManager();
-    return manager.lookupPlayer(uuid);
+    return manager.lookupPlayer(player);
   }
 
   public static void removeAllPotionEffects(final Player player) {
     player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
   }
 
-  public static void setGlowColor(final GamePlayer gamePlayer, final ChatColor color) {
+  public static void setGlowColor(
+      final GamePlayer gamePlayer, final ChatColor color, final Collection<GamePlayer> receivers) {
+
     final Player player = gamePlayer.getPlayer();
     final ScoreboardManager manager = Bukkit.getScoreboardManager();
     if (manager == null) {
       throw new AssertionError("Failed to access the main scoreboard!");
     }
+
     final Scoreboard scoreboard = manager.getMainScoreboard();
     final UUID glowID = UUID.randomUUID();
     final String name = String.format("color-%s", glowID);
@@ -54,18 +63,27 @@ public final class PlayerUtils {
     team.setColor(color);
     team.addEntry(player.getDisplayName());
     GLOW_TEAMS.put(player, team);
-    player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0));
+
+    receivers.forEach(
+        receiver -> NMSHandler.NMS_UTILS.sendGlowPacket(player, receiver.getPlayer()));
   }
 
-  public static void removeGlow(final GamePlayer gamePlayer) {
+  public static void removeGlow(
+      final GamePlayer gamePlayer, final Collection<GamePlayer> receivers) {
+
     final Player player = gamePlayer.getPlayer();
     player.removePotionEffect(PotionEffectType.GLOWING);
+
     final Team team = GLOW_TEAMS.get(player);
     if (team == null) {
       return;
     }
     team.unregister();
+
     GLOW_TEAMS.remove(player);
+
+    receivers.forEach(
+        receiver -> NMSHandler.NMS_UTILS.sendRemoveGlowPacket(player, receiver.getPlayer()));
   }
 
   public static void addFakeWorldBorderEffect(final GamePlayer gamePlayer) {
@@ -115,5 +133,22 @@ public final class PlayerUtils {
     }
     team.unregister();
     HIDE_NAME_TAG_TEAMS.remove(player);
+  }
+
+  public static boolean canEntitySeePlayer(
+      final Entity entity, final GamePlayer player, final double maxRangeSquared) {
+    final Location entityLocation = entity.getLocation();
+    final Location playerLocation = player.getLocation();
+    final double distanceSquared = entityLocation.distanceSquared(playerLocation);
+    if (distanceSquared > maxRangeSquared) {
+      return false;
+    }
+
+    final World world = entity.getWorld();
+    final Vector direction =
+        playerLocation.toVector().subtract(entityLocation.toVector()).normalize();
+    final RayTraceResult result = world.rayTraceBlocks(entityLocation, direction, maxRangeSquared);
+    final Block block = result == null ? null : result.getHitBlock();
+    return block == null || !block.getType().isSolid();
   }
 }

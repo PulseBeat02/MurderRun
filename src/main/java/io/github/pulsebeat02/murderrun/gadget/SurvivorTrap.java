@@ -39,6 +39,10 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Shield -- low durability take extra hits when held
   /TP ME AWAY FROM HERE -- teleports you to a random spot on the map
   Speed Pendant - adds speed pendant
+  Camera -- if killer within  range glow
+  Sixth Sense -- if killer is near makes them glow
+  Trap Sniffer -- senses detect car parts within 15 blocks
+  Chipped -- you can see all alive survivors on the map
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -60,13 +64,9 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Taglock Needle -- voodoo puppet
   Smoke Bomb -- if activated smoke bomb causes survivor invis
   Flashbang -- stuns
-  Camera -- if killer within range glow
-  Sixth Sense -- if killer is near makes them glow
   Blast Off -- sends the killer into a rocket into space
   Drone -- roots you to the ground, but allows you to fly above and look
-  Trap Sniffer -- senses detect car parts within 15 blocks
   Some Cake in Vegas -- Sends killer to gamble for a random debuff
-  Chipped -- you can see all alive survivors on the map
   Life Insurance -- if killer gets close, you teleport away (1 time use)
   Cryo-Freeze -- creates a huge ice dome around you
   Ice-Skatin -- spawns a boat that has ice underneath it

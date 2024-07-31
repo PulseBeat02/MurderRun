@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import io.github.pulsebeat02.murderrun.utils.SchedulingUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
@@ -22,7 +23,10 @@ public final class Cloak extends MurderGadget {
   @Override
   public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
     final PlayerManager manager = game.getPlayerManager();
+    final Component message = Locale.CLOAK_TRAP_ACTIVATE.build();
     manager.applyToAllInnocents(PlayerUtils::hideNameTag);
-    SchedulingUtils.scheduleTask(() -> manager.applyToAllInnocents(PlayerUtils::showNameTag), 7 * 20);
+    manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
+    SchedulingUtils.scheduleTask(
+        () -> manager.applyToAllInnocents(PlayerUtils::showNameTag), 7 * 20);
   }
 }

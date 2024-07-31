@@ -16,7 +16,6 @@ import io.github.pulsebeat02.murderrun.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import java.util.Map;
-import java.util.UUID;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -69,9 +68,9 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
       throw new AssertionError("Failed to retrieve car part from game!");
     }
 
-    final Map<String, CarPartItemStack> carPartItemStackMap = manager.getParts();
     manager.removeCarPart(carPartItemStack);
 
+    final Map<String, CarPartItemStack> carPartItemStackMap = manager.getParts();
     final int leftOver = carPartItemStackMap.size();
     this.announceCarPartRetrieval(leftOver);
     this.setBossBar(leftOver);
@@ -120,8 +119,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private void setPlayerCarPartStatus(final Player thrower) {
     final PlayerManager manager = this.game.getPlayerManager();
-    final UUID uuid = thrower.getUniqueId();
-    final GamePlayer player = manager.lookupPlayer(uuid).orElseThrow();
+    final GamePlayer player = manager.lookupPlayer(thrower).orElseThrow();
     if (player instanceof final InnocentPlayer innocent) {
       innocent.setHasCarPart(false);
     }

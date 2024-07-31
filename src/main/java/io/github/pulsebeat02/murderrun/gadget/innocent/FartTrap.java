@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 

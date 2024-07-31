@@ -21,6 +21,7 @@ public final class CarPartItemStack {
   private final ItemStack stack;
   private Location location;
   private boolean pickedUp;
+  private Item item;
 
   public CarPartItemStack(final Location location) {
     this.uuid = UUID.randomUUID().toString();
@@ -69,13 +70,22 @@ public final class CarPartItemStack {
     meta.setCustomModelData(id);
   }
 
-  public void spawn() {
+  public Item spawn() {
+
     final World world = this.location.getWorld();
     if (world == null) {
       throw new AssertionError("Location doesn't have World attached to it!");
     }
+
     final Item item = world.dropItemNaturally(this.location, this.stack);
     this.customizeItemEntity(item);
+
+    this.item = item;
+    return item;
+  }
+
+  public Item getItem() {
+    return this.item;
   }
 
   private void customizeItemEntity(final Item item) {

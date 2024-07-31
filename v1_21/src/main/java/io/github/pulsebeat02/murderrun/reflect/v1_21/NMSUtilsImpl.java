@@ -4,12 +4,20 @@ import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
 import io.github.pulsebeat02.murderrun.reflect.NMSUtils;
+import net.minecraft.core.Holder;
 import net.minecraft.core.IRegistryCustom;
 import net.minecraft.nbt.*;
+import net.minecraft.network.protocol.game.PacketPlayOutEntityEffect;
+import net.minecraft.network.protocol.game.PacketPlayOutRemoveEntityEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.datafix.fixes.DataConverterTypes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.effect.MobEffectList;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -52,5 +60,21 @@ public class NMSUtilsImpl implements NMSUtils {
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
+  }
+
+  @Override
+  public void sendGlowPacket(final Player watcher, final Entity glow) {
+    final int id = glow.getEntityId();
+    final CraftPlayer player = (CraftPlayer) watcher;
+    final PacketPlayOutEntityEffect effect = new PacketPlayOutEntityEffect(id, new MobEffect(MobEffects.x, Integer.MAX_VALUE, 0, true, true), false);
+    player.getHandle().c.b(effect);
+  }
+
+  @Override
+  public void sendRemoveGlowPacket(final Player watcher, final Entity glow) {
+    final int id = glow.getEntityId();
+    final CraftPlayer player = (CraftPlayer) watcher;
+    final PacketPlayOutRemoveEntityEffect effect = new PacketPlayOutRemoveEntityEffect(id, MobEffects.x);
+    player.getHandle().c.b(effect);
   }
 }

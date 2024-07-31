@@ -126,4 +126,8 @@ public final class MurderGame {
   public MurderTimeManager getTimeManager() {
     return this.murderTimeManager;
   }
+
+  public boolean isFinished() {
+    return status == MurderStatus.FINISHED;
+  }
 }

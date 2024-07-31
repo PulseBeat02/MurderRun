@@ -130,6 +130,10 @@ public final class PlayerManager {
     return Optional.ofNullable(this.lookupMap.get(uuid));
   }
 
+  public Optional<GamePlayer> lookupPlayer(final Player player) {
+    return this.lookupPlayer(player.getUniqueId());
+  }
+
   public MurderGame getGame() {
     return this.game;
   }
