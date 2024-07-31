@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.config;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.checkerframework.common.value.qual.IntRange;
 
@@ -46,10 +47,12 @@ public final class PluginConfiguration {
   }
 
   public void serialize() {
-    final FileConfiguration config = this.plugin.getConfig();
-    config.set("server.host-name", this.hostName);
-    config.set("server.port", this.port);
-    this.plugin.saveConfig();
+    CompletableFuture.runAsync(() -> {
+      final FileConfiguration config = this.plugin.getConfig();
+      config.set("server.host-name", this.hostName);
+      config.set("server.port", this.port);
+      this.plugin.saveConfig();
+    });
   }
 
   public int getPort() {

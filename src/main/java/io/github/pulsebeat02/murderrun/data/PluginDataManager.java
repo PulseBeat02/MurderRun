@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class PluginDataManager<T> {
 
@@ -28,6 +29,10 @@ public abstract class PluginDataManager<T> {
     if (manager == null) {
       throw new AssertionError("Failed to serialize data manager!");
     }
+    CompletableFuture.runAsync(() -> this.writeJson(manager));
+  }
+
+  private void writeJson(final T manager) {
     try (final Writer writer = Files.newBufferedWriter(this.json)) {
       this.createFolders();
       final Gson gson = GsonProvider.getGson();
