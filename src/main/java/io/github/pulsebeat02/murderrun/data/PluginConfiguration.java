@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.config;
+package io.github.pulsebeat02.murderrun.data;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import java.util.concurrent.CompletableFuture;

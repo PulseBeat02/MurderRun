@@ -1,11 +1,11 @@
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
+import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;

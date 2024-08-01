@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.gadget;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;

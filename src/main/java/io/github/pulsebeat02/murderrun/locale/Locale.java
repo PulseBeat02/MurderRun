@@ -29,7 +29,6 @@ public interface Locale extends LocaleParent {
   UniComponent<Sender, String> PLAYER_DEATH = direct("murder_run.game.death", null);
   NullComponent<Sender> RESOURCEPACK_PROMPT = direct("murder_run.resourcepack");
 
-  NullComponent<Sender> NOT_PLAYER = direct("murder_run.command.console");
   TriComponent<Sender, Integer, Integer, Integer> ARENA_FIRST_CORNER =
       direct("murder_run.command.arena.set.first-corner", null, null, null);
   TriComponent<Sender, Integer, Integer, Integer> ARENA_SECOND_CORNER =
@@ -342,4 +341,6 @@ public interface Locale extends LocaleParent {
   UniComponent<Sender, String> LOBBY_REMOVE = direct("murder_run.command.lobby.remove", null);
   NullComponent<Sender> ARENA_REMOVE_ERROR = direct("murder_run.command.arena.remove_error");
   NullComponent<Sender> LOBBY_REMOVE_ERROR = direct("murder_run.command.lobby.remove_error");
+  NullComponent<Sender> LIFE_INSURANCE_ACTIVATE =
+      direct("murder_run.game.trap.life_insurance.activate");
 }

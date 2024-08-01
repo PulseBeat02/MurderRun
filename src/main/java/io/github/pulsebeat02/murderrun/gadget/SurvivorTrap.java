@@ -43,25 +43,23 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Sixth Sense -- if killer is near makes them glow
   Trap Sniffer -- senses detect car parts within 15 blocks
   Chipped -- you can see all alive survivors on the map
+  Rewind -- rewinds player 5 seconds (must use circular buffer)
+  Murderer Rewind -- rewinds murderer 5 seconds
+  Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
+  Med Bot -- constant regeneration pool in area
+  Life Insurance -- if killer gets close, you teleport away (1 time use)
+  Ice-Skatin -- spawns a boat that has ice underneath it
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
   Portal Trap -- teleports trap to killer
-
-  Rewind -- rewinds player 5 seconds (must use circular buffer)
-  Murderer Rewind -- rewinds murderer 5 seconds
   Ghosting -- become a ghost after death
   Horcrux -- respawn after death
-  Med Bot -- constant the al pool in area
-  Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Tracker -- if used near killer you can always see them
-  Life Insurance -- if killer gets close, you teleport away (1 time use)
-  Ice-Skatin -- spawns a boat that has ice underneath it
   Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Jeb Trap -- places herd of rainbow sheep
   Bush -- you become a bush for 10s
   Demonetized -- if activated then youtube police spawns on killer
-
   Resurrection Stone -- resurrects a dead player
   Supply Drop -- get a various assortment of traps
   Deadringer -- fake player death, fake kill them and then they become invulnerable

@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.map.part;
 
-import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.List;
 import java.util.UUID;
