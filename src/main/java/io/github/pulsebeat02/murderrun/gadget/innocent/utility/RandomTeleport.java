@@ -13,11 +13,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-public final class TPMeAwayFromHere extends MurderGadget {
+public final class RandomTeleport extends MurderGadget {
 
-  public TPMeAwayFromHere() {
+  public RandomTeleport() {
     super(
-        "tp_me_away_from_here",
+        "random_teleport",
         Material.GOLDEN_CARROT,
         Locale.TP_ME_AWAY_FROM_HERE_TRAP_NAME.build(),
         Locale.TP_ME_AWAY_FROM_HERE_TRAP_LORE.build());

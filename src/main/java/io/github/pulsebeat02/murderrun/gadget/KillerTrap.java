@@ -17,7 +17,6 @@ public abstract non-sealed class KillerTrap extends MurderTrap {
   Trap Seeker: Allows the Killer to detect hidden traps
   Infrared Vision: Gives the Killer infrared vision, to see where someone is hiding
   Fright: Puts an illusion in-front of everyone suddenly, jump scaring them
-  Super Saiyan: Grants the Killer a significant speed and strength boost and giving them the ability to fly
   Blood Curse: Causes the opponent to bleed profusely permanently, leaving a trail behind for the killer to follow
   Death Steed: Summons a Death Steed that follows where the survivors are, can ride on the horse
   All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing them to track their location and plans
@@ -42,17 +41,31 @@ public abstract non-sealed class KillerTrap extends MurderTrap {
   Pumpkin Disease: Causes a disease in opponents which forces them to glow
   Ender Shadows: Creates animated shadows which causes opponents to light up when touched
   Forewarn: If an opponent grabs a truck part, they will start to glow
-  Fortnite Builder: Allows the Killer to generate, build, and place objects on the spot giving them an advantage.
-  Infinity Gauntlet: Allows the Killer to jump extremely high and create explosions
   Fire Trail: Leaves a trail of fire wherever the Killer walks
   Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move faster
-  Animatronic Alarm: Blinds, slows, jump scares, and makes the opponent visible to the Killer
   Dormagogg: An evil being that blind, stuns, and illuminates opponents
   Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
-  Brigette - Shield Bash: Bashing ground stuns survivors
   Red Arrow: Places a red beacon above any survivor nearby
 
   */
+
+  /*
+
+  EXCLUDED TRAPS FROM SSUNDEE'S SERIES
+  Traps here are excluded for one of the following reasons:
+  - Trap isn't explained well
+  - Trap pertains to a specific theme too much (for example, Fortnite)
+  - Trap functions too similar to another trap
+  - Trap isn't balanced
+  - Trap has controversial topics (for example, clickbait, demonetization, etc).
+
+  Super Saiyan: Grants the Killer a significant speed and strength boost and giving them the ability to fly
+  Fortnite Builder: Allows the Killer to generate, build, and place objects on the spot giving them an advantage.
+  Infinity Gauntlet: Allows the Killer to jump extremely high and create explosions
+  Animatronic Alarm: Blinds, slows, jump scares, and makes the opponent visible to the Killer
+  Brigette - Shield Bash: Bashing ground stuns survivors
+
+     */
 
   public KillerTrap(
       final String name,

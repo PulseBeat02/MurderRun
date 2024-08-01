@@ -49,47 +49,60 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Med Bot -- constant regeneration pool in area
   Life Insurance -- if killer gets close, you teleport away (1 time use)
   Ice-Skatin -- spawns a boat that has ice underneath it
+  Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
+  Bush -- you become a bush for 10s
+  Jeb Trap -- places herd of rainbow sheep
+  Shockwave Trap -- sets off massive blast flinging all players
+  Tracker -- if activated near killer you can always see them
+  Deadringer -- fake player death, fake kill them and then they become invulnerable
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
   Portal Trap -- teleports trap to killer
   Ghosting -- become a ghost after death
   Horcrux -- respawn after death
-  Tracker -- if used near killer you can always see them
-  Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
-  Jeb Trap -- places herd of rainbow sheep
-  Bush -- you become a bush for 10s
-  Demonetized -- if activated then youtube police spawns on killer
   Resurrection Stone -- resurrects a dead player
   Supply Drop -- get a various assortment of traps
-  Deadringer -- fake player death, fake kill them and then they become invulnerable
   Trap Vest -- if survivor uses it and dies, explodes all remaining traps on ground
   Random Trap -- gets a random trap
   Magnet Mode -- makes all trap activation range 3 times larger
   Translocator -- one use teleporter, (becomes lever to warp)
-  Taglock Needle -- voodoo puppet
   Smoke Bomb -- if activated smoke bomb causes survivor invis
   Flashbang -- stuns
   Blast Off -- sends the killer into a rocket into space
   Drone -- roots you to the ground, but allows you to fly above and look
-  Some Cake in Vegas -- Sends killer to gamble for a random debuff
   Cryo-Freeze -- creates a huge ice dome around you
   Mind Control -- controls player mind
-  Fortnite Building -- build stairs, walls, floors
-  Jack-Jack - Laser Eyes -- shooting survivor makes them faster, murderer burns them
-  Violet - Force Field Rift -- hold killer place with a forcefield that increases in strength longer item is on ground
   Killer Tracker -- tells you how close the killer is and how much danger you are in
   Flashlight -- blinds killer if come close, every 5 seconds
-  Launch Pad -- spawns launch pad that launches you into the air
-  Impulse Grenade -- causes all players to be launched away
+  Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
+  Distorter -- fills killer screen with annoying particles until destroyed
+
+   */
+
+  /*
+
+  EXCLUDED TRAPS FROM SSUNDEE'S SERIES
+  Traps here are excluded for one of the following reasons:
+  - Trap isn't explained well
+  - Trap pertains to a specific theme too much (for example, Fortnite)
+  - Trap functions too similar to another trap
+  - Trap isn't balanced
+  - Trap has controversial topics (for example, clickbait, demonetization, etc).
+
+  Jack-Jack - Laser Eyes -- shooting survivor makes them faster, murderer burns them
+  Violet - Force Field Rift -- hold killer place with a force field that increases in strength longer item is on ground
   Zarya - Gravitron Surge -- creates a rift in the sky and sucks player
   Lucio - Crank it UP! -- ??
-  Shockwave -- sets off massive blast flinging all players
-  Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
-  Porta-Fort -- spawns a portafort
-  Distorter -- fills killer screen with annoying particles until destroyed
-  Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
+  Fortnite Building -- build stairs, walls, floors
+  Taglock Needle -- voodoo puppet
   Jetpack -- you can fly temporarily
+  Launch Pad -- spawns launch pad that launches you into the air
+  Impulse Grenade -- causes all players to be launched away
+  Porta-Fort -- spawns a portafort
+  Demonetized -- if activated then youtube police spawns on killer
+  Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
+  Some Cake in Vegas -- Sends killer to gamble for a random debuff
 
    */
 

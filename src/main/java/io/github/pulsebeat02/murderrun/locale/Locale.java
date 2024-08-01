@@ -343,4 +343,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> LOBBY_REMOVE_ERROR = direct("murder_run.command.lobby.remove_error");
   NullComponent<Sender> LIFE_INSURANCE_ACTIVATE =
       direct("murder_run.game.trap.life_insurance.activate");
+  NullComponent<Sender> TRACKER_TRAP_ACTIVATE = direct("murder_run.game.trap.tracker.activate");
+  NullComponent<Sender> TRACKER_TRAP_DEACTIVATE = direct("murder_run.game.trap.tracker.deactivate");
 }
