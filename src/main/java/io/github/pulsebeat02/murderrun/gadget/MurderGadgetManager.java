@@ -1,17 +1,18 @@
 package io.github.pulsebeat02.murderrun.gadget;
 
-import com.openpojo.reflection.PojoClass;
-import com.openpojo.reflection.PojoClassFilter;
-import com.openpojo.reflection.PojoMethod;
-import com.openpojo.reflection.filters.FilterBasedOnInheritance;
-import com.openpojo.reflection.impl.PojoClassFactory;
+import com.google.common.reflect.ClassPath;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.immutable.NamespacedKeys;
 import io.github.pulsebeat02.murderrun.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
-import java.util.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
@@ -19,7 +20,7 @@ import org.bukkit.persistence.PersistentDataType;
 public final class MurderGadgetManager {
 
   private static final String GADGETS_PACKAGE = "io.github.pulsebeat02.murderrun.gadget";
-  public static final Map<String, PojoMethod> GADGET_LOOK_UP_MAP = new HashMap<>();
+  public static final Map<String, Constructor<?>> GADGET_LOOK_UP_MAP = new HashMap<>();
 
   private final MurderRun plugin;
   private final MurderGame game;
@@ -31,38 +32,42 @@ public final class MurderGadgetManager {
     this.gameGadgets = new HashMap<>();
   }
 
-  public static void init(final MurderRun plugin) {
-    final Class<MurderGadget> clazz = MurderGadget.class;
-    final PojoClassFilter inheritance = new FilterBasedOnInheritance(clazz);
-    final List<PojoClass> classes =
-        PojoClassFactory.enumerateClassesByExtendingType(GADGETS_PACKAGE, clazz, inheritance);
-    for (final PojoClass pojoClass : classes) {
-      final PojoMethod constructor = getPojoConstructor(pojoClass);
-      final MurderGadget gadget = invokeGadgetConstructor(plugin, constructor);
-      final String name = gadget.getName();
-      GADGET_LOOK_UP_MAP.put(name, constructor);
-    }
-  }
-
-  private static PojoMethod getPojoConstructor(final PojoClass pojoClass) {
-    final List<PojoMethod> methods = pojoClass.getPojoConstructors();
-    final PojoMethod first = methods.getFirst();
-    if (first == null) {
-      throw new AssertionError(
-          String.format("Couldn't find constructor of gadget class %s", pojoClass));
-    }
-    return first;
-  }
-
   @SuppressWarnings("nullness")
+  public static void init(final MurderRun plugin) {
+    final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+    try {
+      for (final ClassPath.ClassInfo info : ClassPath.from(loader).getTopLevelClasses()) {
+        if (info.getName().startsWith(GADGETS_PACKAGE)) {
+          final Class<?> clazz = info.load();
+          final Constructor<?> constructor = getConstructor(clazz);
+          final MurderGadget gadget = invokeGadgetConstructor(plugin, constructor);
+          final String name = gadget.getName();
+          GADGET_LOOK_UP_MAP.put(name, constructor);
+        }
+      }
+    } catch (final Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static Constructor<?> getConstructor(final Class<?> clazz) {
+    final Constructor<?>[] constructors = clazz.getConstructors();
+    if (constructors.length == 0) {
+      throw new AssertionError(
+          String.format("Couldn't find constructor of gadget class %s", clazz));
+    }
+    return constructors[0];
+  }
+
   private static MurderGadget invokeGadgetConstructor(
-      final MurderRun plugin, final PojoMethod constructor) {
+      final MurderRun plugin, final Constructor<?> constructor)
+      throws InvocationTargetException, InstantiationException, IllegalAccessException {
     final Class<?>[] arguments = constructor.getParameterTypes();
     final MurderGadget gadget;
     if (arguments.length == 1 && arguments[0].equals(MurderGame.class)) {
-      gadget = (MurderGadget) constructor.invoke(plugin);
+      gadget = (MurderGadget) constructor.newInstance(plugin);
     } else {
-      gadget = (MurderGadget) constructor.invoke(null);
+      gadget = (MurderGadget) constructor.newInstance();
     }
     return gadget;
   }
@@ -91,13 +96,15 @@ public final class MurderGadgetManager {
       if (data == null) {
         throw new AssertionError("An error occurred while retrieving from PDC!");
       }
-      final PojoMethod constructor = GADGET_LOOK_UP_MAP.get(data);
+      final Constructor<?> constructor = GADGET_LOOK_UP_MAP.get(data);
       if (constructor == null) {
         throw new AssertionError(String.format("Failed to get class for trap %s", data));
       }
-      final MurderGadget gadget = invokeGadgetConstructor(this.plugin, constructor);
-      if (gadget != null) {
+      try {
+        final MurderGadget gadget = invokeGadgetConstructor(this.plugin, constructor);
         playerGadgets.add(gadget);
+      } catch (final Exception e) {
+        throw new RuntimeException(e);
       }
     }
     return playerGadgets;

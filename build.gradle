@@ -1,3 +1,5 @@
+import xyz.jpenilla.runtask.task.AbstractRun
+
 plugins {
     id 'java'
     id 'io.github.goooler.shadow' version '8.1.8'
@@ -51,7 +53,6 @@ dependencies {
     implementation 'org.incendo:cloud-paper:2.0.0-beta.9'
     implementation 'org.incendo:cloud-minecraft-extras:2.0.0-beta.9'
     implementation 'me.lucko:commodore:2.2'
-    implementation 'com.openpojo:openpojo:0.9.1'
 
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.21:3.95.1'
     testImplementation 'team.unnamed:creative-api:1.7.3'
@@ -76,19 +77,28 @@ assemble {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.compilerArgs.add("-parameters")
+    options.compilerArgs.add('-parameters')
     options.encoding = 'UTF-8'
     options.release.set(targetJavaVersion)
     options.fork = true
-    options.forkOptions.setMemoryMaximumSize("4g")
+    options.forkOptions.setMemoryMaximumSize('4g')
 }
 
 runServer {
     downloadPlugins {
         url 'https://cdn.modrinth.com/data/S0GwusT4/versions/lPHdbL5F/WETS-0.0.3-bukkit.jar'
         url 'https://cdn.modrinth.com/data/1u6JkXh5/versions/Jo76t1oi/worldedit-bukkit-7.3.5.jar'
+        url 'https://ci.citizensnpcs.co/job/Citizens2/lastStableBuild/artifact/dist/target/Citizens-2.0.35-b3489.jar'
     }
     minecraftVersion('1.21')
+}
+
+tasks.withType(AbstractRun).configureEach {
+    javaLauncher = javaToolchains.launcherFor {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    jvmArgs('-XX:+AllowEnhancedClassRedefinition', '-XX:+AllowRedefinitionToAddDeleteMethods')
 }
 
 sourceSets {
@@ -110,17 +120,20 @@ processResources {
 }
 
 shadowJar {
+
+//    TEMPORARILY DISABLED FOR HOT-SWAPPING PURPOSES
+
+//    relocate('net.kyori', 'io.github.pulsebeat02.murderrun.lib.net.kyori')
+//    relocate('team.unnamed', 'io.github.pulsebeat02.murderrun.lib.team.unnamed')
+//    relocate('org.incendo', 'io.github.pulsebeat02.murderrun.lib.org.incendo')
+//    relocate('me.lucko', 'io.github.pulsebeat02.murderrun.lib.me.lucko')
+//    relocate('io.leangen', 'io.github.pulsebeat02.murderrun.lib.io.leangen')
+
     relocate('org.bstats', 'io.github.pulsebeat02.murderrun.lib.org.bstats')
-    relocate('net.kyori', 'io.github.pulsebeat02.murderrun.lib.net.kyori')
-    relocate('team.unnamed', 'io.github.pulsebeat02.murderrun.lib.team.unnamed')
-    relocate('org.incendo', 'io.github.pulsebeat02.murderrun.lib.org.incendo')
-    relocate('me.lucko', "io.github.pulsebeat02.murderrun.lib.me.lucko")
-    relocate('io.leangen', "io.github.pulsebeat02.murderrun.lib.io.leangen")
     dependencies {
         exclude(dependency('com.google.code.gson:gson:.*'))
         exclude(dependency('com.mojang:brigadier:.*'))
     }
-
 }
 
 checkerFramework {
@@ -131,6 +144,6 @@ checkerFramework {
 
 spotless {
     java {
-        palantirJavaFormat('2.47.0').style("GOOGLE")
+        palantirJavaFormat('2.47.0').style('GOOGLE')
     }
 }

@@ -338,4 +338,8 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> SURVIVOR_LEGGINGS = direct("murder_run.game.trap.leggings");
   NullComponent<Sender> SURVIVOR_BOOTS = direct("murder_run.game.trap.boots");
   NullComponent<Sender> PONY_TRAP_ACTIVATE = direct("murder_run.game.trap.pony.activate");
+  UniComponent<Sender, String> ARENA_REMOVE = direct("murder_run.command.arena.remove", null);
+  UniComponent<Sender, String> LOBBY_REMOVE = direct("murder_run.command.lobby.remove", null);
+  NullComponent<Sender> ARENA_REMOVE_ERROR = direct("murder_run.command.arena.remove_error");
+  NullComponent<Sender> LOBBY_REMOVE_ERROR = direct("murder_run.command.lobby.remove_error");
 }

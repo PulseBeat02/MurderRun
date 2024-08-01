@@ -50,6 +50,31 @@ public final class MurderLobbyCommand implements AnnotationCommandFeature {
     audience.sendMessage(component);
   }
 
+  @CommandDescription("murder_run.command.lobby.remove.info")
+  @Command(value = "murder lobby remove <name>", requiredSender = Player.class)
+  public void removeLobby(final Player sender, final String name) {
+    final Audience audience = this.audiences.player(sender);
+    if (this.checkInvalidLobby(audience, name)) {
+      return;
+    }
+    final MurderLobbyManager manager = this.plugin.getLobbyManager();
+    manager.removeLobby(name);
+    final Component message = Locale.LOBBY_REMOVE.build(name);
+    this.sendSuccessMessage(sender, message);
+  }
+
+  private boolean checkInvalidLobby(final Audience audience, final String name) {
+    final MurderLobbyManager manager = this.plugin.getLobbyManager();
+    final Map<String, MurderLobby> arenas = manager.getLobbies();
+    final MurderLobby lobby = arenas.get(name);
+    if (lobby == null) {
+      final Component message = Locale.LOBBY_REMOVE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
   @CommandDescription("murder_run.command.lobby.create.info")
   @Command(value = "murder lobby create", requiredSender = Player.class)
   public void createLobby(final Player sender) {

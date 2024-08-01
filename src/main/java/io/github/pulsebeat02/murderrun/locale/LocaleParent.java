@@ -1,11 +1,17 @@
 package io.github.pulsebeat02.murderrun.locale;
 
-import static net.kyori.adventure.text.Component.*;
+import static net.kyori.adventure.text.Component.join;
+import static net.kyori.adventure.text.Component.space;
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.Component.translatable;
 import static net.kyori.adventure.text.JoinConfiguration.separator;
-import static net.kyori.adventure.text.format.NamedTextColor.*;
+import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
+import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.function.Function;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface LocaleParent {
@@ -13,25 +19,26 @@ public interface LocaleParent {
   TranslationManager MANAGER = new TranslationManager();
 
   NullComponent<Sender> PREFIX = () ->
-      text().color(GOLD).append(text('['), text("Murder Run", RED), text(']')).build();
-
-  static NullComponent<Sender> direct(final String key) {
-    return () -> format(MANAGER.render(translatable(key)));
-  }
+      text().color(GOLD).append(text('<'), text("Murder Run", RED), text('>')).build();
 
   static Component format(final Component message) {
     return join(separator(space()), PREFIX.build(), message);
   }
 
-  static <T> UniComponent<Sender, T> direct(
-      final String key, final @Nullable Function<T, String> function) {
-    return (arg) -> format(MANAGER.render(translatable(key, createFinalText(arg, function))));
+  static Component useSmallCaps(final Component input) {
+    return input.replaceText(TextReplacementConfig.builder()
+        .match(".*")
+        .replacement((match, original) -> text(AdventureUtils.convertToMini(match.group())))
+        .build());
   }
 
-  static <T> Component createFinalText(
-      final T argument, final @Nullable Function<T, String> function) {
-    final String text = argument == null ? "" : argument.toString();
-    return text(function == null ? text : function.apply(argument));
+  static NullComponent<Sender> direct(final String key) {
+    return () -> format(MANAGER.render(translatable(key)));
+  }
+
+  static <T> UniComponent<Sender, T> direct(
+      final String key, final @Nullable Function<T, String> function) {
+    return arg -> format(MANAGER.render(translatable(key, createFinalText(arg, function))));
   }
 
   static <T, U> BiComponent<Sender, T, U> direct(
@@ -52,6 +59,12 @@ public interface LocaleParent {
         createFinalText(arg1, function1),
         createFinalText(arg2, function2),
         createFinalText(arg3, function3))));
+  }
+
+  static <T> Component createFinalText(
+      final T argument, final @Nullable Function<T, String> function) {
+    final String text = argument == null ? "" : argument.toString();
+    return text(function == null ? text : function.apply(argument));
   }
 
   @FunctionalInterface

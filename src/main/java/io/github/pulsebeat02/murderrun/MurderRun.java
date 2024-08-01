@@ -62,12 +62,12 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onEnable() {
     this.registerAudienceHandler();
+    this.registerLookUpMaps();
     this.dependencyCheck();
     this.registerNMS();
     this.readPluginData();
     this.startHostingDaemon();
     this.registerCommands();
-    this.registerLookUpMaps();
     this.enableBStats();
     this.sendConsoleMessage(Locale.PLUGIN_ENABLE.build());
   }

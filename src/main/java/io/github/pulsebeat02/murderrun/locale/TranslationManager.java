@@ -11,13 +11,13 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import net.kyori.adventure.translation.GlobalTranslator;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class TranslationManager {
@@ -38,7 +38,6 @@ public final class TranslationManager {
   public TranslationManager() {
     this.bundle = this.getBundle();
     this.translator = new MurderTranslator(ADVENTURE_KEY, this.bundle);
-    GlobalTranslator.translator().addSource(this.translator);
   }
 
   private PropertyResourceBundle getBundle(@UnderInitialization TranslationManager this) {
@@ -56,7 +55,7 @@ public final class TranslationManager {
     if (Files.notExists(locale)) {
       FileUtils.createFile(locale);
       try (final InputStream stream = ResourceUtils.getResourceAsStream(PROPERTIES_PATH)) {
-        Files.copy(stream, locale);
+        Files.copy(stream, locale, StandardCopyOption.REPLACE_EXISTING);
       } catch (final IOException e) {
         throw new RuntimeException(e);
       }

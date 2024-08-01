@@ -5,6 +5,8 @@ import io.github.pulsebeat02.murderrun.locale.LocaleParent;
 import io.github.pulsebeat02.murderrun.locale.Sender;
 import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
+import java.util.HashMap;
+import java.util.Map;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
@@ -17,6 +19,40 @@ import org.bukkit.Sound;
 public final class AdventureUtils {
 
   private static final LegacyComponentSerializer SERIALIZER = BukkitComponentSerializer.legacy();
+  private static final Map<Character, Character> SMALL_CAPS_FONT = new HashMap<>();
+
+  static {
+    SMALL_CAPS_FONT.put('a', 'ᴀ');
+    SMALL_CAPS_FONT.put('b', 'ʙ');
+    SMALL_CAPS_FONT.put('c', 'ᴄ');
+    SMALL_CAPS_FONT.put('d', 'ᴅ');
+    SMALL_CAPS_FONT.put('e', 'ᴇ');
+    SMALL_CAPS_FONT.put('f', 'ꜰ');
+    SMALL_CAPS_FONT.put('g', 'ɢ');
+    SMALL_CAPS_FONT.put('h', 'ʜ');
+    SMALL_CAPS_FONT.put('i', 'ɪ');
+    SMALL_CAPS_FONT.put('j', 'ᴊ');
+    SMALL_CAPS_FONT.put('k', 'ᴋ');
+    SMALL_CAPS_FONT.put('l', 'ʟ');
+    SMALL_CAPS_FONT.put('m', 'ᴍ');
+    SMALL_CAPS_FONT.put('n', 'ɴ');
+    SMALL_CAPS_FONT.put('o', 'ᴏ');
+    SMALL_CAPS_FONT.put('p', 'ᴘ');
+    SMALL_CAPS_FONT.put('q', 'q');
+    SMALL_CAPS_FONT.put('r', 'ʀ');
+    SMALL_CAPS_FONT.put('s', 'ꜱ');
+    SMALL_CAPS_FONT.put('t', 'ᴛ');
+    SMALL_CAPS_FONT.put('u', 'ᴜ');
+    SMALL_CAPS_FONT.put('v', 'ᴠ');
+    SMALL_CAPS_FONT.put('w', 'ᴡ');
+    SMALL_CAPS_FONT.put('x', 'x');
+    SMALL_CAPS_FONT.put('y', 'ʏ');
+    SMALL_CAPS_FONT.put('z', 'ᴢ');
+    SMALL_CAPS_FONT.put('{', '{');
+    SMALL_CAPS_FONT.put('|', '|');
+    SMALL_CAPS_FONT.put('}', '}');
+    SMALL_CAPS_FONT.put('~', '˜');
+  }
 
   private AdventureUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -122,5 +158,18 @@ public final class AdventureUtils {
       final BossBar.Overlay overlay) {
     final MurderPlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(player -> player.showBossBar(name, progress, color, overlay));
+  }
+
+  public static String convertToMini(final String text) {
+    final String lower = text.toLowerCase();
+    final StringBuilder result = new StringBuilder();
+    for (final char character : lower.toCharArray()) {
+      if (SMALL_CAPS_FONT.containsKey(character)) {
+        result.append(SMALL_CAPS_FONT.get(character));
+      } else {
+        result.append(character);
+      }
+    }
+    return result.toString();
   }
 }

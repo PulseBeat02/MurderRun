@@ -48,6 +48,31 @@ public final class MurderArenaCommand implements AnnotationCommandFeature {
     this.sendSuccessMessage(sender, message);
   }
 
+  @CommandDescription("murder_run.command.arena.remove.info")
+  @Command(value = "murder arena remove <name>", requiredSender = Player.class)
+  public void removeArena(final Player sender, final String name) {
+    final Audience audience = this.audiences.player(sender);
+    if (this.checkInvalidArena(audience, name)) {
+      return;
+    }
+    final MurderArenaManager manager = this.plugin.getArenaManager();
+    manager.removeArena(name);
+    final Component message = Locale.ARENA_REMOVE.build(name);
+    this.sendSuccessMessage(sender, message);
+  }
+
+  private boolean checkInvalidArena(final Audience audience, final String name) {
+    final MurderArenaManager manager = this.plugin.getArenaManager();
+    final Map<String, MurderArena> arenas = manager.getArenas();
+    final MurderArena arena = arenas.get(name);
+    if (arena == null) {
+      final Component message = Locale.ARENA_REMOVE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
   private void sendSuccessMessage(final Player player, final Component component) {
     final Audience audience = this.audiences.player(player);
     audience.sendMessage(component);

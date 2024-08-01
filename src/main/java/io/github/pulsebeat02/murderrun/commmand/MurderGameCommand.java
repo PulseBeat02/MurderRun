@@ -290,7 +290,7 @@ public final class MurderGameCommand implements AnnotationCommandFeature {
   private boolean checkIfNotInvited(
       final Audience audience, final Player sender, final Player owner) {
     final Collection<Player> invitations = this.invites.get(sender);
-    if (!invitations.contains(owner)) {
+    if (invitations == null || !invitations.contains(owner)) {
       final Component message = Locale.GAME_INVALID_INVITE_ERROR.build();
       audience.sendMessage(message);
       return true;

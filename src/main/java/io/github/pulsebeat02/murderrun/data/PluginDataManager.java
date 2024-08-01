@@ -32,6 +32,7 @@ public abstract class PluginDataManager<T> {
     CompletableFuture.runAsync(() -> this.writeJson(manager));
   }
 
+  @SuppressWarnings("nullness")
   private void writeJson(final T manager) {
     try (final Writer writer = Files.newBufferedWriter(this.json)) {
       this.createFolders();
