@@ -42,8 +42,9 @@ public final class Rewind extends MurderGadget implements Listener {
   }
 
   @Override
-  public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
-    super.onDropEvent(game, event);
+  public void onDropEvent(
+      final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
+    super.onDropEvent(game, event, true);
     final Player player = event.getPlayer();
     final CircularBuffer<SimpleEntry<Location, Long>> buffer = this.playerLocations.get(player);
     if (buffer != null && buffer.isFull()) {

@@ -21,7 +21,9 @@ public final class Cloak extends MurderGadget {
   }
 
   @Override
-  public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
+  public void onDropEvent(
+      final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
+    super.onDropEvent(game, event, true);
     final MurderPlayerManager manager = game.getPlayerManager();
     final Component message = Locale.CLOAK_TRAP_ACTIVATE.build();
     final MurderGameScheduler scheduler = game.getScheduler();

@@ -1,7 +1,9 @@
 package io.github.pulsebeat02.murderrun.gadget;
 
+import io.github.pulsebeat02.murderrun.game.MurderGame;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.event.player.PlayerDropItemEvent;
 
 public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
@@ -55,6 +57,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Shockwave Trap -- sets off massive blast flinging all players
   Tracker -- if activated near killer you can always see them
   Deadringer -- fake player death, fake kill them and then they become invulnerable
+  Distorter -- fills killer screen with annoying particles until destroyed
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -76,7 +79,6 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Killer Tracker -- tells you how close the killer is and how much danger you are in
   Flashlight -- blinds killer if come close, every 5 seconds
   Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
-  Distorter -- fills killer screen with annoying particles until destroyed
 
    */
 
@@ -113,5 +115,9 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
       final Component itemLore,
       final Component announcement) {
     super(name, material, itemName, itemLore, announcement);
+  }
+
+  public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
+    super.onDropEvent(game, event, false);
   }
 }

@@ -18,8 +18,9 @@ public final class Bush extends MurderGadget {
   }
 
   @Override
-  public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
-    super.onDropEvent(game, event);
+  public void onDropEvent(
+      final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
+    super.onDropEvent(game, event, true);
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     location.getBlock().setType(Material.OAK_LEAVES);

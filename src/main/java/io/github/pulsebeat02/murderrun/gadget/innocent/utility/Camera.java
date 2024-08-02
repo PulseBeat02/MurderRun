@@ -44,9 +44,9 @@ public final class Camera extends MurderGadget {
   }
 
   @Override
-  public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {
-    super.onDropEvent(game, event);
-
+  public void onDropEvent(
+      final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
+    super.onDropEvent(game, event, true);
     final MurderPlayerManager manager = game.getPlayerManager();
     final Collection<InnocentPlayer> players = manager.getInnocentPlayers();
     final Player player = event.getPlayer();

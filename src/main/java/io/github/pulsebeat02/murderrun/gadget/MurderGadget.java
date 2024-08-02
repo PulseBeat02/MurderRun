@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -76,7 +77,13 @@ public abstract class MurderGadget {
 
   public void onRightClickEvent(final MurderGame game, final PlayerInteractEvent event) {}
 
-  public void onDropEvent(final MurderGame game, final PlayerDropItemEvent event) {}
+  public void onDropEvent(
+      final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
+    final Item item = event.getItemDrop();
+    if (remove) {
+      item.remove();
+    }
+  }
 
   public ItemStack getGadget() {
     return this.gadget;
