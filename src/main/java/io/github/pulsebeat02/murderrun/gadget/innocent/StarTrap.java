@@ -24,10 +24,12 @@ public final class StarTrap extends SurvivorTrap {
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
     super.onTrapActivate(game, murderer);
     final MurderPlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(player -> {
-      player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5, 2));
-      player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 5, 2));
-      player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 2));
-    });
+    manager.applyToAllInnocents(this::addPotionEffect);
+  }
+
+  private void addPotionEffect(final GamePlayer player) {
+    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5, 2));
+    player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 5, 2));
+    player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5, 2));
   }
 }
