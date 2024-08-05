@@ -3,34 +3,18 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import com.google.common.reflect.ClassPath;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
-import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
-import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.persistence.PersistentDataType;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class MurderGadgetManager {
 
   private static final String GADGETS_PACKAGE = "io.github.pulsebeat02.murderrun.gadget";
   public static final Map<String, Constructor<?>> GADGET_LOOK_UP_MAP = new HashMap<>();
-
-  private final MurderRun plugin;
-  private final MurderGame game;
-  private final Map<String, MurderGadget> gameGadgets;
-
-  public MurderGadgetManager(final MurderGame game) {
-    this.game = game;
-    this.plugin = game.getPlugin();
-    this.gameGadgets = new HashMap<>();
-  }
 
   @SuppressWarnings("nullness")
   public static void init(final MurderRun plugin) {
@@ -59,8 +43,8 @@ public final class MurderGadgetManager {
     return constructors[0];
   }
 
-  private static MurderGadget invokeGadgetConstructor(
-      final MurderRun plugin, final Constructor<?> constructor)
+  private static MurderGadget invokeGadgetConstructor(final MurderRun plugin,
+      final Constructor<?> constructor)
       throws InvocationTargetException, InstantiationException, IllegalAccessException {
     final Class<?>[] arguments = constructor.getParameterTypes();
     final MurderGadget gadget;
@@ -72,41 +56,38 @@ public final class MurderGadgetManager {
     return gadget;
   }
 
-  public void registerNecessaryGadgets() {
-    final MurderPlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllParticipants(participant -> {
-      final Set<MurderGadget> gadgets = this.getUsedGadgets(participant);
-      for (final MurderGadget gadget : gadgets) {
-        final String name = gadget.getName();
-        this.gameGadgets.put(name, gadget);
-      }
-    });
+  private final MurderRun plugin;
+  private final MurderGame game;
+  private final Map<String, MurderGadget> gameGadgets;
+  private final AtomicInteger activationRange;
+
+  public MurderGadgetManager(final MurderGame game) {
+    this.game = game;
+    this.plugin = game.getPlugin();
+    this.gameGadgets = this.getUsedGadgets();
+    this.activationRange = new AtomicInteger(3);
   }
 
-  private Set<MurderGadget> getUsedGadgets(final GamePlayer player) {
-    final PlayerInventory inventory = player.getInventory();
-    final ItemStack[] slots = inventory.getContents();
-    final Set<MurderGadget> playerGadgets = new HashSet<>();
-    for (final ItemStack slot : slots) {
-      if (!ItemStackUtils.isTrap(slot)) {
-        continue;
-      }
-      final String data =
-          ItemStackUtils.getData(slot, NamespacedKeys.TRAP_KEY_NAME, PersistentDataType.STRING);
-      if (data == null) {
-        throw new AssertionError("An error occurred while retrieving from PDC!");
-      }
-      final Constructor<?> constructor = GADGET_LOOK_UP_MAP.get(data);
-      if (constructor == null) {
-        throw new AssertionError(String.format("Failed to get class for trap %s", data));
-      }
+  private Map<String, MurderGadget> getUsedGadgets() {
+    final Collection<Constructor<?>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
+    final Map<String, MurderGadget> gadgets = new HashMap<>();
+    for (final Constructor<?> constructor : gadgetClasses) {
       try {
         final MurderGadget gadget = invokeGadgetConstructor(this.plugin, constructor);
-        playerGadgets.add(gadget);
-      } catch (final Exception e) {
-        throw new RuntimeException(e);
+        final String name = gadget.getName();
+        gadgets.put(name, gadget);
+      } catch (final InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+        throw new AssertionError(e);
       }
     }
-    return playerGadgets;
+    return gadgets;
+  }
+
+  public void startTrapChecks() {
+    final MurderPlayerManager manager = this.game.getPlayerManager();
+    manager.applyToAllMurderers(killer -> {
+
+    });
   }
 }

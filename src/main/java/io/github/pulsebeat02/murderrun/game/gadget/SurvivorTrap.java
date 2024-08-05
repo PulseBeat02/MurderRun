@@ -68,9 +68,9 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Portal Trap -- teleports trap to killer
   Ghosting -- become a ghost after death
   Horcrux -- respawn after death
+  Trap Vest -- if survivor uses it and dies, explodes all remaining traps on ground
   Resurrection Stone -- resurrects a dead player
   Supply Drop -- get a various assortment of traps
-  Trap Vest -- if survivor uses it and dies, explodes all remaining traps on ground
   Random Trap -- gets a random trap
   Magnet Mode -- makes all trap activation range 3 times larger
   Translocator -- one use teleporter, (becomes lever to warp)
