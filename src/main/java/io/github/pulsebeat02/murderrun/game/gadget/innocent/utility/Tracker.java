@@ -22,10 +22,10 @@ public final class Tracker extends MurderGadget {
   }
 
   @Override
-  public void onDropEvent(
+  public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onDropEvent(game, event, true);
+    super.onGadgetDrop(game, event, true);
 
     final Player player = event.getPlayer();
     final MurderPlayerManager manager = game.getPlayerManager();

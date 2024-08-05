@@ -24,7 +24,6 @@ public final class NeckSnapTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-    super.onTrapActivate(game, murderer);
     final MurderGameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setHeadUp(murderer), 0, 5, 7 * 20);
   }

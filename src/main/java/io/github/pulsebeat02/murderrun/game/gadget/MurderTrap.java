@@ -26,10 +26,14 @@ public abstract sealed class MurderTrap extends MurderGadget permits SurvivorTra
     return this.announcement;
   }
 
-  public void onTrapActivate(final MurderGame game, final GamePlayer activee) {
+  @Override
+  public void onGadgetNearby(final MurderGame game, final GamePlayer activator) {
+    this.onTrapActivate(game, activator);
     if (this.announcement != null) {
       final MurderPlayerManager manager = game.getPlayerManager();
       manager.applyToAllParticipants(player -> player.showTitle(this.announcement, empty()));
     }
   }
+
+  public abstract void onTrapActivate(final MurderGame game, final GamePlayer activee);
 }

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -74,10 +77,19 @@ public abstract class MurderGadget {
     return stack;
   }
 
-  public void onRightClickEvent(
-      final MurderGame game, final PlayerInteractEvent event, final boolean remove) {}
+  public void onGadgetNearby(final MurderGame game, final GamePlayer activator) {}
 
-  public void onDropEvent(
+  public void onGadgetRightClick(
+      final MurderGame game, final PlayerInteractEvent event, final boolean remove) {
+    final Player player = event.getPlayer();
+    if (remove) {
+      final PlayerInventory inventory = player.getInventory();
+      final ItemStack stack = inventory.getItemInMainHand();
+      stack.setType(Material.AIR);
+    }
+  }
+
+  public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
     final Item item = event.getItemDrop();
     if (remove) {

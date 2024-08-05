@@ -25,9 +25,6 @@ public final class FartTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-
-    super.onTrapActivate(game, murderer);
-
     final Location location = murderer.getLocation();
     final Key key = FXSound.FART.getSound().key();
     murderer.playSound(key, Source.MASTER, 1f, 1f);

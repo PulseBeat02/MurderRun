@@ -25,9 +25,6 @@ public final class GlowTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-
-    super.onTrapActivate(game, murderer);
-
     final MurderPlayerManager manager = game.getPlayerManager();
     final Collection<Innocent> players = manager.getInnocentPlayers();
     final Collection<GamePlayer> higher =

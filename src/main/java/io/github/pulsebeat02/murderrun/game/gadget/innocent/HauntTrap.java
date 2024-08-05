@@ -25,9 +25,6 @@ public final class HauntTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-
-    super.onTrapActivate(game, murderer);
-
     final MurderGameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.createSpookyEffect(game, murderer), 0, 14, 7 * 20);
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.NAUSEA, 20 * 7, 10));

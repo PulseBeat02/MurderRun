@@ -24,7 +24,6 @@ public final class SmokeTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-    super.onTrapActivate(game, murderer);
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 2));

@@ -46,11 +46,7 @@ public final class KillerTracker extends MurderGadget {
     final double distance = this.getNearestKillerDistance(manager, location);
     final int count = this.increaseAndGetKillerCount(player);
     final boolean destroy = count == 5;
-    if (destroy) {
-      final PlayerInventory inventory = player.getInventory();
-      final ItemStack stack = inventory.getItemInMainHand();
-      stack.setType(Material.AIR);
-    }
+    super.onGadgetRightClick(game, event, destroy);
 
     final Component message = Locale.KILLER_TRACKER_ACTIVATE.build(distance);
     gamePlayer.sendMessage(message);

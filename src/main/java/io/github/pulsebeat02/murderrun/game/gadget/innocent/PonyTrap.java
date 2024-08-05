@@ -25,9 +25,6 @@ public final class PonyTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-
-    super.onTrapActivate(game, murderer);
-
     final Location location = murderer.getLocation();
     final World world = location.getWorld();
     if (world == null) {

@@ -21,7 +21,6 @@ public final class BlindTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer murderer) {
-    super.onTrapActivate(game, murderer);
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 7, 0));
   }
 }

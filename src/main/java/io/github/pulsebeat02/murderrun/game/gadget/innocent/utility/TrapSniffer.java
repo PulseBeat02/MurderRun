@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.innocent.utility;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.gadget.MurderGadget;
 import io.github.pulsebeat02.murderrun.game.map.MurderMap;
@@ -11,10 +13,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,7 +23,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class TrapSniffer extends MurderGadget {
 
-  private final Map<Player, Set<Item>> glowItemStates;
+  private final Multimap<Player, Item> glowItemStates;
 
   public TrapSniffer() {
     super(
@@ -32,14 +31,14 @@ public final class TrapSniffer extends MurderGadget {
         Material.IRON_DOOR,
         Locale.TRAP_SNIFFER_TRAP_NAME.build(),
         Locale.TRAP_SNIFFER_TRAP_LORE.build());
-    this.glowItemStates = new WeakHashMap<>();
+    this.glowItemStates = ArrayListMultimap.create();
   }
 
   @Override
-  public void onDropEvent(
+  public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onDropEvent(game, event, true);
+    super.onGadgetDrop(game, event, true);
 
     final MurderPlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
@@ -48,7 +47,6 @@ public final class TrapSniffer extends MurderGadget {
     gamePlayer.sendMessage(message);
 
     final MurderGameScheduler scheduler = game.getScheduler();
-    this.glowItemStates.computeIfAbsent(player, fun -> new HashSet<>());
     scheduler.scheduleRepeatedTask(
         () -> manager.applyToAllMurderers(murderer -> this.handleTrapSniffing(game, player)),
         0,
@@ -66,7 +64,7 @@ public final class TrapSniffer extends MurderGadget {
 
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();
-      final Set<Item> set = this.glowItemStates.get(innocent);
+      final Collection<Item> set = this.glowItemStates.get(innocent);
       if (set == null) {
         throw new AssertionError("Couldn't get player's glow states!");
       }
@@ -76,6 +74,7 @@ public final class TrapSniffer extends MurderGadget {
         set.add(entity);
         NMSHandler.NMS_UTILS.sendGlowPacket(innocent, entity);
       } else if (set.contains(entity)) {
+        set.remove(entity);
         NMSHandler.NMS_UTILS.sendRemoveGlowPacket(innocent, entity);
       }
     }

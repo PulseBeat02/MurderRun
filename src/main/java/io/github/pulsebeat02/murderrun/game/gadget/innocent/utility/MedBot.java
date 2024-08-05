@@ -31,10 +31,10 @@ public final class MedBot extends MurderGadget {
   }
 
   @Override
-  public void onDropEvent(
+  public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onDropEvent(game, event, true);
+    super.onGadgetDrop(game, event, true);
 
     final MurderPlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
@@ -58,16 +58,18 @@ public final class MedBot extends MurderGadget {
     final MurderGameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilCondition(
         () -> this.handleArmorStandEffects(armorStand), 0, 2, armorStand::isDead);
-    scheduler.scheduleRepeatedTask(
+    scheduler.scheduleTaskUntilCondition(
         () -> manager.applyToAllInnocents(
             innocent -> this.handleInnocentEffects(innocent, armorStand)),
         40L,
-        20L);
-    scheduler.scheduleRepeatedTask(
+        20L,
+        armorStand::isDead);
+    scheduler.scheduleTaskUntilCondition(
         () ->
             manager.applyToAllInnocents(innocent -> this.handleKillerDestroy(innocent, armorStand)),
         40L,
-        20L);
+        20L,
+        armorStand::isDead);
   }
 
   private void handleKillerDestroy(final GamePlayer killer, final ArmorStand stand) {

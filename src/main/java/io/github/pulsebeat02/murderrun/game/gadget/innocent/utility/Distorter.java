@@ -24,10 +24,10 @@ public final class Distorter extends MurderGadget {
   }
 
   @Override
-  public void onDropEvent(
+  public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onDropEvent(game, event, false);
+    super.onGadgetDrop(game, event, false);
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
