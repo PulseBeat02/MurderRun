@@ -49,8 +49,9 @@ public final class GamePlayerDeathEvent implements Listener {
     final PlayerDeathManager death = manager.getDeathManager();
     gamePlayer.setAlive(false);
     death.initiateDeathSequence(gamePlayer);
-    event.setKeepInventory(false);
 
+    event.setDroppedExp(0);
+    event.setKeepInventory(true);
     this.playDeathSoundEffect();
     this.runDeathTasks(gamePlayer);
 

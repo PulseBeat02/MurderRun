@@ -62,21 +62,20 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
   Drone -- roots you to the ground, but allows you to fly above and look
   Mind Control -- controls player mind
-
-  LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
-
+  Cryo-Freeze -- creates a huge ice dome around you
   Ghosting -- become an annoying ghost after death
   Horcrux -- respawn after death
-  Trap Vest -- if survivor uses it and dies, explodes all remaining traps on ground
+  Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
+  Magnet Mode -- makes all trap activation range 3 times larger
+  Random Trap -- gets a random trap
+
+  LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
   Portal Trap -- teleports trap to killer
   Resurrection Stone -- resurrects a dead player
   Supply Drop -- get a various assortment of traps
-  Random Trap -- gets a random trap
-  Magnet Mode -- makes all trap activation range 3 times larger
   Translocator -- one use teleporter, (becomes lever to warp)
   Blast Off -- sends the killer into a rocket into space
-  Cryo-Freeze -- creates a huge ice dome around you
   Flashlight -- blinds killer if come close, every 5 seconds
 
    */

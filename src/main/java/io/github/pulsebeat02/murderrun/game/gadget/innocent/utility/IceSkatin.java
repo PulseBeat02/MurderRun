@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
@@ -30,7 +31,12 @@ public final class IceSkatin extends MurderGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final Boat boat = (Boat) location.getWorld().spawnEntity(location, EntityType.BOAT);
+    final World world = location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
+
+    final Boat boat = (Boat) world.spawnEntity(location, EntityType.BOAT);
     final MurderGameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.spawnIceUnderBoat(boat), 5L);
   }

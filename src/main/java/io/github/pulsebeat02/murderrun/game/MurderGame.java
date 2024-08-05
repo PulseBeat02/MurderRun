@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.gadget.MurderGadgetManager;
 import io.github.pulsebeat02.murderrun.game.map.MurderMap;
 import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.MurderGameScheduler;
@@ -20,6 +21,7 @@ public final class MurderGame {
   private MurderTimeManager murderTimeManager;
   private MurderGameScheduler scheduler;
   private MurderStatus status;
+  private MurderGadgetManager gadgetManager;
 
   public MurderGame(final MurderRun plugin) {
     this.plugin = plugin;
@@ -59,6 +61,8 @@ public final class MurderGame {
     this.murderMap.start();
     this.murderPlayerManager.start(murderers, participants);
     this.preparationManager.start();
+    this.gadgetManager = new MurderGadgetManager(this);
+    this.gadgetManager.start();
   }
 
   private void setMurdererCount(final Collection<Player> murderers) {
@@ -136,5 +140,9 @@ public final class MurderGame {
 
   public MurderGameScheduler getScheduler() {
     return this.scheduler;
+  }
+
+  public MurderGadgetManager getGadgetManager() {
+    return this.gadgetManager;
   }
 }

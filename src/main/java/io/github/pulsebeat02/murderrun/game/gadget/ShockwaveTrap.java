@@ -24,9 +24,6 @@ public final class ShockwaveTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final MurderGame game, final GamePlayer survivor) {
-
-    super.onTrapActivate(game, survivor);
-
     final MurderPlayerManager manager = game.getPlayerManager();
     final Location origin = survivor.getLocation();
     final World world = origin.getWorld();

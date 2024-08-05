@@ -141,7 +141,7 @@ public final class MapUtils {
     return new CuboidRegion(instance, firstCorner, secondCorner);
   }
 
-  private static BlockVector3 toBlockVector3(final Location location) {
+  public static BlockVector3 toBlockVector3(final Location location) {
     final double x = location.getX();
     final double y = location.getY();
     final double z = location.getZ();

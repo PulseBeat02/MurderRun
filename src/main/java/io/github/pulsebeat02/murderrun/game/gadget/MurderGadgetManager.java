@@ -43,8 +43,8 @@ public final class MurderGadgetManager {
     return constructors[0];
   }
 
-  private static MurderGadget invokeGadgetConstructor(final MurderRun plugin,
-      final Constructor<?> constructor)
+  private static MurderGadget invokeGadgetConstructor(
+      final MurderRun plugin, final Constructor<?> constructor)
       throws InvocationTargetException, InstantiationException, IllegalAccessException {
     final Class<?>[] arguments = constructor.getParameterTypes();
     final MurderGadget gadget;
@@ -76,18 +76,37 @@ public final class MurderGadgetManager {
         final MurderGadget gadget = invokeGadgetConstructor(this.plugin, constructor);
         final String name = gadget.getName();
         gadgets.put(name, gadget);
-      } catch (final InvocationTargetException | InstantiationException |
-                     IllegalAccessException e) {
+      } catch (final InvocationTargetException
+          | InstantiationException
+          | IllegalAccessException e) {
         throw new AssertionError(e);
       }
     }
     return gadgets;
   }
 
-  public void startTrapChecks() {
+  public void start() {
     final MurderPlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllMurderers(killer -> {
+    manager.applyToAllMurderers(killer -> {});
+  }
 
-    });
+  public MurderRun getPlugin() {
+    return this.plugin;
+  }
+
+  public MurderGame getGame() {
+    return this.game;
+  }
+
+  public Map<String, MurderGadget> getGameGadgets() {
+    return this.gameGadgets;
+  }
+
+  public int getActivationRange() {
+    return this.activationRange.get();
+  }
+
+  public void setActivationRange(final int range) {
+    this.activationRange.getAndSet(range);
   }
 }

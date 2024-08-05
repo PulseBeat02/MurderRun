@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.Murderer;
 import io.github.pulsebeat02.murderrun.game.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import java.util.Collection;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -53,7 +54,8 @@ public final class MindControl extends MurderGadget {
     });
   }
 
-  private GamePlayer getNearestKiller(final MurderPlayerManager manager, final Location origin) {
+  private @Nullable GamePlayer getNearestKiller(
+      final MurderPlayerManager manager, final Location origin) {
     GamePlayer nearest = null;
     double min = Double.MAX_VALUE;
     final Collection<Murderer> killers = manager.getMurderers();
