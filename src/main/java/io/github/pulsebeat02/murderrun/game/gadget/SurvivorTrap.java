@@ -65,10 +65,11 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
-  Portal Trap -- teleports trap to killer
-  Ghosting -- become a ghost after death
+  Ghosting -- become an annoying ghost after death
   Horcrux -- respawn after death
   Trap Vest -- if survivor uses it and dies, explodes all remaining traps on ground
+
+  Portal Trap -- teleports trap to killer
   Resurrection Stone -- resurrects a dead player
   Supply Drop -- get a various assortment of traps
   Random Trap -- gets a random trap

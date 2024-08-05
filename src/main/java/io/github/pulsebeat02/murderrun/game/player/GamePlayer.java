@@ -6,7 +6,10 @@ import static net.kyori.adventure.title.Title.title;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.gadget.DeathTask;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.function.Consumer;
 import net.kyori.adventure.audience.Audience;
@@ -31,6 +34,7 @@ public abstract sealed class GamePlayer permits Innocent, Murderer {
   private final MurderGame game;
   private final UUID uuid;
   private final Audience audience;
+  private final Collection<DeathTask> tasks;
   private boolean alive;
 
   public GamePlayer(final MurderGame game, final UUID uuid) {
@@ -38,6 +42,7 @@ public abstract sealed class GamePlayer permits Innocent, Murderer {
     this.uuid = uuid;
     this.audience = this.getAudience();
     this.alive = true;
+    this.tasks = new HashSet<>();
   }
 
   private Audience getAudience(@UnderInitialization GamePlayer this) {
@@ -129,6 +134,18 @@ public abstract sealed class GamePlayer permits Innocent, Murderer {
 
   public void teleport(final Location location) {
     this.apply(player -> player.teleport(location));
+  }
+
+  public void addDeathTask(final DeathTask task) {
+    this.tasks.add(task);
+  }
+
+  public void removeDeathTask(final DeathTask task) {
+    this.tasks.remove(task);
+  }
+
+  public Collection<DeathTask> getDeathTasks() {
+    return this.tasks;
   }
 
   public UUID getUuid() {
