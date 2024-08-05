@@ -29,6 +29,14 @@ public final class ItemStackUtils {
     return getData(stack, NamespacedKeys.TRAP_KEY_NAME, PersistentDataType.STRING) != null;
   }
 
+  public static boolean isFlashBang(final ItemStack stack) {
+    return getData(stack, NamespacedKeys.FLASH_BANG, PersistentDataType.BOOLEAN) != null;
+  }
+
+  public static boolean isSmokeGrenade(final ItemStack stack) {
+    return getData(stack, NamespacedKeys.SMOKE_GRENADE, PersistentDataType.BOOLEAN) != null;
+  }
+
   public static <P, C> @Nullable C getData(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<P, C> type) {
     final ItemMeta meta = stack.getItemMeta();

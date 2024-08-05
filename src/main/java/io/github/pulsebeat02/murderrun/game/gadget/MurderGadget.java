@@ -63,7 +63,6 @@ public abstract class MurderGadget {
 
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     container.set(NamespacedKeys.TRAP_KEY_NAME, PersistentDataType.STRING, pdcName);
-
     meta.setDisplayName(name);
     meta.setLore(lore);
     stack.setItemMeta(meta);
@@ -75,7 +74,8 @@ public abstract class MurderGadget {
     return stack;
   }
 
-  public void onRightClickEvent(final MurderGame game, final PlayerInteractEvent event) {}
+  public void onRightClickEvent(
+      final MurderGame game, final PlayerInteractEvent event, final boolean remove) {}
 
   public void onDropEvent(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {

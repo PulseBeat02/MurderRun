@@ -345,4 +345,6 @@ public interface Locale extends LocaleParent {
       direct("murder_run.game.trap.life_insurance.activate");
   NullComponent<Sender> TRACKER_TRAP_ACTIVATE = direct("murder_run.game.trap.tracker.activate");
   NullComponent<Sender> TRACKER_TRAP_DEACTIVATE = direct("murder_run.game.trap.tracker.deactivate");
+  UniComponent<Sender, Double> KILLER_TRACKER_ACTIVATE =
+      direct("murder_run.game.trap.killer_tracker.activate", null);
 }

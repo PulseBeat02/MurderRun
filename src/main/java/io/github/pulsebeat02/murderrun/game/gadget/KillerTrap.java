@@ -56,7 +56,7 @@ public abstract non-sealed class KillerTrap extends MurderTrap {
   - Trap isn't explained well
   - Trap pertains to a specific theme too much (for example, Fortnite)
   - Trap functions too similar to another trap
-  - Trap isn't balanced
+  - Trap is not balanced or not worth implementing
   - Trap has controversial topics (for example, clickbait, demonetization, etc).
 
   Super Saiyan: Grants the Killer a significant speed and strength boost and giving them the ability to fly

@@ -56,6 +56,9 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Tracker -- if activated near killer you can always see them
   Deadringer -- fake player death, fake kill them and then they become invulnerable
   Distorter -- fills killer screen with annoying particles until destroyed
+  Killer Tracker -- tells you how close the killer is and how much danger you are in
+  Flashbang -- stuns
+  Smoke Grenade -- creates a huge smoke cloud
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -68,13 +71,8 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Random Trap -- gets a random trap
   Magnet Mode -- makes all trap activation range 3 times larger
   Translocator -- one use teleporter, (becomes lever to warp)
-  Smoke Bomb -- if activated smoke bomb causes survivor invis
-  Flashbang -- stuns
-  Blast Off -- sends the killer into a rocket into space
   Drone -- roots you to the ground, but allows you to fly above and look
-  Cryo-Freeze -- creates a huge ice dome around you
   Mind Control -- controls player mind
-  Killer Tracker -- tells you how close the killer is and how much danger you are in
   Flashlight -- blinds killer if come close, every 5 seconds
   Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
 
@@ -87,7 +85,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   - Trap isn't explained well
   - Trap pertains to a specific theme too much (for example, Fortnite)
   - Trap functions too similar to another trap
-  - Trap isn't balanced
+  - Trap is not balanced or not worth implementing
   - Trap has controversial topics (for example, clickbait, demonetization, etc).
 
   Jack-Jack - Laser Eyes -- shooting survivor makes them faster, murderer burns them
@@ -103,6 +101,8 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Demonetized -- if activated then youtube police spawns on killer
   Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
   Some Cake in Vegas -- Sends killer to gamble for a random debuff
+  Blast Off -- sends the killer into a rocket into space
+  Cryo-Freeze -- creates a huge ice dome around you
 
    */
 

@@ -11,6 +11,9 @@ public final class NamespacedKeys {
   public static NamespacedKey CAR_PART_UUID;
   public static NamespacedKey TRAP_KEY_NAME;
   public static NamespacedKey CAN_BREAK_BLOCKS;
+  public static NamespacedKey KILLER_TRACKER;
+  public static NamespacedKey FLASH_BANG;
+  public static NamespacedKey SMOKE_GRENADE;
 
   public static void init(final MurderRun plugin) {
     PLUGIN = plugin;
@@ -18,6 +21,9 @@ public final class NamespacedKeys {
     CAR_PART_UUID = createKey("car-part-uuid");
     TRAP_KEY_NAME = createKey("trap");
     CAN_BREAK_BLOCKS = createKey("can-break-blocks");
+    KILLER_TRACKER = createKey("killer-tracker");
+    FLASH_BANG = createKey("flash-bang");
+    SMOKE_GRENADE = createKey("smoke-grenade");
   }
 
   private static NamespacedKey createKey(final String key) {
