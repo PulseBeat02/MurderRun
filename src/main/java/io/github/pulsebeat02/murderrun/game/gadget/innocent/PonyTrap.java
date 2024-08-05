@@ -31,7 +31,7 @@ public final class PonyTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     final World world = location.getWorld();
     if (world == null) {
-      throw new AssertionError("Failed to spawn pony!");
+      throw new AssertionError("Location doesn't have World attached to it!");
     }
 
     final Horse horse = this.spawnCustomisedHorse(world, location);

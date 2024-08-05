@@ -31,7 +31,7 @@ public final class LevitationTrap extends SurvivorTrap {
 
     final World world = location.getWorld();
     if (world == null) {
-      throw new AssertionError("Failed to spawn portal particles!");
+      throw new AssertionError("Location doesn't have World attached to it!");
     }
 
     final MurderGameScheduler scheduler = game.getScheduler();

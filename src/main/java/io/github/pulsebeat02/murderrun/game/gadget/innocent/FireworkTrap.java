@@ -31,7 +31,7 @@ public final class FireworkTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     final World world = location.getWorld();
     if (world == null) {
-      throw new AssertionError("Failed to spawn fireworks!");
+      throw new AssertionError("Location doesn't have World attached to it!");
     }
 
     final MurderGameScheduler scheduler = game.getScheduler();
