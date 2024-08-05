@@ -29,7 +29,7 @@ public final class Parasite extends MurderGadget {
   public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onGadgetDrop(game, event, remove);
+    super.onGadgetDrop(game, event, false);
 
     final Item item = event.getItemDrop();
     final Player player = event.getPlayer();

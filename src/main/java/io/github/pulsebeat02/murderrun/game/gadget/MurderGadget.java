@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import java.util.List;
 import java.util.function.Consumer;
@@ -15,7 +16,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -64,8 +64,7 @@ public abstract class MurderGadget {
       throw new AssertionError("Failed to construct ItemStack for trap!");
     }
 
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
-    container.set(NamespacedKeys.TRAP_KEY_NAME, PersistentDataType.STRING, pdcName);
+    ItemStackUtils.setData(stack, NamespacedKeys.TRAP_KEY_NAME, PersistentDataType.STRING, pdcName);
     meta.setDisplayName(name);
     meta.setLore(lore);
     stack.setItemMeta(meta);

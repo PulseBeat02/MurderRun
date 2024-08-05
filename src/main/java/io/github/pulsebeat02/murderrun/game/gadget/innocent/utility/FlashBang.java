@@ -19,8 +19,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 
@@ -32,14 +30,8 @@ public final class FlashBang extends MurderGadget implements Listener {
         Material.SNOWBALL,
         Locale.FLASHBANG_TRAP_NAME.build(),
         Locale.FLASHBANG_TRAP_LORE.build(),
-        stack -> {
-          final ItemMeta meta = stack.getItemMeta();
-          if (meta == null) {
-            throw new AssertionError("Failed to create flash bang!");
-          }
-          final PersistentDataContainer container = meta.getPersistentDataContainer();
-          container.set(NamespacedKeys.FLASH_BANG, PersistentDataType.BOOLEAN, true);
-        });
+        stack -> ItemStackUtils.setData(
+            stack, NamespacedKeys.FLASH_BANG, PersistentDataType.BOOLEAN, true));
     Bukkit.getPluginManager().registerEvents(this, plugin);
   }
 

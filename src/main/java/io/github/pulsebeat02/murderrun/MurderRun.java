@@ -36,6 +36,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Make traps have particle effects
   - Create all Game Gadgets
+  - Check remove for all gadgets
 
    */
 

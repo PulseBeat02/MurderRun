@@ -37,6 +37,19 @@ public final class ItemStackUtils {
     return getData(stack, NamespacedKeys.SMOKE_GRENADE, PersistentDataType.BOOLEAN) != null;
   }
 
+  public static <P, C> void setData(
+      final ItemStack stack,
+      final NamespacedKey key,
+      final PersistentDataType<P, C> type,
+      final C value) {
+    final ItemMeta meta = stack.getItemMeta();
+    if (meta == null) {
+      return;
+    }
+    final PersistentDataContainer container = meta.getPersistentDataContainer();
+    container.set(key, type, value);
+  }
+
   public static <P, C> @Nullable C getData(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<P, C> type) {
     final ItemMeta meta = stack.getItemMeta();

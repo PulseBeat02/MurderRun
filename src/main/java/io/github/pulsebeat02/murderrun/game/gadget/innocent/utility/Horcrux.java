@@ -26,7 +26,7 @@ public final class Horcrux extends MurderGadget {
   public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, event, false);
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();

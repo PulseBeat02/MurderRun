@@ -24,7 +24,7 @@ public final class Drone extends MurderGadget {
   public void onGadgetDrop(
       final MurderGame game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onGadgetDrop(game, event, remove);
+    super.onGadgetDrop(game, event, true);
 
     final Player player = event.getPlayer();
     final Location origin = player.getLocation();

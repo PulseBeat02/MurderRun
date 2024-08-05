@@ -68,6 +68,7 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
   Magnet Mode -- makes all trap activation range 3 times larger
   Random Trap -- gets a random trap
+  Flashlight -- blinds killer if come close, every 5 seconds
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
@@ -76,7 +77,6 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Supply Drop -- get a various assortment of traps
   Translocator -- one use teleporter, (becomes lever to warp)
   Blast Off -- sends the killer into a rocket into space
-  Flashlight -- blinds killer if come close, every 5 seconds
 
    */
 

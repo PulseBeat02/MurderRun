@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Murderer;
 import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
 import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -16,7 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class KillerTracker extends MurderGadget {
@@ -27,17 +27,13 @@ public final class KillerTracker extends MurderGadget {
         Material.COMPASS,
         Locale.KILLER_TRACKER_TRAP_NAME.build(),
         Locale.KILLER_TRACKER_TRAP_LORE.build(),
-        stack -> {
-          final ItemMeta meta = stack.getItemMeta();
-          if (meta == null) {
-            throw new AssertionError("Failed to create killer tracker!");
-          }
-          final PersistentDataContainer container = meta.getPersistentDataContainer();
-          container.set(NamespacedKeys.KILLER_TRACKER, PersistentDataType.INTEGER, 0);
-        });
+        stack -> ItemStackUtils.setData(
+            stack, NamespacedKeys.KILLER_TRACKER, PersistentDataType.INTEGER, 0));
   }
 
-  public void onRightClickEvent(final MurderGame game, final PlayerInteractEvent event) {
+  @Override
+  public void onGadgetRightClick(
+      final MurderGame game, final PlayerInteractEvent event, final boolean remove) {
 
     final MurderPlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
@@ -61,14 +57,14 @@ public final class KillerTracker extends MurderGadget {
       throw new AssertionError("Failed to retrieve killer tracker meta!");
     }
 
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final Integer val = container.get(NamespacedKeys.KILLER_TRACKER, PersistentDataType.INTEGER);
+    final Integer val =
+        ItemStackUtils.getData(stack, NamespacedKeys.KILLER_TRACKER, PersistentDataType.INTEGER);
     if (val == null) {
       throw new AssertionError("Failed to retrieve killer tracker value!");
     }
 
     final int count = val + 1;
-    container.set(NamespacedKeys.KILLER_TRACKER, PersistentDataType.INTEGER, count);
+    ItemStackUtils.setData(stack, NamespacedKeys.KILLER_TRACKER, PersistentDataType.INTEGER, count);
 
     return count;
   }
