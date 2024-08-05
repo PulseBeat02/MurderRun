@@ -86,7 +86,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     final Component title = Locale.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
     final Component subtitle = empty();
     AdventureUtils.showTitleForAllParticipants(this.game, title, subtitle);
-    AdventureUtils.playSoundForAllParticipants(this.game, Sound.BLOCK_ANVIL_USE);
+    AdventureUtils.playSoundForAllParticipants(this.game, "block.anvil.use");
   }
 
   private void setBossBar(final int leftOver) {
