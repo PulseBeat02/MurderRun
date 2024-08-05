@@ -1,12 +1,12 @@
 package io.github.pulsebeat02.murderrun;
 
-import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.data.MurderArenaDataManager;
 import io.github.pulsebeat02.murderrun.data.MurderLobbyDataManager;
 import io.github.pulsebeat02.murderrun.data.PluginConfiguration;
-import io.github.pulsebeat02.murderrun.gadget.MurderGadgetManager;
-import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
+import io.github.pulsebeat02.murderrun.game.arena.MurderArenaManager;
+import io.github.pulsebeat02.murderrun.game.gadget.MurderGadgetManager;
+import io.github.pulsebeat02.murderrun.game.lobby.MurderLobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.locale.TranslationManager;
@@ -35,7 +35,7 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Make traps have particle effects
-  - Handle game gadgets
+  - Create all Game Gadgets
 
    */
 

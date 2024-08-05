@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.data;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.lobby.MurderLobbyManager;
+import io.github.pulsebeat02.murderrun.game.lobby.MurderLobbyManager;
 
 public final class MurderLobbyDataManager extends PluginDataManager<MurderLobbyManager> {
 

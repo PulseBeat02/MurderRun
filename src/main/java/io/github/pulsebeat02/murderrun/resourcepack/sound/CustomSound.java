@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +16,7 @@ public class CustomSound {
   private final Writable data;
 
   public CustomSound(final String namespace) throws IOException {
-    this.key = Key.key("murder_run", namespace);
+    this.key = key("murder_run", namespace);
     this.data = this.getSoundStream(namespace);
   }
 

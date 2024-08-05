@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.arena.MurderArena;
-import io.github.pulsebeat02.murderrun.arena.MurderArenaManager;
+import io.github.pulsebeat02.murderrun.game.arena.MurderArena;
+import io.github.pulsebeat02.murderrun.game.arena.MurderArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;

@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.map.MurderMap;
-import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
-import io.github.pulsebeat02.murderrun.scheduler.MurderGameScheduler;
+import io.github.pulsebeat02.murderrun.game.map.MurderMap;
+import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.MurderGameScheduler;
 import java.util.Collection;
 import java.util.UUID;
 import org.bukkit.entity.Player;

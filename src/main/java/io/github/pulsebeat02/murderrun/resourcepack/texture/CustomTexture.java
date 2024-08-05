@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.texture;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +16,7 @@ public final class CustomTexture {
   private final Writable data;
 
   public CustomTexture(final String namespace) {
-    this(Key.key("murder_run", namespace), namespace);
+    this(key("murder_run", namespace), namespace);
   }
 
   public CustomTexture(final Key key, final String namespace) {

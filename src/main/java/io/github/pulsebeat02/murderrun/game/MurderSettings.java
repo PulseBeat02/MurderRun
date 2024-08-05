@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game;
 
-import io.github.pulsebeat02.murderrun.arena.MurderArena;
-import io.github.pulsebeat02.murderrun.lobby.MurderLobby;
+import io.github.pulsebeat02.murderrun.game.arena.MurderArena;
+import io.github.pulsebeat02.murderrun.game.lobby.MurderLobby;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class MurderSettings {

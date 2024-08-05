@@ -1,10 +1,12 @@
 package io.github.pulsebeat02.murderrun.utils;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,9 +14,11 @@ import java.util.WeakHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -37,7 +41,20 @@ public final class PlayerUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static Optional<GamePlayer> checkIfValidPlayer(
+  public static void removeAllBossBars(final Player player) {
+    final Server server = Bukkit.getServer();
+    final Iterator<KeyedBossBar> bars = server.getBossBars();
+    while (bars.hasNext()) {
+      final KeyedBossBar bar = bars.next();
+      final List<Player> players = bar.getPlayers();
+      if (!players.contains(player)) {
+        continue;
+      }
+      bar.removePlayer(player);
+    }
+  }
+
+  public static Optional<GamePlayer> checkIfValidEventPlayer(
       final MurderGame game, final Player player) {
     final MurderPlayerManager manager = game.getPlayerManager();
     return manager.lookupPlayer(player);

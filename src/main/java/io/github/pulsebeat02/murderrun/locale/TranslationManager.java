@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.locale;
 
+import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
@@ -23,7 +24,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 public final class TranslationManager {
 
   private static final java.util.Locale DEFAULT_LOCALE = Locale.ENGLISH;
-  private static final Key ADVENTURE_KEY = Key.key("murder_run", "main");
+  private static final Key ADVENTURE_KEY = key("murder_run", "main");
   private static final String PROPERTIES_PATH = "locale/murder_run_en.properties";
 
   private static MurderRun PLUGIN;

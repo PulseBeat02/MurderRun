@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.model;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.resourcepack.texture.CustomTexture;
 import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
 import java.util.ArrayList;
@@ -23,8 +25,8 @@ public final class ModelHandler {
       list.add(override);
     }
     return Model.model()
-        .key(Key.key("item/diamond"))
-        .parent(Key.key("item/generated"))
+        .key(key("item/diamond"))
+        .parent(key("item/generated"))
         .overrides(list)
         .build();
   }
@@ -36,14 +38,13 @@ public final class ModelHandler {
     final ItemOverride override = ItemOverride.of(key, predicate);
     final List<ItemOverride> list = List.of(override);
     return Model.model()
-        .key(Key.key("item/diamond_sword"))
-        .parent(Key.key("item/generated"))
+        .key(key("item/diamond_sword"))
+        .parent(key("item/generated"))
         .overrides(list)
         .build();
   }
 
   public Texture customJumpScareGenerator() {
-    return new CustomTexture(Key.key("minecraft", "misc/pumpkinblur.png"), "pumpkinblur.png")
-        .build();
+    return new CustomTexture(key("minecraft", "misc/pumpkinblur.png"), "pumpkinblur.png").build();
   }
 }

@@ -5,9 +5,9 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.arena.MurderArena;
+import io.github.pulsebeat02.murderrun.game.arena.MurderArena;
+import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -70,7 +70,7 @@ public final class MurderPreparationManager {
 
   private void setTimeRemaining(final int time) {
     final MurderPlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllParticipants(player -> player.setXpLevel(time));
+    manager.applyToAllParticipants(gamePlayer -> gamePlayer.apply(player -> player.setLevel(time)));
   }
 
   private void announceCountdown(final int seconds) {
