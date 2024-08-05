@@ -69,12 +69,12 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Magnet Mode -- makes all trap activation range 3 times larger
   Random Trap -- gets a random trap
   Flashlight -- blinds killer if come close, every 5 seconds
+  Supply Drop -- get a various assortment of traps
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
   Portal Trap -- teleports trap to killer
   Resurrection Stone -- resurrects a dead player
-  Supply Drop -- get a various assortment of traps
   Translocator -- one use teleporter, (becomes lever to warp)
   Blast Off -- sends the killer into a rocket into space
 

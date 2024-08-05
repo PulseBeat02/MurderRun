@@ -4,11 +4,8 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.gadget.MurderGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Murderer;
 import io.github.pulsebeat02.murderrun.game.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.Collection;
-import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,7 +30,7 @@ public final class MindControl extends MurderGadget {
 
     final Player player = event.getPlayer();
     final MurderPlayerManager manager = game.getPlayerManager();
-    final GamePlayer nearest = this.getNearestKiller(manager, player.getLocation());
+    final GamePlayer nearest = manager.getNearestKiller(player.getLocation());
 
     final Location origin = player.getLocation();
     final Location location = nearest.getLocation();
@@ -54,19 +51,4 @@ public final class MindControl extends MurderGadget {
     });
   }
 
-  private @Nullable GamePlayer getNearestKiller(
-      final MurderPlayerManager manager, final Location origin) {
-    GamePlayer nearest = null;
-    double min = Double.MAX_VALUE;
-    final Collection<Murderer> killers = manager.getMurderers();
-    for (final GamePlayer killer : killers) {
-      final Location location = killer.getLocation();
-      final double distance = location.distanceSquared(origin);
-      if (distance < min) {
-        nearest = killer;
-        min = distance;
-      }
-    }
-    return nearest;
-  }
 }

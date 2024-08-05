@@ -4,10 +4,7 @@ import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.gadget.MurderGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Murderer;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.Collection;
-import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -43,7 +40,7 @@ public final class IceSpirit extends MurderGadget {
       throw new AssertionError("Location doesn't have World attached to it!");
     }
 
-    final GamePlayer nearest = this.getNearestKiller(manager, location);
+    final GamePlayer nearest = manager.getNearestKiller(location);
     final Zombie iceSpirit = this.spawnSpirit(world, location, nearest);
     game.getScheduler().scheduleTask(() -> this.checkInteraction(manager, iceSpirit, nearest), 20L);
   }
@@ -57,22 +54,6 @@ public final class IceSpirit extends MurderGadget {
       this.applyDebuffs(manager, nearest);
       zombie.remove();
     }
-  }
-
-  private @Nullable GamePlayer getNearestKiller(
-      final MurderPlayerManager manager, final Location origin) {
-    GamePlayer nearest = null;
-    double min = Double.MAX_VALUE;
-    final Collection<Murderer> killers = manager.getMurderers();
-    for (final GamePlayer killer : killers) {
-      final Location location = killer.getLocation();
-      final double distance = location.distanceSquared(origin);
-      if (distance < min) {
-        nearest = killer;
-        min = distance;
-      }
-    }
-    return nearest;
   }
 
   private void applyDebuffs(final MurderPlayerManager manager, final GamePlayer killer) {

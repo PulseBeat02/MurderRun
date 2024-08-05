@@ -35,8 +35,8 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Make traps have particle effects
-  - Create all Game Gadgets
-  - Check remove for all gadgets
+  - Create all innocent gadgets
+  - Make all methods private
 
    */
 

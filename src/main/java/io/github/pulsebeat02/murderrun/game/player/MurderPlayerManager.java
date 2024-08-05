@@ -11,6 +11,7 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -63,6 +64,21 @@ public final class MurderPlayerManager {
         .filter(player -> player instanceof Innocent)
         .map(murderer -> (Innocent) murderer)
         .collect(Collectors.toSet());
+  }
+
+  public GamePlayer getNearestKiller(final Location origin) {
+    GamePlayer nearest = null;
+    double min = Double.MAX_VALUE;
+    final Collection<Murderer> killers = this.getMurderers();
+    for (final GamePlayer killer : killers) {
+      final Location location = killer.getLocation();
+      final double distance = location.distanceSquared(origin);
+      if (distance < min) {
+        nearest = killer;
+        min = distance;
+      }
+    }
+    return nearest;
   }
 
   private void createMurderers(final Collection<Player> murderers) {
