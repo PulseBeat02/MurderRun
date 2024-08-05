@@ -75,6 +75,8 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Random Trap -- gets a random trap
   Magnet Mode -- makes all trap activation range 3 times larger
   Translocator -- one use teleporter, (becomes lever to warp)
+  Blast Off -- sends the killer into a rocket into space
+  Cryo-Freeze -- creates a huge ice dome around you
   Flashlight -- blinds killer if come close, every 5 seconds
 
    */
@@ -102,8 +104,6 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Demonetized -- if activated then youtube police spawns on killer
   Clickbait Trap -- if killer steps on it they are sent to a room full of clickbait
   Some Cake in Vegas -- Sends killer to gamble for a random debuff
-  Blast Off -- sends the killer into a rocket into space
-  Cryo-Freeze -- creates a huge ice dome around you
 
    */
 
