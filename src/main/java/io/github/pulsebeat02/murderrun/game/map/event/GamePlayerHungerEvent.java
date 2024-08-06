@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import java.util.Optional;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -13,13 +13,13 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 public final class GamePlayerHungerEvent implements Listener {
 
-  private final MurderGame game;
+  private final Game game;
 
-  public GamePlayerHungerEvent(final MurderGame game) {
+  public GamePlayerHungerEvent(final Game game) {
     this.game = game;
   }
 
-  public MurderGame getGame() {
+  public Game getGame() {
     return this.game;
   }
 
@@ -31,7 +31,7 @@ public final class GamePlayerHungerEvent implements Listener {
       return;
     }
 
-    final MurderPlayerManager manager = this.game.getPlayerManager();
+    final PlayerManager manager = this.game.getPlayerManager();
     final Optional<GamePlayer> optional = manager.lookupPlayer(player);
     if (optional.isEmpty()) {
       return;

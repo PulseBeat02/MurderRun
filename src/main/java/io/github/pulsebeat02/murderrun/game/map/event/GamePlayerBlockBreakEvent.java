@@ -1,11 +1,11 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.Murderer;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
 import org.bukkit.Location;
@@ -21,13 +21,13 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class GamePlayerBlockBreakEvent implements Listener {
 
-  private final MurderGame game;
+  private final Game game;
 
-  public GamePlayerBlockBreakEvent(final MurderGame game) {
+  public GamePlayerBlockBreakEvent(final Game game) {
     this.game = game;
   }
 
-  public MurderGame getGame() {
+  public Game getGame() {
     return this.game;
   }
 
@@ -37,7 +37,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     final Player player = event.getPlayer();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack hand = inventory.getItemInMainHand();
-    if (!ItemStackUtils.canBreakMapBlocks(hand)) {
+    if (!ItemUtils.canBreakMapBlocks(hand)) {
       return;
     }
 
@@ -54,9 +54,9 @@ public final class GamePlayerBlockBreakEvent implements Listener {
 
     final GamePlayer murderer = optional.get();
     final Location murdererLocation = murderer.getLocation();
-    if (murderer instanceof Murderer) {
-      AdventureUtils.playSoundForAllParticipantsAtLocation(
-          this.game, murdererLocation, FXSound.CHAINSAW);
+    if (murderer instanceof Killer) {
+      ComponentUtils.playSoundForAllParticipantsAtLocation(
+          this.game, murdererLocation, SoundKeys.CHAINSAW);
     }
 
     event.setCancelled(true);

@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.utils;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
-import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -54,9 +54,8 @@ public final class PlayerUtils {
     }
   }
 
-  public static Optional<GamePlayer> checkIfValidEventPlayer(
-      final MurderGame game, final Player player) {
-    final MurderPlayerManager manager = game.getPlayerManager();
+  public static Optional<GamePlayer> checkIfValidEventPlayer(final Game game, final Player player) {
+    final PlayerManager manager = game.getPlayerManager();
     return manager.lookupPlayer(player);
   }
 
@@ -82,7 +81,7 @@ public final class PlayerUtils {
     GLOW_TEAMS.put(player, team);
 
     receivers.forEach(
-        receiver -> NMSHandler.NMS_UTILS.sendGlowPacket(player, receiver.getPlayer()));
+        receiver -> PacketToolsProvider.NMS_UTILS.sendGlowPacket(player, receiver.getPlayer()));
   }
 
   public static void removeGlow(
@@ -99,8 +98,8 @@ public final class PlayerUtils {
 
     GLOW_TEAMS.remove(player);
 
-    receivers.forEach(
-        receiver -> NMSHandler.NMS_UTILS.sendRemoveGlowPacket(player, receiver.getPlayer()));
+    receivers.forEach(receiver ->
+        PacketToolsProvider.NMS_UTILS.sendRemoveGlowPacket(player, receiver.getPlayer()));
   }
 
   public static void addFakeWorldBorderEffect(final GamePlayer gamePlayer) {

@@ -1,10 +1,10 @@
 package io.github.pulsebeat02.murderrun.locale;
 
-import static io.github.pulsebeat02.murderrun.locale.LocaleParent.direct;
+import static io.github.pulsebeat02.murderrun.locale.LocaleTooling.direct;
 
 import java.util.List;
 
-public interface Locale extends LocaleParent {
+public interface Locale extends LocaleTooling {
   NullComponent<Sender> PLUGIN_ENABLE = direct("murder_run.plugin.enable");
   NullComponent<Sender> PLUGIN_DEPENDENCY_ERROR = direct("murder_run.plugin.dependency");
   NullComponent<Sender> PLUGIN_DISABLE = direct("murder_run.plugin.disable");

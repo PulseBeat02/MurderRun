@@ -15,11 +15,11 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.MurderSettings;
-import io.github.pulsebeat02.murderrun.game.arena.MurderArena;
-import io.github.pulsebeat02.murderrun.game.arena.MurderArenaSchematic;
-import io.github.pulsebeat02.murderrun.game.map.MurderMap;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
+import io.github.pulsebeat02.murderrun.game.map.Map;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -57,11 +57,11 @@ public final class MapUtils {
     return first + second;
   }
 
-  public static void resetMap(final MurderMap map) {
-    final MurderGame game = map.getGame();
-    final MurderSettings settings = game.getSettings();
-    final MurderArena arena = settings.getArena();
-    final MurderArenaSchematic schematic = arena.getSchematic();
+  public static void resetMap(final Map map) {
+    final Game game = map.getGame();
+    final GameSettings settings = game.getSettings();
+    final Arena arena = settings.getArena();
+    final ArenaSchematic schematic = arena.getSchematic();
     final BlockVector3 vector3 = schematic.getOrigin();
     final Clipboard clipboard = loadSchematic(schematic);
     final Region region = clipboard.getRegion();
@@ -78,7 +78,7 @@ public final class MapUtils {
     }
   }
 
-  private static Clipboard loadSchematic(final MurderArenaSchematic schematic) {
+  private static Clipboard loadSchematic(final ArenaSchematic schematic) {
     final Path path = schematic.getSchematicPath();
     final ClipboardFormat format = ClipboardFormats.findByFile(path.toFile());
     if (format == null) {
@@ -91,13 +91,12 @@ public final class MapUtils {
     }
   }
 
-  public static MurderArenaSchematic copyAndCreateSchematic(
-      final String name, final Location[] corners) {
+  public static ArenaSchematic copyAndCreateSchematic(final String name, final Location[] corners) {
     try {
       final Clipboard clipboard = performForwardExtentCopy(corners);
       final Path path = performSchematicWrite(clipboard, name);
       final BlockVector3 origin = clipboard.getOrigin();
-      return new MurderArenaSchematic(path, origin);
+      return new ArenaSchematic(path, origin);
     } catch (final WorldEditException e) {
       throw new AssertionError(e);
     }

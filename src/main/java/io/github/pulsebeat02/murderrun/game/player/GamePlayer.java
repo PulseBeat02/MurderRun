@@ -5,9 +5,9 @@ import static net.kyori.adventure.sound.Sound.sound;
 import static net.kyori.adventure.title.Title.title;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.gadget.DeathTask;
-import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
+import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
@@ -29,15 +29,15 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public abstract sealed class GamePlayer permits Innocent, Murderer {
+public abstract sealed class GamePlayer permits Survivor, Killer {
 
-  private final MurderGame game;
+  private final Game game;
   private final UUID uuid;
   private final Audience audience;
-  private final Collection<DeathTask> tasks;
+  private final Collection<PlayerDeathTask> tasks;
   private boolean alive;
 
-  public GamePlayer(final MurderGame game, final UUID uuid) {
+  public GamePlayer(final Game game, final UUID uuid) {
     this.game = game;
     this.uuid = uuid;
     this.audience = this.getAudience(game, uuid);
@@ -46,9 +46,9 @@ public abstract sealed class GamePlayer permits Innocent, Murderer {
   }
 
   private Audience getAudience(
-      @UnderInitialization GamePlayer this, final MurderGame game, final UUID uuid) {
+      @UnderInitialization GamePlayer this, final Game game, final UUID uuid) {
     final MurderRun plugin = game.getPlugin();
-    final AudienceHandler handler = plugin.getAudience();
+    final AudienceProvider handler = plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
     return audiences.player(uuid);
   }
@@ -137,15 +137,15 @@ public abstract sealed class GamePlayer permits Innocent, Murderer {
     this.apply(player -> player.teleport(location));
   }
 
-  public void addDeathTask(final DeathTask task) {
+  public void addDeathTask(final PlayerDeathTask task) {
     this.tasks.add(task);
   }
 
-  public void removeDeathTask(final DeathTask task) {
+  public void removeDeathTask(final PlayerDeathTask task) {
     this.tasks.remove(task);
   }
 
-  public Collection<DeathTask> getDeathTasks() {
+  public Collection<PlayerDeathTask> getDeathTasks() {
     return this.tasks;
   }
 
@@ -161,7 +161,7 @@ public abstract sealed class GamePlayer permits Innocent, Murderer {
     this.alive = alive;
   }
 
-  public MurderGame getGame() {
+  public Game getGame() {
     return this.game;
   }
 }

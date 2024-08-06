@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.map.MurderMap;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.map.Map;
 import java.util.Collection;
 import java.util.Set;
 import org.bukkit.Server;
@@ -12,10 +12,10 @@ import org.bukkit.plugin.PluginManager;
 
 public final class GameEventManager {
 
-  private final MurderGame game;
+  private final Game game;
   private final Collection<Listener> events;
 
-  public GameEventManager(final MurderMap map) {
+  public GameEventManager(final Map map) {
     this.game = map.getGame();
     this.events = Set.of(
         new GamePlayerDeathEvent(this.game),
@@ -27,7 +27,7 @@ public final class GameEventManager {
         new GamePlayerRegenEvent(this.game));
   }
 
-  public MurderGame getGame() {
+  public Game getGame() {
     return this.game;
   }
 

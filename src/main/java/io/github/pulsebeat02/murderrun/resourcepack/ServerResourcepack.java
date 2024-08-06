@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.resourcepack;
 
-import io.github.pulsebeat02.murderrun.resourcepack.model.ModelHandler;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
-import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTexture;
+import io.github.pulsebeat02.murderrun.resourcepack.model.ModelGeneratorManager;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
+import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTextureKeys;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,22 +46,22 @@ public final class ServerResourcepack {
   }
 
   private void addTextures() {
-    final ItemTexture[] textures = ItemTexture.values();
-    for (final ItemTexture texture : textures) {
+    final ItemTextureKeys[] textures = ItemTextureKeys.values();
+    for (final ItemTextureKeys texture : textures) {
       this.pack.texture(texture.getTexture());
     }
   }
 
   private void addModels() {
-    final ModelHandler handler = new ModelHandler();
+    final ModelGeneratorManager handler = new ModelGeneratorManager();
     this.pack.texture(handler.customJumpScareGenerator());
     this.pack.model(handler.customItemModelGenerator());
     this.pack.model(handler.customSwordGenerator());
   }
 
   private void addSounds() {
-    final FXSound[] sounds = FXSound.values();
-    for (final FXSound sound : sounds) {
+    final SoundKeys[] sounds = SoundKeys.values();
+    for (final SoundKeys sound : sounds) {
       this.pack.sound(sound.getSound());
     }
   }

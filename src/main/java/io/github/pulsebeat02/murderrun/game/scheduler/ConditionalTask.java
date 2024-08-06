@@ -1,14 +1,14 @@
 package io.github.pulsebeat02.murderrun.game.scheduler;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.Game;
 import java.util.function.Supplier;
 
-public final class ConditionalTask extends MurderScheduler {
+public final class ConditionalTask extends GameScheduledTask {
 
   private final Supplier<Boolean> condition;
 
   public ConditionalTask(
-      final MurderGame game, final Runnable runnable, final Supplier<Boolean> condition) {
+      final Game game, final Runnable runnable, final Supplier<Boolean> condition) {
     super(game, runnable);
     this.condition = condition;
   }

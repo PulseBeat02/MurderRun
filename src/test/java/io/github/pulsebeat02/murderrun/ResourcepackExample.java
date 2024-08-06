@@ -1,12 +1,12 @@
 package io.github.pulsebeat02.murderrun;
 
-import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
+import io.github.pulsebeat02.murderrun.resourcepack.server.ResourcePackDaemon;
 
 public class ResourcepackExample {
 
   public static void main(final String[] args) {
 
-    final PackHostingDaemon daemon = new PackHostingDaemon("localhost", 7270);
+    final ResourcePackDaemon daemon = new ResourcePackDaemon("localhost", 7270);
     daemon.buildPack();
     daemon.start();
 

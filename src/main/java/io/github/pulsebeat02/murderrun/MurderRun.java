@@ -1,19 +1,19 @@
 package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
-import io.github.pulsebeat02.murderrun.data.MurderArenaDataManager;
-import io.github.pulsebeat02.murderrun.data.MurderLobbyDataManager;
-import io.github.pulsebeat02.murderrun.data.PluginConfiguration;
-import io.github.pulsebeat02.murderrun.game.arena.MurderArenaManager;
-import io.github.pulsebeat02.murderrun.game.gadget.MurderGadgetManager;
-import io.github.pulsebeat02.murderrun.game.lobby.MurderLobbyManager;
-import io.github.pulsebeat02.murderrun.locale.AudienceHandler;
+import io.github.pulsebeat02.murderrun.data.ArenaDataConfigurationConfigurationMapper;
+import io.github.pulsebeat02.murderrun.data.LobbyDataConfigurationConfigurationMapper;
+import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
+import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.locale.TranslationManager;
-import io.github.pulsebeat02.murderrun.reflect.NMSHandler;
-import io.github.pulsebeat02.murderrun.resourcepack.server.PackHostingDaemon;
+import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
+import io.github.pulsebeat02.murderrun.resourcepack.server.ResourcePackDaemon;
+import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
-import io.github.pulsebeat02.murderrun.utils.NamespacedKeys;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -34,19 +34,18 @@ public final class MurderRun extends JavaPlugin {
   - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
 
-  - Make traps have particle effects
-  - Create all innocent gadgets
-  - Make all methods private
+  - Create all killer gadgets
+  - Handle Gadget Action Handler
 
    */
 
-  private PluginConfiguration configuration;
-  private AudienceHandler audience;
-  private PackHostingDaemon daemon;
-  private MurderArenaDataManager murderArenaDataManager;
-  private MurderLobbyDataManager murderLobbyDataManager;
-  private MurderArenaManager arenaManager;
-  private MurderLobbyManager lobbyManager;
+  private PluginDataConfigurationMapper configuration;
+  private AudienceProvider audience;
+  private ResourcePackDaemon daemon;
+  private ArenaDataConfigurationConfigurationMapper arenaDataConfigurationMapper;
+  private LobbyDataConfigurationConfigurationMapper lobbyDataConfigurationMapper;
+  private ArenaManager arenaManager;
+  private LobbyManager lobbyManager;
   private AnnotationParserHandler commandHandler;
   private Metrics metrics;
 
@@ -76,8 +75,8 @@ public final class MurderRun extends JavaPlugin {
   private void registerLookUpMaps() {
     TranslationManager.init(this);
     MapUtils.init(this);
-    NamespacedKeys.init(this);
-    MurderGadgetManager.init(this);
+    Keys.init(this);
+    GadgetLoadingMechanism.init(this);
   }
 
   private void dependencyCheck() {
@@ -102,22 +101,22 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void registerNMS() {
-    NMSHandler.init();
+    PacketToolsProvider.init();
   }
 
   private void readPluginData() {
-    this.configuration = new PluginConfiguration(this);
-    this.murderArenaDataManager = new MurderArenaDataManager(this);
-    this.murderLobbyDataManager = new MurderLobbyDataManager(this);
+    this.configuration = new PluginDataConfigurationMapper(this);
+    this.arenaDataConfigurationMapper = new ArenaDataConfigurationConfigurationMapper(this);
+    this.lobbyDataConfigurationMapper = new LobbyDataConfigurationConfigurationMapper(this);
     this.configuration.deserialize();
-    this.arenaManager = this.murderArenaDataManager.deserialize();
-    this.lobbyManager = this.murderLobbyDataManager.deserialize();
+    this.arenaManager = this.arenaDataConfigurationMapper.deserialize();
+    this.lobbyManager = this.lobbyDataConfigurationMapper.deserialize();
   }
 
   private void startHostingDaemon() {
     final String hostName = this.configuration.getHostName();
     final int port = this.configuration.getPort();
-    this.daemon = new PackHostingDaemon(hostName, port);
+    this.daemon = new ResourcePackDaemon(hostName, port);
     this.daemon.buildPack();
     this.daemon.start();
   }
@@ -128,7 +127,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void registerAudienceHandler() {
-    this.audience = new AudienceHandler(this);
+    this.audience = new AudienceProvider(this);
   }
 
   private void enableBStats() {
@@ -136,8 +135,8 @@ public final class MurderRun extends JavaPlugin {
   }
 
   public void updatePluginData() {
-    this.murderArenaDataManager.serialize(this.arenaManager);
-    this.murderLobbyDataManager.serialize(this.lobbyManager);
+    this.arenaDataConfigurationMapper.serialize(this.arenaManager);
+    this.lobbyDataConfigurationMapper.serialize(this.lobbyManager);
     this.configuration.serialize();
   }
 
@@ -149,35 +148,35 @@ public final class MurderRun extends JavaPlugin {
     this.metrics.shutdown();
   }
 
-  public PluginConfiguration getConfiguration() {
+  public PluginDataConfigurationMapper getConfiguration() {
     return this.configuration;
   }
 
-  public AudienceHandler getAudience() {
+  public AudienceProvider getAudience() {
     return this.audience;
   }
 
-  public PackHostingDaemon getDaemon() {
+  public ResourcePackDaemon getDaemon() {
     return this.daemon;
   }
 
-  public MurderArenaManager getArenaManager() {
+  public ArenaManager getArenaManager() {
     return this.arenaManager;
   }
 
-  public MurderArenaDataManager getArenaDataManager() {
-    return this.murderArenaDataManager;
+  public ArenaDataConfigurationConfigurationMapper getArenaDataManager() {
+    return this.arenaDataConfigurationMapper;
   }
 
   public AnnotationParserHandler getCommandHandler() {
     return this.commandHandler;
   }
 
-  public MurderLobbyDataManager getLobbyDataManager() {
-    return this.murderLobbyDataManager;
+  public LobbyDataConfigurationConfigurationMapper getLobbyDataManager() {
+    return this.lobbyDataConfigurationMapper;
   }
 
-  public MurderLobbyManager getLobbyManager() {
+  public LobbyManager getLobbyManager() {
     return this.lobbyManager;
   }
 

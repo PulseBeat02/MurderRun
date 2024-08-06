@@ -1,11 +1,11 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.map.MurderMap;
-import io.github.pulsebeat02.murderrun.game.map.part.CarPartItemStack;
-import io.github.pulsebeat02.murderrun.game.map.part.CarPartManager;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
+import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.ItemStackUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,13 +20,13 @@ import org.bukkit.inventory.ItemStack;
 
 public final class GamePlayerPickupCarPartEvent implements Listener {
 
-  private final MurderGame game;
+  private final Game game;
 
-  public GamePlayerPickupCarPartEvent(final MurderGame game) {
+  public GamePlayerPickupCarPartEvent(final Game game) {
     this.game = game;
   }
 
-  public MurderGame getGame() {
+  public Game getGame() {
     return this.game;
   }
 
@@ -39,7 +39,7 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
 
     final Item item = event.getItem();
     final ItemStack stack = item.getItemStack();
-    if (!ItemStackUtils.isCarPart(stack)) {
+    if (!ItemUtils.isCarPart(stack)) {
       return;
     }
 
@@ -61,12 +61,12 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
     final GamePlayer gamePlayer = optional.get();
     gamePlayer.onPlayerAttemptPickupPartEvent(event);
 
-    final MurderMap map = this.game.getMurderMap();
-    final CarPartManager manager = map.getCarPartManager();
-    final CarPartItemStack carPartItemStack = manager.getCarPartItemStack(stack);
-    if (carPartItemStack == null) {
+    final Map map = this.game.getMurderMap();
+    final PartsManager manager = map.getCarPartManager();
+    final CarPart carPart = manager.getCarPartItemStack(stack);
+    if (carPart == null) {
       throw new AssertionError("Failed to retrieve car part from game!");
     }
-    carPartItemStack.setPickedUp(true);
+    carPart.setPickedUp(true);
   }
 }

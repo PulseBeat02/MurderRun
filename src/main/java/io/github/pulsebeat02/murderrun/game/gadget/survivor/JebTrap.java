@@ -1,0 +1,40 @@
+package io.github.pulsebeat02.murderrun.game.gadget.survivor;
+
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.locale.Locale;
+import java.awt.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.Sheep;
+
+public final class JebTrap extends SurvivorTrap {
+
+  private static final int SHEEP_COUNT = 15;
+
+  public JebTrap() {
+    super(
+        "jeb",
+        Material.SHEEP_SPAWN_EGG,
+        Locale.JEB_TRAP_NAME.build(),
+        Locale.JEB_TRAP_LORE.build(),
+        Locale.JEB_TRAP_ACTIVATE.build(),
+        Color.WHITE);
+  }
+
+  @Override
+  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+    final Location location = murderer.getLocation();
+    final World world = location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
+
+    for (int i = 0; i < SHEEP_COUNT; i++) {
+      world.spawn(location, Sheep.class, sheep -> {
+        sheep.setCustomName("jeb_");
+      });
+    }
+  }
+}

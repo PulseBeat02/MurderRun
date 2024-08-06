@@ -19,11 +19,11 @@ public final class AnnotationParserHandler {
 
   public AnnotationParserHandler(final MurderRun plugin) {
     this.features = List.of(
-        new MurderArenaCommand(),
-        new MurderLobbyCommand(),
-        new MurderHelpCommand(),
-        new MurderGameCommand(),
-        new MurderVillagerCommand());
+        new ArenaCommand(),
+        new LobbyCommand(),
+        new HelpCommand(),
+        new GameCommand(),
+        new VillagerCommand());
     this.manager = this.getCommandManager(plugin);
     this.parser = this.getAnnotationParser();
   }

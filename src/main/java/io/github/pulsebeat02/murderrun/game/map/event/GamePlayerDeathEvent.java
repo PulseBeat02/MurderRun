@@ -1,14 +1,14 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
-import io.github.pulsebeat02.murderrun.game.MurderWinCode;
-import io.github.pulsebeat02.murderrun.game.gadget.DeathTask;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.Innocent;
-import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathManager;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.FXSound;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
+import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
+import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,13 +21,13 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public final class GamePlayerDeathEvent implements Listener {
 
-  private final MurderGame game;
+  private final Game game;
 
-  public GamePlayerDeathEvent(final MurderGame game) {
+  public GamePlayerDeathEvent(final Game game) {
     this.game = game;
   }
 
-  public MurderGame getGame() {
+  public Game getGame() {
     return this.game;
   }
 
@@ -45,8 +45,8 @@ public final class GamePlayerDeathEvent implements Listener {
       return;
     }
 
-    final MurderPlayerManager manager = this.game.getPlayerManager();
-    final PlayerDeathManager death = manager.getDeathManager();
+    final PlayerManager manager = this.game.getPlayerManager();
+    final PlayerDeathTool death = manager.getDeathManager();
     gamePlayer.setAlive(false);
     death.initiateDeathSequence(gamePlayer);
 
@@ -56,26 +56,26 @@ public final class GamePlayerDeathEvent implements Listener {
     this.runDeathTasks(gamePlayer);
 
     if (this.allInnocentDead()) {
-      this.game.finishGame(MurderWinCode.MURDERERS);
+      this.game.finishGame(GameResult.MURDERERS);
     }
   }
 
   private void runDeathTasks(final GamePlayer player) {
-    final Collection<DeathTask> tasks = player.getDeathTasks();
-    final Iterator<DeathTask> iterator = tasks.iterator();
+    final Collection<PlayerDeathTask> tasks = player.getDeathTasks();
+    final Iterator<PlayerDeathTask> iterator = tasks.iterator();
     while (iterator.hasNext()) {
-      final DeathTask task = iterator.next();
+      final PlayerDeathTask task = iterator.next();
       task.run();
       iterator.remove();
     }
   }
 
   private boolean checkDeathCancellation(final GamePlayer player) {
-    final Collection<DeathTask> tasks = player.getDeathTasks();
+    final Collection<PlayerDeathTask> tasks = player.getDeathTasks();
     boolean cancel;
-    final Iterator<DeathTask> iterator = tasks.iterator();
+    final Iterator<PlayerDeathTask> iterator = tasks.iterator();
     while (iterator.hasNext()) {
-      final DeathTask task = iterator.next();
+      final PlayerDeathTask task = iterator.next();
       cancel = task.isCancelDeath();
       if (cancel) {
         iterator.remove();
@@ -86,12 +86,12 @@ public final class GamePlayerDeathEvent implements Listener {
   }
 
   private void playDeathSoundEffect() {
-    AdventureUtils.playSoundForAllParticipants(this.game, FXSound.DEATH);
+    ComponentUtils.playSoundForAllParticipants(this.game, SoundKeys.DEATH);
   }
 
   private boolean allInnocentDead() {
-    final MurderPlayerManager manager = this.game.getPlayerManager();
-    final Collection<Innocent> players = manager.getInnocentPlayers();
+    final PlayerManager manager = this.game.getPlayerManager();
+    final Collection<Survivor> players = manager.getInnocentPlayers();
     return players.stream().noneMatch(GamePlayer::isAlive);
   }
 }

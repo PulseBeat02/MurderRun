@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
-import io.github.pulsebeat02.murderrun.game.MurderGame;
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
@@ -12,13 +12,13 @@ import org.bukkit.event.block.BlockDropItemEvent;
 
 public final class GamePlayerBlockDropEvent implements Listener {
 
-  private final MurderGame game;
+  private final Game game;
 
-  public GamePlayerBlockDropEvent(final MurderGame game) {
+  public GamePlayerBlockDropEvent(final Game game) {
     this.game = game;
   }
 
-  public MurderGame getGame() {
+  public Game getGame() {
     return this.game;
   }
 
