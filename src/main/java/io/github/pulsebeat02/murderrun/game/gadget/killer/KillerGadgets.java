@@ -4,6 +4,8 @@ public enum KillerGadgets {
 
 /*
 
+KILLER TRAPS IMPLEMENTED
+
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
 Player Tracker: Tells the Killer how close opponents are to the Killer
