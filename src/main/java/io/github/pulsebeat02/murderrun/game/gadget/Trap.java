@@ -3,8 +3,6 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -17,7 +15,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-public abstract sealed class Trap extends Gadget permits SurvivorTrap, KillerTrap {
+public abstract class Trap extends Gadget {
 
   private final Component announcement;
   private final Color color;

@@ -5,7 +5,7 @@ import java.awt.Color;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 
-public abstract non-sealed class KillerTrap extends Trap {
+public abstract class KillerTrap extends Trap {
 
   public KillerTrap(
       final String name,

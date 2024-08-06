@@ -4,6 +4,8 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
+import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.Keys;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -11,7 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GadgetLoadingMechanism {
 
@@ -92,6 +97,14 @@ public final class GadgetLoadingMechanism {
       }
       HandlerList.unregisterAll(listener);
     }
+  }
+
+  public @Nullable Gadget getGadgetFromStack(final ItemStack stack) {
+    final String data = ItemUtils.getData(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    if (data == null) {
+      throw new AssertionError("Item is not a gadget!");
+    }
+    return this.gameGadgets.get(data);
   }
 
   public GadgetManager getManager() {

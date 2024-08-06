@@ -4,9 +4,9 @@ import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.KeyFor;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ArenaManager {
 
