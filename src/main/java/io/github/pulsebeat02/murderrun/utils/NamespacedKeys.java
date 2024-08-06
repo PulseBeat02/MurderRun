@@ -15,6 +15,7 @@ public final class NamespacedKeys {
   public static NamespacedKey FLASH_BANG;
   public static NamespacedKey SMOKE_GRENADE;
   public static NamespacedKey FLASH_LIGHT_LAST_USE;
+  public static NamespacedKey TRANSLOCATOR;
 
   public static void init(final MurderRun plugin) {
     PLUGIN = plugin;
@@ -26,6 +27,7 @@ public final class NamespacedKeys {
     FLASH_BANG = createKey("flash-bang");
     SMOKE_GRENADE = createKey("smoke-grenade");
     FLASH_LIGHT_LAST_USE = createKey("flash-light-last-use");
+    TRANSLOCATOR = createKey("translocator");
   }
 
   private static NamespacedKey createKey(final String key) {

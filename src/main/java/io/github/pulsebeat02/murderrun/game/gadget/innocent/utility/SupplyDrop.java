@@ -27,17 +27,17 @@ import org.bukkit.inventory.ItemStack;
 public final class SupplyDrop extends MurderGadget {
 
   private static final String[] AIR_DROP_MASKS = {
-      """
+    """
       AXAXAXAXA
       XAXAXAXAX
       AXAXAXAXA
       """,
-      """
+    """
       XXXXAXXXX
       XAXAAAXAX
       XXXXAXXXX
       """,
-      """
+    """
       AAXXAXXAA
       AXAXAXAXA
       AAXXAXXAA

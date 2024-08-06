@@ -50,5 +50,4 @@ public final class MindControl extends MurderGadget {
       other.setVelocity(velocity);
     });
   }
-
 }

@@ -25,12 +25,12 @@ public final class PlayerStartConfigurator {
     });
   }
 
-  private void handleInnocent(final GamePlayer gamePlayer) {
+  public void handleInnocent(final GamePlayer gamePlayer) {
     this.handleAll(gamePlayer);
     gamePlayer.apply(player -> player.setWalkSpeed(0.2f));
   }
 
-  private void handleMurderer(final GamePlayer gamePlayer) {
+  public void handleMurderer(final GamePlayer gamePlayer) {
     this.handleAll(gamePlayer);
     gamePlayer.addPotionEffects(
         new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));

@@ -85,6 +85,8 @@ public abstract class MurderGadget {
       final PlayerInventory inventory = player.getInventory();
       final ItemStack stack = inventory.getItemInMainHand();
       stack.setType(Material.AIR);
+    } else {
+      event.setCancelled(true);
     }
   }
 
