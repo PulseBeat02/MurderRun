@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class MurderGadgetManager {
 
@@ -62,18 +63,20 @@ public final class MurderGadgetManager {
   private final AtomicInteger activationRange;
 
   public MurderGadgetManager(final MurderGame game) {
+    final MurderRun plugin = game.getPlugin();
     this.game = game;
-    this.plugin = game.getPlugin();
-    this.gameGadgets = this.getUsedGadgets();
+    this.plugin = plugin;
+    this.gameGadgets = this.getUsedGadgets(plugin);
     this.activationRange = new AtomicInteger(3);
   }
 
-  private Map<String, MurderGadget> getUsedGadgets() {
+  private Map<String, MurderGadget> getUsedGadgets(
+      @UnderInitialization MurderGadgetManager this, final MurderRun plugin) {
     final Collection<Constructor<?>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
     final Map<String, MurderGadget> gadgets = new HashMap<>();
     for (final Constructor<?> constructor : gadgetClasses) {
       try {
-        final MurderGadget gadget = invokeGadgetConstructor(this.plugin, constructor);
+        final MurderGadget gadget = invokeGadgetConstructor(plugin, constructor);
         final String name = gadget.getName();
         gadgets.put(name, gadget);
       } catch (final InvocationTargetException

@@ -41,6 +41,10 @@ public final class IceSpirit extends MurderGadget {
     }
 
     final GamePlayer nearest = manager.getNearestKiller(location);
+    if (nearest == null) {
+      return;
+    }
+
     final Zombie iceSpirit = this.spawnSpirit(world, location, nearest);
     game.getScheduler().scheduleTask(() -> this.checkInteraction(manager, iceSpirit, nearest), 20L);
   }

@@ -35,6 +35,10 @@ public final class BlastOff extends MurderGadget {
     final Location location = player.getLocation();
     final MurderPlayerManager manager = game.getPlayerManager();
     final GamePlayer killer = manager.getNearestKiller(location);
+    if (killer == null) {
+      return;
+    }
+
     this.launchKillerIntoSpace(killer, game);
 
     final Component message = Locale.BLAST_OFF_TRAP_ACTIVATE.build();

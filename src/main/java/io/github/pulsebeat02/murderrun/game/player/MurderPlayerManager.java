@@ -66,7 +66,7 @@ public final class MurderPlayerManager {
         .collect(Collectors.toSet());
   }
 
-  public GamePlayer getNearestKiller(final Location origin) {
+  public @Nullable GamePlayer getNearestKiller(final Location origin) {
     GamePlayer nearest = null;
     double min = Double.MAX_VALUE;
     final Collection<Murderer> killers = this.getMurderers();

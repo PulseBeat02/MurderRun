@@ -38,6 +38,10 @@ public final class Flashlight extends MurderGadget {
     super.onGadgetRightClick(game, event, false);
 
     final ItemStack stack = event.getItem();
+    if (stack == null) {
+      return;
+    }
+
     final Long last =
         ItemStackUtils.getData(stack, NamespacedKeys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG);
     if (last == null) {

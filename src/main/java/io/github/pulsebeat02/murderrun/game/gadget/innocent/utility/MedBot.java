@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.MurderGameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import java.awt.Color;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -65,18 +66,21 @@ public final class MedBot extends MurderGadget {
         20L,
         armorStand::isDead);
     scheduler.scheduleTaskUntilCondition(
-        () ->
-            manager.applyToAllInnocents(innocent -> this.handleKillerDestroy(innocent, armorStand)),
+        () -> manager.applyToAllInnocents(
+            innocent -> this.handleKillerDestroy(manager, innocent, armorStand)),
         40L,
         20L,
         armorStand::isDead);
   }
 
-  private void handleKillerDestroy(final GamePlayer killer, final ArmorStand stand) {
+  private void handleKillerDestroy(
+      final MurderPlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
     if (distance <= 1) {
+      final Component message = Locale.MED_BOT_TRAP_DEACTIVATE.build();
+      manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
       stand.remove();
     }
   }

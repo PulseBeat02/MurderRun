@@ -12,7 +12,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> CAR_PART_ITEM_LORE = direct("murder_run.item.car_part.lore");
   UniComponent<Sender, Integer> CAR_PART_ITEM_RETRIEVAL =
       direct("murder_run.game.item.car_part.retrieval", null);
-
   NullComponent<Sender> PREPARATION_PHASE = direct("murder_run.game.survivor_preparation");
   NullComponent<Sender> RELEASE_PHASE = direct("murder_run.game.murderer_released");
   NullComponent<Sender> INNOCENT_VICTORY_INNOCENT =
@@ -23,12 +22,10 @@ public interface Locale extends LocaleParent {
       direct("murder_run.game.murderer_victory_innocent");
   NullComponent<Sender> MURDERER_VICTORY_MURDERER =
       direct("murder_run.game.murderer_victory_murderer");
-
   UniComponent<Sender, Long> FINAL_TIME = direct("murder_run.game.time", null);
   BiComponent<Sender, Integer, Integer> BOSS_BAR = direct("murder_run.game.boss_bar", null, null);
   UniComponent<Sender, String> PLAYER_DEATH = direct("murder_run.game.death", null);
   NullComponent<Sender> RESOURCEPACK_PROMPT = direct("murder_run.resourcepack");
-
   TriComponent<Sender, Integer, Integer, Integer> ARENA_FIRST_CORNER =
       direct("murder_run.command.arena.set.first-corner", null, null, null);
   TriComponent<Sender, Integer, Integer, Integer> ARENA_SECOND_CORNER =
@@ -44,7 +41,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> ARENA_TRUCK_ERROR = direct("murder_run.command.arena.set.truck_error");
   NullComponent<Sender> ARENA_BUILT = direct("murder_run.command.arena.create");
   UniComponent<Sender, List<String>> ARENA_LIST = direct("murder_run.command.arena.list", null);
-
   UniComponent<Sender, String> LOBBY_NAME = direct("murder_run.command.lobby.set.name", null);
   TriComponent<Sender, Integer, Integer, Integer> LOBBY_SPAWN =
       direct("murder_run.command.lobby.set.spawn", null, null, null);
@@ -52,7 +48,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> LOBBY_SPAWN_ERROR = direct("murder_run.command.lobby.set.spawn_error");
   NullComponent<Sender> LOBBY_BUILT = direct("murder_run.command.lobby.create");
   UniComponent<Sender, List<String>> LOBBY_LIST = direct("murder_run.command.lobby.list", null);
-
   NullComponent<Sender> GAME_LEFT = direct("murder_run.command.game.leave");
   NullComponent<Sender> GAME_CREATED = direct("murder_run.command.game.create");
   UniComponent<Sender, String> GAME_OWNER_INVITE =
@@ -71,7 +66,6 @@ public interface Locale extends LocaleParent {
   UniComponent<Sender, List<String>> GAME_LIST = direct("murder_run.command.game.list", null);
   UniComponent<Sender, String> GAME_JOIN = direct("murder_run.command.game.join", null);
   NullComponent<Sender> GAME_START = direct("murder_run.command.game.start");
-
   NullComponent<Sender> GAME_ARENA_ERROR = direct("murder_run.command.game.arena_error");
   NullComponent<Sender> GAME_LOBBY_ERROR = direct("murder_run.command.game.lobby_error");
   NullComponent<Sender> GAME_LEAVE_ERROR = direct("murder_run.command.game.leave_error");
@@ -84,9 +78,7 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> GAME_LOW_PLAYER_COUNT_ERROR =
       direct("murder_run.command.game.low_player_count_error");
   NullComponent<Sender> GAME_INVITE_ERROR = direct("murder_run.command.game.invite_error");
-
   NullComponent<Sender> VILLAGER_SPAWN = direct("murder_run.command.villager");
-
   NullComponent<Sender> HACK_TRAP_NAME = direct("murder_run.game.trap.hack.name");
   NullComponent<Sender> GLOW_TRAP_NAME = direct("murder_run.game.trap.glow.name");
   NullComponent<Sender> BEAR_TRAP_NAME = direct("murder_run.game.trap.bear.name");
@@ -108,7 +100,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> MED_KIT_TRAP_NAME = direct("murder_run.game.trap.med_kit.name");
   NullComponent<Sender> JUMP_SCARE_TRAP_NAME = direct("murder_run.game.trap.jump_scare.name");
   NullComponent<Sender> SMOKE_TRAP_NAME = direct("murder_run.game.trap.smoke.name");
-  NullComponent<Sender> DIAMOND_ARMOR_TRAP_NAME = direct("murder_run.game.trap.diamond_armor.name");
   NullComponent<Sender> LEVITATION_TRAP_NAME = direct("murder_run.game.trap.levitation.name");
   NullComponent<Sender> CAGE_TRAP_NAME = direct("murder_run.game.trap.cage.name");
   NullComponent<Sender> BLIND_TRAP_NAME = direct("murder_run.game.trap.blind.name");
@@ -178,11 +169,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> DEMONETIZED_TRAP_NAME = direct("murder_run.game.trap.demonetized.name");
   NullComponent<Sender> JETPACK_TRAP_NAME = direct("murder_run.game.trap.jetpack.name");
   NullComponent<Sender> SPEED_PENDANT_NAME = direct("murder_run.game.trap.speed_pendant.name");
-  NullComponent<Sender> RESISTANCE_PENDANT_NAME =
-      direct("murder_run.game.trap.resistance_pendant.name");
-  NullComponent<Sender> REGENERATION_PENDANT_NAME =
-      direct("murder_run.game.trap.regeneration_pendant.name");
-
   NullComponent<Sender> GLOW_TRAP_LORE = direct("murder_run.game.trap.glow.lore");
   NullComponent<Sender> HACK_TRAP_LORE = direct("murder_run.game.trap.hack.lore");
   NullComponent<Sender> BEAR_TRAP_LORE = direct("murder_run.game.trap.bear.lore");
@@ -273,11 +259,9 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> CLICKBAIT_TRAP_LORE = direct("murder_run.game.trap.clickbait.lore");
   NullComponent<Sender> DEMONETIZED_TRAP_LORE = direct("murder_run.game.trap.demonetized.lore");
   NullComponent<Sender> JETPACK_TRAP_LORE = direct("murder_run.game.trap.jetpack.lore");
-
   NullComponent<Sender> GLOW_TRAP_ACTIVATE = direct("murder_run.game.trap.glow.activate");
   NullComponent<Sender> HACK_TRAP_ACTIVATE = direct("murder_run.game.trap.hack.activate");
   NullComponent<Sender> BEAR_TRAP_ACTIVATE = direct("murder_run.game.trap.bear.activate");
-  NullComponent<Sender> PORTAL_TRAP_ACTIVATE = direct("murder_run.game.trap.portal.activate");
   NullComponent<Sender> SPASM_TRAP_ACTIVATE = direct("murder_run.game.trap.spasm.activate");
   NullComponent<Sender> RESURRECTION_STONE_TRAP_ACTIVATE =
       direct("murder_run.game.trap.resurrection_stone.activate");
@@ -303,7 +287,6 @@ public interface Locale extends LocaleParent {
   NullComponent<Sender> FIREWORK_TRAP_ACTIVATE = direct("murder_run.game.trap.firework.activate");
   NullComponent<Sender> FART_TRAP_ACTIVATE = direct("murder_run.game.trap.fart.activate");
   NullComponent<Sender> TRAP_VEST_ACTIVATE = direct("murder_run.game.trap.trap_vest.activate");
-  NullComponent<Sender> RANDOM_TRAP_ACTIVATE = direct("murder_run.game.trap.random.activate");
   NullComponent<Sender> MAGNET_MODE_TRAP_ACTIVATE =
       direct("murder_run.game.trap.magnet_mode.activate");
   NullComponent<Sender> TAGLOCK_NEEDLE_TRAP_ACTIVATE =

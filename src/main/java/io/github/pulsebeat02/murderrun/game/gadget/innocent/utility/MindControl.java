@@ -31,6 +31,9 @@ public final class MindControl extends MurderGadget {
     final Player player = event.getPlayer();
     final MurderPlayerManager manager = game.getPlayerManager();
     final GamePlayer nearest = manager.getNearestKiller(player.getLocation());
+    if (nearest == null) {
+      return;
+    }
 
     final Location origin = player.getLocation();
     final Location location = nearest.getLocation();

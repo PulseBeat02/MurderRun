@@ -32,7 +32,7 @@ public final class Translocator extends MurderGadget {
         Locale.TRANSLOCATOR_TRAP_NAME.build(),
         Locale.TRANSLOCATOR_TRAP_LORE.build(),
         stack -> ItemStackUtils.setData(
-            stack, NamespacedKeys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, null));
+            stack, NamespacedKeys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]));
   }
 
   @Override
@@ -43,6 +43,14 @@ public final class Translocator extends MurderGadget {
 
     final Player player = event.getPlayer();
     final ItemStack stack = event.getItem();
+    if (stack == null) {
+      return;
+    }
+
+    final Material material = stack.getType();
+    if (material != Material.LEVER) {
+      return;
+    }
 
     final byte[] data =
         ItemStackUtils.getData(stack, NamespacedKeys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY);

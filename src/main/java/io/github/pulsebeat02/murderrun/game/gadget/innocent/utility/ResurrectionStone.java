@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ResurrectionStone extends MurderGadget {
 
@@ -37,6 +38,10 @@ public final class ResurrectionStone extends MurderGadget {
     final int range = gadgetManager.getActivationRange();
 
     final GamePlayer closest = this.getClosestDeadPlayer(game, location);
+    if (closest == null) {
+      return;
+    }
+
     final Location closestLocation = closest.getLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
@@ -51,6 +56,9 @@ public final class ResurrectionStone extends MurderGadget {
 
     closest.apply(resurrected -> {
       final Location death = resurrected.getLastDeathLocation();
+      if (death == null) {
+        throw new AssertionError("Death location is null!");
+      }
       resurrected.setHealth(20);
       resurrected.setFoodLevel(20);
       resurrected.setSaturation(20);
@@ -62,7 +70,7 @@ public final class ResurrectionStone extends MurderGadget {
     playerManager.applyToAllParticipants(gamePlayer -> gamePlayer.sendMessage(message));
   }
 
-  private GamePlayer getClosestDeadPlayer(final MurderGame game, final Location origin) {
+  private @Nullable GamePlayer getClosestDeadPlayer(final MurderGame game, final Location origin) {
     final MurderPlayerManager playerManager = game.getPlayerManager();
     final Collection<GamePlayer> players = playerManager.getDead();
     final double min = Double.MAX_VALUE;

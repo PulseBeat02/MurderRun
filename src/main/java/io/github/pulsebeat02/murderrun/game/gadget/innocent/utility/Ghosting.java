@@ -27,8 +27,8 @@ public final class Ghosting extends MurderGadget {
     super(
         "ghosting",
         Material.WHITE_WOOL,
-        Locale.GHOST_TRAP_NAME.build(),
-        Locale.GHOST_TRAP_LORE.build());
+        Locale.GHOSTING_TRAP_NAME.build(),
+        Locale.GHOSTING_TRAP_LORE.build());
   }
 
   @Override
@@ -43,7 +43,7 @@ public final class Ghosting extends MurderGadget {
     final DeathTask task = new DeathTask(() -> this.handleGhosting(game, gamePlayer), false);
     gamePlayer.addDeathTask(task);
 
-    final Component message = Locale.GHOST_TRAP_ACTIVATE.build();
+    final Component message = Locale.GHOSTING_TRAP_ACTIVATE.build();
     gamePlayer.sendMessage(message);
   }
 

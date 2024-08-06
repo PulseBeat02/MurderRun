@@ -17,6 +17,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PortalTrap extends MurderGadget {
 
@@ -46,17 +47,22 @@ public final class PortalTrap extends MurderGadget {
     final Item closest = this.getClosestEntity(location, items);
     if (closest == null) {
       super.onGadgetDrop(game, event, false);
+      return;
     }
 
     final MurderPlayerManager playerManager = game.getPlayerManager();
     final GamePlayer killer = playerManager.getNearestKiller(location);
+    if (killer == null) {
+      return;
+    }
+
     final Location killerLocation = killer.getLocation();
     closest.teleport(killerLocation);
 
     super.onGadgetDrop(game, event, true);
   }
 
-  private Item getClosestEntity(final Location location, final Collection<Item> items) {
+  private @Nullable Item getClosestEntity(final Location location, final Collection<Item> items) {
     Item closest = null;
     double closestDistance = Double.MAX_VALUE;
     for (final Item item : items) {

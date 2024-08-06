@@ -46,6 +46,9 @@ public final class ItemStackUtils {
     if (meta == null) {
       return;
     }
+    if (value == null) {
+      return;
+    }
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     container.set(key, type, value);
   }

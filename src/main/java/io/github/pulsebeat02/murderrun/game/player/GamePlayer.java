@@ -25,7 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -38,18 +37,14 @@ public abstract sealed class GamePlayer permits Innocent, Murderer {
   private boolean alive;
 
   public GamePlayer(final MurderGame game, final UUID uuid) {
-    this.game = game;
-    this.uuid = uuid;
-    this.audience = this.getAudience();
-    this.alive = true;
-    this.tasks = new HashSet<>();
-  }
-
-  private Audience getAudience(@UnderInitialization GamePlayer this) {
-    final MurderRun plugin = this.game.getPlugin();
+    final MurderRun plugin = game.getPlugin();
     final AudienceHandler handler = plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
-    return audiences.player(this.uuid);
+    this.game = game;
+    this.uuid = uuid;
+    this.audience = audiences.player(uuid);
+    this.alive = true;
+    this.tasks = new HashSet<>();
   }
 
   public abstract void onPlayerAttemptPickupPartEvent(final EntityPickupItemEvent event);
