@@ -62,9 +62,8 @@ Infinity Gauntlet: Allows the Killer to jump extremely high and create explosion
 Animatronic Alarm: Blinds, slows, jump scares, and makes the opponent visible to the Killer
 Brigette - Shield Bash: Bashing ground stuns survivors
 
-*/
+*/ ;
 
-;
   private final Class<?> clazz;
 
   KillerGadgets(final Class<?> clazz) {

@@ -1,12 +1,12 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
-import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public final class Shield extends Gadget {
+public final class Shield extends SurvivorGadget {
 
   public Shield() {
     super(

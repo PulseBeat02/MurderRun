@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 
-public final class MedKit extends Gadget {
+public final class MedKit extends SurvivorGadget {
 
   public MedKit() {
     super(

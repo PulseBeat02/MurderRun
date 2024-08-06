@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import static net.kyori.adventure.text.Component.empty;
 
-import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,7 +12,7 @@ import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public final class SpeedPendant extends Gadget {
+public final class SpeedPendant extends SurvivorGadget {
 
   public SpeedPendant() {
     super(

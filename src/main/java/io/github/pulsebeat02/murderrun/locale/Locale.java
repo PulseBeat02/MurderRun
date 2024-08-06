@@ -5,6 +5,7 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTooling.direct;
 import java.util.List;
 
 public interface Locale extends LocaleTooling {
+
   NullComponent<Sender> PLUGIN_ENABLE = direct("murder_run.plugin.enable");
   NullComponent<Sender> PLUGIN_DEPENDENCY_ERROR = direct("murder_run.plugin.dependency");
   NullComponent<Sender> PLUGIN_DISABLE = direct("murder_run.plugin.disable");
@@ -119,8 +120,6 @@ public interface Locale extends LocaleTooling {
   NullComponent<Sender> MAGNET_MODE_TRAP_NAME = direct("murder_run.game.trap.magnet_mode.name");
   NullComponent<Sender> TRANSLOCATOR_TRAP_NAME = direct("murder_run.game.trap.translocator.name");
   NullComponent<Sender> TRACKER_TRAP_NAME = direct("murder_run.game.trap.tracker.name");
-  NullComponent<Sender> TAGLOCK_NEEDLE_TRAP_NAME =
-      direct("murder_run.game.trap.taglock_needle.name");
   NullComponent<Sender> DECOY_TRAP_NAME = direct("murder_run.game.trap.decoy.name");
   NullComponent<Sender> SMOKE_BOMB_TRAP_NAME = direct("murder_run.game.trap.smoke_bomb.name");
   NullComponent<Sender> FRIEND_WARP_TRAP_NAME = direct("murder_run.game.trap.friend_warp.name");
@@ -134,8 +133,6 @@ public interface Locale extends LocaleTooling {
   NullComponent<Sender> BLAST_OFF_TRAP_NAME = direct("murder_run.game.trap.blast_off.name");
   NullComponent<Sender> DRONE_TRAP_NAME = direct("murder_run.game.trap.drone.name");
   NullComponent<Sender> TRAP_SNIFFER_TRAP_NAME = direct("murder_run.game.trap.trap_sniffer.name");
-  NullComponent<Sender> SOME_CAKE_IN_VEGAS_TRAP_NAME =
-      direct("murder_run.game.trap.some_cake_in_vegas.name");
   NullComponent<Sender> CHIPPED_TRAP_NAME = direct("murder_run.game.trap.chipped.name");
   NullComponent<Sender> LIFE_INSURANCE_TRAP_NAME =
       direct("murder_run.game.trap.life_insurance.name");
@@ -145,29 +142,12 @@ public interface Locale extends LocaleTooling {
   NullComponent<Sender> MIND_CONTROL_TRAP_NAME = direct("murder_run.game.trap.mind_control.name");
   NullComponent<Sender> JEB_TRAP_NAME = direct("murder_run.game.trap.jeb.name");
   NullComponent<Sender> BUSH_TRAP_NAME = direct("murder_run.game.trap.bush.name");
-  NullComponent<Sender> FORTNITE_BUILDING_TRAP_NAME =
-      direct("murder_run.game.trap.fortnite_building.name");
-  NullComponent<Sender> JACK_JACK_LASER_EYES_TRAP_NAME =
-      direct("murder_run.game.trap.jack_jack_laser_eyes.name");
-  NullComponent<Sender> VIOLET_FORCE_FIELD_RIFT_TRAP_NAME =
-      direct("murder_run.game.trap.violet_force_field_rift.name");
   NullComponent<Sender> KILLER_TRACKER_TRAP_NAME =
       direct("murder_run.game.trap.killer_tracker.name");
   NullComponent<Sender> FLASHLIGHT_TRAP_NAME = direct("murder_run.game.trap.flashlight.name");
-  NullComponent<Sender> LAUNCH_PAD_TRAP_NAME = direct("murder_run.game.trap.launch_pad.name");
-  NullComponent<Sender> IMPULSE_GRENADE_TRAP_NAME =
-      direct("murder_run.game.trap.impulse_grenade.name");
-  NullComponent<Sender> ZARYA_GRAVITRON_SURGE_TRAP_NAME =
-      direct("murder_run.game.trap.zarya_gravitron_surge.name");
-  NullComponent<Sender> LUCIO_CRANK_IT_UP_TRAP_NAME =
-      direct("murder_run.game.trap.lucio_crank_it_up.name");
   NullComponent<Sender> SHOCKWAVE_TRAP_NAME = direct("murder_run.game.trap.shockwave.name");
   NullComponent<Sender> PARASITE_TRAP_NAME = direct("murder_run.game.trap.parasite.name");
-  NullComponent<Sender> PORTA_FORT_TRAP_NAME = direct("murder_run.game.trap.porta_fort.name");
   NullComponent<Sender> DISTORTER_TRAP_NAME = direct("murder_run.game.trap.distorter.name");
-  NullComponent<Sender> CLICKBAIT_TRAP_NAME = direct("murder_run.game.trap.clickbait.name");
-  NullComponent<Sender> DEMONETIZED_TRAP_NAME = direct("murder_run.game.trap.demonetized.name");
-  NullComponent<Sender> JETPACK_TRAP_NAME = direct("murder_run.game.trap.jetpack.name");
   NullComponent<Sender> SPEED_PENDANT_NAME = direct("murder_run.game.trap.speed_pendant.name");
   NullComponent<Sender> GLOW_TRAP_LORE = direct("murder_run.game.trap.glow.lore");
   NullComponent<Sender> HACK_TRAP_LORE = direct("murder_run.game.trap.hack.lore");
@@ -210,8 +190,6 @@ public interface Locale extends LocaleTooling {
   NullComponent<Sender> TRANSLOCATOR_TRAP_LORE = direct("murder_run.game.trap.translocator.lore");
   NullComponent<Sender> TRANSLOCATOR_TRAP_LORE1 = direct("murder_run.game.trap.translocator.lore1");
   NullComponent<Sender> TRACKER_TRAP_LORE = direct("murder_run.game.trap.tracker.lore");
-  NullComponent<Sender> TAGLOCK_NEEDLE_TRAP_LORE =
-      direct("murder_run.game.trap.taglock_needle.lore");
   NullComponent<Sender> DECOY_TRAP_LORE = direct("murder_run.game.trap.decoy.lore");
   NullComponent<Sender> SMOKE_BOMB_TRAP_LORE = direct("murder_run.game.trap.smoke_bomb.lore");
   NullComponent<Sender> FRIEND_WARP_TRAP_LORE = direct("murder_run.game.trap.friend_warp.lore");
@@ -225,8 +203,6 @@ public interface Locale extends LocaleTooling {
   NullComponent<Sender> BLAST_OFF_TRAP_LORE = direct("murder_run.game.trap.blast_off.lore");
   NullComponent<Sender> DRONE_TRAP_LORE = direct("murder_run.game.trap.drone.lore");
   NullComponent<Sender> TRAP_SNIFFER_TRAP_LORE = direct("murder_run.game.trap.trap_sniffer.lore");
-  NullComponent<Sender> SOME_CAKE_IN_VEGAS_TRAP_LORE =
-      direct("murder_run.game.trap.some_cake_in_vegas.lore");
   NullComponent<Sender> CHIPPED_TRAP_LORE = direct("murder_run.game.trap.chipped.lore");
   NullComponent<Sender> LIFE_INSURANCE_TRAP_LORE =
       direct("murder_run.game.trap.life_insurance.lore");
@@ -236,29 +212,12 @@ public interface Locale extends LocaleTooling {
   NullComponent<Sender> MIND_CONTROL_TRAP_LORE = direct("murder_run.game.trap.mind_control.lore");
   NullComponent<Sender> JEB_TRAP_LORE = direct("murder_run.game.trap.jeb.lore");
   NullComponent<Sender> BUSH_TRAP_LORE = direct("murder_run.game.trap.bush.lore");
-  NullComponent<Sender> FORTNITE_BUILDING_TRAP_LORE =
-      direct("murder_run.game.trap.fortnite_building.lore");
-  NullComponent<Sender> JACK_JACK_LASER_EYES_TRAP_LORE =
-      direct("murder_run.game.trap.jack_jack_laser_eyes.lore");
-  NullComponent<Sender> VIOLET_FORCE_FIELD_RIFT_TRAP_LORE =
-      direct("murder_run.game.trap.violet_force_field_rift.lore");
   NullComponent<Sender> KILLER_TRACKER_TRAP_LORE =
       direct("murder_run.game.trap.killer_tracker.lore");
   NullComponent<Sender> FLASHLIGHT_TRAP_LORE = direct("murder_run.game.trap.flashlight.lore");
-  NullComponent<Sender> LAUNCH_PAD_TRAP_LORE = direct("murder_run.game.trap.launch_pad.lore");
-  NullComponent<Sender> IMPULSE_GRENADE_TRAP_LORE =
-      direct("murder_run.game.trap.impulse_grenade.lore");
-  NullComponent<Sender> ZARYA_GRAVITRON_SURGE_TRAP_LORE =
-      direct("murder_run.game.trap.zarya_gravitron_surge.lore");
-  NullComponent<Sender> LUCIO_CRANK_IT_UP_TRAP_LORE =
-      direct("murder_run.game.trap.lucio_crank_it_up.lore");
   NullComponent<Sender> SHOCKWAVE_TRAP_LORE = direct("murder_run.game.trap.shockwave.lore");
   NullComponent<Sender> PARASITE_TRAP_LORE = direct("murder_run.game.trap.parasite.lore");
-  NullComponent<Sender> PORTA_FORT_TRAP_LORE = direct("murder_run.game.trap.porta_fort.lore");
   NullComponent<Sender> DISTORTER_TRAP_LORE = direct("murder_run.game.trap.distorter.lore");
-  NullComponent<Sender> CLICKBAIT_TRAP_LORE = direct("murder_run.game.trap.clickbait.lore");
-  NullComponent<Sender> DEMONETIZED_TRAP_LORE = direct("murder_run.game.trap.demonetized.lore");
-  NullComponent<Sender> JETPACK_TRAP_LORE = direct("murder_run.game.trap.jetpack.lore");
   NullComponent<Sender> GLOW_TRAP_ACTIVATE = direct("murder_run.game.trap.glow.activate");
   NullComponent<Sender> HACK_TRAP_ACTIVATE = direct("murder_run.game.trap.hack.activate");
   NullComponent<Sender> BEAR_TRAP_ACTIVATE = direct("murder_run.game.trap.bear.activate");
@@ -289,27 +248,14 @@ public interface Locale extends LocaleTooling {
   NullComponent<Sender> TRAP_VEST_ACTIVATE = direct("murder_run.game.trap.trap_vest.activate");
   NullComponent<Sender> MAGNET_MODE_TRAP_ACTIVATE =
       direct("murder_run.game.trap.magnet_mode.activate");
-  NullComponent<Sender> TAGLOCK_NEEDLE_TRAP_ACTIVATE =
-      direct("murder_run.game.trap.taglock_needle.activate");
   NullComponent<Sender> CLOAK_TRAP_ACTIVATE = direct("murder_run.game.trap.cloak.activate");
   NullComponent<Sender> SIXTH_SENSE_TRAP_ACTIVATE =
       direct("murder_run.game.trap.sixth_sense.activate");
   NullComponent<Sender> BLAST_OFF_TRAP_ACTIVATE = direct("murder_run.game.trap.blast_off.activate");
   NullComponent<Sender> TRAP_SNIFFER_TRAP_ACTIVATE =
       direct("murder_run.game.trap.trap_sniffer.activate");
-  NullComponent<Sender> SOME_CAKE_IN_VEGAS_TRAP_ACTIVATE =
-      direct("murder_run.game.trap.some_cake_in_vegas.activate");
-  NullComponent<Sender> MIND_CONTROL_TRAP_ACTIVATE =
-      direct("murder_run.game.trap.mind_control.activate");
   NullComponent<Sender> JEB_TRAP_ACTIVATE = direct("murder_run.game.trap.jeb.activate");
-  NullComponent<Sender> VIOLET_FORCE_FIELD_RIFT_TRAP_ACTIVATE =
-      direct("murder_run.game.trap.violet_force_field_rift.activate");
-  NullComponent<Sender> ZARYA_GRAVITRON_SURGE_TRAP_ACTIVATE =
-      direct("murder_run.game.trap.zarya_gravitron_surge.activate");
   NullComponent<Sender> SHOCKWAVE_TRAP_ACTIVATE = direct("murder_run.game.trap.shockwave.activate");
-  NullComponent<Sender> CLICKBAIT_TRAP_ACTIVATE = direct("murder_run.game.trap.clickbait.activate");
-  NullComponent<Sender> DEMONETIZED_TRAP_ACTIVATE =
-      direct("murder_run.game.trap.demonetized.activate");
   NullComponent<Sender> MED_BOT_TRAP_DEACTIVATE = direct("murder_run.game.trap.med_bot.deactivate");
   NullComponent<Sender> PARASITE_TRAP_DEACTIVATE =
       direct("murder_run.game.trap.parasite.deactivate");
