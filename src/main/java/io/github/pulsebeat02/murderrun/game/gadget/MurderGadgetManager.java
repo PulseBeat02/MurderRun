@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.stream.Location;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class MurderGadgetManager {
@@ -90,7 +91,10 @@ public final class MurderGadgetManager {
 
   public void start() {
     final MurderPlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllMurderers(killer -> {});
+    manager.applyToAllMurderers(killer -> {
+      final Location location = killer.getLocation();
+
+    });
   }
 
   public MurderRun getPlugin() {
