@@ -70,13 +70,13 @@ public abstract non-sealed class SurvivorTrap extends MurderTrap {
   Random Trap -- gets a random trap
   Flashlight -- blinds killer if come close, every 5 seconds
   Supply Drop -- get a various assortment of traps
+  Blast Off -- sends the killer into a rocket into space
 
   LIST OF ALL SURVIVOR TRAPS TO IMPLEMENT:
 
   Portal Trap -- teleports trap to killer
   Resurrection Stone -- resurrects a dead player
   Translocator -- one use teleporter, (becomes lever to warp)
-  Blast Off -- sends the killer into a rocket into space
 
    */
 

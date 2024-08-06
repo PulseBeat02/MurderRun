@@ -2,17 +2,18 @@ package io.github.pulsebeat02.murderrun.game.gadget.innocent.utility;
 
 import io.github.pulsebeat02.murderrun.game.MurderGame;
 import io.github.pulsebeat02.murderrun.game.gadget.MurderGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MurderPlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.Optional;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 public final class BlastOff extends MurderGadget {
 
@@ -32,27 +33,28 @@ public final class BlastOff extends MurderGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
+    final MurderPlayerManager manager = game.getPlayerManager();
+    final GamePlayer killer = manager.getNearestKiller(location);
+    this.launchKillerIntoSpace(killer, game);
+
+    final Component message = Locale.BLAST_OFF_TRAP_ACTIVATE.build();
+    manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
   }
 
-  private void launchKillerIntoSpace(Player killer, MurderGame game) {
+  private void launchKillerIntoSpace(final GamePlayer killer, final MurderGame game) {
 
-    Location location = killer.getLocation();
-    Firework firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
-    FireworkMeta meta = firework.getFireworkMeta();
-    meta.setPower(2); // Set the power of the firework
-    firework.setFireworkMeta(meta);
-    firework.addPassenger(killer);
+    final Location location = killer.getLocation();
+    final World world = location.getWorld();
+    if (world == null) {
+      throw new AssertionError("Location doesn't have World attached to it!");
+    }
 
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        if (firework.isDead() || !firework.getPassengers().contains(killer)) {
-          firework.remove();
-          this.cancel();
-          return;
-        }
-        firework.setVelocity(new Vector(0, 1, 0));
-      }
-    }.runTaskTimer(game.getPlugin(), 0L, 1L);
+    killer.apply(player -> {
+      final Firework firework = (Firework) world.spawnEntity(location, EntityType.FIREWORK_ROCKET);
+      final FireworkMeta meta = firework.getFireworkMeta();
+      meta.setPower(2 * 20);
+      firework.setFireworkMeta(meta);
+      firework.addPassenger(player);
+    });
   }
 }
