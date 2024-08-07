@@ -34,10 +34,7 @@ public final class GameSettings {
     this.carPartCount = carPartCount;
   }
 
-  public Lobby getLobby() {
-    if (this.lobby == null) {
-      throw new AssertionError("Lobby wasn't created in game settings!");
-    }
+  public @Nullable Lobby getLobby() {
     return this.lobby;
   }
 
@@ -45,10 +42,7 @@ public final class GameSettings {
     this.lobby = lobbySpawn;
   }
 
-  public Arena getArena() {
-    if (this.arena == null) {
-      throw new AssertionError("Arena wasn't created in game settings!");
-    }
+  public @Nullable Arena getArena() {
     return this.arena;
   }
 

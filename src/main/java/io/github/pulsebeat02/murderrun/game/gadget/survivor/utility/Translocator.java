@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -52,11 +54,8 @@ public final class Translocator extends SurvivorGadget {
       return;
     }
 
-    final byte[] data = ItemUtils.getData(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY);
-    if (data == null) {
-      return;
-    }
-
+    final byte[] data =
+        requireNonNull(ItemUtils.getData(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = this.byteArrayToLocation(data);
     player.teleport(location);
   }
@@ -73,11 +72,7 @@ public final class Translocator extends SurvivorGadget {
     final byte[] bytes = this.locationToByteArray(location);
     ItemUtils.setData(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
 
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Couldn't construct Translocator!");
-    }
-
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final Component lore = Locale.TRANSLOCATOR_TRAP_LORE1.build();
     final String message = ComponentUtils.serializeComponentToLegacy(lore);
     final List<String> newLore = List.of(message);
@@ -105,11 +100,7 @@ public final class Translocator extends SurvivorGadget {
 
   private byte[] locationToByteArray(final Location location) {
 
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final String name = world.getName();
     final byte[] worldBytes = name.getBytes(StandardCharsets.UTF_8);
     final ByteBuffer buffer =

@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -17,11 +18,7 @@ public final class SpeedPendant extends SurvivorGadget {
   public SpeedPendant() {
     super(
         "speed_pendant", Material.WHITE_DYE, Locale.SPEED_PENDANT_NAME.build(), empty(), stack -> {
-          final ItemMeta meta = stack.getItemMeta();
-          if (meta == null) {
-            throw new AssertionError("Failed to create speed pendant!");
-          }
-
+          final ItemMeta meta = requireNonNull(stack.getItemMeta());
           final NamespacedKey key = Attribute.GENERIC_MOVEMENT_SPEED.getKey();
           final AttributeModifier modifier =
               new AttributeModifier(key, 0.2, Operation.ADD_NUMBER, EquipmentSlotGroup.ANY);

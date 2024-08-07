@@ -24,10 +24,8 @@ public final class GhostTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(player -> {
-      player.addPotionEffects(
-          new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1),
-          new PotionEffect(PotionEffectType.SPEED, 10 * 20, 1));
-    });
+    manager.applyToAllInnocents(player -> player.addPotionEffects(
+        new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1),
+        new PotionEffect(PotionEffectType.SPEED, 10 * 20, 1)));
   }
 }

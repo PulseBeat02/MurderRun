@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
@@ -51,19 +53,16 @@ public abstract class Gadget {
       final Component itemLore,
       final @Nullable Consumer<ItemStack> consumer) {
 
-    if (pdcName == null || itemName == null || itemLore == null || material == null) {
-      throw new AssertionError("Failed to create ItemStack for trap!");
-    }
+    requireNonNull(pdcName);
+    requireNonNull(itemName);
+    requireNonNull(itemLore);
+    requireNonNull(material);
 
     final String name = ComponentUtils.serializeComponentToLegacy(itemName);
     final String rawLore = ComponentUtils.serializeComponentToLegacy(itemLore);
     final List<String> lore = List.of(rawLore);
     final ItemStack stack = new ItemStack(material);
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to construct ItemStack for trap!");
-    }
-
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
     ItemUtils.setData(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
     meta.setDisplayName(name);
     meta.setLore(lore);

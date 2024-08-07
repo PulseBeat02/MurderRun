@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -27,6 +29,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GadgetActionHandler implements Listener {
 
@@ -80,11 +83,7 @@ public final class GadgetActionHandler implements Listener {
   private void handlePlayerGadgetLogic(final GamePlayer player) {
 
     final Location origin = player.getLocation();
-    final World world = origin.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(origin.getWorld());
     final int range = this.manager.getActivationRange();
     final Collection<Entity> entities = world.getNearbyEntities(origin, range, range, range);
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
@@ -126,13 +125,13 @@ public final class GadgetActionHandler implements Listener {
     closest.onGadgetNearby(game, player);
   }
 
-  private void handleEventLogic(final ItemStack stack, final Consumer<Gadget> gadget) {
+  private void handleEventLogic(final @Nullable ItemStack stack, final Consumer<Gadget> gadget) {
 
-    if (!ItemUtils.isGadget(stack)) {
+    if (stack == null) {
       return;
     }
 
-    if (stack == null) {
+    if (!ItemUtils.isGadget(stack)) {
       return;
     }
 
@@ -143,7 +142,7 @@ public final class GadgetActionHandler implements Listener {
 
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
-    final Gadget tool = gadgets.get(data);
+    final Gadget tool = requireNonNull(gadgets.get(data));
     gadget.accept(tool);
   }
 }

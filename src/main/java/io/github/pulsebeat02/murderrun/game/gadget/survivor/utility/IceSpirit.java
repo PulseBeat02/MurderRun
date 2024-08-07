@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -8,6 +10,7 @@ import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -34,11 +37,7 @@ public final class IceSpirit extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final GamePlayer nearest = manager.getNearestKiller(location);
     if (nearest == null) {
       return;
@@ -72,7 +71,9 @@ public final class IceSpirit extends SurvivorGadget {
     return world.spawn(location, Zombie.class, zombie -> {
       this.setEquipment(zombie);
       this.setTarget(zombie, nearest);
-      zombie.setBaby(true);
+      if (zombie instanceof final Ageable ageable) {
+        ageable.setBaby();
+      }
     });
   }
 
@@ -81,12 +82,7 @@ public final class IceSpirit extends SurvivorGadget {
   }
 
   private void setEquipment(final Zombie zombie) {
-
-    final EntityEquipment equipment = zombie.getEquipment();
-    if (equipment == null) {
-      throw new AssertionError("Zombie doesn't have equipment!");
-    }
-
+    final EntityEquipment equipment = requireNonNull(zombie.getEquipment());
     equipment.setHelmet(new ItemStack(Material.DIAMOND_HELMET));
     equipment.setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
     equipment.setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));

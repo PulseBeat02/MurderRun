@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -62,11 +64,7 @@ public final class TrapSniffer extends SurvivorGadget {
 
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();
-      final Collection<Item> set = this.glowItemStates.get(innocent);
-      if (set == null) {
-        throw new AssertionError("Couldn't get player's glow states!");
-      }
-
+      final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
       final double distance = origin.distanceSquared(location);
       if (distance <= 36) {
         set.add(entity);

@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -16,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class KillerTracker extends SurvivorGadget {
@@ -51,16 +52,8 @@ public final class KillerTracker extends SurvivorGadget {
 
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = inventory.getItemInMainHand();
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to retrieve killer tracker meta!");
-    }
-
-    final Integer val = ItemUtils.getData(stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER);
-    if (val == null) {
-      throw new AssertionError("Failed to retrieve killer tracker value!");
-    }
-
+    final Integer val =
+        requireNonNull(ItemUtils.getData(stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER));
     final int count = val + 1;
     ItemUtils.setData(stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER, count);
 

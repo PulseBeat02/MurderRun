@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -33,11 +35,7 @@ public final class TrapVest extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
     final PlayerDeathTask task =

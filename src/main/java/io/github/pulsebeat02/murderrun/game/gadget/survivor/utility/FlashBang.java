@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Locale;
@@ -53,10 +55,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     }
 
     final Location location = block.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.WHITE_ASH, location, 30, 1, 1, 1, 1, 1);
 
     final List<Entity> entities = entity.getNearbyEntities(1, 1, 1);

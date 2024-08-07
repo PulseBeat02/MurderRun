@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -41,11 +43,8 @@ public final class Flashlight extends SurvivorGadget {
       return;
     }
 
-    final Long last = ItemUtils.getData(stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG);
-    if (last == null) {
-      throw new AssertionError("Failed to get last use of flashlight!");
-    }
-
+    final Long last = requireNonNull(
+        ItemUtils.getData(stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG));
     final long current = System.currentTimeMillis();
     if (current - last < 5000) {
       return;
@@ -73,11 +72,7 @@ public final class Flashlight extends SurvivorGadget {
 
         final Location hand = handLocation.clone();
         final Location particleLocation = hand.add(offset);
-        final World world = hand.getWorld();
-        if (world == null) {
-          throw new AssertionError("Location doesn't have World attached to it!");
-        }
-
+        final World world = requireNonNull(hand.getWorld());
         world.spawnParticle(Particle.SMOKE, particleLocation, 1, 0, 0, 0, 0);
         manager.applyToAllMurderers(killer -> applyPotionEffects(killer, particleLocation));
       }

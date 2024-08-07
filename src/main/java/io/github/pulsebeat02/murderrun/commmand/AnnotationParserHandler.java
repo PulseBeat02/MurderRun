@@ -25,20 +25,15 @@ public final class AnnotationParserHandler {
         new GameCommand(),
         new VillagerCommand());
     this.manager = this.getCommandManager(plugin);
-    this.parser = this.getAnnotationParser();
+    this.parser = this.getAnnotationParser(this.manager);
   }
 
   private AnnotationParser<CommandSender> getAnnotationParser(
-      @UnderInitialization AnnotationParserHandler this) {
-
-    if (this.manager == null) {
-      throw new AssertionError("Annotation command manager is null!");
-    }
-
+      @UnderInitialization AnnotationParserHandler this,
+      final CommandManager<CommandSender> manager) {
     final AnnotationParser<CommandSender> parser =
-        new AnnotationParser<>(this.manager, CommandSender.class);
+        new AnnotationParser<>(manager, CommandSender.class);
     parser.descriptionMapper(RichDescription::translatable);
-
     return parser;
   }
 

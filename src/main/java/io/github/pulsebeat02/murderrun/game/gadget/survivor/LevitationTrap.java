@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -27,11 +29,7 @@ public final class LevitationTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     location.add(0, 10, 0);
 
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
     this.setLevitation(murderer, location);
     scheduler.scheduleTask(() -> this.teleportBack(murderer, location), 20 * 7);

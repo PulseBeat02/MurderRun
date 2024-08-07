@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,15 +19,8 @@ public final class ResourceUtils {
   }
 
   public static InputStream getResourceAsStream(final String name) {
-    final ClassLoader loader = ResourceUtils.class.getClassLoader();
-    if (loader == null) {
-      throw new AssertionError(String.format("Failed to access %s", name));
-    }
-    final InputStream stream = loader.getResourceAsStream(name);
-    if (stream == null) {
-      throw new AssertionError(String.format("Failed to access %s", name));
-    }
-    return stream;
+    final ClassLoader loader = requireNonNull(ResourceUtils.class.getClassLoader());
+    return requireNonNull(loader.getResourceAsStream(name));
   }
 
   public static String getFilename(final String url) {

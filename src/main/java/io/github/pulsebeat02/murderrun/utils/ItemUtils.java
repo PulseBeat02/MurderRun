@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -43,10 +45,7 @@ public final class ItemUtils {
       final PersistentDataType<P, C> type,
       final C value) {
     final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      return;
-    }
-    if (value == null) {
+    if (meta == null || value == null) {
       return;
     }
     final PersistentDataContainer container = meta.getPersistentDataContainer();
@@ -55,10 +54,7 @@ public final class ItemUtils {
 
   public static <P, C> @Nullable C getData(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<P, C> type) {
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      return null;
-    }
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     return container.get(key, type);
   }

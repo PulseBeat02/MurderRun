@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -39,20 +41,13 @@ public final class MedBot extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final ArmorStand armorStand = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
     armorStand.setInvisible(true);
     armorStand.setGravity(false);
     armorStand.setMarker(true);
 
-    final EntityEquipment equipment = armorStand.getEquipment();
-    if (equipment == null) {
-      throw new AssertionError("Failed to spawn Med Bot!");
-    }
+    final EntityEquipment equipment = requireNonNull(armorStand.getEquipment());
     equipment.setHelmet(new ItemStack(Material.CHORUS_FLOWER));
 
     final GameScheduler scheduler = game.getScheduler();
@@ -100,13 +95,8 @@ public final class MedBot extends SurvivorGadget {
   }
 
   private void handleParticles(final ArmorStand stand) {
-
     final Location location = stand.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.ENTITY_EFFECT, location, 5, 8, 8, 8, Color.PINK);
   }
 

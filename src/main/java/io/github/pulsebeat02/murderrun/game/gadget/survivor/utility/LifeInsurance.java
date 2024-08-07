@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -44,13 +46,10 @@ public final class LifeInsurance extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
     final GameSettings settings = game.getSettings();
-    final Arena arena = settings.getArena();
+    final Arena arena = requireNonNull(settings.getArena());
     final Location first = arena.getFirstCorner();
     final Location second = arena.getSecondCorner();
-    final World world = first.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(first.getWorld());
 
     final Component message = Locale.LIFE_INSURANCE_ACTIVATE.build();
     gamePlayer.sendMessage(message);

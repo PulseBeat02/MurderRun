@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.lobby;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,10 +29,7 @@ public final class LobbyTrader {
   }
 
   public void spawnVillager() {
-    final World world = this.location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(this.location.getWorld());
     final Entity entity = world.spawnEntity(this.location, EntityType.VILLAGER);
     if (entity instanceof final Villager villager) {
       villager.setAI(false);

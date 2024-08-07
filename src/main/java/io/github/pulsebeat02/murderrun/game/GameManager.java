@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
@@ -52,11 +54,7 @@ public final class GameManager {
   private void giveSpecialSword(final Player player) {
 
     final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to create murderer's sword!");
-    }
-
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
     final AttributeModifier modifier = new AttributeModifier(
         attribute.getKey(), 8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ANY);
@@ -100,7 +98,7 @@ public final class GameManager {
   }
 
   private void teleportPlayerToLobby(final Player player) {
-    final Lobby lobby = this.settings.getLobby();
+    final Lobby lobby = requireNonNull(this.settings.getLobby());
     final Location spawn = lobby.getLobbySpawn();
     player.teleport(spawn);
   }

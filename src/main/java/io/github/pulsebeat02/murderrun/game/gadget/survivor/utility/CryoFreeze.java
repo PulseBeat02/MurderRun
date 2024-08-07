@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.WorldEdit;
@@ -35,19 +37,11 @@ public final class CryoFreeze extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
     final WorldEdit worldEdit = WorldEdit.getInstance();
     final BlockVector3 vector3 = MapUtils.toBlockVector3(location);
-    final BlockType ice = BlockTypes.ICE;
-    if (ice == null) {
-      throw new AssertionError("Ice block state is null!");
-    }
-
+    final BlockType ice = requireNonNull(BlockTypes.ICE);
     final BlockState state = ice.getDefaultState();
     try (final EditSession session = worldEdit.newEditSession(weWorld)) {
       try {

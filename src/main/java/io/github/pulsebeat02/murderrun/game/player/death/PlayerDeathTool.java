@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.player.death;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -30,6 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -75,10 +77,7 @@ public final class PlayerDeathTool {
 
   private ArmorStand summonArmorStand(final GamePlayer player) {
     final Location location = player.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(location.getWorld());
     final Entity entity = world.spawnEntity(location, EntityType.ARMOR_STAND);
     return (ArmorStand) entity;
   }
@@ -96,10 +95,7 @@ public final class PlayerDeathTool {
   }
 
   private void setArmorStandGear(final Player player, final ArmorStand stand) {
-    final EntityEquipment equipment = stand.getEquipment();
-    if (equipment == null) {
-      throw new AssertionError("Failed to set ArmorStand equipment!");
-    }
+    final EntityEquipment equipment = requireNonNull(stand.getEquipment());
     final ItemStack head = this.getHeadItemStack(player);
     final ItemStack chest = createArmorPiece(Material.LEATHER_CHESTPLATE);
     final ItemStack legs = createArmorPiece(Material.LEATHER_LEGGINGS);
@@ -126,14 +122,8 @@ public final class PlayerDeathTool {
       }
       final Map map = this.game.getMurderMap();
       final PartsManager manager = map.getCarPartManager();
-      final CarPart stack = manager.getCarPartItemStack(slot);
-      if (stack == null) {
-        throw new AssertionError("Failed to retrieve car part from game!");
-      }
-      final Location death = player.getLastDeathLocation();
-      if (death == null) {
-        throw new AssertionError("Player didn't die! Fake death error?");
-      }
+      final CarPart stack = requireNonNull(manager.getCarPartItemStack(slot));
+      final Location death = requireNonNull(player.getLastDeathLocation());
       stack.setPickedUp(false);
       stack.setLocation(death);
       stack.spawn();
@@ -142,23 +132,21 @@ public final class PlayerDeathTool {
 
   private ItemStack getHeadItemStack(final Player player) {
     final ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-    final SkullMeta meta = (SkullMeta) head.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to create Player head!");
+    final ItemMeta meta = requireNonNull(head.getItemMeta());
+    if (meta instanceof final SkullMeta skullMeta) {
+      skullMeta.setOwningPlayer(player);
+      head.setItemMeta(skullMeta);
     }
-    meta.setOwningPlayer(player);
-    head.setItemMeta(meta);
     return head;
   }
 
   public static ItemStack createArmorPiece(final Material leatherPiece) {
     final ItemStack item = new ItemStack(leatherPiece);
-    final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to dye leather armor!");
+    final ItemMeta meta = requireNonNull(item.getItemMeta());
+    if (meta instanceof final LeatherArmorMeta leatherArmorMeta) {
+      leatherArmorMeta.setColor(Color.RED);
+      item.setItemMeta(leatherArmorMeta);
     }
-    meta.setColor(Color.RED);
-    item.setItemMeta(meta);
     return item;
   }
 
@@ -174,10 +162,7 @@ public final class PlayerDeathTool {
       throw new AssertionError("Player didn't die! Fake death error?");
     }
     final Location clone = location.clone().add(0, 1, 0);
-    final World world = clone.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(clone.getWorld());
     final BlockData data = Material.RED_CONCRETE.createBlockData();
     world.spawnParticle(Particle.BLOCK, clone, 10, 0.5, 0.5, 0.5, data);
   }

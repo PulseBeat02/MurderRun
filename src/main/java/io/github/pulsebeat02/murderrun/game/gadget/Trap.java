@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -56,11 +57,7 @@ public abstract class Trap extends Gadget {
 
     final Item item = event.getItemDrop();
     final Location location = item.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilCondition(
         () -> world.spawnParticle(Particle.DUST, location, 10, 0.2, 0.2, 0.2, this.color),

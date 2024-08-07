@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -16,6 +17,8 @@ import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
+import org.bukkit.SoundCategory;
+import org.bukkit.World;
 
 public final class ComponentUtils {
 
@@ -113,18 +116,14 @@ public final class ComponentUtils {
     final String key = getRandomKey(keys);
     final Key id = key(key);
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(innocent -> {
-      final Location location = innocent.getLocation();
-      innocent.playSound(id, Source.MASTER, 1f, 1f);
-    });
+    manager.applyToAllInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
   }
 
   public static void playSoundForAllParticipantsAtLocation(
-      final Game game, final Location origin, final SoundKeys... keys) {
+      final Location origin, final SoundKeys... keys) {
     final String key = getRandomKey(keys);
-    final Key id = key(key);
-    final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllParticipants(player -> player.playSound(id, Source.MASTER, 1f, 1f));
+    final World world = requireNonNull(origin.getWorld());
+    world.playSound(origin, key, SoundCategory.MASTER, 1f, 1f);
   }
 
   public static void showTitleForAllParticipants(

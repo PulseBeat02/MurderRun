@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -19,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public final class Ghosting extends SurvivorGadget {
@@ -57,7 +60,7 @@ public final class Ghosting extends SurvivorGadget {
 
   private void teleport(final Game game, final GamePlayer gamePlayer) {
     final GameSettings settings = game.getSettings();
-    final Arena arena = settings.getArena();
+    final Arena arena = requireNonNull(settings.getArena());
     final Location location = arena.getSpawn();
     gamePlayer.teleport(location);
   }
@@ -92,12 +95,11 @@ public final class Ghosting extends SurvivorGadget {
 
   private ItemStack createArmorPiece(final Material leatherPiece) {
     final ItemStack item = new ItemStack(leatherPiece);
-    final LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to dye leather armor!");
+    final ItemMeta meta = requireNonNull(item.getItemMeta());
+    if (meta instanceof final LeatherArmorMeta leatherArmorMeta) {
+      leatherArmorMeta.setColor(Color.WHITE);
+      item.setItemMeta(leatherArmorMeta);
     }
-    meta.setColor(Color.WHITE);
-    item.setItemMeta(meta);
     return item;
   }
 }

@@ -55,8 +55,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     final GamePlayer murderer = optional.get();
     final Location murdererLocation = murderer.getLocation();
     if (murderer instanceof Killer) {
-      ComponentUtils.playSoundForAllParticipantsAtLocation(
-          this.game, murdererLocation, SoundKeys.CHAINSAW);
+      ComponentUtils.playSoundForAllParticipantsAtLocation(murdererLocation, SoundKeys.CHAINSAW);
     }
 
     event.setCancelled(true);

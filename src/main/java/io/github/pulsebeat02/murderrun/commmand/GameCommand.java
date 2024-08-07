@@ -1,5 +1,9 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
+import static java.util.Objects.requireNonNull;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameManager;
 import io.github.pulsebeat02.murderrun.game.GameResult;
@@ -10,12 +14,18 @@ import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
@@ -25,13 +35,12 @@ import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.type.tuple.Pair;
 
-@SuppressWarnings("nullness")
 public final class GameCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
   private BukkitAudiences audiences;
   private Map<Player, Pair<GameManager, Boolean>> games;
-  private Map<Player, Collection<Player>> invites;
+  private Multimap<Player, Player> invites;
 
   @Override
   public void registerFeature(
@@ -39,7 +48,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.games = new WeakHashMap<>();
-    this.invites = new WeakHashMap<>();
+    this.invites = ArrayListMultimap.create();
     this.plugin = plugin;
   }
 
@@ -160,14 +169,6 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.games = games;
   }
 
-  public Map<Player, Collection<Player>> getInvites() {
-    return this.invites;
-  }
-
-  public void setInvites(final Map<Player, Collection<Player>> invites) {
-    this.invites = invites;
-  }
-
   @CommandDescription("murder_run.command.game.cancel.info")
   @Command(value = "murder game cancel", requiredSender = Player.class)
   public void cancelGame(final Player sender) {
@@ -193,7 +194,9 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(ownerMessage);
   }
 
-  private boolean checkIfInNoGame(final Audience audience, final Pair<GameManager, Boolean> pair) {
+  @EnsuresNonNullIf(expression = "#2", result = false)
+  private boolean checkIfInNoGame(
+      final Audience audience, final @Nullable Pair<GameManager, Boolean> pair) {
     if (pair == null) {
       final Component message = Locale.GAME_INVALID_ERROR.build();
       audience.sendMessage(message);
@@ -226,7 +229,6 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final String senderDisplayName = sender.getDisplayName();
     final String inviteDisplayName = invite.getDisplayName();
-    this.invites.computeIfAbsent(invite, k -> new HashSet<>());
 
     final Collection<Player> outgoing = this.invites.get(invite);
     outgoing.add(sender);
@@ -260,7 +262,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
 
     final Collection<Player> invitations = this.invites.get(sender);
-    final Pair<GameManager, Boolean> ownerData = this.games.get(owner);
+    final Pair<GameManager, Boolean> ownerData = requireNonNull(this.games.get(owner));
 
     final GameManager manager = ownerData.first();
     manager.addParticipantToLobby(sender);
@@ -276,7 +278,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   }
 
   private boolean checkIfAlreadyInGame(
-      final Audience audience, final Pair<GameManager, Boolean> data) {
+      final Audience audience, final @Nullable Pair<GameManager, Boolean> data) {
     if (data != null) {
       final Component message = Locale.GAME_JOIN_ERROR.build();
       audience.sendMessage(message);
@@ -288,7 +290,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   private boolean checkIfNotInvited(
       final Audience audience, final Player sender, final Player owner) {
     final Collection<Player> invitations = this.invites.get(sender);
-    if (invitations == null || !invitations.contains(owner)) {
+    if (!invitations.contains(owner)) {
       final Component message = Locale.GAME_INVALID_INVITE_ERROR.build();
       audience.sendMessage(message);
       return true;

@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -51,10 +53,7 @@ public final class JumpScareTrap extends SurvivorTrap {
   private @Nullable ItemStack setPumpkinItemStack(final GamePlayer player) {
 
     final ItemStack stack = new ItemStack(Material.CARVED_PUMPKIN);
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to create jump scare mask!");
-    }
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
     meta.setCustomModelData(1);
     stack.setItemMeta(meta);
 

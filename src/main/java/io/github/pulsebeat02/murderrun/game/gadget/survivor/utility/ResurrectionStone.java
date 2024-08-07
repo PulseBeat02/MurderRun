@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -39,11 +41,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     final GadgetManager gadgetManager = game.getGadgetManager();
     final int range = gadgetManager.getActivationRange();
 
-    final GamePlayer closest = this.getClosestDeadPlayer(game, location);
-    if (closest == null) {
-      return;
-    }
-
+    final GamePlayer closest = requireNonNull(this.getClosestDeadPlayer(game, location));
     final Location closestLocation = closest.getLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
@@ -56,10 +54,7 @@ public final class ResurrectionStone extends SurvivorGadget {
   }
 
   private void spawnParticles(final Location location) {
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.DRAGON_BREATH, location, 10, 0.5, 0.5, 0.5);
     location.add(0, 0.05, 0);
   }
@@ -73,10 +68,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     playerManager.resetCachedPlayers();
 
     closest.apply(resurrected -> {
-      final Location death = resurrected.getLastDeathLocation();
-      if (death == null) {
-        throw new AssertionError("Death location is null!");
-      }
+      final Location death = requireNonNull(resurrected.getLastDeathLocation());
       resurrected.setHealth(20);
       resurrected.setFoodLevel(20);
       resurrected.setSaturation(20);

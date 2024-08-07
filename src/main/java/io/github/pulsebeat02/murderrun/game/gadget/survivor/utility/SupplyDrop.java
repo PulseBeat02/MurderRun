@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
@@ -62,11 +64,7 @@ public final class SupplyDrop extends SurvivorGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final Location spawnLocation = location.add(0, 50, 0);
-    final World world = spawnLocation.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(spawnLocation.getWorld());
     final BlockData data = Material.CHEST.createBlockData();
     final FallingBlock chest = world.spawnFallingBlock(spawnLocation, data);
     chest.setDropItem(false);
@@ -78,10 +76,7 @@ public final class SupplyDrop extends SurvivorGadget {
   private void spawnParticleTrail(final Game game, final FallingBlock chest) {
 
     final Location location = chest.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.CLOUD, location, 5, 0.2, 0.2, 0.2);
 
     final boolean grounded = chest.isOnGround() || chest.isDead();
@@ -93,11 +88,7 @@ public final class SupplyDrop extends SurvivorGadget {
 
   private void handleChestInventory(final Game game, final Location location) {
 
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final Block block = world.getBlockAt(location);
     if (!(block instanceof final Chest chest)) {
       return;

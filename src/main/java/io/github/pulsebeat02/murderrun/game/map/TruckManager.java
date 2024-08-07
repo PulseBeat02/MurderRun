@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.map;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -27,12 +29,9 @@ public final class TruckManager {
   private void spawnParticleOnTruck() {
     final Game game = this.map.getGame();
     final GameSettings settings = game.getSettings();
-    final Arena arena = settings.getArena();
+    final Arena arena = requireNonNull(settings.getArena());
     final Location truck = arena.getTruck();
-    final World world = truck.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(truck.getWorld());
     world.spawnParticle(Particle.LAVA, truck, 10, 0.5, 0.5, 0.5);
     world.spawnParticle(Particle.SMOKE, truck, 10, 0.5, 0.5, 0.5);
   }

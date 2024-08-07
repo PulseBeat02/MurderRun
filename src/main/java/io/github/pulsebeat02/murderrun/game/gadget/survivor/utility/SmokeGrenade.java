@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.UnattachedTemporaryRepeatedTask;
@@ -54,11 +56,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     }
 
     final Location location = block.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final UnattachedTemporaryRepeatedTask task = new UnattachedTemporaryRepeatedTask(
         () -> world.spawnParticle(Particle.SMOKE, location, 50, 2, 2, 2), 10, 5 * 20);
     task.run();

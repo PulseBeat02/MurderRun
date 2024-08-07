@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.map.part;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.Keys;
@@ -31,10 +33,7 @@ public final class CarPart {
 
   private ItemStack createItemStack(@UnderInitialization CarPart this) {
     final ItemStack stack = new ItemStack(Material.DIAMOND);
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to create car part!");
-    }
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
     this.customize(meta);
     stack.setItemMeta(meta);
     return stack;
@@ -71,15 +70,9 @@ public final class CarPart {
   }
 
   public Item spawn() {
-
-    final World world = this.location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(this.location.getWorld());
     final Item item = world.dropItemNaturally(this.location, this.stack);
     this.customizeItemEntity(item);
-
     this.item = item;
     return item;
   }

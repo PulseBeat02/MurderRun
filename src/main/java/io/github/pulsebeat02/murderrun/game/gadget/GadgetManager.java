@@ -8,21 +8,21 @@ public final class GadgetManager {
 
   private final MurderRun plugin;
   private final Game game;
-  private final GadgetLoadingMechanism mechanism;
-  private final GadgetActionHandler actionHandler;
-  private final AtomicInteger activationRange;
+  private GadgetLoadingMechanism mechanism;
+  private GadgetActionHandler actionHandler;
+  private AtomicInteger activationRange;
 
   public GadgetManager(final Game game) {
     final MurderRun plugin = game.getPlugin();
     this.game = game;
     this.plugin = plugin;
-    this.mechanism = new GadgetLoadingMechanism(this);
-    this.actionHandler = new GadgetActionHandler(this);
-    this.activationRange = new AtomicInteger(3);
   }
 
   public void start() {
     this.actionHandler.start();
+    this.mechanism = new GadgetLoadingMechanism(this);
+    this.actionHandler = new GadgetActionHandler(this);
+    this.activationRange = new AtomicInteger(3);
   }
 
   public void shutdown() {

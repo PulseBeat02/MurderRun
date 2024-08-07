@@ -59,10 +59,6 @@ public final class SixthSense extends SurvivorGadget {
     final Location location = innocent.getLocation();
     final Location other = killer.getLocation();
     final Collection<GamePlayer> visible = this.glowPlayerStates.get(innocent);
-    if (visible == null) {
-      throw new AssertionError("Couldn't get player's glow states!");
-    }
-
     final double distance = location.distanceSquared(other);
     if (distance <= 64) {
       visible.add(killer);

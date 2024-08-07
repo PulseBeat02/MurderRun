@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.locale.Locale;
@@ -26,15 +28,9 @@ public final class JebTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final Location location = murderer.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     for (int i = 0; i < SHEEP_COUNT; i++) {
-      world.spawn(location, Sheep.class, sheep -> {
-        sheep.setCustomName("jeb_");
-      });
+      world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
     }
   }
 }

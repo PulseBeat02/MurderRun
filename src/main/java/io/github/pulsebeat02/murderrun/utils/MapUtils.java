@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
@@ -60,7 +62,7 @@ public final class MapUtils {
   public static void resetMap(final Map map) {
     final Game game = map.getGame();
     final GameSettings settings = game.getSettings();
-    final Arena arena = settings.getArena();
+    final Arena arena = requireNonNull(settings.getArena());
     final ArenaSchematic schematic = arena.getSchematic();
     final BlockVector3 vector3 = schematic.getOrigin();
     final Clipboard clipboard = loadSchematic(schematic);
@@ -80,10 +82,7 @@ public final class MapUtils {
 
   private static Clipboard loadSchematic(final ArenaSchematic schematic) {
     final Path path = schematic.getSchematicPath();
-    final ClipboardFormat format = ClipboardFormats.findByFile(path.toFile());
-    if (format == null) {
-      throw new AssertionError(String.format("Schematic %s is corrupted or doesn't exist!", path));
-    }
+    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(path.toFile()));
     try (final ClipboardReader reader = format.getReader(Files.newInputStream(path))) {
       return reader.read();
     } catch (final IOException e) {
@@ -130,10 +129,7 @@ public final class MapUtils {
   private static CuboidRegion createRegion(final Location[] corners) {
     final Location first = corners[0];
     final Location second = corners[1];
-    final World world = first.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(first.getWorld());
     final BlockVector3 firstCorner = toBlockVector3(first);
     final BlockVector3 secondCorner = toBlockVector3(second);
     final com.sk89q.worldedit.world.World instance = BukkitAdapter.adapt(world);

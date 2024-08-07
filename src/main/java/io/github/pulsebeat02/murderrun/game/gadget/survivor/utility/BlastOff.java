@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -45,13 +47,8 @@ public final class BlastOff extends SurvivorGadget {
   }
 
   private void launchKillerIntoSpace(final GamePlayer killer, final Game game) {
-
     final Location location = killer.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     killer.apply(player -> {
       final Firework firework = (Firework) world.spawnEntity(location, EntityType.FIREWORK_ROCKET);
       final FireworkMeta meta = firework.getFireworkMeta();

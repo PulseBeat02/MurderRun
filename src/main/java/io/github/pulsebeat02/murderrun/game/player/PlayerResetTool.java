@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
@@ -22,7 +24,7 @@ public final class PlayerResetTool {
   public void handleAll(final GamePlayer gamePlayer) {
     final Game game = this.manager.getGame();
     final GameSettings configuration = game.getSettings();
-    final Lobby lobby = configuration.getLobby();
+    final Lobby lobby = requireNonNull(configuration.getLobby());
     final Location location = lobby.getLobbySpawn();
     gamePlayer.apply(player -> {
       PlayerUtils.removeAllPotionEffects(player);

@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.json.adapters;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.gson.*;
 import java.lang.reflect.Type;
 import org.bukkit.Bukkit;
@@ -37,10 +39,7 @@ public final class LocationAdapter implements JsonDeserializer<Location>, JsonSe
       final Type type,
       final JsonSerializationContext jsonSerializationContext) {
     final JsonObject obj = new JsonObject();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(location.getWorld());
     final String name = world.getName();
     obj.addProperty("world", name);
     obj.addProperty("x", location.getX());

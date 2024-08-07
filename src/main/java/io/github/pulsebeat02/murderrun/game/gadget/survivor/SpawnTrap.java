@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -24,7 +26,7 @@ public final class SpawnTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final GameSettings settings = game.getSettings();
-    final Arena arena = settings.getArena();
+    final Arena arena = requireNonNull(settings.getArena());
     final Location spawn = arena.getSpawn();
     murderer.teleport(spawn);
   }

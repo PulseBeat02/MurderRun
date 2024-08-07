@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -37,11 +39,7 @@ public final class PortalTrap extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final Collection<Item> items = this.getTrapItemStackEntities(location, world, range);
     final Item closest = this.getClosestEntity(location, items);
     if (closest == null) {
@@ -50,11 +48,7 @@ public final class PortalTrap extends SurvivorGadget {
     }
 
     final PlayerManager playerManager = game.getPlayerManager();
-    final GamePlayer killer = playerManager.getNearestKiller(location);
-    if (killer == null) {
-      return;
-    }
-
+    final GamePlayer killer = requireNonNull(playerManager.getNearestKiller(location));
     final Location killerLocation = killer.getLocation();
     closest.teleport(killerLocation);
 

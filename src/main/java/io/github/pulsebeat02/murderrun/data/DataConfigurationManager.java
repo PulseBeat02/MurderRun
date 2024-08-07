@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.data;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
@@ -26,18 +28,14 @@ public abstract class DataConfigurationManager<T> {
   }
 
   public void serialize(final T manager) {
-    if (manager == null) {
-      throw new AssertionError("Failed to serialize data manager!");
-    }
-    CompletableFuture.runAsync(() -> this.writeJson(manager));
+    CompletableFuture.runAsync(() -> this.writeJson(requireNonNull(manager)));
   }
 
-  @SuppressWarnings("nullness")
   private void writeJson(final T manager) {
     try (final Writer writer = Files.newBufferedWriter(this.json)) {
       this.createFolders();
       final Gson gson = GsonProvider.getGson();
-      gson.toJson(manager, writer);
+      gson.toJson(requireNonNull(manager), writer);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -28,11 +30,7 @@ public final class ShockwaveTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer survivor) {
     final PlayerManager manager = game.getPlayerManager();
     final Location origin = survivor.getLocation();
-    final World world = origin.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(origin.getWorld());
     world.createExplosion(origin, 0, false, false);
     manager.applyToAllParticipants(participant -> {
       final Location location = participant.getLocation();

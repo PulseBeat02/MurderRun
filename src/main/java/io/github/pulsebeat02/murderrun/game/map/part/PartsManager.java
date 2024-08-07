@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.map.part;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -40,7 +42,7 @@ public final class PartsManager {
   private void randomizeSpawnLocations() {
     final Game game = this.map.getGame();
     final GameSettings configuration = game.getSettings();
-    final Arena arena = configuration.getArena();
+    final Arena arena = requireNonNull(configuration.getArena());
     final Location first = arena.getFirstCorner();
     final Location second = arena.getSecondCorner();
     final World world = first.getWorld();
@@ -68,10 +70,7 @@ public final class PartsManager {
   private void spawnParticleOnPart(final CarPart stack) {
     final Location location = stack.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
-    final World world = clone.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
+    final World world = requireNonNull(clone.getWorld());
     world.spawnParticle(Particle.DUST, clone, 10, 0.2, 0.2, 0.2, Color.YELLOW);
   }
 
@@ -93,10 +92,7 @@ public final class PartsManager {
   }
 
   public @Nullable CarPart getCarPartItemStack(final ItemStack stack) {
-    final ItemMeta meta = stack.getItemMeta();
-    if (meta == null) {
-      throw new AssertionError("Failed to retrieve car part from game!");
-    }
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final String uuid = container.get(Keys.CAR_PART_UUID, PersistentDataType.STRING);
     return uuid == null ? null : this.parts.get(uuid);

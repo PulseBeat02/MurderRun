@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.locale.Locale;
@@ -27,20 +29,14 @@ public final class PonyTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final Location location = murderer.getLocation();
-    final World world = location.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(location.getWorld());
     final Horse horse = this.spawnCustomisedHorse(world, location);
     this.setHorseSpeed(horse);
   }
 
   private void setHorseSpeed(final Horse horse) {
-    final AttributeInstance attribute = horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
-    if (attribute == null) {
-      throw new AssertionError("Couldn't modify pony speed!");
-    }
+    final AttributeInstance attribute =
+        requireNonNull(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
     attribute.setBaseValue(0.5);
   }
 

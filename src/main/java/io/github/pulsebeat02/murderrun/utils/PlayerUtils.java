@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -67,11 +69,7 @@ public final class PlayerUtils {
       final GamePlayer gamePlayer, final ChatColor color, final Collection<GamePlayer> receivers) {
 
     final Player player = gamePlayer.getPlayer();
-    final ScoreboardManager manager = Bukkit.getScoreboardManager();
-    if (manager == null) {
-      throw new AssertionError("Failed to access the main scoreboard!");
-    }
-
+    final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
     final Scoreboard scoreboard = manager.getMainScoreboard();
     final UUID glowID = UUID.randomUUID();
     final String name = String.format("color-%s", glowID);
@@ -127,10 +125,7 @@ public final class PlayerUtils {
 
   public static void hideNameTag(final GamePlayer gamePlayer) {
     final Player player = gamePlayer.getPlayer();
-    final ScoreboardManager manager = Bukkit.getScoreboardManager();
-    if (manager == null) {
-      throw new AssertionError("Failed to access the main scoreboard!");
-    }
+    final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
     final Scoreboard scoreboard = manager.getMainScoreboard();
     final UUID hideID = UUID.randomUUID();
     final String name = String.format("hide-name-tag-%s", hideID);

@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
@@ -35,7 +36,7 @@ public final class GameStartupTool {
 
   private void teleportInnocentPlayers() {
     final GameSettings configuration = this.game.getSettings();
-    final Arena arena = configuration.getArena();
+    final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllInnocents(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
@@ -92,7 +93,7 @@ public final class GameStartupTool {
 
   private void teleportMurderers() {
     final GameSettings configuration = this.game.getSettings();
-    final Arena arena = configuration.getArena();
+    final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllDead(murderer -> murderer.teleport(spawnLocation));

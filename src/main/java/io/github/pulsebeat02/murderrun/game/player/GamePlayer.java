@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.bossbar.BossBar.bossBar;
 import static net.kyori.adventure.sound.Sound.sound;
 import static net.kyori.adventure.title.Title.title;
@@ -56,11 +57,7 @@ public abstract sealed class GamePlayer permits Survivor, Killer {
   public abstract void onPlayerAttemptPickupPartEvent(final EntityPickupItemEvent event);
 
   public Player getPlayer() {
-    final Player player = Bukkit.getPlayer(this.uuid);
-    if (player == null) {
-      throw new AssertionError("Failed to retrieve Player object from uuid!");
-    }
-    return player;
+    return requireNonNull(Bukkit.getPlayer(this.uuid));
   }
 
   public void apply(final Consumer<Player> consumer) {

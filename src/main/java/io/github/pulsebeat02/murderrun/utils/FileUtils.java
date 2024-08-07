@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,17 +14,14 @@ public final class FileUtils {
 
   public static void createFile(final Path path) {
 
-    final Path parent = path.getParent();
-    if (parent == null) {
-      throw new AssertionError("Failed to retrieve parent folder!");
-    }
+    final Path parent = requireNonNull(path.getParent());
 
     try {
       Files.createDirectories(parent);
       if (Files.notExists(path)) {
         Files.createFile(path);
       }
-    } catch (IOException e) {
+    } catch (final IOException e) {
       throw new RuntimeException(e);
     }
   }

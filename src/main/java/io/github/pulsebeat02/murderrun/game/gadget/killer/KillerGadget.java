@@ -22,7 +22,7 @@ public class KillerGadget extends Gadget {
       final Material material,
       final Component itemName,
       final Component itemLore,
-      @Nullable final Consumer<ItemStack> consumer) {
+      final @Nullable Consumer<ItemStack> consumer) {
     super(name, material, itemName, itemLore, consumer);
   }
 }

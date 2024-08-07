@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -49,7 +50,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     }
 
     final GameSettings configuration = this.game.getSettings();
-    final Arena arena = configuration.getArena();
+    final Arena arena = requireNonNull(configuration.getArena());
     final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
     final double distSquared = itemLocation.distanceSquared(truckLocation);
@@ -61,10 +62,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
     final Map map = this.game.getMurderMap();
     final PartsManager manager = map.getCarPartManager();
-    final CarPart carPart = manager.getCarPartItemStack(stack);
-    if (carPart == null) {
-      throw new AssertionError("Failed to retrieve car part from game!");
-    }
+    final CarPart carPart = requireNonNull(manager.getCarPartItemStack(stack));
 
     manager.removeCarPart(carPart);
 

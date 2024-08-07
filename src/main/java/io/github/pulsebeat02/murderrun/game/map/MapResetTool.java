@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.map;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -28,15 +30,11 @@ public final class MapResetTool {
 
     final Game game = this.map.getGame();
     final GameSettings settings = game.getSettings();
-    final Arena arena = settings.getArena();
+    final Arena arena = requireNonNull(settings.getArena());
     final Location first = arena.getFirstCorner();
     final Location second = arena.getSecondCorner();
     final BoundingBox box = BoundingBox.of(first, second);
-    final World world = first.getWorld();
-    if (world == null) {
-      throw new AssertionError("Location doesn't have World attached to it!");
-    }
-
+    final World world = requireNonNull(first.getWorld());
     final Collection<Entity> entities = world.getNearbyEntities(box);
     for (final Entity entity : entities) {
       if (entity instanceof Player) {

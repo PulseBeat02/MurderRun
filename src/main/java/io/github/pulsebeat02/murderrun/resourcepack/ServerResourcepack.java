@@ -67,9 +67,6 @@ public final class ServerResourcepack {
   }
 
   private void zipPack() {
-    if (this.path == null) {
-      throw new AssertionError("Failed to zip the server resource pack!");
-    }
     MinecraftResourcePackWriter.minecraft().writeToZipFile(this.path, this.pack);
   }
 
