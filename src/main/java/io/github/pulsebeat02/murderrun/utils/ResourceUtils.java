@@ -2,7 +2,12 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.*;
+import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -20,17 +25,14 @@ public final class ResourceUtils {
 
   public static InputStream getResourceAsStream(final String name) {
     final ClassLoader loader = requireNonNull(ResourceUtils.class.getClassLoader());
-    return requireNonNull(loader.getResourceAsStream(name));
-  }
-
-  public static String getFilename(final String url) {
-    return url.substring(url.lastIndexOf('/') + 1);
+    final InputStream stream = requireNonNull(loader.getResourceAsStream(name));
+    return new FastBufferedInputStream(stream);
   }
 
   public static String createPackHash(final Path path)
       throws IOException, NoSuchAlgorithmException {
     final MessageDigest digest = MessageDigest.getInstance("SHA-1");
-    try (final InputStream fis = Files.newInputStream(path)) {
+    try (final InputStream fis = new FastBufferedInputStream(Files.newInputStream(path))) {
       int n = 0;
       final byte[] buffer = new byte[8192];
       while (n != -1) {

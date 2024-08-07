@@ -6,6 +6,9 @@ public enum KillerGadgets {
 
 KILLER TRAPS IMPLEMENTED
 
+Red Arrow: Places a red beacon above any survivor nearby
+
+
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
 Player Tracker: Tells the Killer how close opponents are to the Killer
@@ -44,7 +47,6 @@ Fire Trail: Leaves a trail of fire wherever the Killer walks
 Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move faster
 Dormagogg: An evil being that blind, stuns, and illuminates opponents
 Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
-Red Arrow: Places a red beacon above any survivor nearby
 
 */
 

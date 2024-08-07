@@ -377,7 +377,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.game.set.murderer.info")
+  @CommandDescription("murder_run.command.game.set.killer.info")
   @Command(value = "murder game set murderer <murderer>", requiredSender = Player.class)
   public void setMurderer(final Player sender, final Player murderer) {
 
@@ -395,7 +395,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
-  @CommandDescription("murder_run.command.game.set.innocent.info")
+  @CommandDescription("murder_run.command.game.set.survivor.info")
   @Command(value = "murder game set innocent <innocent>", requiredSender = Player.class)
   public void setInnocent(final Player sender, final Player innocent) {
 

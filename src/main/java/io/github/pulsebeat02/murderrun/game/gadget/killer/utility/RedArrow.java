@@ -23,7 +23,7 @@ public final class RedArrow extends KillerGadget {
 
   public RedArrow() {
     super(
-        "Red Arrow",
+        "red_arrow",
         Material.TIPPED_ARROW,
         Locale.RED_ARROW_TRAP_NAME.build(),
         Locale.RED_ARROW_TRAP_LORE.build(),

@@ -8,7 +8,11 @@ import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.*;
+import com.sk89q.worldedit.extent.clipboard.io.BuiltInClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardWriter;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
@@ -22,6 +26,8 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
 import io.github.pulsebeat02.murderrun.game.map.Map;
+import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -83,7 +89,8 @@ public final class MapUtils {
   private static Clipboard loadSchematic(final ArenaSchematic schematic) {
     final Path path = schematic.getSchematicPath();
     final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(path.toFile()));
-    try (final ClipboardReader reader = format.getReader(Files.newInputStream(path))) {
+    try (final ClipboardReader reader =
+        format.getReader(new FastBufferedInputStream(Files.newInputStream(path)))) {
       return reader.read();
     } catch (final IOException e) {
       throw new AssertionError(e);
@@ -117,8 +124,8 @@ public final class MapUtils {
 
   private static Path performSchematicWrite(final Clipboard clipboard, final String name) {
     final Path file = PARENT_FOLDER.resolve(name);
-    try (final ClipboardWriter writer =
-        BuiltInClipboardFormat.MCEDIT_SCHEMATIC.getWriter(Files.newOutputStream(file))) {
+    try (final ClipboardWriter writer = BuiltInClipboardFormat.MCEDIT_SCHEMATIC.getWriter(
+        new FastBufferedOutputStream(Files.newOutputStream(file)))) {
       writer.write(clipboard);
     } catch (final IOException e) {
       throw new AssertionError(e);

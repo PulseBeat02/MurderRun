@@ -57,9 +57,9 @@ public interface Locale extends LocaleTooling {
       direct("murder_run.command.game.player_invite", null);
   NullComponent<Sender> GAME_CANCEL = direct("murder_run.command.game.cancel");
   UniComponent<Sender, String> GAME_SET_MURDERER =
-      direct("murder_run.command.game.set.murderer", null);
+      direct("murder_run.command.game.set.killer", null);
   UniComponent<Sender, String> GAME_SET_INNOCENT =
-      direct("murder_run.command.game.set.innocent", null);
+      direct("murder_run.command.game.set.survivor", null);
   UniComponent<Sender, Integer> GAME_SET_CAR_PART_COUNT =
       direct("murder_run.command.game.set.car_part_count", null);
   UniComponent<Sender, String> GAME_OWNER_KICK = direct("murder_run.command.game.owner_kick", null);
