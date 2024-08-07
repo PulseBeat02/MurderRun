@@ -37,10 +37,10 @@ public final class Chipped extends SurvivorGadget {
   }
 
   private void sendGlowPacket(final GamePlayer gamePlayer, final Player target) {
-    gamePlayer.apply(player -> PacketToolsProvider.NMS_UTILS.sendGlowPacket(player, target));
+    gamePlayer.apply(player -> PacketToolsProvider.INSTANCE.sendGlowPacket(player, target));
   }
 
   private void removeGlowPacket(final GamePlayer gamePlayer, final Player target) {
-    gamePlayer.apply(player -> PacketToolsProvider.NMS_UTILS.sendRemoveGlowPacket(player, target));
+    gamePlayer.apply(player -> PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(player, target));
   }
 }

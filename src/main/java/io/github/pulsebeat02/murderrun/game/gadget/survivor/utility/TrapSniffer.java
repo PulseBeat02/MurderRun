@@ -68,10 +68,10 @@ public final class TrapSniffer extends SurvivorGadget {
       final double distance = origin.distanceSquared(location);
       if (distance <= 36) {
         set.add(entity);
-        PacketToolsProvider.NMS_UTILS.sendGlowPacket(innocent, entity);
+        PacketToolsProvider.INSTANCE.sendGlowPacket(innocent, entity);
       } else if (set.contains(entity)) {
         set.remove(entity);
-        PacketToolsProvider.NMS_UTILS.sendRemoveGlowPacket(innocent, entity);
+        PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(innocent, entity);
       }
     }
   }

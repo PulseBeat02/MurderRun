@@ -39,7 +39,7 @@ public final class Tracker extends SurvivorGadget {
     final double distance = origin.distanceSquared(killerLocation);
     if (distance <= 25) {
       killer.apply(raw -> {
-        PacketToolsProvider.getNmsUtils().sendGlowPacket(playerRaw, raw);
+        PacketToolsProvider.INSTANCE.sendGlowPacket(playerRaw, raw);
         player.sendMessage(Locale.TRACKER_TRAP_ACTIVATE.build());
       });
     } else {

@@ -79,7 +79,7 @@ public final class PlayerUtils {
     GLOW_TEAMS.put(player, team);
 
     receivers.forEach(
-        receiver -> PacketToolsProvider.NMS_UTILS.sendGlowPacket(player, receiver.getPlayer()));
+        receiver -> PacketToolsProvider.INSTANCE.sendGlowPacket(player, receiver.getPlayer()));
   }
 
   public static void removeGlow(
@@ -97,7 +97,7 @@ public final class PlayerUtils {
     GLOW_TEAMS.remove(player);
 
     receivers.forEach(receiver ->
-        PacketToolsProvider.NMS_UTILS.sendRemoveGlowPacket(player, receiver.getPlayer()));
+        PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(player, receiver.getPlayer()));
   }
 
   public static void addFakeWorldBorderEffect(final GamePlayer gamePlayer) {

@@ -22,7 +22,7 @@ public final class RandomTrap extends SurvivorGadget {
   public RandomTrap() {
     super(
         "random",
-        Material.END_PORTAL,
+        Material.END_PORTAL_FRAME,
         Locale.RANDOM_TRAP_NAME.build(),
         Locale.RANDOM_TRAP_LORE.build());
   }

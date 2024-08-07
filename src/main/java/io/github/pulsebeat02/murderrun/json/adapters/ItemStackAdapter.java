@@ -16,14 +16,14 @@ public final class ItemStackAdapter
       throws JsonParseException {
     final String data = json.getAsString();
     final byte[] bytes = Base64Coder.decode(data);
-    return PacketToolsProvider.NMS_UTILS.fromByteArray(bytes);
+    return PacketToolsProvider.INSTANCE.fromByteArray(bytes);
   }
 
   @Override
   public JsonElement serialize(
       final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
     final Gson gson = GsonProvider.getGson();
-    final byte[] bytes = PacketToolsProvider.NMS_UTILS.toByteArray(src);
+    final byte[] bytes = PacketToolsProvider.INSTANCE.toByteArray(src);
     final char[] base64 = Base64Coder.encode(bytes);
     final String data = new String(base64);
     return gson.toJsonTree(data);

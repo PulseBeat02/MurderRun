@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
@@ -58,13 +57,8 @@ public final class GadgetLoadingMechanism {
       final MurderRun plugin, final Constructor<?> constructor) {
     try {
       final Class<?>[] arguments = constructor.getParameterTypes();
-      final Gadget gadget;
-      if (arguments.length == 1 && arguments[0].equals(Game.class)) {
-        gadget = (Gadget) constructor.newInstance(plugin);
-      } else {
-        gadget = (Gadget) constructor.newInstance();
-      }
-      return gadget;
+      final boolean hasPlugin = arguments.length == 1;
+      return (Gadget) (hasPlugin ? constructor.newInstance(plugin) : constructor.newInstance());
     } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
       throw new AssertionError(e);
     }

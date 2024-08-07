@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 
 public final class PacketToolsProvider {
 
-  public static final NMSUtils NMS_UTILS;
+  public static final PacketToolAPI INSTANCE;
   private static final String VERSION;
 
   static {
@@ -13,23 +13,13 @@ public final class PacketToolsProvider {
     final String complete = String.format("v%s", mcVer);
     VERSION = complete.replace(".", "_");
     try {
-      NMS_UTILS = getNMSUtils();
+      final String path =
+          "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools".formatted(VERSION);
+      final Class<?> clazz = Class.forName(path);
+      INSTANCE = (PacketToolAPI) clazz.getDeclaredConstructor().newInstance();
     } catch (final Exception e) {
       throw new AssertionError(e);
     }
-  }
-
-  public static NMSUtils getNmsUtils() {
-    return NMS_UTILS;
-  }
-
-  private static NMSUtils getNMSUtils() throws Exception {
-    return (NMSUtils) getNMSUtilsClass().getDeclaredConstructor().newInstance();
-  }
-
-  private static Class<?> getNMSUtilsClass() throws ClassNotFoundException {
-    return Class.forName(
-        "io.github.pulsebeat02.murderrun.reflect.%s.NMSUtilsImpl".formatted(VERSION));
   }
 
   public static String getVersion() {

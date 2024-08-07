@@ -17,7 +17,8 @@ public final class Excavator extends SurvivorGadget {
         stack -> {
           final ItemMeta meta = stack.getItemMeta();
           if (meta instanceof final Damageable damageable) {
-            final int max = damageable.getMaxDamage();
+            final Material material = stack.getType();
+            final int max = material.getMaxDurability();
             final int damage = max - 9;
             damageable.setDamage(damage);
           }

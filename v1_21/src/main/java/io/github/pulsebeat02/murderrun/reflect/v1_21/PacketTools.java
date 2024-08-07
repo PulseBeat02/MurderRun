@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.reflect.v1_21;
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
-import io.github.pulsebeat02.murderrun.reflect.NMSUtils;
+import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class NMSUtilsImpl implements NMSUtils {
+public class PacketTools implements PacketToolAPI {
 
   @Override
   public byte[] toByteArray(final ItemStack item) {

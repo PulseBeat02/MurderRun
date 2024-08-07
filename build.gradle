@@ -34,7 +34,7 @@ dependencies {
     compileOnly 'fastutil:fastutil:5.0.9'
     compileOnly 'com.sk89q.worldedit:worldedit-core:7.3.0'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.3.0'
-    compileOnly('net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT') {
+    compileOnly ('net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT') {
         exclude group: '*', module: '*'
     }
 
