@@ -6,6 +6,6 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 public final class ArenaDataConfigurationMapper extends DataConfigurationManager<ArenaManager> {
 
   public ArenaDataConfigurationMapper(final MurderRun run) {
-    super(run, ArenaManager.class, "arenas.json");
+    super(ArenaManager.class, "arenas.json");
   }
 }

@@ -4,7 +4,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,12 +35,12 @@ public final class HauntTrap extends SurvivorTrap {
     final GameScheduler scheduler = game.getScheduler();
     gamePlayer.addPotionEffects(new PotionEffect(PotionEffectType.DARKNESS, 20, 10));
     gamePlayer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);
-    PlayerUtils.addFakeWorldBorderEffect(gamePlayer);
+    gamePlayer.addFakeWorldBorderEffect();
     scheduler.scheduleTask(() -> this.removeSpecialEffects(gamePlayer), 20);
   }
 
   private void removeSpecialEffects(final GamePlayer gamePlayer) {
     gamePlayer.apply(player -> player.removePotionEffect(PotionEffectType.DARKNESS));
-    PlayerUtils.removeFakeWorldBorderEffect(gamePlayer);
+    gamePlayer.removeFakeWorldBorderEffect();
   }
 }

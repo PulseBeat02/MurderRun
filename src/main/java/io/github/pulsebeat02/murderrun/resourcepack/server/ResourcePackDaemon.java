@@ -34,7 +34,7 @@ public final class ResourcePackDaemon {
     final Path path = this.constructResourcepack();
     try (final InputStream stream = Files.newInputStream(path);
         final InputStream fast = new FastBufferedInputStream(stream)) {
-      this.url = String.format(HOST_URL, this.hostName, this.port);
+      this.url = HOST_URL.formatted(this.hostName, this.port);
       this.hash = ResourceUtils.generateFileHash(path);
       final Writable writable = Writable.copyInputStream(fast);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);

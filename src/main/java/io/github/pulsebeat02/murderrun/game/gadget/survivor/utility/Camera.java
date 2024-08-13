@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -71,13 +70,13 @@ public final class Camera extends SurvivorGadget {
       final Killer killer, final Entity entity, final Collection<Survivor> survivors) {
     final Collection<GamePlayer> higher =
         survivors.stream().map(player -> (GamePlayer) player).toList();
-    if (PlayerUtils.canEntitySeePlayer(entity, killer, 64d)) {
+    if (killer.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(killer);
-      PlayerUtils.setGlowColor(killer, ChatColor.RED, higher);
+      killer.setGlowColor(ChatColor.RED, higher);
       this.setLookDirection(killer, entity);
     } else if (this.glowPlayers.contains(killer)) {
       this.glowPlayers.remove(killer);
-      PlayerUtils.removeGlow(killer, higher);
+      killer.removeGlow(higher);
     }
   }
 

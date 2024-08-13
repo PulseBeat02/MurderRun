@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.reflect;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +17,7 @@ public final class FallbackPacketTools implements PacketToolAPI {
         final BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
       dataOutput.writeObject(item);
       return outputStream.toByteArray();
-    } catch (final Exception e) {
+    } catch (final IOException e) {
       throw new AssertionError(e);
     }
   }
@@ -26,7 +27,7 @@ public final class FallbackPacketTools implements PacketToolAPI {
     try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         final BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
       return (ItemStack) dataInput.readObject();
-    } catch (final Exception e) {
+    } catch (final IOException | ClassNotFoundException e) {
       throw new AssertionError(e);
     }
   }

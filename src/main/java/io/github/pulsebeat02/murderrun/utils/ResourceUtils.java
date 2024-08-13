@@ -6,11 +6,13 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import org.bukkit.plugin.Plugin;
 
 public final class ResourceUtils {
 
@@ -36,7 +38,7 @@ public final class ResourceUtils {
     }
   }
 
-  public static void createFile(final Path path) {
+  public static Path createFile(final Path path) {
     final Path parent = requireNonNull(path.getParent());
     try {
       Files.createDirectories(parent);
@@ -46,5 +48,14 @@ public final class ResourceUtils {
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
+    return path;
+  }
+
+  public static Path getPluginDataFolderPath() {
+    final Plugin plugin =
+        CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider.retrievePluginInstance();
+    final File file = plugin.getDataFolder();
+    final Path path = file.toPath();
+    return path.toAbsolutePath();
   }
 }

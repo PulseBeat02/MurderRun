@@ -6,7 +6,6 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,7 +40,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
       return;
     }
 
-    final Optional<GamePlayer> optional = PlayerUtils.checkIfValidEventPlayer(this.game, player);
+    final Optional<GamePlayer> optional = this.game.checkIfValidEventPlayer(player);
     if (optional.isEmpty()) {
       return;
     }

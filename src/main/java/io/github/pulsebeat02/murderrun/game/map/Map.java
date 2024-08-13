@@ -11,6 +11,7 @@ public final class Map {
   private final GameEventManager eventManager;
   private final MapResetTool resetManager;
   private final TruckManager truckManager;
+  private final MapSchematicIO mapSchematicIO;
 
   public Map(final Game game) {
     this.game = game;
@@ -18,6 +19,7 @@ public final class Map {
     this.eventManager = new GameEventManager(this);
     this.resetManager = new MapResetTool(this);
     this.truckManager = new TruckManager(this);
+    this.mapSchematicIO = new MapSchematicIO(this);
     this.eventManager.registerEvents();
     this.partsManager.spawnParts();
     this.truckManager.spawnParticles();
@@ -42,6 +44,10 @@ public final class Map {
 
   private void resetWorld() {
     this.resetManager.resetMap();
+  }
+
+  public MapSchematicIO getMapSchematicIO() {
+    return this.mapSchematicIO;
   }
 
   public Game getGame() {

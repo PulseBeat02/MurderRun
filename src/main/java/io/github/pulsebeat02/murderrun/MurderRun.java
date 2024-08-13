@@ -27,6 +27,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Create all killer gadgets
   - Revamp Code in Game Package for Readability Purposes
+  - Create "Holder" classes for commands
 
    */
 
@@ -100,6 +101,9 @@ public final class MurderRun extends JavaPlugin {
     this.arenaDataConfigurationMapper.serialize(this.arenaManager);
     this.lobbyDataConfigurationMapper.serialize(this.lobbyManager);
     this.configuration.serialize();
+    this.arenaDataConfigurationMapper.shutdown();
+    this.lobbyDataConfigurationMapper.shutdown();
+    this.configuration.shutdown();
   }
 
   private void stopHostingDaemon() {

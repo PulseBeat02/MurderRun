@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 
@@ -26,9 +25,9 @@ public final class PlayerResetTool {
     final GameSettings configuration = game.getSettings();
     final Lobby lobby = requireNonNull(configuration.getLobby());
     final Location location = lobby.getLobbySpawn();
+    gamePlayer.removeAllPotionEffects();
+    gamePlayer.removeAllBossBars();
     gamePlayer.apply(player -> {
-      PlayerUtils.removeAllPotionEffects(player);
-      PlayerUtils.removeAllBossBars(player);
       player.getInventory().clear();
       player.setGameMode(GameMode.SURVIVAL);
       player.teleport(location);

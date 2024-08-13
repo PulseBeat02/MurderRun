@@ -6,6 +6,6 @@ import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 public final class LobbyDataConfigurationMapper extends DataConfigurationManager<LobbyManager> {
 
   public LobbyDataConfigurationMapper(final MurderRun run) {
-    super(run, LobbyManager.class, "lobbies.json");
+    super(LobbyManager.class, "lobbies.json");
   }
 }

@@ -29,7 +29,7 @@ public final class ResourcePackTexture {
 
   private Writable getTextureStream(
       @UnderInitialization ResourcePackTexture this, final String namespace) {
-    final String path = String.format(PATH_RESOURCE, namespace);
+    final String path = PATH_RESOURCE.formatted(namespace);
     try (final InputStream stream = ResourceUtils.getResourceAsStream(path)) {
       return Writable.copyInputStream(stream);
     } catch (final IOException e) {

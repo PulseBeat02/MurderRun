@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
 import java.util.UUID;
 import org.bukkit.entity.Player;
@@ -29,7 +28,7 @@ public final class GamePlayerLeaveEvent implements Listener {
 
     final PlayerManager manager = this.game.getPlayerManager();
     final Player player = event.getPlayer();
-    final Optional<GamePlayer> optional = PlayerUtils.checkIfValidEventPlayer(this.game, player);
+    final Optional<GamePlayer> optional = this.game.checkIfValidEventPlayer(player);
     if (optional.isEmpty()) {
       return;
     }

@@ -1,13 +1,10 @@
 package io.github.pulsebeat02.murderrun.utils;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.plugin.Plugin;
 
 public final class Keys {
 
-  private static final Plugin PLUGIN =
-      CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider.retrievePluginInstance();
-  public static final String NAMESPACE = "murder_run";
+  public static final String NAMESPACE = "murderrun";
 
   public static NamespacedKey SPECIAL_SWORD = createNamespacedPluginKey("sword");
   public static NamespacedKey CAR_PART_UUID = createNamespacedPluginKey("car-part-uuid");
@@ -21,6 +18,6 @@ public final class Keys {
   public static NamespacedKey TRANSLOCATOR = createNamespacedPluginKey("translocator");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
-    return new NamespacedKey(PLUGIN, key);
+    return new NamespacedKey(NAMESPACE, key);
   }
 }

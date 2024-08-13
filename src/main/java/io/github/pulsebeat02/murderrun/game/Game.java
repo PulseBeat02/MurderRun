@@ -3,9 +3,11 @@ package io.github.pulsebeat02.murderrun.game;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 import org.bukkit.entity.Player;
 
@@ -88,20 +90,17 @@ public final class Game {
     this.service.shutdown();
   }
 
+  public Optional<GamePlayer> checkIfValidEventPlayer(final Player player) {
+    final PlayerManager manager = this.getPlayerManager();
+    return manager.lookupPlayer(player);
+  }
+
   public PlayerManager getPlayerManager() {
     return this.playerManager;
   }
 
-  public void setPlayerManager(final PlayerManager playerManager) {
-    this.playerManager = playerManager;
-  }
-
   public GameStatus getStatus() {
     return this.status;
-  }
-
-  public void setStatus(final GameStatus status) {
-    this.status = status;
   }
 
   public MurderRun getPlugin() {
@@ -112,24 +111,12 @@ public final class Game {
     return this.map;
   }
 
-  public void setMurderMap(final Map map) {
-    this.map = map;
-  }
-
   public GameStartupTool getPreparationManager() {
     return this.preparationManager;
   }
 
-  public void setPreparationManager(final GameStartupTool preparationManager) {
-    this.preparationManager = preparationManager;
-  }
-
   public GameCleanupTool getEndManager() {
     return this.endManager;
-  }
-
-  public void setEndManager(final GameCleanupTool endManager) {
-    this.endManager = endManager;
   }
 
   public UUID getGameID() {

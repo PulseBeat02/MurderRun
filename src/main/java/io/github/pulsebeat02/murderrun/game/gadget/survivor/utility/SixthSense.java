@@ -10,7 +10,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.*;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -62,10 +61,10 @@ public final class SixthSense extends SurvivorGadget {
     final double distance = location.distanceSquared(other);
     if (distance <= 64) {
       visible.add(killer);
-      PlayerUtils.setGlowColor(killer, ChatColor.RED, higher);
+      killer.setGlowColor(ChatColor.RED, higher);
     } else if (visible.contains(killer)) {
       visible.remove(killer);
-      PlayerUtils.removeGlow(killer, higher);
+      killer.removeGlow(higher);
     }
   }
 }

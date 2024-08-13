@@ -11,7 +11,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.sound.Sound;
 
-public class ResourcePackSound {
+public final class ResourcePackSound {
 
   private static final String PATH_RESOURCE = "assets/textures/%s";
 
@@ -25,7 +25,7 @@ public class ResourcePackSound {
 
   private Writable getSoundStream(
       @UnderInitialization ResourcePackSound this, final String namespace) {
-    final String path = String.format(PATH_RESOURCE, namespace);
+    final String path = PATH_RESOURCE.formatted(namespace);
     try (final InputStream stream = ResourceUtils.getResourceAsStream(path)) {
       return Writable.copyInputStream(stream);
     } catch (final IOException e) {

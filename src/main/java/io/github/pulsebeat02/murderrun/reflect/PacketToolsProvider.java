@@ -16,11 +16,11 @@ public final class PacketToolsProvider {
     final Server server = Bukkit.getServer();
     final String bukkitVersion = server.getBukkitVersion();
     final String minecraftVersion = bukkitVersion.split("-")[0];
-    final String packageVersion = String.format("v%s", minecraftVersion);
+    final String packageVersion = "v%s".formatted(minecraftVersion);
     final String version = packageVersion.replace(".", "_");
     PacketToolAPI api;
     try {
-      final String path = String.format(CLASS_PATH, version);
+      final String path = CLASS_PATH.formatted(version);
       final Class<?> clazz = Class.forName(path);
       final MethodHandles.Lookup lookup = MethodHandles.lookup();
       final MethodType type = MethodType.methodType(Void.TYPE);

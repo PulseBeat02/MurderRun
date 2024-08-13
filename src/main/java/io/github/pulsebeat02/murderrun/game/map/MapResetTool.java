@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,7 +26,6 @@ public final class MapResetTool {
   }
 
   private void killExistingEntities() {
-
     final Game game = this.map.getGame();
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
@@ -45,7 +43,8 @@ public final class MapResetTool {
   }
 
   private void resetMapBlocksEntities() {
-    MapUtils.resetMap(this.map);
+    final MapSchematicIO io = this.map.getMapSchematicIO();
+    io.resetMap();
   }
 
   public Map getMap() {

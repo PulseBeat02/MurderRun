@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
@@ -47,9 +48,8 @@ public final class AnnotationParserHandler {
   }
 
   private ExecutionCoordinator<CommandSender> constructCoordinator() {
-    return ExecutionCoordinator.<CommandSender>builder()
-        .executor(Executors.newVirtualThreadPerTaskExecutor())
-        .build();
+    final ExecutorService virtual = Executors.newVirtualThreadPerTaskExecutor();
+    return ExecutionCoordinator.<CommandSender>builder().executor(virtual).build();
   }
 
   public CommandManager<CommandSender> getManager() {

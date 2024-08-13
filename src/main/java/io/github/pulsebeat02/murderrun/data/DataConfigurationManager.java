@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.data;
 import static java.util.Objects.requireNonNull;
 
 import com.google.gson.Gson;
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
@@ -12,49 +11,73 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class DataConfigurationManager<T> {
 
+  private static final byte[] EMPTY_JSON_BYTES = "{}".getBytes();
+
+  private final ExecutorService service;
   private final Class<T> clazz;
   private final Path json;
+  private final Lock readLock;
+  private final Lock writeLock;
 
-  public DataConfigurationManager(final MurderRun plugin, final Class<T> clazz, final String name) {
+  public DataConfigurationManager(final Class<T> clazz, final String name) {
+    final Path parent = ResourceUtils.getPluginDataFolderPath();
+    final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    this.service = Executors.newVirtualThreadPerTaskExecutor();
     this.clazz = clazz;
-    this.json = plugin.getDataFolder().toPath().resolve(name);
+    this.json = parent.resolve(name);
+    this.readLock = lock.readLock();
+    this.writeLock = lock.writeLock();
   }
 
-  public void serialize(final T manager) {
+  public synchronized void serialize(final T manager) {
     requireNonNull(manager);
-    CompletableFuture.runAsync(() -> this.writeJson(manager));
+    CompletableFuture.runAsync(() -> this.writeJson(manager), this.service);
+  }
+
+  public synchronized void shutdown() {
+    this.service.shutdown();
   }
 
   private void writeJson(final T manager) {
     requireNonNull(manager); // checker framework
+    this.writeLock.lock();
     try (final Writer writer = Files.newBufferedWriter(this.json)) {
       this.createFolders();
       final Gson gson = GsonProvider.getGson();
       gson.toJson(manager, writer);
     } catch (final IOException e) {
       throw new AssertionError(e);
+    } finally {
+      this.writeLock.unlock();
     }
   }
 
   private void createFolders() {
     try {
       ResourceUtils.createFile(this.json);
-      Files.write(this.json, "{}".getBytes());
+      Files.write(this.json, EMPTY_JSON_BYTES);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
   }
 
-  public T deserialize() {
+  public synchronized T deserialize() {
+    this.readLock.lock();
     this.createFolders();
     try (final Reader reader = Files.newBufferedReader(this.json)) {
       final Gson gson = GsonProvider.getGson();
       return gson.fromJson(reader, this.clazz);
     } catch (final IOException e) {
       throw new AssertionError(e);
+    } finally {
+      this.readLock.unlock();
     }
   }
 }

@@ -123,7 +123,7 @@ public final class GameStartupTool {
     return this.game;
   }
 
-  public class Countdown extends BukkitRunnable {
+  public final class Countdown extends BukkitRunnable {
 
     private final AtomicInteger secondsLeft;
 

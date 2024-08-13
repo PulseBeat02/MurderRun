@@ -5,7 +5,7 @@ import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-public class CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider {
+public final class CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider {
 
   private static final String PLUGIN_NAME = "MurderRun";
   private static final Plugin PLUGIN_INSTANCE;

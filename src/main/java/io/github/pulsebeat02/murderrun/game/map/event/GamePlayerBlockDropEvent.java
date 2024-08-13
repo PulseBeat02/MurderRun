@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Optional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +25,7 @@ public final class GamePlayerBlockDropEvent implements Listener {
   private void onBlockDropEvent(final BlockDropItemEvent event) {
 
     final Player player = event.getPlayer();
-    final Optional<GamePlayer> optional = PlayerUtils.checkIfValidEventPlayer(this.game, player);
+    final Optional<GamePlayer> optional = this.game.checkIfValidEventPlayer(player);
     if (optional.isEmpty()) {
       return;
     }

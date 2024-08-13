@@ -23,7 +23,7 @@ public enum SoundKeys {
   SoundKeys(final String id) {
     this.sound = this.loadSound(id);
     this.id = id;
-    this.namespace = String.format(PATH_RESOURCE, id);
+    this.namespace = PATH_RESOURCE.formatted(id);
   }
 
   private Sound loadSound(@UnderInitialization SoundKeys this, final String name) {

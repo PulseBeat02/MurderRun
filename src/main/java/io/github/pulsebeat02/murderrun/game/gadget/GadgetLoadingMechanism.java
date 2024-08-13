@@ -23,7 +23,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GadgetLoadingMechanism {
 
-  private static final String GADGETS_PACKAGE = "io.github.pulsebeat02.murderrun.gadget";
   private static final Map<String, Constructor<?>> GADGET_LOOK_UP_MAP = new HashMap<>();
 
   public static void init() {
@@ -51,8 +50,8 @@ public final class GadgetLoadingMechanism {
   private static Constructor<?> getConstructor(final Class<?> clazz) {
     final Constructor<?>[] constructors = clazz.getConstructors();
     if (constructors.length == 0) {
-      throw new AssertionError(
-          String.format("Couldn't find constructor of gadget class %s", clazz));
+      final String message = "Couldn't find constructor of gadget class %s".formatted(clazz);
+      throw new AssertionError(message);
     }
     return constructors[0];
   }

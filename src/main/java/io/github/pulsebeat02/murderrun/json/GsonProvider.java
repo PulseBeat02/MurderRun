@@ -21,6 +21,7 @@ public final class GsonProvider {
     builder.registerTypeAdapter(ItemStack.class, new ItemStackAdapter());
     builder.registerTypeHierarchyAdapter(BlockVector3.class, new BlockVectorAdapter());
     builder.registerTypeHierarchyAdapter(Path.class, new PathAdapter());
+    builder.serializeNulls();
     GSON = builder.create();
   }
 

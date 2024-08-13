@@ -11,7 +11,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class ArgumentTag implements TagResolver {
+public final class ArgumentTag implements TagResolver {
 
   private static final String NAME = "arg";
 
