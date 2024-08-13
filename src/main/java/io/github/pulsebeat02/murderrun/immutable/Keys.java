@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.utils;
+package io.github.pulsebeat02.murderrun.immutable;
 
 import org.bukkit.NamespacedKey;
 

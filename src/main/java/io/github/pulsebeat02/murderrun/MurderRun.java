@@ -24,7 +24,6 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Create all killer gadgets
-  - Switch to gradle kotlin dsl?
 
    */
 

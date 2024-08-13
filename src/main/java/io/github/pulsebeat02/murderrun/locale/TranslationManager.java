@@ -3,8 +3,8 @@ package io.github.pulsebeat02.murderrun.locale;
 import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.text.Component.empty;
 
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.minimessage.PluginTranslator;
-import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;

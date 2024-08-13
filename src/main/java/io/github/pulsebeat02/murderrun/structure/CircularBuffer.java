@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.utils;
+package io.github.pulsebeat02.murderrun.structure;
 
 import java.util.Iterator;
 import java.util.LinkedList;

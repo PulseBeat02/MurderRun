@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.utils.CircularBuffer;
+import io.github.pulsebeat02.murderrun.structure.CircularBuffer;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.WeakHashMap;

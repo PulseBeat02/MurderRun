@@ -2,10 +2,10 @@ package io.github.pulsebeat02.murderrun.game.map.part;
 
 import static java.util.Objects.requireNonNull;
 
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
-import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.List;
 import java.util.UUID;

@@ -24,6 +24,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
   private BukkitAudiences audiences;
+
   private String name;
   private Location spawn;
   private Location truck;

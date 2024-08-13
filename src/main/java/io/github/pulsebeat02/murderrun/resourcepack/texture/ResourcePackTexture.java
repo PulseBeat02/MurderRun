@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.texture;
 
 import static net.kyori.adventure.key.Key.key;
 
-import io.github.pulsebeat02.murderrun.utils.Keys;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
