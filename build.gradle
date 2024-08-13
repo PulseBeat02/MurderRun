@@ -32,7 +32,7 @@ dependencies {
 
     compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT'
     compileOnly 'fastutil:fastutil:5.0.9'
-    compileOnly 'com.sk89q.worldedit:worldedit-core:7.3.0'
+    compileOnly 'com.sk89q.worldedit:worldedit-core:7.3.6'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.3.0'
     compileOnly ('net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT') {
         exclude group: '*', module: '*'
