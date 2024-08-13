@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
+import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.Reader;
@@ -44,7 +45,7 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
 
   @Override
   public synchronized void shutdown() {
-    this.service.shutdown();
+    ExecutorUtils.shutdownExecutorGracefully(this.service);
   }
 
   private void writeJson(final T manager) {

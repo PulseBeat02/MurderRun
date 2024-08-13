@@ -4,11 +4,11 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.texture.Texture;
 
 public enum ItemTextureKeys {
-  CAR_PART_1("car_part_1.png", 1),
-  CAR_PART_2("car_part_2.png", 2),
-  CAR_PART_3("car_part_3.png", 3),
-  CAR_PART_4("car_part_4.png", 4),
-  CAR_PART_5("car_part_5.png", 5);
+  CAR_PART_1("car_part_1", 1),
+  CAR_PART_2("car_part_2", 2),
+  CAR_PART_3("car_part_3", 3),
+  CAR_PART_4("car_part_4", 4),
+  CAR_PART_5("car_part_5", 5);
 
   private final Texture texture;
   private final int customModelDataId;

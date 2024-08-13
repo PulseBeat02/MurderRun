@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.data;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,7 +35,7 @@ public final class PluginDataConfigurationMapper {
   }
 
   public synchronized void shutdown() {
-    this.service.shutdown();
+    ExecutorUtils.shutdownExecutorGracefully(this.service);
   }
 
   public MurderRun getPlugin() {

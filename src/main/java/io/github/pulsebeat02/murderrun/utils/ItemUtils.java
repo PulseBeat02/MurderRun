@@ -43,17 +43,18 @@ public final class ItemUtils {
         != null;
   }
 
-  public static <P, C> void setPersistentDataAttribute(
+  public static <P, C> boolean setPersistentDataAttribute(
       final ItemStack stack,
       final NamespacedKey key,
       final PersistentDataType<P, C> type,
       final C value) {
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null || value == null) {
-      return;
+      return false;
     }
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     container.set(key, type, value);
+    return true;
   }
 
   public static <P, C> @Nullable C getPersistentDataAttribute(

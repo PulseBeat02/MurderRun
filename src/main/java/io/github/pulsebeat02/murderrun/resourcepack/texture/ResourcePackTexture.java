@@ -13,7 +13,7 @@ import team.unnamed.creative.texture.Texture;
 
 public final class ResourcePackTexture {
 
-  private static final String PATH_RESOURCE = "assets/textures/%s";
+  private static final String PATH_RESOURCE = "assets/textures/%s.png";
 
   private final Key key;
   private final Writable data;

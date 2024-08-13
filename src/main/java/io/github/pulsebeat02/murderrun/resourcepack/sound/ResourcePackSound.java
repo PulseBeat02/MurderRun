@@ -13,7 +13,7 @@ import team.unnamed.creative.sound.Sound;
 
 public final class ResourcePackSound {
 
-  private static final String PATH_RESOURCE = "assets/textures/%s";
+  private static final String PATH_RESOURCE = "assets/sounds/%s.ogg";
 
   private final Key key;
   private final Writable data;
