@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
@@ -33,22 +33,22 @@ public final class CarPart {
 
   private ItemStack createItemStack(@UnderInitialization CarPart this) {
     final ItemStack stack = new ItemStack(Material.DIAMOND);
-    final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    this.customize(meta);
-    stack.setItemMeta(meta);
+    this.customize(stack);
     return stack;
   }
 
-  private void customize(@UnderInitialization CarPart this, final ItemMeta meta) {
-    this.tagData(meta);
+  private void customize(@UnderInitialization CarPart this, final ItemStack stack) {
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
+    this.tagData(stack);
     this.setLore(meta);
     this.changeProperties(meta);
+    stack.setItemMeta(meta);
   }
 
-  private void tagData(@UnderInitialization CarPart this, final ItemMeta meta) {
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
+  private void tagData(@UnderInitialization CarPart this, final ItemStack stack) {
     if (this.uuid != null) {
-      container.set(Keys.CAR_PART_UUID, PersistentDataType.STRING, this.uuid);
+      ItemUtils.setPersistentDataAttribute(
+          stack, Keys.CAR_PART_UUID, PersistentDataType.STRING, this.uuid);
     }
   }
 

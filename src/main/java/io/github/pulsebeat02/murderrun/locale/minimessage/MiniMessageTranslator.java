@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.locale.minimessage;
 
+import static java.util.Objects.requireNonNull;
+
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
@@ -34,11 +36,7 @@ public abstract class MiniMessageTranslator implements Translator {
       final TranslatableComponent component, final @NonNull Locale locale) {
 
     final String key = component.key();
-    final String miniMessageString = this.getMiniMessageString(key, locale);
-    if (miniMessageString == null) {
-      return null;
-    }
-
+    final String miniMessageString = requireNonNull(this.getMiniMessageString(key, locale));
     final List<? extends ComponentLike> args = component.arguments();
     final boolean empty = args.isEmpty();
     final MiniMessage parser = MiniMessage.miniMessage();

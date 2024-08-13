@@ -4,17 +4,15 @@ import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameExecutors;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -142,10 +140,9 @@ public final class PlayerDeathTool {
 
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
-    final GameExecutors provider = this.game.getExecutorProvider();
-    final ScheduledExecutorService scheduled = provider.getScheduledExecutor();
-    scheduled.scheduleAtFixedRate(
-        () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 1, TimeUnit.SECONDS);
+    final GameScheduler scheduler = this.game.getScheduler();
+    scheduler.scheduleRepeatedTask(
+        () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 20);
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {

@@ -7,14 +7,18 @@ import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 public final class Map {
 
   private final Game game;
-  private final PartsManager partsManager;
-  private final GameEventManager eventManager;
-  private final MapResetTool resetManager;
-  private final TruckManager truckManager;
-  private final MapSchematicIO mapSchematicIO;
+
+  private PartsManager partsManager;
+  private GameEventManager eventManager;
+  private MapResetTool resetManager;
+  private TruckManager truckManager;
+  private MapSchematicIO mapSchematicIO;
 
   public Map(final Game game) {
     this.game = game;
+  }
+
+  public void start() {
     this.partsManager = new PartsManager(this);
     this.eventManager = new GameEventManager(this);
     this.resetManager = new MapResetTool(this);

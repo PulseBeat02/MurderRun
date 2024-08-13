@@ -1,7 +1,10 @@
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun.game.stage;
 
 import static net.kyori.adventure.text.Component.empty;
 
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameResult;
+import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;

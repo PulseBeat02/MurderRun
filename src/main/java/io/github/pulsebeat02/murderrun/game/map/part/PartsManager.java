@@ -3,22 +3,19 @@ package io.github.pulsebeat02.murderrun.game.map.part;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameExecutors;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.awt.Color;
 import java.util.HashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -57,15 +54,13 @@ public final class PartsManager {
 
   private void spawnParticles() {
     final Game game = this.map.getGame();
-    final GameExecutors provider = game.getExecutorProvider();
-    final ScheduledExecutorService scheduled = provider.getScheduledExecutor();
-    scheduled.scheduleAtFixedRate(
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(
         () -> this.parts.values().stream()
             .filter(part -> !part.isPickedUp())
             .forEach(this::spawnParticleOnPart),
         0,
-        1,
-        TimeUnit.SECONDS);
+        20);
   }
 
   private void spawnParticleOnPart(final CarPart stack) {
@@ -89,9 +84,8 @@ public final class PartsManager {
   }
 
   public @Nullable CarPart getCarPartItemStack(final ItemStack stack) {
-    final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final String uuid = container.get(Keys.CAR_PART_UUID, PersistentDataType.STRING);
+    final String uuid =
+        ItemUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
     return uuid == null ? null : this.parts.get(uuid);
   }
 }

@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
-import io.github.pulsebeat02.murderrun.utils.CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.Keys;
 import java.lang.reflect.Constructor;
@@ -18,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -26,8 +26,7 @@ public final class GadgetLoadingMechanism {
   private static final Map<String, Constructor<?>> GADGET_LOOK_UP_MAP = new HashMap<>();
 
   public static void init() {
-    final Plugin plugin =
-        CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider.retrievePluginInstance();
+    final Plugin plugin = JavaPlugin.getProvidingPlugin(MurderRun.class);
     final SurvivorGadgets[] survivorGadgets = SurvivorGadgets.values();
     final KillerGadgets[] killerGadgets = KillerGadgets.values();
     for (final SurvivorGadgets gadget : survivorGadgets) {

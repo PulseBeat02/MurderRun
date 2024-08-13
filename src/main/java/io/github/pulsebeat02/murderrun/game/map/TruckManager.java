@@ -3,11 +3,9 @@ package io.github.pulsebeat02.murderrun.game.map;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameExecutors;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -22,9 +20,8 @@ public final class TruckManager {
 
   public void spawnParticles() {
     final Game game = this.map.getGame();
-    final GameExecutors provider = game.getExecutorProvider();
-    final ScheduledExecutorService scheduled = provider.getScheduledExecutor();
-    scheduled.scheduleAtFixedRate(this::spawnParticleOnTruck, 0, 500, TimeUnit.MILLISECONDS);
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(this::spawnParticleOnTruck, 0, 20);
   }
 
   private void spawnParticleOnTruck() {

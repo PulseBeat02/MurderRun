@@ -1,15 +1,22 @@
 package io.github.pulsebeat02.murderrun.resourcepack.server;
 
+import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.ServerResourcepack;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import net.kyori.adventure.resource.ResourcePackInfo;
+import net.kyori.adventure.resource.ResourcePackRequest;
+import net.kyori.adventure.text.Component;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.server.ResourcePackServer;
@@ -45,6 +52,22 @@ public final class ResourcePackDaemon {
           .executor(service)
           .build();
     } catch (final IOException | NoSuchAlgorithmException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  public ResourcePackRequest createResourcePackRequest() {
+    try {
+      final URI uri = new URI(this.url);
+      final UUID id = UUID.randomUUID();
+      final Component message = Locale.RESOURCEPACK_PROMPT.build();
+      final ResourcePackInfo info = ResourcePackInfo.resourcePackInfo(id, uri, this.hash);
+      return ResourcePackRequest.resourcePackRequest()
+          .packs(info)
+          .required(true)
+          .prompt(message)
+          .asResourcePackRequest();
+    } catch (final URISyntaxException e) {
       throw new AssertionError(e);
     }
   }

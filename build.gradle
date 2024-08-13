@@ -11,7 +11,7 @@ plugins {
 apply plugin: 'org.checkerframework'
 
 group = 'io.github.pulsebeat02'
-version = '1.21-v1.0.0'
+version = '1.21.1-v1.0.0'
 description = 'MurderRun'
 
 repositories {
@@ -30,7 +30,7 @@ dependencies {
 
     annotationProcessor 'org.incendo:cloud-annotations:2.0.0-rc.2'
 
-    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT'
     compileOnly 'fastutil:fastutil:5.0.9'
     compileOnly 'com.sk89q.worldedit:worldedit-core:7.3.0'
     compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.3.0'
@@ -91,7 +91,7 @@ runServer {
         url 'https://cdn.modrinth.com/data/1u6JkXh5/versions/Jo76t1oi/worldedit-bukkit-7.3.5.jar'
         url 'https://ci.citizensnpcs.co/job/Citizens2/lastStableBuild/artifact/dist/target/Citizens-2.0.35-b3489.jar'
     }
-    minecraftVersion('1.21')
+    minecraftVersion('1.21.1')
 }
 
 tasks.withType(AbstractRun).configureEach {

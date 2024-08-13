@@ -41,13 +41,16 @@ public final class AnnotationParserHandler {
     return manager;
   }
 
-  private void registerBrigadierCapability(final LegacyPaperCommandManager<CommandSender> manager) {
+  private void registerBrigadierCapability(
+      @UnderInitialization AnnotationParserHandler this,
+      final LegacyPaperCommandManager<CommandSender> manager) {
     if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
       manager.registerBrigadier();
     }
   }
 
-  private ExecutionCoordinator<CommandSender> constructCoordinator() {
+  private ExecutionCoordinator<CommandSender> constructCoordinator(
+      @UnderInitialization AnnotationParserHandler this) {
     final ExecutorService virtual = Executors.newVirtualThreadPerTaskExecutor();
     return ExecutionCoordinator.<CommandSender>builder().executor(virtual).build();
   }

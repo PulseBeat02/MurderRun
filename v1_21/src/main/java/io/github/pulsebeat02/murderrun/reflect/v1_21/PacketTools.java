@@ -27,7 +27,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-@SuppressWarnings("deprecation")
 public class PacketTools implements PacketToolAPI {
 
   private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";

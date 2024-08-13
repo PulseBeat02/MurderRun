@@ -43,7 +43,7 @@ public final class MapSchematicIO {
       final BlockVector3 vector3 = schematic.getOrigin();
       final Clipboard clipboard = this.loadSchematic(schematic);
       final Region region = clipboard.getRegion();
-      final com.sk89q.worldedit.world.World world = region.getWorld();
+      final com.sk89q.worldedit.world.World world = requireNonNull(region.getWorld());
       final WorldEdit instance = WorldEdit.getInstance();
       this.performResetPaste(instance, world, clipboard, vector3);
     } catch (final WorldEditException | IOException e) {

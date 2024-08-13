@@ -13,11 +13,12 @@ public final class PacketToolsProvider {
   public static final PacketToolAPI INSTANCE;
 
   static {
-    final Server server = Bukkit.getServer();
-    final String bukkitVersion = server.getBukkitVersion();
-    final String minecraftVersion = bukkitVersion.split("-")[0];
-    final String packageVersion = "v%s".formatted(minecraftVersion);
-    final String version = packageVersion.replace(".", "_");
+    final Server server =
+        Bukkit.getServer(); // only supporting latest version for each major release
+    final String bukkitVersion = server.getBukkitVersion(); // 1.21-R0.1-SNAPSHOT
+    final String minecraftVersion = bukkitVersion.split("-")[0]; // 1.21
+    final String packageVersion = "v%s".formatted(minecraftVersion); // v1.21
+    final String version = packageVersion.replace(".", "_"); // v1_21
     PacketToolAPI api;
     try {
       final String path = CLASS_PATH.formatted(version);
@@ -28,7 +29,7 @@ public final class PacketToolsProvider {
       api = (PacketToolAPI) handle.invoke();
     } catch (final Throwable e) {
       api = new FallbackPacketTools();
-      throw new IllegalStateException(
+      throw new UnsupportedOperationException(
           "The current server version isn't supported by this plugin! Resorting to fallback adapter",
           e);
     }

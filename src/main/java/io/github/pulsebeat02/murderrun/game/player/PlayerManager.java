@@ -125,11 +125,7 @@ public final class PlayerManager {
     return this.lookupMap.values();
   }
 
-  public void shutdown() {
-    this.resetAllPlayers();
-  }
-
-  private void resetAllPlayers() {
+  public void resetAllPlayers() {
     final PlayerResetTool manager = new PlayerResetTool(this);
     manager.configure();
   }

@@ -10,8 +10,13 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public enum LobbyTrade {
   ;
 
-  private static final Map<String, LobbyTrade> LOOKUP_TABLE = Stream.of(LobbyTrade.values())
-      .collect(Collectors.toMap(Enum::name, UnaryOperator.identity()));
+  private static final Map<String, LobbyTrade> LOOKUP_TABLE;
+
+  static {
+    final LobbyTrade[] trades = LobbyTrade.values();
+    LOOKUP_TABLE =
+        Stream.of(trades).collect(Collectors.toMap(Enum::name, UnaryOperator.identity()));
+  }
 
   private final ItemStack cost;
   private final ItemStack stack;

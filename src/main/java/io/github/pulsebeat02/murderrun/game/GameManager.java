@@ -5,29 +5,25 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
-import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.server.ResourcePackDaemon;
+import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.Keys;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class GameManager {
@@ -52,23 +48,32 @@ public final class GameManager {
   }
 
   private void giveSpecialSword(final Player player) {
-
     final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
+    this.setPDCTags(stack);
+
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
-    final AttributeModifier modifier = new AttributeModifier(
-        attribute.getKey(), 8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ANY);
+    this.setAttributeModifiers(meta);
     meta.setCustomModelData(1);
-    meta.addAttributeModifier(attribute, modifier);
-
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
-    container.set(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true);
-    container.set(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true);
-
     stack.setItemMeta(meta);
 
     final PlayerInventory inventory = player.getInventory();
     inventory.addItem(stack);
+  }
+
+  private void setPDCTags(final ItemStack stack) {
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true);
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true);
+  }
+
+  private void setAttributeModifiers(final ItemMeta meta) {
+    final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
+    final NamespacedKey key = attribute.getKey();
+    final AttributeModifier.Operation operation = Operation.ADD_NUMBER;
+    final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
+    final AttributeModifier modifier = new AttributeModifier(key, 8, operation, group);
+    meta.addAttributeModifier(attribute, modifier);
   }
 
   public void setPlayerToInnocent(final Player innocent) {
@@ -86,7 +91,7 @@ public final class GameManager {
     this.participants.add(player);
     this.teleportPlayerToLobby(player);
     this.addCurrency(player);
-    this.setResourcepack(player);
+    this.setResourcePack(player);
   }
 
   private void clearInventory(final Player player) {
@@ -111,31 +116,24 @@ public final class GameManager {
     }
   }
 
-  private void setResourcepack(final Player player) {
-    try {
-      final ResourcePackDaemon daemon = this.plugin.getDaemon();
-      final String url = daemon.getUrl();
-      final URI uri = new URI(url);
-      final String hash = daemon.getHash();
-      final UUID id = UUID.randomUUID();
-      final AudienceProvider handler = this.plugin.getAudience();
-      final BukkitAudiences audiences = handler.retrieve();
-      final Audience audience = audiences.player(player);
-      final Component message = Locale.RESOURCEPACK_PROMPT.build();
-      final ResourcePackInfo info = ResourcePackInfo.resourcePackInfo(id, uri, hash);
-      final ResourcePackRequest request = ResourcePackRequest.resourcePackRequest()
-          .packs(info)
-          .required(true)
-          .prompt(message)
-          .asResourcePackRequest();
-      audience.sendResourcePacks(request);
-    } catch (final URISyntaxException e) {
-      throw new AssertionError(e);
-    }
+  private void setResourcePack(final Player player) {
+    final ResourcePackDaemon daemon = this.plugin.getDaemon();
+    final ResourcePackRequest request = daemon.createResourcePackRequest();
+    final AudienceProvider handler = this.plugin.getAudience();
+    final BukkitAudiences audiences = handler.retrieve();
+    final Audience audience = audiences.player(player);
+    audience.sendResourcePacks(request);
   }
 
   public void startGame() {
+    this.setMurdererCount(this.murderers);
     this.game.startGame(this.settings, this.murderers, this.participants);
+  }
+
+  private void setMurdererCount(final Collection<Player> murderers) {
+    final GameSettings settings = this.getSettings();
+    final int count = murderers.size();
+    settings.setMurdererCount(count);
   }
 
   public MurderRun getPlugin() {
