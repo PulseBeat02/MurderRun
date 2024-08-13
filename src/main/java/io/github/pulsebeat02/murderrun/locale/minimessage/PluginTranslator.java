@@ -5,12 +5,12 @@ import java.util.ResourceBundle;
 import net.kyori.adventure.key.Key;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public final class MurderTranslator extends MiniMessageTranslator {
+public final class PluginTranslator extends MiniMessageTranslator {
 
   private final Key key;
   private final ResourceBundle bundle;
 
-  public MurderTranslator(final Key key, final ResourceBundle bundle) {
+  public PluginTranslator(final Key key, final ResourceBundle bundle) {
     this.key = key;
     this.bundle = bundle;
   }

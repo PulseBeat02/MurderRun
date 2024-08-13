@@ -16,7 +16,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-public abstract class Trap extends Gadget {
+public abstract class Trap extends AbstractGadget {
 
   private final Component announcement;
   private final Color color;

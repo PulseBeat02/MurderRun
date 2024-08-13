@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.scheduler;
 import io.github.pulsebeat02.murderrun.game.Game;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public sealed class GameScheduledTask extends BukkitRunnable
+public sealed class GameScheduledTask extends BukkitRunnable implements ScheduledTask
     permits ConditionalTask, TemporaryRepeatedTask {
 
   private final Game game;

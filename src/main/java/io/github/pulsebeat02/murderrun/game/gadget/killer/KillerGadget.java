@@ -1,13 +1,13 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer;
 
-import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
+import io.github.pulsebeat02.murderrun.game.gadget.AbstractGadget;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class KillerGadget extends Gadget {
+public class KillerGadget extends AbstractGadget {
 
   public KillerGadget(
       final String name,

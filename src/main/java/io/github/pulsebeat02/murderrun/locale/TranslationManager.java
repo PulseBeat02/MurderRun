@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.locale;
 import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.text.Component.empty;
 
-import io.github.pulsebeat02.murderrun.locale.minimessage.MurderTranslator;
+import io.github.pulsebeat02.murderrun.locale.minimessage.PluginTranslator;
 import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
@@ -27,11 +27,11 @@ public final class TranslationManager {
   private static final String PROPERTIES_PATH = "locale/murder_run_en.properties";
 
   private final ResourceBundle bundle;
-  private final MurderTranslator translator;
+  private final PluginTranslator translator;
 
   public TranslationManager() {
     this.bundle = this.getBundle();
-    this.translator = new MurderTranslator(ADVENTURE_KEY, this.bundle);
+    this.translator = new PluginTranslator(ADVENTURE_KEY, this.bundle);
   }
 
   private PropertyResourceBundle getBundle(@UnderInitialization TranslationManager this) {

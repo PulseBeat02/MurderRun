@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public abstract class DataConfigurationManager<T> {
+public abstract class AbstractConfigurationManager<T> implements ConfigurationManager<T> {
 
   private static final byte[] EMPTY_JSON_BYTES = "{}".getBytes();
 
@@ -26,7 +26,7 @@ public abstract class DataConfigurationManager<T> {
   private final Lock readLock;
   private final Lock writeLock;
 
-  public DataConfigurationManager(final Class<T> clazz, final String name) {
+  public AbstractConfigurationManager(final Class<T> clazz, final String name) {
     final Path parent = ResourceUtils.getPluginDataFolderPath();
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     this.service = Executors.newVirtualThreadPerTaskExecutor();
@@ -36,11 +36,13 @@ public abstract class DataConfigurationManager<T> {
     this.writeLock = lock.writeLock();
   }
 
+  @Override
   public synchronized void serialize(final T manager) {
     requireNonNull(manager);
     CompletableFuture.runAsync(() -> this.writeJson(manager), this.service);
   }
 
+  @Override
   public synchronized void shutdown() {
     this.service.shutdown();
   }
@@ -68,6 +70,7 @@ public abstract class DataConfigurationManager<T> {
     }
   }
 
+  @Override
   public synchronized T deserialize() {
     this.readLock.lock();
     this.createFolders();
