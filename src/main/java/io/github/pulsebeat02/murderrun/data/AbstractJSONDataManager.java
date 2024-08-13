@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public abstract class AbstractConfigurationManager<T> implements ConfigurationManager<T> {
+public abstract class AbstractJSONDataManager<T> implements ConfigurationManager<T> {
 
   private static final byte[] EMPTY_JSON_BYTES = "{}".getBytes();
 
@@ -26,7 +26,7 @@ public abstract class AbstractConfigurationManager<T> implements ConfigurationMa
   private final Lock readLock;
   private final Lock writeLock;
 
-  public AbstractConfigurationManager(final Class<T> clazz, final String name) {
+  public AbstractJSONDataManager(final Class<T> clazz, final String name) {
     final Path parent = ResourceUtils.getPluginDataFolderPath();
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     this.service = Executors.newVirtualThreadPerTaskExecutor();
