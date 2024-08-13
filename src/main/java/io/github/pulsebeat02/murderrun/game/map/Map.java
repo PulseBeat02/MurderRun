@@ -7,13 +7,20 @@ import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 public final class Map {
 
   private final Game game;
-  private PartsManager partsManager;
-  private GameEventManager eventManager;
-  private MapResetTool resetManager;
-  private TruckManager truckManager;
+  private final PartsManager partsManager;
+  private final GameEventManager eventManager;
+  private final MapResetTool resetManager;
+  private final TruckManager truckManager;
 
   public Map(final Game game) {
     this.game = game;
+    this.partsManager = new PartsManager(this);
+    this.eventManager = new GameEventManager(this);
+    this.resetManager = new MapResetTool(this);
+    this.truckManager = new TruckManager(this);
+    this.eventManager.registerEvents();
+    this.partsManager.spawnParts();
+    this.truckManager.spawnParticles();
   }
 
   public GameEventManager getEventManager() {
@@ -24,41 +31,13 @@ public final class Map {
     return this.resetManager;
   }
 
-  public void start() {
-    this.createManagers();
-    this.registerEvents();
-    this.spawnParts();
-  }
-
-  private void createManagers() {
-    this.partsManager = new PartsManager(this);
-    this.eventManager = new GameEventManager(this);
-    this.resetManager = new MapResetTool(this);
-    this.truckManager = new TruckManager(this);
-  }
-
-  private void registerEvents() {
-    this.eventManager.registerEvents();
-  }
-
-  private void spawnParts() {
-    this.partsManager.spawnParts();
-    this.truckManager.spawnParticles();
-  }
-
   public void shutdown() {
     this.unregisterEvents();
-    this.stopExecutors();
     this.resetWorld();
   }
 
   private void unregisterEvents() {
     this.eventManager.unregisterEvents();
-  }
-
-  private void stopExecutors() {
-    this.partsManager.shutdownExecutor();
-    this.truckManager.shutdownExecutor();
   }
 
   private void resetWorld() {

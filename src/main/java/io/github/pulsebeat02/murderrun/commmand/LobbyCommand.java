@@ -33,6 +33,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
+    this.registerFeature(plugin, parser);
   }
 
   @CommandDescription("murder_run.command.lobby.list.info")
@@ -121,14 +122,6 @@ public final class LobbyCommand implements AnnotationCommandFeature {
 
   public void setPlugin(final MurderRun plugin) {
     this.plugin = plugin;
-  }
-
-  public BukkitAudiences getAudiences() {
-    return this.audiences;
-  }
-
-  public void setAudiences(final BukkitAudiences audiences) {
-    this.audiences = audiences;
   }
 
   public Location getSpawn() {

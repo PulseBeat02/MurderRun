@@ -130,7 +130,7 @@ public final class GameManager {
           .asResourcePackRequest();
       audience.sendResourcePacks(request);
     } catch (final URISyntaxException e) {
-      throw new RuntimeException(e);
+      throw new AssertionError(e);
     }
   }
 

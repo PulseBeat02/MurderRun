@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.structure;
+package io.github.pulsebeat02.murderrun.utils;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,7 +15,8 @@ public final class CircularBuffer<T> implements Iterable<T> {
   }
 
   public void add(final T item) {
-    if (this.buffer.size() == this.maxSize) {
+    final int currentSize = this.buffer.size();
+    if (currentSize == this.maxSize) {
       this.buffer.removeFirst();
     }
     this.buffer.addLast(item);

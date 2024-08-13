@@ -3,9 +3,9 @@ package io.github.pulsebeat02.murderrun.game.map;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameExecutors;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.bukkit.Location;
@@ -15,15 +15,16 @@ import org.bukkit.World;
 public final class TruckManager {
 
   private final Map map;
-  private final ScheduledExecutorService service;
 
   public TruckManager(final Map map) {
     this.map = map;
-    this.service = Executors.newScheduledThreadPool(1);
   }
 
   public void spawnParticles() {
-    this.service.scheduleAtFixedRate(this::spawnParticleOnTruck, 0, 500, TimeUnit.MILLISECONDS);
+    final Game game = this.map.getGame();
+    final GameExecutors provider = game.getExecutorProvider();
+    final ScheduledExecutorService scheduled = provider.getScheduledExecutor();
+    scheduled.scheduleAtFixedRate(this::spawnParticleOnTruck, 0, 500, TimeUnit.MILLISECONDS);
   }
 
   private void spawnParticleOnTruck() {
@@ -34,9 +35,5 @@ public final class TruckManager {
     final World world = requireNonNull(truck.getWorld());
     world.spawnParticle(Particle.LAVA, truck, 10, 0.5, 0.5, 0.5);
     world.spawnParticle(Particle.SMOKE, truck, 10, 0.5, 0.5, 0.5);
-  }
-
-  public void shutdownExecutor() {
-    this.service.shutdown();
   }
 }

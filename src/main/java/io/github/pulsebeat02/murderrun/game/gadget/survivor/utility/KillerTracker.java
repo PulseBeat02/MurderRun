@@ -28,7 +28,8 @@ public final class KillerTracker extends SurvivorGadget {
         Material.COMPASS,
         Locale.KILLER_TRACKER_TRAP_NAME.build(),
         Locale.KILLER_TRACKER_TRAP_LORE.build(),
-        stack -> ItemUtils.setData(stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER, 0));
+        stack -> ItemUtils.setPersistentDataAttribute(
+            stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER, 0));
   }
 
   @Override
@@ -52,10 +53,11 @@ public final class KillerTracker extends SurvivorGadget {
 
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = inventory.getItemInMainHand();
-    final Integer val =
-        requireNonNull(ItemUtils.getData(stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER));
+    final Integer val = requireNonNull(ItemUtils.getPersistentDataAttribute(
+        stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER));
     final int count = val + 1;
-    ItemUtils.setData(stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER, count);
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER, count);
 
     return count;
   }

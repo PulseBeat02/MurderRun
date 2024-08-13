@@ -2,15 +2,14 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public final class ResourceUtils {
@@ -19,30 +18,33 @@ public final class ResourceUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static Reader getResourceAsReader(final String name) {
-    return new BufferedReader(new InputStreamReader(getResourceAsStream(name)));
-  }
-
   public static InputStream getResourceAsStream(final String name) {
-    final ClassLoader loader = requireNonNull(ResourceUtils.class.getClassLoader());
+    final Class<ResourceUtils> clazz = ResourceUtils.class;
+    final ClassLoader loader = requireNonNull(clazz.getClassLoader());
     final InputStream stream = requireNonNull(loader.getResourceAsStream(name));
     return new FastBufferedInputStream(stream);
   }
 
-  public static String createPackHash(final Path path)
+  public static String generateFileHash(final Path path)
       throws IOException, NoSuchAlgorithmException {
-    final MessageDigest digest = MessageDigest.getInstance("SHA-1");
-    try (final InputStream fis = new FastBufferedInputStream(Files.newInputStream(path))) {
-      int n = 0;
-      final byte[] buffer = new byte[8192];
-      while (n != -1) {
-        n = fis.read(buffer);
-        if (n > 0) {
-          digest.update(buffer, 0, n);
-        }
-      }
+    final HashFunction function = Hashing.sha1();
+    try (final InputStream fileStream = Files.newInputStream(path);
+        final InputStream stream = new FastBufferedInputStream(fileStream)) {
+      final byte[] bytes = stream.readAllBytes();
+      final HashCode code = function.hashBytes(bytes);
+      return code.toString();
     }
-    final byte[] hash = digest.digest();
-    return new String(hash);
+  }
+
+  public static void createFile(final Path path) {
+    final Path parent = requireNonNull(path.getParent());
+    try {
+      Files.createDirectories(parent);
+      if (Files.notExists(path)) {
+        Files.createFile(path);
+      }
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
   }
 }

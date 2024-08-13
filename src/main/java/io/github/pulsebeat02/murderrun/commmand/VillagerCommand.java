@@ -18,11 +18,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.incendo.cloud.annotations.*;
+import org.incendo.cloud.annotations.AnnotationParser;
+import org.incendo.cloud.annotations.Argument;
+import org.incendo.cloud.annotations.Command;
+import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.annotations.Default;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
 public final class VillagerCommand implements AnnotationCommandFeature {
+
+  private static final Stream<String> TRADE_SUGGESTIONS;
+
+  static {
+    final GameTrap[] values = GameTrap.values();
+    TRADE_SUGGESTIONS = Arrays.stream(values).map(GameTrap::name);
+  }
 
   private MurderRun plugin;
   private BukkitAudiences audiences;
@@ -33,6 +44,7 @@ public final class VillagerCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
+    this.registerFeature(plugin, parser);
   }
 
   @CommandDescription("murder_run.command.villager.spawn.info")
@@ -55,7 +67,8 @@ public final class VillagerCommand implements AnnotationCommandFeature {
         final ItemStack ingredient = trade.getCost();
         final ItemStack reward = trade.getStack();
         final List<ItemStack> ingredients = List.of(ingredient);
-        final MerchantRecipe recipe = new MerchantRecipe(reward, Integer.MAX_VALUE);
+        final int uses = Integer.MAX_VALUE;
+        final MerchantRecipe recipe = new MerchantRecipe(reward, uses);
         recipe.setIngredients(ingredients);
         recipes.add(recipe);
       }
@@ -76,17 +89,9 @@ public final class VillagerCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  public BukkitAudiences getAudiences() {
-    return this.audiences;
-  }
-
-  public void setAudiences(final BukkitAudiences audiences) {
-    this.audiences = audiences;
-  }
-
   @Suggestions("traps")
   public Stream<String> suggestTrades(
       final CommandContext<CommandSender> context, final String input) {
-    return Arrays.stream(GameTrap.values()).map(GameTrap::name);
+    return TRADE_SUGGESTIONS;
   }
 }

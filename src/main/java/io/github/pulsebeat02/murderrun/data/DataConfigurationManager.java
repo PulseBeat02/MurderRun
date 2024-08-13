@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
-import io.github.pulsebeat02.murderrun.utils.FileUtils;
+import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -23,19 +23,17 @@ public abstract class DataConfigurationManager<T> {
     this.json = plugin.getDataFolder().toPath().resolve(name);
   }
 
-  public Path getJson() {
-    return this.json;
-  }
-
   public void serialize(final T manager) {
-    CompletableFuture.runAsync(() -> this.writeJson(requireNonNull(manager)));
+    requireNonNull(manager);
+    CompletableFuture.runAsync(() -> this.writeJson(manager));
   }
 
   private void writeJson(final T manager) {
+    requireNonNull(manager); // checker framework
     try (final Writer writer = Files.newBufferedWriter(this.json)) {
       this.createFolders();
       final Gson gson = GsonProvider.getGson();
-      gson.toJson(requireNonNull(manager), writer);
+      gson.toJson(manager, writer);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
@@ -43,7 +41,7 @@ public abstract class DataConfigurationManager<T> {
 
   private void createFolders() {
     try {
-      FileUtils.createFile(this.json);
+      ResourceUtils.createFile(this.json);
       Files.write(this.json, "{}".getBytes());
     } catch (final IOException e) {
       throw new AssertionError(e);

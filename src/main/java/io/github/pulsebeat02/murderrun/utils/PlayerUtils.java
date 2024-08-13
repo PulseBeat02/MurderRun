@@ -16,6 +16,7 @@ import java.util.WeakHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -35,6 +36,9 @@ import org.bukkit.util.Vector;
 
 public final class PlayerUtils {
 
+  private static final String GLOW_TEAM_NAME = "glow-color-%s";
+  private static final String HIDE_NAME_TAG_TEAM_NAME = "hide-name-tag-%s";
+
   private static final Map<Player, Team> GLOW_TEAMS = new WeakHashMap<>();
   private static final Map<Player, Team> HIDE_NAME_TAG_TEAMS = new WeakHashMap<>();
   private static final Map<UUID, WorldBorder> WORLD_BORDERS = new WeakHashMap<>();
@@ -49,10 +53,9 @@ public final class PlayerUtils {
     while (bars.hasNext()) {
       final KeyedBossBar bar = bars.next();
       final List<Player> players = bar.getPlayers();
-      if (!players.contains(player)) {
-        continue;
+      if (players.contains(player)) {
+        bar.removePlayer(player);
       }
-      bar.removePlayer(player);
     }
   }
 
@@ -62,42 +65,45 @@ public final class PlayerUtils {
   }
 
   public static void removeAllPotionEffects(final Player player) {
-    player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+    final Collection<PotionEffect> effects = player.getActivePotionEffects();
+    effects.forEach(effect -> {
+      final PotionEffectType type = effect.getType();
+      player.removePotionEffect(type);
+    });
   }
 
   public static void setGlowColor(
       final GamePlayer gamePlayer, final ChatColor color, final Collection<GamePlayer> receivers) {
-
     final Player player = gamePlayer.getPlayer();
     final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
     final Scoreboard scoreboard = manager.getMainScoreboard();
     final UUID glowID = UUID.randomUUID();
-    final String name = String.format("color-%s", glowID);
+    final String name = String.format(GLOW_TEAM_NAME, glowID);
     final Team team = scoreboard.registerNewTeam(name);
     team.setColor(color);
     team.addEntry(player.getDisplayName());
     GLOW_TEAMS.put(player, team);
-
-    receivers.forEach(
-        receiver -> PacketToolsProvider.INSTANCE.sendGlowPacket(player, receiver.getPlayer()));
+    receivers.forEach(receiver -> {
+      final Player receiverPlayer = receiver.getPlayer();
+      PacketToolsProvider.INSTANCE.sendGlowPacket(player, receiverPlayer);
+    });
   }
 
   public static void removeGlow(
       final GamePlayer gamePlayer, final Collection<GamePlayer> receivers) {
-
     final Player player = gamePlayer.getPlayer();
-    player.removePotionEffect(PotionEffectType.GLOWING);
-
+    final PotionEffectType type = PotionEffectType.GLOWING;
+    player.removePotionEffect(type);
     final Team team = GLOW_TEAMS.get(player);
     if (team == null) {
       return;
     }
     team.unregister();
-
     GLOW_TEAMS.remove(player);
-
-    receivers.forEach(receiver ->
-        PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(player, receiver.getPlayer()));
+    receivers.forEach(receiver -> {
+      final Player receiverPlayer = receiver.getPlayer();
+      PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(player, receiverPlayer);
+    });
   }
 
   public static void addFakeWorldBorderEffect(final GamePlayer gamePlayer) {
@@ -124,16 +130,20 @@ public final class PlayerUtils {
   }
 
   public static void hideNameTag(final GamePlayer gamePlayer) {
+
     final Player player = gamePlayer.getPlayer();
     final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
     final Scoreboard scoreboard = manager.getMainScoreboard();
     final UUID hideID = UUID.randomUUID();
-    final String name = String.format("hide-name-tag-%s", hideID);
+    final String name = String.format(HIDE_NAME_TAG_TEAM_NAME, hideID);
     final Team team = scoreboard.registerNewTeam(name);
     team.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
     team.addEntry(player.getDisplayName());
     HIDE_NAME_TAG_TEAMS.put(player, team);
-    player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 0));
+
+    final PotionEffectType type = PotionEffectType.GLOWING;
+    final int duration = Integer.MAX_VALUE;
+    player.addPotionEffect(new PotionEffect(type, duration, 0));
   }
 
   public static void showNameTag(final GamePlayer gamePlayer) {
@@ -148,6 +158,7 @@ public final class PlayerUtils {
 
   public static boolean canEntitySeePlayer(
       final Entity entity, final GamePlayer player, final double maxRangeSquared) {
+
     final Location entityLocation = entity.getLocation();
     final Location playerLocation = player.getLocation();
     final double distanceSquared = entityLocation.distanceSquared(playerLocation);
@@ -156,10 +167,22 @@ public final class PlayerUtils {
     }
 
     final World world = entity.getWorld();
-    final Vector direction =
-        playerLocation.toVector().subtract(entityLocation.toVector()).normalize();
-    final RayTraceResult result = world.rayTraceBlocks(entityLocation, direction, maxRangeSquared);
-    final Block block = result == null ? null : result.getHitBlock();
-    return block == null || !block.getType().isSolid();
+    final Vector playerVector = playerLocation.toVector();
+    final Vector entityVector = entityLocation.toVector();
+    final Vector direction = playerVector.subtract(entityVector);
+    final Vector normalizedDirection = direction.normalize();
+    final RayTraceResult result =
+        world.rayTraceBlocks(entityLocation, normalizedDirection, maxRangeSquared);
+    if (result == null) {
+      return true;
+    }
+
+    final Block block = result.getHitBlock();
+    if (block == null) {
+      return true;
+    }
+
+    final Material type = block.getType();
+    return !type.isSolid();
   }
 }

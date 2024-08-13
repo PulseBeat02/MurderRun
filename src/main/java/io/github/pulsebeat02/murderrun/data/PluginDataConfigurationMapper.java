@@ -3,13 +3,12 @@ package io.github.pulsebeat02.murderrun.data;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import java.util.concurrent.CompletableFuture;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.checkerframework.common.value.qual.IntRange;
 
 public final class PluginDataConfigurationMapper {
 
   private final MurderRun plugin;
   private String hostName;
-  private @IntRange(from = 1, to = 65535) int port;
+  private int port;
 
   public PluginDataConfigurationMapper(final MurderRun plugin) {
     this.plugin = plugin;
@@ -22,8 +21,8 @@ public final class PluginDataConfigurationMapper {
   }
 
   public void deserialize() {
-    this.plugin.saveConfig();
     final FileConfiguration config = this.plugin.getConfig();
+    this.plugin.saveConfig();
     this.hostName = this.getHostName(config);
     this.port = this.getPortServerPort(config);
   }
@@ -42,10 +41,6 @@ public final class PluginDataConfigurationMapper {
     return this.hostName;
   }
 
-  public void setHostName(final String hostName) {
-    this.hostName = hostName;
-  }
-
   public void serialize() {
     CompletableFuture.runAsync(() -> {
       final FileConfiguration config = this.plugin.getConfig();
@@ -57,9 +52,5 @@ public final class PluginDataConfigurationMapper {
 
   public int getPort() {
     return this.port;
-  }
-
-  public void setPort(final int port) {
-    this.port = port;
   }
 }

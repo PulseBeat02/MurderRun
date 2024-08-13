@@ -45,7 +45,8 @@ public final class GameStartupTool {
   private void announceHidePhase() {
     final Component title = Locale.PREPARATION_PHASE.build();
     final Component subtitle = empty();
-    ComponentUtils.showTitleForAllParticipants(this.game, title, subtitle);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void setBossBar() {
@@ -77,7 +78,8 @@ public final class GameStartupTool {
   private void announceCountdown(final int seconds) {
     final Component title = text(seconds, RED);
     final Component subtitle = empty();
-    ComponentUtils.showTitleForAllParticipants(this.game, title, subtitle);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void countDownAudio() {
@@ -102,7 +104,8 @@ public final class GameStartupTool {
   private void announceReleasePhase() {
     final Component title = Locale.RELEASE_PHASE.build();
     final Component subtitle = empty();
-    ComponentUtils.showTitleForAllParticipants(this.game, title, subtitle);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void playReleaseSoundEffect() {

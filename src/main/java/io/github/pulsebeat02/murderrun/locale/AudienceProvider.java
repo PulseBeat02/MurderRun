@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.locale;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 
@@ -31,6 +32,7 @@ public final class AudienceProvider {
 
   public void console(final Component component) {
     this.checkStatus();
-    this.audience.console().sendMessage(component);
+    final Audience console = this.audience.console();
+    console.sendMessage(component);
   }
 }

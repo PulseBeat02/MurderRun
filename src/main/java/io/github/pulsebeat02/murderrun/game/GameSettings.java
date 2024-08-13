@@ -12,8 +12,6 @@ public final class GameSettings {
   private int carPartCount;
 
   public GameSettings() {
-    this.arena = null;
-    this.lobby = null;
     this.murdererCount = 1;
     this.carPartCount = 3;
   }

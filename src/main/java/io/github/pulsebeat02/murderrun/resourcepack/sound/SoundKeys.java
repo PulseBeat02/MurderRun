@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
-import java.io.IOException;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.sound.Sound;
 
@@ -15,6 +14,8 @@ public enum SoundKeys {
   JUMP_SCARE("jump_scare"),
   FART("fart");
 
+  private static final String PATH_RESOURCE = "murder_run:%s";
+
   private final Sound sound;
   private final String id;
   private final String namespace;
@@ -22,16 +23,12 @@ public enum SoundKeys {
   SoundKeys(final String id) {
     this.sound = this.loadSound(id);
     this.id = id;
-    this.namespace = String.format("murder_run:%s,", id);
+    this.namespace = String.format(PATH_RESOURCE, id);
   }
 
   private Sound loadSound(@UnderInitialization SoundKeys this, final String name) {
-    try {
-      final ResourcePackSound ogg = new ResourcePackSound(name);
-      return ogg.build();
-    } catch (final IOException e) {
-      throw new AssertionError(String.format("Failed to load sound %s.ogg!", name), e);
-    }
+    final ResourcePackSound ogg = new ResourcePackSound(name);
+    return ogg.build();
   }
 
   public String getSoundName() {

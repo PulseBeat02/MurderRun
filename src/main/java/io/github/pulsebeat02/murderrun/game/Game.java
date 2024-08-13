@@ -13,6 +13,7 @@ public final class Game {
 
   private final MurderRun plugin;
   private final UUID gameID;
+
   private Map map;
   private GameSettings configuration;
   private PlayerManager playerManager;
@@ -22,6 +23,7 @@ public final class Game {
   private GameScheduler scheduler;
   private GameStatus status;
   private GadgetManager gadgetManager;
+  private GameExecutors service;
 
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
@@ -49,19 +51,22 @@ public final class Game {
       final GameSettings settings,
       final Collection<Player> murderers,
       final Collection<Player> participants) {
+
     this.status = GameStatus.IN_PROGRESS;
     this.configuration = settings;
     this.setMurdererCount(murderers);
+
+    this.service = new GameExecutors();
     this.scheduler = new GameScheduler(this);
     this.map = new Map(this);
     this.playerManager = new PlayerManager(this);
     this.preparationManager = new GameStartupTool(this);
     this.endManager = new GameCleanupTool(this);
     this.murderGameTimer = new GameTimer();
-    this.map.start();
+    this.gadgetManager = new GadgetManager(this);
+
     this.playerManager.start(murderers, participants);
     this.preparationManager.start();
-    this.gadgetManager = new GadgetManager(this);
     this.gadgetManager.start();
   }
 
@@ -80,6 +85,7 @@ public final class Game {
     this.endManager.start(code);
     this.playerManager.shutdown();
     this.map.shutdown();
+    this.service.shutdown();
   }
 
   public PlayerManager getPlayerManager() {
@@ -144,5 +150,9 @@ public final class Game {
 
   public GadgetManager getGadgetManager() {
     return this.gadgetManager;
+  }
+
+  public GameExecutors getExecutorProvider() {
+    return this.service;
   }
 }

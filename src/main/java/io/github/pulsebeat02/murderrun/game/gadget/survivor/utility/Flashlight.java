@@ -29,7 +29,8 @@ public final class Flashlight extends SurvivorGadget {
         Material.GOLDEN_SHOVEL,
         Locale.FLASHLIGHT_TRAP_NAME.build(),
         Locale.FLASHLIGHT_TRAP_LORE.build(),
-        stack -> ItemUtils.setData(stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, 0L));
+        stack -> ItemUtils.setPersistentDataAttribute(
+            stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, 0L));
   }
 
   @Override
@@ -43,15 +44,16 @@ public final class Flashlight extends SurvivorGadget {
       return;
     }
 
-    final Long last = requireNonNull(
-        ItemUtils.getData(stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG));
+    final Long last = requireNonNull(ItemUtils.getPersistentDataAttribute(
+        stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG));
     final long current = System.currentTimeMillis();
     if (current - last < 5000) {
       return;
     }
 
     final Player player = event.getPlayer();
-    ItemUtils.setData(stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, current);
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, current);
     this.sprayParticlesInCone(game, player);
   }
 

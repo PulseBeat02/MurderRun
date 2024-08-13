@@ -11,6 +11,7 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -116,8 +117,6 @@ public final class PlayerManager {
 
   public void shutdown() {
     this.resetAllPlayers();
-    this.deathManager.shutdownExecutor();
-    this.killerLocationTracker.shutdownExecutor();
   }
 
   private void resetAllPlayers() {
@@ -167,5 +166,21 @@ public final class PlayerManager {
 
   public @Nullable GamePlayer removePlayer(final UUID uuid) {
     return this.lookupMap.remove(uuid);
+  }
+
+  public void sendMessageToAllParticipants(final Component message) {
+    this.applyToAllParticipants(player -> player.sendMessage(message));
+  }
+
+  public void showTitleForAllInnocents(final Component title, final Component subtitle) {
+    this.applyToAllInnocents(innocent -> innocent.showTitle(title, subtitle));
+  }
+
+  public void showTitleForAllMurderers(final Component title, final Component subtitle) {
+    this.applyToAllMurderers(murderer -> murderer.showTitle(title, subtitle));
+  }
+
+  public void showTitleForAllParticipants(final Component title, final Component subtitle) {
+    this.applyToAllParticipants(player -> player.showTitle(title, subtitle));
   }
 }

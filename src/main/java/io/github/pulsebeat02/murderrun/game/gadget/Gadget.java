@@ -58,12 +58,13 @@ public abstract class Gadget {
     requireNonNull(itemLore);
     requireNonNull(material);
 
-    final String name = ComponentUtils.serializeComponentToLegacy(itemName);
-    final String rawLore = ComponentUtils.serializeComponentToLegacy(itemLore);
+    final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
+    final String rawLore = ComponentUtils.serializeComponentToLegacyString(itemLore);
     final List<String> lore = List.of(rawLore);
     final ItemStack stack = new ItemStack(material);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    ItemUtils.setData(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
     meta.setDisplayName(name);
     meta.setLore(lore);
     stack.setItemMeta(meta);

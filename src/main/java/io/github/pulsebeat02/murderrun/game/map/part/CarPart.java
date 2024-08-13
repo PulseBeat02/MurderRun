@@ -55,15 +55,16 @@ public final class CarPart {
   private void setLore(@UnderInitialization CarPart this, final ItemMeta meta) {
     if (!meta.hasLore()) {
       final List<Component> components = List.of(Locale.CAR_PART_ITEM_LORE.build());
-      final List<String> lore =
-          components.stream().map(ComponentUtils::serializeComponentToLegacy).toList();
+      final List<String> lore = components.stream()
+          .map(ComponentUtils::serializeComponentToLegacyString)
+          .toList();
       meta.setLore(lore);
     }
   }
 
   private void changeProperties(@UnderInitialization CarPart this, final ItemMeta meta) {
     final Component component = Locale.CAR_PART_ITEM_NAME.build();
-    final String raw = ComponentUtils.serializeComponentToLegacy(component);
+    final String raw = ComponentUtils.serializeComponentToLegacyString(component);
     final int id = RandomUtils.generateInt(1, 6);
     meta.setDisplayName(raw);
     meta.setCustomModelData(id);

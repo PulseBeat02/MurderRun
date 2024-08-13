@@ -3,14 +3,14 @@ package io.github.pulsebeat02.murderrun.game.map.part;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameExecutors;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashMap;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.bukkit.Location;
@@ -26,12 +26,10 @@ public final class PartsManager {
 
   private final Map map;
   private final java.util.Map<String, CarPart> parts;
-  private final ScheduledExecutorService service;
 
   public PartsManager(final Map map) {
     this.map = map;
     this.parts = new HashMap<>();
-    this.service = Executors.newScheduledThreadPool(1);
   }
 
   public void spawnParts() {
@@ -58,7 +56,10 @@ public final class PartsManager {
   }
 
   private void spawnParticles() {
-    this.service.scheduleAtFixedRate(
+    final Game game = this.map.getGame();
+    final GameExecutors provider = game.getExecutorProvider();
+    final ScheduledExecutorService scheduled = provider.getScheduledExecutor();
+    scheduled.scheduleAtFixedRate(
         () -> this.parts.values().stream()
             .filter(part -> !part.isPickedUp())
             .forEach(this::spawnParticleOnPart),
@@ -72,10 +73,6 @@ public final class PartsManager {
     final Location clone = location.clone().add(0, 1, 0);
     final World world = requireNonNull(clone.getWorld());
     world.spawnParticle(Particle.DUST, clone, 10, 0.2, 0.2, 0.2, Color.YELLOW);
-  }
-
-  public void shutdownExecutor() {
-    this.service.shutdown();
   }
 
   public Map getMap() {

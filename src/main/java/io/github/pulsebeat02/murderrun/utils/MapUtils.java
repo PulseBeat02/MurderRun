@@ -20,7 +20,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
-import io.github.pulsebeat02.murderrun.MurderRun;
+import com.sk89q.worldedit.session.PasteBuilder;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -30,17 +30,22 @@ import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.EulerAngle;
 
 public final class MapUtils {
 
-  private static Path PARENT_FOLDER;
+  private static final Path PARENT_FOLDER;
 
-  public static void init(final MurderRun plugin) {
+  static {
+    final Plugin plugin =
+        CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider.retrievePluginInstance();
     final File folder = plugin.getDataFolder();
     PARENT_FOLDER = folder.toPath();
   }
@@ -50,7 +55,10 @@ public final class MapUtils {
   }
 
   public static EulerAngle toEulerAngle(final int x, final int y, final int z) {
-    return new EulerAngle(Math.toRadians(x), Math.toRadians(y), Math.toRadians(z));
+    final double radianX = Math.toRadians(x);
+    final double radianY = Math.toRadians(y);
+    final double radianZ = Math.toRadians(z);
+    return new EulerAngle(radianX, radianY, radianZ);
   }
 
   public static double[] generateFriendlyRandomXZ(final Location first, final Location second) {
@@ -66,34 +74,44 @@ public final class MapUtils {
   }
 
   public static void resetMap(final Map map) {
-    final Game game = map.getGame();
-    final GameSettings settings = game.getSettings();
-    final Arena arena = requireNonNull(settings.getArena());
-    final ArenaSchematic schematic = arena.getSchematic();
-    final BlockVector3 vector3 = schematic.getOrigin();
-    final Clipboard clipboard = loadSchematic(schematic);
-    final Region region = clipboard.getRegion();
-    final com.sk89q.worldedit.world.World world = region.getWorld();
-    try (final EditSession session = WorldEdit.getInstance().newEditSession(world)) {
-      final Operation operation = new ClipboardHolder(clipboard)
-          .createPaste(session)
-          .to(vector3)
-          .ignoreAirBlocks(false)
-          .build();
-      Operations.complete(operation);
-    } catch (final WorldEditException e) {
+    try {
+      final Game game = map.getGame();
+      final GameSettings settings = game.getSettings();
+      final Arena arena = requireNonNull(settings.getArena());
+      final ArenaSchematic schematic = arena.getSchematic();
+      final BlockVector3 vector3 = schematic.getOrigin();
+      final Clipboard clipboard = loadSchematic(schematic);
+      final Region region = clipboard.getRegion();
+      final com.sk89q.worldedit.world.World world = region.getWorld();
+      final WorldEdit instance = WorldEdit.getInstance();
+      performResetPaste(instance, world, clipboard, vector3);
+    } catch (final WorldEditException | IOException e) {
       throw new AssertionError(e);
     }
   }
 
-  private static Clipboard loadSchematic(final ArenaSchematic schematic) {
+  private static void performResetPaste(
+      final WorldEdit instance,
+      final com.sk89q.worldedit.world.World world,
+      final Clipboard clipboard,
+      final BlockVector3 vector3)
+      throws WorldEditException {
+    try (final EditSession session = instance.newEditSession(world)) {
+      final ClipboardHolder holder = new ClipboardHolder(clipboard);
+      final PasteBuilder extent = holder.createPaste(session).to(vector3).ignoreAirBlocks(false);
+      final Operation operation = extent.build();
+      Operations.complete(operation);
+    }
+  }
+
+  private static Clipboard loadSchematic(final ArenaSchematic schematic) throws IOException {
     final Path path = schematic.getSchematicPath();
-    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(path.toFile()));
-    try (final ClipboardReader reader =
-        format.getReader(new FastBufferedInputStream(Files.newInputStream(path)))) {
+    final File legacyPath = path.toFile();
+    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(legacyPath));
+    try (final InputStream stream = Files.newInputStream(path);
+        final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
+        final ClipboardReader reader = format.getReader(fast)) {
       return reader.read();
-    } catch (final IOException e) {
-      throw new AssertionError(e);
     }
   }
 
@@ -103,7 +121,7 @@ public final class MapUtils {
       final Path path = performSchematicWrite(clipboard, name);
       final BlockVector3 origin = clipboard.getOrigin();
       return new ArenaSchematic(path, origin);
-    } catch (final WorldEditException e) {
+    } catch (final WorldEditException | IOException e) {
       throw new AssertionError(e);
     }
   }
@@ -113,22 +131,25 @@ public final class MapUtils {
     final CuboidRegion region = createRegion(corners);
     final BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     final com.sk89q.worldedit.world.World world = region.getWorld();
-    try (final EditSession session = WorldEdit.getInstance().newEditSession(world)) {
+    final WorldEdit instance = WorldEdit.getInstance();
+    try (final EditSession session = instance.newEditSession(world)) {
+      final BlockVector3 min = region.getMinimumPoint();
       final ForwardExtentCopy forwardExtentCopy =
-          new ForwardExtentCopy(session, region, clipboard, region.getMinimumPoint());
+          new ForwardExtentCopy(session, region, clipboard, min);
       forwardExtentCopy.setCopyingEntities(true);
       Operations.complete(forwardExtentCopy);
       return clipboard;
     }
   }
 
-  private static Path performSchematicWrite(final Clipboard clipboard, final String name) {
+  private static Path performSchematicWrite(final Clipboard clipboard, final String name)
+      throws IOException {
     final Path file = PARENT_FOLDER.resolve(name);
-    try (final ClipboardWriter writer = BuiltInClipboardFormat.MCEDIT_SCHEMATIC.getWriter(
-        new FastBufferedOutputStream(Files.newOutputStream(file)))) {
+    final BuiltInClipboardFormat format = BuiltInClipboardFormat.MCEDIT_SCHEMATIC;
+    try (final OutputStream stream = Files.newOutputStream(file);
+        final OutputStream fast = new FastBufferedOutputStream(stream);
+        final ClipboardWriter writer = format.getWriter(fast)) {
       writer.write(clipboard);
-    } catch (final IOException e) {
-      throw new AssertionError(e);
     }
     return file;
   }

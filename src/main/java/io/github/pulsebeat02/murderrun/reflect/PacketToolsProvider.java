@@ -1,29 +1,38 @@
 package io.github.pulsebeat02.murderrun.reflect;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 
 public final class PacketToolsProvider {
 
+  private static final String CLASS_PATH = "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools";
+
   public static final PacketToolAPI INSTANCE;
-  private static final String VERSION;
 
   static {
-    final String ver = Bukkit.getServer().getBukkitVersion();
-    final String mcVer = ver.split("-")[0];
-    final String complete = String.format("v%s", mcVer);
-    VERSION = complete.replace(".", "_");
+    final Server server = Bukkit.getServer();
+    final String bukkitVersion = server.getBukkitVersion();
+    final String minecraftVersion = bukkitVersion.split("-")[0];
+    final String packageVersion = String.format("v%s", minecraftVersion);
+    final String version = packageVersion.replace(".", "_");
+    PacketToolAPI api;
     try {
-      final String path =
-          "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools".formatted(VERSION);
+      final String path = String.format(CLASS_PATH, version);
       final Class<?> clazz = Class.forName(path);
-      INSTANCE = (PacketToolAPI) clazz.getDeclaredConstructor().newInstance();
-    } catch (final Exception e) {
-      throw new AssertionError(e);
+      final MethodHandles.Lookup lookup = MethodHandles.lookup();
+      final MethodType type = MethodType.methodType(Void.TYPE);
+      final MethodHandle handle = lookup.findConstructor(clazz, type);
+      api = (PacketToolAPI) handle.invoke();
+    } catch (final Throwable e) {
+      api = new FallbackPacketTools();
+      throw new IllegalStateException(
+          "The current server version isn't supported by this plugin! Resorting to fallback adapter",
+          e);
     }
-  }
-
-  public static String getVersion() {
-    return VERSION;
+    INSTANCE = api;
   }
 
   public static void init() {}

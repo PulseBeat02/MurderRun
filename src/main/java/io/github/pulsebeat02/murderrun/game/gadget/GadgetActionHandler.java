@@ -135,7 +135,8 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    final String data = ItemUtils.getData(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data = ItemUtils.getPersistentDataAttribute(
+        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     if (data == null) {
       return;
     }

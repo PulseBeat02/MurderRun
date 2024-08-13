@@ -3,12 +3,12 @@ package io.github.pulsebeat02.murderrun.game.player.death;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameExecutors;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
-import java.awt.*;
+import java.awt.Color;
 import java.util.Collection;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.bukkit.Location;
@@ -18,17 +18,16 @@ import org.bukkit.World;
 public final class KillerLocationTracker {
 
   private final Game game;
-  private final ScheduledExecutorService service;
 
   public KillerLocationTracker(final Game game) {
     this.game = game;
-    this.service = Executors.newScheduledThreadPool(1);
   }
 
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
-
-    this.service.scheduleAtFixedRate(
+    final GameExecutors provider = this.game.getExecutorProvider();
+    final ScheduledExecutorService scheduled = provider.getScheduledExecutor();
+    scheduled.scheduleAtFixedRate(
         () -> manager.applyToAllMurderers(this::spawnParticlesWhenClose), 0, 1, TimeUnit.SECONDS);
   }
 
@@ -49,13 +48,5 @@ public final class KillerLocationTracker {
 
   public Game getGame() {
     return this.game;
-  }
-
-  public ScheduledExecutorService getService() {
-    return this.service;
-  }
-
-  public void shutdownExecutor() {
-    this.service.shutdown();
   }
 }

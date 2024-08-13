@@ -20,22 +20,28 @@ import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import org.bukkit.Bukkit;
+import org.bukkit.UnsafeValues;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings("deprecation")
 public class PacketTools implements PacketToolAPI {
+
+  private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";
 
   @Override
   public byte[] toByteArray(final ItemStack item) {
     try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-      final int version = Bukkit.getUnsafe().getDataVersion();
-      final RegistryAccess.Frozen dimension = MinecraftServer.getServer().registryAccess();
+      final MinecraftServer server = MinecraftServer.getServer();
+      final UnsafeValues values = Bukkit.getUnsafe();
+      final int version = values.getDataVersion();
+      final RegistryAccess.Frozen dimension = server.registryAccess();
       final net.minecraft.world.item.ItemStack craftItemStack = CraftItemStack.asNMSCopy(item);
       final CompoundTag compound = (CompoundTag) craftItemStack.save(dimension);
-      compound.putInt("DataVersion", version);
+      compound.putInt(ITEMS_VERSION_ATTRIBUTE, version);
       NbtIo.writeCompressed(compound, outputStream);
       return outputStream.toByteArray();
     } catch (final IOException e) {
@@ -46,20 +52,22 @@ public class PacketTools implements PacketToolAPI {
   @Override
   public ItemStack fromByteArray(final byte[] bytes) {
     try (final ByteArrayInputStream stream = new ByteArrayInputStream(bytes)) {
-      final RegistryAccess.Frozen dimension = MinecraftServer.getServer().registryAccess();
+      final MinecraftServer server = MinecraftServer.getServer();
+      final RegistryAccess.Frozen dimension = server.registryAccess();
       final NbtAccounter unlimited = NbtAccounter.unlimitedHeap();
       final CompoundTag old = NbtIo.readCompressed(stream, unlimited);
-      final int dataVersion = old.getInt("DataVersion");
-      final int ver = Bukkit.getUnsafe().getDataVersion();
+      final int dataVersion = old.getInt(ITEMS_VERSION_ATTRIBUTE);
+      final UnsafeValues values = Bukkit.getUnsafe();
+      final int ver = values.getDataVersion();
       final DSL.TypeReference reference = References.ITEM_STACK;
-      final MinecraftServer server = MinecraftServer.getServer();
       final DataFixer fixer = server.fixerUpper;
-      final Dynamic<Tag> dynamic = new Dynamic<>(NbtOps.INSTANCE, old);
+      final NbtOps operation = NbtOps.INSTANCE;
+      final Dynamic<Tag> dynamic = new Dynamic<>(operation, old);
       fixer.update(reference, dynamic, dataVersion, ver);
       final CompoundTag newCompound = (CompoundTag) dynamic.getValue();
-      return CraftItemStack.asCraftMirror(
-          net.minecraft.world.item.ItemStack.parseOptional(dimension,
-              newCompound));
+      final net.minecraft.world.item.ItemStack stack = net.minecraft.world.item.ItemStack.parseOptional(
+          dimension, newCompound);
+      return CraftItemStack.asCraftMirror(stack);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

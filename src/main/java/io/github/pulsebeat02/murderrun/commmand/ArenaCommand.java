@@ -36,6 +36,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
+    this.registerFeature(plugin, parser);
   }
 
   @CommandDescription("murder_run.command.arena.list.info")
@@ -140,34 +141,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.sendSuccessMessage(sender, message);
   }
 
-  public MurderRun getPlugin() {
-    return this.plugin;
-  }
-
-  public void setPlugin(final MurderRun plugin) {
-    this.plugin = plugin;
-  }
-
-  public BukkitAudiences getAudiences() {
-    return this.audiences;
-  }
-
-  public void setAudiences(final BukkitAudiences audiences) {
-    this.audiences = audiences;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(final String name) {
-    this.name = name;
-  }
-
-  public Location getSpawn() {
-    return this.spawn;
-  }
-
   @CommandDescription("murder_run.command.arena.set.spawn.info")
   @Command(value = "murder arena set spawn", requiredSender = Player.class)
   public void setSpawn(final Player sender) {
@@ -177,18 +150,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.sendSuccessMessage(sender, message);
   }
 
-  public void setSpawn(final Location spawn) {
-    this.spawn = spawn;
-  }
-
-  public Location getTruck() {
-    return this.truck;
-  }
-
-  public void setTruck(final Location truck) {
-    this.truck = truck;
-  }
-
   @CommandDescription("murder_run.command.arena.set.truck.info")
   @Command(value = "murder arena set truck", requiredSender = Player.class)
   public void setTruck(final Player sender) {
@@ -196,22 +157,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.truck = location;
     final Component message = ComponentUtils.createLocationComponent(Locale.ARENA_TRUCK, location);
     this.sendSuccessMessage(sender, message);
-  }
-
-  public Location getFirst() {
-    return this.first;
-  }
-
-  public void setFirst(final Location first) {
-    this.first = first;
-  }
-
-  public Location getSecond() {
-    return this.second;
-  }
-
-  public void setSecond(final Location second) {
-    this.second = second;
   }
 
   @CommandDescription("murder_run.command.arena.set.first_corner.info")

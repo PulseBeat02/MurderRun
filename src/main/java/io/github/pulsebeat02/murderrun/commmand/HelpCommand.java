@@ -4,7 +4,7 @@ import static org.incendo.cloud.minecraft.extras.MinecraftHelp.*;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
-import io.github.pulsebeat02.murderrun.locale.LocaleTooling;
+import io.github.pulsebeat02.murderrun.locale.LocaleTools;
 import io.github.pulsebeat02.murderrun.locale.TranslationManager;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,10 +30,11 @@ public final class HelpCommand implements AnnotationCommandFeature {
     this.bukkitAudiences = handler.retrieve();
     this.manager = parser.manager();
     this.setupHelp();
+    this.registerFeature(plugin, parser);
   }
 
   private Map<String, String> constructHelpMap() {
-    final TranslationManager manager = LocaleTooling.MANAGER;
+    final TranslationManager manager = LocaleTools.MANAGER;
     final Map<String, String> bundle = new HashMap<>();
     bundle.put(MESSAGE_HELP_TITLE, manager.getProperty("murder_run.command.game.help.command"));
     bundle.put(
@@ -75,24 +76,12 @@ public final class HelpCommand implements AnnotationCommandFeature {
     return this.manager;
   }
 
-  public void setManager(final CommandManager<CommandSender> manager) {
-    this.manager = manager;
-  }
-
   public MinecraftHelp<CommandSender> getMinecraftHelp() {
     return this.minecraftHelp;
   }
 
-  public void setMinecraftHelp(final MinecraftHelp<CommandSender> minecraftHelp) {
-    this.minecraftHelp = minecraftHelp;
-  }
-
   public BukkitAudiences getBukkitAudiences() {
     return this.bukkitAudiences;
-  }
-
-  public void setBukkitAudiences(final BukkitAudiences bukkitAudiences) {
-    this.bukkitAudiences = bukkitAudiences;
   }
 
   @CommandDescription("murder_run.command.help.info")

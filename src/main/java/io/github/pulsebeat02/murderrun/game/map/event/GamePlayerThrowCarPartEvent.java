@@ -81,7 +81,8 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
   private void announceCarPartRetrieval(final int leftOver) {
     final Component title = Locale.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
     final Component subtitle = empty();
-    ComponentUtils.showTitleForAllParticipants(this.game, title, subtitle);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.showTitleForAllParticipants(title, subtitle);
     ComponentUtils.playSoundForAllParticipants(this.game, "block.anvil.use");
   }
 

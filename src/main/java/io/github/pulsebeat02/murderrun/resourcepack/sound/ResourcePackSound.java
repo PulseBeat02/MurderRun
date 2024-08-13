@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
 import static net.kyori.adventure.key.Key.key;
 
+import io.github.pulsebeat02.murderrun.utils.Keys;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,19 +13,24 @@ import team.unnamed.creative.sound.Sound;
 
 public class ResourcePackSound {
 
+  private static final String PATH_RESOURCE = "assets/textures/%s";
+
   private final Key key;
   private final Writable data;
 
-  public ResourcePackSound(final String namespace) throws IOException {
-    this.key = key("murder_run", namespace);
+  public ResourcePackSound(final String namespace) {
+    this.key = key(Keys.NAMESPACE, namespace);
     this.data = this.getSoundStream(namespace);
   }
 
   private Writable getSoundStream(
-      @UnderInitialization ResourcePackSound this, final String namespace) throws IOException {
-    final String path = String.format("assets/sounds/%s.ogg", namespace);
-    final InputStream stream = ResourceUtils.getResourceAsStream(path);
-    return Writable.copyInputStream(stream);
+      @UnderInitialization ResourcePackSound this, final String namespace) {
+    final String path = String.format(PATH_RESOURCE, namespace);
+    try (final InputStream stream = ResourceUtils.getResourceAsStream(path)) {
+      return Writable.copyInputStream(stream);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
   }
 
   public Key getKey() {

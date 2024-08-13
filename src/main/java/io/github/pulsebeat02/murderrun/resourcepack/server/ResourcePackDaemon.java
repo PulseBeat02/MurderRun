@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
@@ -15,12 +16,7 @@ import team.unnamed.creative.server.ResourcePackServer;
 
 public final class ResourcePackDaemon {
 
-  private static final ServerResourcepack PACK;
-
-  static {
-    PACK = new ServerResourcepack();
-    PACK.build();
-  }
+  private static final String HOST_URL = "http://%s:%s";
 
   private final String hostName;
   private final int port;
@@ -35,18 +31,30 @@ public final class ResourcePackDaemon {
   }
 
   public void buildPack() {
-    final Path path = PACK.getPath();
-    try (final InputStream stream = new FastBufferedInputStream(Files.newInputStream(path))) {
-      final Writable writable = Writable.copyInputStream(stream);
-      this.url = String.format("http://%s:%s", this.hostName, this.port);
-      this.hash = ResourceUtils.createPackHash(path);
+    final Path path = this.constructResourcepack();
+    try (final InputStream stream = Files.newInputStream(path);
+        final InputStream fast = new FastBufferedInputStream(stream)) {
+      this.url = String.format(HOST_URL, this.hostName, this.port);
+      this.hash = ResourceUtils.generateFileHash(path);
+      final Writable writable = Writable.copyInputStream(fast);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);
+      final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
       this.server = ResourcePackServer.server()
           .address(this.hostName, this.port)
           .pack(pack)
-          .executor(Executors.newFixedThreadPool(8))
+          .executor(service)
           .build();
     } catch (final IOException | NoSuchAlgorithmException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  private Path constructResourcepack() {
+    try {
+      final ServerResourcepack pack = new ServerResourcepack();
+      pack.build();
+      return pack.getPath();
+    } catch (final IOException e) {
       throw new AssertionError(e);
     }
   }

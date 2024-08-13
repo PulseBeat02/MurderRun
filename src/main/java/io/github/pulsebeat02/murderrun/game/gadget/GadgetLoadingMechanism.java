@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
+import io.github.pulsebeat02.murderrun.utils.CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.Keys;
 import java.lang.reflect.Constructor;
@@ -16,6 +17,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -24,7 +26,9 @@ public final class GadgetLoadingMechanism {
   private static final String GADGETS_PACKAGE = "io.github.pulsebeat02.murderrun.gadget";
   private static final Map<String, Constructor<?>> GADGET_LOOK_UP_MAP = new HashMap<>();
 
-  public static void init(final MurderRun plugin) {
+  public static void init() {
+    final Plugin plugin =
+        CursedPluginInstanceRetrieverOnlyForUtilityClassesProvider.retrievePluginInstance();
     final SurvivorGadgets[] survivorGadgets = SurvivorGadgets.values();
     final KillerGadgets[] killerGadgets = KillerGadgets.values();
     for (final SurvivorGadgets gadget : survivorGadgets) {
@@ -37,7 +41,7 @@ public final class GadgetLoadingMechanism {
     }
   }
 
-  private static void handleGadgetClass(final MurderRun plugin, final Class<?> clazz) {
+  private static void handleGadgetClass(final Plugin plugin, final Class<?> clazz) {
     final Constructor<?> constructor = getConstructor(clazz);
     final Gadget gadget = invokeGadgetConstructor(plugin, constructor);
     final String name = gadget.getName();
@@ -54,7 +58,7 @@ public final class GadgetLoadingMechanism {
   }
 
   private static Gadget invokeGadgetConstructor(
-      final MurderRun plugin, final Constructor<?> constructor) {
+      final Plugin plugin, final Constructor<?> constructor) {
     try {
       final Class<?>[] arguments = constructor.getParameterTypes();
       final boolean hasPlugin = arguments.length == 1;
@@ -96,8 +100,8 @@ public final class GadgetLoadingMechanism {
   }
 
   public @Nullable Gadget getGadgetFromStack(final ItemStack stack) {
-    final String data =
-        requireNonNull(ItemUtils.getData(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING));
+    final String data = requireNonNull(ItemUtils.getPersistentDataAttribute(
+        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING));
     return this.gameGadgets.get(data);
   }
 

@@ -8,13 +8,11 @@ import static net.kyori.adventure.text.JoinConfiguration.separator;
 import static net.kyori.adventure.text.format.NamedTextColor.GOLD;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import java.util.function.Function;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextReplacementConfig;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public interface LocaleTooling {
+public interface LocaleTools {
 
   TranslationManager MANAGER = new TranslationManager();
 
@@ -23,13 +21,6 @@ public interface LocaleTooling {
 
   static Component format(final Component message) {
     return join(separator(space()), PREFIX.build(), message);
-  }
-
-  static Component useSmallCaps(final Component input) {
-    return input.replaceText(TextReplacementConfig.builder()
-        .match(".*")
-        .replacement((match, original) -> text(ComponentUtils.convertToMini(match.group())))
-        .build());
   }
 
   static NullComponent<Sender> direct(final String key) {
@@ -70,19 +61,11 @@ public interface LocaleTooling {
   @FunctionalInterface
   interface NullComponent<S extends Sender> {
 
-    default void send(final S sender) {
-      sender.sendMessage(this.build());
-    }
-
     Component build();
   }
 
   @FunctionalInterface
   interface UniComponent<S extends Sender, A0> {
-
-    default void send(final S sender, final A0 arg0) {
-      sender.sendMessage(this.build(arg0));
-    }
 
     Component build(A0 arg0);
   }
@@ -90,19 +73,11 @@ public interface LocaleTooling {
   @FunctionalInterface
   interface BiComponent<S extends Sender, A0, A1> {
 
-    default void send(final S sender, final A0 arg0, final A1 arg1) {
-      sender.sendMessage(this.build(arg0, arg1));
-    }
-
     Component build(A0 arg0, A1 arg1);
   }
 
   @FunctionalInterface
   interface TriComponent<S extends Sender, A0, A1, A2> {
-
-    default void send(final S sender, final A0 arg0, final A1 arg1, final A2 arg2) {
-      sender.sendMessage(this.build(arg0, arg1, arg2));
-    }
 
     Component build(A0 arg0, A1 arg1, A2 arg2);
   }

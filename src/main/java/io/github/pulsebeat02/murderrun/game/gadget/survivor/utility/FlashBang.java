@@ -32,7 +32,8 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         Material.SNOWBALL,
         Locale.FLASHBANG_TRAP_NAME.build(),
         Locale.FLASHBANG_TRAP_LORE.build(),
-        stack -> ItemUtils.setData(stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true));
+        stack -> ItemUtils.setPersistentDataAttribute(
+            stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true));
     Bukkit.getPluginManager().registerEvents(this, plugin);
   }
 

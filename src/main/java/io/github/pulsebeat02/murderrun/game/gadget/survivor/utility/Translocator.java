@@ -33,7 +33,7 @@ public final class Translocator extends SurvivorGadget {
         Material.CHORUS_FLOWER,
         Locale.TRANSLOCATOR_TRAP_NAME.build(),
         Locale.TRANSLOCATOR_TRAP_LORE.build(),
-        stack -> ItemUtils.setData(
+        stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]));
   }
 
@@ -54,8 +54,8 @@ public final class Translocator extends SurvivorGadget {
       return;
     }
 
-    final byte[] data =
-        requireNonNull(ItemUtils.getData(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
+    final byte[] data = requireNonNull(ItemUtils.getPersistentDataAttribute(
+        stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = this.byteArrayToLocation(data);
     player.teleport(location);
   }
@@ -70,11 +70,12 @@ public final class Translocator extends SurvivorGadget {
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
     final byte[] bytes = this.locationToByteArray(location);
-    ItemUtils.setData(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
 
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final Component lore = Locale.TRANSLOCATOR_TRAP_LORE1.build();
-    final String message = ComponentUtils.serializeComponentToLegacy(lore);
+    final String message = ComponentUtils.serializeComponentToLegacyString(lore);
     final List<String> newLore = List.of(message);
     meta.setLore(newLore);
     stack.setType(Material.LEVER);

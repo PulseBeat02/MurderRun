@@ -2,7 +2,13 @@ package io.github.pulsebeat02.murderrun.json.adapters;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,13 +30,12 @@ public final class LocationAdapter implements JsonDeserializer<Location>, JsonSe
     final JsonElement yaw = obj.get("yaw");
     final JsonElement pitch = obj.get("pitch");
     final World instance = Bukkit.getWorld(world.getAsString());
-    return new Location(
-        instance,
-        x.getAsDouble(),
-        y.getAsDouble(),
-        z.getAsDouble(),
-        yaw != null ? yaw.getAsFloat() : 0.0F,
-        pitch != null ? pitch.getAsFloat() : 0.0F);
+    final double xValue = x.getAsDouble();
+    final double yValue = y.getAsDouble();
+    final double zValue = z.getAsDouble();
+    final float yawValue = yaw != null ? yaw.getAsFloat() : 0.0f;
+    final float pitchValue = pitch != null ? pitch.getAsFloat() : 0.0f;
+    return new Location(instance, xValue, yValue, zValue, yawValue, pitchValue);
   }
 
   @Override
@@ -41,12 +46,17 @@ public final class LocationAdapter implements JsonDeserializer<Location>, JsonSe
     final JsonObject obj = new JsonObject();
     final World world = requireNonNull(location.getWorld());
     final String name = world.getName();
+    final double x = location.getX();
+    final double y = location.getY();
+    final double z = location.getZ();
+    final float yaw = location.getYaw();
+    final float pitch = location.getPitch();
     obj.addProperty("world", name);
-    obj.addProperty("x", location.getX());
-    obj.addProperty("y", location.getY());
-    obj.addProperty("z", location.getZ());
-    obj.addProperty("yaw", location.getYaw());
-    obj.addProperty("pitch", location.getPitch());
+    obj.addProperty("x", x);
+    obj.addProperty("y", y);
+    obj.addProperty("z", z);
+    obj.addProperty("yaw", yaw);
+    obj.addProperty("pitch", pitch);
     return obj;
   }
 }

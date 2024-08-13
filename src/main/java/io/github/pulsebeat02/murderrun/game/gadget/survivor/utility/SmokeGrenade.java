@@ -33,7 +33,8 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
         Material.SNOWBALL,
         Locale.SMOKE_BOMB_TRAP_NAME.build(),
         Locale.SMOKE_BOMB_TRAP_LORE.build(),
-        stack -> ItemUtils.setData(stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true));
+        stack -> ItemUtils.setPersistentDataAttribute(
+            stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true));
     Bukkit.getPluginManager().registerEvents(this, plugin);
   }
 

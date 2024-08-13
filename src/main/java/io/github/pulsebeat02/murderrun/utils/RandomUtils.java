@@ -25,12 +25,4 @@ public final class RandomUtils {
   public static int generateInt(final int min, final int max) {
     return SPLITTABLE_RANDOM.nextInt(min, max);
   }
-
-  public static float generateFloat() {
-    return SPLITTABLE_RANDOM.nextFloat();
-  }
-
-  public static float generateFloat(final float min, final float max) {
-    return SPLITTABLE_RANDOM.nextFloat(min, max);
-  }
 }

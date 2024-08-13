@@ -4,16 +4,15 @@ import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameExecutors;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import net.kyori.adventure.text.Component;
@@ -38,23 +37,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 public final class PlayerDeathTool {
 
   private final Game game;
-  private final ScheduledExecutorService service;
 
   public PlayerDeathTool(final Game game) {
     this.game = game;
-    this.service = Executors.newScheduledThreadPool(8);
-  }
-
-  public void shutdownExecutor() {
-    this.service.shutdown();
   }
 
   public Game getGame() {
     return this.game;
-  }
-
-  public ScheduledExecutorService getService() {
-    return this.service;
   }
 
   public void initiateDeathSequence(final GamePlayer gamePlayer) {
@@ -110,7 +99,8 @@ public final class PlayerDeathTool {
     final String name = dead.getDisplayName();
     final Component title = Locale.PLAYER_DEATH.build(name);
     final Component subtitle = empty();
-    ComponentUtils.showTitleForAllParticipants(this.game, title, subtitle);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void summonCarParts(final Player player) {
@@ -152,7 +142,9 @@ public final class PlayerDeathTool {
 
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
-    this.service.scheduleAtFixedRate(
+    final GameExecutors provider = this.game.getExecutorProvider();
+    final ScheduledExecutorService scheduled = provider.getScheduledExecutor();
+    scheduled.scheduleAtFixedRate(
         () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 1, TimeUnit.SECONDS);
   }
 

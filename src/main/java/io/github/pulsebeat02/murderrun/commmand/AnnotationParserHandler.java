@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import java.util.List;
+import java.util.concurrent.Executors;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.incendo.cloud.CommandManager;
@@ -13,17 +14,10 @@ import org.incendo.cloud.paper.LegacyPaperCommandManager;
 
 public final class AnnotationParserHandler {
 
-  private final List<AnnotationCommandFeature> features;
   private final CommandManager<CommandSender> manager;
   private final AnnotationParser<CommandSender> parser;
 
   public AnnotationParserHandler(final MurderRun plugin) {
-    this.features = List.of(
-        new ArenaCommand(),
-        new LobbyCommand(),
-        new HelpCommand(),
-        new GameCommand(),
-        new VillagerCommand());
     this.manager = this.getCommandManager(plugin);
     this.parser = this.getAnnotationParser(this.manager);
   }
@@ -31,38 +25,39 @@ public final class AnnotationParserHandler {
   private AnnotationParser<CommandSender> getAnnotationParser(
       @UnderInitialization AnnotationParserHandler this,
       final CommandManager<CommandSender> manager) {
-    final AnnotationParser<CommandSender> parser =
-        new AnnotationParser<>(manager, CommandSender.class);
+    final Class<CommandSender> sender = CommandSender.class;
+    final AnnotationParser<CommandSender> parser = new AnnotationParser<>(manager, sender);
     parser.descriptionMapper(RichDescription::translatable);
     return parser;
   }
 
   private CommandManager<CommandSender> getCommandManager(
       @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
+    final ExecutionCoordinator<CommandSender> coordinator = this.constructCoordinator();
     final LegacyPaperCommandManager<CommandSender> manager =
-        LegacyPaperCommandManager.createNative(plugin, ExecutionCoordinator.simpleCoordinator());
+        LegacyPaperCommandManager.createNative(plugin, coordinator);
+    this.registerBrigadierCapability(manager);
+    return manager;
+  }
+
+  private void registerBrigadierCapability(final LegacyPaperCommandManager<CommandSender> manager) {
     if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
       manager.registerBrigadier();
     }
-    return manager;
+  }
+
+  private ExecutionCoordinator<CommandSender> constructCoordinator() {
+    return ExecutionCoordinator.<CommandSender>builder()
+        .executor(Executors.newVirtualThreadPerTaskExecutor())
+        .build();
   }
 
   public CommandManager<CommandSender> getManager() {
     return this.manager;
   }
 
-  public List<AnnotationCommandFeature> getFeatures() {
-    return this.features;
-  }
-
-  public AnnotationParser<CommandSender> getParser() {
-    return this.parser;
-  }
-
-  public void registerCommands(final MurderRun plugin) {
-    this.features.forEach(feature -> {
-      feature.registerFeature(plugin, this.parser);
-      this.parser.parse(feature);
-    });
+  public void registerCommands() {
+    final List<AnnotationCommandFeature> features = Commands.getFeatures();
+    features.forEach(this.parser::parse);
   }
 }
