@@ -26,7 +26,6 @@ public final class MurderRun extends JavaPlugin {
   - Add Villager Trades for Traps
 
   - Create all killer gadgets
-  - Move ComponentUtils into PlayerManager class
   - Revamp Code in Game Package for Readability Purposes
 
    */

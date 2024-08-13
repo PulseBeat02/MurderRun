@@ -1,8 +1,13 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
+import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.KillerLocationTracker;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
+import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -11,8 +16,13 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.SoundCategory;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -182,5 +192,60 @@ public final class PlayerManager {
 
   public void showTitleForAllParticipants(final Component title, final Component subtitle) {
     this.applyToAllParticipants(player -> player.showTitle(title, subtitle));
+  }
+
+  public void playSoundForAllParticipants(final SoundKeys... keys) {
+    final String key = this.getRandomKey(keys);
+    final Key id = key(key);
+    this.applyToAllParticipants(player -> player.playSound(id, Source.MASTER, 1f, 1f));
+  }
+
+  private String getRandomKey(final SoundKeys... keys) {
+    final int bound = keys.length;
+    final int random = RandomUtils.generateInt(bound);
+    final SoundKeys chosen = keys[random];
+    return chosen.getSoundName();
+  }
+
+  public void playSoundForAllParticipants(final String... keys) {
+    final String id = this.getRandomKey(keys);
+    final Key key = key(id);
+    this.applyToAllParticipants(player -> player.playSound(key, Source.MASTER, 1f, 1f));
+  }
+
+  private String getRandomKey(final String... keys) {
+    final int bound = keys.length;
+    final int random = RandomUtils.generateInt(bound);
+    return keys[random];
+  }
+
+  public void playSoundForAllMurderers(final SoundKeys... keys) {
+    final String key = this.getRandomKey(keys);
+    final Key id = key(key);
+    this.applyToAllDead(player -> {
+      final Location location = player.getLocation();
+      player.playSound(id, Source.MASTER, 1f, 1f);
+    });
+  }
+
+  public void playSoundForAllInnocents(final SoundKeys... keys) {
+    final String key = this.getRandomKey(keys);
+    final Key id = key(key);
+    this.applyToAllInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
+  }
+
+  public void playSoundForAllParticipantsAtLocation(
+      final Location origin, final SoundKeys... keys) {
+    final String key = this.getRandomKey(keys);
+    final World world = requireNonNull(origin.getWorld());
+    world.playSound(origin, key, SoundCategory.MASTER, 1f, 1f);
+  }
+
+  public void showBossBarForAllParticipants(
+      final Component name,
+      final float progress,
+      final BossBar.Color color,
+      final BossBar.Overlay overlay) {
+    this.applyToAllParticipants(player -> player.showBossBar(name, progress, color, overlay));
   }
 }

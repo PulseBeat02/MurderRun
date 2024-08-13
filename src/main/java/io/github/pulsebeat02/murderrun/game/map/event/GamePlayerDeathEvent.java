@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.PlayerUtils;
 import java.util.Collection;
 import java.util.Iterator;
@@ -86,7 +85,8 @@ public final class GamePlayerDeathEvent implements Listener {
   }
 
   private void playDeathSoundEffect() {
-    ComponentUtils.playSoundForAllParticipants(this.game, SoundKeys.DEATH);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.playSoundForAllParticipants(SoundKeys.DEATH);
   }
 
   private boolean allInnocentDead() {

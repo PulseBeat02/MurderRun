@@ -5,7 +5,6 @@ import static net.kyori.adventure.text.Component.empty;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import net.kyori.adventure.text.Component;
 
 public final class GameCleanupTool {
@@ -44,8 +43,8 @@ public final class GameCleanupTool {
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllInnocents(innocentMessage, subtitle);
     manager.showTitleForAllMurderers(murdererMessage, subtitle);
-    ComponentUtils.playSoundForAllInnocents(this.game, SoundKeys.WIN);
-    ComponentUtils.playSoundForAllMurderers(this.game, SoundKeys.LOSS);
+    manager.playSoundForAllInnocents(SoundKeys.WIN);
+    manager.playSoundForAllMurderers(SoundKeys.LOSS);
   }
 
   private void invalidateTimer() {
@@ -60,8 +59,8 @@ public final class GameCleanupTool {
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllInnocents(innocentMessage, subtitle);
     manager.showTitleForAllMurderers(murdererMessage, subtitle);
-    ComponentUtils.playSoundForAllInnocents(this.game, SoundKeys.LOSS);
-    ComponentUtils.playSoundForAllMurderers(this.game, SoundKeys.WIN);
+    manager.playSoundForAllInnocents(SoundKeys.LOSS);
+    manager.playSoundForAllMurderers(SoundKeys.WIN);
   }
 
   private void announceMurdererTime() {

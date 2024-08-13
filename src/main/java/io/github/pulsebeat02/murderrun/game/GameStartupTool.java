@@ -10,7 +10,6 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -56,7 +55,8 @@ public final class GameStartupTool {
     final float progress = 0f;
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
-    ComponentUtils.showBossBarForAllParticipants(this.game, name, progress, color, overlay);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.showBossBarForAllParticipants(name, progress, color, overlay);
   }
 
   private void clearNetherStars() {
@@ -83,7 +83,8 @@ public final class GameStartupTool {
   }
 
   private void countDownAudio() {
-    ComponentUtils.playSoundForAllParticipants(this.game, SoundKeys.COUNTDOWN);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.playSoundForAllParticipants(SoundKeys.COUNTDOWN);
   }
 
   private void futureTask() {
@@ -109,8 +110,8 @@ public final class GameStartupTool {
   }
 
   private void playReleaseSoundEffect() {
-    ComponentUtils.playSoundForAllParticipants(
-        this.game, SoundKeys.RELEASED_1, SoundKeys.RELEASED_2);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.playSoundForAllParticipants(SoundKeys.RELEASED_1, SoundKeys.RELEASED_2);
   }
 
   private void startTimer() {
