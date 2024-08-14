@@ -76,9 +76,10 @@ public class PacketTools implements PacketToolAPI {
   public void sendGlowPacket(final Player watcher, final Entity glow) {
     final int id = glow.getEntityId();
     final CraftPlayer player = (CraftPlayer) watcher;
-    final ClientboundUpdateMobEffectPacket effect = new ClientboundUpdateMobEffectPacket(id,
-        new MobEffectInstance(MobEffects.GLOWING, Integer.MAX_VALUE, 0, true, true), false);
-    player.getHandle().connection.send(effect);
+    final MobEffectInstance effect = new MobEffectInstance(MobEffects.GLOWING, Integer.MAX_VALUE, 0, true, true);
+    final ClientboundUpdateMobEffectPacket packet = new ClientboundUpdateMobEffectPacket(id,
+        effect, false);
+    player.getHandle().connection.send(packet);
   }
 
   @Override

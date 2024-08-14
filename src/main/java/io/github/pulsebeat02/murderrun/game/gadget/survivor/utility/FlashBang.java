@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Locale;
@@ -25,7 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FlashBang extends SurvivorGadget implements Listener {
 
-  public FlashBang(final MurderRun plugin) {
+  public FlashBang() {
     super(
         "flash_bang",
         Material.SNOWBALL,

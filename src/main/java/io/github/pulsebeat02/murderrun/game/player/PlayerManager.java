@@ -82,12 +82,25 @@ public final class PlayerManager {
   public @Nullable GamePlayer getNearestKiller(final Location origin) {
     GamePlayer nearest = null;
     double min = Double.MAX_VALUE;
-    final Collection<Killer> killers = this.getMurderers();
-    for (final GamePlayer killer : killers) {
+    for (final GamePlayer killer : this.cachedKillers) {
       final Location location = killer.getLocation();
       final double distance = location.distanceSquared(origin);
       if (distance < min) {
         nearest = killer;
+        min = distance;
+      }
+    }
+    return nearest;
+  }
+
+  public @Nullable GamePlayer getNearestSurvivor(final Location origin) {
+    GamePlayer nearest = null;
+    double min = Double.MAX_VALUE;
+    for (final GamePlayer survivor : this.cachedSurvivors) {
+      final Location location = survivor.getLocation();
+      final double distance = location.distanceSquared(origin);
+      if (distance < min) {
+        nearest = survivor;
         min = distance;
       }
     }

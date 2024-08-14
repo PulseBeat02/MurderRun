@@ -44,6 +44,10 @@ public final class ItemUtils {
         != null;
   }
 
+  public static boolean isHook(final ItemStack stack) {
+    return getPersistentDataAttribute(stack, Keys.HOOK, PersistentDataType.BOOLEAN) != null;
+  }
+
   public static <P, C> boolean setPersistentDataAttribute(
       final ItemStack stack,
       final NamespacedKey key,

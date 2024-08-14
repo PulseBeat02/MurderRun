@@ -25,9 +25,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
@@ -38,24 +36,23 @@ public final class GadgetLoadingMechanism {
       new HashMap<>();
 
   static {
-    final Plugin plugin = JavaPlugin.getProvidingPlugin(MurderRun.class);
     final SurvivorGadgets[] survivorGadgets = SurvivorGadgets.values();
     final KillerGadgets[] killerGadgets = KillerGadgets.values();
     for (final SurvivorGadgets gadget : survivorGadgets) {
       final Class<?> clazz = gadget.getClazz();
-      handleGadgetClass(plugin, clazz);
+      handleGadgetClass(clazz);
     }
     for (final KillerGadgets gadget : killerGadgets) {
       final Class<?> clazz = gadget.getClazz();
-      handleGadgetClass(plugin, clazz);
+      handleGadgetClass(clazz);
     }
   }
 
   public static void init() {}
 
-  private static void handleGadgetClass(final Plugin plugin, final Class<?> clazz) {
+  private static void handleGadgetClass(final Class<?> clazz) {
     final Constructor<?> constructor = getConstructor(clazz);
-    final Gadget gadget = invokeGadgetConstructor(plugin, constructor);
+    final Gadget gadget = invokeGadgetConstructor(constructor);
     final String name = gadget.getName();
     final Pair<Gadget, Constructor<?>> pair = Pair.of(gadget, constructor);
     GADGET_LOOK_UP_MAP.put(name, pair);
@@ -70,12 +67,9 @@ public final class GadgetLoadingMechanism {
     return constructors[0];
   }
 
-  private static Gadget invokeGadgetConstructor(
-      final Plugin plugin, final Constructor<?> constructor) {
+  private static Gadget invokeGadgetConstructor(final Constructor<?> constructor) {
     try {
-      final Class<?>[] arguments = constructor.getParameterTypes();
-      final boolean hasPlugin = arguments.length == 1;
-      return (Gadget) (hasPlugin ? constructor.newInstance(plugin) : constructor.newInstance());
+      return (Gadget) constructor.newInstance();
     } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
       throw new AssertionError(e);
     }
@@ -90,20 +84,22 @@ public final class GadgetLoadingMechanism {
     final MurderRun run = manager.getPlugin();
     this.manager = manager;
     this.gameGadgets = this.getUsedGadgets(run);
-    this.killerGadgets = this.getKillerGadgets();
-    this.survivorGadgets = this.getSurvivorGadgets();
+    this.killerGadgets = this.getKillerGadgets(this.gameGadgets);
+    this.survivorGadgets = this.getSurvivorGadgets(this.gameGadgets);
   }
 
-  private Set<Gadget> getKillerGadgets(@UnderInitialization GadgetLoadingMechanism this) {
-    final Collection<Gadget> gadgets = this.gameGadgets.values();
+  private Set<Gadget> getKillerGadgets(
+      @UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
+    final Collection<Gadget> gadgets = gameGadgets.values();
     return gadgets.stream()
         .filter(StreamUtils.isInstanceOf(KillerGadget.class)
             .or(StreamUtils.isInstanceOf(KillerTrap.class)))
         .collect(Collectors.toSet());
   }
 
-  private Set<Gadget> getSurvivorGadgets(@UnderInitialization GadgetLoadingMechanism this) {
-    final Collection<Gadget> gadgets = this.gameGadgets.values();
+  private Set<Gadget> getSurvivorGadgets(
+      @UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
+    final Collection<Gadget> gadgets = gameGadgets.values();
     return gadgets.stream()
         .filter(StreamUtils.isInstanceOf(SurvivorGadget.class)
             .or(StreamUtils.isInstanceOf(SurvivorTrap.class)))
@@ -118,7 +114,7 @@ public final class GadgetLoadingMechanism {
     final Map<String, Gadget> gadgets = new HashMap<>();
     for (final Pair<Gadget, Constructor<?>> pair : gadgetClasses) {
       final Constructor<?> constructor = pair.second();
-      final Gadget gadget = invokeGadgetConstructor(plugin, constructor);
+      final Gadget gadget = invokeGadgetConstructor(constructor);
       if (gadget instanceof final Listener listener) {
         pluginManager.registerEvents(listener, plugin);
       }

@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Locale;
@@ -21,7 +20,7 @@ public final class Rewind extends SurvivorGadget implements Listener {
   private static final int BUFFER_SIZE = 5 * 5 * 20;
   private final Map<Player, CircularBuffer<SimpleEntry<Location, Long>>> playerLocations;
 
-  public Rewind(final MurderRun plugin) {
+  public Rewind() {
     super(
         "rewind",
         Material.DIAMOND,

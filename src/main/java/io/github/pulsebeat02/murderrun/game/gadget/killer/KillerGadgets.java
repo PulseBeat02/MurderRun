@@ -23,18 +23,19 @@ Trap Seeker: Allows the Killer to detect hidden traps
 Death Steed: Summons a Death Steed that follows where the survivors are, can ride on the horse
 All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing them to track their location and plans
 Health Cut: Reduces the health of all opponents to 1, allowing for them to be one-shot even if they have comparable durability
-
-LIST OF ALL KILLER TRAPS TO IMPLEMENT:
-
 Phantom: Allows the Killer to fly and float through walls for 15 seconds
 Death Hound: Summons a wolf that sniffs out and kills opponents
 Heat Seeker: Allows the killer to see all opponents within a certain range of him.
-EMP Blast: Destroys all traps on the map and stuns all opponents.
-Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
-Pumpkin Disease: Causes a disease in opponents which forces them to glow
-Fire Trail: Leaves a trail of fire wherever the Killer walks
 Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move faster
+Fire Trail: Leaves a trail of fire wherever the Killer walks
+Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
+Hook: Drags opponents closer to the killer
 
+LIST OF ALL KILLER TRAPS TO IMPLEMENT:
+
+EMP Blast: Destroys all traps on the map and stuns all opponents.
+Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
+Part Warp: Teleports the closest car part to the trap where the Killer put it.
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
 Corruption: Can resurrect dead opponents and corrupt them into joining his side
 Portal Gun: Allows the user to create portals wherever they please
@@ -42,9 +43,6 @@ The Reaper: Creates tentacles of darkness that slow/blind nearby opponents
 The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
 Gamble: Killing a player causes them to drop a random killer trap.
 Poison Smog: Covers the area in a poisonous smog
-Part Warp: Teleports the closest car part to the trap where the Killer put it.
-Hook: Drags opponents closer to the killer
-Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
 Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
 Burn the Body: Completely destroys the body of an opponent
 Ender Shadows: Creates animated shadows which causes opponents to light up when touched
@@ -71,6 +69,7 @@ Infinity Gauntlet: Allows the Killer to jump extremely high and create explosion
 Animatronic Alarm: Blinds, slows, jump scares, and makes the opponent visible to the Killer
 Brigette - Shield Bash: Bashing ground stuns survivors
 Paint Trap: Covers opponents in glow-in-the-dark paint for a short time
+Pumpkin Disease: Causes a disease in opponents which forces them to glow
 
 */ ;
 

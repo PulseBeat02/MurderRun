@@ -1,24 +1,23 @@
-package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
+package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-public final class Drone extends SurvivorGadget {
+public final class Phantom extends KillerGadget {
 
-  public Drone() {
+  public Phantom() {
     super(
-        "drone",
-        Material.ENDER_EYE,
-        Locale.DRONE_TRAP_NAME.build(),
-        Locale.DRONE_TRAP_LORE.build(),
-        32);
+        "phantom",
+        Material.PHANTOM_MEMBRANE,
+        Locale.PHANTOM_TRAP_NAME.build(),
+        Locale.PHANTOM_TRAP_LORE.build(),
+        48);
   }
 
   @Override
@@ -27,17 +26,13 @@ public final class Drone extends SurvivorGadget {
     super.onGadgetDrop(game, event, true);
 
     final Player player = event.getPlayer();
-    final Location origin = player.getLocation();
-    final Location drone = origin.add(0, 20, 0);
     player.setGameMode(GameMode.SPECTATOR);
-    player.teleport(drone);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setDefault(player, origin), 15 * 20L);
+    scheduler.scheduleTask(() -> this.setDefault(player), 15 * 20L);
   }
 
-  private void setDefault(final Player player, final Location origin) {
-    player.teleport(origin);
+  private void setDefault(final Player player) {
     player.setGameMode(GameMode.ADVENTURE);
   }
 }
