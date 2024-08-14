@@ -26,28 +26,29 @@ Health Cut: Reduces the health of all opponents to 1, allowing for them to be on
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
-Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
 Phantom: Allows the Killer to fly and float through walls for 15 seconds
 Death Hound: Summons a wolf that sniffs out and kills opponents
+Heat Seeker: Allows the killer to see all opponents within a certain range of him.
+EMP Blast: Destroys all traps on the map and stuns all opponents.
+Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
+Pumpkin Disease: Causes a disease in opponents which forces them to glow
+Fire Trail: Leaves a trail of fire wherever the Killer walks
+Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move faster
+
+Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
 Corruption: Can resurrect dead opponents and corrupt them into joining his side
 Portal Gun: Allows the user to create portals wherever they please
 The Reaper: Creates tentacles of darkness that slow/blind nearby opponents
-Heat Seeker: Allows the killer to see all opponents within a certain range of him.
 The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
-EMP Blast: Destroys all traps on the map and stuns all opponents.
 Gamble: Killing a player causes them to drop a random killer trap.
-Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
 Poison Smog: Covers the area in a poisonous smog
 Part Warp: Teleports the closest car part to the trap where the Killer put it.
 Hook: Drags opponents closer to the killer
 Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
 Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
 Burn the Body: Completely destroys the body of an opponent
-Pumpkin Disease: Causes a disease in opponents which forces them to glow
 Ender Shadows: Creates animated shadows which causes opponents to light up when touched
 Forewarn: If an opponent grabs a truck part, they will start to glow
-Fire Trail: Leaves a trail of fire wherever the Killer walks
-Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move faster
 Dormagogg: An evil being that blind, stuns, and illuminates opponents
 Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
 
