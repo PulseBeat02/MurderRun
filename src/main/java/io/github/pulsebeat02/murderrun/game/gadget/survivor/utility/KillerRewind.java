@@ -9,7 +9,6 @@ import io.github.pulsebeat02.murderrun.structure.CircularBuffer;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.WeakHashMap;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,7 +30,6 @@ public final class KillerRewind extends SurvivorGadget implements Listener {
         Locale.MURDERER_REWIND_TRAP_LORE.build(),
         16);
     this.playerLocations = new WeakHashMap<>();
-    Bukkit.getPluginManager().registerEvents(this, plugin);
   }
 
   @EventHandler

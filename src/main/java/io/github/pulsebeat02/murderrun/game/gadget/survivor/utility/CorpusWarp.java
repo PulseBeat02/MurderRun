@@ -7,10 +7,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
@@ -36,14 +32,7 @@ public final class CorpusWarp extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final Collection<GamePlayer> raw = manager.getDead();
-    final List<GamePlayer> alive = new ArrayList<>(raw);
-    if (alive.isEmpty()) {
-      return;
-    }
-
-    Collections.shuffle(alive);
-    final GamePlayer target = alive.getFirst();
+    final GamePlayer target = manager.getRandomDeadPlayer();
     final Location location = target.getDeathLocation();
     if (location == null) {
       return;

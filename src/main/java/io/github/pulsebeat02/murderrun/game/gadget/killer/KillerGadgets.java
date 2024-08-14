@@ -13,11 +13,12 @@ KILLER TRAPS IMPLEMENTED
 
 Red Arrow: Places a red beacon above any survivor nearby
 Player Tracker: Tells the Killer how close opponents are to the Killer
+Warp Distort: Swaps two opponents with each other to cause confusion
+Murderous Warp: Swaps the Killer and opponent's positions with teleportation
+Camera: Alerts the Killer if an opponent crosses the camera
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
-Camera: Alerts the Killer if an opponent crosses the camera
-Warp Distort: Swaps two opponents with each other to cause confusion
 Paint Trap: Covers opponents in glow-in-the-dark paint for a short time
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
 Trap Seeker: Allows the Killer to detect hidden traps
@@ -29,7 +30,6 @@ All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing
 Phantom: Allows the Killer to fly and float through walls for 15 seconds
 Death Hound: Summons a wolf that sniffs out and kills opponents
 Corruption: Can resurrect dead opponents and corrupt them into joining his side
-Murderous Warp: Swaps the Killer and opponent's positions with teleportation
 Portal Gun: Allows the user to create portals wherever they please
 The Reaper: Creates tentacles of darkness that slow/blind nearby opponents
 Heat Seeker: Allows the killer to see all opponents within a certain range of him.

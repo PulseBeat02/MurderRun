@@ -8,7 +8,9 @@ import io.github.pulsebeat02.murderrun.game.player.death.KillerLocationTracker;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -69,7 +71,7 @@ public final class PlayerManager {
         .map(murderer -> (Killer) murderer)
         .collect(Collectors.toSet());
     this.cachedDeadPlayers = this.lookupMap.values().stream()
-        .filter(player -> !player.isAlive())
+        .filter(StreamUtils.inverse(GamePlayer::isAlive))
         .collect(Collectors.toSet());
     this.cachedSurvivors = this.lookupMap.values().stream()
         .filter(player -> player instanceof Survivor)
@@ -243,5 +245,19 @@ public final class PlayerManager {
       final BossBar.Color color,
       final BossBar.Overlay overlay) {
     this.applyToAllParticipants(player -> player.showBossBar(name, progress, color, overlay));
+  }
+
+  public Survivor getRandomAliveInnocentPlayer() {
+    final List<Survivor> list = this.cachedSurvivors.stream()
+        .filter(Survivor::isAlive)
+        .collect(StreamUtils.toShuffledList());
+    return list.getFirst();
+  }
+
+  public Survivor getRandomDeadPlayer() {
+    final List<Survivor> list = this.cachedSurvivors.stream()
+        .filter(StreamUtils.inverse(Survivor::isAlive))
+        .collect(StreamUtils.toShuffledList());
+    return list.getFirst();
   }
 }

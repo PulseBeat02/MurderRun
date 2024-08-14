@@ -14,6 +14,7 @@ public final class Shield extends SurvivorGadget {
         Material.SHIELD,
         Locale.SHIELD_TRAP_NAME.build(),
         Locale.SHIELD_TRAP_LORE.build(),
+        16,
         stack -> {
           final ItemMeta meta = stack.getItemMeta();
           if (meta instanceof final Damageable damageable) {

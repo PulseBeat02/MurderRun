@@ -9,7 +9,6 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.util.List;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -36,7 +35,6 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
         16,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true));
-    Bukkit.getPluginManager().registerEvents(this, plugin);
   }
 
   @EventHandler

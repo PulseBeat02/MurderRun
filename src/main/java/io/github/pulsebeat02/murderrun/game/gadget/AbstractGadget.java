@@ -16,10 +16,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class AbstractGadget implements Gadget {
@@ -120,5 +122,18 @@ public abstract class AbstractGadget implements Gadget {
   @Override
   public int getPrice() {
     return this.cost;
+  }
+
+  @Override
+  public @NonNull MerchantRecipe createRecipe() {
+
+    requireNonNull(this.gadget);
+
+    final ItemStack ingredient = new ItemStack(Material.NETHER_STAR, this.cost);
+    final int uses = Integer.MAX_VALUE;
+    final MerchantRecipe recipe = new MerchantRecipe(this.gadget, uses);
+    recipe.addIngredient(ingredient);
+
+    return recipe;
   }
 }

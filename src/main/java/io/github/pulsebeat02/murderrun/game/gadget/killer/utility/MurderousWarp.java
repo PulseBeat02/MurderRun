@@ -8,16 +8,17 @@ import io.github.pulsebeat02.murderrun.locale.Locale;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-public final class WarpDistort extends KillerGadget {
+public final class MurderousWarp extends KillerGadget {
 
-  public WarpDistort() {
+  public MurderousWarp() {
     super(
-        "warp_distort",
-        Material.CHORUS_FRUIT,
-        Locale.WARP_DISTORT_TRAP_NAME.build(),
-        Locale.WARP_DISTORT_TRAP_LORE.build(),
+        "murderous_warp",
+        Material.REDSTONE,
+        Locale.MURDEROUS_WARP_TRAP_NAME.build(),
+        Locale.MURDEROUS_WARP_TRAP_LORE.build(),
         32);
   }
 
@@ -26,20 +27,18 @@ public final class WarpDistort extends KillerGadget {
 
     super.onGadgetDrop(game, event, true);
 
+    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer random = manager.getRandomAliveInnocentPlayer();
-    GamePlayer random2 = manager.getRandomAliveInnocentPlayer();
-    while (random == random2) {
-      random2 = manager.getRandomAliveInnocentPlayer();
-    }
+    final GamePlayer killer = manager.lookupPlayer(player).orElseThrow();
 
     final Location first = random.getLocation();
-    final Location second = random2.getLocation();
+    final Location second = killer.getLocation();
     random.teleport(second);
-    random2.teleport(first);
+    killer.teleport(first);
 
     final Component msg = Locale.WARP_DISTORT_ACTIVATE.build();
     random.sendMessage(msg);
-    random2.sendMessage(msg);
+    killer.sendMessage(msg);
   }
 }

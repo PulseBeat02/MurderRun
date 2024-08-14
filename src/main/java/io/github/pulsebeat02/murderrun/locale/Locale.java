@@ -284,7 +284,7 @@ public interface Locale extends LocaleTools {
       direct("murder_run.game.gadget.killer_tracker.activate", null);
   NullComponent<Sender> PLAYER_TRACKER_TRAP_NAME =
       direct("murder_run.game.gadget.player_tracker.name");
-  NullComponent<Sender> CAMERA_KILLER_TRAP_NAME =
+  NullComponent<Sender> KILLER_CAMERA_TRAP_NAME =
       direct("murder_run.game.gadget.camera_killer.name");
   NullComponent<Sender> WARP_DISTORT_TRAP_NAME = direct("murder_run.game.gadget.warp_distort.name");
   NullComponent<Sender> PAINT_TRAP_NAME = direct("murder_run.game.gadget.paint_trap.name");

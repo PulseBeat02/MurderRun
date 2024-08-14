@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
 
-    annotationProcessor 'org.incendo:cloud-annotations:2.0.0-rc.2'
+    annotationProcessor 'org.incendo:cloud-annotations:2.0.0-SNAPSHOT'
 
     compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT'
     compileOnly 'fastutil:fastutil:5.0.9'
@@ -55,7 +55,7 @@ dependencies {
     implementation 'org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT'
     implementation 'me.lucko:commodore:2.2'
 
-    testImplementation 'com.github.seeseemelk:MockBukkit-v1.21:3.99.1'
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.21:3.100.0'
     testImplementation 'team.unnamed:creative-api:1.7.3'
     testImplementation 'team.unnamed:creative-serializer-minecraft:1.7.3'
     testImplementation 'team.unnamed:creative-server:1.7.3'
@@ -133,6 +133,7 @@ shadowJar {
     dependencies {
         exclude(dependency('com.google.code.gson:gson:.*'))
         exclude(dependency('com.mojang:brigadier:.*'))
+        exclude(dependency('org.jetbrains:annotations:.*'))
     }
 }
 

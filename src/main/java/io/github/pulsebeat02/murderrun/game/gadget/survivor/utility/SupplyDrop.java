@@ -10,11 +10,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -104,30 +99,16 @@ public final class SupplyDrop extends SurvivorGadget {
     final int index = RandomUtils.generateInt(3);
     final String mask = AIR_DROP_MASKS[index];
     final ItemStack[] items = new ItemStack[mask.length()];
+    final GadgetManager manager = game.getGadgetManager();
+    final GadgetLoadingMechanism mechanism = manager.getMechanism();
     for (int i = 0; i < mask.length(); i++) {
       final char c = mask.charAt(i);
       if (c == 'A') {
-        final Gadget gadget = this.getRandomGadget(game);
+        final Gadget gadget = mechanism.getRandomGadget();
         final ItemStack stack = gadget.getGadget();
         items[i] = stack;
       }
     }
     return items;
-  }
-
-  private Gadget getRandomGadget(final Game game) {
-
-    final GadgetManager manager = game.getGadgetManager();
-    final GadgetLoadingMechanism mechanism = manager.getMechanism();
-    final Map<String, Gadget> map = mechanism.getGameGadgets();
-    final Collection<Gadget> gadgets = map.values();
-    if (gadgets.isEmpty()) {
-      throw new AssertionError("No gadgets found!");
-    }
-
-    final List<Gadget> list = new ArrayList<>(gadgets);
-    Collections.shuffle(list);
-
-    return list.getFirst();
   }
 }

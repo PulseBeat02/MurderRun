@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.awt.Color;
 import java.util.HashMap;
 import org.bukkit.Location;
@@ -57,7 +58,7 @@ public final class PartsManager {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
         () -> this.parts.values().stream()
-            .filter(part -> !part.isPickedUp())
+            .filter(StreamUtils.inverse(CarPart::isPickedUp))
             .forEach(this::spawnParticleOnPart),
         0,
         20);

@@ -1,13 +1,10 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.gadget.GameTrap;
-import io.github.pulsebeat02.murderrun.game.lobby.LobbyTrade;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyTrader;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.ArrayList;
-import java.util.Arrays;
+import io.github.pulsebeat02.murderrun.utils.TradingUtils;
 import java.util.List;
 import java.util.stream.Stream;
 import net.kyori.adventure.audience.Audience;
@@ -16,7 +13,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
@@ -28,12 +24,7 @@ import org.incendo.cloud.context.CommandContext;
 
 public final class VillagerCommand implements AnnotationCommandFeature {
 
-  private static final Stream<String> TRADE_SUGGESTIONS;
-
-  static {
-    final GameTrap[] values = GameTrap.values();
-    TRADE_SUGGESTIONS = Arrays.stream(values).map(GameTrap::name);
-  }
+  private static final Stream<String> TRADE_SUGGESTIONS = TradingUtils.getTradeSuggestions();
 
   private MurderRun plugin;
   private BukkitAudiences audiences;
@@ -53,27 +44,10 @@ public final class VillagerCommand implements AnnotationCommandFeature {
       final Player sender,
       @Argument(value = "args", suggestions = "traps") @Default("0") final String[] args) {
     final Location location = sender.getLocation();
-    final List<MerchantRecipe> recipes = this.parseRecipeOptions(args);
+    final List<MerchantRecipe> recipes = TradingUtils.parseRecipes(args);
     final LobbyTrader trader = new LobbyTrader(location, recipes);
     trader.spawnVillager();
     this.sendSuccessMessage(sender, Locale.VILLAGER_SPAWN.build());
-  }
-
-  private List<MerchantRecipe> parseRecipeOptions(final String[] args) {
-    final List<MerchantRecipe> recipes = new ArrayList<>();
-    for (final String trapName : args) {
-      final LobbyTrade trade = LobbyTrade.get(trapName);
-      if (trade != null) {
-        final ItemStack ingredient = trade.getCost();
-        final ItemStack reward = trade.getStack();
-        final List<ItemStack> ingredients = List.of(ingredient);
-        final int uses = Integer.MAX_VALUE;
-        final MerchantRecipe recipe = new MerchantRecipe(reward, uses);
-        recipe.setIngredients(ingredients);
-        recipes.add(recipe);
-      }
-    }
-    return recipes;
   }
 
   private void sendSuccessMessage(final Player player, final Component component) {

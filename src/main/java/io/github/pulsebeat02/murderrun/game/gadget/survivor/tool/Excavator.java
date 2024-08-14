@@ -14,6 +14,7 @@ public final class Excavator extends SurvivorGadget {
         Material.DIAMOND_PICKAXE,
         Locale.EXCAVATOR_TRAP_NAME.build(),
         Locale.EXCAVATOR_TRAP_LORE.build(),
+        32,
         stack -> {
           final ItemMeta meta = stack.getItemMeta();
           if (meta instanceof final Damageable damageable) {
