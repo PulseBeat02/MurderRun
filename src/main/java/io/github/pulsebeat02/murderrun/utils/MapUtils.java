@@ -35,4 +35,11 @@ public final class MapUtils {
     final double z = location.getZ();
     return BlockVector3.at(x, y, z);
   }
+
+  public static Location getAverageLocation(final Location first, final Location second) {
+    final double x = (first.getX() + second.getX()) / 2;
+    final double y = (first.getY() + second.getY()) / 2;
+    final double z = (first.getZ() + second.getZ()) / 2;
+    return new Location(first.getWorld(), x, y, z);
+  }
 }

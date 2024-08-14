@@ -30,11 +30,11 @@ Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move
 Fire Trail: Leaves a trail of fire wherever the Killer walks
 Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
 Hook: Drags opponents closer to the killer
+EMP Blast: Destroys all traps on the map and stuns all opponents.
+Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
-EMP Blast: Destroys all traps on the map and stuns all opponents.
-Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
 Part Warp: Teleports the closest car part to the trap where the Killer put it.
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
 Corruption: Can resurrect dead opponents and corrupt them into joining his side
