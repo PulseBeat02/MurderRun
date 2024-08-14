@@ -13,8 +13,9 @@ public class SurvivorGadget extends AbstractGadget {
       final String name,
       final Material material,
       final Component itemName,
-      final Component itemLore) {
-    super(name, material, itemName, itemLore);
+      final Component itemLore,
+      final int cost) {
+    super(name, material, itemName, itemLore, cost);
   }
 
   public SurvivorGadget(
@@ -22,7 +23,8 @@ public class SurvivorGadget extends AbstractGadget {
       final Material material,
       final Component itemName,
       final Component itemLore,
+      final int cost,
       final @Nullable Consumer<ItemStack> consumer) {
-    super(name, material, itemName, itemLore, consumer);
+    super(name, material, itemName, itemLore, cost, consumer);
   }
 }

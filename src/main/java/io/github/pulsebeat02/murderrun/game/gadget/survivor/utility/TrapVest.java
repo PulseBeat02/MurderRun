@@ -27,7 +27,8 @@ public final class TrapVest extends SurvivorGadget {
         "trap_vest",
         Material.TNT,
         Locale.TRAP_VEST_TRAP_NAME.build(),
-        Locale.TRAP_VEST_TRAP_LORE.build());
+        Locale.TRAP_VEST_TRAP_LORE.build(),
+        32);
   }
 
   @Override

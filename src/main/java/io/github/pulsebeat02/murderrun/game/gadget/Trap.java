@@ -27,8 +27,9 @@ public abstract class Trap extends AbstractGadget {
       final Component itemName,
       final Component itemLore,
       final Component announcement,
+      final int cost,
       final Color color) {
-    super(name, material, itemName, itemLore);
+    super(name, material, itemName, itemLore, cost);
     this.announcement = announcement;
     this.color = color;
   }

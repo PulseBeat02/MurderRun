@@ -38,7 +38,8 @@ public final class Camera extends SurvivorGadget {
         "camera",
         Material.ENDER_EYE,
         Locale.CAMERA_TRAP_NAME.build(),
-        Locale.CAMERA_TRAP_LORE.build());
+        Locale.CAMERA_TRAP_LORE.build(),
+        32);
     this.glowPlayers = Collections.newSetFromMap(new WeakHashMap<>());
   }
 

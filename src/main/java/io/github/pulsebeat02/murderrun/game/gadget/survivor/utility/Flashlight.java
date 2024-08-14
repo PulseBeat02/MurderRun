@@ -29,6 +29,7 @@ public final class Flashlight extends SurvivorGadget {
         Material.GOLDEN_SHOVEL,
         Locale.FLASHLIGHT_TRAP_NAME.build(),
         Locale.FLASHLIGHT_TRAP_LORE.build(),
+        48,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, 0L));
   }

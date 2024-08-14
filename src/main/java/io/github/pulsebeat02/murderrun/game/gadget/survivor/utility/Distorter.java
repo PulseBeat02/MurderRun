@@ -20,7 +20,8 @@ public final class Distorter extends SurvivorGadget {
         "distorter",
         Material.END_STONE,
         Locale.DISTORTER_TRAP_NAME.build(),
-        Locale.DISTORTER_TRAP_LORE.build());
+        Locale.DISTORTER_TRAP_LORE.build(),
+        32);
   }
 
   @Override

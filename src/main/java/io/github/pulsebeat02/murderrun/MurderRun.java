@@ -19,10 +19,9 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  - Add Innocent Traps for Survival
-  - Add Murderer Traps for Killing
   - Add Villager Trades for Traps
-
+  - Fix Issue where loading Gadgets causes Listener to be registered
+        - check if gadget is instanceof Listener and then register event
   - Create all killer gadgets
 
    */

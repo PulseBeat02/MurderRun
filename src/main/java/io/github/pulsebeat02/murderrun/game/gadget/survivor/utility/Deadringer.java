@@ -21,7 +21,8 @@ public final class Deadringer extends SurvivorGadget {
         "deadringer",
         Material.WITHER_SKELETON_SKULL,
         Locale.DEADRINGER_TRAP_NAME.build(),
-        Locale.DEADRINGER_TRAP_LORE.build());
+        Locale.DEADRINGER_TRAP_LORE.build(),
+        48);
   }
 
   @Override

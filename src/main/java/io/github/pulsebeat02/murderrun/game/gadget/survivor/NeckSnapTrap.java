@@ -20,6 +20,7 @@ public final class NeckSnapTrap extends SurvivorTrap {
         Locale.NECK_SNAP_TRAP_NAME.build(),
         Locale.NECK_SNAP_TRAP_LORE.build(),
         Locale.NECK_SNAP_TRAP_ACTIVATE.build(),
+        16,
         Color.GREEN);
   }
 

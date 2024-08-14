@@ -17,6 +17,7 @@ public final class BearTrap extends SurvivorTrap {
         Locale.BEAR_TRAP_NAME.build(),
         Locale.BEAR_TRAP_LORE.build(),
         Locale.BEAR_TRAP_ACTIVATE.build(),
+        16,
         new Color(35, 23, 9));
   }
 

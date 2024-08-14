@@ -18,7 +18,8 @@ public final class Tracker extends SurvivorGadget {
         "tracker",
         Material.TRIPWIRE_HOOK,
         Locale.TRACKER_TRAP_NAME.build(),
-        Locale.TRACKER_TRAP_LORE.build());
+        Locale.TRACKER_TRAP_LORE.build(),
+        64);
   }
 
   @Override

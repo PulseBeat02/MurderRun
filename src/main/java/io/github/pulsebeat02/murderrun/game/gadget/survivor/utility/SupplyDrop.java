@@ -53,7 +53,8 @@ public final class SupplyDrop extends SurvivorGadget {
         "supply_drop",
         Material.CHEST,
         Locale.SUPPLY_DROP_TRAP_NAME.build(),
-        Locale.SUPPLY_DROP_TRAP_LORE.build());
+        Locale.SUPPLY_DROP_TRAP_LORE.build(),
+        64);
   }
 
   @Override

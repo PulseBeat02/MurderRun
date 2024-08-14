@@ -20,6 +20,7 @@ public final class HackTrap extends SurvivorTrap {
         Locale.HACK_TRAP_NAME.build(),
         Locale.HACK_TRAP_LORE.build(),
         Locale.HACK_TRAP_ACTIVATE.build(),
+        48,
         Color.GREEN);
   }
 

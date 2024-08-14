@@ -22,7 +22,8 @@ public final class RandomTeleport extends SurvivorGadget {
         "random_teleport",
         Material.GOLDEN_CARROT,
         Locale.TP_ME_AWAY_FROM_HERE_TRAP_NAME.build(),
-        Locale.TP_ME_AWAY_FROM_HERE_TRAP_LORE.build());
+        Locale.TP_ME_AWAY_FROM_HERE_TRAP_LORE.build(),
+        32);
   }
 
   @Override

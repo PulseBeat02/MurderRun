@@ -18,7 +18,8 @@ public final class Chipped extends SurvivorGadget {
         "chipped",
         Material.GOLD_NUGGET,
         Locale.CHIPPED_TRAP_NAME.build(),
-        Locale.CHIPPED_TRAP_LORE.build());
+        Locale.CHIPPED_TRAP_LORE.build(),
+        32);
   }
 
   @Override

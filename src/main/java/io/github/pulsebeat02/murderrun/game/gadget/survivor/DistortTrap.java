@@ -18,6 +18,7 @@ public final class DistortTrap extends SurvivorTrap {
         Locale.DISTORT_TRAP_NAME.build(),
         Locale.DISTORT_TRAP_LORE.build(),
         Locale.DISTORT_TRAP_ACTIVATE.build(),
+        16,
         new Color(177, 156, 217));
   }
 

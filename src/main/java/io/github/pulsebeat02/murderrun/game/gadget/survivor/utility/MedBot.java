@@ -30,7 +30,8 @@ public final class MedBot extends SurvivorGadget {
         "med_bot",
         Material.CHORUS_FLOWER,
         Locale.MED_BOT_TRAP_NAME.build(),
-        Locale.MED_BOT_TRAP_LORE.build());
+        Locale.MED_BOT_TRAP_LORE.build(),
+        32);
   }
 
   @Override

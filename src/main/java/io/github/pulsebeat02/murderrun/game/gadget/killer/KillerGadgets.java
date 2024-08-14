@@ -1,17 +1,21 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer;
 
+import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.PlayerTracker;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.RedArrow;
+
 public enum KillerGadgets {
+  RED_ARROW(RedArrow.class),
+  PLAYER_TRACKER(PlayerTracker.class)
 
 /*
 
 KILLER TRAPS IMPLEMENTED
 
 Red Arrow: Places a red beacon above any survivor nearby
-
+Player Tracker: Tells the Killer how close opponents are to the Killer
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
-Player Tracker: Tells the Killer how close opponents are to the Killer
 Camera: Alerts the Killer if an opponent crosses the camera
 Warp Distort: Swaps two opponents with each other to cause confusion
 Paint Trap: Covers opponents in glow-in-the-dark paint for a short time

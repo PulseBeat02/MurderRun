@@ -27,7 +27,8 @@ public final class SixthSense extends SurvivorGadget {
         "sixth_sense",
         Material.ENDER_PEARL,
         Locale.SIXTH_SENSE_TRAP_NAME.build(),
-        Locale.SIXTH_SENSE_TRAP_LORE.build());
+        Locale.SIXTH_SENSE_TRAP_LORE.build(),
+        48);
     this.glowPlayerStates = ArrayListMultimap.create();
   }
 

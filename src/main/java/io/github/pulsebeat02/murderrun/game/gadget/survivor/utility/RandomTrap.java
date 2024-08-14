@@ -24,7 +24,8 @@ public final class RandomTrap extends SurvivorGadget {
         "random",
         Material.END_PORTAL_FRAME,
         Locale.RANDOM_TRAP_NAME.build(),
-        Locale.RANDOM_TRAP_LORE.build());
+        Locale.RANDOM_TRAP_LORE.build(),
+        16);
   }
 
   @Override

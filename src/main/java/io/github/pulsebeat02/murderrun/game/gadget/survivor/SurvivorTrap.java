@@ -13,7 +13,8 @@ public abstract class SurvivorTrap extends Trap {
       final Component itemName,
       final Component itemLore,
       final Component announcement,
+      final int cost,
       final Color color) {
-    super(name, material, itemName, itemLore, announcement, color);
+    super(name, material, itemName, itemLore, announcement, cost, color);
   }
 }

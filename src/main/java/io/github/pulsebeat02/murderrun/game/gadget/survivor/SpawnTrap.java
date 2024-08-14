@@ -20,6 +20,7 @@ public final class SpawnTrap extends SurvivorTrap {
         Locale.SPAWN_TRAP_NAME.build(),
         Locale.SPAWN_TRAP_LORE.build(),
         Locale.SPAWN_TRAP_ACTIVATE.build(),
+        32,
         Color.GRAY);
   }
 

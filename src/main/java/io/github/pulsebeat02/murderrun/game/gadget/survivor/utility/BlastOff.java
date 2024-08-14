@@ -24,7 +24,8 @@ public final class BlastOff extends SurvivorGadget {
         "blast_off",
         Material.FIREWORK_ROCKET,
         Locale.BLAST_OFF_TRAP_NAME.build(),
-        Locale.BLAST_OFF_TRAP_LORE.build());
+        Locale.BLAST_OFF_TRAP_LORE.build(),
+        32);
   }
 
   @Override

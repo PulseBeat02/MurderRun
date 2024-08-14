@@ -23,6 +23,7 @@ public final class PonyTrap extends SurvivorTrap {
         Locale.PONY_TRAP_NAME.build(),
         Locale.PONY_TRAP_LORE.build(),
         Locale.PONY_TRAP_ACTIVATE.build(),
+        16,
         new Color(177, 156, 217));
   }
 

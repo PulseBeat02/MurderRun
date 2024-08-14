@@ -17,7 +17,12 @@ public final class SpeedPendant extends SurvivorGadget {
 
   public SpeedPendant() {
     super(
-        "speed_pendant", Material.WHITE_DYE, Locale.SPEED_PENDANT_NAME.build(), empty(), stack -> {
+        "speed_pendant",
+        Material.WHITE_DYE,
+        Locale.SPEED_PENDANT_NAME.build(),
+        empty(),
+        48,
+        stack -> {
           final ItemMeta meta = requireNonNull(stack.getItemMeta());
           final NamespacedKey key = Attribute.GENERIC_MOVEMENT_SPEED.getKey();
           final AttributeModifier modifier =

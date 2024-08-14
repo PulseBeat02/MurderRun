@@ -18,6 +18,7 @@ public final class StarTrap extends SurvivorTrap {
         Locale.STAR_TRAP_NAME.build(),
         Locale.STAR_TRAP_LORE.build(),
         Locale.STAR_TRAP_ACTIVATE.build(),
+        16,
         new Color(255, 215, 0));
   }
 

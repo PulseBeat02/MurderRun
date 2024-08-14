@@ -18,6 +18,7 @@ public final class BurrowTrap extends SurvivorTrap {
         Locale.BURROW_TRAP_NAME.build(),
         Locale.BURROW_TRAP_LORE.build(),
         Locale.BURROW_TRAP_ACTIVATE.build(),
+        32,
         new Color(49, 42, 41));
   }
 

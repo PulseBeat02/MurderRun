@@ -33,6 +33,7 @@ public final class Translocator extends SurvivorGadget {
         Material.CHORUS_FLOWER,
         Locale.TRANSLOCATOR_TRAP_NAME.build(),
         Locale.TRANSLOCATOR_TRAP_LORE.build(),
+        64,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]));
   }

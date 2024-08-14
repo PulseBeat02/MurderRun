@@ -18,7 +18,8 @@ public final class MagnetMode extends SurvivorGadget {
         "magnet_mode",
         Material.IRON_INGOT,
         Locale.MAGNET_MODE_TRAP_NAME.build(),
-        Locale.MAGNET_MODE_TRAP_LORE.build());
+        Locale.MAGNET_MODE_TRAP_LORE.build(),
+        48);
   }
 
   @Override

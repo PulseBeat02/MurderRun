@@ -16,6 +16,7 @@ public final class MedKit extends SurvivorGadget {
         Material.SPLASH_POTION,
         Locale.MED_KIT_TRAP_NAME.build(),
         Locale.MED_KIT_TRAP_LORE.build(),
+        16,
         stack -> {
           final ItemMeta meta = stack.getItemMeta();
           if (meta instanceof final PotionMeta potionMeta) {

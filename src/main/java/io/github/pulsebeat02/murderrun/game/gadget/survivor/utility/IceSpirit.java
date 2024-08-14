@@ -26,7 +26,8 @@ public final class IceSpirit extends SurvivorGadget {
         "ice_spirit",
         Material.SNOWBALL,
         Locale.ICE_SPIRIT_TRAP_NAME.build(),
-        Locale.ICE_SPIRIT_TRAP_LORE.build());
+        Locale.ICE_SPIRIT_TRAP_LORE.build(),
+        16);
   }
 
   @Override

@@ -20,6 +20,7 @@ public final class GlowTrap extends SurvivorTrap {
         Locale.GLOW_TRAP_NAME.build(),
         Locale.GLOW_TRAP_LORE.build(),
         Locale.GLOW_TRAP_ACTIVATE.build(),
+        32,
         Color.YELLOW);
   }
 

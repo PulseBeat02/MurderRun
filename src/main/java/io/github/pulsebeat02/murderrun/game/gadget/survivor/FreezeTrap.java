@@ -17,6 +17,7 @@ public final class FreezeTrap extends SurvivorTrap {
         Locale.FREEZE_TRAP_NAME.build(),
         Locale.FREEZE_TRAP_LORE.build(),
         Locale.FREEZE_TRAP_ACTIVATE.build(),
+        32,
         Color.BLUE);
   }
 

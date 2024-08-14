@@ -17,7 +17,8 @@ public final class Cloak extends SurvivorGadget {
         "cloak",
         Material.WHITE_BANNER,
         Locale.CLOAK_TRAP_NAME.build(),
-        Locale.CLOAK_TRAP_LORE.build());
+        Locale.CLOAK_TRAP_LORE.build(),
+        32);
   }
 
   @Override

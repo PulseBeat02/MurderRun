@@ -19,7 +19,8 @@ public final class MindControl extends SurvivorGadget {
         "mind_control",
         Material.STRUCTURE_VOID,
         Locale.MIND_CONTROL_TRAP_NAME.build(),
-        Locale.MIND_CONTROL_TRAP_LORE.build());
+        Locale.MIND_CONTROL_TRAP_LORE.build(),
+        64);
   }
 
   @Override

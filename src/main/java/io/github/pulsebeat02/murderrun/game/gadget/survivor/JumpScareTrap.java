@@ -28,6 +28,7 @@ public final class JumpScareTrap extends SurvivorTrap {
         Locale.JUMP_SCARE_TRAP_NAME.build(),
         Locale.JUMP_SCARE_TRAP_LORE.build(),
         Locale.JUMP_SCARE_TRAP_ACTIVATE.build(),
+        32,
         Color.RED);
   }
 

@@ -25,7 +25,8 @@ public final class CorpusWarp extends SurvivorGadget {
         "corpus_warp",
         Material.PURPLE_STAINED_GLASS,
         Locale.CORPUS_WARP_TRAP_NAME.build(),
-        Locale.CORPUS_WARP_TRAP_LORE.build());
+        Locale.CORPUS_WARP_TRAP_LORE.build(),
+        32);
   }
 
   @Override

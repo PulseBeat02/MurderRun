@@ -17,7 +17,8 @@ public final class Drone extends SurvivorGadget {
         "drone",
         Material.ENDER_EYE,
         Locale.DRONE_TRAP_NAME.build(),
-        Locale.DRONE_TRAP_LORE.build());
+        Locale.DRONE_TRAP_LORE.build(),
+        32);
   }
 
   @Override

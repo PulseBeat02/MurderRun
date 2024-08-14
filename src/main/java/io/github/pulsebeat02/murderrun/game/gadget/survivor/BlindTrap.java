@@ -17,6 +17,7 @@ public final class BlindTrap extends SurvivorTrap {
         Locale.BLIND_TRAP_NAME.build(),
         Locale.BLIND_TRAP_LORE.build(),
         Locale.BLIND_TRAP_ACTIVATE.build(),
+        16,
         Color.BLACK);
   }
 

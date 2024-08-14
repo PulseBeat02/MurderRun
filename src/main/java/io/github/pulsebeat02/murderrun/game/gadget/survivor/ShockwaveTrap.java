@@ -23,6 +23,7 @@ public final class ShockwaveTrap extends SurvivorTrap {
         Locale.SHOCKWAVE_TRAP_NAME.build(),
         Locale.SHOCKWAVE_TRAP_LORE.build(),
         Locale.SHOCKWAVE_TRAP_ACTIVATE.build(),
+        32,
         new Color(255, 215, 0));
   }
 

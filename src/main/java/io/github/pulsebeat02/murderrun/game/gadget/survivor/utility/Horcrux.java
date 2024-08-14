@@ -19,7 +19,8 @@ public final class Horcrux extends SurvivorGadget {
         "horcrux",
         Material.CHARCOAL,
         Locale.HORCRUX_TRAP_NAME.build(),
-        Locale.HORCRUX_TRAP_LORE.build());
+        Locale.HORCRUX_TRAP_LORE.build(),
+        64);
   }
 
   @Override

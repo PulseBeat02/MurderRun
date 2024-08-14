@@ -20,6 +20,7 @@ public final class HauntTrap extends SurvivorTrap {
         Locale.HAUNT_TRAP_NAME.build(),
         Locale.HAUNT_TRAP_LORE.build(),
         Locale.HAUNT_TRAP_ACTIVATE.build(),
+        32,
         Color.GRAY);
   }
 

@@ -18,6 +18,7 @@ public final class GhostTrap extends SurvivorTrap {
         Locale.GHOST_TRAP_NAME.build(),
         Locale.GHOST_TRAP_LORE.build(),
         Locale.GHOST_TRAP_ACTIVATE.build(),
+        16,
         Color.WHITE);
   }
 

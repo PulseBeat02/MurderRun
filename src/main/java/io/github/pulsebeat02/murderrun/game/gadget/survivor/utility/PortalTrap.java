@@ -28,7 +28,8 @@ public final class PortalTrap extends SurvivorGadget {
         "portal",
         Material.PURPLE_WOOL,
         Locale.PORTAL_TRAP_NAME.build(),
-        Locale.PORTAL_TRAP_LORE.build());
+        Locale.PORTAL_TRAP_LORE.build(),
+        16);
   }
 
   @Override

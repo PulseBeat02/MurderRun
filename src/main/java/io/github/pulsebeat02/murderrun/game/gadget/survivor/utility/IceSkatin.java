@@ -22,7 +22,8 @@ public final class IceSkatin extends SurvivorGadget {
         "ice_skatin",
         Material.OAK_BOAT,
         Locale.ICE_SKATIN_TRAP_NAME.build(),
-        Locale.ICE_SKATIN_TRAP_LORE.build());
+        Locale.ICE_SKATIN_TRAP_LORE.build(),
+        32);
   }
 
   @Override

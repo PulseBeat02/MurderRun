@@ -23,7 +23,8 @@ public final class Decoy extends SurvivorGadget {
         "decoy",
         Material.GHAST_SPAWN_EGG,
         Locale.DECOY_TRAP_NAME.build(),
-        Locale.DECOY_TRAP_LORE.build());
+        Locale.DECOY_TRAP_LORE.build(),
+        8);
   }
 
   @Override

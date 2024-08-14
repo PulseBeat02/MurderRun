@@ -31,7 +31,8 @@ public final class Ghosting extends SurvivorGadget {
         "ghosting",
         Material.WHITE_WOOL,
         Locale.GHOSTING_TRAP_NAME.build(),
-        Locale.GHOSTING_TRAP_LORE.build());
+        Locale.GHOSTING_TRAP_LORE.build(),
+        96);
   }
 
   @Override

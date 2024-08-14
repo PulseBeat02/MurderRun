@@ -33,7 +33,8 @@ public final class LifeInsurance extends SurvivorGadget {
         "life_insurance",
         Material.RED_DYE,
         Locale.LIFE_INSURANCE_TRAP_NAME.build(),
-        Locale.LIFE_INSURANCE_TRAP_LORE.build());
+        Locale.LIFE_INSURANCE_TRAP_LORE.build(),
+        32);
     this.taskMap = ArrayListMultimap.create();
   }
 

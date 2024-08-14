@@ -21,6 +21,7 @@ public final class LevitationTrap extends SurvivorTrap {
         Locale.LEVITATION_TRAP_NAME.build(),
         Locale.LEVITATION_TRAP_LORE.build(),
         Locale.LEVITATION_TRAP_ACTIVATE.build(),
+        32,
         new Color(177, 156, 217));
   }
 

@@ -22,6 +22,7 @@ public final class JebTrap extends SurvivorTrap {
         Locale.JEB_TRAP_NAME.build(),
         Locale.JEB_TRAP_LORE.build(),
         Locale.JEB_TRAP_ACTIVATE.build(),
+        16,
         Color.WHITE);
   }
 

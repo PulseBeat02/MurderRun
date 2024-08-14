@@ -28,7 +28,8 @@ public final class KillerRewind extends SurvivorGadget implements Listener {
         "rewind",
         Material.DIAMOND,
         Locale.MURDERER_REWIND_TRAP_NAME.build(),
-        Locale.MURDERER_REWIND_TRAP_LORE.build());
+        Locale.MURDERER_REWIND_TRAP_LORE.build(),
+        16);
     this.playerLocations = new WeakHashMap<>();
     Bukkit.getPluginManager().registerEvents(this, plugin);
   }

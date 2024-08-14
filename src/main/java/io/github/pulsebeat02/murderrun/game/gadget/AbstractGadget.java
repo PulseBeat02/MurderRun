@@ -25,14 +25,16 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public abstract class AbstractGadget implements Gadget {
 
   private final String name;
+  private final int cost;
   private final ItemStack gadget;
 
   public AbstractGadget(
       final String name,
       final Material material,
       final Component itemName,
-      final Component itemLore) {
-    this(name, material, itemName, itemLore, null);
+      final Component itemLore,
+      final int cost) {
+    this(name, material, itemName, itemLore, cost, null);
   }
 
   public AbstractGadget(
@@ -40,8 +42,10 @@ public abstract class AbstractGadget implements Gadget {
       final Material material,
       final Component itemName,
       final Component itemLore,
+      final int cost,
       final @Nullable Consumer<ItemStack> consumer) {
     this.name = name;
+    this.cost = cost;
     this.gadget = this.constructItemStack(name, material, itemName, itemLore, consumer);
   }
 
@@ -111,5 +115,10 @@ public abstract class AbstractGadget implements Gadget {
   @Override
   public String getName() {
     return this.name;
+  }
+
+  @Override
+  public int getPrice() {
+    return this.cost;
   }
 }

@@ -26,6 +26,7 @@ public final class SpasmTrap extends SurvivorTrap {
         Locale.SPASM_TRAP_NAME.build(),
         Locale.SPASM_TRAP_LORE.build(),
         Locale.SPASM_TRAP_ACTIVATE.build(),
+        32,
         Color.RED);
     this.states = new WeakHashMap<>();
   }

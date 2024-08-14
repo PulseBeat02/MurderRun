@@ -22,7 +22,8 @@ public final class Parasite extends SurvivorGadget {
         "parasite",
         Material.VINE,
         Locale.PARASITE_TRAP_NAME.build(),
-        Locale.PARASITE_TRAP_LORE.build());
+        Locale.PARASITE_TRAP_LORE.build(),
+        48);
   }
 
   @Override

@@ -16,7 +16,11 @@ public final class Bush extends SurvivorGadget {
 
   public Bush() {
     super(
-        "bush", Material.OAK_LEAVES, Locale.BUSH_TRAP_NAME.build(), Locale.BUSH_TRAP_LORE.build());
+        "bush",
+        Material.OAK_LEAVES,
+        Locale.BUSH_TRAP_NAME.build(),
+        Locale.BUSH_TRAP_LORE.build(),
+        8);
   }
 
   @Override

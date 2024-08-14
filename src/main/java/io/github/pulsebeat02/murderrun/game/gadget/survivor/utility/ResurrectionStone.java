@@ -28,7 +28,8 @@ public final class ResurrectionStone extends SurvivorGadget {
         "resurrection_stone",
         Material.BEACON,
         Locale.RESURRECTION_STONE_TRAP_NAME.build(),
-        Locale.RESURRECTION_STONE_TRAP_LORE.build());
+        Locale.RESURRECTION_STONE_TRAP_LORE.build(),
+        128);
   }
 
   @Override

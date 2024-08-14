@@ -25,6 +25,7 @@ public final class CageTrap extends SurvivorTrap {
         Locale.CAGE_TRAP_NAME.build(),
         Locale.CAGE_TRAP_LORE.build(),
         Locale.CAGE_TRAP_ACTIVATE.build(),
+        48,
         Color.GRAY);
   }
 

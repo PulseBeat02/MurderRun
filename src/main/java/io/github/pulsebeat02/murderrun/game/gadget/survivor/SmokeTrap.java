@@ -20,6 +20,7 @@ public final class SmokeTrap extends SurvivorTrap {
         Locale.SMOKE_TRAP_NAME.build(),
         Locale.SMOKE_TRAP_LORE.build(),
         Locale.SMOKE_TRAP_ACTIVATE.build(),
+        16,
         Color.GRAY);
   }
 

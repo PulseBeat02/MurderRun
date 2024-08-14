@@ -21,7 +21,8 @@ public final class FriendWarp extends SurvivorGadget {
         "friend_warp",
         Material.EMERALD,
         Locale.FRIEND_WARP_TRAP_NAME.build(),
-        Locale.FRIEND_WARP_TRAP_LORE.build());
+        Locale.FRIEND_WARP_TRAP_LORE.build(),
+        32);
   }
 
   @Override

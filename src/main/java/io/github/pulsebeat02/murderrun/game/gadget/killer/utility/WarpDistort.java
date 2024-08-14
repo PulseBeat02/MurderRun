@@ -11,6 +11,7 @@ public final class WarpDistort extends KillerGadget {
         "warp_distort",
         Material.CHORUS_FRUIT,
         Locale.WARP_DISTORT_TRAP_NAME.build(),
-        Locale.WARP_DISTORT_TRAP_LORE.build());
+        Locale.WARP_DISTORT_TRAP_LORE.build(),
+        32);
   }
 }

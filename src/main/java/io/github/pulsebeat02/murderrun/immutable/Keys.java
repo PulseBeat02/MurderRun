@@ -16,6 +16,7 @@ public final class Keys {
   public static NamespacedKey FLASH_LIGHT_LAST_USE =
       createNamespacedPluginKey("flash-light-last-use");
   public static NamespacedKey TRANSLOCATOR = createNamespacedPluginKey("translocator");
+  public static NamespacedKey PLAYER_TRACKER = createNamespacedPluginKey("player-tracker");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

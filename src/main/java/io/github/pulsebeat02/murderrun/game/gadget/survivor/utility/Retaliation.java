@@ -23,7 +23,8 @@ public final class Retaliation extends SurvivorGadget {
         "retaliation",
         Material.GOLD_BLOCK,
         Locale.RETALIATION_TRAP_NAME.build(),
-        Locale.RETALIATION_TRAP_LORE.build());
+        Locale.RETALIATION_TRAP_LORE.build(),
+        32);
   }
 
   @Override

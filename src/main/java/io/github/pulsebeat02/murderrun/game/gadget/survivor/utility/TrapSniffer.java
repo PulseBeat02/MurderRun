@@ -31,7 +31,8 @@ public final class TrapSniffer extends SurvivorGadget {
         "trap_sniffer",
         Material.IRON_DOOR,
         Locale.TRAP_SNIFFER_TRAP_NAME.build(),
-        Locale.TRAP_SNIFFER_TRAP_LORE.build());
+        Locale.TRAP_SNIFFER_TRAP_LORE.build(),
+        64);
     this.glowItemStates = ArrayListMultimap.create();
   }
 

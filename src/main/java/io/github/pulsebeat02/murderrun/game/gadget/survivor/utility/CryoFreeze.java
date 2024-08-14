@@ -27,7 +27,8 @@ public final class CryoFreeze extends SurvivorGadget {
         "cryo_freeze",
         Material.ICE,
         Locale.CRYO_FREEZE_TRAP_NAME.build(),
-        Locale.CRYO_FREEZE_TRAP_LORE.build());
+        Locale.CRYO_FREEZE_TRAP_LORE.build(),
+        32);
   }
 
   @Override

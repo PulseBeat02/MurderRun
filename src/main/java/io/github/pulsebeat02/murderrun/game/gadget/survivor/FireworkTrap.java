@@ -27,6 +27,7 @@ public final class FireworkTrap extends SurvivorTrap {
         Locale.FIREWORK_TRAP_NAME.build(),
         Locale.FIREWORK_TRAP_LORE.build(),
         Locale.FIREWORK_TRAP_ACTIVATE.build(),
+        16,
         Color.RED);
   }
 
