@@ -3,18 +3,23 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerTrap;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -78,11 +83,31 @@ public final class GadgetLoadingMechanism {
 
   private final GadgetManager manager;
   private final Map<String, Gadget> gameGadgets;
+  private final Set<Gadget> killerGadgets;
+  private final Set<Gadget> survivorGadgets;
 
   public GadgetLoadingMechanism(final GadgetManager manager) {
     final MurderRun run = manager.getPlugin();
     this.manager = manager;
     this.gameGadgets = this.getUsedGadgets(run);
+    this.killerGadgets = this.getKillerGadgets();
+    this.survivorGadgets = this.getSurvivorGadgets();
+  }
+
+  private Set<Gadget> getKillerGadgets(@UnderInitialization GadgetLoadingMechanism this) {
+    final Collection<Gadget> gadgets = this.gameGadgets.values();
+    return gadgets.stream()
+        .filter(StreamUtils.isInstanceOf(KillerGadget.class)
+            .or(StreamUtils.isInstanceOf(KillerTrap.class)))
+        .collect(Collectors.toSet());
+  }
+
+  private Set<Gadget> getSurvivorGadgets(@UnderInitialization GadgetLoadingMechanism this) {
+    final Collection<Gadget> gadgets = this.gameGadgets.values();
+    return gadgets.stream()
+        .filter(StreamUtils.isInstanceOf(SurvivorGadget.class)
+            .or(StreamUtils.isInstanceOf(SurvivorTrap.class)))
+        .collect(Collectors.toSet());
   }
 
   private Map<String, Gadget> getUsedGadgets(
@@ -119,11 +144,15 @@ public final class GadgetLoadingMechanism {
     return this.gameGadgets.get(data);
   }
 
-  public Gadget getRandomGadget() {
-    final Collection<Gadget> gadgets = this.gameGadgets.values();
-    final List<Gadget> list = new ArrayList<>(gadgets);
-    Collections.shuffle(list);
-    return list.getFirst();
+  public Gadget getRandomInnocentGadget() {
+    final List<Gadget> gadgets =
+        this.survivorGadgets.stream().collect(StreamUtils.toShuffledList());
+    return gadgets.getFirst();
+  }
+
+  public Gadget getRandomKillerGadget() {
+    final List<Gadget> gadgets = this.killerGadgets.stream().collect(StreamUtils.toShuffledList());
+    return gadgets.getFirst();
   }
 
   public GadgetManager getManager() {

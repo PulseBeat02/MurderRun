@@ -1,45 +1,49 @@
-package io.github.pulsebeat02.murderrun.game.gadget.survivor;
+package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
-import java.awt.Color;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Material;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class JumpScareTrap extends SurvivorTrap {
+public final class Fright extends KillerGadget {
 
-  public JumpScareTrap() {
+  public Fright() {
     super(
-        "jump_scare",
+        "fright",
         Material.BLACK_CONCRETE,
-        Locale.JUMP_SCARE_TRAP_NAME.build(),
-        Locale.JUMP_SCARE_TRAP_LORE.build(),
-        Locale.JUMP_SCARE_TRAP_ACTIVATE.build(),
-        32,
-        Color.RED);
+        Locale.FRIGHT_TRAP_NAME.build(),
+        Locale.FRIGHT_TRAP_LORE.build(),
+        32);
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
 
-    final ItemStack before = this.setPumpkinItemStack(murderer);
-    final GameScheduler scheduler = game.getScheduler();
-    final Key key = SoundKeys.JUMP_SCARE.getSound().key();
-    murderer.playSound(key, Source.MASTER, 1f, 1f);
-    murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
+    super.onGadgetDrop(game, event, true);
 
-    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), 2 * 20);
+    final PlayerManager manager = game.getPlayerManager();
+    manager.applyToAllInnocents(survivor -> {
+      final ItemStack before = this.setPumpkinItemStack(survivor);
+      final GameScheduler scheduler = game.getScheduler();
+      final Key key = SoundKeys.JUMP_SCARE.getSound().key();
+      survivor.playSound(key, Source.MASTER, 1f, 1f);
+      survivor.addPotionEffects(
+          new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
+          new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
+      scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20);
+    });
   }
 
   private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {

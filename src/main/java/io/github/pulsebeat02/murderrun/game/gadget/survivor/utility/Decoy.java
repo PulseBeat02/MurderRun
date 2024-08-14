@@ -21,7 +21,7 @@ public final class Decoy extends SurvivorGadget {
   public Decoy() {
     super(
         "decoy",
-        Material.GHAST_SPAWN_EGG,
+        Material.PLAYER_HEAD,
         Locale.DECOY_TRAP_NAME.build(),
         Locale.DECOY_TRAP_LORE.build(),
         8);

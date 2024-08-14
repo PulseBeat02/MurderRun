@@ -22,8 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
-public abstract sealed class GamePlayer
-    implements io.github.pulsebeat02.murderrun.game.player.Player permits Survivor, Killer {
+public abstract sealed class GamePlayer implements Participant permits Survivor, Killer {
 
   private final Game game;
   private final UUID uuid;

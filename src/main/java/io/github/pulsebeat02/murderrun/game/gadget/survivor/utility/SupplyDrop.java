@@ -104,7 +104,7 @@ public final class SupplyDrop extends SurvivorGadget {
     for (int i = 0; i < mask.length(); i++) {
       final char c = mask.charAt(i);
       if (c == 'A') {
-        final Gadget gadget = mechanism.getRandomGadget();
+        final Gadget gadget = mechanism.getRandomInnocentGadget();
         final ItemStack stack = gadget.getGadget();
         items[i] = stack;
       }

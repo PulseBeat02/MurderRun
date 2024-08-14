@@ -41,7 +41,7 @@ import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public interface Player {
+public interface Participant {
 
   String GLOW_TEAM_NAME = "glow-color-%s";
   String HIDE_NAME_TAG_TEAM_NAME = "hide-name-tag-%s";

@@ -29,7 +29,7 @@ public final class RandomTrap extends SurvivorGadget {
     final Player player = event.getPlayer();
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
-    final Gadget gadget = mechanism.getRandomGadget();
+    final Gadget gadget = mechanism.getRandomInnocentGadget();
     final ItemStack stack = gadget.getGadget();
     final PlayerInventory inventory = player.getInventory();
     inventory.addItem(stack);

@@ -19,7 +19,7 @@ public final class PonyTrap extends SurvivorTrap {
   public PonyTrap() {
     super(
         "pony",
-        Material.HORSE_SPAWN_EGG,
+        Material.SADDLE,
         Locale.PONY_TRAP_NAME.build(),
         Locale.PONY_TRAP_LORE.build(),
         Locale.PONY_TRAP_ACTIVATE.build(),

@@ -18,7 +18,7 @@ public final class JebTrap extends SurvivorTrap {
   public JebTrap() {
     super(
         "jeb",
-        Material.SHEEP_SPAWN_EGG,
+        Material.CYAN_WOOL,
         Locale.JEB_TRAP_NAME.build(),
         Locale.JEB_TRAP_LORE.build(),
         Locale.JEB_TRAP_ACTIVATE.build(),

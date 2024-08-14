@@ -23,6 +23,10 @@ public final class StreamUtils {
     return predicate.negate();
   }
 
+  public static <T, U> Predicate<? super T> isInstanceOf(final Class<U> clazz) {
+    return clazz::isInstance;
+  }
+
   public static <T> Collector<T, ?, List<T>> toShuffledList() {
     return (Collector<T, ?, List<T>>) SHUFFLER;
   }

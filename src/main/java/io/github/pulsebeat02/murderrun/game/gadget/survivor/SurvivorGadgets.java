@@ -130,6 +130,7 @@ public enum SurvivorGadgets {
   - Trap functions too similar to another trap
   - Trap is not balanced or not worth implementing
   - Trap has controversial topics (for example, clickbait, demonetization, etc).
+  - Trap was superseded by another trap (for example, paint trap -> infrared vision)
 
   Jack-Jack - Laser Eyes -- shooting survivor makes them faster, murderer burns them
   Violet - Force Field Rift -- hold killer place with a force field that increases in strength longer item is on ground
