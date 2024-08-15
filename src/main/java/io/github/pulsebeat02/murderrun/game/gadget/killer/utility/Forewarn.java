@@ -7,7 +7,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,7 +47,7 @@ public final class Forewarn extends KillerGadget {
 
   private void handleForewarn(final Survivor survivor, final GamePlayer player) {
     if (survivor.hasCarPart()) {
-      PacketToolsProvider.INSTANCE.sendGlowPacket();
+      // PacketToolsProvider.INSTANCE.sendGlowPacket();
     }
   }
 }
