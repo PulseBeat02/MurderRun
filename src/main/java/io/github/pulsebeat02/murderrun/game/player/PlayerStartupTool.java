@@ -28,15 +28,15 @@ public final class PlayerStartupTool {
       player.setGameMode(GameMode.ADVENTURE);
       player.setHealth(20f);
       player.setFoodLevel(20);
-      player.setRespawnLocation(getSpawnLocation());
+      player.setRespawnLocation(this.getSpawnLocation());
     });
   }
 
   private Location getSpawnLocation() {
     final Game game = this.manager.getGame();
     final GameSettings settings = game.getSettings();
-    final Arena arena = settings.getArena();
-    return requireNonNull(arena.getSpawn());
+    final Arena arena = requireNonNull(settings.getArena());
+    return arena.getSpawn();
   }
 
   public void handleInnocent(final GamePlayer gamePlayer) {
