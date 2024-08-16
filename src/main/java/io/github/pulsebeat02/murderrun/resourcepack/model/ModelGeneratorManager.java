@@ -21,8 +21,6 @@ public final class ModelGeneratorManager {
   private static final String PUMPKIN_BLUR_RESOURCE_PATH = "pumpkinblur";
   private static final String PUMPKIN_BLUR_NAMESPACE = "pumpkinblur";
 
-  public ModelGeneratorManager() {}
-
   public Model customItemModelGenerator() {
     final List<ItemOverride> list = new ArrayList<>();
     final ItemTextureKeys[] textures = ItemTextureKeys.values();

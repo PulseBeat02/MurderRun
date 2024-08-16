@@ -150,6 +150,7 @@ public final class GameStartupTool {
           GameStartupTool.this.futureTask();
           this.cancel();
         }
+        default -> {} // Do nothing
       }
       GameStartupTool.this.setTimeRemaining(seconds);
     }

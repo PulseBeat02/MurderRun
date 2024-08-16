@@ -36,5 +36,6 @@ public final class PacketToolsProvider {
     INSTANCE = api;
   }
 
+  // instantiate packet api singleton
   public static void init() {}
 }

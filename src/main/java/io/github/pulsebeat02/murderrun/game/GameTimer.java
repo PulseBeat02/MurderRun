@@ -6,8 +6,6 @@ public final class GameTimer {
   private long endTime;
   private long elapsedTime;
 
-  public GameTimer() {}
-
   public void startTimer() {
     this.startTime = System.currentTimeMillis();
   }

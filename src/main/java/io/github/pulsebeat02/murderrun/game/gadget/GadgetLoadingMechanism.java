@@ -30,7 +30,7 @@ import org.incendo.cloud.type.tuple.Pair;
 
 public final class GadgetLoadingMechanism {
 
-  private static final Map<String, Pair<Gadget, Constructor<?>>> GADGET_LOOK_UP_MAP =
+  private static final Map<String, Pair<Gadget, Constructor<Object>>> GADGET_LOOK_UP_MAP =
       new HashMap<>();
 
   static {
@@ -46,18 +46,19 @@ public final class GadgetLoadingMechanism {
     }
   }
 
+  // initialize all static fields
   public static void init() {}
 
   private static void handleGadgetClass(final Class<?> clazz) {
-    final Constructor<?> constructor = getConstructor(clazz);
+    final Constructor<Object> constructor = getConstructor(clazz);
     final Gadget gadget = invokeGadgetConstructor(constructor);
     final String name = gadget.getName();
-    final Pair<Gadget, Constructor<?>> pair = Pair.of(gadget, constructor);
+    final Pair<Gadget, Constructor<Object>> pair = Pair.of(gadget, constructor);
     GADGET_LOOK_UP_MAP.put(name, pair);
   }
 
-  private static Constructor<?> getConstructor(final Class<?> clazz) {
-    final Constructor<?>[] constructors = clazz.getConstructors();
+  private static Constructor<Object> getConstructor(final Class<?> clazz) {
+    final Constructor<Object>[] constructors = (Constructor<Object>[]) clazz.getConstructors();
     if (constructors.length == 0) {
       final String message = "Couldn't find constructor of gadget class %s".formatted(clazz);
       throw new AssertionError(message);
@@ -106,9 +107,9 @@ public final class GadgetLoadingMechanism {
       @UnderInitialization GadgetLoadingMechanism this, final MurderRun plugin) {
     final Server server = plugin.getServer();
     final PluginManager pluginManager = server.getPluginManager();
-    final Collection<Pair<Gadget, Constructor<?>>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
+    final Collection<Pair<Gadget, Constructor<Object>>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
     final Map<String, Gadget> gadgets = new HashMap<>();
-    for (final Pair<Gadget, Constructor<?>> pair : gadgetClasses) {
+    for (final Pair<Gadget, Constructor<Object>> pair : gadgetClasses) {
       final Constructor<?> constructor = pair.second();
       final Gadget gadget = invokeGadgetConstructor(constructor);
       if (gadget instanceof final Listener listener) {
@@ -155,7 +156,7 @@ public final class GadgetLoadingMechanism {
     return this.gameGadgets;
   }
 
-  public static Map<String, Pair<Gadget, Constructor<?>>> getGadgetLookUpMap() {
+  public static Map<String, Pair<Gadget, Constructor<Object>>> getGadgetLookUpMap() {
     return GADGET_LOOK_UP_MAP;
   }
 }

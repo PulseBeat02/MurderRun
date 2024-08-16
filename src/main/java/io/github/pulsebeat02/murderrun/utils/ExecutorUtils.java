@@ -20,7 +20,7 @@ public final class ExecutorUtils {
         throw new AssertionError(msg);
       }
     } catch (final InterruptedException e) {
-      throw new AssertionError(e);
+      Thread.currentThread().interrupt();
     }
     return false;
   }

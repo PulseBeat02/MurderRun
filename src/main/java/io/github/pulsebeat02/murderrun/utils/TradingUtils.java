@@ -18,7 +18,7 @@ public final class TradingUtils {
   }
 
   public static Stream<String> getTradeSuggestions() {
-    final Collection<Pair<Gadget, Constructor<?>>> values =
+    final Collection<Pair<Gadget, Constructor<Object>>> values =
         GadgetLoadingMechanism.getGadgetLookUpMap().values();
     return values.stream().map(pair -> {
       final Gadget gadget = pair.first();
@@ -27,11 +27,11 @@ public final class TradingUtils {
   }
 
   public static List<MerchantRecipe> getAllRecipes() {
-    final Map<String, Pair<Gadget, Constructor<?>>> gadgets =
+    final Map<String, Pair<Gadget, Constructor<Object>>> gadgets =
         GadgetLoadingMechanism.getGadgetLookUpMap();
-    final Collection<Pair<Gadget, Constructor<?>>> values = gadgets.values();
+    final Collection<Pair<Gadget, Constructor<Object>>> values = gadgets.values();
     final List<MerchantRecipe> recipes = new ArrayList<>();
-    for (final Pair<Gadget, Constructor<?>> pair : values) {
+    for (final Pair<Gadget, Constructor<Object>> pair : values) {
       final Gadget gadget = pair.first();
       final MerchantRecipe recipe = gadget.createRecipe();
       recipes.add(recipe);
@@ -40,11 +40,11 @@ public final class TradingUtils {
   }
 
   public static List<MerchantRecipe> parseRecipes(final String[] args) {
-    final Map<String, Pair<Gadget, Constructor<?>>> gadgets =
+    final Map<String, Pair<Gadget, Constructor<Object>>> gadgets =
         GadgetLoadingMechanism.getGadgetLookUpMap();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String arg : args) {
-      final Pair<Gadget, Constructor<?>> pair = gadgets.get(arg);
+      final Pair<Gadget, Constructor<Object>> pair = gadgets.get(arg);
       if (pair != null) {
         final Gadget gadget = pair.first();
         final MerchantRecipe recipe = gadget.createRecipe();

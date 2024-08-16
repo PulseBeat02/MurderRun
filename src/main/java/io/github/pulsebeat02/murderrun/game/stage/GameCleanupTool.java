@@ -30,6 +30,7 @@ public final class GameCleanupTool {
         this.invalidateTimer();
       }
       case MURDERERS -> this.announceMurdererVictory();
+      default -> throw new IllegalStateException();
     }
     this.announceMurdererTime();
   }

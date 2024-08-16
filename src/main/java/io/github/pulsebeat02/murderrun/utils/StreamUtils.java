@@ -19,11 +19,11 @@ public final class StreamUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static <T> Predicate<? super T> inverse(final Predicate<? super T> predicate) {
+  public static <T> Predicate<T> inverse(final Predicate<T> predicate) {
     return predicate.negate();
   }
 
-  public static <T, U> Predicate<? super T> isInstanceOf(final Class<U> clazz) {
+  public static <T, U> Predicate<T> isInstanceOf(final Class<U> clazz) {
     return clazz::isInstance;
   }
 
