@@ -34,7 +34,7 @@ public final class Retaliation extends SurvivorGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Locale.RETALIATION_TRAP_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 

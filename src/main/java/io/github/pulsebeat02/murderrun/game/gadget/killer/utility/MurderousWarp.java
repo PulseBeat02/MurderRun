@@ -30,7 +30,7 @@ public final class MurderousWarp extends KillerGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer random = manager.getRandomAliveInnocentPlayer();
-    final GamePlayer killer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer killer = manager.getGamePlayer(player);
 
     final Location first = random.getLocation();
     final Location second = killer.getLocation();

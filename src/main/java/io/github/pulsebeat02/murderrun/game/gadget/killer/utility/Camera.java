@@ -46,7 +46,7 @@ public final class Camera extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
-    final GamePlayer killer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer killer = manager.getGamePlayer(player);
     final Location location = player.getLocation();
     final NPC npc = this.spawnNPC(location);
     final Entity entity = npc.getEntity();

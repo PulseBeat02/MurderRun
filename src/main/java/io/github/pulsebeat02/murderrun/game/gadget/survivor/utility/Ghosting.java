@@ -42,7 +42,7 @@ public final class Ghosting extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleGhosting(game, gamePlayer), false);
     gamePlayer.addDeathTask(task);

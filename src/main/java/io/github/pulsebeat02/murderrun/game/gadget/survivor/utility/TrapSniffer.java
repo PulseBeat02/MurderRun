@@ -42,7 +42,7 @@ public final class TrapSniffer extends SurvivorGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Locale.TRAP_SNIFFER_TRAP_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 
@@ -52,7 +52,7 @@ public final class TrapSniffer extends SurvivorGadget {
 
   private void handleTrapSniffing(final Game game, final GamePlayer player) {
     final Location origin = player.getLocation();
-    final Map map = game.getMurderMap();
+    final Map map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();

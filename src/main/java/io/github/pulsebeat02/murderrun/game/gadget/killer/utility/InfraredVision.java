@@ -29,7 +29,7 @@ public final class InfraredVision extends KillerGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer killer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer killer = manager.getGamePlayer(player);
     manager.applyToAllLivingInnocents(innocent -> this.setSurvivorGlow(innocent, killer));
 
     final GameScheduler scheduler = game.getScheduler();

@@ -6,7 +6,6 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
-import java.util.Optional;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,8 +39,9 @@ public final class GamePlayerBlockBreakEvent implements Listener {
       return;
     }
 
-    final Optional<GamePlayer> optional = this.game.checkIfValidEventPlayer(player);
-    if (optional.isEmpty()) {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final boolean valid = manager.checkPlayerExists(player);
+    if (!valid) {
       return;
     }
 
@@ -51,9 +51,8 @@ public final class GamePlayerBlockBreakEvent implements Listener {
       return;
     }
 
-    final GamePlayer murderer = optional.get();
+    final GamePlayer murderer = manager.getGamePlayer(player);
     final Location murdererLocation = murderer.getLocation();
-    final PlayerManager manager = this.game.getPlayerManager();
     if (murderer instanceof Killer) {
       manager.playSoundForAllParticipantsAtLocation(murdererLocation, SoundKeys.CHAINSAW);
     }

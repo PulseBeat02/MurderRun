@@ -47,7 +47,7 @@ public final class LifeInsurance extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location first = arena.getFirstCorner();

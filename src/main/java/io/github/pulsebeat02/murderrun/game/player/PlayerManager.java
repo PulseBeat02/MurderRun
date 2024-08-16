@@ -181,12 +181,19 @@ public final class PlayerManager {
     return this.cachedDeadPlayers;
   }
 
-  public Optional<GamePlayer> lookupPlayer(final UUID uuid) {
+  private Optional<GamePlayer> getGamePlayer(final UUID uuid) {
     return Optional.ofNullable(this.lookupMap.get(uuid));
   }
 
-  public Optional<GamePlayer> lookupPlayer(final Player player) {
-    return this.lookupPlayer(player.getUniqueId());
+  public GamePlayer getGamePlayer(final Player player) {
+    final UUID uuid = player.getUniqueId();
+    final Optional<GamePlayer> optional = this.getGamePlayer(uuid);
+    return optional.orElseThrow();
+  }
+
+  public boolean checkPlayerExists(final Player player) {
+    final UUID uuid = player.getUniqueId();
+    return this.lookupMap.containsKey(uuid);
   }
 
   public Game getGame() {

@@ -3,13 +3,11 @@ package io.github.pulsebeat02.murderrun.game;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.stage.GameCleanupTool;
 import io.github.pulsebeat02.murderrun.game.stage.GameStartupTool;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 import org.bukkit.entity.Player;
 
@@ -36,10 +34,6 @@ public final class Game {
 
   public GameSettings getConfiguration() {
     return this.configuration;
-  }
-
-  public GameTimer getMurderTimeManager() {
-    return this.murderGameTimer;
   }
 
   public void startGame(
@@ -73,11 +67,6 @@ public final class Game {
     this.map.shutdown();
   }
 
-  public Optional<GamePlayer> checkIfValidEventPlayer(final Player player) {
-    final PlayerManager manager = this.getPlayerManager();
-    return manager.lookupPlayer(player);
-  }
-
   public PlayerManager getPlayerManager() {
     return this.playerManager;
   }
@@ -90,7 +79,7 @@ public final class Game {
     return this.plugin;
   }
 
-  public Map getMurderMap() {
+  public Map getMap() {
     return this.map;
   }
 

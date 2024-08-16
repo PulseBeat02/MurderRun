@@ -33,21 +33,23 @@ Hook: Drags opponents closer to the killer
 EMP Blast: Destroys all traps on the map and stuns all opponents.
 Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
 Forewarn: If an opponent grabs a truck part, they will start to glow
+Part Warp: Teleports the closest car part to the trap where the Killer put it.
+The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
+
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
-Part Warp: Teleports the closest car part to the trap where the Killer put it.
+Poison Smog: Covers the area in a poisonous smog
+Dormagogg: An evil being that blind, stuns, and illuminates opponents
+Gamble: Killing a player causes them to drop a random killer trap.
+
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
 Corruption: Can resurrect dead opponents and corrupt them into joining his side
 Portal Gun: Allows the user to create portals wherever they please
 The Reaper: Creates tentacles of darkness that slow/blind nearby opponents
-The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
-Gamble: Killing a player causes them to drop a random killer trap.
-Poison Smog: Covers the area in a poisonous smog
 Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
 Burn the Body: Completely destroys the body of an opponent
 Ender Shadows: Creates animated shadows which causes opponents to light up when touched
-Dormagogg: An evil being that blind, stuns, and illuminates opponents
 Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
 
 */

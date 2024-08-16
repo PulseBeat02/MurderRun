@@ -59,7 +59,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
     item.remove();
 
-    final Map map = this.game.getMurderMap();
+    final Map map = this.game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final CarPart carPart = requireNonNull(manager.getCarPartItemStack(stack));
 
@@ -115,8 +115,14 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
   }
 
   private void setPlayerCarPartStatus(final Player thrower) {
+
     final PlayerManager manager = this.game.getPlayerManager();
-    final GamePlayer player = manager.lookupPlayer(thrower).orElseThrow();
+    final boolean exists = manager.checkPlayerExists(thrower);
+    if (!exists) {
+      return;
+    }
+
+    final GamePlayer player = manager.getGamePlayer(thrower);
     if (player instanceof final Survivor survivor) {
       survivor.setHasCarPart(false);
     }

@@ -46,7 +46,7 @@ public final class TrapSeeker extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Locale.TRAP_SEEKER_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 

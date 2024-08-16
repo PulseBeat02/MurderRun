@@ -38,7 +38,7 @@ public final class TrapVest extends SurvivorGadget {
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleTraps(gamePlayer, location, world), false);
     gamePlayer.addDeathTask(task);

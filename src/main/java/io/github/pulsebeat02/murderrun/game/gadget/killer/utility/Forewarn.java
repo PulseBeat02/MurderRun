@@ -38,7 +38,7 @@ public final class Forewarn extends KillerGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component msg = Locale.FOREWARN_ACTIVATE.build();
     gamePlayer.sendMessage(msg);
 
@@ -53,7 +53,7 @@ public final class Forewarn extends KillerGadget {
   private void handleForewarn(final GamePlayer gamePlayer, final GamePlayer player) {
 
     final Collection<GamePlayer> set = requireNonNull(this.glowStates.get(player));
-    if (!(gamePlayer instanceof Survivor survivor)) {
+    if (!(gamePlayer instanceof final Survivor survivor)) {
       return;
     }
 

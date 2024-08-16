@@ -108,7 +108,7 @@ public final class PlayerDeathTool {
       if (!ItemUtils.isCarPart(slot)) {
         continue;
       }
-      final Map map = this.game.getMurderMap();
+      final Map map = this.game.getMap();
       final PartsManager manager = map.getCarPartManager();
       final CarPart stack = requireNonNull(manager.getCarPartItemStack(slot));
       final Location death = requireNonNull(player.getLastDeathLocation());

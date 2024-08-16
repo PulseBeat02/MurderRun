@@ -46,7 +46,6 @@ public final class GadgetLoadingMechanism {
     }
   }
 
-
   public static void init() {
     // initialize all static fields
   }

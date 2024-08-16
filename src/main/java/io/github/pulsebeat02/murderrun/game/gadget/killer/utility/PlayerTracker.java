@@ -38,7 +38,7 @@ public final class PlayerTracker extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Location location = player.getLocation();
     final double distance = this.getNearestSurvivorDistance(manager, location);
     final int count = this.increaseAndGetSurvivorCount(player);

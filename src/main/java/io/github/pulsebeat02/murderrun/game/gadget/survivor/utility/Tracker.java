@@ -28,7 +28,7 @@ public final class Tracker extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     manager.applyToAllMurderers(killer -> this.handleGlowing(killer, gamePlayer));
   }
 

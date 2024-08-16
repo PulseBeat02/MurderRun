@@ -7,8 +7,8 @@ import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
-import java.util.Optional;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
@@ -54,15 +54,16 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
       return;
     }
 
-    final Optional<GamePlayer> optional = this.game.checkIfValidEventPlayer(player);
-    if (optional.isEmpty()) {
+    final PlayerManager playerManager = this.game.getPlayerManager();
+    final boolean valid = playerManager.checkPlayerExists(player);
+    if (!valid) {
       return;
     }
 
-    final GamePlayer gamePlayer = optional.get();
+    final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
     gamePlayer.onPlayerAttemptPickupPartEvent(event);
 
-    final Map map = this.game.getMurderMap();
+    final Map map = this.game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final CarPart carPart = requireNonNull(manager.getCarPartItemStack(stack));
     carPart.setPickedUp(true);

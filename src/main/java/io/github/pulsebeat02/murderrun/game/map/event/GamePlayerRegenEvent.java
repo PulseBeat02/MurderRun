@@ -1,8 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import java.util.Optional;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import java.util.Set;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -36,8 +35,9 @@ public final class GamePlayerRegenEvent implements Listener {
       return;
     }
 
-    final Optional<GamePlayer> optional = this.game.checkIfValidEventPlayer(player);
-    if (optional.isEmpty()) {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final boolean valid = manager.checkPlayerExists(player);
+    if (!valid) {
       return;
     }
 

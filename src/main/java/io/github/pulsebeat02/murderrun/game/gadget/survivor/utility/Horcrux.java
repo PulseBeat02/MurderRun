@@ -31,7 +31,7 @@ public final class Horcrux extends SurvivorGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleHorcrux(gamePlayer, location), true);
     gamePlayer.addDeathTask(task);

@@ -10,7 +10,6 @@ import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Optional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,17 +32,17 @@ public final class GamePlayerDeathEvent implements Listener {
   public void onPlayerDeath(final PlayerDeathEvent event) {
 
     final Player player = event.getEntity();
-    final Optional<GamePlayer> optional = this.game.checkIfValidEventPlayer(player);
-    if (optional.isEmpty()) {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final boolean valid = manager.checkPlayerExists(player);
+    if (!valid) {
       return;
     }
 
-    final GamePlayer gamePlayer = optional.get();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     if (this.checkDeathCancellation(gamePlayer)) {
       return;
     }
 
-    final PlayerManager manager = this.game.getPlayerManager();
     final PlayerDeathTool death = manager.getDeathManager();
     gamePlayer.setAlive(false);
     death.initiateDeathSequence(gamePlayer);
