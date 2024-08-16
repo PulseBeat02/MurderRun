@@ -32,7 +32,7 @@ public final class BurrowTrap extends SurvivorTrap {
     murderer.apply(player -> {
       final GameScheduler scheduler = game.getScheduler();
       this.burrow(player, location);
-      scheduler.scheduleTask(() -> this.setBackDefault(player, location), 20 * 7);
+      scheduler.scheduleTask(() -> this.setBackDefault(player, location), 7 * 20L);
     });
   }
 

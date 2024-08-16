@@ -17,8 +17,7 @@ public final class ExecutorUtils {
       if (!await) {
         final List<Runnable> tasks = service.shutdownNow();
         final String msg = createExecutorShutdownErrorMessage(tasks);
-        System.err.println(msg);
-        return false;
+        throw new AssertionError(msg);
       }
     } catch (final InterruptedException e) {
       throw new AssertionError(e);

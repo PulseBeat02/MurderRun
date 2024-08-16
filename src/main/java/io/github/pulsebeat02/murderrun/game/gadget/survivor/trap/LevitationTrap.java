@@ -34,8 +34,8 @@ public final class LevitationTrap extends SurvivorTrap {
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
     this.setLevitation(murderer, location);
-    scheduler.scheduleTask(() -> this.teleportBack(murderer, location), 20 * 7);
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, location), 0, 10, 20 * 7);
+    scheduler.scheduleTask(() -> this.teleportBack(murderer, location), 7 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, location), 0, 10, 7 * 20L);
   }
 
   private void setLevitation(final GamePlayer murderer, final Location location) {
