@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
@@ -33,8 +37,14 @@ public final class ServerResourcepack {
   }
 
   private void initializeFields() throws IOException {
-    this.path = Files.createTempFile(PACK_FILE_NAME, PACK_FILE_SUFFIX);
+    this.path = this.createTemporaryPath();
     this.pack = ResourcePack.resourcePack();
+  }
+
+  private Path createTemporaryPath() throws IOException {
+    final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwx------");
+    final FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(permissions);
+    return Files.createTempFile(PACK_FILE_NAME, PACK_FILE_SUFFIX, attr);
   }
 
   private void customizeMetaData() throws IOException {
