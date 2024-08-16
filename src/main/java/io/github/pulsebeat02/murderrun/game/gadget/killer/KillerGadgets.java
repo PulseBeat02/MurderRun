@@ -36,17 +36,15 @@ Forewarn: If an opponent grabs a truck part, they will start to glow
 Part Warp: Teleports the closest car part to the trap where the Killer put it.
 The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
 Dormagogg: An evil being that blind, stuns, and illuminates opponents
+Gamble: Killing a player causes them to drop a random killer trap.
+Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
+Poison Smog: Covers the area in a poisonous smog
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
-
-Poison Smog: Covers the area in a poisonous smog
-Gamble: Killing a player causes them to drop a random killer trap.
 
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
 Corruption: Can resurrect dead opponents and corrupt them into joining his side
 Portal Gun: Allows the user to create portals wherever they please
-The Reaper: Creates tentacles of darkness that slow/blind nearby opponents
-Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
 Burn the Body: Completely destroys the body of an opponent
 Ender Shadows: Creates animated shadows which causes opponents to light up when touched
 Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
@@ -71,6 +69,7 @@ Animatronic Alarm: Blinds, slows, jump scares, and makes the opponent visible to
 Brigette - Shield Bash: Bashing ground stuns survivors
 Paint Trap: Covers opponents in glow-in-the-dark paint for a short time
 Pumpkin Disease: Causes a disease in opponents which forces them to glow
+The Reaper: Creates tentacles of darkness that slow/blind nearby opponents
 
 */ ;
 

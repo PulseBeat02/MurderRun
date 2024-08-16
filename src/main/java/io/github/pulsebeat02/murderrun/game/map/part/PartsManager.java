@@ -12,6 +12,7 @@ import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.awt.Color;
+import java.util.Collection;
 import java.util.HashMap;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -56,8 +57,9 @@ public final class PartsManager {
   private void spawnParticles() {
     final Game game = this.map.getGame();
     final GameScheduler scheduler = game.getScheduler();
+    final Collection<CarPart> parts = this.parts.values();
     scheduler.scheduleRepeatedTask(
-        () -> this.parts.values().stream()
+        () -> parts.stream()
             .filter(StreamUtils.inverse(CarPart::isPickedUp))
             .forEach(this::spawnParticleOnPart),
         0,

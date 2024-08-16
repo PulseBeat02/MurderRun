@@ -64,6 +64,7 @@ public final class Game {
     this.gadgetManager.shutdown();
     this.cleanupManager.start(code);
     this.playerManager.resetAllPlayers();
+    this.scheduler.cancelAllTasks();
     this.map.shutdown();
   }
 

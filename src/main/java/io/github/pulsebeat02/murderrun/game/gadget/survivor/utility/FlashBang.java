@@ -55,7 +55,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
 
     final Location location = block.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.WHITE_ASH, location, 30, 1, 1, 1, 1, 1);
+    world.spawnParticle(Particle.WHITE_ASH, location, 30, 1, 1, 1, 1);
 
     final List<Entity> entities = entity.getNearbyEntities(1, 1, 1);
     for (final Entity nearby : entities) {

@@ -70,7 +70,7 @@ public final class Dormagogg extends KillerGadget {
         new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20, Integer.MAX_VALUE),
         new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1));
     killer.setEntityGlowingForPlayer(survivor);
-    scheduler.scheduleTask(() -> killer.removeEntityGlowingForPlayer(survivor), 7 * 20);
+    scheduler.scheduleTask(() -> killer.removeEntityGlowingForPlayer(survivor), 7 * 20L);
   }
 
   private Zombie spawnDormagogg(
