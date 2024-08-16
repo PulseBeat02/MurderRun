@@ -54,7 +54,7 @@ dependencies {
     implementation("org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT")
     implementation("me.lucko:commodore:2.2")
 
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.100.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.105.0")
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
