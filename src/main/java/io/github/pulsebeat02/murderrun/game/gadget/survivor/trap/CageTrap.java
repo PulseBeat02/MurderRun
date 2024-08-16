@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.survivor;
+package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static net.kyori.adventure.key.Key.key;
 

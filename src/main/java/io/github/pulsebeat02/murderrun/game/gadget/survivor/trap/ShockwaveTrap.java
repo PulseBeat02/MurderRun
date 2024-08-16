@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.survivor;
+package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
 
@@ -34,7 +34,7 @@ public final class ShockwaveTrap extends SurvivorTrap {
     final Location origin = survivor.getLocation();
     final World world = requireNonNull(origin.getWorld());
     world.createExplosion(origin, 0, false, false);
-    manager.applyToAllParticipants(participant -> applyShockwave(participant, origin));
+    manager.applyToAllParticipants(participant -> this.applyShockwave(participant, origin));
   }
 
   private void applyShockwave(final Participant participant, final Location origin) {

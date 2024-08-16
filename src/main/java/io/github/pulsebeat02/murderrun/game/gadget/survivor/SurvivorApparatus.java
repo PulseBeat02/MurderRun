@@ -1,3 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
-public interface SurvivorApparatus {}
+import io.github.pulsebeat02.murderrun.game.Apparatus;
+
+public interface SurvivorApparatus extends Apparatus {}
