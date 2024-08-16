@@ -4,7 +4,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
@@ -36,10 +35,10 @@ public final class Fright extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.applyToAllInnocents(survivor -> this.jumpScareSurvivor(survivor, scheduler));
+    manager.applyToAllLivingInnocents(survivor -> this.jumpScareSurvivor(survivor, scheduler));
   }
 
-  private void jumpScareSurvivor(final Survivor survivor, final GameScheduler scheduler) {
+  private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
     final ItemStack before = this.setPumpkinItemStack(survivor);
     final Key key = SoundKeys.JUMP_SCARE.getSound().key();
     survivor.playSound(key, Source.MASTER, 1f, 1f);

@@ -25,7 +25,7 @@ public final class StarTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(this::addPotionEffect);
+    manager.applyToAllLivingInnocents(this::addPotionEffect);
   }
 
   private void addPotionEffect(final GamePlayer player) {

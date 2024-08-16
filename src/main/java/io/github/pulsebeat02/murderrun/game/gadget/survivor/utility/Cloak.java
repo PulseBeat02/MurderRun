@@ -28,10 +28,11 @@ public final class Cloak extends SurvivorGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.applyToAllInnocents(GamePlayer::hideNameTag);
+    manager.applyToAllLivingInnocents(GamePlayer::hideNameTag);
 
     final Component message = Locale.CLOAK_TRAP_ACTIVATE.build();
-    manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
-    scheduler.scheduleTask(() -> manager.applyToAllInnocents(GamePlayer::showNameTag), 7 * 20L);
+    manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
+    scheduler.scheduleTask(
+        () -> manager.applyToAllLivingInnocents(GamePlayer::showNameTag), 7 * 20L);
   }
 }

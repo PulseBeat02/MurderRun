@@ -4,7 +4,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import java.util.Collections;
@@ -60,11 +59,12 @@ public final class Camera extends KillerGadget {
 
   private void handleCameraWatch(
       final PlayerManager manager, final Entity entity, final GamePlayer killer) {
-    manager.applyToAllInnocents(survivor -> this.handleGlowInnocent(survivor, entity, killer));
+    manager.applyToAllLivingInnocents(
+        survivor -> this.handleGlowInnocent(survivor, entity, killer));
   }
 
   private void handleGlowInnocent(
-      final Survivor survivor, final Entity entity, final GamePlayer killer) {
+      final GamePlayer survivor, final Entity entity, final GamePlayer killer) {
     if (survivor.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(survivor);
       killer.setEntityGlowingForPlayer(survivor);
@@ -75,7 +75,7 @@ public final class Camera extends KillerGadget {
     }
   }
 
-  private void setLookDirection(final Survivor killer, final Entity entity) {
+  private void setLookDirection(final GamePlayer killer, final Entity entity) {
     final Location origin = entity.getLocation();
     final Location look = killer.getLocation();
     final Vector direction = look.getDirection().subtract(origin.toVector());

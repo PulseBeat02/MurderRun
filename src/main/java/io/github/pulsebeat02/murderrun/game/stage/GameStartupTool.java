@@ -41,7 +41,7 @@ public final class GameStartupTool {
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllInnocents(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
+    manager.applyToAllLivingInnocents(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
   }
 
   private void announceHidePhase() {

@@ -36,6 +36,7 @@ public final class PlayerManager {
 
   private final Map<UUID, GamePlayer> lookupMap;
   private Collection<GamePlayer> cachedDeadPlayers;
+  private Collection<GamePlayer> cachedAlivePlayers;
   private Collection<Killer> cachedKillers;
   private Collection<Survivor> cachedSurvivors;
 
@@ -66,14 +67,17 @@ public final class PlayerManager {
   }
 
   public void resetCachedPlayers() {
-    this.cachedKillers = this.lookupMap.values().stream()
+    final Collection<GamePlayer> players = this.lookupMap.values();
+    this.cachedKillers = players.stream()
         .filter(player -> player instanceof Killer)
         .map(murderer -> (Killer) murderer)
         .collect(Collectors.toSet());
-    this.cachedDeadPlayers = this.lookupMap.values().stream()
+    this.cachedDeadPlayers = players.stream()
         .filter(StreamUtils.inverse(GamePlayer::isAlive))
         .collect(Collectors.toSet());
-    this.cachedSurvivors = this.lookupMap.values().stream()
+    this.cachedAlivePlayers =
+        players.stream().filter(GamePlayer::isAlive).collect(Collectors.toSet());
+    this.cachedSurvivors = players.stream()
         .filter(player -> player instanceof Survivor)
         .map(murderer -> (Survivor) murderer)
         .collect(Collectors.toSet());
@@ -145,12 +149,20 @@ public final class PlayerManager {
     manager.configure();
   }
 
-  public void applyToAllInnocents(final Consumer<Survivor> consumer) {
-    this.getInnocentPlayers().forEach(consumer);
+  public void applyToAllInnocents(final Consumer<GamePlayer> consumer) {
+    this.cachedAlivePlayers.forEach(consumer);
+  }
+
+  public void applyToAllLivingInnocents(final Consumer<GamePlayer> consumer) {
+    this.cachedAlivePlayers.forEach(consumer);
   }
 
   public Collection<Survivor> getInnocentPlayers() {
     return this.cachedSurvivors;
+  }
+
+  public Collection<GamePlayer> getAliveInnocentPlayers() {
+    return this.cachedAlivePlayers;
   }
 
   public void applyToAllMurderers(final Consumer<Killer> consumer) {
@@ -186,7 +198,9 @@ public final class PlayerManager {
   }
 
   public @Nullable GamePlayer removePlayer(final UUID uuid) {
-    return this.lookupMap.remove(uuid);
+    final GamePlayer result = this.lookupMap.remove(uuid);
+    this.resetCachedPlayers();
+    return result;
   }
 
   public void sendMessageToAllParticipants(final Component message) {
@@ -194,7 +208,7 @@ public final class PlayerManager {
   }
 
   public void showTitleForAllInnocents(final Component title, final Component subtitle) {
-    this.applyToAllInnocents(innocent -> innocent.showTitle(title, subtitle));
+    this.applyToAllLivingInnocents(innocent -> innocent.showTitle(title, subtitle));
   }
 
   public void showTitleForAllMurderers(final Component title, final Component subtitle) {
@@ -242,7 +256,7 @@ public final class PlayerManager {
   public void playSoundForAllInnocents(final SoundKeys... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
-    this.applyToAllInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
+    this.applyToAllLivingInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
   }
 
   public void playSoundForAllParticipantsAtLocation(

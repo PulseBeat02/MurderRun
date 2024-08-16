@@ -14,7 +14,7 @@ public final class PlayerStartupTool {
 
   public void configurePlayers() {
     this.manager.applyToAllMurderers(this::handleMurderer);
-    this.manager.applyToAllInnocents(this::handleInnocent);
+    this.manager.applyToAllLivingInnocents(this::handleInnocent);
   }
 
   private void handleAll(final GamePlayer gamePlayer) {

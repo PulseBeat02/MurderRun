@@ -68,15 +68,13 @@ public final class Camera extends SurvivorGadget {
 
   private void handleGlowMurderer(
       final Killer killer, final Entity entity, final Collection<Survivor> survivors) {
-    final Collection<GamePlayer> higher =
-        survivors.stream().map(player -> (GamePlayer) player).toList();
     if (killer.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(killer);
-      killer.setGlowColor(ChatColor.RED, higher);
+      killer.setGlowColor(ChatColor.RED, survivors);
       this.setLookDirection(killer, entity);
     } else if (this.glowPlayers.contains(killer)) {
       this.glowPlayers.remove(killer);
-      killer.removeGlow(higher);
+      killer.removeGlow(survivors);
     }
   }
 

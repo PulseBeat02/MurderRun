@@ -33,7 +33,7 @@ public final class Distorter extends SurvivorGadget {
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> handleAllKillers(manager, location), 0L, 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleAllKillers(manager, location), 0L, 20L);
   }
 
   private void handleAllKillers(final PlayerManager manager, final Location location) {
@@ -46,7 +46,7 @@ public final class Distorter extends SurvivorGadget {
     final double distance = location.distanceSquared(origin);
     if (distance <= 1) {
       final Component message = Locale.DISTORTER_TRAP_DEACTIVATE.build();
-      manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
+      manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
     } else if (distance <= 100) {
       killer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);
     }

@@ -37,6 +37,5 @@ public final class GamePlayerLeaveEvent implements Listener {
 
     final UUID uuid = player.getUniqueId();
     manager.removePlayer(uuid);
-    manager.resetCachedPlayers();
   }
 }

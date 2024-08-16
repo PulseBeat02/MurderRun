@@ -4,7 +4,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import net.kyori.adventure.text.Component;
@@ -31,20 +30,20 @@ public final class InfraredVision extends KillerGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer killer = manager.lookupPlayer(player).orElseThrow();
-    manager.applyToAllInnocents(innocent -> this.setSurvivorGlow(innocent, killer));
+    manager.applyToAllLivingInnocents(innocent -> this.setSurvivorGlow(innocent, killer));
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.removeGlow(killer, manager), 7 * 20L);
   }
 
-  private void setSurvivorGlow(final Survivor survivor, final GamePlayer killer) {
+  private void setSurvivorGlow(final GamePlayer survivor, final GamePlayer killer) {
     final Component msg = Locale.INFRARED_VISION_ACTIVATE.build();
     killer.setEntityGlowingForPlayer(survivor);
     survivor.sendMessage(msg);
   }
 
   private void removeGlow(final GamePlayer killer, final PlayerManager manager) {
-    manager.applyToAllInnocents(
+    manager.applyToAllLivingInnocents(
         innocent -> innocent.apply(survivor -> killer.removeEntityGlowingForPlayer(innocent)));
   }
 }

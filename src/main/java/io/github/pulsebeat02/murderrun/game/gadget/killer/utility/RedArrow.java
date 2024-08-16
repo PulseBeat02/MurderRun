@@ -54,7 +54,7 @@ public final class RedArrow extends KillerGadget {
   }
 
   private void handleSurvivors(final PlayerManager manager) {
-    manager.applyToAllInnocents(this::spawnParticleBeam);
+    manager.applyToAllLivingInnocents(this::spawnParticleBeam);
   }
 
   private void spawnParticleBeam(final GamePlayer player) {

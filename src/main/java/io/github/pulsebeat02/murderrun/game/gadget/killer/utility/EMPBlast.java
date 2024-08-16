@@ -10,8 +10,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -58,10 +58,10 @@ public final class EMPBlast extends KillerGadget {
     this.removeAllSurvivorGadgets(entities, mechanism);
 
     final PlayerManager playerManager = game.getPlayerManager();
-    playerManager.applyToAllInnocents(this::stunSurvivors);
+    playerManager.applyToAllLivingInnocents(this::stunSurvivors);
   }
 
-  private void stunSurvivors(final Survivor survivor) {
+  private void stunSurvivors(final GamePlayer survivor) {
     final Component msg = Locale.EMP_BLAST_ACTIVATE.build();
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 1),

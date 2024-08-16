@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.Location;
@@ -45,7 +45,7 @@ public final class DeathSteed extends KillerGadget {
   }
 
   private void handleSurvivors(final PlayerManager manager, final Horse horse) {
-    manager.applyToAllInnocents(survivor -> this.handleSurvivor(survivor, horse));
+    manager.applyToAllLivingInnocents(survivor -> this.handleSurvivor(survivor, horse));
   }
 
   private Horse spawnHorse(final World world, final Location location, final Player player) {
@@ -64,7 +64,7 @@ public final class DeathSteed extends KillerGadget {
     inventory.setSaddle(new ItemStack(Material.SADDLE));
   }
 
-  private void handleSurvivor(final Survivor survivor, final Horse horse) {
+  private void handleSurvivor(final GamePlayer survivor, final Horse horse) {
     final Location survivorLocation = survivor.getLocation();
     final Location horseLocation = horse.getLocation();
     final double distance = survivorLocation.distanceSquared(horseLocation);

@@ -158,7 +158,8 @@ public interface Participant {
     return !type.isSolid();
   }
 
-  default void setGlowColor(final ChatColor color, final Collection<GamePlayer> receivers) {
+  default void setGlowColor(
+      final ChatColor color, final Collection<? extends GamePlayer> receivers) {
     this.apply(player -> {
       final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
       final Scoreboard scoreboard = manager.getMainScoreboard();
@@ -175,7 +176,7 @@ public interface Participant {
     });
   }
 
-  default void removeGlow(final Collection<GamePlayer> receivers) {
+  default void removeGlow(final Collection<? extends GamePlayer> receivers) {
     this.apply(player -> {
       final PotionEffectType type = PotionEffectType.GLOWING;
       player.removePotionEffect(type);

@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.awt.Color;
 import java.util.Collection;
@@ -31,8 +30,8 @@ public final class KillerLocationTracker {
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
     final Location murdererLocation = murdererPlayer.getLocation();
     final PlayerManager manager = this.game.getPlayerManager();
-    final Collection<Survivor> survivors = manager.getInnocentPlayers();
-    for (final Survivor survivor : survivors) {
+    final Collection<GamePlayer> survivors = manager.getAliveInnocentPlayers();
+    for (final GamePlayer survivor : survivors) {
       final Location location = survivor.getLocation();
       if (location.distanceSquared(murdererLocation) > 16) {
         continue;

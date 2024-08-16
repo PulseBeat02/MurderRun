@@ -2,8 +2,8 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import net.kyori.adventure.text.Component;
@@ -28,10 +28,10 @@ public final class BloodCurse extends KillerGadget {
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
     super.onGadgetDrop(game, event, true);
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(survivor -> this.scheduleTaskForSurvivors(game, survivor));
+    manager.applyToAllLivingInnocents(survivor -> this.scheduleTaskForSurvivors(game, survivor));
   }
 
-  private void scheduleTaskForSurvivors(final Game game, final Survivor survivor) {
+  private void scheduleTaskForSurvivors(final Game game, final GamePlayer survivor) {
 
     final Component msg = Locale.BLOOD_CURSE_ACTIVATE.build();
     survivor.sendMessage(msg);
@@ -40,7 +40,7 @@ public final class BloodCurse extends KillerGadget {
     scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 20);
   }
 
-  private void setBloodBlock(final Survivor survivor) {
+  private void setBloodBlock(final GamePlayer survivor) {
     final Location location = survivor.getLocation();
     final Block block = location.getBlock();
     final Block replace = block.getRelative(BlockFace.UP);

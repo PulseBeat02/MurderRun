@@ -29,11 +29,9 @@ public final class GlowTrap extends SurvivorTrap {
 
     final PlayerManager manager = game.getPlayerManager();
     final Collection<Survivor> players = manager.getInnocentPlayers();
-    final Collection<GamePlayer> higher =
-        players.stream().map(player -> (GamePlayer) player).toList();
-    murderer.setGlowColor(ChatColor.RED, higher);
+    murderer.setGlowColor(ChatColor.RED, players);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> murderer.removeGlow(higher), 7 * 20L);
+    scheduler.scheduleTask(() -> murderer.removeGlow(players), 7 * 20L);
   }
 }

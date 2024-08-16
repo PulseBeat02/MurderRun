@@ -59,7 +59,7 @@ public final class MedBot extends SurvivorGadget {
   }
 
   private void handleMedBotUpdate(final PlayerManager manager, final ArmorStand stand) {
-    manager.applyToAllInnocents(innocent -> {
+    manager.applyToAllLivingInnocents(innocent -> {
       this.handleInnocentEffects(innocent, stand);
       this.handleKillerDestroy(manager, innocent, stand);
     });
@@ -72,7 +72,7 @@ public final class MedBot extends SurvivorGadget {
     final double distance = origin.distanceSquared(location);
     if (distance <= 1) {
       final Component message = Locale.MED_BOT_TRAP_DEACTIVATE.build();
-      manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
+      manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
       stand.remove();
     }
   }

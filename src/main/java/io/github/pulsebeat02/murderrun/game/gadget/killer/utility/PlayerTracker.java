@@ -6,11 +6,9 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
-import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -65,15 +63,14 @@ public final class PlayerTracker extends KillerGadget {
   }
 
   private double getNearestSurvivorDistance(final PlayerManager manager, final Location origin) {
-    double min = Double.MAX_VALUE;
-    final Collection<Survivor> survivors = manager.getInnocentPlayers();
-    for (final GamePlayer survivor : survivors) {
+    final double[] min = {Double.MAX_VALUE};
+    manager.applyToAllLivingInnocents(survivor -> {
       final Location location = survivor.getLocation();
       final double distance = location.distanceSquared(origin);
-      if (distance < min) {
-        min = distance;
+      if (distance < min[0]) {
+        min[0] = distance;
       }
-    }
-    return min;
+    });
+    return min[0];
   }
 }

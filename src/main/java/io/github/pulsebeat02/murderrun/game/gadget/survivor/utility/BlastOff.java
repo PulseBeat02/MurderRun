@@ -42,7 +42,7 @@ public final class BlastOff extends SurvivorGadget {
     }
 
     final Component message = Locale.BLAST_OFF_TRAP_ACTIVATE.build();
-    manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
+    manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
     killer.apply(this::spawnRocket);
   }
 

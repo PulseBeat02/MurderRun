@@ -44,13 +44,19 @@ public final class Forewarn extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllInnocents(survivor -> this.handleForewarn(survivor, gamePlayer)),
+        () -> manager.applyToAllLivingInnocents(
+            survivor -> this.handleForewarn(survivor, gamePlayer)),
         0,
         60);
   }
 
-  private void handleForewarn(final Survivor survivor, final GamePlayer player) {
+  private void handleForewarn(final GamePlayer gamePlayer, final GamePlayer player) {
+
     final Collection<GamePlayer> set = requireNonNull(this.glowStates.get(player));
+    if (!(gamePlayer instanceof Survivor survivor)) {
+      return;
+    }
+
     if (survivor.hasCarPart()) {
       set.add(survivor);
       player.setEntityGlowingForPlayer(survivor);

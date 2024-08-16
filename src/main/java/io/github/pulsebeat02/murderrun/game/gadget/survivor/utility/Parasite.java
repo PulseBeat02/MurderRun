@@ -37,7 +37,7 @@ public final class Parasite extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilCondition(
-        () -> handleKillers(manager, origin, item), 0, 40, item::isDead);
+        () -> this.handleKillers(manager, origin, item), 0, 40, item::isDead);
   }
 
   private void handleKillers(final PlayerManager manager, final Location origin, final Item item) {
@@ -54,7 +54,7 @@ public final class Parasite extends SurvivorGadget {
     final double distance = origin.distanceSquared(location);
     if (distance <= 1) {
       final Component message = Locale.PARASITE_TRAP_DEACTIVATE.build();
-      manager.applyToAllInnocents(survivor -> survivor.sendMessage(message));
+      manager.applyToAllLivingInnocents(survivor -> survivor.sendMessage(message));
       item.remove();
     } else if (distance <= 100) {
       player.addPotionEffects(
