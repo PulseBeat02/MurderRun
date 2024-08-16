@@ -46,8 +46,10 @@ public final class GadgetLoadingMechanism {
     }
   }
 
-  // initialize all static fields
-  public static void init() {}
+
+  public static void init() {
+    // initialize all static fields
+  }
 
   private static void handleGadgetClass(final Class<?> clazz) {
     final Constructor<Object> constructor = getConstructor(clazz);
