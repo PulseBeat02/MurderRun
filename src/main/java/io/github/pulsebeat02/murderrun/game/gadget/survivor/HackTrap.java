@@ -29,7 +29,7 @@ public final class HackTrap extends SurvivorTrap {
     final ItemStack stack = this.removeSwordItemStack(murderer);
     final GameScheduler scheduler = game.getScheduler();
     if (stack != null) {
-      scheduler.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20);
+      scheduler.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20L);
     }
   }
 

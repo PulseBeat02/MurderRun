@@ -57,7 +57,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final Location location = block.getLocation();
     final World world = requireNonNull(location.getWorld());
     final UnattachedTemporaryRepeatedTask task = new UnattachedTemporaryRepeatedTask(
-        () -> world.spawnParticle(Particle.SMOKE, location, 50, 2, 2, 2), 10, 5 * 20);
+        () -> world.spawnParticle(Particle.SMOKE, location, 50, 2, 2, 2), 10, 5 * 20L);
     task.run();
 
     final List<Entity> entities = entity.getNearbyEntities(1, 1, 1);

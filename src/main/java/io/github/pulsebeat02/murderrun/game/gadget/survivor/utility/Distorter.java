@@ -33,11 +33,11 @@ public final class Distorter extends SurvivorGadget {
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllMurderers(
-            killer -> this.applyDistortionEffect(manager, killer, location)),
-        0L,
-        20L);
+    scheduler.scheduleRepeatedTask(() -> handleAllKillers(manager, location), 0L, 20L);
+  }
+
+  private void handleAllKillers(final PlayerManager manager, final Location location) {
+    manager.applyToAllMurderers(killer -> this.applyDistortionEffect(manager, killer, location));
   }
 
   private void applyDistortionEffect(

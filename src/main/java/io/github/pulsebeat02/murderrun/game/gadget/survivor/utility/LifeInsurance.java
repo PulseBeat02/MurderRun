@@ -9,12 +9,14 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,10 +58,10 @@ public final class LifeInsurance extends SurvivorGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    final BukkitTask task = scheduler.scheduleTask(
-        () -> manager.applyToAllMurderers(
-            killer -> this.checkKillerDistance(killer, gamePlayer, world, first, second)),
-        20L);
+    final Consumer<Killer> consumer =
+        killer -> this.checkKillerDistance(killer, gamePlayer, world, first, second);
+    final BukkitTask task =
+        scheduler.scheduleTask(() -> manager.applyToAllMurderers(consumer), 20L);
     this.taskMap.put(gamePlayer, task);
   }
 

@@ -24,6 +24,7 @@ public final class BurrowTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
+
     final Location location = murderer.getLocation();
     final Location clone = location.clone();
     clone.subtract(0, 50, 0);

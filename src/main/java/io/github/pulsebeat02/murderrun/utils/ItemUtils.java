@@ -3,8 +3,10 @@ package io.github.pulsebeat02.murderrun.utils;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.immutable.Keys;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -14,6 +16,17 @@ public final class ItemUtils {
 
   private ItemUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static boolean setDurability(final ItemStack stack, final int durability) {
+    final ItemMeta meta = stack.getItemMeta();
+    if (meta instanceof final Damageable damageable) {
+      final Material material = stack.getType();
+      final int max = material.getMaxDurability();
+      final int damage = max - durability;
+      damageable.setDamage(damage);
+    }
+    return stack.setItemMeta(meta);
   }
 
   public static boolean isCarPart(final ItemStack stack) {

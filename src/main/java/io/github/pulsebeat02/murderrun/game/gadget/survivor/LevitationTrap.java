@@ -27,6 +27,7 @@ public final class LevitationTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
+
     final Location location = murderer.getLocation();
     location.add(0, 10, 0);
 

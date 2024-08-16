@@ -43,7 +43,7 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
     random.apply(survivor -> this.setPlayerState(player, survivor));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetPlayerState(player), 7 * 20);
+    scheduler.scheduleTask(() -> this.resetPlayerState(player), 7 * 20L);
   }
 
   private void resetPlayerState(final Player player) {

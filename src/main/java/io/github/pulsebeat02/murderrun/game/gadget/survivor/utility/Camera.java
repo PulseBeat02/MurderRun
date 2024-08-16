@@ -52,19 +52,18 @@ public final class Camera extends SurvivorGadget {
     final Collection<Survivor> players = manager.getInnocentPlayers();
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Camera");
-    this.customizeNPC(npc);
-    npc.spawn(location);
-
+    final NPC npc = this.spawnNPC(location);
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllMurderers(
-            murderer -> this.handleGlowMurderer(murderer, entity, players)),
-        0,
-        3 * 20);
+        () -> this.handleAllKillers(manager, entity, players), 0, 3 * 20L);
+  }
+
+  private void handleAllKillers(
+      final PlayerManager manager, final Entity entity, final Collection<Survivor> players) {
+    manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(murderer, entity, players));
   }
 
   private void handleGlowMurderer(
@@ -89,8 +88,11 @@ public final class Camera extends SurvivorGadget {
     entity.teleport(origin);
   }
 
-  private void customizeNPC(final NPC npc) {
+  private NPC spawnNPC(final Location location) {
+    final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Camera");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Camera", TEXTURE_SIGNATURE, TEXTURE_DATA);
+    npc.spawn(location);
+    return npc;
   }
 }

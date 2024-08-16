@@ -29,7 +29,7 @@ public final class Phantom extends KillerGadget {
     player.setGameMode(GameMode.SPECTATOR);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setDefault(player), 15 * 20);
+    scheduler.scheduleTask(() -> this.setDefault(player), 15 * 20L);
   }
 
   private void setDefault(final Player player) {

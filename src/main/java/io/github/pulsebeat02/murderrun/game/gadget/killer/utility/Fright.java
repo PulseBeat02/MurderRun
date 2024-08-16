@@ -46,7 +46,7 @@ public final class Fright extends KillerGadget {
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
-    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20);
+    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L);
   }
 
   private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {

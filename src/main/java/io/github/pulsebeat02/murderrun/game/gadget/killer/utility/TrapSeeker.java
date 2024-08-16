@@ -51,8 +51,7 @@ public final class TrapSeeker extends KillerGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.handleTrapSeeking(game, player, gamePlayer), 0, 2 * 20);
+    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, gamePlayer), 0, 2 * 20L);
   }
 
   private void handleTrapSeeking(final Game game, final GamePlayer innocent) {

@@ -39,7 +39,7 @@ public final class JumpScareTrap extends SurvivorTrap {
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
 
-    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), 2 * 20);
+    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), 2 * 20L);
   }
 
   private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {

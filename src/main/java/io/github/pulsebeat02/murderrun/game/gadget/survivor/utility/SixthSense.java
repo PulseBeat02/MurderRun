@@ -41,7 +41,7 @@ public final class SixthSense extends SurvivorGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, gamePlayer), 0, 2 * 20);
+    scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, gamePlayer), 0, 2 * 20L);
   }
 
   private void handleKillers(final PlayerManager manager, final GamePlayer player) {

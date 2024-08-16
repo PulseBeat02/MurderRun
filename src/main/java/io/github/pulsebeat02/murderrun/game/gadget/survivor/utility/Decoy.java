@@ -44,15 +44,11 @@ public final class Decoy extends SurvivorGadget {
     final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
     final PlayerInventory inventory = player.getInventory();
     final Equipment equipment = npc.getOrAddTrait(Equipment.class);
+    equipment.set(EquipmentSlot.HELMET, this.equipArmorSlot(EquipmentSlot.HELMET, inventory));
     equipment.set(
-        Equipment.EquipmentSlot.HELMET, this.equipArmorSlot(EquipmentSlot.HELMET, inventory));
-    equipment.set(
-        Equipment.EquipmentSlot.CHESTPLATE,
-        this.equipArmorSlot(EquipmentSlot.CHESTPLATE, inventory));
-    equipment.set(
-        Equipment.EquipmentSlot.LEGGINGS, this.equipArmorSlot(EquipmentSlot.LEGGINGS, inventory));
-    equipment.set(
-        Equipment.EquipmentSlot.BOOTS, this.equipArmorSlot(EquipmentSlot.BOOTS, inventory));
+        EquipmentSlot.CHESTPLATE, this.equipArmorSlot(EquipmentSlot.CHESTPLATE, inventory));
+    equipment.set(EquipmentSlot.LEGGINGS, this.equipArmorSlot(EquipmentSlot.LEGGINGS, inventory));
+    equipment.set(EquipmentSlot.BOOTS, this.equipArmorSlot(EquipmentSlot.BOOTS, inventory));
     npc.setUseMinecraftAI(true);
 
     final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);

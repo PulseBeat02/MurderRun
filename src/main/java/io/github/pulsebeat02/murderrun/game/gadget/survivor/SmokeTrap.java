@@ -30,7 +30,7 @@ public final class SmokeTrap extends SurvivorTrap {
         new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 2));
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 10, 7 * 20);
+    scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 10, 7 * 20L);
   }
 
   private void spawnSmoke(final GamePlayer murderer) {

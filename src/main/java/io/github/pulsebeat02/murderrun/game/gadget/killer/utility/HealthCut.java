@@ -41,7 +41,7 @@ public final class HealthCut extends KillerGadget {
     survivor.apply(player -> {
       final double before = player.getHealth();
       player.setHealth(2d);
-      scheduler.scheduleTask(() -> player.setHealth(before), 5 * 20);
+      scheduler.scheduleTask(() -> player.setHealth(before), 5 * 20L);
     });
   }
 }

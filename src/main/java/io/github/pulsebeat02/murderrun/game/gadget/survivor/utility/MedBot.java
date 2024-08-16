@@ -55,17 +55,14 @@ public final class MedBot extends SurvivorGadget {
     scheduler.scheduleTaskUntilCondition(
         () -> this.handleArmorStandEffects(armorStand), 0, 2, armorStand::isDead);
     scheduler.scheduleTaskUntilCondition(
-        () -> manager.applyToAllInnocents(
-            innocent -> this.handleInnocentEffects(innocent, armorStand)),
-        40L,
-        20L,
-        armorStand::isDead);
-    scheduler.scheduleTaskUntilCondition(
-        () -> manager.applyToAllInnocents(
-            innocent -> this.handleKillerDestroy(manager, innocent, armorStand)),
-        40L,
-        20L,
-        armorStand::isDead);
+        () -> this.handleMedBotUpdate(manager, armorStand), 0, 20L, armorStand::isDead);
+  }
+
+  private void handleMedBotUpdate(final PlayerManager manager, final ArmorStand stand) {
+    manager.applyToAllInnocents(innocent -> {
+      this.handleInnocentEffects(innocent, stand);
+      this.handleKillerDestroy(manager, innocent, stand);
+    });
   }
 
   private void handleKillerDestroy(

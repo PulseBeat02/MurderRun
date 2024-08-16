@@ -50,15 +50,19 @@ public final class KillerRewind extends SurvivorGadget implements Listener {
   private void handleRewind(final Player player) {
     final CircularBuffer<SimpleEntry<Location, Long>> buffer = this.playerLocations.get(player);
     if (buffer != null && buffer.isFull()) {
-      final long currentTime = System.currentTimeMillis();
-      SimpleEntry<Location, Long> rewindEntry = buffer.getOldest();
-      for (final SimpleEntry<Location, Long> entry : buffer) {
-        if (currentTime - entry.getValue() >= 5000) {
-          rewindEntry = entry;
-          break;
-        }
-      }
+      final SimpleEntry<Location, Long> rewindEntry = this.getRewindEntry(buffer);
       player.teleport(rewindEntry.getKey());
     }
+  }
+
+  private SimpleEntry<Location, Long> getRewindEntry(
+      final CircularBuffer<SimpleEntry<Location, Long>> buffer) {
+    final long currentTime = System.currentTimeMillis();
+    for (final SimpleEntry<Location, Long> entry : buffer) {
+      if (currentTime - entry.getValue() >= 5000) {
+        return entry;
+      }
+    }
+    return buffer.getOldest();
   }
 }

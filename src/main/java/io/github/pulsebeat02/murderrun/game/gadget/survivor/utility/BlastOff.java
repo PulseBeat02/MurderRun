@@ -41,21 +41,18 @@ public final class BlastOff extends SurvivorGadget {
       return;
     }
 
-    this.launchKillerIntoSpace(killer, game);
-
     final Component message = Locale.BLAST_OFF_TRAP_ACTIVATE.build();
     manager.applyToAllInnocents(innocent -> innocent.sendMessage(message));
+    killer.apply(this::spawnRocket);
   }
 
-  private void launchKillerIntoSpace(final GamePlayer killer, final Game game) {
-    final Location location = killer.getLocation();
+  private void spawnRocket(final Player player) {
+    final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
-    killer.apply(player -> {
-      final Firework firework = (Firework) world.spawnEntity(location, EntityType.FIREWORK_ROCKET);
-      final FireworkMeta meta = firework.getFireworkMeta();
-      meta.setPower(2 * 20);
-      firework.setFireworkMeta(meta);
-      firework.addPassenger(player);
-    });
+    final Firework firework = (Firework) world.spawnEntity(location, EntityType.FIREWORK_ROCKET);
+    final FireworkMeta meta = firework.getFireworkMeta();
+    meta.setPower(2 * 20);
+    firework.setFireworkMeta(meta);
+    firework.addPassenger(player);
   }
 }

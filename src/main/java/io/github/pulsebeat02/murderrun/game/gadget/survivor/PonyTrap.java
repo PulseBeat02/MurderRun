@@ -12,6 +12,7 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Horse;
+import org.bukkit.inventory.HorseInventory;
 import org.bukkit.inventory.ItemStack;
 
 public final class PonyTrap extends SurvivorTrap {
@@ -44,9 +45,14 @@ public final class PonyTrap extends SurvivorTrap {
   private Horse spawnCustomisedHorse(final World world, final Location location) {
     return world.spawn(location, Horse.class, horse -> {
       horse.setTamed(true);
-      horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
       horse.setJumpStrength(2);
       horse.setAdult();
+      this.setSaddle(horse);
     });
+  }
+
+  private void setSaddle(final Horse horse) {
+    final HorseInventory inventory = horse.getInventory();
+    inventory.setSaddle(new ItemStack(Material.SADDLE));
   }
 }

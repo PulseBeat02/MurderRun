@@ -41,7 +41,7 @@ public final class MindControl extends SurvivorGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> this.applyMindControlEffects(player, nearest), 0L, 1L, 10 * 20);
+        () -> this.applyMindControlEffects(player, nearest), 0L, 1L, 10 * 20L);
     scheduler.scheduleTask(() -> player.teleport(origin), 20 * 20L);
   }
 

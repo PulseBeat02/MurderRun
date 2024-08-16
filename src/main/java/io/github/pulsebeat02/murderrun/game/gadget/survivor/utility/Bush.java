@@ -32,10 +32,10 @@ public final class Bush extends SurvivorGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1));
-    scheduler.scheduleRepeatedTask(() -> player.teleport(location), 0, 20, 10 * 20);
+    scheduler.scheduleRepeatedTask(() -> player.teleport(location), 0, 20, 10 * 20L);
 
     final Block block = location.getBlock();
     block.setType(Material.OAK_LEAVES);
-    scheduler.scheduleTask(() -> block.setType(Material.AIR), 10 * 20);
+    scheduler.scheduleTask(() -> block.setType(Material.AIR), 10 * 20L);
   }
 }

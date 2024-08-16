@@ -37,11 +37,12 @@ public final class Parasite extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilCondition(
-        () -> manager.applyToAllMurderers(
-            killer -> this.checkActivationDistance(killer, origin, manager, item)),
-        0,
-        40,
-        item::isDead);
+        () -> handleKillers(manager, origin, item), 0, 40, item::isDead);
+  }
+
+  private void handleKillers(final PlayerManager manager, final Location origin, final Item item) {
+    manager.applyToAllMurderers(
+        killer -> this.checkActivationDistance(killer, origin, manager, item));
   }
 
   private void checkActivationDistance(

@@ -34,7 +34,7 @@ public final class SpasmTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 10, 7 * 20);
+    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 10, 7 * 20L);
   }
 
   private void alternateHead(final GamePlayer murderer) {

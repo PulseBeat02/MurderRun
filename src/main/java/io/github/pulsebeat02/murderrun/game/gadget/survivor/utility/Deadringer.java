@@ -41,6 +41,6 @@ public final class Deadringer extends SurvivorGadget {
     player.setInvulnerable(true);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> player.setInvulnerable(false), 15 * 20);
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), 15 * 20L);
   }
 }

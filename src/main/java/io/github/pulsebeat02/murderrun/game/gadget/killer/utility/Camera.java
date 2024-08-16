@@ -55,7 +55,7 @@ public final class Camera extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> this.handleCameraWatch(manager, entity, killer), 0, 3 * 20);
+        () -> this.handleCameraWatch(manager, entity, killer), 0, 3 * 20L);
   }
 
   private void handleCameraWatch(

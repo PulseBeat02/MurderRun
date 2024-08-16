@@ -47,8 +47,7 @@ public final class TrapSniffer extends SurvivorGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.handleTrapSniffing(game, player, gamePlayer), 0, 2 * 20);
+    scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, gamePlayer), 0, 2 * 20L);
   }
 
   private void handleTrapSniffing(final Game game, final GamePlayer player) {

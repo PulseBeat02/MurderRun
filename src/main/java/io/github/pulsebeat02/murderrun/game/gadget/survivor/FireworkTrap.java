@@ -36,7 +36,7 @@ public final class FireworkTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location, world), 0, 5, 5 * 20);
+    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location, world), 0, 5, 5 * 20L);
   }
 
   private void spawnFirework(final Location location, final World world) {
