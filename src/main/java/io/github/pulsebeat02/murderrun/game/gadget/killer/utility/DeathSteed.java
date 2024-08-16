@@ -37,26 +37,31 @@ public final class DeathSteed extends KillerGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
+    final Horse horse = this.spawnHorse(world, location, player);
+    final GameScheduler scheduler = game.getScheduler();
+    final PlayerManager manager = game.getPlayerManager();
+    scheduler.scheduleTaskUntilCondition(
+        () -> this.handleSurvivors(manager, horse), 0, 20, horse::isDead);
+  }
 
-    final Horse horse = world.spawn(location, Horse.class, entity -> {
+  private void handleSurvivors(final PlayerManager manager, final Horse horse) {
+    manager.applyToAllInnocents(survivor -> this.handleSurvivor(survivor, horse));
+  }
+
+  private Horse spawnHorse(final World world, final Location location, final Player player) {
+    return world.spawn(location, Horse.class, entity -> {
       entity.setOwner(player);
       entity.setCustomName("Death Steed");
       entity.setCustomNameVisible(true);
       entity.setTamed(true);
-
-      final HorseInventory inventory = entity.getInventory();
-      inventory.setSaddle(new ItemStack(Material.SADDLE));
-
       entity.addPassenger(player);
+      this.setSaddle(entity);
     });
+  }
 
-    final GameScheduler scheduler = game.getScheduler();
-    final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleTaskUntilCondition(
-        () -> manager.applyToAllInnocents(survivor -> this.handleSurvivor(survivor, horse)),
-        0,
-        20,
-        horse::isDead);
+  private void setSaddle(final Horse horse) {
+    final HorseInventory inventory = horse.getInventory();
+    inventory.setSaddle(new ItemStack(Material.SADDLE));
   }
 
   private void handleSurvivor(final Survivor survivor, final Horse horse) {

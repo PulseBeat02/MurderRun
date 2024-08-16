@@ -3,12 +3,10 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
@@ -92,8 +90,7 @@ public final class GadgetLoadingMechanism {
       @UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
     final Collection<Gadget> gadgets = gameGadgets.values();
     return gadgets.stream()
-        .filter(StreamUtils.isInstanceOf(KillerGadget.class)
-            .or(StreamUtils.isInstanceOf(KillerTrap.class)))
+        .filter(StreamUtils.isInstanceOf(KillerApparatus.class))
         .collect(Collectors.toSet());
   }
 
@@ -101,8 +98,7 @@ public final class GadgetLoadingMechanism {
       @UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
     final Collection<Gadget> gadgets = gameGadgets.values();
     return gadgets.stream()
-        .filter(StreamUtils.isInstanceOf(SurvivorGadget.class)
-            .or(StreamUtils.isInstanceOf(SurvivorTrap.class)))
+        .filter(StreamUtils.isInstanceOf(SurvivorApparatus.class))
         .collect(Collectors.toSet());
   }
 

@@ -7,14 +7,12 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -48,35 +46,32 @@ public final class Camera extends KillerGadget {
     super.onGadgetDrop(game, event, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Collection<Survivor> players = manager.getInnocentPlayers();
     final Player player = event.getPlayer();
+    final GamePlayer killer = manager.lookupPlayer(player).orElseThrow();
     final Location location = player.getLocation();
-    final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Killer Camera");
-    this.customizeNPC(npc);
-    npc.spawn(location);
-
+    final NPC npc = this.spawnNPC(location);
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllInnocents(
-            survivor -> this.handleGlowInnocent(survivor, entity, players)),
-        0,
-        3 * 20);
+        () -> this.handleCameraWatch(manager, entity, killer), 0, 3 * 20);
+  }
+
+  private void handleCameraWatch(
+      final PlayerManager manager, final Entity entity, final GamePlayer killer) {
+    manager.applyToAllInnocents(survivor -> this.handleGlowInnocent(survivor, entity, killer));
   }
 
   private void handleGlowInnocent(
-      final Survivor survivor, final Entity entity, final Collection<Survivor> survivors) {
-    final Collection<GamePlayer> higher =
-        survivors.stream().map(player -> (GamePlayer) player).toList();
+      final Survivor survivor, final Entity entity, final GamePlayer killer) {
     if (survivor.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(survivor);
-      survivor.setGlowColor(ChatColor.RED, higher);
+      killer.setEntityGlowingForPlayer(survivor);
       this.setLookDirection(survivor, entity);
     } else if (this.glowPlayers.contains(survivor)) {
       this.glowPlayers.remove(survivor);
-      survivor.removeGlow(higher);
+      killer.removeEntityGlowingForPlayer(survivor);
     }
   }
 
@@ -88,8 +83,11 @@ public final class Camera extends KillerGadget {
     entity.teleport(origin);
   }
 
-  private void customizeNPC(final NPC npc) {
+  private NPC spawnNPC(final Location location) {
+    final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Killer Camera");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Camera", TEXTURE_SIGNATURE, TEXTURE_DATA);
+    npc.spawn(location);
+    return npc;
   }
 }

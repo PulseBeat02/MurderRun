@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,12 +26,16 @@ public final class QuickBomb extends KillerGadget {
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+
     super.onGadgetDrop(game, event, true);
+
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(survivor -> {
-      final Location location = survivor.getLocation();
-      final World world = requireNonNull(location.getWorld());
-      world.spawn(location, TNTPrimed.class, tnt -> tnt.setFuseTicks(40));
-    });
+    manager.applyToAllInnocents(this::spawnPrimedTnt);
+  }
+
+  private void spawnPrimedTnt(final Survivor survivor) {
+    final Location location = survivor.getLocation();
+    final World world = requireNonNull(location.getWorld());
+    world.spawn(location, TNTPrimed.class, tnt -> tnt.setFuseTicks(40));
   }
 }

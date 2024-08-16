@@ -8,13 +8,12 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -28,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 
 public final class TrapSeeker extends KillerGadget {
 
-  private final Multimap<Player, Item> glowItemStates;
+  private final Multimap<GamePlayer, Item> glowItemStates;
 
   public TrapSeeker() {
     super(
@@ -52,10 +51,11 @@ public final class TrapSeeker extends KillerGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, player), 0, 2 * 20);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleTrapSeeking(game, player, gamePlayer), 0, 2 * 20);
   }
 
-  private void handleTrapSeeking(final Game game, final Player innocent) {
+  private void handleTrapSeeking(final Game game, final GamePlayer innocent) {
 
     final GadgetManager manager = game.getGadgetManager();
     final Location origin = innocent.getLocation();
@@ -77,13 +77,13 @@ public final class TrapSeeker extends KillerGadget {
       }
 
       final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
-      final boolean survivor = gadget instanceof KillerTrap || gadget instanceof KillerGadget;
+      final boolean survivor = gadget instanceof KillerApparatus;
       if (survivor) {
         set.add(item);
-        PacketToolsProvider.INSTANCE.sendGlowPacket(innocent, entity);
+        innocent.setEntityGlowingForPlayer(item);
       } else if (set.contains(entity)) {
         set.remove(entity);
-        PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(innocent, entity);
+        innocent.removeEntityGlowingForPlayer(item);
       }
     }
   }

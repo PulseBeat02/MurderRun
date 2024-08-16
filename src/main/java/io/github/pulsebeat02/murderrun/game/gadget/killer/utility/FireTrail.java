@@ -34,14 +34,13 @@ public final class FireTrail extends KillerGadget {
         new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 1));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> {
-          final Location location = player.getLocation();
-          final Block block = location.getBlock();
-          final Block replace = block.getRelative(BlockFace.UP);
-          replace.setType(Material.FIRE);
-        },
-        0,
-        10);
+    scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 10);
+  }
+
+  private void spawnFire(final Player player) {
+    final Location location = player.getLocation();
+    final Block block = location.getBlock();
+    final Block replace = block.getRelative(BlockFace.UP);
+    replace.setType(Material.FIRE);
   }
 }

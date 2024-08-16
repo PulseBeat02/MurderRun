@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
@@ -34,16 +35,18 @@ public final class Fright extends KillerGadget {
     super.onGadgetDrop(game, event, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(survivor -> {
-      final ItemStack before = this.setPumpkinItemStack(survivor);
-      final GameScheduler scheduler = game.getScheduler();
-      final Key key = SoundKeys.JUMP_SCARE.getSound().key();
-      survivor.playSound(key, Source.MASTER, 1f, 1f);
-      survivor.addPotionEffects(
-          new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
-          new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
-      scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20);
-    });
+    final GameScheduler scheduler = game.getScheduler();
+    manager.applyToAllInnocents(survivor -> this.jumpScareSurvivor(survivor, scheduler));
+  }
+
+  private void jumpScareSurvivor(final Survivor survivor, final GameScheduler scheduler) {
+    final ItemStack before = this.setPumpkinItemStack(survivor);
+    final Key key = SoundKeys.JUMP_SCARE.getSound().key();
+    survivor.playSound(key, Source.MASTER, 1f, 1f);
+    survivor.addPotionEffects(
+        new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
+    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20);
   }
 
   private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {

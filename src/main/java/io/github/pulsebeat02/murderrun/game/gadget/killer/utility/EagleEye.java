@@ -48,11 +48,11 @@ public final class EagleEye extends KillerGadget {
     player.teleport(teleport);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(
-        () -> {
-          player.teleport(previous);
-          player.setGravity(true);
-        },
-        20 * 10);
+    scheduler.scheduleTask(() -> this.resetState(player, previous), 20 * 10);
+  }
+
+  private void resetState(final Player player, final Location previous) {
+    player.teleport(previous);
+    player.setGravity(true);
   }
 }

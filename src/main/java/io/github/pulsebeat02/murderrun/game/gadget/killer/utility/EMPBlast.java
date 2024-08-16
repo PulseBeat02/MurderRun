@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Locale;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -54,6 +55,24 @@ public final class EMPBlast extends KillerGadget {
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     final Collection<Entity> entities = world.getNearbyEntities(box);
+    this.removeAllSurvivorGadgets(entities, mechanism);
+
+    final PlayerManager playerManager = game.getPlayerManager();
+    playerManager.applyToAllInnocents(this::stunSurvivors);
+  }
+
+  private void stunSurvivors(final Survivor survivor) {
+    final Component msg = Locale.EMP_BLAST_ACTIVATE.build();
+    survivor.addPotionEffects(
+        new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 1),
+        new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
+        new PotionEffect(PotionEffectType.JUMP_BOOST, 5 * 20, 0));
+    survivor.sendMessage(msg);
+  }
+
+  private void removeAllSurvivorGadgets(
+      final Collection<Entity> entities, final GadgetLoadingMechanism mechanism) {
+
     for (final Entity entity : entities) {
 
       if (!(entity instanceof final Item item)) {
@@ -72,15 +91,5 @@ public final class EMPBlast extends KillerGadget {
 
       item.remove();
     }
-
-    final PlayerManager playerManager = game.getPlayerManager();
-    final Component msg = Locale.EMP_BLAST_ACTIVATE.build();
-    playerManager.applyToAllInnocents(survivor -> {
-      survivor.addPotionEffects(
-          new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 1),
-          new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
-          new PotionEffect(PotionEffectType.JUMP_BOOST, 5 * 20, 0));
-      survivor.sendMessage(msg);
-    });
   }
 }

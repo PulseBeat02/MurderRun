@@ -26,13 +26,12 @@ public final class IcePath extends KillerGadget {
     super.onGadgetDrop(game, event, true);
     final Player player = event.getPlayer();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> {
-          final Location location = player.getLocation();
-          final Block block = location.getBlock();
-          block.setType(Material.ICE);
-        },
-        0,
-        10);
+    scheduler.scheduleRepeatedTask(() -> this.setIceTrail(player), 0, 10);
+  }
+
+  private void setIceTrail(final Player player) {
+    final Location location = player.getLocation();
+    final Block block = location.getBlock();
+    block.setType(Material.ICE);
   }
 }

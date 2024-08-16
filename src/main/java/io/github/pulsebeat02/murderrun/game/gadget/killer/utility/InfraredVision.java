@@ -2,10 +2,11 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,18 +30,21 @@ public final class InfraredVision extends KillerGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final Component msg = Locale.INFRARED_VISION_ACTIVATE.build();
-    manager.applyToAllInnocents(innocent -> {
-      innocent.apply(survivor -> PacketToolsProvider.INSTANCE.sendGlowPacket(player, survivor));
-      innocent.sendMessage(msg);
-    });
+    final GamePlayer killer = manager.lookupPlayer(player).orElseThrow();
+    manager.applyToAllInnocents(innocent -> this.setSurvivorGlow(innocent, killer));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.removeGlow(player, manager), 20 * 7);
+    scheduler.scheduleTask(() -> this.removeGlow(killer, manager), 7 * 20);
   }
 
-  private void removeGlow(final Player watcher, final PlayerManager manager) {
-    manager.applyToAllInnocents(innocent -> innocent.apply(
-        survivor -> PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(watcher, survivor)));
+  private void setSurvivorGlow(final Survivor survivor, final GamePlayer killer) {
+    final Component msg = Locale.INFRARED_VISION_ACTIVATE.build();
+    killer.setEntityGlowingForPlayer(survivor);
+    survivor.sendMessage(msg);
+  }
+
+  private void removeGlow(final GamePlayer killer, final PlayerManager manager) {
+    manager.applyToAllInnocents(
+        innocent -> innocent.apply(survivor -> killer.removeEntityGlowingForPlayer(innocent)));
   }
 }

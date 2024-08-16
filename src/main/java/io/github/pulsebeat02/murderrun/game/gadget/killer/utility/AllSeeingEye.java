@@ -40,20 +40,22 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final Survivor random = manager.getRandomAliveInnocentPlayer();
-    random.apply(survivor -> {
-      player.setGameMode(GameMode.SPECTATOR);
-      player.setSpectatorTarget(survivor);
-    });
-    this.spectatorDisabled.add(player);
+    random.apply(survivor -> this.setPlayerState(player, survivor));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(
-        () -> {
-          player.setGameMode(GameMode.ADVENTURE);
-          player.setSpectatorTarget(null);
-          this.spectatorDisabled.remove(player);
-        },
-        20 * 7);
+    scheduler.scheduleTask(() -> this.resetPlayerState(player), 7 * 20);
+  }
+
+  private void resetPlayerState(final Player player) {
+    player.setGameMode(GameMode.ADVENTURE);
+    player.setSpectatorTarget(null);
+    this.spectatorDisabled.remove(player);
+  }
+
+  private void setPlayerState(final Player player, final Player survivor) {
+    player.setGameMode(GameMode.SPECTATOR);
+    player.setSpectatorTarget(survivor);
+    this.spectatorDisabled.add(player);
   }
 
   @EventHandler

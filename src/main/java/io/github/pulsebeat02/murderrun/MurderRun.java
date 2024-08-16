@@ -20,8 +20,9 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   - Create all killer gadgets
-  - Add all killer gadgets to centralized enum
-  - Fix bug, apply to all innocents counts dead?
+    - Add all killer gadgets to centralized enum
+  - Fix bug, apply to all innocent counts dead?
+  - Rewriting Code for Gadgets
 
    */
 

@@ -4,10 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorTrap;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
@@ -103,10 +101,8 @@ public final class GadgetActionHandler implements Listener {
         continue;
       }
 
-      final boolean survivor =
-          isSurvivor && (gadget instanceof KillerTrap || gadget instanceof KillerGadget);
-      final boolean killer =
-          !isSurvivor && (gadget instanceof SurvivorTrap || gadget instanceof SurvivorGadget);
+      final boolean survivor = isSurvivor && (gadget instanceof KillerApparatus);
+      final boolean killer = !isSurvivor && (gadget instanceof SurvivorApparatus);
       if (survivor || killer) {
         final Location location = item.getLocation();
         final double distance = origin.distanceSquared(location);

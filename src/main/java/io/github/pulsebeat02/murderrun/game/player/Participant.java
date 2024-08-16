@@ -259,4 +259,16 @@ public interface Participant {
   void setAlive(final boolean alive);
 
   Game getGame();
+
+  void setEntityGlowingForPlayer(final Entity entity);
+
+  void removeEntityGlowingForPlayer(final Entity entity);
+
+  default void setEntityGlowingForPlayer(final GamePlayer player) {
+    this.apply(player::setEntityGlowingForPlayer);
+  }
+
+  default void removeEntityGlowingForPlayer(final GamePlayer player) {
+    this.apply(player::removeEntityGlowingForPlayer);
+  }
 }

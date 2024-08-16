@@ -32,6 +32,7 @@ Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape bef
 Hook: Drags opponents closer to the killer
 EMP Blast: Destroys all traps on the map and stuns all opponents.
 Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
+Forewarn: If an opponent grabs a truck part, they will start to glow
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
@@ -46,7 +47,6 @@ Poison Smog: Covers the area in a poisonous smog
 Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
 Burn the Body: Completely destroys the body of an opponent
 Ender Shadows: Creates animated shadows which causes opponents to light up when touched
-Forewarn: If an opponent grabs a truck part, they will start to glow
 Dormagogg: An evil being that blind, stuns, and illuminates opponents
 Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
 

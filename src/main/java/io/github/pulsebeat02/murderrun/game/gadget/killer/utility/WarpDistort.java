@@ -27,11 +27,9 @@ public final class WarpDistort extends KillerGadget {
     super.onGadgetDrop(game, event, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer random = manager.getRandomAliveInnocentPlayer();
-    GamePlayer random2 = manager.getRandomAliveInnocentPlayer();
-    while (random == random2) {
-      random2 = manager.getRandomAliveInnocentPlayer();
-    }
+    final GamePlayer[] players = this.getRandomPlayers(manager);
+    final GamePlayer random = players[0];
+    final GamePlayer random2 = players[1];
 
     final Location first = random.getLocation();
     final Location second = random2.getLocation();
@@ -41,5 +39,14 @@ public final class WarpDistort extends KillerGadget {
     final Component msg = Locale.WARP_DISTORT_ACTIVATE.build();
     random.sendMessage(msg);
     random2.sendMessage(msg);
+  }
+
+  private GamePlayer[] getRandomPlayers(final PlayerManager manager) {
+    final GamePlayer random = manager.getRandomAliveInnocentPlayer();
+    GamePlayer random2 = manager.getRandomAliveInnocentPlayer();
+    while (random == random2) {
+      random2 = manager.getRandomAliveInnocentPlayer();
+    }
+    return new GamePlayer[] {random, random2};
   }
 }

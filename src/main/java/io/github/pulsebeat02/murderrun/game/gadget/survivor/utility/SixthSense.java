@@ -7,10 +7,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -37,34 +35,30 @@ public final class SixthSense extends SurvivorGadget {
     super.onGadgetDrop(game, event, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Collection<Survivor> players = manager.getInnocentPlayers();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
     final Component message = Locale.SIXTH_SENSE_TRAP_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllMurderers(
-            murderer -> this.handleGlowMurderer(murderer, player, gamePlayer)),
-        0,
-        2 * 20);
+    scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, gamePlayer), 0, 2 * 20);
   }
 
-  private void handleGlowMurderer(
-      final Killer killer, final Player innocent, final GamePlayer state) {
-    final Location location = innocent.getLocation();
+  private void handleKillers(final PlayerManager manager, final GamePlayer player) {
+    manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(murderer, player));
+  }
+
+  private void handleGlowMurderer(final Killer killer, final GamePlayer state) {
+    final Location location = state.getLocation();
     final Location other = killer.getLocation();
     final Collection<GamePlayer> visible = this.glowPlayerStates.get(state);
     final double distance = location.distanceSquared(other);
-    killer.apply(player -> {
-      if (distance <= 64) {
-        visible.add(killer);
-        PacketToolsProvider.INSTANCE.sendGlowPacket(innocent, player);
-      } else if (visible.contains(killer)) {
-        visible.remove(killer);
-        PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(innocent, player);
-      }
-    });
+    if (distance <= 64) {
+      visible.add(killer);
+      state.setEntityGlowingForPlayer(killer);
+    } else if (visible.contains(killer)) {
+      visible.remove(killer);
+      state.removeEntityGlowingForPlayer(killer);
+    }
   }
 }

@@ -47,11 +47,14 @@ public final class RedArrow extends KillerGadget {
     final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllInnocents(this::spawnParticleBeam), 0, 40);
+    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, 2 * 20);
 
     final Component message = Locale.RED_ARROW_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+  }
+
+  private void handleSurvivors(final PlayerManager manager) {
+    manager.applyToAllInnocents(this::spawnParticleBeam);
   }
 
   private void spawnParticleBeam(final GamePlayer player) {
@@ -64,9 +67,11 @@ public final class RedArrow extends KillerGadget {
 
     final double startY = location.getY();
     final double skyLimit = world.getMaxHeight();
+    final double x = location.getX();
+    final double z = location.getZ();
 
     for (double y = startY; y <= skyLimit; y += 1.0) {
-      final Location particleLocation = new Location(world, location.getX(), y, location.getZ());
+      final Location particleLocation = new Location(world, x, y, z);
       world.spawnParticle(Particle.ENTITY_EFFECT, particleLocation, 1, Color.RED);
     }
   }

@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
+import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
@@ -74,6 +76,16 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
   public void playSound(
       final Key key, final Source category, final float volume, final float pitch) {
     this.audience.playSound(sound(key, category, volume, pitch));
+  }
+
+  @Override
+  public void setEntityGlowingForPlayer(final Entity entity) {
+    this.apply(innocent -> PacketToolsProvider.INSTANCE.sendGlowPacket(innocent, entity));
+  }
+
+  @Override
+  public void removeEntityGlowingForPlayer(final Entity entity) {
+    this.apply(innocent -> PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(innocent, entity));
   }
 
   @Override

@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class SurvivorGadget extends AbstractGadget {
+public class SurvivorGadget extends AbstractGadget implements SurvivorApparatus {
 
   public SurvivorGadget(
       final String name,

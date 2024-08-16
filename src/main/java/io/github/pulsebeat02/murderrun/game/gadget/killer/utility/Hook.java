@@ -50,13 +50,17 @@ public final class Hook extends KillerGadget implements Listener {
       return;
     }
 
+    final Vector multiplied = this.getMultipliedVelocity(killer, caught);
+    caught.setVelocity(multiplied);
+  }
+
+  private Vector getMultipliedVelocity(final Player killer, final Entity caught) {
     final Location killerLocation = killer.getLocation();
     final Location caughtLocation = caught.getLocation();
     final Vector killerVector = killerLocation.toVector();
     final Vector caughtVector = caughtLocation.toVector();
     final Vector pullVector = killerVector.subtract(caughtVector);
     final Vector normalized = pullVector.normalize();
-    final Vector multiplied = normalized.multiply(2);
-    caught.setVelocity(multiplied);
+    return normalized.multiply(2);
   }
 }

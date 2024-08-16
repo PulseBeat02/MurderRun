@@ -5,7 +5,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,19 +29,16 @@ public final class Tracker extends SurvivorGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.lookupPlayer(player).orElseThrow();
-    manager.applyToAllMurderers(killer -> this.handleGlowing(killer, gamePlayer, player));
+    manager.applyToAllMurderers(killer -> this.handleGlowing(killer, gamePlayer));
   }
 
-  private void handleGlowing(
-      final GamePlayer killer, final GamePlayer player, final Player playerRaw) {
+  private void handleGlowing(final GamePlayer killer, final GamePlayer player) {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = origin.distanceSquared(killerLocation);
     if (distance <= 25) {
-      killer.apply(raw -> {
-        PacketToolsProvider.INSTANCE.sendGlowPacket(playerRaw, raw);
-        player.sendMessage(Locale.TRACKER_TRAP_ACTIVATE.build());
-      });
+      player.setEntityGlowingForPlayer(killer);
+      player.sendMessage(Locale.TRACKER_TRAP_ACTIVATE.build());
     } else {
       player.sendMessage(Locale.TRACKER_TRAP_DEACTIVATE.build());
     }

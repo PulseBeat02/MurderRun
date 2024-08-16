@@ -34,24 +34,26 @@ public final class DeathHound extends KillerGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final World world = requireNonNull(location.getWorld());
-
-    final Wolf wolf = world.spawn(location, Wolf.class, entity -> {
-      entity.setOwner(player);
-      entity.setCustomName("Death Hound");
-      entity.setCustomNameVisible(true);
-      entity.setTamed(true);
-      entity.setAngry(true);
-    });
-
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer nearest = manager.getNearestSurvivor(location);
     if (nearest == null) {
       return;
     }
-    nearest.apply(wolf::setTarget);
 
-    wolf.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, 1));
-    wolf.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, Integer.MAX_VALUE, 2));
+    this.spawnWolf(location, player, nearest);
+  }
+
+  private void spawnWolf(final Location location, final Player owner, final GamePlayer target) {
+    final World world = requireNonNull(location.getWorld());
+    final Wolf wolf = world.spawn(location, Wolf.class, entity -> {
+      entity.setOwner(owner);
+      entity.setCustomName("Death Hound");
+      entity.setCustomNameVisible(true);
+      entity.setTamed(true);
+      entity.setAngry(true);
+      entity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, 1));
+      entity.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, Integer.MAX_VALUE, 2));
+    });
+    target.apply(wolf::setTarget);
   }
 }

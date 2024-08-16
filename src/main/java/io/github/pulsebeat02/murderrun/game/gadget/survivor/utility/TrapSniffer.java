@@ -13,7 +13,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Locale;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -24,7 +23,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class TrapSniffer extends SurvivorGadget {
 
-  private final Multimap<Player, Item> glowItemStates;
+  private final Multimap<GamePlayer, Item> glowItemStates;
 
   public TrapSniffer() {
     super(
@@ -48,11 +47,12 @@ public final class TrapSniffer extends SurvivorGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, player), 0, 2 * 20);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleTrapSniffing(game, player, gamePlayer), 0, 2 * 20);
   }
 
-  private void handleTrapSniffing(final Game game, final Player innocent) {
-    final Location origin = innocent.getLocation();
+  private void handleTrapSniffing(final Game game, final GamePlayer player) {
+    final Location origin = player.getLocation();
     final Map map = game.getMurderMap();
     final PartsManager manager = map.getCarPartManager();
     final java.util.Map<String, CarPart> parts = manager.getParts();
@@ -60,14 +60,14 @@ public final class TrapSniffer extends SurvivorGadget {
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();
-      final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
+      final Collection<Item> set = requireNonNull(this.glowItemStates.get(player));
       final double distance = origin.distanceSquared(location);
       if (distance <= 36) {
         set.add(entity);
-        PacketToolsProvider.INSTANCE.sendGlowPacket(innocent, entity);
+        player.setEntityGlowingForPlayer(entity);
       } else if (set.contains(entity)) {
         set.remove(entity);
-        PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(innocent, entity);
+        player.removeEntityGlowingForPlayer(entity);
       }
     }
   }
