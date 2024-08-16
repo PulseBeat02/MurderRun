@@ -35,12 +35,11 @@ Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots 
 Forewarn: If an opponent grabs a truck part, they will start to glow
 Part Warp: Teleports the closest car part to the trap where the Killer put it.
 The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
-
+Dormagogg: An evil being that blind, stuns, and illuminates opponents
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
 Poison Smog: Covers the area in a poisonous smog
-Dormagogg: An evil being that blind, stuns, and illuminates opponents
 Gamble: Killing a player causes them to drop a random killer trap.
 
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds

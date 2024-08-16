@@ -66,7 +66,7 @@ public final class EMPBlast extends KillerGadget {
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 1),
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
-        new PotionEffect(PotionEffectType.JUMP_BOOST, 5 * 20, 0));
+        new PotionEffect(PotionEffectType.JUMP_BOOST, 5 * 20, Integer.MAX_VALUE));
     survivor.sendMessage(msg);
   }
 
