@@ -43,7 +43,8 @@ public final class ServerResourcepack {
 
   private Path createTemporaryPath() throws IOException {
     final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwx------");
-    final FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(permissions);
+    final FileAttribute<Set<PosixFilePermission>> attr =
+        PosixFilePermissions.asFileAttribute(permissions);
     return Files.createTempFile(PACK_FILE_NAME, PACK_FILE_SUFFIX, attr);
   }
 
