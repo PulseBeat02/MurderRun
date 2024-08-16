@@ -1,6 +1,12 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
+import static java.util.Objects.requireNonNull;
+
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -22,7 +28,15 @@ public final class PlayerStartupTool {
       player.setGameMode(GameMode.ADVENTURE);
       player.setHealth(20f);
       player.setFoodLevel(20);
+      player.setRespawnLocation(getSpawnLocation());
     });
+  }
+
+  private Location getSpawnLocation() {
+    final Game game = this.manager.getGame();
+    final GameSettings settings = game.getSettings();
+    final Arena arena = settings.getArena();
+    return requireNonNull(arena.getSpawn());
   }
 
   public void handleInnocent(final GamePlayer gamePlayer) {
