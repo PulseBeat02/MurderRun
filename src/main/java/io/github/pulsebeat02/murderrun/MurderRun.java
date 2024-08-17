@@ -21,6 +21,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Create all killer gadgets
     - Add all killer gadgets to centralized enum
+  - Make everything attached to Game
 
    */
 

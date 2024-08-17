@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
@@ -12,6 +13,7 @@ import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Parameter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +54,7 @@ public final class GadgetLoadingMechanism {
 
   private static void handleGadgetClass(final Class<?> clazz) {
     final Constructor<Object> constructor = getConstructor(clazz);
-    final Gadget gadget = invokeGadgetConstructor(constructor);
+    final Gadget gadget = invokeGadgetConstructor(constructor, null);
     final String name = gadget.getName();
     final Pair<Gadget, Constructor<Object>> pair = Pair.of(gadget, constructor);
     GADGET_LOOK_UP_MAP.put(name, pair);
@@ -67,9 +69,11 @@ public final class GadgetLoadingMechanism {
     return constructors[0];
   }
 
-  private static Gadget invokeGadgetConstructor(final Constructor<?> constructor) {
+  private static Gadget invokeGadgetConstructor(final Constructor<?> constructor, final Game game) {
     try {
-      return (Gadget) constructor.newInstance();
+      final Parameter[] parameters = constructor.getParameters();
+      final int size = parameters.length;
+      return (Gadget) (size == 0 ? constructor.newInstance() : constructor.newInstance(game));
     } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
       throw new AssertionError(e);
     }
@@ -106,13 +110,14 @@ public final class GadgetLoadingMechanism {
 
   private Map<String, Gadget> getUsedGadgets(
       @UnderInitialization GadgetLoadingMechanism this, final MurderRun plugin) {
+    final Game game = this.manager.getGame();
     final Server server = plugin.getServer();
     final PluginManager pluginManager = server.getPluginManager();
     final Collection<Pair<Gadget, Constructor<Object>>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
     final Map<String, Gadget> gadgets = new HashMap<>();
     for (final Pair<Gadget, Constructor<Object>> pair : gadgetClasses) {
       final Constructor<?> constructor = pair.second();
-      final Gadget gadget = invokeGadgetConstructor(constructor);
+      final Gadget gadget = invokeGadgetConstructor(constructor, game);
       if (gadget instanceof final Listener listener) {
         pluginManager.registerEvents(listener, plugin);
       }
