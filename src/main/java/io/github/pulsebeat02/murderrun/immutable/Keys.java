@@ -18,6 +18,8 @@ public final class Keys {
   public static NamespacedKey TRANSLOCATOR = createNamespacedPluginKey("translocator");
   public static NamespacedKey PLAYER_TRACKER = createNamespacedPluginKey("player-tracker");
   public static NamespacedKey HOOK = createNamespacedPluginKey("hook");
+  public static NamespacedKey PORTAL_GUN = createNamespacedPluginKey("portal-gun");
+  public static NamespacedKey UUID = createNamespacedPluginKey("uuid");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

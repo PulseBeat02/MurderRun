@@ -61,6 +61,10 @@ public final class ItemUtils {
     return getPersistentDataAttribute(stack, Keys.HOOK, PersistentDataType.BOOLEAN) != null;
   }
 
+  public static boolean isPortalGun(final ItemStack stack) {
+    return getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN) != null;
+  }
+
   public static <P, C> boolean setPersistentDataAttribute(
       final ItemStack stack,
       final NamespacedKey key,

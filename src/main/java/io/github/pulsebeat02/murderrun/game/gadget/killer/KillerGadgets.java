@@ -44,8 +44,8 @@ Ender Shadows: Creates animated shadows which causes opponents to light up when 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
-Corruption: Can resurrect dead opponents and corrupt them into joining his side
 Portal Gun: Allows the user to create portals wherever they please
+Corruption: Can resurrect dead opponents and corrupt them into joining his side
 Burn the Body: Completely destroys the body of an opponent
 Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
 
