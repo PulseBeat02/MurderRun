@@ -89,6 +89,7 @@ public final class GadgetActionHandler implements Listener {
 
     double min = Double.MAX_VALUE;
     Gadget closest = null;
+    Item closestItem = null;
     for (final Entity entity : entities) {
 
       if (!(entity instanceof final Item item)) {
@@ -109,6 +110,7 @@ public final class GadgetActionHandler implements Listener {
         if (distance < min) {
           min = distance;
           closest = gadget;
+          closestItem = item;
         }
       }
     }
@@ -119,6 +121,7 @@ public final class GadgetActionHandler implements Listener {
 
     final Game game = this.manager.getGame();
     closest.onGadgetNearby(game, player);
+    closestItem.remove();
   }
 
   private void handleEventLogic(final @Nullable ItemStack stack, final Consumer<Gadget> gadget) {
