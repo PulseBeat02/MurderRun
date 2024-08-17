@@ -8,11 +8,12 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.awt.Color;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -70,7 +71,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance <= 1) {
+    if (distance < 1) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
       stand.remove();
@@ -81,7 +82,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance <= 64) {
+    if (distance < 64) {
       innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 5, 2));
     }
   }
@@ -95,7 +96,7 @@ public final class MedBot extends SurvivorGadget {
   private void handleParticles(final ArmorStand stand) {
     final Location location = stand.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.ENTITY_EFFECT, location, 5, 8, 8, 8, Color.PINK);
+    world.spawnParticle(Particle.DUST, location, 5, 8, 8, 8, new DustOptions(Color.PURPLE, 1));
   }
 
   private void handleVerticalBobbing(final ArmorStand stand) {

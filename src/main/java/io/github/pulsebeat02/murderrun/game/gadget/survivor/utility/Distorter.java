@@ -44,10 +44,10 @@ public final class Distorter extends SurvivorGadget {
       final PlayerManager manager, final GamePlayer killer, final Location origin) {
     final Location location = killer.getLocation();
     final double distance = location.distanceSquared(origin);
-    if (distance <= 1) {
+    if (distance < 1) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();
       manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
-    } else if (distance <= 100) {
+    } else if (distance < 100) {
       killer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);
     }
   }

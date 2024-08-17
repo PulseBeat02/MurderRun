@@ -36,7 +36,7 @@ public final class Tracker extends SurvivorGadget {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = origin.distanceSquared(killerLocation);
-    if (distance <= 25) {
+    if (distance < 25) {
       player.setEntityGlowingForPlayer(killer);
       player.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {

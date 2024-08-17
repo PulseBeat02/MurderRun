@@ -76,7 +76,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);
 
-    if (distance <= 16) {
+    if (distance < 16) {
 
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
       final Location temp = new Location(world, coords[0], 0, coords[1]);

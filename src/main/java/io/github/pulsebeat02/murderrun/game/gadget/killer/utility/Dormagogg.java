@@ -57,7 +57,7 @@ public final class Dormagogg extends KillerGadget {
     final Location origin = zombie.getLocation();
     final Location target = nearest.getLocation();
     final double distance = origin.distanceSquared(target);
-    if (distance <= 1) {
+    if (distance < 1) {
       this.applyDebuffs(scheduler, killer, nearest);
       zombie.remove();
     }

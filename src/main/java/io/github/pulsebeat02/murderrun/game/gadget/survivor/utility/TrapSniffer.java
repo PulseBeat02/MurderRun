@@ -61,7 +61,7 @@ public final class TrapSniffer extends SurvivorGadget {
       final Item entity = stack.getItem();
       final Collection<Item> set = requireNonNull(this.glowItemStates.get(player));
       final double distance = origin.distanceSquared(location);
-      if (distance <= 36) {
+      if (distance < 36) {
         set.add(entity);
         player.setEntityGlowingForPlayer(entity);
       } else if (set.contains(entity)) {

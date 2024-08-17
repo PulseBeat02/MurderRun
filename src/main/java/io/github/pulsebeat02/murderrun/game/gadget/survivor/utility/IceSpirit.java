@@ -55,7 +55,7 @@ public final class IceSpirit extends SurvivorGadget {
     final Location origin = zombie.getLocation();
     final Location target = nearest.getLocation();
     final double distance = origin.distanceSquared(target);
-    if (distance <= 1) {
+    if (distance < 1) {
       this.applyDebuffs(manager, nearest);
       zombie.remove();
     }

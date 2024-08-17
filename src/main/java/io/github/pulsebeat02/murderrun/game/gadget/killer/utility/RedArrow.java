@@ -13,6 +13,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -72,7 +73,7 @@ public final class RedArrow extends KillerGadget {
 
     for (double y = startY; y <= skyLimit; y += 1.0) {
       final Location particleLocation = new Location(world, x, y, z);
-      world.spawnParticle(Particle.ENTITY_EFFECT, particleLocation, 1, Color.RED);
+      world.spawnParticle(Particle.DUST, particleLocation, 1, new DustOptions(Color.RED, 1));
     }
   }
 }

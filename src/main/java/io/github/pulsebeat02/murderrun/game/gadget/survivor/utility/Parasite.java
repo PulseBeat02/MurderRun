@@ -52,11 +52,11 @@ public final class Parasite extends SurvivorGadget {
       final Item item) {
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance <= 1) {
+    if (distance < 1) {
       final Component message = Message.PARASITE_DEACTIVATE.build();
       manager.applyToAllLivingInnocents(survivor -> survivor.sendMessage(message));
       item.remove();
-    } else if (distance <= 100) {
+    } else if (distance < 100) {
       player.addPotionEffects(
           new PotionEffect(PotionEffectType.SLOWNESS, 10, 1),
           new PotionEffect(PotionEffectType.POISON, 10, 1),

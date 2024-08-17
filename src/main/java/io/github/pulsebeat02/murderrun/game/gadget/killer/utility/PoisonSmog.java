@@ -8,10 +8,11 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.awt.Color;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -55,13 +56,13 @@ public final class PoisonSmog extends KillerGadget {
   private void handleDebuffs(final GamePlayer survivor, final Location origin) {
     final Location location = survivor.getLocation();
     final double distance = location.distanceSquared(origin);
-    if (distance <= 25) {
+    if (distance < 25) {
       survivor.addPotionEffects(new PotionEffect(PotionEffectType.WITHER, 3 * 20, 1));
       survivor.addPotionEffects(new PotionEffect(PotionEffectType.POISON, 3 * 20, 1));
     }
   }
 
   private void spawnSmogParticles(final World world, final Location origin) {
-    world.spawnParticle(Particle.ENTITY_EFFECT, origin, 25, 10, 10, 10, Color.GREEN);
+    world.spawnParticle(Particle.DUST, origin, 25, 10, 10, 10, new DustOptions(Color.GREEN, 1));
   }
 }

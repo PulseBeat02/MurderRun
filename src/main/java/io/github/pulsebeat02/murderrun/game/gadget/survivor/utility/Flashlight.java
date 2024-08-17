@@ -85,7 +85,7 @@ public final class Flashlight extends SurvivorGadget {
   private static void applyPotionEffects(final GamePlayer killer, final Location particleLocation) {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(particleLocation);
-    if (distance <= 1) {
+    if (distance < 1) {
       killer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 10, 0));
     }
   }

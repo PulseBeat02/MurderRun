@@ -54,7 +54,7 @@ public final class HeatSeeker extends KillerGadget {
     final Location other = state.getLocation();
     final Collection<GamePlayer> visible = this.glowPlayerStates.get(state);
     final double distance = location.distanceSquared(other);
-    if (distance <= 64) {
+    if (distance < 64) {
       visible.add(innocent);
       state.setEntityGlowingForPlayer(innocent);
     } else if (visible.contains(innocent)) {
