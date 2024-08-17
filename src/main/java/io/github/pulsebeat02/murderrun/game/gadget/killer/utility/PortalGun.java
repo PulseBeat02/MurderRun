@@ -34,6 +34,8 @@ public final class PortalGun extends KillerGadget implements Listener {
 
   private final Map<String, Pair<Holder<Location>, Holder<Location>>> portals;
 
+  // make sure portal doesnt constantly teleport player back and forth
+
   public PortalGun() {
     super(
         "portal_gun",
@@ -100,6 +102,8 @@ public final class PortalGun extends KillerGadget implements Listener {
       final Pair<Holder<Location>, Holder<Location>> value = Pair.of(sending, holder);
       this.portals.put(uuid, value);
     }
+    ItemUtils.setPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, !status);
+
 
     // todo
   }

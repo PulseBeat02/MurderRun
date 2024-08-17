@@ -60,15 +60,16 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final Location location = block.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> world.spawnParticle(Particle.SMOKE, location, 50, 2, 2, 2), 10, 5 * 20L);
+    scheduler.scheduleRepeatedTask(
+        () -> world.spawnParticle(Particle.SMOKE, location, 50, 2, 2, 2), 10, 5 * 20L);
 
     final PlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllParticipants(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);
-        if (distance < 1) {
-            player.addPotionEffects(PotionEffectType.BLINDNESS.createEffect(20, 0));
-        }
+      if (distance < 1) {
+        player.addPotionEffects(PotionEffectType.BLINDNESS.createEffect(20, 0));
+      }
     });
   }
 }
