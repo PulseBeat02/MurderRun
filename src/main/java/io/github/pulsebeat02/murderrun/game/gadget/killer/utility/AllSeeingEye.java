@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -20,9 +21,10 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public final class AllSeeingEye extends KillerGadget implements Listener {
 
-  private final Set<Player> spectatorDisabled;
+  private final Set<GamePlayer> spectatorDisabled;
+  private final Game game;
 
-  public AllSeeingEye() {
+  public AllSeeingEye(final Game game) {
     super(
         "all_seeing_eye",
         Material.ENDER_EYE,
@@ -30,6 +32,7 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
         Message.ALL_SEEING_EYE_LORE.build(),
         48);
     this.spectatorDisabled = Collections.newSetFromMap(new WeakHashMap<>());
+    this.game = game;
   }
 
   @Override
@@ -40,21 +43,26 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final Survivor random = manager.getRandomAliveInnocentPlayer();
-    random.apply(survivor -> this.setPlayerState(player, survivor));
+    final GamePlayer killer = manager.getGamePlayer(player);
+    this.setPlayerState(killer, random);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetPlayerState(player), 7 * 20L);
+    scheduler.scheduleTask(() -> this.resetPlayerState(killer), 7 * 20L);
   }
 
-  private void resetPlayerState(final Player player) {
-    player.setGameMode(GameMode.ADVENTURE);
-    player.setSpectatorTarget(null);
+  private void resetPlayerState(final GamePlayer player) {
+    player.apply(raw -> {
+      raw.setGameMode(GameMode.ADVENTURE);
+      raw.setSpectatorTarget(null);
+    });
     this.spectatorDisabled.remove(player);
   }
 
-  private void setPlayerState(final Player player, final Player survivor) {
-    player.setGameMode(GameMode.SPECTATOR);
-    player.setSpectatorTarget(survivor);
+  private void setPlayerState(final GamePlayer player, final GamePlayer survivor) {
+    player.apply(raw -> {
+      raw.setGameMode(GameMode.SPECTATOR);
+      survivor.apply(raw::setSpectatorTarget);
+    });
     this.spectatorDisabled.add(player);
   }
 
@@ -62,7 +70,13 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
   public void onPlayerTeleportEvent(final PlayerTeleportEvent event) {
 
     final Player player = event.getPlayer();
-    if (!this.spectatorDisabled.contains(player)) {
+    final PlayerManager manager = game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!this.spectatorDisabled.contains(gamePlayer)) {
       return;
     }
 

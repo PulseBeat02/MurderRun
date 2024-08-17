@@ -1,6 +1,9 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
@@ -19,7 +22,9 @@ import org.bukkit.util.Vector;
 
 public final class Hook extends KillerGadget implements Listener {
 
-  public Hook() {
+  private final Game game;
+
+  public Hook(final Game game) {
     super(
         "hook",
         Material.FISHING_ROD,
@@ -28,6 +33,7 @@ public final class Hook extends KillerGadget implements Listener {
         32,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.HOOK, PersistentDataType.BOOLEAN, true));
+    this.game = game;
   }
 
   @EventHandler
@@ -38,15 +44,24 @@ public final class Hook extends KillerGadget implements Listener {
       return;
     }
 
+    final Entity caught = event.getCaught();
+    if (caught == null) {
+      return;
+    }
+
+    if (!(caught instanceof final Player player)) {
+      return;
+    }
+
+    final PlayerManager manager = game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
     final Player killer = event.getPlayer();
     final PlayerInventory inventory = killer.getInventory();
     final ItemStack hand = inventory.getItemInMainHand();
     if (!ItemUtils.isHook(hand)) {
-      return;
-    }
-
-    final Entity caught = event.getCaught();
-    if (caught == null) {
       return;
     }
 

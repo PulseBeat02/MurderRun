@@ -100,6 +100,8 @@ public final class PortalGun extends KillerGadget implements Listener {
       final Pair<Holder<Location>, Holder<Location>> value = Pair.of(sending, holder);
       this.portals.put(uuid, value);
     }
+
+    // todo
   }
 
   private void spawnPortal(

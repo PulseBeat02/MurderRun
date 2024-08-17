@@ -2,7 +2,9 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
@@ -24,7 +26,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FlashBang extends SurvivorGadget implements Listener {
 
-  public FlashBang() {
+  private final Game game;
+
+  public FlashBang(final Game game) {
     super(
         "flash_bang",
         Material.SNOWBALL,
@@ -33,6 +37,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         8,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true));
+    this.game = game;
   }
 
   @EventHandler
@@ -57,13 +62,15 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.WHITE_ASH, location, 30, 1, 1, 1, 1);
 
-    final List<Entity> entities = entity.getNearbyEntities(1, 1, 1);
-    for (final Entity nearby : entities) {
-      if (!(nearby instanceof final Player player)) {
-        return;
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.applyToAllMurderers(killer -> {
+      final Location killerLocation = killer.getLocation();
+      final double distance = killerLocation.distanceSquared(location);
+      if (distance < 1) {
+        killer.addPotionEffects(
+            PotionEffectType.BLINDNESS.createEffect(10, 0),
+            PotionEffectType.SLOWNESS.createEffect(10, 1));
       }
-      player.addPotionEffect(PotionEffectType.BLINDNESS.createEffect(10, 0));
-      player.addPotionEffect(PotionEffectType.SLOWNESS.createEffect(10, 1));
-    }
+    });
   }
 }

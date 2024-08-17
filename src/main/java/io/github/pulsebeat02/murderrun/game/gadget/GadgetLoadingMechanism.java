@@ -72,7 +72,7 @@ public final class GadgetLoadingMechanism {
   private static Gadget invokeGadgetConstructor(final Constructor<?> constructor, final Game game) {
     try {
       final Parameter[] parameters = constructor.getParameters();
-      final int size = parameters.length;
+      final int size = parameters.length; // either inject with Game or not for getting object metadata
       return (Gadget) (size == 0 ? constructor.newInstance() : constructor.newInstance(game));
     } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
       throw new AssertionError(e);

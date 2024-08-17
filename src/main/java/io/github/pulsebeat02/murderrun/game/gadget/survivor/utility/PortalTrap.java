@@ -61,7 +61,7 @@ public final class PortalTrap extends SurvivorGadget {
     double closestDistance = Double.MAX_VALUE;
     for (final Item item : items) {
       final Location itemLocation = item.getLocation();
-      final double distance = location.distance(itemLocation);
+      final double distance = location.distanceSquared(itemLocation);
       if (distance < closestDistance) {
         closest = item;
         closestDistance = distance;
