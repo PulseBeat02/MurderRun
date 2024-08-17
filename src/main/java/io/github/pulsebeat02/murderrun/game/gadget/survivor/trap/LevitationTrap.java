@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +18,9 @@ public final class LevitationTrap extends SurvivorTrap {
     super(
         "levitation",
         Material.SHULKER_SHELL,
-        Locale.LEVITATION_TRAP_NAME.build(),
-        Locale.LEVITATION_TRAP_LORE.build(),
-        Locale.LEVITATION_TRAP_ACTIVATE.build(),
+        Message.LEVITATION_NAME.build(),
+        Message.LEVITATION_LORE.build(),
+        Message.LEVITATION_ACTIVATE.build(),
         32,
         new Color(177, 156, 217));
   }

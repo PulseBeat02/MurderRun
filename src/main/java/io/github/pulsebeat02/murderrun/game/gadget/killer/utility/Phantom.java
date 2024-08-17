@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,8 +15,8 @@ public final class Phantom extends KillerGadget {
     super(
         "phantom",
         Material.PHANTOM_MEMBRANE,
-        Locale.PHANTOM_TRAP_NAME.build(),
-        Locale.PHANTOM_TRAP_LORE.build(),
+        Message.PHANTOM_NAME.build(),
+        Message.PHANTOM_LORE.build(),
         48);
   }
 

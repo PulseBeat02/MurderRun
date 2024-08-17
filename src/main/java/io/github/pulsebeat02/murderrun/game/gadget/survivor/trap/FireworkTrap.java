@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableList;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ public final class FireworkTrap extends SurvivorTrap {
     super(
         "firework",
         Material.FIREWORK_ROCKET,
-        Locale.FIREWORK_TRAP_NAME.build(),
-        Locale.FIREWORK_TRAP_LORE.build(),
-        Locale.FIREWORK_TRAP_ACTIVATE.build(),
+        Message.FIREWORK_NAME.build(),
+        Message.FIREWORK_LORE.build(),
+        Message.FIREWORK_ACTIVATE.build(),
         16,
         Color.RED);
   }

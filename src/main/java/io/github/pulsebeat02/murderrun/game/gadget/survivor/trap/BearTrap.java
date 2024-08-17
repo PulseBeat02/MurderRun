@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
@@ -14,9 +14,9 @@ public final class BearTrap extends SurvivorTrap {
     super(
         "bear",
         Material.IRON_TRAPDOOR,
-        Locale.BEAR_TRAP_NAME.build(),
-        Locale.BEAR_TRAP_LORE.build(),
-        Locale.BEAR_TRAP_ACTIVATE.build(),
+        Message.BEAR_NAME.build(),
+        Message.BEAR_LORE.build(),
+        Message.BEAR_ACTIVATE.build(),
         16,
         new Color(35, 23, 9));
   }

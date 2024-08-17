@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -33,8 +33,8 @@ public final class Camera extends KillerGadget {
     super(
         "killer_camera",
         Material.ENDER_EYE,
-        Locale.KILLER_CAMERA_TRAP_NAME.build(),
-        Locale.KILLER_CAMERA_TRAP_LORE.build(),
+        Message.KILLER_CAMERA_NAME.build(),
+        Message.KILLER_CAMERA_LORE.build(),
         32);
     this.glowPlayers = Collections.newSetFromMap(new WeakHashMap<>());
   }

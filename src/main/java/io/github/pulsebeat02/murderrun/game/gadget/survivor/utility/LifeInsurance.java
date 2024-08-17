@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.Collection;
 import java.util.Iterator;
@@ -34,8 +34,8 @@ public final class LifeInsurance extends SurvivorGadget {
     super(
         "life_insurance",
         Material.RED_DYE,
-        Locale.LIFE_INSURANCE_TRAP_NAME.build(),
-        Locale.LIFE_INSURANCE_TRAP_LORE.build(),
+        Message.LIFE_INSURANCE_NAME.build(),
+        Message.LIFE_INSURANCE_LORE.build(),
         32);
     this.taskMap = ArrayListMultimap.create();
   }
@@ -54,7 +54,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location second = arena.getSecondCorner();
     final World world = requireNonNull(first.getWorld());
 
-    final Component message = Locale.LIFE_INSURANCE_ACTIVATE.build();
+    final Component message = Message.LIFE_INSURANCE_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();

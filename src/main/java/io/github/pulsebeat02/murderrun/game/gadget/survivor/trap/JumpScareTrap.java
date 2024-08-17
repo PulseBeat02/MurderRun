@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import java.awt.Color;
 import net.kyori.adventure.key.Key;
@@ -21,9 +21,9 @@ public final class JumpScareTrap extends SurvivorTrap {
     super(
         "jump_scare",
         Material.BLACK_CONCRETE,
-        Locale.JUMP_SCARE_TRAP_NAME.build(),
-        Locale.JUMP_SCARE_TRAP_LORE.build(),
-        Locale.JUMP_SCARE_TRAP_ACTIVATE.build(),
+        Message.JUMP_SCARE_NAME.build(),
+        Message.JUMP_SCARE_LORE.build(),
+        Message.JUMP_SCARE_ACTIVATE.build(),
         32,
         Color.RED);
   }

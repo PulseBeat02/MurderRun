@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
@@ -29,8 +29,8 @@ public final class FakePart extends KillerGadget {
     super(
         "fake_part",
         Material.COMPARATOR,
-        Locale.FAKE_PART_NAME.build(),
-        Locale.FAKE_PART_TRAP_LORE.build(),
+        Message.FAKE_PART_NAME.build(),
+        Message.FAKE_PART_LORE.build(),
         48);
   }
 
@@ -72,7 +72,7 @@ public final class FakePart extends KillerGadget {
     final double distance = origin.distanceSquared(location);
     if (distance < 1) {
       this.handleDebuff(scheduler, survivor, killer);
-      final Component msg = Locale.FAKE_PART_ACTIVATE.build();
+      final Component msg = Message.FAKE_PART_ACTIVATE.build();
       survivor.sendMessage(msg);
     }
   }

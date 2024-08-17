@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,8 +14,8 @@ public final class MedKit extends SurvivorGadget {
     super(
         "med_kit",
         Material.SPLASH_POTION,
-        Locale.MED_KIT_TRAP_NAME.build(),
-        Locale.MED_KIT_TRAP_LORE.build(),
+        Message.MED_KIT_NAME.build(),
+        Message.MED_KIT_LORE.build(),
         16,
         stack -> {
           final ItemMeta meta = stack.getItemMeta();

@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,8 +22,8 @@ public final class Gamble extends KillerGadget {
     super(
         "gamble",
         Material.END_PORTAL_FRAME,
-        Locale.GAMBLE_TRAP_NAME.build(),
-        Locale.GAMBLE_TRAP_LORE.build(),
+        Message.GAMBLE_NAME.build(),
+        Message.GAMBLE_LORE.build(),
         48);
   }
 
@@ -40,7 +40,7 @@ public final class Gamble extends KillerGadget {
     playerManager.applyToAllLivingInnocents(
         survivor -> this.applyGamble(mechanism, survivor, killer));
 
-    final Component msg = Locale.GAMBLE_ACTIVATE.build();
+    final Component msg = Message.GAMBLE_ACTIVATE.build();
     killer.sendMessage(msg);
   }
 

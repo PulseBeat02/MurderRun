@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
@@ -20,8 +20,8 @@ public final class CorpusWarp extends SurvivorGadget {
     super(
         "corpus_warp",
         Material.PURPLE_STAINED_GLASS,
-        Locale.CORPUS_WARP_TRAP_NAME.build(),
-        Locale.CORPUS_WARP_TRAP_LORE.build(),
+        Message.CORPUS_WARP_NAME.build(),
+        Message.CORPUS_WARP_LORE.build(),
         32);
   }
 

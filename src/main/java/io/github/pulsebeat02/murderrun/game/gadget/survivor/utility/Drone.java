@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,12 +13,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 public final class Drone extends SurvivorGadget {
 
   public Drone() {
-    super(
-        "drone",
-        Material.ENDER_EYE,
-        Locale.DRONE_TRAP_NAME.build(),
-        Locale.DRONE_TRAP_LORE.build(),
-        32);
+    super("drone", Material.ENDER_EYE, Message.DRONE_NAME.build(), Message.DRONE_LORE.build(), 32);
   }
 
   @Override

@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -25,8 +25,8 @@ public final class RedArrow extends KillerGadget {
     super(
         "red_arrow",
         Material.TIPPED_ARROW,
-        Locale.RED_ARROW_TRAP_NAME.build(),
-        Locale.RED_ARROW_TRAP_LORE.build(),
+        Message.RED_ARROW_NAME.build(),
+        Message.RED_ARROW_LORE.build(),
         32,
         stack -> {
           final ItemMeta meta = requireNonNull(stack.getItemMeta());
@@ -49,7 +49,7 @@ public final class RedArrow extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, 2 * 20L);
 
-    final Component message = Locale.RED_ARROW_ACTIVATE.build();
+    final Component message = Message.RED_ARROW_ACTIVATE.build();
     gamePlayer.sendMessage(message);
   }
 

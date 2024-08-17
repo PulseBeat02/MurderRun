@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,8 +21,8 @@ public final class IceSkatin extends SurvivorGadget {
     super(
         "ice_skatin",
         Material.OAK_BOAT,
-        Locale.ICE_SKATIN_TRAP_NAME.build(),
-        Locale.ICE_SKATIN_TRAP_LORE.build(),
+        Message.ICE_SKATIN_NAME.build(),
+        Message.ICE_SKATIN_LORE.build(),
         32);
   }
 

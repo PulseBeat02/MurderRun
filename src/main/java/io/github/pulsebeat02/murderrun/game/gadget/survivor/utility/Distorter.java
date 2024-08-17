@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,8 +19,8 @@ public final class Distorter extends SurvivorGadget {
     super(
         "distorter",
         Material.END_STONE,
-        Locale.DISTORTER_TRAP_NAME.build(),
-        Locale.DISTORTER_TRAP_LORE.build(),
+        Message.DISTORTER_NAME.build(),
+        Message.DISTORTER_LORE.build(),
         32);
   }
 
@@ -45,7 +45,7 @@ public final class Distorter extends SurvivorGadget {
     final Location location = killer.getLocation();
     final double distance = location.distanceSquared(origin);
     if (distance <= 1) {
-      final Component message = Locale.DISTORTER_TRAP_DEACTIVATE.build();
+      final Component message = Message.DISTORTER_DEACTIVATE.build();
       manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
     } else if (distance <= 100) {
       killer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);

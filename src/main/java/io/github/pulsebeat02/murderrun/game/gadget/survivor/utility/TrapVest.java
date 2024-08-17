@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -26,8 +26,8 @@ public final class TrapVest extends SurvivorGadget {
     super(
         "trap_vest",
         Material.TNT,
-        Locale.TRAP_VEST_TRAP_NAME.build(),
-        Locale.TRAP_VEST_TRAP_LORE.build(),
+        Message.TRAP_VEST_NAME.build(),
+        Message.TRAP_VEST_LORE.build(),
         32);
   }
 
@@ -43,7 +43,7 @@ public final class TrapVest extends SurvivorGadget {
         new PlayerDeathTask(() -> this.handleTraps(gamePlayer, location, world), false);
     gamePlayer.addDeathTask(task);
 
-    final Component message = Locale.TRAP_VEST_ACTIVATE.build();
+    final Component message = Message.TRAP_VEST_ACTIVATE.build();
     gamePlayer.sendMessage(message);
   }
 

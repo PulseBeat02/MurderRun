@@ -12,7 +12,7 @@ import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,8 +26,8 @@ public final class CryoFreeze extends SurvivorGadget {
     super(
         "cryo_freeze",
         Material.ICE,
-        Locale.CRYO_FREEZE_TRAP_NAME.build(),
-        Locale.CRYO_FREEZE_TRAP_LORE.build(),
+        Message.CRYO_FREEZE_NAME.build(),
+        Message.CRYO_FREEZE_LORE.build(),
         32);
   }
 

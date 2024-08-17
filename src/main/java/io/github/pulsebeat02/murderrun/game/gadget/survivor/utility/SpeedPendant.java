@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -19,7 +19,7 @@ public final class SpeedPendant extends SurvivorGadget {
     super(
         "speed_pendant",
         Material.WHITE_DYE,
-        Locale.SPEED_PENDANT_NAME.build(),
+        Message.SPEED_PENDANT_NAME.build(),
         empty(),
         48,
         stack -> {

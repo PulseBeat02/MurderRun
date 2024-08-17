@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.nio.ByteBuffer;
@@ -30,8 +30,8 @@ public final class Translocator extends SurvivorGadget {
     super(
         "translocator",
         Material.CHORUS_FLOWER,
-        Locale.TRANSLOCATOR_TRAP_NAME.build(),
-        Locale.TRANSLOCATOR_TRAP_LORE.build(),
+        Message.TRANSLOCATOR_NAME.build(),
+        Message.TRANSLOCATOR_LORE.build(),
         64,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]));
@@ -74,7 +74,7 @@ public final class Translocator extends SurvivorGadget {
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
 
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    final Component lore = Locale.TRANSLOCATOR_TRAP_LORE1.build();
+    final Component lore = Message.TRANSLOCATOR_LORE1.build();
     final String message = ComponentUtils.serializeComponentToLegacyString(lore);
     final List<String> newLore = List.of(message);
     meta.setLore(newLore);

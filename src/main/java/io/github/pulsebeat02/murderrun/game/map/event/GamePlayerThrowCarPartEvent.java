@@ -13,7 +13,7 @@ import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
@@ -78,7 +78,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
   }
 
   private void announceCarPartRetrieval(final int leftOver) {
-    final Component title = Locale.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
+    final Component title = Message.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
     final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllParticipants(title, subtitle);
@@ -89,7 +89,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     final GameSettings settings = this.game.getSettings();
     final int parts = settings.getCarPartCount();
     final int collected = parts - leftOver;
-    final Component name = Locale.BOSS_BAR.build(collected, parts);
+    final Component name = Message.BOSS_BAR.build(collected, parts);
     final float progress = 0f;
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;

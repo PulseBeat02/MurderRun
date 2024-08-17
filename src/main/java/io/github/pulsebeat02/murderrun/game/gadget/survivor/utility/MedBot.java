@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -29,8 +29,8 @@ public final class MedBot extends SurvivorGadget {
     super(
         "med_bot",
         Material.CHORUS_FLOWER,
-        Locale.MED_BOT_TRAP_NAME.build(),
-        Locale.MED_BOT_TRAP_LORE.build(),
+        Message.MED_BOT_NAME.build(),
+        Message.MED_BOT_LORE.build(),
         32);
   }
 
@@ -71,7 +71,7 @@ public final class MedBot extends SurvivorGadget {
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
     if (distance <= 1) {
-      final Component message = Locale.MED_BOT_TRAP_DEACTIVATE.build();
+      final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
       stand.remove();
     }

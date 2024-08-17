@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,9 +17,9 @@ public final class SmokeTrap extends SurvivorTrap {
     super(
         "smoke",
         Material.GUNPOWDER,
-        Locale.SMOKE_TRAP_NAME.build(),
-        Locale.SMOKE_TRAP_LORE.build(),
-        Locale.SMOKE_TRAP_ACTIVATE.build(),
+        Message.SMOKE_NAME.build(),
+        Message.SMOKE_LORE.build(),
+        Message.SMOKE_ACTIVATE.build(),
         16,
         Color.GRAY);
   }

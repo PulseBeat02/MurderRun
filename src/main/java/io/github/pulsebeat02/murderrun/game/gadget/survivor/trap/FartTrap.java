@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import java.awt.Color;
 import net.kyori.adventure.key.Key;
@@ -17,9 +17,9 @@ public final class FartTrap extends SurvivorTrap {
     super(
         "fart",
         Material.GREEN_WOOL,
-        Locale.FART_TRAP_NAME.build(),
-        Locale.FART_TRAP_LORE.build(),
-        Locale.FART_TRAP_ACTIVATE.build(),
+        Message.FART_NAME.build(),
+        Message.FART_LORE.build(),
+        Message.FART_ACTIVATE.build(),
         32,
         Color.GREEN);
   }

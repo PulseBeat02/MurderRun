@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -18,8 +18,8 @@ public final class RandomTrap extends SurvivorGadget {
     super(
         "random",
         Material.END_PORTAL_FRAME,
-        Locale.RANDOM_TRAP_NAME.build(),
-        Locale.RANDOM_TRAP_LORE.build(),
+        Message.RANDOM_NAME.build(),
+        Message.RANDOM_LORE.build(),
         16);
   }
 

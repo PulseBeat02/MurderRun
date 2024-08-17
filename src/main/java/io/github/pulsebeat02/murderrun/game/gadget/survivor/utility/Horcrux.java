@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,8 +18,8 @@ public final class Horcrux extends SurvivorGadget {
     super(
         "horcrux",
         Material.CHARCOAL,
-        Locale.HORCRUX_TRAP_NAME.build(),
-        Locale.HORCRUX_TRAP_LORE.build(),
+        Message.HORCRUX_NAME.build(),
+        Message.HORCRUX_LORE.build(),
         64);
   }
 
@@ -38,7 +38,7 @@ public final class Horcrux extends SurvivorGadget {
   }
 
   private void handleHorcrux(final GamePlayer player, final Location location) {
-    final Component message = Locale.HORCRUX_TRAP_ACTIVATE.build();
+    final Component message = Message.HORCRUX_ACTIVATE.build();
     player.teleport(location);
     player.sendMessage(message);
   }

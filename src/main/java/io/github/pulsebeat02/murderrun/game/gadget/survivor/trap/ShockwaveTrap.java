@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,9 +21,9 @@ public final class ShockwaveTrap extends SurvivorTrap {
     super(
         "shockwave_trap",
         Material.TNT,
-        Locale.SHOCKWAVE_TRAP_NAME.build(),
-        Locale.SHOCKWAVE_TRAP_LORE.build(),
-        Locale.SHOCKWAVE_TRAP_ACTIVATE.build(),
+        Message.SHOCKWAVE_NAME.build(),
+        Message.SHOCKWAVE_LORE.build(),
+        Message.SHOCKWAVE_ACTIVATE.build(),
         32,
         new Color(255, 215, 0));
   }

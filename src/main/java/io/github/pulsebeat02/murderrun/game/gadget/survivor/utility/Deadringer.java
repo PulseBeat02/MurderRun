@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,8 +20,8 @@ public final class Deadringer extends SurvivorGadget {
     super(
         "deadringer",
         Material.WITHER_SKELETON_SKULL,
-        Locale.DEADRINGER_TRAP_NAME.build(),
-        Locale.DEADRINGER_TRAP_LORE.build(),
+        Message.DEADRINGER_NAME.build(),
+        Message.DEADRINGER_LORE.build(),
         48);
   }
 
@@ -33,7 +33,7 @@ public final class Deadringer extends SurvivorGadget {
     final Player player = event.getPlayer();
     final String name = player.getDisplayName();
     final PlayerManager manager = game.getPlayerManager();
-    final Component message = Locale.PLAYER_DEATH.build(name);
+    final Component message = Message.PLAYER_DEATH.build(name);
     manager.applyToAllParticipants(gamePlayer -> gamePlayer.showTitle(message, empty()));
     player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 15 * 20, 1, true, false));
     player.addPotionEffect(

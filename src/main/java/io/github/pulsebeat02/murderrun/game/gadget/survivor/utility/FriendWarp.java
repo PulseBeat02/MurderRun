@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,8 +16,8 @@ public final class FriendWarp extends SurvivorGadget {
     super(
         "friend_warp",
         Material.EMERALD,
-        Locale.FRIEND_WARP_TRAP_NAME.build(),
-        Locale.FRIEND_WARP_TRAP_LORE.build(),
+        Message.FRIEND_WARP_NAME.build(),
+        Message.FRIEND_WARP_LORE.build(),
         32);
   }
 

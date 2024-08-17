@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,8 +19,8 @@ public final class BloodCurse extends KillerGadget {
     super(
         "blood_curse",
         Material.REDSTONE_BLOCK,
-        Locale.BLOOD_CURSE_TRAP_NAME.build(),
-        Locale.BLOOD_CURSE_TRAP_LORE.build(),
+        Message.BLOOD_CURSE_NAME.build(),
+        Message.BLOOD_CURSE_LORE.build(),
         48);
   }
 
@@ -33,7 +33,7 @@ public final class BloodCurse extends KillerGadget {
 
   private void scheduleTaskForSurvivors(final Game game, final GamePlayer survivor) {
 
-    final Component msg = Locale.BLOOD_CURSE_ACTIVATE.build();
+    final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
     survivor.sendMessage(msg);
 
     final GameScheduler scheduler = game.getScheduler();

@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,8 +24,8 @@ public final class PoisonSmog extends KillerGadget {
     super(
         "poison_smog",
         Material.SLIME_BALL,
-        Locale.POISON_SMOG_TRAP_NAME.build(),
-        Locale.POISON_SMOG_TRAP_LORE.build(),
+        Message.POISON_SMOG_NAME.build(),
+        Message.POISON_SMOG_LORE.build(),
         32);
   }
 

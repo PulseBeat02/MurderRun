@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
@@ -14,9 +14,9 @@ public final class FreezeTrap extends SurvivorTrap {
     super(
         "freeze",
         Material.PACKED_ICE,
-        Locale.FREEZE_TRAP_NAME.build(),
-        Locale.FREEZE_TRAP_LORE.build(),
-        Locale.FREEZE_TRAP_ACTIVATE.build(),
+        Message.FREEZE_NAME.build(),
+        Message.FREEZE_LORE.build(),
+        Message.FREEZE_ACTIVATE.build(),
         32,
         Color.BLUE);
   }

@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,8 +23,8 @@ public final class Hook extends KillerGadget implements Listener {
     super(
         "hook",
         Material.FISHING_ROD,
-        Locale.HOOK_TRAP_NAME.build(),
-        Locale.HOOK_TRAP_LORE.build(),
+        Message.HOOK_NAME.build(),
+        Message.HOOK_LORE.build(),
         32,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.HOOK, PersistentDataType.BOOLEAN, true));

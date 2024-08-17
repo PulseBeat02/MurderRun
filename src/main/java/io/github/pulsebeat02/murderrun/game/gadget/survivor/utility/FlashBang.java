@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.util.List;
 import org.bukkit.Location;
@@ -28,8 +28,8 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     super(
         "flash_bang",
         Material.SNOWBALL,
-        Locale.FLASHBANG_TRAP_NAME.build(),
-        Locale.FLASHBANG_TRAP_LORE.build(),
+        Message.FLASHBANG_NAME.build(),
+        Message.FLASHBANG_LORE.build(),
         8,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true));

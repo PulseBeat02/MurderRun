@@ -5,7 +5,7 @@ import static net.kyori.adventure.key.Key.key;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,9 @@ public final class CageTrap extends SurvivorTrap {
     super(
         "cage",
         Material.IRON_BARS,
-        Locale.CAGE_TRAP_NAME.build(),
-        Locale.CAGE_TRAP_LORE.build(),
-        Locale.CAGE_TRAP_ACTIVATE.build(),
+        Message.CAGE_NAME.build(),
+        Message.CAGE_LORE.build(),
+        Message.CAGE_ACTIVATE.build(),
         48,
         Color.GRAY);
   }

@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
@@ -15,9 +15,9 @@ public final class StarTrap extends SurvivorTrap {
     super(
         "star",
         Material.FIREWORK_STAR,
-        Locale.STAR_TRAP_NAME.build(),
-        Locale.STAR_TRAP_LORE.build(),
-        Locale.STAR_TRAP_ACTIVATE.build(),
+        Message.STAR_NAME.build(),
+        Message.STAR_LORE.build(),
+        Message.STAR_ACTIVATE.build(),
         16,
         new Color(255, 215, 0));
   }

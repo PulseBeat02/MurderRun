@@ -9,7 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
@@ -27,8 +27,8 @@ public final class ResurrectionStone extends SurvivorGadget {
     super(
         "resurrection_stone",
         Material.BEACON,
-        Locale.RESURRECTION_STONE_TRAP_NAME.build(),
-        Locale.RESURRECTION_STONE_TRAP_LORE.build(),
+        Message.RESURRECTION_STONE_NAME.build(),
+        Message.RESURRECTION_STONE_LORE.build(),
         128);
   }
 
@@ -77,7 +77,7 @@ public final class ResurrectionStone extends SurvivorGadget {
       resurrected.setGameMode(GameMode.SURVIVAL);
     });
 
-    final Component message = Locale.RESURRECTION_STONE_TRAP_ACTIVATE.build();
+    final Component message = Message.RESURRECTION_STONE_ACTIVATE.build();
     playerManager.applyToAllParticipants(gamePlayer -> gamePlayer.sendMessage(message));
   }
 

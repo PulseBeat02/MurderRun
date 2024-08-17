@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -16,8 +16,8 @@ public final class HealthCut extends KillerGadget {
     super(
         "health_cut",
         Material.GOLDEN_SWORD,
-        Locale.HEALTH_CUT_ACTIVATE.build(),
-        Locale.HEALTH_CUT_TRAP_LORE.build(),
+        Message.HEALTH_CUT_ACTIVATE.build(),
+        Message.HEALTH_CUT_LORE.build(),
         48);
   }
 
@@ -32,7 +32,7 @@ public final class HealthCut extends KillerGadget {
   }
 
   private void setState(final GamePlayer survivor, final GameScheduler scheduler) {
-    final Component msg = Locale.HEALTH_CUT_ACTIVATE.build();
+    final Component msg = Message.HEALTH_CUT_ACTIVATE.build();
     survivor.sendMessage(msg);
     this.resetState(survivor, scheduler);
   }

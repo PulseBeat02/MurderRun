@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -33,8 +33,8 @@ public final class EMPBlast extends KillerGadget {
     super(
         "emp_blast",
         Material.SNOWBALL,
-        Locale.EMP_BLAST_TRAP_NAME.build(),
-        Locale.EMP_BLAST_TRAP_LORE.build(),
+        Message.EMP_BLAST_NAME.build(),
+        Message.EMP_BLAST_LORE.build(),
         96);
   }
 
@@ -62,7 +62,7 @@ public final class EMPBlast extends KillerGadget {
   }
 
   private void stunSurvivors(final GamePlayer survivor) {
-    final Component msg = Locale.EMP_BLAST_ACTIVATE.build();
+    final Component msg = Message.EMP_BLAST_ACTIVATE.build();
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 1),
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),

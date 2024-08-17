@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,8 +27,8 @@ public final class Flashlight extends SurvivorGadget {
     super(
         "flashlight",
         Material.GOLDEN_SHOVEL,
-        Locale.FLASHLIGHT_TRAP_NAME.build(),
-        Locale.FLASHLIGHT_TRAP_LORE.build(),
+        Message.FLASHLIGHT_NAME.build(),
+        Message.FLASHLIGHT_LORE.build(),
         48,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, 0L));

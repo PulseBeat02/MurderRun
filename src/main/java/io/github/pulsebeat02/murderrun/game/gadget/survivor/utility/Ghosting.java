@@ -10,7 +10,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -30,8 +30,8 @@ public final class Ghosting extends SurvivorGadget {
     super(
         "ghosting",
         Material.WHITE_WOOL,
-        Locale.GHOSTING_TRAP_NAME.build(),
-        Locale.GHOSTING_TRAP_LORE.build(),
+        Message.GHOSTING_NAME.build(),
+        Message.GHOSTING_LORE.build(),
         96);
   }
 
@@ -47,7 +47,7 @@ public final class Ghosting extends SurvivorGadget {
         new PlayerDeathTask(() -> this.handleGhosting(game, gamePlayer), false);
     gamePlayer.addDeathTask(task);
 
-    final Component message = Locale.GHOSTING_TRAP_ACTIVATE.build();
+    final Component message = Message.GHOSTING_ACTIVATE.build();
     gamePlayer.sendMessage(message);
   }
 

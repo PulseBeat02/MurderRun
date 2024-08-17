@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,8 +16,8 @@ public final class WarpDistort extends KillerGadget {
     super(
         "warp_distort",
         Material.CHORUS_FRUIT,
-        Locale.WARP_DISTORT_TRAP_NAME.build(),
-        Locale.WARP_DISTORT_TRAP_LORE.build(),
+        Message.WARP_DISTORT_NAME.build(),
+        Message.WARP_DISTORT_LORE.build(),
         32);
   }
 
@@ -36,7 +36,7 @@ public final class WarpDistort extends KillerGadget {
     random.teleport(second);
     random2.teleport(first);
 
-    final Component msg = Locale.WARP_DISTORT_ACTIVATE.build();
+    final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     random.sendMessage(msg);
     random2.sendMessage(msg);
   }

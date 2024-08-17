@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,8 +23,8 @@ public final class BlastOff extends SurvivorGadget {
     super(
         "blast_off",
         Material.FIREWORK_ROCKET,
-        Locale.BLAST_OFF_TRAP_NAME.build(),
-        Locale.BLAST_OFF_TRAP_LORE.build(),
+        Message.BLAST_OFF_NAME.build(),
+        Message.BLAST_OFF_LORE.build(),
         32);
   }
 
@@ -41,7 +41,7 @@ public final class BlastOff extends SurvivorGadget {
       return;
     }
 
-    final Component message = Locale.BLAST_OFF_TRAP_ACTIVATE.build();
+    final Component message = Message.BLAST_OFF_ACTIVATE.build();
     manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
     killer.apply(this::spawnRocket);
   }

@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -26,8 +26,8 @@ public final class IceSpirit extends SurvivorGadget {
     super(
         "ice_spirit",
         Material.SNOWBALL,
-        Locale.ICE_SPIRIT_TRAP_NAME.build(),
-        Locale.ICE_SPIRIT_TRAP_LORE.build(),
+        Message.ICE_SPIRIT_NAME.build(),
+        Message.ICE_SPIRIT_LORE.build(),
         16);
   }
 
@@ -67,7 +67,7 @@ public final class IceSpirit extends SurvivorGadget {
         new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, Integer.MAX_VALUE),
         new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20, Integer.MAX_VALUE));
     manager.applyToAllLivingInnocents(
-        innocent -> innocent.sendMessage(Locale.FREEZE_TRAP_ACTIVATE.build()));
+        innocent -> innocent.sendMessage(Message.FREEZE_ACTIVATE.build()));
   }
 
   private Zombie spawnSpirit(final World world, final Location location, final GamePlayer nearest) {

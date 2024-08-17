@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -23,9 +23,9 @@ public final class SpasmTrap extends SurvivorTrap {
     super(
         "spasm",
         Material.SEA_LANTERN,
-        Locale.SPASM_TRAP_NAME.build(),
-        Locale.SPASM_TRAP_LORE.build(),
-        Locale.SPASM_TRAP_ACTIVATE.build(),
+        Message.SPASM_NAME.build(),
+        Message.SPASM_LORE.build(),
+        Message.SPASM_ACTIVATE.build(),
         32,
         Color.RED);
     this.states = new WeakHashMap<>();

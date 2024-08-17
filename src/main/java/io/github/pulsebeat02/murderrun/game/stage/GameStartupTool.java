@@ -11,7 +11,7 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.bossbar.BossBar;
@@ -45,7 +45,7 @@ public final class GameStartupTool {
   }
 
   private void announceHidePhase() {
-    final Component title = Locale.PREPARATION_PHASE.build();
+    final Component title = Message.PREPARATION_PHASE.build();
     final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllParticipants(title, subtitle);
@@ -54,7 +54,7 @@ public final class GameStartupTool {
   private void setBossBar() {
     final GameSettings settings = this.game.getSettings();
     final int parts = settings.getCarPartCount();
-    final Component name = Locale.BOSS_BAR.build(0, parts);
+    final Component name = Message.BOSS_BAR.build(0, parts);
     final float progress = 0f;
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
@@ -106,7 +106,7 @@ public final class GameStartupTool {
   }
 
   private void announceReleasePhase() {
-    final Component title = Locale.RELEASE_PHASE.build();
+    final Component title = Message.RELEASE_PHASE.build();
     final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllParticipants(title, subtitle);

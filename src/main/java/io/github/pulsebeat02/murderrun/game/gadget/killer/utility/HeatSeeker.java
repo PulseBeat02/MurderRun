@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -23,8 +23,8 @@ public final class HeatSeeker extends KillerGadget {
     super(
         "heat_seeker",
         Material.REPEATER,
-        Locale.HEAT_SEEKER_TRAP_NAME.build(),
-        Locale.HEAT_SEEKER_TRAP_LORE.build(),
+        Message.HEAT_SEEKER_NAME.build(),
+        Message.HEAT_SEEKER_LORE.build(),
         48);
     this.glowPlayerStates = ArrayListMultimap.create();
   }
@@ -37,7 +37,7 @@ public final class HeatSeeker extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final Component message = Locale.HEAT_SEEKER_ACTIVATE.build();
+    final Component message = Message.HEAT_SEEKER_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();

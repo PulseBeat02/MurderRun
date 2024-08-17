@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,8 +21,8 @@ public final class RandomTeleport extends SurvivorGadget {
     super(
         "random_teleport",
         Material.GOLDEN_CARROT,
-        Locale.TP_ME_AWAY_FROM_HERE_TRAP_NAME.build(),
-        Locale.TP_ME_AWAY_FROM_HERE_TRAP_LORE.build(),
+        Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
+        Message.TP_ME_AWAY_FROM_HERE_LORE.build(),
         32);
   }
 

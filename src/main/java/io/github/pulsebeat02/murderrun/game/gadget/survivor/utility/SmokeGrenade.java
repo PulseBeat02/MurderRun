@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.UnattachedTemporaryRepeatedTask;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.util.List;
 import org.bukkit.Location;
@@ -29,8 +29,8 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     super(
         "smoke_grenade",
         Material.SNOWBALL,
-        Locale.SMOKE_BOMB_TRAP_NAME.build(),
-        Locale.SMOKE_BOMB_TRAP_LORE.build(),
+        Message.SMOKE_BOMB_NAME.build(),
+        Message.SMOKE_BOMB_LORE.build(),
         16,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true));

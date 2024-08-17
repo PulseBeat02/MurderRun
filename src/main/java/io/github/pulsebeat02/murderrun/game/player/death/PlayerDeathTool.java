@@ -10,7 +10,7 @@ import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import net.kyori.adventure.text.Component;
@@ -95,7 +95,7 @@ public final class PlayerDeathTool {
 
   private void announcePlayerDeath(final Player dead) {
     final String name = dead.getDisplayName();
-    final Component title = Locale.PLAYER_DEATH.build(name);
+    final Component title = Message.PLAYER_DEATH.build(name);
     final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllParticipants(title, subtitle);

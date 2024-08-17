@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,9 +17,9 @@ public final class SpawnTrap extends SurvivorTrap {
     super(
         "spawn",
         Material.AMETHYST_SHARD,
-        Locale.SPAWN_TRAP_NAME.build(),
-        Locale.SPAWN_TRAP_LORE.build(),
-        Locale.SPAWN_TRAP_ACTIVATE.build(),
+        Message.SPAWN_NAME.build(),
+        Message.SPAWN_LORE.build(),
+        Message.SPAWN_ACTIVATE.build(),
         32,
         Color.GRAY);
   }

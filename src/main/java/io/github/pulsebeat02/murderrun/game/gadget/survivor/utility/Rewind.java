@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.structure.CircularBuffer;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
@@ -21,12 +21,7 @@ public final class Rewind extends SurvivorGadget implements Listener {
   private final Map<Player, CircularBuffer<SimpleEntry<Location, Long>>> playerLocations;
 
   public Rewind() {
-    super(
-        "rewind",
-        Material.DIAMOND,
-        Locale.REWIND_TRAP_NAME.build(),
-        Locale.REWIND_TRAP_LORE.build(),
-        16);
+    super("rewind", Material.DIAMOND, Message.REWIND_NAME.build(), Message.REWIND_LORE.build(), 16);
     this.playerLocations = new WeakHashMap<>();
   }
 

@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.resourcepack.server;
 
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.ServerResourcepack;
 import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
@@ -60,7 +60,7 @@ public final class ResourcePackDaemon {
     try {
       final URI uri = new URI(this.url);
       final UUID id = UUID.randomUUID();
-      final Component message = Locale.RESOURCEPACK_PROMPT.build();
+      final Component message = Message.RESOURCEPACK_PROMPT.build();
       final ResourcePackInfo info = ResourcePackInfo.resourcePackInfo(id, uri, this.hash);
       return ResourcePackRequest.resourcePackRequest()
           .packs(info)

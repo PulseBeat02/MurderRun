@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,8 +22,8 @@ public final class DeathHound extends KillerGadget {
     super(
         "death_hound",
         Material.BONE,
-        Locale.DEATH_HOUND_TRAP_NAME.build(),
-        Locale.DEATH_HOUND_TRAP_LORE.build(),
+        Message.DEATH_HOUND_NAME.build(),
+        Message.DEATH_HOUND_LORE.build(),
         48);
   }
 

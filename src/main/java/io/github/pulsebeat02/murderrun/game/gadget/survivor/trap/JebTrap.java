@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,9 +19,9 @@ public final class JebTrap extends SurvivorTrap {
     super(
         "jeb",
         Material.CYAN_WOOL,
-        Locale.JEB_TRAP_NAME.build(),
-        Locale.JEB_TRAP_LORE.build(),
-        Locale.JEB_TRAP_ACTIVATE.build(),
+        Message.JEB_NAME.build(),
+        Message.JEB_LORE.build(),
+        Message.JEB_ACTIVATE.build(),
         16,
         Color.WHITE);
   }

@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,8 +21,8 @@ public final class Parasite extends SurvivorGadget {
     super(
         "parasite",
         Material.VINE,
-        Locale.PARASITE_TRAP_NAME.build(),
-        Locale.PARASITE_TRAP_LORE.build(),
+        Message.PARASITE_NAME.build(),
+        Message.PARASITE_LORE.build(),
         48);
   }
 
@@ -53,7 +53,7 @@ public final class Parasite extends SurvivorGadget {
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
     if (distance <= 1) {
-      final Component message = Locale.PARASITE_TRAP_DEACTIVATE.build();
+      final Component message = Message.PARASITE_DEACTIVATE.build();
       manager.applyToAllLivingInnocents(survivor -> survivor.sendMessage(message));
       item.remove();
     } else if (distance <= 100) {

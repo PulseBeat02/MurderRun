@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.commmand;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyTrader;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.TradingUtils;
 import java.util.List;
 import java.util.stream.Stream;
@@ -47,7 +47,7 @@ public final class VillagerCommand implements AnnotationCommandFeature {
     final List<MerchantRecipe> recipes = TradingUtils.parseRecipes(args);
     final LobbyTrader trader = new LobbyTrader(location, recipes);
     trader.spawnVillager();
-    this.sendSuccessMessage(sender, Locale.VILLAGER_SPAWN.build());
+    this.sendSuccessMessage(sender, Message.VILLAGER_SPAWN.build());
   }
 
   private void sendSuccessMessage(final Player player, final Component component) {

@@ -115,6 +115,10 @@ public final class GadgetActionHandler implements Listener {
       }
     }
 
+    if (closestItem == null) {
+      return; // checker framework
+    }
+
     if (closest == null) {
       return;
     }

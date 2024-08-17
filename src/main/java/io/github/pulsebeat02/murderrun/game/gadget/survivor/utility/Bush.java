@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,12 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class Bush extends SurvivorGadget {
 
   public Bush() {
-    super(
-        "bush",
-        Material.OAK_LEAVES,
-        Locale.BUSH_TRAP_NAME.build(),
-        Locale.BUSH_TRAP_LORE.build(),
-        8);
+    super("bush", Material.OAK_LEAVES, Message.BUSH_NAME.build(), Message.BUSH_LORE.build(), 8);
   }
 
   @Override

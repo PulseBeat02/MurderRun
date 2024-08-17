@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,9 +17,9 @@ public final class NeckSnapTrap extends SurvivorTrap {
     super(
         "neck_snap",
         Material.BONE,
-        Locale.NECK_SNAP_TRAP_NAME.build(),
-        Locale.NECK_SNAP_TRAP_LORE.build(),
-        Locale.NECK_SNAP_TRAP_ACTIVATE.build(),
+        Message.NECK_SNAP_NAME.build(),
+        Message.NECK_SNAP_LORE.build(),
+        Message.NECK_SNAP_ACTIVATE.build(),
         16,
         Color.GREEN);
   }

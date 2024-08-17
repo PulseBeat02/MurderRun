@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final LobbyManager manager = this.plugin.getLobbyManager();
     final Map<String, Lobby> arenas = manager.getLobbies();
     final List<String> keys = new ArrayList<>(arenas.keySet());
-    final Component message = Locale.LOBBY_LIST.build(keys);
+    final Component message = Message.LOBBY_LIST.build(keys);
     this.sendSuccessMessage(sender, message);
   }
 
@@ -60,7 +60,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     }
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.removeLobby(name);
-    final Component message = Locale.LOBBY_REMOVE.build(name);
+    final Component message = Message.LOBBY_REMOVE.build(name);
     this.sendSuccessMessage(sender, message);
   }
 
@@ -69,7 +69,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final Map<String, Lobby> arenas = manager.getLobbies();
     final Lobby lobby = arenas.get(name);
     if (lobby == null) {
-      final Component message = Locale.LOBBY_REMOVE_ERROR.build();
+      final Component message = Message.LOBBY_REMOVE_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -85,14 +85,14 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     }
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.addLobby(this.name, this.spawn);
-    final Component message = Locale.LOBBY_BUILT.build();
+    final Component message = Message.LOBBY_BUILT.build();
     this.sendSuccessMessage(sender, message);
     this.plugin.updatePluginData();
   }
 
   private boolean handleNullSpawn(final Audience audience) {
     if (this.spawn == null) {
-      final Component message = Locale.LOBBY_SPAWN_ERROR.build();
+      final Component message = Message.LOBBY_SPAWN_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -101,7 +101,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
 
   private boolean handleNullName(final Audience audience) {
     if (this.name == null) {
-      final Component message = Locale.LOBBY_NAME_ERROR.build();
+      final Component message = Message.LOBBY_NAME_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -112,7 +112,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   @Command(value = "murder lobby set name <name>", requiredSender = Player.class)
   public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
-    final Component message = Locale.LOBBY_NAME.build(name);
+    final Component message = Message.LOBBY_NAME.build(name);
     this.sendSuccessMessage(sender, message);
   }
 
@@ -133,7 +133,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   public void setSpawn(final Player sender) {
     final Location location = sender.getLocation();
     this.spawn = location;
-    final Component message = ComponentUtils.createLocationComponent(Locale.LOBBY_SPAWN, location);
+    final Component message = ComponentUtils.createLocationComponent(Message.LOBBY_SPAWN, location);
     this.sendSuccessMessage(sender, message);
   }
 

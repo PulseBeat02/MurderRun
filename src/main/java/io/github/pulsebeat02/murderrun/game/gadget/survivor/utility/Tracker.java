@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,8 +16,8 @@ public final class Tracker extends SurvivorGadget {
     super(
         "tracker",
         Material.TRIPWIRE_HOOK,
-        Locale.TRACKER_TRAP_NAME.build(),
-        Locale.TRACKER_TRAP_LORE.build(),
+        Message.TRACKER_NAME.build(),
+        Message.TRACKER_LORE.build(),
         64);
   }
 
@@ -38,9 +38,9 @@ public final class Tracker extends SurvivorGadget {
     final double distance = origin.distanceSquared(killerLocation);
     if (distance <= 25) {
       player.setEntityGlowingForPlayer(killer);
-      player.sendMessage(Locale.TRACKER_TRAP_ACTIVATE.build());
+      player.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {
-      player.sendMessage(Locale.TRACKER_TRAP_DEACTIVATE.build());
+      player.sendMessage(Message.TRACKER_DEACTIVATE.build());
     }
   }
 }

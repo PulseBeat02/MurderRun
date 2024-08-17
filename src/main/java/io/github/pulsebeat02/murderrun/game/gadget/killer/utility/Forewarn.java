@@ -10,7 +10,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -25,8 +25,8 @@ public final class Forewarn extends KillerGadget {
     super(
         "forewarn",
         Material.GLOWSTONE_DUST,
-        Locale.FOREWARN_TRAP_NAME.build(),
-        Locale.FOREWARN_TRAP_LORE.build(),
+        Message.FOREWARN_NAME.build(),
+        Message.FOREWARN_LORE.build(),
         96);
     this.glowStates = ArrayListMultimap.create();
   }
@@ -39,7 +39,7 @@ public final class Forewarn extends KillerGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final Component msg = Locale.FOREWARN_ACTIVATE.build();
+    final Component msg = Message.FOREWARN_ACTIVATE.build();
     gamePlayer.sendMessage(msg);
 
     final GameScheduler scheduler = game.getScheduler();

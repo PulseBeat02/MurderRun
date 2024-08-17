@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,11 +14,7 @@ public final class IcePath extends KillerGadget {
 
   public IcePath() {
     super(
-        "ice_path",
-        Material.ICE,
-        Locale.ICE_PATH_TRAP_NAME.build(),
-        Locale.ICE_PATH_TRAP_LORE.build(),
-        32);
+        "ice_path", Material.ICE, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build(), 32);
   }
 
   @Override

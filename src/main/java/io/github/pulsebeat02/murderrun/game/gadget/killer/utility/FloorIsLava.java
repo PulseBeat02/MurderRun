@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -24,8 +24,8 @@ public final class FloorIsLava extends KillerGadget {
     super(
         "floor_is_lava",
         Material.LAVA_BUCKET,
-        Locale.THE_FLOOR_IS_LAVA_TRAP_NAME.build(),
-        Locale.THE_FLOOR_IS_LAVA_TRAP_LORE.build(),
+        Message.THE_FLOOR_IS_LAVA_NAME.build(),
+        Message.THE_FLOOR_IS_LAVA_LORE.build(),
         64);
     this.glowPlayerStates = ArrayListMultimap.create();
   }
@@ -75,7 +75,7 @@ public final class FloorIsLava extends KillerGadget {
   }
 
   private void sendFloorIsLavaMessage(final Participant participant) {
-    final Component msg = Locale.THE_FLOOR_IS_LAVA_ACTIVATE.build();
+    final Component msg = Message.THE_FLOOR_IS_LAVA_ACTIVATE.build();
     participant.sendMessage(msg);
   }
 }

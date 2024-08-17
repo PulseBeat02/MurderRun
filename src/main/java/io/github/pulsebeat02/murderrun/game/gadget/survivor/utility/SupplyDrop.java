@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,8 +47,8 @@ public final class SupplyDrop extends SurvivorGadget {
     super(
         "supply_drop",
         Material.CHEST,
-        Locale.SUPPLY_DROP_TRAP_NAME.build(),
-        Locale.SUPPLY_DROP_TRAP_LORE.build(),
+        Message.SUPPLY_DROP_NAME.build(),
+        Message.SUPPLY_DROP_LORE.build(),
         64);
   }
 

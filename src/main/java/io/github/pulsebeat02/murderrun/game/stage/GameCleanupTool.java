@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import net.kyori.adventure.text.Component;
 
@@ -41,8 +41,8 @@ public final class GameCleanupTool {
   }
 
   private void announceInnocentVictory() {
-    final Component innocentMessage = Locale.INNOCENT_VICTORY_INNOCENT.build();
-    final Component murdererMessage = Locale.INNOCENT_VICTORY_MURDERER.build();
+    final Component innocentMessage = Message.INNOCENT_VICTORY_INNOCENT.build();
+    final Component murdererMessage = Message.INNOCENT_VICTORY_MURDERER.build();
     final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllInnocents(innocentMessage, subtitle);
@@ -57,8 +57,8 @@ public final class GameCleanupTool {
   }
 
   private void announceMurdererVictory() {
-    final Component innocentMessage = Locale.MURDERER_VICTORY_INNOCENT.build();
-    final Component murdererMessage = Locale.MURDERER_VICTORY_MURDERER.build();
+    final Component innocentMessage = Message.MURDERER_VICTORY_INNOCENT.build();
+    final Component murdererMessage = Message.MURDERER_VICTORY_MURDERER.build();
     final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllInnocents(innocentMessage, subtitle);
@@ -70,7 +70,7 @@ public final class GameCleanupTool {
   private void announceMurdererTime() {
     final GameTimer timer = this.game.getTimeManager();
     final long timeElapsed = timer.getElapsedTime();
-    final Component message = Locale.FINAL_TIME.build(timeElapsed);
+    final Component message = Message.FINAL_TIME.build(timeElapsed);
     final PlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(message);
   }

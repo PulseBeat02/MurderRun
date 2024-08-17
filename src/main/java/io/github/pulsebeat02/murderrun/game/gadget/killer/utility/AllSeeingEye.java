@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -26,8 +26,8 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
     super(
         "all_seeing_eye",
         Material.ENDER_EYE,
-        Locale.ALL_SEEING_EYE_TRAP_NAME.build(),
-        Locale.ALL_SEEING_EYE_TRAP_LORE.build(),
+        Message.ALL_SEEING_EYE_NAME.build(),
+        Message.ALL_SEEING_EYE_LORE.build(),
         48);
     this.spectatorDisabled = Collections.newSetFromMap(new WeakHashMap<>());
   }

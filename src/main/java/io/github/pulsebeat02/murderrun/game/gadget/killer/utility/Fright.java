@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
@@ -23,8 +23,8 @@ public final class Fright extends KillerGadget {
     super(
         "fright",
         Material.BLACK_CONCRETE,
-        Locale.FRIGHT_TRAP_NAME.build(),
-        Locale.FRIGHT_TRAP_LORE.build(),
+        Message.FRIGHT_NAME.build(),
+        Message.FRIGHT_LORE.build(),
         32);
   }
 

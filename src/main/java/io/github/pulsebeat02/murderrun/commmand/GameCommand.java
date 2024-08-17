@@ -13,7 +13,7 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -70,7 +70,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
     manager.startGame();
 
-    final Component message = Locale.GAME_START.build();
+    final Component message = Message.GAME_START.build();
     audience.sendMessage(message);
   }
 
@@ -78,7 +78,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       final Audience audience, final Collection<Player> players) {
     final int size = players.size();
     if (size < 2) {
-      final Component message = Locale.GAME_LOW_PLAYER_COUNT_ERROR.build();
+      final Component message = Message.GAME_LOW_PLAYER_COUNT_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -110,14 +110,14 @@ public final class GameCommand implements AnnotationCommandFeature {
     settings.setArena(arena);
     settings.setLobby(lobby);
 
-    final Component message = Locale.GAME_CREATED.build();
+    final Component message = Message.GAME_CREATED.build();
     audience.sendMessage(message);
   }
 
   private boolean checkIfAlreadyInGame(final Audience audience, final Player sender) {
     final Pair<GameManager, Boolean> data = this.games.get(sender);
     if (data != null) {
-      final Component message = Locale.GAME_CREATE_ERROR.build();
+      final Component message = Message.GAME_CREATE_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -128,7 +128,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final ArenaManager arenaManager = this.plugin.getArenaManager();
     final Arena arena = arenaManager.getArena(arenaName);
     if (arena == null) {
-      final Component message = Locale.GAME_ARENA_ERROR.build();
+      final Component message = Message.GAME_ARENA_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -139,7 +139,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final LobbyManager lobbyManager = this.plugin.getLobbyManager();
     final Lobby lobby = lobbyManager.getLobby(lobbyName);
     if (lobby == null) {
-      final Component message = Locale.GAME_LOBBY_ERROR.build();
+      final Component message = Message.GAME_LOBBY_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -184,8 +184,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     manager.getGame().finishGame(GameResult.INTERRUPTED);
 
     final Collection<Player> participants = manager.getParticipants();
-    final Component ownerMessage = Locale.GAME_CANCEL.build();
-    final Component kickedMessage = Locale.GAME_PLAYER_KICK.build();
+    final Component ownerMessage = Message.GAME_CANCEL.build();
+    final Component kickedMessage = Message.GAME_PLAYER_KICK.build();
     for (final Player player : participants) {
       this.games.remove(player);
       final Audience kicked = this.audiences.player(player);
@@ -199,7 +199,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   private boolean checkIfInNoGame(
       final Audience audience, final @Nullable Pair<GameManager, Boolean> pair) {
     if (pair == null) {
-      final Component message = Locale.GAME_INVALID_ERROR.build();
+      final Component message = Message.GAME_INVALID_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -209,7 +209,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   private boolean checkIfNotOwner(final Audience audience, final Pair<GameManager, Boolean> pair) {
     final boolean owner = pair.second();
     if (!owner) {
-      final Component message = Locale.GAME_NOT_OWNER_ERROR.build();
+      final Component message = Message.GAME_NOT_OWNER_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -234,8 +234,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Collection<Player> outgoing = this.invites.get(invite);
     outgoing.add(sender);
 
-    final Component owner = Locale.GAME_OWNER_INVITE.build(inviteDisplayName);
-    final Component player = Locale.GAME_PLAYER_INVITE.build(senderDisplayName);
+    final Component owner = Message.GAME_OWNER_INVITE.build(inviteDisplayName);
+    final Component player = Message.GAME_PLAYER_INVITE.build(senderDisplayName);
     final Audience invited = this.audiences.player(invite);
     audience.sendMessage(owner);
     invited.sendMessage(player);
@@ -244,7 +244,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   private boolean checkIfNotSamePlayer(
       final Audience audience, final Player sender, final Player invite) {
     if (sender == invite) {
-      final Component message = Locale.GAME_INVITE_ERROR.build();
+      final Component message = Message.GAME_INVITE_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -271,7 +271,7 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final Collection<Player> participants = manager.getParticipants();
     final String name = sender.getDisplayName();
-    final Component message = Locale.GAME_JOIN.build(name);
+    final Component message = Message.GAME_JOIN.build(name);
     for (final Player player : participants) {
       final Audience member = this.audiences.player(player);
       member.sendMessage(message);
@@ -281,7 +281,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   private boolean checkIfAlreadyInGame(
       final Audience audience, final @Nullable Pair<GameManager, Boolean> data) {
     if (data != null) {
-      final Component message = Locale.GAME_JOIN_ERROR.build();
+      final Component message = Message.GAME_JOIN_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -292,7 +292,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       final Audience audience, final Player sender, final Player owner) {
     final Collection<Player> invitations = this.invites.get(sender);
     if (!invitations.contains(owner)) {
-      final Component message = Locale.GAME_INVALID_INVITE_ERROR.build();
+      final Component message = Message.GAME_INVALID_INVITE_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -311,7 +311,7 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final GameManager manager = data.first();
     final List<String> names = this.constructPlayerList(manager);
-    final Component message = Locale.GAME_LIST.build(names);
+    final Component message = Message.GAME_LIST.build(names);
     audience.sendMessage(message);
   }
 
@@ -343,8 +343,8 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final String name = kick.getDisplayName();
     final Audience player = this.audiences.player(kick);
-    final Component ownerMessage = Locale.GAME_OWNER_KICK.build(name);
-    final Component kickedMessage = Locale.GAME_PLAYER_KICK.build();
+    final Component ownerMessage = Message.GAME_OWNER_KICK.build(name);
+    final Component kickedMessage = Message.GAME_PLAYER_KICK.build();
     audience.sendMessage(ownerMessage);
     player.sendMessage(kickedMessage);
   }
@@ -363,7 +363,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     manager.removeParticipantFromLobby(sender);
     this.games.remove(sender);
 
-    final Component message = Locale.GAME_LEFT.build();
+    final Component message = Message.GAME_LEFT.build();
     audience.sendMessage(message);
   }
 
@@ -371,7 +371,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       final Audience audience, final Pair<GameManager, Boolean> data) {
     final boolean owner = data.second();
     if (owner) {
-      final Component message = Locale.GAME_LEAVE_ERROR.build();
+      final Component message = Message.GAME_LEAVE_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
@@ -392,7 +392,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final GameManager manager = data.first();
     manager.setPlayerToMurderer(murderer);
 
-    final Component message = Locale.GAME_SET_MURDERER.build(name);
+    final Component message = Message.GAME_SET_MURDERER.build(name);
     audience.sendMessage(message);
   }
 
@@ -410,7 +410,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final GameManager manager = data.first();
     manager.setPlayerToInnocent(innocent);
 
-    final Component message = Locale.GAME_SET_INNOCENT.build(name);
+    final Component message = Message.GAME_SET_INNOCENT.build(name);
     audience.sendMessage(message);
   }
 
@@ -428,7 +428,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final GameSettings settings = manager.getSettings();
     settings.setCarPartCount(count);
 
-    final Component message = Locale.GAME_SET_CAR_PART_COUNT.build(count);
+    final Component message = Message.GAME_SET_CAR_PART_COUNT.build(count);
     audience.sendMessage(message);
   }
 

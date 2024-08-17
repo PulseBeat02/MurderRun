@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -25,8 +25,8 @@ public final class PlayerTracker extends KillerGadget {
     super(
         "player_tracker",
         Material.COMPASS,
-        Locale.PLAYER_TRACKER_TRAP_NAME.build(),
-        Locale.PLAYER_TRACKER_TRAP_LORE.build(),
+        Message.PLAYER_TRACKER_NAME.build(),
+        Message.PLAYER_TRACKER_LORE.build(),
         32,
         stack -> ItemUtils.setPersistentDataAttribute(
             stack, Keys.PLAYER_TRACKER, PersistentDataType.INTEGER, 0));
@@ -45,7 +45,7 @@ public final class PlayerTracker extends KillerGadget {
     final boolean destroy = count == 5;
     super.onGadgetRightClick(game, event, destroy);
 
-    final Component message = Locale.PLAYER_TRACKER_ACTIVATE.build(distance);
+    final Component message = Message.PLAYER_TRACKER_ACTIVATE.build(distance);
     gamePlayer.sendMessage(message);
   }
 

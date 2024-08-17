@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -24,8 +24,8 @@ public final class DeathSteed extends KillerGadget {
     super(
         "death_steed",
         Material.SADDLE,
-        Locale.DEATH_STEED_TRAP_NAME.build(),
-        Locale.DEATH_STEED_TRAP_LORE.build(),
+        Message.DEATH_STEED_NAME.build(),
+        Message.DEATH_STEED_LORE.build(),
         64);
   }
 

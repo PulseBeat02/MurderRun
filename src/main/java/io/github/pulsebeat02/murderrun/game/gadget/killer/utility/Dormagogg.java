@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,8 +24,8 @@ public final class Dormagogg extends KillerGadget {
     super(
         "dormagogg",
         Material.SKELETON_SKULL,
-        Locale.DORMAGOGG_TRAP_NAME.build(),
-        Locale.DORMAGOGG_TRAP_LORE.build(),
+        Message.DORMAGOGG_NAME.build(),
+        Message.DORMAGOGG_LORE.build(),
         16);
   }
 

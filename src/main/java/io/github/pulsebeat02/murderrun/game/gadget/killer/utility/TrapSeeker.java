@@ -13,7 +13,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -33,8 +33,8 @@ public final class TrapSeeker extends KillerGadget {
     super(
         "trap_seeker",
         Material.CLOCK,
-        Locale.TRAP_SEEKER_TRAP_NAME.build(),
-        Locale.TRAP_SEEKER_TRAP_LORE.build(),
+        Message.TRAP_SEEKER_NAME.build(),
+        Message.TRAP_SEEKER_LORE.build(),
         64);
     this.glowItemStates = ArrayListMultimap.create();
   }
@@ -47,7 +47,7 @@ public final class TrapSeeker extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final Component message = Locale.TRAP_SEEKER_ACTIVATE.build();
+    final Component message = Message.TRAP_SEEKER_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();

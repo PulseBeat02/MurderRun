@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -22,8 +22,8 @@ public final class Retaliation extends SurvivorGadget {
     super(
         "retaliation",
         Material.GOLD_BLOCK,
-        Locale.RETALIATION_TRAP_NAME.build(),
-        Locale.RETALIATION_TRAP_LORE.build(),
+        Message.RETALIATION_NAME.build(),
+        Message.RETALIATION_LORE.build(),
         32);
   }
 
@@ -35,7 +35,7 @@ public final class Retaliation extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final Component message = Locale.RETALIATION_TRAP_ACTIVATE.build();
+    final Component message = Message.RETALIATION_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();

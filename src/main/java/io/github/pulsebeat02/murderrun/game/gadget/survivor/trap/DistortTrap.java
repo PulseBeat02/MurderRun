@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,9 +15,9 @@ public final class DistortTrap extends SurvivorTrap {
     super(
         "distort",
         Material.PRISMARINE_SHARD,
-        Locale.DISTORT_TRAP_NAME.build(),
-        Locale.DISTORT_TRAP_LORE.build(),
-        Locale.DISTORT_TRAP_ACTIVATE.build(),
+        Message.DISTORT_NAME.build(),
+        Message.DISTORT_LORE.build(),
+        Message.DISTORT_ACTIVATE.build(),
         16,
         new Color(177, 156, 217));
   }

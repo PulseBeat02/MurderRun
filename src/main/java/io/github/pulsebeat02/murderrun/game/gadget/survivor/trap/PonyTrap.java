@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,9 +21,9 @@ public final class PonyTrap extends SurvivorTrap {
     super(
         "pony",
         Material.SADDLE,
-        Locale.PONY_TRAP_NAME.build(),
-        Locale.PONY_TRAP_LORE.build(),
-        Locale.PONY_TRAP_ACTIVATE.build(),
+        Message.PONY_NAME.build(),
+        Message.PONY_LORE.build(),
+        Message.PONY_ACTIVATE.build(),
         16,
         new Color(177, 156, 217));
   }

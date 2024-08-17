@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -24,8 +24,8 @@ public final class SixthSense extends SurvivorGadget {
     super(
         "sixth_sense",
         Material.ENDER_PEARL,
-        Locale.SIXTH_SENSE_TRAP_NAME.build(),
-        Locale.SIXTH_SENSE_TRAP_LORE.build(),
+        Message.SIXTH_SENSE_NAME.build(),
+        Message.SIXTH_SENSE_LORE.build(),
         48);
     this.glowPlayerStates = ArrayListMultimap.create();
   }
@@ -37,7 +37,7 @@ public final class SixthSense extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final Component message = Locale.SIXTH_SENSE_TRAP_ACTIVATE.build();
+    final Component message = Message.SIXTH_SENSE_ACTIVATE.build();
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();

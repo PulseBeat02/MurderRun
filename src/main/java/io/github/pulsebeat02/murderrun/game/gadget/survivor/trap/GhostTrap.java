@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
@@ -15,9 +15,9 @@ public final class GhostTrap extends SurvivorTrap {
     super(
         "ghost",
         Material.WHITE_WOOL,
-        Locale.GHOST_TRAP_NAME.build(),
-        Locale.GHOST_TRAP_LORE.build(),
-        Locale.GHOST_TRAP_ACTIVATE.build(),
+        Message.GHOST_NAME.build(),
+        Message.GHOST_LORE.build(),
+        Message.GHOST_ACTIVATE.build(),
         16,
         Color.WHITE);
   }

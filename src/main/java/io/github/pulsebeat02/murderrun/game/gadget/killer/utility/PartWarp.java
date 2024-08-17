@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
-import io.github.pulsebeat02.murderrun.locale.Locale;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.util.Collection;
 import java.util.List;
@@ -21,8 +21,8 @@ public final class PartWarp extends KillerGadget {
     super(
         "part_warp",
         Material.REPEATER,
-        Locale.PART_WARP_TRAP_NAME.build(),
-        Locale.PART_WARP_TRAP_LORE.build(),
+        Message.PART_WARP_NAME.build(),
+        Message.PART_WARP_LORE.build(),
         48);
   }
 
@@ -36,7 +36,7 @@ public final class PartWarp extends KillerGadget {
     final Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> values = parts.values();
     final List<CarPart> shuffled = values.stream().collect(StreamUtils.toShuffledList());
-    final CarPart part = getRandomCarPart(shuffled);
+    final CarPart part = this.getRandomCarPart(shuffled);
     final Item item = part.getItem();
 
     final Player player = event.getPlayer();
