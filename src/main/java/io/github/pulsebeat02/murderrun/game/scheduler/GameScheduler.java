@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -55,6 +56,13 @@ public final class GameScheduler {
     final TemporaryRepeatedTask custom =
         new TemporaryRepeatedTask(this.game, runnable, period, duration);
     final BukkitTask bukkit = custom.runTaskTimer(this.plugin, delay, period);
+    this.tasks.add(bukkit);
+    return bukkit;
+  }
+
+  public BukkitTask scheduleCountdownTask(final Consumer<Integer> tasks, final int seconds) {
+    final CountdownTask task = new CountdownTask(this.game, () -> {}, seconds, tasks);
+    final BukkitTask bukkit = task.runTaskTimer(this.plugin, 0, 20);
     this.tasks.add(bukkit);
     return bukkit;
   }

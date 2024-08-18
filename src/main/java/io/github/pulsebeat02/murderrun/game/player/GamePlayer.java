@@ -20,16 +20,20 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract sealed class GamePlayer implements Participant permits Survivor, Killer {
 
   private final Game game;
   private final UUID uuid;
   private final Audience audience;
+
   private final Collection<PlayerDeathTask> tasks;
+  private @Nullable ArmorStand corpse;
   private boolean alive;
 
   public GamePlayer(final Game game, final UUID uuid) {
@@ -121,5 +125,16 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
   @Override
   public Game getGame() {
     return this.game;
+  }
+
+  @Override
+  @Nullable
+  public ArmorStand getCorpse() {
+    return this.corpse;
+  }
+
+  @Override
+  public void setCorpse(final @Nullable ArmorStand corpse) {
+    this.corpse = corpse;
   }
 }

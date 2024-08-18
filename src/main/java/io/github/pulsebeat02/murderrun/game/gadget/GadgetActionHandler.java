@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -79,6 +80,10 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private void handlePlayerGadgetLogic(final GamePlayer player) {
+
+    if (player instanceof final Killer killer && killer.isIgnoringTraps()) {
+      return;
+    }
 
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());

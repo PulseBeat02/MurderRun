@@ -5,20 +5,18 @@ import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
-import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public final class GameStartupTool {
 
@@ -68,9 +66,23 @@ public final class GameStartupTool {
   }
 
   private void runFutureTask() {
-    final MurderRun plugin = this.game.getPlugin();
-    final Countdown countdown = new Countdown();
-    countdown.runTaskTimer(plugin, 0, 20);
+    final GameScheduler scheduler = this.game.getScheduler();
+    scheduler.scheduleCountdownTask(this::handleCountdownSeconds, 120);
+  }
+
+  private void handleCountdownSeconds(final int time) {
+    switch (time) {
+      case 5 -> {
+        GameStartupTool.this.countDownAudio();
+        GameStartupTool.this.announceCountdown(5);
+      }
+      case 4 -> GameStartupTool.this.announceCountdown(4);
+      case 3 -> GameStartupTool.this.announceCountdown(3);
+      case 2 -> GameStartupTool.this.announceCountdown(2);
+      case 1 -> GameStartupTool.this.announceCountdown(1);
+      default -> {} // Do nothing
+    }
+    GameStartupTool.this.setTimeRemaining(time);
   }
 
   private void setTimeRemaining(final int time) {
@@ -124,35 +136,5 @@ public final class GameStartupTool {
 
   public Game getGame() {
     return this.game;
-  }
-
-  public final class Countdown extends BukkitRunnable {
-
-    private final AtomicInteger secondsLeft;
-
-    public Countdown() {
-      this.secondsLeft = new AtomicInteger(121);
-    }
-
-    @Override
-    public void run() {
-      final int seconds = this.secondsLeft.decrementAndGet();
-      switch (seconds) {
-        case 5 -> {
-          GameStartupTool.this.countDownAudio();
-          GameStartupTool.this.announceCountdown(5);
-        }
-        case 4 -> GameStartupTool.this.announceCountdown(4);
-        case 3 -> GameStartupTool.this.announceCountdown(3);
-        case 2 -> GameStartupTool.this.announceCountdown(2);
-        case 1 -> GameStartupTool.this.announceCountdown(1);
-        case 0 -> {
-          GameStartupTool.this.futureTask();
-          this.cancel();
-        }
-        default -> {} // Do nothing
-      }
-      GameStartupTool.this.setTimeRemaining(seconds);
-    }
   }
 }

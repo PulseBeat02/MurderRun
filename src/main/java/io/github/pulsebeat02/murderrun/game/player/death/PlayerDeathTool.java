@@ -53,6 +53,7 @@ public final class PlayerDeathTool {
       this.setArmorStandGear(player, stand);
       this.announcePlayerDeath(player);
       this.summonCarParts(player);
+      gamePlayer.setCorpse(stand);
     });
   }
 

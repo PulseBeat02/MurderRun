@@ -26,6 +26,7 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.boss.KeyedBossBar;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.PlayerInventory;
@@ -272,4 +273,9 @@ public interface Participant {
   default void removeEntityGlowingForPlayer(final GamePlayer player) {
     this.apply(player::removeEntityGlowingForPlayer);
   }
+
+  @Nullable
+  ArmorStand getCorpse();
+
+  void setCorpse(@Nullable ArmorStand corpse);
 }

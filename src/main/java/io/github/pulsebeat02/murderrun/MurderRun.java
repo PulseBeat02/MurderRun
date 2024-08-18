@@ -16,12 +16,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class MurderRun extends JavaPlugin {
 
   private static final int BSTATS_SERVER_ID = 22728;
+  public static final boolean DEVELOPMENT_SWITCH = true;
 
   /*
 
   - Create all killer gadgets
-    - Add all killer gadgets to centralized enum
-  - Add command to give all ItemStacks
+  - Check all Locale messages and edit them accordingly
+  - Check all prices and make them fair, check materials
 
    */
 

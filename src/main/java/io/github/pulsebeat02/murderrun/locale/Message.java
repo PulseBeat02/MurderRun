@@ -405,4 +405,5 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> RED_ARROW_ACTIVATE = direct("murder_run.game.gadget.red_arrow.activate");
   NullComponent<Sender> ENDER_SHADOWS_EFFECT =
       direct("murder_run.game.gadget.ender_shadows.effect");
+  NullComponent<Sender> CURSED_NOTE_DROP = direct("murder_run.game.gadget.cursed_note.drop");
 }

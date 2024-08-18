@@ -111,6 +111,20 @@ public final class PlayerManager {
     return nearest;
   }
 
+  public @Nullable GamePlayer getNearestDeadSurvivor(final Location origin) {
+    GamePlayer nearest = null;
+    double min = Double.MAX_VALUE;
+    for (final GamePlayer survivor : this.cachedAlivePlayers) {
+      final Location location = requireNonNull(survivor.getDeathLocation());
+      final double distance = location.distanceSquared(origin);
+      if (distance < min) {
+        nearest = survivor;
+        min = distance;
+      }
+    }
+    return nearest;
+  }
+
   private void createMurderers(final Collection<Player> murderers) {
     for (final Player player : murderers) {
       final UUID uuid = player.getUniqueId();

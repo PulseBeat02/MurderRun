@@ -10,7 +10,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -19,7 +18,6 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ResurrectionStone extends SurvivorGadget {
 
@@ -41,9 +39,17 @@ public final class ResurrectionStone extends SurvivorGadget {
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final int range = gadgetManager.getActivationRange();
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer closest = manager.getNearestDeadSurvivor(location);
+    if (closest == null) {
+      return;
+    }
 
-    final GamePlayer closest = requireNonNull(this.getClosestDeadPlayer(game, location));
-    final Location closestLocation = closest.getLocation();
+    final Location closestLocation = closest.getDeathLocation();
+    if (closestLocation == null) {
+      return;
+    }
+
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
       return;
@@ -79,23 +85,5 @@ public final class ResurrectionStone extends SurvivorGadget {
 
     final Component message = Message.RESURRECTION_STONE_ACTIVATE.build();
     playerManager.applyToAllParticipants(gamePlayer -> gamePlayer.sendMessage(message));
-  }
-
-  private @Nullable GamePlayer getClosestDeadPlayer(final Game game, final Location origin) {
-    final PlayerManager playerManager = game.getPlayerManager();
-    final Collection<GamePlayer> players = playerManager.getDead();
-    final double min = Double.MAX_VALUE;
-    GamePlayer closest = null;
-    for (final GamePlayer player : players) {
-      final Location location = player.getDeathLocation();
-      if (location == null) {
-        continue;
-      }
-      final double distance = location.distanceSquared(origin);
-      if (distance < min) {
-        closest = player;
-      }
-    }
-    return closest;
   }
 }

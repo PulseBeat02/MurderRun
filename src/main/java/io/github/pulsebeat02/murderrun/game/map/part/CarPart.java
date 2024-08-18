@@ -16,14 +16,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class CarPart {
 
   private final String uuid;
   private final ItemStack stack;
+
   private Location location;
   private boolean pickedUp;
   private Item item;
+  private @Nullable Item cursedNote;
 
   public CarPart(final Location location) {
     this.uuid = UUID.randomUUID().toString();
@@ -108,5 +111,16 @@ public final class CarPart {
 
   public void setPickedUp(final boolean pickedUp) {
     this.pickedUp = pickedUp;
+  }
+
+  public boolean isCursed() {
+    if (this.cursedNote != null && this.cursedNote.isDead()) {
+      this.cursedNote = null;
+    }
+    return this.cursedNote != null;
+  }
+
+  public void setCursed(final Item cursedNote) {
+    this.cursedNote = cursedNote;
   }
 }
