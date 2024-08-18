@@ -11,10 +11,15 @@ import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlotGroup;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
@@ -74,6 +79,15 @@ public abstract class AbstractGadget implements Gadget {
         stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
     meta.setDisplayName(name);
     meta.setLore(lore);
+
+    final Attribute attribute = Attribute.GENERIC_MOVEMENT_SPEED;
+    final NamespacedKey key = attribute.getKey();
+    final AttributeModifier modifier = new AttributeModifier(
+        key, 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ANY);
+    meta.addAttributeModifier(attribute, modifier);
+
+    meta.addItemFlags(
+        ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
     stack.setItemMeta(meta);
 
     if (consumer != null) {

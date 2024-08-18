@@ -1,8 +1,14 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.utils.TradingUtils;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -30,9 +36,22 @@ public final class GadgetCommand implements AnnotationCommandFeature {
 
     final PlayerInventory inventory = sender.getInventory();
     final List<MerchantRecipe> allGadgets = TradingUtils.getAllRecipes();
-    for (final MerchantRecipe recipe : allGadgets) {
-      final ItemStack result = recipe.getResult();
-      inventory.addItem(result);
+    final List<ItemStack> stacks =
+        allGadgets.stream().map(MerchantRecipe::getResult).toList();
+    final Location location = sender.getLocation();
+    final World world = requireNonNull(location.getWorld());
+
+    for (final ItemStack stack : stacks) {
+
+      final Map<Integer, ItemStack> remaining = inventory.addItem(stack);
+      if (remaining.isEmpty()) {
+        continue;
+      }
+
+      final Collection<ItemStack> left = remaining.values();
+      for (final ItemStack leftover : left) {
+        world.dropItemNaturally(location, leftover);
+      }
     }
   }
 }

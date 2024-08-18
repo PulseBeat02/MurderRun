@@ -2,8 +2,6 @@ package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.incendo.cloud.CommandManager;
@@ -34,7 +32,8 @@ public final class AnnotationParserHandler {
 
   private CommandManager<CommandSender> getCommandManager(
       @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
-    final ExecutionCoordinator<CommandSender> coordinator = this.constructCoordinator();
+    final ExecutionCoordinator<CommandSender> coordinator =
+        ExecutionCoordinator.simpleCoordinator();
     final LegacyPaperCommandManager<CommandSender> manager =
         LegacyPaperCommandManager.createNative(plugin, coordinator);
     this.registerBrigadierCapability(manager);
@@ -47,12 +46,6 @@ public final class AnnotationParserHandler {
     if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
       manager.registerBrigadier();
     }
-  }
-
-  private ExecutionCoordinator<CommandSender> constructCoordinator(
-      @UnderInitialization AnnotationParserHandler this) {
-    final ExecutorService virtual = Executors.newVirtualThreadPerTaskExecutor();
-    return ExecutionCoordinator.<CommandSender>builder().executor(virtual).build();
   }
 
   public CommandManager<CommandSender> getManager() {

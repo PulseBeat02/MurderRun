@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -50,6 +51,7 @@ public final class PortalGun extends KillerGadget implements Listener {
           ItemUtils.setPersistentDataAttribute(
               stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true);
           ItemUtils.setPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING, data);
+          stack.addEnchantment(Enchantment.INFINITY, 1);
         });
     this.portals = new HashMap<>();
     this.game = game;
