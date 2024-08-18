@@ -136,7 +136,7 @@ public final class PortalGun extends KillerGadget implements Listener {
     final Location sendingLocation = sending.get();
     final Location receivingLocation = receiving.get();
     scheduler.scheduleRepeatedTask(
-        () -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 10L);
+        () -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 2 * 20L);
   }
 
   private void handleParticipants(

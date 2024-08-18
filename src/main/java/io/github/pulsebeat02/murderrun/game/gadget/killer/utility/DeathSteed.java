@@ -75,7 +75,7 @@ public final class DeathSteed extends KillerGadget {
 
   private void spawnParticleLine(final Location start, final Location end) {
     final World world = requireNonNull(start.getWorld());
-    final double distance = start.distance(end);
+    final double distance = start.distance(end) - 3;
     final double step = 0.5;
     for (double d = 0; d < distance; d += step) {
       final double t = d / distance;

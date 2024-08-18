@@ -15,7 +15,7 @@ public final class Excavator extends SurvivorGadget {
         Message.EXCAVATOR_LORE.build(),
         32,
         stack -> {
-          ItemUtils.setDurability(stack, 9);
+          ItemUtils.setDurability(stack, 10);
         });
   }
 }

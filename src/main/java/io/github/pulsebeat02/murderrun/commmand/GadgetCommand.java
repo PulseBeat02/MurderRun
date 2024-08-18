@@ -20,7 +20,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
     this.registerFeature(plugin, parser);
   }
 
-  @CommandDescription("murder_run.command.gadget.retrieve-all")
+  @CommandDescription("murder_run.command.gadget.retrieve-all.info")
   @Command(value = "murder gadget retrieve-all", requiredSender = Player.class)
   public void giveAllGadgets(final Player sender) {
 
