@@ -107,9 +107,9 @@ public final class GadgetActionHandler implements Listener {
         continue;
       }
 
-      final boolean survivor = isSurvivor && (gadget instanceof KillerApparatus);
-      final boolean killer = !isSurvivor && (gadget instanceof SurvivorApparatus);
-      if (survivor || killer) {
+      final boolean activate = isSurvivor && (gadget instanceof KillerApparatus)
+          || !isSurvivor && (gadget instanceof SurvivorApparatus);
+      if (activate) {
         final Location location = item.getLocation();
         final double distance = origin.distanceSquared(location);
         if (distance < min) {
@@ -120,12 +120,8 @@ public final class GadgetActionHandler implements Listener {
       }
     }
 
-    if (closestItem == null) {
+    if (closestItem == null || closest == null) {
       return; // checker framework
-    }
-
-    if (closest == null) {
-      return;
     }
 
     final Game game = this.manager.getGame();
