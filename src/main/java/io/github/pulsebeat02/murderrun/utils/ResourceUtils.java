@@ -12,7 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.security.NoSuchAlgorithmException;
+import java.util.Set;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -58,5 +62,18 @@ public final class ResourceUtils {
     final File file = plugin.getDataFolder();
     final Path path = file.toPath();
     return path.toAbsolutePath();
+  }
+
+  public static Path createTemporaryPath(final String prefix, final String suffix)
+      throws IOException {
+    final String os = System.getProperty("os.name").toLowerCase();
+    if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+      final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwx------");
+      final FileAttribute<Set<PosixFilePermission>> attr =
+          PosixFilePermissions.asFileAttribute(permissions);
+      return Files.createTempFile(prefix, suffix, attr);
+    } else {
+      return Files.createTempFile(prefix, suffix);
+    }
   }
 }
