@@ -40,11 +40,11 @@ Gamble: Killing a player causes them to drop a random killer trap.
 Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
 Poison Smog: Covers the area in a poisonous smog
 Ender Shadows: Creates animated shadows which causes opponents to light up when touched
+Portal Gun: Allows the user to create portals wherever they please
 
 LIST OF ALL KILLER TRAPS TO IMPLEMENT:
 
 Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
-Portal Gun: Allows the user to create portals wherever they please
 Corruption: Can resurrect dead opponents and corrupt them into joining his side
 Burn the Body: Completely destroys the body of an opponent
 Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.

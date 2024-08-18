@@ -69,7 +69,8 @@ public final class GadgetLoadingMechanism {
     return constructors[0];
   }
 
-  private static Gadget invokeGadgetConstructor(final Constructor<?> constructor, final Game game) {
+  private static Gadget invokeGadgetConstructor(
+      final Constructor<?> constructor, final @Nullable Game game) {
     try {
       final Parameter[] parameters = constructor.getParameters();
       final int size =
@@ -88,7 +89,7 @@ public final class GadgetLoadingMechanism {
   public GadgetLoadingMechanism(final GadgetManager manager) {
     final MurderRun run = manager.getPlugin();
     this.manager = manager;
-    this.gameGadgets = this.getUsedGadgets(run);
+    this.gameGadgets = this.getUsedGadgets(manager, run);
     this.killerGadgets = this.getKillerGadgets(this.gameGadgets);
     this.survivorGadgets = this.getSurvivorGadgets(this.gameGadgets);
   }
@@ -110,8 +111,10 @@ public final class GadgetLoadingMechanism {
   }
 
   private Map<String, Gadget> getUsedGadgets(
-      @UnderInitialization GadgetLoadingMechanism this, final MurderRun plugin) {
-    final Game game = this.manager.getGame();
+      @UnderInitialization GadgetLoadingMechanism this,
+      final GadgetManager manager,
+      final MurderRun plugin) {
+    final Game game = manager.getGame();
     final Server server = plugin.getServer();
     final PluginManager pluginManager = server.getPluginManager();
     final Collection<Pair<Gadget, Constructor<Object>>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
