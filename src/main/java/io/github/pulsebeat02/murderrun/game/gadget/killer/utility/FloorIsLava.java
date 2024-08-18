@@ -23,7 +23,7 @@ public final class FloorIsLava extends KillerGadget {
   public FloorIsLava() {
     super(
         "floor_is_lava",
-        Material.LAVA_BUCKET,
+        Material.MAGMA_BLOCK,
         Message.THE_FLOOR_IS_LAVA_NAME.build(),
         Message.THE_FLOOR_IS_LAVA_LORE.build(),
         64);

@@ -20,9 +20,7 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  - Create all killer gadgets
   - Check all Locale messages and edit them accordingly
-  - Check all prices and make them fair, check materials
 
    */
 

@@ -25,7 +25,7 @@ public final class TrapVest extends SurvivorGadget {
   public TrapVest() {
     super(
         "trap_vest",
-        Material.TNT,
+        Material.LEATHER_CHESTPLATE,
         Message.TRAP_VEST_NAME.build(),
         Message.TRAP_VEST_LORE.build(),
         32);

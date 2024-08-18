@@ -32,10 +32,10 @@ public final class Camera extends KillerGadget {
   public Camera() {
     super(
         "killer_camera",
-        Material.ENDER_EYE,
+        Material.OBSERVER,
         Message.KILLER_CAMERA_NAME.build(),
         Message.KILLER_CAMERA_LORE.build(),
-        32);
+        48);
     this.glowPlayers = Collections.newSetFromMap(new WeakHashMap<>());
   }
 

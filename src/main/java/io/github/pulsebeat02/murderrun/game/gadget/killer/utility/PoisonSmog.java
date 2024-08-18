@@ -27,7 +27,7 @@ public final class PoisonSmog extends KillerGadget {
         Material.SLIME_BALL,
         Message.POISON_SMOG_NAME.build(),
         Message.POISON_SMOG_LORE.build(),
-        32);
+        48);
   }
 
   @Override

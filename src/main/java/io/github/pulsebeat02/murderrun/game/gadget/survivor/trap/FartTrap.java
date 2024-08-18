@@ -20,7 +20,7 @@ public final class FartTrap extends SurvivorTrap {
         Message.FART_NAME.build(),
         Message.FART_LORE.build(),
         Message.FART_ACTIVATE.build(),
-        32,
+        16,
         Color.GREEN);
   }
 

@@ -18,7 +18,7 @@ public final class FireTrail extends KillerGadget {
   public FireTrail() {
     super(
         "fire_trail",
-        Material.FLINT_AND_STEEL,
+        Material.MAGMA_CREAM,
         Message.FIRE_TRAIL_NAME.build(),
         Message.FIRE_TRAIL_LORE.build(),
         32);

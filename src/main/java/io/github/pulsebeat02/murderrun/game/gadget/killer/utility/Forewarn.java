@@ -27,7 +27,7 @@ public final class Forewarn extends KillerGadget {
         Material.GLOWSTONE_DUST,
         Message.FOREWARN_NAME.build(),
         Message.FOREWARN_LORE.build(),
-        96);
+        128);
     this.glowStates = ArrayListMultimap.create();
   }
 

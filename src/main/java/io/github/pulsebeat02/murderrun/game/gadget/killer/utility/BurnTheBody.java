@@ -24,7 +24,7 @@ public final class BurnTheBody extends KillerGadget {
         Material.RED_STAINED_GLASS,
         Message.BURN_THE_BODY_NAME.build(),
         Message.BURN_THE_BODY_LORE.build(),
-        32);
+        48);
   }
 
   @Override

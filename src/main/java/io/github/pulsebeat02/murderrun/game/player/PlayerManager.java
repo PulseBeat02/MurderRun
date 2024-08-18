@@ -308,4 +308,11 @@ public final class PlayerManager {
         .collect(StreamUtils.toShuffledList());
     return list.getFirst();
   }
+
+  public void promoteToKiller(final GamePlayer player) {
+    final UUID uuid = player.getUuid();
+    final Killer killer = new Killer(this.game, uuid);
+    this.lookupMap.put(uuid, killer);
+    this.resetCachedPlayers();
+  }
 }

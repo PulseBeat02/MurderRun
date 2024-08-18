@@ -23,7 +23,7 @@ public final class SixthSense extends SurvivorGadget {
   public SixthSense() {
     super(
         "sixth_sense",
-        Material.ENDER_PEARL,
+        Material.GOLDEN_CARROT,
         Message.SIXTH_SENSE_NAME.build(),
         Message.SIXTH_SENSE_LORE.build(),
         48);

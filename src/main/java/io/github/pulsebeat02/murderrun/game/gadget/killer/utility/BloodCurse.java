@@ -18,10 +18,10 @@ public final class BloodCurse extends KillerGadget {
   public BloodCurse() {
     super(
         "blood_curse",
-        Material.REDSTONE_BLOCK,
+        Material.REDSTONE,
         Message.BLOOD_CURSE_NAME.build(),
         Message.BLOOD_CURSE_LORE.build(),
-        48);
+        64);
   }
 
   @Override

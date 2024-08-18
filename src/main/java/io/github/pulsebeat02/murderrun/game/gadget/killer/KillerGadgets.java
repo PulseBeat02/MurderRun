@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer;
 
 import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.*;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool.Hook;
 
 public enum KillerGadgets {
   ALL_SEEING_EYE(AllSeeingEye.class),
@@ -75,9 +76,6 @@ public enum KillerGadgets {
   Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
   Burn the Body: Completely destroys the body of an opponent
   Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
-
-  LIST OF ALL KILLER TRAPS TO IMPLEMENT:
-
   Corruption: Can resurrect dead opponents and corrupt them into joining his side
 
   */

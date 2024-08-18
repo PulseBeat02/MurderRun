@@ -26,7 +26,7 @@ public final class DeathSteed extends KillerGadget {
         Material.SADDLE,
         Message.DEATH_STEED_NAME.build(),
         Message.DEATH_STEED_LORE.build(),
-        64);
+        32);
   }
 
   @Override

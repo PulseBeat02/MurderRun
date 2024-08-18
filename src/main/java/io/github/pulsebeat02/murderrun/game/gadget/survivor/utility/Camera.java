@@ -35,7 +35,7 @@ public final class Camera extends SurvivorGadget {
 
   public Camera() {
     super(
-        "camera", Material.ENDER_EYE, Message.CAMERA_NAME.build(), Message.CAMERA_LORE.build(), 32);
+        "camera", Material.OBSERVER, Message.CAMERA_NAME.build(), Message.CAMERA_LORE.build(), 48);
     this.glowPlayers = Collections.newSetFromMap(new WeakHashMap<>());
   }
 

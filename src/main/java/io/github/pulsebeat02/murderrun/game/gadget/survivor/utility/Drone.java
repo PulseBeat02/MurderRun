@@ -13,7 +13,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 public final class Drone extends SurvivorGadget {
 
   public Drone() {
-    super("drone", Material.ENDER_EYE, Message.DRONE_NAME.build(), Message.DRONE_LORE.build(), 32);
+    super(
+        "drone",
+        Material.PHANTOM_MEMBRANE,
+        Message.DRONE_NAME.build(),
+        Message.DRONE_LORE.build(),
+        32);
   }
 
   @Override

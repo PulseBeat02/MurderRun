@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
@@ -55,6 +56,10 @@ public final class GamePlayerDeathEvent implements Listener {
     if (this.allInnocentDead()) {
       this.game.finishGame(GameResult.MURDERERS);
     }
+
+    if (this.allKillersDead()) {
+      this.game.finishGame(GameResult.INNOCENTS);
+    }
   }
 
   private void runDeathTasks(final GamePlayer player) {
@@ -90,6 +95,12 @@ public final class GamePlayerDeathEvent implements Listener {
   private boolean allInnocentDead() {
     final PlayerManager manager = this.game.getPlayerManager();
     final Collection<Survivor> players = manager.getInnocentPlayers();
+    return players.stream().noneMatch(GamePlayer::isAlive);
+  }
+
+  private boolean allKillersDead() {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final Collection<Killer> players = manager.getMurderers();
     return players.stream().noneMatch(GamePlayer::isAlive);
   }
 }

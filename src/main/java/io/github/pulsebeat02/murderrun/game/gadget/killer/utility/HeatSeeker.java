@@ -22,7 +22,7 @@ public final class HeatSeeker extends KillerGadget {
   public HeatSeeker() {
     super(
         "heat_seeker",
-        Material.REPEATER,
+        Material.BLAZE_ROD,
         Message.HEAT_SEEKER_NAME.build(),
         Message.HEAT_SEEKER_LORE.build(),
         48);

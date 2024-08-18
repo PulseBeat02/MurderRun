@@ -38,7 +38,7 @@ public final class EnderShadows extends KillerGadget {
   public EnderShadows() {
     super(
         "ender_shadows",
-        Material.ENDER_PEARL,
+        Material.BLACK_STAINED_GLASS,
         Message.ENDER_SHADOWS_NAME.build(),
         Message.ENDER_SHADOWS_LORE.build(),
         48);

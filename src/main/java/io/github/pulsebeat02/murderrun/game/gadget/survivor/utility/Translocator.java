@@ -29,7 +29,7 @@ public final class Translocator extends SurvivorGadget {
   public Translocator() {
     super(
         "translocator",
-        Material.CHORUS_FLOWER,
+        Material.END_ROD,
         Message.TRANSLOCATOR_NAME.build(),
         Message.TRANSLOCATOR_LORE.build(),
         64,

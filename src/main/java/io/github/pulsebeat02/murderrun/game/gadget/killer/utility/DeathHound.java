@@ -24,7 +24,7 @@ public final class DeathHound extends KillerGadget {
         Material.BONE,
         Message.DEATH_HOUND_NAME.build(),
         Message.DEATH_HOUND_LORE.build(),
-        48);
+        16);
   }
 
   @Override

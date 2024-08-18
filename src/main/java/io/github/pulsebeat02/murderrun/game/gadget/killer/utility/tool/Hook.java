@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
+package io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -52,7 +52,7 @@ public final class Hook extends KillerGadget implements Listener {
       return;
     }
 
-    final PlayerManager manager = game.getPlayerManager();
+    final PlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(player)) {
       return;
     }

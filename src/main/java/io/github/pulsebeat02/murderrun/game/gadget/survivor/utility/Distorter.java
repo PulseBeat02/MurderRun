@@ -18,7 +18,7 @@ public final class Distorter extends SurvivorGadget {
   public Distorter() {
     super(
         "distorter",
-        Material.END_STONE,
+        Material.CHORUS_FLOWER,
         Message.DISTORTER_NAME.build(),
         Message.DISTORTER_LORE.build(),
         32);

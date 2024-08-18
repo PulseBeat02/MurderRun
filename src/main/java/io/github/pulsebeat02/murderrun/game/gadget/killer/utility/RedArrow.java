@@ -28,7 +28,7 @@ public final class RedArrow extends KillerGadget {
         Material.TIPPED_ARROW,
         Message.RED_ARROW_NAME.build(),
         Message.RED_ARROW_LORE.build(),
-        32,
+        64,
         stack -> {
           final ItemMeta meta = requireNonNull(stack.getItemMeta());
           if (meta instanceof final PotionMeta potionMeta) {

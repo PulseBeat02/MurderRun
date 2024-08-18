@@ -28,7 +28,7 @@ public final class TrapSniffer extends SurvivorGadget {
   public TrapSniffer() {
     super(
         "trap_sniffer",
-        Material.IRON_DOOR,
+        Material.TRIPWIRE_HOOK,
         Message.TRAP_SNIFFER_NAME.build(),
         Message.TRAP_SNIFFER_LORE.build(),
         64);

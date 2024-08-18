@@ -28,6 +28,7 @@ public final class PlayerStartupTool {
       player.setGameMode(GameMode.ADVENTURE);
       player.setHealth(20f);
       player.setFoodLevel(20);
+      player.setSaturation(20);
       player.setRespawnLocation(this.getSpawnLocation());
     });
   }

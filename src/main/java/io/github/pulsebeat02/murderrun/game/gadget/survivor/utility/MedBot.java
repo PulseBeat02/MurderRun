@@ -29,10 +29,10 @@ public final class MedBot extends SurvivorGadget {
   public MedBot() {
     super(
         "med_bot",
-        Material.CHORUS_FLOWER,
+        Material.DISPENSER,
         Message.MED_BOT_NAME.build(),
         Message.MED_BOT_LORE.build(),
-        32);
+        48);
   }
 
   @Override

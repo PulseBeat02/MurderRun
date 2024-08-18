@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
-import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.server.ResourcePackDaemon;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
@@ -15,16 +14,9 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 public final class GameManager {
 
@@ -48,32 +40,9 @@ public final class GameManager {
   }
 
   private void giveSpecialSword(final Player player) {
-    final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
-    this.setPDCTags(stack);
-
-    final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    this.setAttributeModifiers(meta);
-    meta.setCustomModelData(1);
-    stack.setItemMeta(meta);
-
+    final ItemStack stack = ItemUtils.createKillerSword();
     final PlayerInventory inventory = player.getInventory();
     inventory.addItem(stack);
-  }
-
-  private void setPDCTags(final ItemStack stack) {
-    ItemUtils.setPersistentDataAttribute(
-        stack, Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true);
-    ItemUtils.setPersistentDataAttribute(
-        stack, Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true);
-  }
-
-  private void setAttributeModifiers(final ItemMeta meta) {
-    final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
-    final NamespacedKey key = attribute.getKey();
-    final AttributeModifier.Operation operation = Operation.ADD_NUMBER;
-    final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
-    final AttributeModifier modifier = new AttributeModifier(key, 8, operation, group);
-    meta.addAttributeModifier(attribute, modifier);
   }
 
   public void setPlayerToInnocent(final Player innocent) {
@@ -111,7 +80,7 @@ public final class GameManager {
   private void addCurrency(final Player player) {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = new ItemStack(Material.NETHER_STAR, 64);
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 4; i++) {
       inventory.addItem(stack);
     }
   }

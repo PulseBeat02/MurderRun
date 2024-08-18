@@ -5,6 +5,10 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.attribute.AttributeModifier.Operation;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -63,6 +67,33 @@ public final class ItemUtils {
 
   public static boolean isPortalGun(final ItemStack stack) {
     return getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN) != null;
+  }
+
+  public static ItemStack createKillerSword() {
+
+    final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
+    setPDCTags(stack);
+
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
+    setAttributeModifiers(meta);
+    meta.setCustomModelData(1);
+    stack.setItemMeta(meta);
+
+    return stack;
+  }
+
+  private static void setPDCTags(final ItemStack stack) {
+    setPersistentDataAttribute(stack, Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true);
+    setPersistentDataAttribute(stack, Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true);
+  }
+
+  private static void setAttributeModifiers(final ItemMeta meta) {
+    final Attribute attribute = Attribute.GENERIC_ATTACK_DAMAGE;
+    final NamespacedKey key = attribute.getKey();
+    final AttributeModifier.Operation operation = Operation.ADD_NUMBER;
+    final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
+    final AttributeModifier modifier = new AttributeModifier(key, 8, operation, group);
+    meta.addAttributeModifier(attribute, modifier);
   }
 
   public static <P, C> boolean setPersistentDataAttribute(

@@ -42,7 +42,7 @@ public final class PortalGun extends KillerGadget implements Listener {
         "portal_gun",
         Material.BOW,
         Message.PORTAL_GUN_NAME.build(),
-        Message.PORTAL_LORE.build(),
+        Message.PORTAL_GUN_LORE.build(),
         64,
         stack -> {
           final UUID uuid = UUID.randomUUID();

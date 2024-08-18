@@ -23,7 +23,7 @@ public final class IceSkatin extends SurvivorGadget {
         Material.OAK_BOAT,
         Message.ICE_SKATIN_NAME.build(),
         Message.ICE_SKATIN_LORE.build(),
-        32);
+        16);
   }
 
   @Override

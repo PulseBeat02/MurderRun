@@ -271,7 +271,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> PLAYER_TRACKER_NAME = direct("murder_run.game.gadget.player_tracker.name");
   NullComponent<Sender> KILLER_CAMERA_NAME = direct("murder_run.game.gadget.camera_killer.name");
   NullComponent<Sender> WARP_DISTORT_NAME = direct("murder_run.game.gadget.warp_distort.name");
-  NullComponent<Sender> PAINT_NAME = direct("murder_run.game.gadget.paint_trap.name");
   NullComponent<Sender> TRAP_WRECKER_NAME = direct("murder_run.game.gadget.trap_wrecker.name");
   NullComponent<Sender> TRAP_SEEKER_NAME = direct("murder_run.game.gadget.trap_seeker.name");
   NullComponent<Sender> INFRARED_VISION_NAME =
@@ -285,7 +284,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> CORRUPTION_NAME = direct("murder_run.game.gadget.corruption.name");
   NullComponent<Sender> MURDEROUS_WARP_NAME = direct("murder_run.game.gadget.murderous_warp.name");
   NullComponent<Sender> PORTAL_GUN_NAME = direct("murder_run.game.gadget.portal_gun.name");
-  NullComponent<Sender> THE_REAPER_NAME = direct("murder_run.game.gadget.the_reaper.name");
   NullComponent<Sender> HEAT_SEEKER_NAME = direct("murder_run.game.gadget.heat_seeker.name");
   NullComponent<Sender> THE_FLOOR_IS_LAVA_NAME =
       direct("murder_run.game.gadget.the_floor_is_lava.name");
@@ -299,8 +297,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> EAGLE_EYE_NAME = direct("murder_run.game.gadget.eagle_eye.name");
   NullComponent<Sender> FAKE_PART_NAME = direct("murder_run.game.gadget.fake_part.name");
   NullComponent<Sender> BURN_THE_BODY_NAME = direct("murder_run.game.gadget.burn_the_body.name");
-  NullComponent<Sender> PUMPKIN_DISEASE_NAME =
-      direct("murder_run.game.gadget.pumpkin_disease.name");
   NullComponent<Sender> ENDER_SHADOWS_NAME = direct("murder_run.game.gadget.ender_shadows.name");
   NullComponent<Sender> FOREWARN_NAME = direct("murder_run.game.gadget.forewarn.name");
   NullComponent<Sender> FIRE_TRAIL_NAME = direct("murder_run.game.gadget.fire_trail.name");
@@ -311,7 +307,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> PLAYER_TRACKER_LORE = direct("murder_run.game.gadget.player_tracker.lore");
   NullComponent<Sender> KILLER_CAMERA_LORE = direct("murder_run.game.gadget.killer_camera.lore");
   NullComponent<Sender> WARP_DISTORT_LORE = direct("murder_run.game.gadget.warp_distort.lore");
-  NullComponent<Sender> PAINT_TRAP_LORE = direct("murder_run.game.gadget.paint_trap.lore");
   NullComponent<Sender> TRAP_WRECKER_LORE = direct("murder_run.game.gadget.trap_wrecker.lore");
   NullComponent<Sender> TRAP_SEEKER_LORE = direct("murder_run.game.gadget.trap_seeker.lore");
   NullComponent<Sender> INFRARED_VISION_LORE =
@@ -325,7 +320,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> CORRUPTION_LORE = direct("murder_run.game.gadget.corruption.lore");
   NullComponent<Sender> MURDEROUS_WARP_LORE = direct("murder_run.game.gadget.murderous_warp.lore");
   NullComponent<Sender> PORTAL_GUN_LORE = direct("murder_run.game.gadget.portal_gun.lore");
-  NullComponent<Sender> THE_REAPER_LORE = direct("murder_run.game.gadget.the_reaper.lore");
   NullComponent<Sender> HEAT_SEEKER_LORE = direct("murder_run.game.gadget.heat_seeker.lore");
   NullComponent<Sender> THE_FLOOR_IS_LAVA_LORE =
       direct("murder_run.game.gadget.the_floor_is_lava.lore");
@@ -339,8 +333,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> EAGLE_EYE_LORE = direct("murder_run.game.gadget.eagle_eye.lore");
   NullComponent<Sender> FAKE_PART_LORE = direct("murder_run.game.gadget.fake_part.lore");
   NullComponent<Sender> BURN_THE_BODY_LORE = direct("murder_run.game.gadget.burn_the_body.lore");
-  NullComponent<Sender> PUMPKIN_DISEASE_LORE =
-      direct("murder_run.game.gadget.pumpkin_disease.lore");
   NullComponent<Sender> ENDER_SHADOWS_LORE = direct("murder_run.game.gadget.ender_shadows.lore");
   NullComponent<Sender> FOREWARN_LORE = direct("murder_run.game.gadget.forewarn.lore");
   NullComponent<Sender> FIRE_TRAIL_LORE = direct("murder_run.game.gadget.fire_trail.lore");
@@ -350,56 +342,28 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> RED_ARROW_LORE = direct("murder_run.game.gadget.red_arrow.lore");
   UniComponent<Sender, Double> PLAYER_TRACKER_ACTIVATE =
       direct("murder_run.game.gadget.player_tracker.activate", null);
-  NullComponent<Sender> KILLER_CAMERA_ACTIVATE =
-      direct("murder_run.game.gadget.killer_camera.activate");
   NullComponent<Sender> WARP_DISTORT_ACTIVATE =
       direct("murder_run.game.gadget.warp_distort.activate");
-  NullComponent<Sender> PAINT_ACTIVATE = direct("murder_run.game.gadget.paint_trap.activate");
   NullComponent<Sender> TRAP_WRECKER_ACTIVATE =
       direct("murder_run.game.gadget.trap_wrecker.activate");
   NullComponent<Sender> TRAP_SEEKER_ACTIVATE =
       direct("murder_run.game.gadget.trap_seeker.activate");
   NullComponent<Sender> INFRARED_VISION_ACTIVATE =
       direct("murder_run.game.gadget.infrared_vision.activate");
-  NullComponent<Sender> FRIGHT_ACTIVATE = direct("murder_run.game.gadget.fright.activate");
   NullComponent<Sender> BLOOD_CURSE_ACTIVATE =
       direct("murder_run.game.gadget.blood_curse.activate");
-  NullComponent<Sender> DEATH_STEED_ACTIVATE =
-      direct("murder_run.game.gadget.death_steed.activate");
-  NullComponent<Sender> ALL_SEEING_EYE_ACTIVATE =
-      direct("murder_run.game.gadget.all_seeing_eye.activate");
-  NullComponent<Sender> PHANTOM_ACTIVATE = direct("murder_run.game.gadget.phantom.activate");
-  NullComponent<Sender> DEATH_HOUND_ACTIVATE =
-      direct("murder_run.game.gadget.death_hound.activate");
   NullComponent<Sender> CORRUPTION_ACTIVATE = direct("murder_run.game.gadget.corruption.activate");
-  NullComponent<Sender> MURDEROUS_WARP_ACTIVATE =
-      direct("murder_run.game.gadget.murderous_warp.activate");
-  NullComponent<Sender> PORTAL_GUN_ACTIVATE = direct("murder_run.game.gadget.portal_gun.activate");
-  NullComponent<Sender> THE_REAPER_ACTIVATE = direct("murder_run.game.gadget.the_reaper.activate");
   NullComponent<Sender> HEAT_SEEKER_ACTIVATE =
       direct("murder_run.game.gadget.heat_seeker.activate");
   NullComponent<Sender> THE_FLOOR_IS_LAVA_ACTIVATE =
       direct("murder_run.game.gadget.the_floor_is_lava.activate");
   NullComponent<Sender> EMP_BLAST_ACTIVATE = direct("murder_run.game.gadget.emp_blast.activate");
   NullComponent<Sender> GAMBLE_ACTIVATE = direct("murder_run.game.gadget.gamble.activate");
-  NullComponent<Sender> QUICK_BOMB_ACTIVATE = direct("murder_run.game.gadget.quick_bomb.activate");
   NullComponent<Sender> HEALTH_CUT_ACTIVATE = direct("murder_run.game.gadget.health_cut.activate");
-  NullComponent<Sender> POISON_SMOG_ACTIVATE =
-      direct("murder_run.game.gadget.poison_smog.activate");
-  NullComponent<Sender> PART_WARP_ACTIVATE = direct("murder_run.game.gadget.part_warp.activate");
-  NullComponent<Sender> HOOK_ACTIVATE = direct("murder_run.game.gadget.hook.activate");
-  NullComponent<Sender> EAGLE_EYE_ACTIVATE = direct("murder_run.game.gadget.eagle_eye.activate");
   NullComponent<Sender> FAKE_PART_ACTIVATE = direct("murder_run.game.gadget.fake_part.activate");
-  NullComponent<Sender> BURN_THE_BODY_ACTIVATE =
-      direct("murder_run.game.gadget.burn_the_body.activate");
-  NullComponent<Sender> PUMPKIN_DISEASE_ACTIVATE =
-      direct("murder_run.game.gadget.pumpkin_disease.activate");
   NullComponent<Sender> ENDER_SHADOWS_ACTIVATE =
       direct("murder_run.game.gadget.ender_shadows.activate");
   NullComponent<Sender> FOREWARN_ACTIVATE = direct("murder_run.game.gadget.forewarn.activate");
-  NullComponent<Sender> FIRE_TRAIL_ACTIVATE = direct("murder_run.game.gadget.fire_trail.activate");
-  NullComponent<Sender> ICE_PATH_ACTIVATE = direct("murder_run.game.gadget.ice_path.activate");
-  NullComponent<Sender> DORMAGOGG_ACTIVATE = direct("murder_run.game.gadget.dormagogg.activate");
   NullComponent<Sender> CURSED_NOTE_ACTIVATE =
       direct("murder_run.game.gadget.cursed_note.activate");
   NullComponent<Sender> RED_ARROW_ACTIVATE = direct("murder_run.game.gadget.red_arrow.activate");

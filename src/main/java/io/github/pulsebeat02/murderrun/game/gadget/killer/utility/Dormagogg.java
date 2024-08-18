@@ -23,7 +23,7 @@ public final class Dormagogg extends KillerGadget {
   public Dormagogg() {
     super(
         "dormagogg",
-        Material.SKELETON_SKULL,
+        Material.WITHER_SKELETON_SKULL,
         Message.DORMAGOGG_NAME.build(),
         Message.DORMAGOGG_LORE.build(),
         16);

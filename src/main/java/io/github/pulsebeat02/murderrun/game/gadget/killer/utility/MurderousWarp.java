@@ -16,7 +16,7 @@ public final class MurderousWarp extends KillerGadget {
   public MurderousWarp() {
     super(
         "murderous_warp",
-        Material.REDSTONE,
+        Material.REDSTONE_BLOCK,
         Message.MURDEROUS_WARP_NAME.build(),
         Message.MURDEROUS_WARP_LORE.build(),
         32);

@@ -18,7 +18,7 @@ public final class SpeedPendant extends SurvivorGadget {
   public SpeedPendant() {
     super(
         "speed_pendant",
-        Material.WHITE_DYE,
+        Material.FEATHER,
         Message.SPEED_PENDANT_NAME.build(),
         empty(),
         48,

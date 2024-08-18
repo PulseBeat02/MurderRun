@@ -21,7 +21,7 @@ public final class EagleEye extends KillerGadget {
   public EagleEye() {
     super(
         "eagle_eye",
-        Material.ENDER_EYE,
+        Material.FEATHER,
         Message.EAGLE_EYE_NAME.build(),
         Message.EAGLE_EYE_LORE.build(),
         16);

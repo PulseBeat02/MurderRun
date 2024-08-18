@@ -17,10 +17,10 @@ public final class PlayerResetTool {
   }
 
   public void configure() {
-    this.manager.applyToAllParticipants(this::handleAll);
+    this.manager.applyToAllParticipants(this::handlePlayer);
   }
 
-  public void handleAll(final GamePlayer gamePlayer) {
+  public void handlePlayer(final GamePlayer gamePlayer) {
     final Game game = this.manager.getGame();
     final GameSettings configuration = game.getSettings();
     final Lobby lobby = requireNonNull(configuration.getLobby());

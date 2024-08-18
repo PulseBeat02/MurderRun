@@ -19,7 +19,7 @@ public final class InfraredVision extends KillerGadget {
         Material.REDSTONE_LAMP,
         Message.INFRARED_VISION_NAME.build(),
         Message.INFRARED_VISION_LORE.build(),
-        16);
+        32);
   }
 
   @Override

@@ -15,7 +15,7 @@ public final class Tracker extends SurvivorGadget {
   public Tracker() {
     super(
         "tracker",
-        Material.TRIPWIRE_HOOK,
+        Material.COMPASS,
         Message.TRACKER_NAME.build(),
         Message.TRACKER_LORE.build(),
         64);

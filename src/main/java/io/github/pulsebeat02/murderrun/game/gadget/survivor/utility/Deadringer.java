@@ -19,7 +19,7 @@ public final class Deadringer extends SurvivorGadget {
   public Deadringer() {
     super(
         "deadringer",
-        Material.WITHER_SKELETON_SKULL,
+        Material.ZOMBIE_HEAD,
         Message.DEADRINGER_NAME.build(),
         Message.DEADRINGER_LORE.build(),
         48);

@@ -27,7 +27,7 @@ public final class FireworkTrap extends SurvivorTrap {
         Message.FIREWORK_NAME.build(),
         Message.FIREWORK_LORE.build(),
         Message.FIREWORK_ACTIVATE.build(),
-        16,
+        32,
         Color.RED);
   }
 

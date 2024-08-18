@@ -1,6 +1,7 @@
-package io.github.pulsebeat02.murderrun.game.gadget.killer;
+package io.github.pulsebeat02.murderrun.game.gadget.killer.trap;
 
 import io.github.pulsebeat02.murderrun.game.gadget.Trap;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;

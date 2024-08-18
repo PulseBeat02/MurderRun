@@ -16,7 +16,7 @@ public final class HealthCut extends KillerGadget {
     super(
         "health_cut",
         Material.GOLDEN_SWORD,
-        Message.HEALTH_CUT_ACTIVATE.build(),
+        Message.HEALTH_CUT_NAME.build(),
         Message.HEALTH_CUT_LORE.build(),
         48);
   }

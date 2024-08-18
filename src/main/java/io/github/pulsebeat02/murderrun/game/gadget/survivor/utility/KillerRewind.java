@@ -28,7 +28,7 @@ public final class KillerRewind extends SurvivorGadget implements Listener {
   public KillerRewind(final Game game) {
     super(
         "rewind",
-        Material.DIAMOND,
+        Material.LAPIS_BLOCK,
         Message.MURDERER_REWIND_NAME.build(),
         Message.MURDERER_REWIND_LORE.build(),
         16);
@@ -40,7 +40,7 @@ public final class KillerRewind extends SurvivorGadget implements Listener {
   public void onPlayerMove(final PlayerMoveEvent event) {
 
     final Player player = event.getPlayer();
-    final PlayerManager manager = game.getPlayerManager();
+    final PlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(player)) {
       return;
     }

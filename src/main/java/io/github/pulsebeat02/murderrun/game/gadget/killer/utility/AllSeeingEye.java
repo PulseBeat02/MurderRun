@@ -30,7 +30,7 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
         Material.ENDER_EYE,
         Message.ALL_SEEING_EYE_NAME.build(),
         Message.ALL_SEEING_EYE_LORE.build(),
-        48);
+        32);
     this.spectatorDisabled = Collections.newSetFromMap(new WeakHashMap<>());
     this.game = game;
   }
@@ -70,7 +70,7 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
   public void onPlayerTeleportEvent(final PlayerTeleportEvent event) {
 
     final Player player = event.getPlayer();
-    final PlayerManager manager = game.getPlayerManager();
+    final PlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(player)) {
       return;
     }

@@ -32,10 +32,10 @@ public final class EMPBlast extends KillerGadget {
   public EMPBlast() {
     super(
         "emp_blast",
-        Material.SNOWBALL,
+        Material.TARGET,
         Message.EMP_BLAST_NAME.build(),
         Message.EMP_BLAST_LORE.build(),
-        96);
+        64);
   }
 
   @Override
