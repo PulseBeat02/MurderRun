@@ -11,9 +11,9 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +32,7 @@ import org.incendo.cloud.type.tuple.Pair;
 
 public final class GadgetLoadingMechanism {
 
-  private static final Map<String, Pair<Gadget, Constructor<Object>>> GADGET_LOOK_UP_MAP =
-      new HashMap<>();
+  private static final Map<String, Pair<Gadget, MethodHandle>> GADGET_LOOK_UP_MAP = new HashMap<>();
 
   static {
     final SurvivorGadgets[] survivorGadgets = SurvivorGadgets.values();
@@ -53,31 +52,35 @@ public final class GadgetLoadingMechanism {
   }
 
   private static void handleGadgetClass(final Class<?> clazz) {
-    final Constructor<Object> constructor = getConstructor(clazz);
-    final Gadget gadget = invokeGadgetConstructor(constructor, null);
-    final String name = gadget.getName();
-    final Pair<Gadget, Constructor<Object>> pair = Pair.of(gadget, constructor);
-    GADGET_LOOK_UP_MAP.put(name, pair);
+    try {
+      final MethodHandle handle = getMethodHandleClass(clazz);
+      final Gadget gadget = invokeGadgetConstructor(handle, null);
+      final String name = gadget.getName();
+      final Pair<Gadget, MethodHandle> pair = Pair.of(gadget, handle);
+      GADGET_LOOK_UP_MAP.put(name, pair);
+    } catch (final Throwable e) {
+      throw new RuntimeException(e);
+    }
   }
 
-  private static Constructor<Object> getConstructor(final Class<?> clazz) {
-    final Constructor<Object>[] constructors = (Constructor<Object>[]) clazz.getConstructors();
-    if (constructors.length == 0) {
-      final String message = "Couldn't find constructor of gadget class %s".formatted(clazz);
-      throw new AssertionError(message);
+  private static MethodHandle getMethodHandleClass(final Class<?> clazz) throws Throwable {
+    final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      final MethodType type = MethodType.methodType(Void.TYPE);
+      return lookup.findConstructor(clazz, type);
+    } catch (final Throwable e) {
+      // if invalid, inject the game
+      final MethodType injectGame = MethodType.methodType(Void.TYPE, Game.class);
+      return lookup.findConstructor(clazz, injectGame);
     }
-    return constructors[0];
   }
 
   private static Gadget invokeGadgetConstructor(
-      final Constructor<?> constructor, final @Nullable Game game) {
+      final MethodHandle handle, final @Nullable Game game) {
     try {
-      final Parameter[] parameters = constructor.getParameters();
-      final int size =
-          parameters.length; // either inject with Game or not for getting object metadata
-      return (Gadget) (size == 0 ? constructor.newInstance() : constructor.newInstance(game));
-    } catch (final InvocationTargetException | InstantiationException | IllegalAccessException e) {
-      throw new AssertionError(e);
+      return (Gadget) (game == null ? handle.invoke() : handle.invoke(game));
+    } catch (final Throwable e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -117,10 +120,10 @@ public final class GadgetLoadingMechanism {
     final Game game = manager.getGame();
     final Server server = plugin.getServer();
     final PluginManager pluginManager = server.getPluginManager();
-    final Collection<Pair<Gadget, Constructor<Object>>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
+    final Collection<Pair<Gadget, MethodHandle>> gadgetClasses = GADGET_LOOK_UP_MAP.values();
     final Map<String, Gadget> gadgets = new HashMap<>();
-    for (final Pair<Gadget, Constructor<Object>> pair : gadgetClasses) {
-      final Constructor<?> constructor = pair.second();
+    for (final Pair<Gadget, MethodHandle> pair : gadgetClasses) {
+      final MethodHandle constructor = pair.second();
       final Gadget gadget = invokeGadgetConstructor(constructor, game);
       if (gadget instanceof final Listener listener) {
         pluginManager.registerEvents(listener, plugin);
@@ -166,7 +169,7 @@ public final class GadgetLoadingMechanism {
     return this.gameGadgets;
   }
 
-  public static Map<String, Pair<Gadget, Constructor<Object>>> getGadgetLookUpMap() {
+  public static Map<String, Pair<Gadget, MethodHandle>> getGadgetLookUpMap() {
     return GADGET_LOOK_UP_MAP;
   }
 }
