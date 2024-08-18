@@ -22,9 +22,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
 
   @Override
   public void registerFeature(
-      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
-    this.registerFeature(plugin, parser);
-  }
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {}
 
   @CommandDescription("murder_run.command.gadget.retrieve-all.info")
   @Command(value = "murder gadget retrieve-all", requiredSender = Player.class)

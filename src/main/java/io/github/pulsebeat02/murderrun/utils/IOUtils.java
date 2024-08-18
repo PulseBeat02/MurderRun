@@ -20,14 +20,14 @@ import java.util.Set;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class ResourceUtils {
+public final class IOUtils {
 
-  private ResourceUtils() {
+  private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
   public static InputStream getResourceAsStream(final String name) {
-    final Class<ResourceUtils> clazz = ResourceUtils.class;
+    final Class<IOUtils> clazz = IOUtils.class;
     final ClassLoader loader = requireNonNull(clazz.getClassLoader());
     final InputStream stream = requireNonNull(loader.getResourceAsStream(name));
     return new FastBufferedInputStream(stream);

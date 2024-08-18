@@ -33,7 +33,6 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
-    this.registerFeature(plugin, parser);
   }
 
   @CommandDescription("murder_run.command.lobby.list.info")

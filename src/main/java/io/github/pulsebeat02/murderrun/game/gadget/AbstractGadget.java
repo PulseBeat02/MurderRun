@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
@@ -14,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -71,19 +73,24 @@ public abstract class AbstractGadget implements Gadget {
     requireNonNull(material);
 
     final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
-    final String rawLore = ComponentUtils.serializeComponentToLegacyString(itemLore);
-    final List<String> lore = List.of(rawLore);
+    final List<Component> lore = ComponentUtils.wrapLoreLines(itemLore, 40);
+    final List<String> rawLore = new ArrayList<>();
+    for (final Component component : lore) {
+      rawLore.add(ComponentUtils.serializeComponentToLegacyString(component));
+    }
+
     final ItemStack stack = new ItemStack(material);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     ItemUtils.setPersistentDataAttribute(
         stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
     meta.setDisplayName(name);
-    meta.setLore(lore);
+    meta.setLore(rawLore);
 
     final Attribute attribute = Attribute.GENERIC_MOVEMENT_SPEED;
     final NamespacedKey key = attribute.getKey();
-    final AttributeModifier modifier = new AttributeModifier(
-        key, 0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.ANY);
+    final Operation operation = Operation.ADD_NUMBER;
+    final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
+    final AttributeModifier modifier = new AttributeModifier(key, 0, operation, group);
     meta.addAttributeModifier(attribute, modifier);
 
     meta.addItemFlags(

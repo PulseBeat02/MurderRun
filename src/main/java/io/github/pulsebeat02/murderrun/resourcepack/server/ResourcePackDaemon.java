@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.server;
 
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.ServerResourcepack;
-import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +42,7 @@ public final class ResourcePackDaemon {
     try (final InputStream stream = Files.newInputStream(path);
         final InputStream fast = new FastBufferedInputStream(stream)) {
       this.url = HOST_URL.formatted(this.hostName, this.port);
-      this.hash = ResourceUtils.generateFileHash(path);
+      this.hash = IOUtils.generateFileHash(path);
       final Writable writable = Writable.copyInputStream(fast);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, this.hash);
       final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();

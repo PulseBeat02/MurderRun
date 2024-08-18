@@ -83,7 +83,7 @@ public final class GadgetLoadingMechanism {
       final int count = type.parameterCount();
       return count == 0
           ? (Gadget) handle.invoke()
-          : (Gadget) handle.invoke((@NonNull Game) game); // checker framework
+          : (Gadget) handle.invoke((@NonNull Game) game); // checker framework ignore warning
     } catch (final Throwable e) {
       throw new RuntimeException(e);
     }

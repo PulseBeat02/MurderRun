@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.texture;
 import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import net.kyori.adventure.key.Key;
@@ -30,7 +30,7 @@ public final class ResourcePackTexture {
   private Writable getTextureStream(
       @UnderInitialization ResourcePackTexture this, final String namespace) {
     final String path = PATH_RESOURCE.formatted(namespace);
-    try (final InputStream stream = ResourceUtils.getResourceAsStream(path)) {
+    try (final InputStream stream = IOUtils.getResourceAsStream(path)) {
       return Writable.copyInputStream(stream);
     } catch (final IOException e) {
       throw new AssertionError(e);

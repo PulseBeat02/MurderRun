@@ -37,7 +37,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
-    this.registerFeature(plugin, parser);
   }
 
   @CommandDescription("murder_run.command.arena.list.info")

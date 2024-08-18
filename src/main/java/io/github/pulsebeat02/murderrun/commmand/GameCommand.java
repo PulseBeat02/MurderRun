@@ -50,7 +50,6 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.games = new WeakHashMap<>();
     this.invites = ArrayListMultimap.create();
     this.plugin = plugin;
-    this.registerFeature(plugin, parser);
   }
 
   @CommandDescription("murder_run.command.game.create.info")

@@ -5,7 +5,7 @@ import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.minimessage.PluginTranslator;
-import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -44,17 +44,17 @@ public final class TranslationManager {
   }
 
   private Path copyResourceToFolder(@UnderInitialization TranslationManager this) {
-    final Path folder = ResourceUtils.getPluginDataFolderPath();
+    final Path folder = IOUtils.getPluginDataFolderPath();
     final Path locale = folder.resolve(PROPERTIES_PATH);
     if (Files.notExists(locale)) {
-      ResourceUtils.createFile(locale);
+      IOUtils.createFile(locale);
       copyLocaleProperties(locale);
     }
     return locale;
   }
 
   private static void copyLocaleProperties(final Path locale) {
-    try (final InputStream stream = ResourceUtils.getResourceAsStream(PROPERTIES_PATH)) {
+    try (final InputStream stream = IOUtils.getResourceAsStream(PROPERTIES_PATH)) {
       Files.copy(stream, locale, StandardCopyOption.REPLACE_EXISTING);
     } catch (final IOException e) {
       throw new AssertionError(e);

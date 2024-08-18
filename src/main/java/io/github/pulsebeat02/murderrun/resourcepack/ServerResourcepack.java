@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.resourcepack;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ModelGeneratorManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
 import io.github.pulsebeat02.murderrun.resourcepack.texture.ItemTextureKeys;
-import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -32,12 +32,12 @@ public final class ServerResourcepack {
   }
 
   private void initializeFields() throws IOException {
-    this.path = ResourceUtils.createTemporaryPath(PACK_FILE_NAME, PACK_FILE_SUFFIX);
+    this.path = IOUtils.createTemporaryPath(PACK_FILE_NAME, PACK_FILE_SUFFIX);
     this.pack = ResourcePack.resourcePack();
   }
 
   private void customizeMetaData() throws IOException {
-    final InputStream stream = ResourceUtils.getResourceAsStream(PACK_PNG_PATH);
+    final InputStream stream = IOUtils.getResourceAsStream(PACK_PNG_PATH);
     this.pack.packMeta(34, PACK_MCMETA_DESCRIPTION);
     this.pack.icon(Writable.copyInputStream(stream));
   }

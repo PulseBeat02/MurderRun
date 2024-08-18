@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
-import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -28,7 +28,7 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
   private final Lock writeLock;
 
   public AbstractJSONDataManager(final Class<T> clazz, final String name) {
-    final Path parent = ResourceUtils.getPluginDataFolderPath();
+    final Path parent = IOUtils.getPluginDataFolderPath();
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     this.service = Executors.newVirtualThreadPerTaskExecutor();
     this.clazz = clazz;
@@ -64,7 +64,7 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
 
   private void createFolders() {
     try {
-      ResourceUtils.createFile(this.json);
+      IOUtils.createFile(this.json);
       Files.write(this.json, EMPTY_JSON_BYTES);
     } catch (final IOException e) {
       throw new AssertionError(e);

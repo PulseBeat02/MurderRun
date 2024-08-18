@@ -15,8 +15,10 @@ public final class AnnotationParserHandler {
 
   private final CommandManager<CommandSender> manager;
   private final AnnotationParser<CommandSender> parser;
+  private final MurderRun plugin;
 
   public AnnotationParserHandler(final MurderRun plugin) {
+    this.plugin = plugin;
     this.manager = this.getCommandManager(plugin);
     this.parser = this.getAnnotationParser(this.manager);
   }
@@ -54,6 +56,9 @@ public final class AnnotationParserHandler {
 
   public void registerCommands() {
     final List<AnnotationCommandFeature> features = Commands.getFeatures();
-    features.forEach(this.parser::parse);
+    features.forEach(feature -> {
+      feature.registerFeature(this.plugin, this.parser);
+      this.parser.parse(feature);
+    });
   }
 }

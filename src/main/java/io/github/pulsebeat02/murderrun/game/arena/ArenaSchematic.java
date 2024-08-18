@@ -14,8 +14,8 @@ import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
-import io.github.pulsebeat02.murderrun.utils.ResourceUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -63,7 +63,7 @@ public final class ArenaSchematic {
 
   private static Path performSchematicWrite(final Clipboard clipboard, final String name)
       throws IOException {
-    final Path parent = ResourceUtils.getPluginDataFolderPath();
+    final Path parent = IOUtils.getPluginDataFolderPath();
     final Path file = parent.resolve(name);
     final BuiltInClipboardFormat format = BuiltInClipboardFormat.MCEDIT_SCHEMATIC;
     try (final OutputStream stream = Files.newOutputStream(file);
