@@ -65,7 +65,7 @@ public final class ArenaSchematic {
       throws IOException {
     final Path parent = IOUtils.getPluginDataFolderPath();
     final Path file = parent.resolve(name);
-    final BuiltInClipboardFormat format = BuiltInClipboardFormat.MCEDIT_SCHEMATIC;
+    final BuiltInClipboardFormat format = BuiltInClipboardFormat.SPONGE_V3_SCHEMATIC;
     try (final OutputStream stream = Files.newOutputStream(file);
         final OutputStream fast = new FastBufferedOutputStream(stream);
         final ClipboardWriter writer = format.getWriter(fast)) {

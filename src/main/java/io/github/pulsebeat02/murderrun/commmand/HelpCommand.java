@@ -30,7 +30,6 @@ public final class HelpCommand implements AnnotationCommandFeature {
     this.bukkitAudiences = handler.retrieve();
     this.manager = parser.manager();
     this.setupHelp();
-    this.registerFeature(plugin, parser);
   }
 
   private Map<String, String> constructHelpMap() {

@@ -96,7 +96,6 @@ tasks {
 
     runServer {
         downloadPlugins {
-            url("https://cdn.modrinth.com/data/S0GwusT4/versions/lPHdbL5F/WETS-0.0.3-bukkit.jar")
             url("https://cdn.modrinth.com/data/1u6JkXh5/versions/yAujLUIK/worldedit-bukkit-7.3.6.jar")
             url("https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3501.jar")
         }
