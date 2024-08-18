@@ -85,6 +85,17 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
+    final Gadget result = getGetClosestTrap(player);
+    if (result == null) {
+      return;
+    }
+
+    final Game game = this.manager.getGame();
+    result.onGadgetNearby(game, player);
+  }
+
+  private @Nullable Gadget getGetClosestTrap(GamePlayer player) {
+
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
     final int range = this.manager.getActivationRange();
@@ -120,13 +131,11 @@ public final class GadgetActionHandler implements Listener {
       }
     }
 
-    if (closestItem == null || closest == null) {
-      return; // checker framework
+    if (closestItem != null) {
+      closestItem.remove();
     }
 
-    final Game game = this.manager.getGame();
-    closest.onGadgetNearby(game, player);
-    closestItem.remove();
+    return closest;
   }
 
   private void handleEventLogic(final @Nullable ItemStack stack, final Consumer<Gadget> gadget) {
