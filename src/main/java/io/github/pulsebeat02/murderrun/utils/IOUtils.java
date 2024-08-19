@@ -73,7 +73,8 @@ public final class IOUtils {
           PosixFilePermissions.asFileAttribute(permissions);
       return Files.createTempFile(prefix, suffix, attr);
     } else {
-      final File file = File.createTempFile(prefix, suffix);
+      final File parent = new File("murderrun");
+      final File file = File.createTempFile(prefix, suffix, parent);
       final boolean executable = file.setExecutable(true, true);
       final boolean writable = file.setWritable(true, true);
       final boolean readable = file.setReadable(true, true);
