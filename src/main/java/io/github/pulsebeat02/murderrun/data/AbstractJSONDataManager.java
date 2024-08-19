@@ -64,8 +64,10 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
 
   private void createFolders() {
     try {
-      IOUtils.createFile(this.json);
-      Files.write(this.json, EMPTY_JSON_BYTES);
+      if (Files.notExists(this.json)) {
+        IOUtils.createFile(this.json);
+        Files.write(this.json, EMPTY_JSON_BYTES);
+      }
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

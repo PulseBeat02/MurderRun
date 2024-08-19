@@ -103,11 +103,13 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Arena arena = arenaManager.getArena(arenaName);
     final Lobby lobby = lobbyManager.getLobby(lobbyName);
     final GameManager manager = new GameManager(this.plugin);
-    manager.addParticipantToLobby(sender);
-
     final GameSettings settings = manager.getSettings();
     settings.setArena(arena);
     settings.setLobby(lobby);
+    manager.addParticipantToLobby(sender);
+
+    final Pair<GameManager, Boolean> gamePair = Pair.of(manager, true);
+    this.games.put(sender, gamePair);
 
     final Component message = Message.GAME_CREATED.build();
     audience.sendMessage(message);

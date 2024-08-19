@@ -11,11 +11,12 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
-import java.awt.Color;
 import java.util.Collection;
 import java.util.HashMap;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -70,7 +71,7 @@ public final class PartsManager {
     final Location location = stack.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
     final World world = requireNonNull(clone.getWorld());
-    world.spawnParticle(Particle.DUST, clone, 10, 0.2, 0.2, 0.2, Color.YELLOW);
+    world.spawnParticle(Particle.DUST, clone, 10, 0.2, 0.2, 0.2, new DustOptions(Color.YELLOW, 1));
   }
 
   public Map getMap() {

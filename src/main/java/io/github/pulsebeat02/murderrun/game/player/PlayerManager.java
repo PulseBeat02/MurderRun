@@ -49,8 +49,8 @@ public final class PlayerManager {
 
   public void start(final Collection<Player> murderers, final Collection<Player> participants) {
     this.assignPlayerRoles(murderers, participants);
-    this.setupAllPlayers();
     this.resetCachedPlayers();
+    this.setupAllPlayers();
     this.killerLocationTracker.spawnParticles();
     this.deathManager.spawnParticles();
   }

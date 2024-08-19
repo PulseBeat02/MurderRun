@@ -20,7 +20,7 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  - Check all Locale messages and edit them accordingly
+  - Fix Resourcepack not being sent
 
    */
 
@@ -36,6 +36,7 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onDisable() {
     this.updatePluginData();
+    this.shutdownPluginData();
     this.stopHostingDaemon();
     this.shutdownMetrics();
     this.shutdownAudience();
@@ -87,13 +88,18 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void enableBStats() {
-    this.metrics = new Metrics(this, BSTATS_SERVER_ID);
+    if (!DEVELOPMENT_SWITCH) {
+      this.metrics = new Metrics(this, BSTATS_SERVER_ID);
+    }
   }
 
   public void updatePluginData() {
     this.arenaDataConfigurationMapper.serialize(this.arenaManager);
     this.lobbyDataConfigurationMapper.serialize(this.lobbyManager);
     this.configuration.serialize();
+  }
+
+  public void shutdownPluginData() {
     this.arenaDataConfigurationMapper.shutdown();
     this.lobbyDataConfigurationMapper.shutdown();
     this.configuration.shutdown();

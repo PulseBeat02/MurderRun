@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
@@ -150,9 +148,9 @@ public final class GadgetLoadingMechanism {
   }
 
   public @Nullable Gadget getGadgetFromStack(final ItemStack stack) {
-    final String data = requireNonNull(ItemUtils.getPersistentDataAttribute(
-        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING));
-    return this.gameGadgets.get(data);
+    final String data = ItemUtils.getPersistentDataAttribute(
+        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    return data != null ? this.gameGadgets.get(data) : null;
   }
 
   public Gadget getRandomInnocentGadget() {

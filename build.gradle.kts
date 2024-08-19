@@ -114,12 +114,14 @@ tasks {
     }
 
     shadowJar {
-        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
-        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
-        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
-        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
-        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
-        relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
+
+//        Disable Temporarily for Hot Swapping
+//        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
+//        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
+//        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
+//        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
+//        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
+//        relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
         dependencies {
             exclude(dependency("com.google.code.gson:gson:.*"))
             exclude(dependency("com.mojang:brigadier:.*"))
