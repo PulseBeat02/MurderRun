@@ -24,6 +24,7 @@ public final class ComponentUtils {
 
   private static final LegacyComponentSerializer SERIALIZER = BukkitComponentSerializer.legacy();
   private static final TextComponent UNSUPPORTED = text("ERROR WRAPPING").color(DARK_RED);
+  private static final String COMPONENT_REGEX = "(?<=\\s)|(?=\\n)";
 
   private ComponentUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -58,7 +59,7 @@ public final class ComponentUtils {
 
       final Style style = part.style();
       final String content = part.content();
-      final String[] words = content.split("(?<=\\s)|(?=\\n)");
+      final String[] words = content.split(COMPONENT_REGEX);
 
       for (final String word : words) {
 

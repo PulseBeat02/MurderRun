@@ -53,6 +53,7 @@ dependencies {
     implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
     implementation("org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT")
     implementation("me.lucko:commodore:2.2")
+    implementation("org.jsoup:jsoup:1.18.1")
 
     testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.108.0")
     testImplementation("team.unnamed:creative-api:1.7.3")
@@ -115,14 +116,13 @@ tasks {
     }
 
     shadowJar {
-
-//        Disable Temporarily for Hot Swapping
-//        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
-//        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
-//        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
-//        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
-//        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
-//        relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
+        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
+        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
+        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
+        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
+        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
+        relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
+        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
         dependencies {
             exclude(dependency("com.google.code.gson:gson:.*"))
             exclude(dependency("com.mojang:brigadier:.*"))

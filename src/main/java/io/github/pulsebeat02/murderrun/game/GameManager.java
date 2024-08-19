@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
-import io.github.pulsebeat02.murderrun.resourcepack.server.ResourcePackDaemon;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.util.Collection;
 import java.util.HashSet;
@@ -86,8 +86,8 @@ public final class GameManager {
   }
 
   private void setResourcePack(final Player player) {
-    final ResourcePackDaemon daemon = this.plugin.getDaemon();
-    final ResourcePackRequest request = daemon.createResourcePackRequest();
+    final ResourcePackProvider daemon = this.plugin.getProvider();
+    final ResourcePackRequest request = daemon.getResourcePackRequest();
     final AudienceProvider handler = this.plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
     final Audience audience = audiences.player(player);

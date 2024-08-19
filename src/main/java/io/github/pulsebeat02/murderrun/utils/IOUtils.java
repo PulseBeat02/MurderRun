@@ -57,6 +57,18 @@ public final class IOUtils {
     return path;
   }
 
+  public static boolean createFolder(final Path path) {
+    if (Files.notExists(path)) {
+      try {
+        Files.createDirectories(path);
+        return true;
+      } catch (final IOException e) {
+        throw new AssertionError(e);
+      }
+    }
+    return false;
+  }
+
   public static Path getPluginDataFolderPath() {
     final Plugin plugin = JavaPlugin.getProvidingPlugin(MurderRun.class);
     final File file = plugin.getDataFolder();
@@ -83,5 +95,9 @@ public final class IOUtils {
       }
       return file.toPath();
     }
+  }
+
+  public static String getName(final Path path) {
+    return requireNonNull(path.getFileName()).toString();
   }
 }

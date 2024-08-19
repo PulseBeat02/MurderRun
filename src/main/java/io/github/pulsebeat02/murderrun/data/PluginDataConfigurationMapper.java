@@ -1,6 +1,9 @@
 package io.github.pulsebeat02.murderrun.data;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -11,10 +14,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public final class PluginDataConfigurationMapper {
 
+  private static final String PROVIDER_CHOICE = "pack-provider";
   private static final String SERVER_PORT_FIELD = "server.port";
   private static final String SERVER_HOST_FIELD = "server.host-name";
-  private static final String FALL_BACK_HOST_NAME = "localhost";
-  private static final int FALL_BACK_PORT = 7270;
 
   private final ExecutorService service;
   private final MurderRun plugin;
@@ -23,22 +25,22 @@ public final class PluginDataConfigurationMapper {
 
   private String hostName;
   private int port;
+  private ProviderMethod providerMethod;
 
   public PluginDataConfigurationMapper(final MurderRun plugin) {
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    this.service = Executors.newVirtualThreadPerTaskExecutor();
     this.plugin = plugin;
-    this.hostName = FALL_BACK_HOST_NAME;
-    this.port = FALL_BACK_PORT;
     this.readLock = lock.readLock();
     this.writeLock = lock.writeLock();
+    this.service = Executors.newVirtualThreadPerTaskExecutor();
+    this.plugin.saveDefaultConfig();
   }
 
   public synchronized void shutdown() {
     ExecutorUtils.shutdownExecutorGracefully(this.service);
   }
 
-  public MurderRun getPlugin() {
+  public synchronized MurderRun getPlugin() {
     return this.plugin;
   }
 
@@ -52,13 +54,16 @@ public final class PluginDataConfigurationMapper {
   }
 
   private int getPortServerPort(final FileConfiguration config) {
-    final int value = config.getInt(SERVER_PORT_FIELD);
-    return value < 1 || value > 65535 ? this.port : value;
+    return config.getInt(SERVER_PORT_FIELD);
   }
 
   private String getHostName(final FileConfiguration config) {
-    final String value = config.getString(SERVER_HOST_FIELD);
-    return value == null ? FALL_BACK_HOST_NAME : value;
+    return requireNonNull(config.getString(SERVER_HOST_FIELD));
+  }
+
+  private ProviderMethod getProviderMethod(final FileConfiguration config) {
+    final String value = config.getString(PROVIDER_CHOICE);
+    return value == null ? ProviderMethod.MC_PACK_HOSTING : ProviderMethod.valueOf(value);
   }
 
   public synchronized String getHostName() {
@@ -80,5 +85,9 @@ public final class PluginDataConfigurationMapper {
 
   public synchronized int getPort() {
     return this.port;
+  }
+
+  public synchronized ProviderMethod getProviderMethod() {
+    return this.providerMethod;
   }
 }

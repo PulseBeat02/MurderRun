@@ -63,7 +63,11 @@ public final class ArenaSchematic {
 
   private static Path performSchematicWrite(final Clipboard clipboard, final String name)
       throws IOException {
-    final Path parent = IOUtils.getPluginDataFolderPath();
+
+    final Path data = IOUtils.getPluginDataFolderPath();
+    final Path parent = data.resolve("schematics");
+    IOUtils.createFolder(parent);
+
     final Path file = parent.resolve(name);
     final BuiltInClipboardFormat format = BuiltInClipboardFormat.SPONGE_V3_SCHEMATIC;
     try (final OutputStream stream = Files.newOutputStream(file);
@@ -71,6 +75,7 @@ public final class ArenaSchematic {
         final ClipboardWriter writer = format.getWriter(fast)) {
       writer.write(clipboard);
     }
+
     return file;
   }
 
