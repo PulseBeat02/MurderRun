@@ -50,6 +50,7 @@ public final class PluginDataConfigurationMapper {
     this.plugin.saveConfig();
     this.hostName = this.getHostName(config);
     this.port = this.getPortServerPort(config);
+    this.providerMethod = this.getProviderMethod(config);
     this.readLock.unlock();
   }
 
