@@ -36,13 +36,14 @@ public final class GameManager {
 
   public void setPlayerToMurderer(final Player murderer) {
     this.murderers.add(murderer);
-    this.giveSpecialSword(murderer);
+    this.giveSpecialItems(murderer);
   }
 
-  private void giveSpecialSword(final Player player) {
-    final ItemStack stack = ItemUtils.createKillerSword();
+  private void giveSpecialItems(final Player player) {
+    final ItemStack sword = ItemUtils.createKillerSword();
+    final ItemStack arrow = ItemUtils.createKillerArrow();
     final PlayerInventory inventory = player.getInventory();
-    inventory.addItem(stack);
+    inventory.addItem(sword, arrow);
   }
 
   public void setPlayerToInnocent(final Player innocent) {

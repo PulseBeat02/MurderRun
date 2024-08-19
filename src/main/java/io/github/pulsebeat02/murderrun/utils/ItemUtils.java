@@ -3,6 +3,9 @@ package io.github.pulsebeat02.murderrun.utils;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.immutable.Keys;
+import io.github.pulsebeat02.murderrun.locale.Message;
+import java.util.List;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -69,13 +72,31 @@ public final class ItemUtils {
     return getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN) != null;
   }
 
+  public static ItemStack createKillerArrow() {
+
+    final Component itemName = Message.ARROW_NAME.build();
+    final Component itemLore = Message.ARROW_LORE.build();
+    final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
+    final List<String> rawLore = ComponentUtils.serializeLoreToLegacyLore(itemLore);
+
+    final ItemStack stack = new ItemStack(Material.ARROW);
+    final ItemMeta meta = requireNonNull(stack.getItemMeta());
+    meta.setDisplayName(name);
+    meta.setLore(rawLore);
+
+    return stack;
+  }
+
   public static ItemStack createKillerSword() {
 
     final ItemStack stack = new ItemStack(Material.DIAMOND_SWORD);
     setPDCTags(stack);
 
+    final Component itemName = Message.KILLER_SWORD.build();
+    final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     setAttributeModifiers(meta);
+    meta.setDisplayName(name);
     meta.setCustomModelData(1);
     stack.setItemMeta(meta);
 

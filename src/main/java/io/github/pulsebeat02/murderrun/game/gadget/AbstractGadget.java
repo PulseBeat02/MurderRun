@@ -7,7 +7,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
@@ -73,11 +72,7 @@ public abstract class AbstractGadget implements Gadget {
     requireNonNull(material);
 
     final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
-    final List<Component> lore = ComponentUtils.wrapLoreLines(itemLore, 40);
-    final List<String> rawLore = new ArrayList<>();
-    for (final Component component : lore) {
-      rawLore.add(ComponentUtils.serializeComponentToLegacyString(component));
-    }
+    final List<String> rawLore = ComponentUtils.serializeLoreToLegacyLore(itemLore);
 
     final ItemStack stack = new ItemStack(material);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());

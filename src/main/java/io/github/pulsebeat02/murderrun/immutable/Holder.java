@@ -15,9 +15,7 @@ public final class Holder<T> {
   }
 
   public static <T> Holder<T> empty() {
-    @SuppressWarnings("unchecked")
-    final Holder<T> t = (Holder<T>) EMPTY;
-    return t;
+    return (Holder<T>) EMPTY;
   }
 
   public T get() {

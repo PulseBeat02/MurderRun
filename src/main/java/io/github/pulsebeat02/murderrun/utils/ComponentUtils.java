@@ -43,6 +43,15 @@ public final class ComponentUtils {
     return SERIALIZER.serialize(component);
   }
 
+  public static List<String> serializeLoreToLegacyLore(final Component lore) {
+    final List<Component> wrapped = ComponentUtils.wrapLoreLines(lore, 40);
+    final List<String> rawLore = new ArrayList<>();
+    for (final Component component : wrapped) {
+      rawLore.add(ComponentUtils.serializeComponentToLegacyString(component));
+    }
+    return rawLore;
+  }
+
   public static List<Component> wrapLoreLines(final Component component, final int length) {
 
     if (!(component instanceof final TextComponent text)) {

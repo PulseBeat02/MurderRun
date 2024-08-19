@@ -370,4 +370,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> ENDER_SHADOWS_EFFECT =
       direct("murder_run.game.gadget.ender_shadows.effect");
   NullComponent<Sender> CURSED_NOTE_DROP = direct("murder_run.game.gadget.cursed_note.drop");
+  NullComponent<Sender> ARROW_NAME = direct("murder_run.game.gadget.arrow.name");
+  NullComponent<Sender> ARROW_LORE = direct("murder_run.game.gadget.arrow.lore");
+  NullComponent<Sender> KILLER_SWORD = direct("murder_run.game.gadget.sword.name");
 }

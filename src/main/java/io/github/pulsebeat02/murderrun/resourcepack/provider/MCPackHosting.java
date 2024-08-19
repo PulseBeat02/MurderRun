@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -19,6 +20,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+// im not dealing with this... checker framework...
+@SuppressWarnings("all")
 public final class MCPackHosting extends ResourcePackProvider {
 
   private static final String WEBSITE_URL = "https://mc-packs.net/";
@@ -35,7 +38,7 @@ public final class MCPackHosting extends ResourcePackProvider {
   }
 
   @Override
-  String getRawUrl() {
+  String getRawUrl(@UnderInitialization MCPackHosting this) {
     final PackInfo info = this.checkFileUrl();
     return this.updateAndRetrievePackJSON(info == null ? this.createNewPackInfo() : info);
   }

@@ -23,8 +23,8 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  - Fix Resourcepack not being sent
-  - Fix infinity arrows
+  - Fix ResourcePack not being sent to players
+  - Fix @SuppressWarnings for ResourcePack providers
 
    */
 

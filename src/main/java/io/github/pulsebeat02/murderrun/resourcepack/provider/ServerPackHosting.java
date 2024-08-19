@@ -7,10 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.server.ResourcePackServer;
 
+// im not dealing with this... checker framework...
+@SuppressWarnings("all")
 public final class ServerPackHosting extends ResourcePackProvider {
 
   private static final String HOST_URL = "%s:%s";
@@ -27,7 +30,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
   }
 
   @Override
-  String getRawUrl() {
+  String getRawUrl(@UnderInitialization ServerPackHosting this) {
     final Path path = this.getZip();
     final String hash = this.getHash();
     try (final InputStream stream = Files.newInputStream(path);

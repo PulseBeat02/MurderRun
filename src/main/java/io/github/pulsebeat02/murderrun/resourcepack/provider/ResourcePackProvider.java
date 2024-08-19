@@ -71,10 +71,6 @@ public abstract class ResourcePackProvider implements PackProvider {
     return this.method;
   }
 
-  public String getUrl() {
-    return this.url;
-  }
-
   public String getHash() {
     return this.hash;
   }
