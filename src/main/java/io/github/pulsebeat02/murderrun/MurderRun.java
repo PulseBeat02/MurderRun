@@ -21,6 +21,7 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   - Fix Resourcepack not being sent
+  - Fix infinity arrows
 
    */
 

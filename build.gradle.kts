@@ -58,6 +58,7 @@ dependencies {
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
+    testImplementation("org.jsoup:jsoup:1.18.1")
 }
 
 val targetJavaVersion = 21
