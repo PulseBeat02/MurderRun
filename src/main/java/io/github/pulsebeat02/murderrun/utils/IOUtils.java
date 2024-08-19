@@ -73,12 +73,14 @@ public final class IOUtils {
           PosixFilePermissions.asFileAttribute(permissions);
       return Files.createTempFile(prefix, suffix, attr);
     } else {
-      final Path path = Files.createTempFile(prefix, suffix);
-      final File file = path.toFile();
-      file.setExecutable(true, true);
-      file.setWritable(true, true);
-      file.setReadable(true, true);
-      return path;
+      final File file = File.createTempFile(prefix, suffix);
+      final boolean executable = file.setExecutable(true, true);
+      final boolean writable = file.setWritable(true, true);
+      final boolean readable = file.setReadable(true, true);
+      if (!executable || !writable || !readable) {
+        throw new IOException("Failed to set file permissions of non-unix system!");
+      }
+      return file.toPath();
     }
   }
 }

@@ -3,7 +3,7 @@ import xyz.jpenilla.runtask.task.AbstractRun
 plugins {
     java
     id("io.github.goooler.shadow") version "8.1.8"
-    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.43"
     id("com.diffplug.spotless") version "7.0.0.BETA1"
 }
@@ -54,7 +54,7 @@ dependencies {
     implementation("org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT")
     implementation("me.lucko:commodore:2.2")
 
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.106.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.108.0")
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
