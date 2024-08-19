@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
+import static java.util.Objects.requireNonNull;
+
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,13 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.server.ResourcePackServer;
 
-// im not dealing with this... checker framework...
-@SuppressWarnings("all")
 public final class ServerPackHosting extends ResourcePackProvider {
 
   private static final String HOST_URL = "%s:%s";
@@ -25,15 +24,13 @@ public final class ServerPackHosting extends ResourcePackProvider {
 
   public ServerPackHosting(final String hostName, final int port) {
     super(ProviderMethod.LOCALLY_HOSTED_DAEMON);
-    this.hostName = hostName;
+    this.hostName = requireNonNull(hostName);
     this.port = port;
   }
 
   @Override
-  String getRawUrl(@UnderInitialization ServerPackHosting this) {
-    final Path path = this.getZip();
-    final String hash = this.getHash();
-    try (final InputStream stream = Files.newInputStream(path);
+  String getRawUrl(final Path zip, final String hash) {
+    try (final InputStream stream = Files.newInputStream(zip);
         final InputStream fast = new FastBufferedInputStream(stream)) {
       final Writable writable = Writable.copyInputStream(fast);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, hash);

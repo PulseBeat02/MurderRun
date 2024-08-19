@@ -28,17 +28,17 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   private final ProviderMethod method;
   private final Path zip;
-  private final String url;
   private final String hash;
+
+  private String url;
 
   public ResourcePackProvider(final ProviderMethod method) {
     this.method = method;
     this.zip = SERVER_PACK.getPath();
     this.hash = this.getRawHash(this.zip);
-    this.url = this.getRawUrl();
   }
 
-  abstract String getRawUrl(@UnderInitialization ResourcePackProvider this);
+  abstract String getRawUrl(final Path zip, final String hash);
 
   private String getRawHash(@UnderInitialization ResourcePackProvider this, final Path zip) {
     try {
@@ -50,7 +50,8 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   @Override
   public ResourcePackRequest getResourcePackRequest() {
-    final URI uri = URI.create(this.url);
+    final String url = this.getFinalUrl();
+    final URI uri = URI.create(url);
     final UUID id = UUID.randomUUID();
     final Component message = Message.RESOURCEPACK_PROMPT.build();
     final ResourcePackInfo info = ResourcePackInfo.resourcePackInfo(id, uri, this.hash);
@@ -77,5 +78,12 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   public Path getZip() {
     return this.zip;
+  }
+
+  public String getFinalUrl() {
+    if (this.url == null) {
+      this.url = this.getRawUrl(this.zip, this.hash);
+    }
+    return this.url;
   }
 }

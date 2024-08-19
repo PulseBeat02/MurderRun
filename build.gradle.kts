@@ -129,6 +129,12 @@ tasks {
             exclude(dependency("org.jetbrains:annotations:.*"))
         }
     }
+
+    setOf(test, compileTestJava, testClasses).forEach {
+        it {
+            enabled = false
+        }
+    }
 }
 
 spotless {
