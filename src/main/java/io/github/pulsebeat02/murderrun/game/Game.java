@@ -61,11 +61,13 @@ public final class Game {
 
   public void finishGame(final GameResult code) {
     this.status = GameStatus.FINISHED;
-    this.gadgetManager.shutdown();
-    this.cleanupManager.start(code);
-    this.playerManager.resetAllPlayers();
-    this.scheduler.cancelAllTasks();
-    this.map.shutdown();
+    if (this.scheduler != null) {
+      this.gadgetManager.shutdown();
+      this.cleanupManager.start(code);
+      this.playerManager.resetAllPlayers();
+      this.scheduler.cancelAllTasks();
+      this.map.shutdown();
+    }
   }
 
   public PlayerManager getPlayerManager() {

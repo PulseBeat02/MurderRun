@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.locks.Lock;
@@ -29,7 +30,7 @@ public final class MCPackHosting extends ResourcePackProvider {
   }
 
   @Override
-  String getRawUrl(final Path zip, final String hash) {
+  String getRawUrl(final Path zip) {
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     final PackInfo info = this.checkFileUrl(lock);
     return this.updateAndRetrievePackJSON(lock, info == null ? this.createNewPackInfo(zip) : info);
@@ -56,8 +57,10 @@ public final class MCPackHosting extends ResourcePackProvider {
       final PackInfo updated = new PackInfo(info.url, loads);
       final Gson gson = GsonProvider.getGson();
       write.lock();
-      gson.toJson(updated, Files.newBufferedWriter(path));
-      return updated.url;
+      try (final Writer writer = Files.newBufferedWriter(path)) {
+        gson.toJson(updated, writer);
+        return updated.url;
+      }
     } catch (final IOException e) {
       throw new AssertionError(e);
     } finally {
@@ -68,7 +71,7 @@ public final class MCPackHosting extends ResourcePackProvider {
   private @Nullable PackInfo checkFileUrl(final ReentrantReadWriteLock lock) {
 
     final Path path = this.getCachedFilePath();
-    if (IOUtils.createFolder(path)) {
+    if (IOUtils.createFile(path)) {
       return null;
     }
 

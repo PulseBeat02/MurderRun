@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
 
@@ -78,8 +79,7 @@ public final class GadgetLoadingMechanism {
     try {
       final MethodType type = handle.type();
       final int count = type.parameterCount();
-      final Object object = new Object[] {game};
-      return count == 0 ? (Gadget) handle.invoke() : (Gadget) handle.invoke(object);
+      return count == 0 ? (Gadget) handle.invoke() : (Gadget) handle.invoke((@NonNull Object) game);
     } catch (final Throwable e) {
       throw new RuntimeException(e);
     }

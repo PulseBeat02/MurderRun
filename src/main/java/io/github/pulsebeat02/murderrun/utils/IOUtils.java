@@ -44,17 +44,18 @@ public final class IOUtils {
     }
   }
 
-  public static Path createFile(final Path path) {
+  public static boolean createFile(final Path path) {
     final Path parent = requireNonNull(path.getParent());
     try {
       Files.createDirectories(parent);
       if (Files.notExists(path)) {
         Files.createFile(path);
+        return true;
       }
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
-    return path;
+    return false;
   }
 
   public static boolean createFolder(final Path path) {
@@ -78,14 +79,25 @@ public final class IOUtils {
 
   public static Path createTemporaryPath(final String prefix, final String suffix)
       throws IOException {
+
     final String os = System.getProperty("os.name").toLowerCase();
+
     if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
+
       final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwx------");
       final FileAttribute<Set<PosixFilePermission>> attr =
           PosixFilePermissions.asFileAttribute(permissions);
       return Files.createTempFile(prefix, suffix, attr);
+
     } else {
+
       final File parent = new File("murderrun");
+      if (!parent.exists()) {
+        if (!parent.mkdirs()) {
+          throw new IOException("Failed to create parent directory for temporary file!");
+        }
+      }
+
       final File file = File.createTempFile(prefix, suffix, parent);
       final boolean executable = file.setExecutable(true, true);
       final boolean writable = file.setWritable(true, true);
@@ -93,6 +105,7 @@ public final class IOUtils {
       if (!executable || !writable || !readable) {
         throw new IOException("Failed to set file permissions of non-unix system!");
       }
+
       return file.toPath();
     }
   }

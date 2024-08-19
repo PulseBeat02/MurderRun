@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameManager;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
@@ -182,7 +183,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
 
     final GameManager manager = data.first();
-    manager.getGame().finishGame(GameResult.INTERRUPTED);
+    final Game game = manager.getGame();
+    game.finishGame(GameResult.INTERRUPTED);
 
     final Collection<Player> participants = manager.getParticipants();
     final Component ownerMessage = Message.GAME_CANCEL.build();

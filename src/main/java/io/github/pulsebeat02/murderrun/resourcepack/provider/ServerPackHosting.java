@@ -2,11 +2,13 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import static java.util.Objects.requireNonNull;
 
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import team.unnamed.creative.BuiltResourcePack;
@@ -29,9 +31,10 @@ public final class ServerPackHosting extends ResourcePackProvider {
   }
 
   @Override
-  String getRawUrl(final Path zip, final String hash) {
+  String getRawUrl(final Path zip) {
     try (final InputStream stream = Files.newInputStream(zip);
         final InputStream fast = new FastBufferedInputStream(stream)) {
+      final String hash = IOUtils.generateFileHash(zip);
       final Writable writable = Writable.copyInputStream(fast);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, hash);
       final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
@@ -41,7 +44,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
           .executor(service)
           .build();
       return HOST_URL.formatted(this.hostName, this.port);
-    } catch (final IOException e) {
+    } catch (final IOException | NoSuchAlgorithmException e) {
       throw new AssertionError(e);
     }
   }

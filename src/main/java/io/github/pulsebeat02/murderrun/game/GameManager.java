@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvide
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.resource.ResourcePackRequest;
@@ -88,11 +89,13 @@ public final class GameManager {
 
   private void setResourcePack(final Player player) {
     final ResourcePackProvider daemon = this.plugin.getProvider();
-    final ResourcePackRequest request = daemon.getResourcePackRequest();
-    final AudienceProvider handler = this.plugin.getAudience();
-    final BukkitAudiences audiences = handler.retrieve();
-    final Audience audience = audiences.player(player);
-    audience.sendResourcePacks(request);
+    final CompletableFuture<ResourcePackRequest> requestFuture = daemon.getResourcePackRequest();
+    requestFuture.thenAccept(request -> {
+      final AudienceProvider handler = this.plugin.getAudience();
+      final BukkitAudiences audiences = handler.retrieve();
+      final Audience audience = audiences.player(player);
+      audience.sendResourcePacks(request);
+    });
   }
 
   public void startGame() {
