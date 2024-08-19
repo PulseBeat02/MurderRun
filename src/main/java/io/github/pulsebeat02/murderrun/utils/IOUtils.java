@@ -73,7 +73,12 @@ public final class IOUtils {
           PosixFilePermissions.asFileAttribute(permissions);
       return Files.createTempFile(prefix, suffix, attr);
     } else {
-      return Files.createTempFile(prefix, suffix);
+      final Path path = Files.createTempFile(prefix, suffix);
+      final File file = path.toFile();
+      file.setExecutable(true, true);
+      file.setWritable(true, true);
+      file.setReadable(true, true);
+      return path;
     }
   }
 }
