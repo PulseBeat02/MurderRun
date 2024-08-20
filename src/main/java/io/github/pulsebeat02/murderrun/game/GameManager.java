@@ -88,8 +88,9 @@ public final class GameManager {
   private void setResourcePack(final Player player) {
     final ResourcePackProvider daemon = this.plugin.getProvider();
     final CompletableFuture<ResourcePackRequest> requestFuture = daemon.getResourcePackRequest();
-    requestFuture.thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request)).handle(
-        (result, error) -> {
+    requestFuture
+        .thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request))
+        .handle((result, error) -> {
           if (error != null) {
             error.printStackTrace();
           }
