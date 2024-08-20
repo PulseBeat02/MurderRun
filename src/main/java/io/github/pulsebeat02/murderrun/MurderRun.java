@@ -53,6 +53,7 @@ public final class MurderRun extends JavaPlugin {
     this.handlePackHosting();
     this.registerCommands();
     this.enableBStats();
+    new DebuggingListener(this);
   }
 
   private void registerLookUpMaps() {
