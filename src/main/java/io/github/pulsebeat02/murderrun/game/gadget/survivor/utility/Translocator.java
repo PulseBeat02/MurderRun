@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -75,7 +75,7 @@ public final class Translocator extends SurvivorGadget {
 
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final Component lore = Message.TRANSLOCATOR_LORE1.build();
-    final String message = ComponentUtils.serializeComponentToLegacyString(lore);
+    final String message = AdventureUtils.serializeComponentToLegacyString(lore);
     final List<String> newLore = List.of(message);
     meta.setLore(newLore);
     stack.setType(Material.LEVER);

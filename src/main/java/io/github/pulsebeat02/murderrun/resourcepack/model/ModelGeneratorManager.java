@@ -18,7 +18,7 @@ public final class ModelGeneratorManager {
   private static final String DIAMOND_SWORD_ITEM_MODEL = "item/diamond_sword";
   private static final String GENERATED_ITEM_MODEL = "item/generated";
   private static final String SWORD_RESOURCE_PATH = "sword";
-  private static final String PUMPKIN_BLUR_RESOURCE_PATH = "pumpkinblur";
+  private static final String PUMPKIN_BLUR_RESOURCE_PATH = "pumpkinblur.png";
   private static final String PUMPKIN_BLUR_NAMESPACE = "pumpkinblur";
 
   public Model customItemModelGenerator() {

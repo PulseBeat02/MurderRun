@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import java.util.List;
 import java.util.function.Consumer;
@@ -71,8 +71,8 @@ public abstract class AbstractGadget implements Gadget {
     requireNonNull(itemLore);
     requireNonNull(material);
 
-    final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
-    final List<String> rawLore = ComponentUtils.serializeLoreToLegacyLore(itemLore);
+    final String name = AdventureUtils.serializeComponentToLegacyString(itemName);
+    final List<String> rawLore = AdventureUtils.serializeLoreToLegacyLore(itemLore);
 
     final ItemStack stack = new ItemStack(material);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());

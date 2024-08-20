@@ -29,11 +29,6 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.gadget.retrieve-all.info")
   @Command(value = "murder gadget retrieve-all", requiredSender = Player.class)
   public void giveAllGadgets(final Player sender) {
-
-    if (!MurderRun.DEVELOPMENT_SWITCH) {
-      return;
-    }
-
     final PlayerInventory inventory = sender.getInventory();
     final List<MerchantRecipe> allGadgets = TradingUtils.getAllRecipes();
     final List<ItemStack> stacks =

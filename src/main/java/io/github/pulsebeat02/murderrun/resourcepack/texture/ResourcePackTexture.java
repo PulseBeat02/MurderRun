@@ -13,13 +13,13 @@ import team.unnamed.creative.texture.Texture;
 
 public final class ResourcePackTexture {
 
-  private static final String PATH_RESOURCE = "assets/textures/%s.png";
+  private static final String PATH_RESOURCE = "textures/%s.png";
 
   private final Key key;
   private final Writable data;
 
   public ResourcePackTexture(final String namespace) {
-    this(key(Keys.NAMESPACE, namespace), namespace);
+    this(key(Keys.NAMESPACE, namespace + ".png"), namespace);
   }
 
   public ResourcePackTexture(final Key key, final String namespace) {

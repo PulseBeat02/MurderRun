@@ -18,7 +18,6 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
-import org.incendo.cloud.annotations.Default;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
@@ -40,8 +39,7 @@ public final class VillagerCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.villager.spawn.info")
   @Command(value = "murder villager spawn [args]", requiredSender = Player.class)
   public void createMerchant(
-      final Player sender,
-      @Argument(value = "args", suggestions = "traps") @Default("0") final String[] args) {
+      final Player sender, @Argument(value = "args", suggestions = "gadgets") final String[] args) {
     final Location location = sender.getLocation();
     final List<MerchantRecipe> recipes = TradingUtils.parseRecipes(args);
     final LobbyTrader trader = new LobbyTrader(location, recipes);
@@ -62,7 +60,7 @@ public final class VillagerCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @Suggestions("traps")
+  @Suggestions("gadgets")
   public Stream<String> suggestTrades(
       final CommandContext<CommandSender> context, final String input) {
     return TRADE_SUGGESTIONS;

@@ -76,13 +76,14 @@ public final class ItemUtils {
 
     final Component itemName = Message.ARROW_NAME.build();
     final Component itemLore = Message.ARROW_LORE.build();
-    final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
-    final List<String> rawLore = ComponentUtils.serializeLoreToLegacyLore(itemLore);
+    final String name = AdventureUtils.serializeComponentToLegacyString(itemName);
+    final List<String> rawLore = AdventureUtils.serializeLoreToLegacyLore(itemLore);
 
     final ItemStack stack = new ItemStack(Material.ARROW);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     meta.setDisplayName(name);
     meta.setLore(rawLore);
+    stack.setItemMeta(meta);
 
     return stack;
   }
@@ -93,7 +94,7 @@ public final class ItemUtils {
     setPDCTags(stack);
 
     final Component itemName = Message.KILLER_SWORD.build();
-    final String name = ComponentUtils.serializeComponentToLegacyString(itemName);
+    final String name = AdventureUtils.serializeComponentToLegacyString(itemName);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     setAttributeModifiers(meta);
     meta.setDisplayName(name);

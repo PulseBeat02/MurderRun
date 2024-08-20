@@ -18,14 +18,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
 
-  private static final int BSTATS_SERVER_ID = 22728;
-  public static final boolean DEVELOPMENT_SWITCH = true;
-
   /*
 
-  - Fix ResourcePack not being sent to players
+  Fix Resourcepacks not being sent to players
 
    */
+
+  private static final int BSTATS_SERVER_ID = 22728;
 
   private PluginDataConfigurationMapper configuration;
   private AudienceProvider audience;
@@ -53,7 +52,6 @@ public final class MurderRun extends JavaPlugin {
     this.handlePackHosting();
     this.registerCommands();
     this.enableBStats();
-    new DebuggingListener(this);
   }
 
   private void registerLookUpMaps() {
@@ -98,9 +96,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void enableBStats() {
-    if (!DEVELOPMENT_SWITCH) {
-      this.metrics = new Metrics(this, BSTATS_SERVER_ID);
-    }
+    this.metrics = new Metrics(this, BSTATS_SERVER_ID);
   }
 
   public void updatePluginData() {

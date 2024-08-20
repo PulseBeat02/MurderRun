@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.List;
@@ -59,7 +59,7 @@ public final class CarPart {
     if (!meta.hasLore()) {
       final List<Component> components = List.of(Message.CAR_PART_ITEM_LORE.build());
       final List<String> lore = components.stream()
-          .map(ComponentUtils::serializeComponentToLegacyString)
+          .map(AdventureUtils::serializeComponentToLegacyString)
           .toList();
       meta.setLore(lore);
     }
@@ -67,7 +67,7 @@ public final class CarPart {
 
   private void changeProperties(@UnderInitialization CarPart this, final ItemMeta meta) {
     final Component component = Message.CAR_PART_ITEM_NAME.build();
-    final String raw = ComponentUtils.serializeComponentToLegacyString(component);
+    final String raw = AdventureUtils.serializeComponentToLegacyString(component);
     final int id = RandomUtils.generateInt(1, 6);
     meta.setDisplayName(raw);
     meta.setCustomModelData(id);

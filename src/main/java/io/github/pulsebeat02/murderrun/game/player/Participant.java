@@ -116,19 +116,7 @@ public interface Participant {
     });
   }
 
-  default void removeAllBossBars() {
-    this.apply(player -> {
-      final Server server = Bukkit.getServer();
-      final Iterator<KeyedBossBar> bars = server.getBossBars();
-      while (bars.hasNext()) {
-        final KeyedBossBar bar = bars.next();
-        final List<org.bukkit.entity.Player> players = bar.getPlayers();
-        if (players.contains(player)) {
-          bar.removePlayer(player);
-        }
-      }
-    });
-  }
+  void removeAllBossBars();
 
   default boolean canSeeEntity(final Entity entity, final double maxRangeSquared) {
 

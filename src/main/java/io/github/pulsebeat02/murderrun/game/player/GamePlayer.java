@@ -33,6 +33,7 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
   private final Audience audience;
 
   private final Collection<PlayerDeathTask> tasks;
+  private final Collection<BossBar> bars;
   private @Nullable ArmorStand corpse;
   private boolean alive;
 
@@ -41,6 +42,7 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
     this.uuid = uuid;
     this.audience = this.getAudience(game, uuid);
     this.alive = true;
+    this.bars = new HashSet<>();
     this.tasks = new HashSet<>();
   }
 
@@ -73,7 +75,9 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
       final float progress,
       final BossBar.Color color,
       final BossBar.Overlay overlay) {
-    this.audience.showBossBar(bossBar(name, progress, color, overlay));
+    final BossBar bar = bossBar(name, progress, color, overlay);
+    this.bars.add(bar);
+    this.audience.showBossBar(bar);
   }
 
   @Override
@@ -136,5 +140,12 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
   @Override
   public void setCorpse(final @Nullable ArmorStand corpse) {
     this.corpse = corpse;
+  }
+
+  @Override
+  public void removeAllBossBars() {
+    for (final BossBar bar : this.bars) {
+      this.audience.hideBossBar(bar);
+    }
   }
 }

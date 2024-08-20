@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +146,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   public void setSpawn(final Player sender) {
     final Location location = sender.getLocation();
     this.spawn = location;
-    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_SPAWN, location);
+    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_SPAWN, location);
     this.sendSuccessMessage(sender, message);
   }
 
@@ -155,7 +155,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   public void setTruck(final Player sender) {
     final Location location = sender.getLocation();
     this.truck = location;
-    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_TRUCK, location);
+    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_TRUCK, location);
     this.sendSuccessMessage(sender, message);
   }
 
@@ -165,7 +165,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.first = location;
     final Component message =
-        ComponentUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
+        AdventureUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
     this.sendSuccessMessage(sender, message);
   }
 
@@ -175,7 +175,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.second = location;
     final Component message =
-        ComponentUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
+        AdventureUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
     this.sendSuccessMessage(sender, message);
   }
 }

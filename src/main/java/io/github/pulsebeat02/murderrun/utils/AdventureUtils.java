@@ -4,14 +4,19 @@ import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.DARK_RED;
 
+import com.google.common.io.BaseEncoding;
 import io.github.pulsebeat02.murderrun.locale.LocaleTools;
 import io.github.pulsebeat02.murderrun.locale.Sender;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.UUID;
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
+import net.kyori.adventure.resource.ResourcePackInfo;
+import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.Style;
@@ -19,14 +24,15 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.format.TextDecoration.State;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
-public final class ComponentUtils {
+public final class AdventureUtils {
 
   private static final LegacyComponentSerializer SERIALIZER = BukkitComponentSerializer.legacy();
   private static final TextComponent UNSUPPORTED = text("ERROR WRAPPING").color(DARK_RED);
   private static final String COMPONENT_REGEX = "(?<=\\s)|(?=\\n)";
 
-  private ComponentUtils() {
+  private AdventureUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
@@ -43,11 +49,38 @@ public final class ComponentUtils {
     return SERIALIZER.serialize(component);
   }
 
+  @Deprecated // when Adventure platform implements new resourcepack logic use that
+  public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
+
+    final List<ResourcePackInfo> packs = request.packs();
+    if (request.replace()) {
+      player.removeResourcePacks();
+    }
+
+    final boolean required = request.required();
+    Component prompt = request.prompt();
+    if (prompt == null) {
+      prompt = empty();
+    }
+
+    final String legacy = serializeComponentToLegacyString(prompt);
+    for (final ResourcePackInfo info : packs) {
+      final URI uri = info.uri();
+      final String url = uri.toASCIIString();
+      final String hexHash = info.hash();
+      final byte[] hash = BaseEncoding.base16().decode(hexHash.toUpperCase());
+      final UUID id = info.id();
+      player.addResourcePack(id, url, hash, legacy, required);
+    }
+
+    return true;
+  }
+
   public static List<String> serializeLoreToLegacyLore(final Component lore) {
-    final List<Component> wrapped = ComponentUtils.wrapLoreLines(lore, 40);
+    final List<Component> wrapped = AdventureUtils.wrapLoreLines(lore, 40);
     final List<String> rawLore = new ArrayList<>();
     for (final Component component : wrapped) {
-      rawLore.add(ComponentUtils.serializeComponentToLegacyString(component));
+      rawLore.add(serializeComponentToLegacyString(component));
     }
     return rawLore;
   }

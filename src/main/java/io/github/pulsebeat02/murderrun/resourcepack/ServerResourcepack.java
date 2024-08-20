@@ -16,7 +16,7 @@ public final class ServerResourcepack {
 
   private static final String PACK_FILE_NAME = "murder-run-pack";
   private static final String PACK_FILE_SUFFIX = ".zip";
-  private static final String PACK_PNG_PATH = "assets/textures/pack.png";
+  private static final String PACK_PNG_PATH = "textures/pack.png";
   private static final String PACK_MCMETA_DESCRIPTION = "Murder Run Plugin Resources";
 
   private Path path;

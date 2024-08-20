@@ -53,7 +53,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @CommandDescription("murder_run.command.game.create.info")
+  @CommandDescription("murder_run.command.game.start.info")
   @Command(value = "murder game start", requiredSender = Player.class)
   public void startGame(final Player sender) {
 
@@ -336,13 +336,18 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final Audience audience = this.audiences.player(sender);
     final Pair<GameManager, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
+    if (this.checkIfInNoGame(audience, data)
+        || this.checkIfNotOwner(audience, data)
+        || this.checkIfOwnerOfCurrentGame(audience, data)) {
       return;
     }
 
     final GameManager manager = data.first();
     manager.removeParticipantFromLobby(kick);
     this.games.remove(kick);
+
+    final Collection<Player> invited = this.invites.get(sender);
+    invited.remove(kick);
 
     final String name = kick.getDisplayName();
     final Audience player = this.audiences.player(kick);

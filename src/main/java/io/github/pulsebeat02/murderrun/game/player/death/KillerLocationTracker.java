@@ -6,10 +6,11 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import java.awt.Color;
 import java.util.Collection;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 
 public final class KillerLocationTracker {
@@ -38,7 +39,7 @@ public final class KillerLocationTracker {
       }
       final Location clone = location.clone().add(0, 1, 0);
       final World world = requireNonNull(clone.getWorld());
-      world.spawnParticle(Particle.DUST, clone, 10, 1, 1, 1, Color.WHITE);
+      world.spawnParticle(Particle.DUST, clone, 10, 1, 1, 1, new DustOptions(Color.WHITE, 1));
     }
   }
 

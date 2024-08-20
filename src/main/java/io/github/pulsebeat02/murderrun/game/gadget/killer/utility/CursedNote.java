@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.Collection;
 import java.util.HashSet;
@@ -89,7 +89,7 @@ public final class CursedNote extends KillerGadget {
   private ItemStack getCursedNoteStack() {
 
     final Component name = Message.CURSED_NOTE_NAME.build();
-    final String legacy = ComponentUtils.serializeComponentToLegacyString(name);
+    final String legacy = AdventureUtils.serializeComponentToLegacyString(name);
 
     final ItemStack item = new ItemStack(Material.PAPER);
     final ItemMeta meta = requireNonNull(item.getItemMeta());
