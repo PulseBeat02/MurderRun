@@ -42,7 +42,6 @@ public abstract class ResourcePackProvider implements PackProvider {
   @Override
   public CompletableFuture<ResourcePackRequest> getResourcePackRequest() {
     final String url = this.getFinalUrl();
-    final byte[] raw = createHashSha1(this.zip);
     final URI uri = URI.create(url);
     final Component message = Message.RESOURCEPACK_PROMPT.build();
     final CompletableFuture<ResourcePackInfo> info =
@@ -53,24 +52,6 @@ public abstract class ResourcePackProvider implements PackProvider {
         .prompt(message)
         .replace(true)
         .asResourcePackRequest());
-  }
-
-  public static byte[] createHashSha1(final Path file) {
-    try {
-      final MessageDigest digest = MessageDigest.getInstance("SHA-1");
-      final InputStream fis = new FileInputStream(file.toFile());
-      int n = 0;
-      final byte[] buffer = new byte[8192];
-      while (n != -1) {
-        n = fis.read(buffer);
-        if (n > 0) {
-          digest.update(buffer, 0, n);
-        }
-      }
-      return digest.digest();
-    } catch (final IOException | NoSuchAlgorithmException e) {
-      throw new AssertionError(e);
-    }
   }
 
   @Override
