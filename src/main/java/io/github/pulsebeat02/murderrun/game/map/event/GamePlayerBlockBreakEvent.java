@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -54,7 +54,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     final GamePlayer murderer = manager.getGamePlayer(player);
     final Location murdererLocation = murderer.getLocation();
     if (murderer instanceof Killer) {
-      manager.playSoundForAllParticipantsAtLocation(murdererLocation, SoundKeys.CHAINSAW);
+      manager.playSoundForAllParticipantsAtLocation(murdererLocation, Sounds.CHAINSAW);
     }
 
     event.setCancelled(true);

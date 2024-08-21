@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.ServerResourcepack;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
@@ -15,8 +16,9 @@ public abstract class ResourcePackProvider implements PackProvider {
   private static final ServerResourcepack SERVER_PACK;
 
   static {
-    SERVER_PACK = new ServerResourcepack();
     try {
+      final Path path = IOUtils.createTemporaryPath("murder-run-pack", ".zip");
+      SERVER_PACK = new ServerResourcepack(path);
       SERVER_PACK.build();
     } catch (final IOException e) {
       throw new AssertionError(e);

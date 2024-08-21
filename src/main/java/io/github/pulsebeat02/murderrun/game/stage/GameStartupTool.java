@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -99,7 +99,7 @@ public final class GameStartupTool {
 
   private void countDownAudio() {
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.playSoundForAllParticipants(SoundKeys.COUNTDOWN);
+    manager.playSoundForAllParticipants(Sounds.COUNTDOWN);
   }
 
   private void futureTask() {
@@ -126,7 +126,7 @@ public final class GameStartupTool {
 
   private void playReleaseSoundEffect() {
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.playSoundForAllParticipants(SoundKeys.RELEASED_1, SoundKeys.RELEASED_2);
+    manager.playSoundForAllParticipants(Sounds.RELEASED_1, Sounds.RELEASED_2);
   }
 
   private void startTimer() {

@@ -6,7 +6,8 @@ import static net.kyori.adventure.key.Key.key;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.KillerLocationTracker;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundKeys;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundFile;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.util.Collection;
@@ -240,17 +241,18 @@ public final class PlayerManager {
     this.applyToAllParticipants(player -> player.showTitle(title, subtitle));
   }
 
-  public void playSoundForAllParticipants(final SoundKeys... keys) {
+  public void playSoundForAllParticipants(final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
     this.applyToAllParticipants(player -> player.playSound(id, Source.MASTER, 1f, 1f));
   }
 
-  private String getRandomKey(final SoundKeys... keys) {
+  private String getRandomKey(final SoundResource... keys) {
     final int bound = keys.length;
     final int random = RandomUtils.generateInt(bound);
-    final SoundKeys chosen = keys[random];
-    return chosen.getSoundName();
+    final SoundResource chosen = keys[random];
+    final Key key = chosen.getKey();
+    return key.asString();
   }
 
   public void playSoundForAllParticipants(final String... keys) {
@@ -265,7 +267,7 @@ public final class PlayerManager {
     return keys[random];
   }
 
-  public void playSoundForAllMurderers(final SoundKeys... keys) {
+  public void playSoundForAllMurderers(final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
     this.applyToAllDead(player -> {
@@ -274,14 +276,14 @@ public final class PlayerManager {
     });
   }
 
-  public void playSoundForAllInnocents(final SoundKeys... keys) {
+  public void playSoundForAllInnocents(final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
     this.applyToAllLivingInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
   }
 
   public void playSoundForAllParticipantsAtLocation(
-      final Location origin, final SoundKeys... keys) {
+      final Location origin, final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final World world = requireNonNull(origin.getWorld());
     world.playSound(origin, key, SoundCategory.MASTER, 1f, 1f);
