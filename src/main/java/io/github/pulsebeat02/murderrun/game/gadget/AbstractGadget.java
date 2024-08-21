@@ -76,8 +76,6 @@ public abstract class AbstractGadget implements Gadget {
 
     final ItemStack stack = new ItemStack(material);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    ItemUtils.setPersistentDataAttribute(
-        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
     meta.setDisplayName(name);
     meta.setLore(rawLore);
 
@@ -87,10 +85,12 @@ public abstract class AbstractGadget implements Gadget {
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
     final AttributeModifier modifier = new AttributeModifier(key, 0, operation, group);
     meta.addAttributeModifier(attribute, modifier);
-
     meta.addItemFlags(
         ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
     stack.setItemMeta(meta);
+
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
 
     if (consumer != null) {
       consumer.accept(stack);

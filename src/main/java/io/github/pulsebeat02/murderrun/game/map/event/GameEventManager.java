@@ -19,7 +19,7 @@ public final class GameEventManager {
     this.game = map.getGame();
     this.events = Set.of(
         new GamePlayerDeathEvent(this.game),
-        new GamePlayerPickupCarPartEvent(this.game),
+        new GamePlayerPickupEvent(this.game),
         new GamePlayerThrowCarPartEvent(this.game),
         new GamePlayerLeaveEvent(this.game),
         new GamePlayerHungerEvent(this.game),

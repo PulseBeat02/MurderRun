@@ -19,11 +19,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-public final class GamePlayerPickupCarPartEvent implements Listener {
+public final class GamePlayerPickupEvent implements Listener {
 
   private final Game game;
 
-  public GamePlayerPickupCarPartEvent(final Game game) {
+  public GamePlayerPickupEvent(final Game game) {
     this.game = game;
   }
 
@@ -59,7 +59,7 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
     }
 
     final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
-    if (!(gamePlayer instanceof Survivor survivor)) {
+    if (!(gamePlayer instanceof final Survivor survivor)) {
       event.setCancelled(true);
       return;
     }

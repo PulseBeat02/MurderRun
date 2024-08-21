@@ -25,6 +25,7 @@ public final class Game {
   private GameScheduler scheduler;
   private GameStatus status;
   private GadgetManager gadgetManager;
+  private GameExecutor executor;
   private GameFinishCallback callback;
 
   public Game(final MurderRun plugin) {
@@ -44,6 +45,7 @@ public final class Game {
       final GameFinishCallback callback) {
     this.status = GameStatus.IN_PROGRESS;
     this.configuration = settings;
+    this.executor = new GameExecutor();
     this.scheduler = new GameScheduler(this);
     this.map = new Map(this);
     this.playerManager = new PlayerManager(this);
@@ -71,6 +73,7 @@ public final class Game {
       this.scheduler.cancelAllTasks();
       this.map.shutdown();
       this.callback.onGameFinish(this, code);
+      this.executor.shutdown();
     }
   }
 
@@ -116,5 +119,9 @@ public final class Game {
 
   public GadgetManager getGadgetManager() {
     return this.gadgetManager;
+  }
+
+  public GameExecutor getExecutor() {
+    return this.executor;
   }
 }

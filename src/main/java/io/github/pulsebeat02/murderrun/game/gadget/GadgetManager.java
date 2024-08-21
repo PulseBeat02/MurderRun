@@ -17,7 +17,7 @@ public final class GadgetManager {
     final MurderRun plugin = game.getPlugin();
     this.game = game;
     this.plugin = plugin;
-    this.activationRange = new AtomicInteger(3);
+    this.activationRange = new AtomicInteger(2);
   }
 
   public void start() {

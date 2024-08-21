@@ -130,7 +130,7 @@ public final class ItemUtils {
     final NamespacedKey key = attribute.getKey();
     final AttributeModifier.Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
-    final AttributeModifier modifier = new AttributeModifier(key, 16, operation, group);
+    final AttributeModifier modifier = new AttributeModifier(key, 10, operation, group);
     meta.addAttributeModifier(attribute, modifier);
   }
 

@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.awt.Color;
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -58,16 +59,32 @@ public abstract class Trap extends AbstractGadget {
     super.onGadgetDrop(game, event, false);
 
     final Item item = event.getItemDrop();
-    final Location location = item.getLocation();
-    final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
-    final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(this.color.getRGB());
+    final AtomicBoolean onFloor = new AtomicBoolean(false);
     scheduler.scheduleTaskUntilCondition(
-        () -> world.spawnParticle(
-            Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(bukkitColor, 4)),
+        () -> {
+          final boolean floor = item.isOnGround();
+          if (floor) {
+            final Location location = item.getLocation();
+            final World world = requireNonNull(location.getWorld());
+            final int r = this.color.getRed();
+            final int g = this.color.getGreen();
+            final int b = this.color.getBlue();
+            final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(r, g, b);
+            scheduler.scheduleTaskUntilCondition(
+                () -> spawnTrapParticles(world, location, bukkitColor), 0, 20, item::isDead);
+            onFloor.set(true);
+          }
+        },
         0,
-        20,
-        item::isDead);
+        20L,
+        onFloor::get);
+  }
+
+  private static void spawnTrapParticles(
+      final World world, final Location location, final org.bukkit.Color bukkitColor) {
+    world.spawnParticle(
+        Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(bukkitColor, 2));
   }
 
   public abstract void onTrapActivate(final Game game, final GamePlayer activee);

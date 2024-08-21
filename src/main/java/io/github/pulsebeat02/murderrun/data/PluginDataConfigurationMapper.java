@@ -72,16 +72,16 @@ public final class PluginDataConfigurationMapper {
   }
 
   public synchronized void serialize() {
-    this.writeLock.lock();
     CompletableFuture.runAsync(
         () -> {
+          this.writeLock.lock();
           final FileConfiguration config = this.plugin.getConfig();
           config.set(SERVER_HOST_FIELD, this.hostName);
           config.set(SERVER_PORT_FIELD, this.port);
           this.plugin.saveConfig();
+          this.writeLock.unlock();
         },
         this.service);
-    this.writeLock.unlock();
   }
 
   public synchronized int getPort() {
