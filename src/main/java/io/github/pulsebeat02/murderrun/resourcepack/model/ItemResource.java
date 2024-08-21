@@ -13,8 +13,6 @@ import team.unnamed.creative.model.ModelTextures;
 
 public final class ItemResource {
 
-  private static final Key GENERATED_ITEM_MODEL_KEY = key("item/generated");
-
   private final ItemModel[] models;
   private final Key key;
 
@@ -29,7 +27,7 @@ public final class ItemResource {
     final ModelTextures textures = ModelTextures.builder().addLayer(texture).build();
     return Model.model()
         .key(this.key)
-        .parent(GENERATED_ITEM_MODEL_KEY)
+        .parent(Model.ITEM_GENERATED)
         .overrides(overrides)
         .textures(textures)
         .build();

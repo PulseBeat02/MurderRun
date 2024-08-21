@@ -9,8 +9,6 @@ import team.unnamed.creative.model.ModelTextures;
 
 public final class ItemModel {
 
-  private static final Key GENERATED_MODEL_KEY = key("item/generated");
-
   private final ItemTexture texture;
   private final int id;
 
@@ -24,7 +22,7 @@ public final class ItemModel {
     final ModelTexture modelTexture = ModelTexture.ofKey(modelKey);
     final ModelTextures textures = ModelTextures.builder().addLayer(modelTexture).build();
     return Model.model()
-        .parent(GENERATED_MODEL_KEY)
+        .parent(Model.ITEM_GENERATED)
         .textures(textures)
         .key(modelKey)
         .build();
