@@ -14,6 +14,7 @@ public final class Models {
   public static final ItemModel CAR_PART_3 = of("car_part_3", 3);
   public static final ItemModel CAR_PART_4 = of("car_part_4", 4);
   public static final ItemModel CAR_PART_5 = of("car_part_5", 5);
+  public static final ItemModel MINEBUCKS = of("minebucks", 1);
   public static final ItemModel SWORD = of("sword", Model.ITEM_HANDHELD, 1);
 
   private static ItemModel of(final String name, final int id) {

@@ -9,7 +9,7 @@ import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -47,8 +47,8 @@ public final class GamePlayerPickupEvent implements Listener {
 
     final Item item = event.getItem();
     final ItemStack stack = item.getItemStack();
-    final boolean isCarPart = ItemUtils.isCarPart(stack);
-    final boolean isTrap = ItemUtils.isTrap(stack);
+    final boolean isCarPart = PDCUtils.isCarPart(stack);
+    final boolean isTrap = PDCUtils.isTrap(stack);
     if (!(isCarPart || isTrap)) {
       return;
     }

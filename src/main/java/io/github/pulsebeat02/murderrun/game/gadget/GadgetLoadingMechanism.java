@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -146,8 +146,8 @@ public final class GadgetLoadingMechanism {
   }
 
   public @Nullable Gadget getGadgetFromStack(final ItemStack stack) {
-    final String data = ItemUtils.getPersistentDataAttribute(
-        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     return data != null ? this.gameGadgets.get(data) : null;
   }
 

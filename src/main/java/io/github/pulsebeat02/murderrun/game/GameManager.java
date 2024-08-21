@@ -6,13 +6,12 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -41,8 +40,8 @@ public final class GameManager {
   }
 
   private void giveSpecialItems(final Player player) {
-    final ItemStack sword = ItemUtils.createKillerSword();
-    final ItemStack arrow = ItemUtils.createKillerArrow();
+    final ItemStack sword = ItemFactory.createKillerSword();
+    final ItemStack arrow = ItemFactory.createKillerArrow();
     final PlayerInventory inventory = player.getInventory();
     inventory.addItem(sword, arrow);
   }
@@ -81,7 +80,8 @@ public final class GameManager {
 
   private void addCurrency(final Player player) {
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = new ItemStack(Material.NETHER_STAR, 64);
+    final ItemStack stack = ItemFactory.createCurrency();
+    stack.setAmount(64);
     for (int i = 0; i < 4; i++) {
       inventory.addItem(stack);
     }

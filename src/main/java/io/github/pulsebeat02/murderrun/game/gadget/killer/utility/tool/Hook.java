@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -30,7 +30,7 @@ public final class Hook extends KillerGadget implements Listener {
         Message.HOOK_NAME.build(),
         Message.HOOK_LORE.build(),
         32,
-        stack -> ItemUtils.setPersistentDataAttribute(
+        stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.HOOK, PersistentDataType.BOOLEAN, true));
     this.game = game;
   }
@@ -60,7 +60,7 @@ public final class Hook extends KillerGadget implements Listener {
     final Player killer = event.getPlayer();
     final PlayerInventory inventory = killer.getInventory();
     final ItemStack hand = inventory.getItemInMainHand();
-    if (!ItemUtils.isHook(hand)) {
+    if (!PDCUtils.isHook(hand)) {
       return;
     }
 

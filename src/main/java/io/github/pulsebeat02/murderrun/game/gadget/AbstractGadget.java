@@ -6,21 +6,16 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlotGroup;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
@@ -76,20 +71,12 @@ public abstract class AbstractGadget implements Gadget {
 
     final ItemStack stack = new ItemStack(material);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
+    ItemFactory.hideAllAttributes(meta);
     meta.setDisplayName(name);
     meta.setLore(rawLore);
-
-    final Attribute attribute = Attribute.GENERIC_MOVEMENT_SPEED;
-    final NamespacedKey key = attribute.getKey();
-    final Operation operation = Operation.ADD_NUMBER;
-    final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
-    final AttributeModifier modifier = new AttributeModifier(key, 0, operation, group);
-    meta.addAttributeModifier(attribute, modifier);
-    meta.addItemFlags(
-        ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
     stack.setItemMeta(meta);
 
-    ItemUtils.setPersistentDataAttribute(
+    PDCUtils.setPersistentDataAttribute(
         stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName);
 
     if (consumer != null) {
@@ -145,7 +132,9 @@ public abstract class AbstractGadget implements Gadget {
 
     requireNonNull(this.gadget);
 
-    final ItemStack ingredient = new ItemStack(Material.NETHER_STAR, this.cost);
+    final ItemStack ingredient = ItemFactory.createCurrency();
+    ingredient.setAmount(this.cost);
+
     final int uses = Integer.MAX_VALUE;
     final MerchantRecipe recipe = new MerchantRecipe(this.gadget, uses);
     recipe.addIngredient(ingredient);

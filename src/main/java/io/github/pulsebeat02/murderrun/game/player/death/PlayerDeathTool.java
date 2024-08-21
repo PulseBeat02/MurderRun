@@ -10,8 +10,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -107,7 +107,7 @@ public final class PlayerDeathTool {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack[] slots = inventory.getContents();
     for (final ItemStack slot : slots) {
-      if (!ItemUtils.isCarPart(slot)) {
+      if (!PDCUtils.isCarPart(slot)) {
         continue;
       }
       final Map map = this.game.getMap();

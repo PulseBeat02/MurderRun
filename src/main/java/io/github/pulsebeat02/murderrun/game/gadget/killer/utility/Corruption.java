@@ -11,7 +11,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerResetTool;
 import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -86,7 +86,7 @@ public final class Corruption extends KillerGadget {
     final Location death = requireNonNull(resurrected.getLastDeathLocation());
     resurrected.teleport(death);
 
-    final ItemStack stack = ItemUtils.createKillerSword();
+    final ItemStack stack = ItemFactory.createKillerSword();
     final PlayerInventory inventory = resurrected.getInventory();
     inventory.addItem(stack);
   }

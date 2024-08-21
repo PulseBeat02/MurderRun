@@ -8,8 +8,8 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.util.Collection;
 import java.util.HashMap;
@@ -93,7 +93,7 @@ public final class PartsManager {
 
   public @Nullable CarPart getCarPartItemStack(final ItemStack stack) {
     final String uuid =
-        ItemUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
+        PDCUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
     return uuid == null ? null : this.parts.get(uuid);
   }
 }

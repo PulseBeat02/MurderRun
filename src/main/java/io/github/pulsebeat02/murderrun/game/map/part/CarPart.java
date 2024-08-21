@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.List;
 import java.util.UUID;
@@ -54,8 +54,7 @@ public final class CarPart {
 
   private void tagData(
       @UnderInitialization CarPart this, final ItemStack stack, final String uuid) {
-    ItemUtils.setPersistentDataAttribute(
-        stack, Keys.CAR_PART_UUID, PersistentDataType.STRING, uuid);
+    PDCUtils.setPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING, uuid);
   }
 
   private void setLore(@UnderInitialization CarPart this, final ItemMeta meta) {

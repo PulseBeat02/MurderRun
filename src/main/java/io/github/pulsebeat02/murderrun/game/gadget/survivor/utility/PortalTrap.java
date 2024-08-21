@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.bukkit.Location;
@@ -79,7 +79,7 @@ public final class PortalTrap extends SurvivorGadget {
         continue;
       }
       final ItemStack stack = item.getItemStack();
-      if (ItemUtils.isGadget(stack)) {
+      if (PDCUtils.isGadget(stack)) {
         trapEntities.add(item);
       }
     }

@@ -11,7 +11,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Holder;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -48,9 +48,9 @@ public final class PortalGun extends KillerGadget implements Listener {
         stack -> {
           final UUID uuid = UUID.randomUUID();
           final String data = uuid.toString();
-          ItemUtils.setPersistentDataAttribute(
+          PDCUtils.setPersistentDataAttribute(
               stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true);
-          ItemUtils.setPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING, data);
+          PDCUtils.setPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING, data);
           stack.addEnchantment(Enchantment.INFINITY, 1);
         });
     this.portals = new HashMap<>();
@@ -75,14 +75,14 @@ public final class PortalGun extends KillerGadget implements Listener {
       return;
     }
 
-    if (!ItemUtils.isPortalGun(stack)) {
+    if (!PDCUtils.isPortalGun(stack)) {
       return;
     }
 
     final Boolean status =
-        ItemUtils.getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN);
+        PDCUtils.getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN);
     final String uuid =
-        ItemUtils.getPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING);
+        PDCUtils.getPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING);
     if (status == null || uuid == null) {
       return;
     }
@@ -106,7 +106,7 @@ public final class PortalGun extends KillerGadget implements Listener {
       final Pair<Holder<Location>, Holder<Location>> value = Pair.of(sending, holder);
       this.portals.put(uuid, value);
     }
-    ItemUtils.setPersistentDataAttribute(
+    PDCUtils.setPersistentDataAttribute(
         stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, !status);
 
     final PlayerManager manager = this.game.getPlayerManager();

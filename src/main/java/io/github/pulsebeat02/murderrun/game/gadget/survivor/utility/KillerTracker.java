@@ -9,7 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -30,7 +30,7 @@ public final class KillerTracker extends SurvivorGadget {
         Message.KILLER_TRACKER_NAME.build(),
         Message.KILLER_TRACKER_LORE.build(),
         32,
-        stack -> ItemUtils.setPersistentDataAttribute(
+        stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.KILLER_TRACKER, PersistentDataType.INTEGER, 0));
   }
 
@@ -57,9 +57,9 @@ public final class KillerTracker extends SurvivorGadget {
     final ItemStack stack = inventory.getItemInMainHand();
     final NamespacedKey key = Keys.KILLER_TRACKER;
     final PersistentDataType<Integer, Integer> type = PersistentDataType.INTEGER;
-    final Integer val = requireNonNull(ItemUtils.getPersistentDataAttribute(stack, key, type));
+    final Integer val = requireNonNull(PDCUtils.getPersistentDataAttribute(stack, key, type));
     final int count = val + 1;
-    ItemUtils.setPersistentDataAttribute(stack, key, type, count);
+    PDCUtils.setPersistentDataAttribute(stack, key, type, count);
 
     return count;
   }

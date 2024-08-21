@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import org.bukkit.Material;
 
 public final class Excavator extends SurvivorGadget {
@@ -14,8 +14,6 @@ public final class Excavator extends SurvivorGadget {
         Message.EXCAVATOR_NAME.build(),
         Message.EXCAVATOR_LORE.build(),
         32,
-        stack -> {
-          ItemUtils.setDurability(stack, 10);
-        });
+        stack -> ItemFactory.setDurability(stack, 10));
   }
 }

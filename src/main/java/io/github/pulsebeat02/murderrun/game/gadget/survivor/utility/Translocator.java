@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -33,7 +33,7 @@ public final class Translocator extends SurvivorGadget {
         Message.TRANSLOCATOR_NAME.build(),
         Message.TRANSLOCATOR_LORE.build(),
         64,
-        stack -> ItemUtils.setPersistentDataAttribute(
+        stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]));
   }
 
@@ -54,7 +54,7 @@ public final class Translocator extends SurvivorGadget {
       return;
     }
 
-    final byte[] data = requireNonNull(ItemUtils.getPersistentDataAttribute(
+    final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = this.byteArrayToLocation(data);
     player.teleport(location);
@@ -70,7 +70,7 @@ public final class Translocator extends SurvivorGadget {
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
     final byte[] bytes = this.locationToByteArray(location);
-    ItemUtils.setPersistentDataAttribute(
+    PDCUtils.setPersistentDataAttribute(
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
 
     final ItemMeta meta = requireNonNull(stack.getItemMeta());

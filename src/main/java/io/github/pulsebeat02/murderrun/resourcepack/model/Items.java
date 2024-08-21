@@ -16,6 +16,9 @@ public final class Items {
       Models.CAR_PART_3,
       Models.CAR_PART_4,
       Models.CAR_PART_5);
+
+  public static final ItemResource MINEBUCKS = of("item/nether_star", Models.MINEBUCKS);
+
   public static final ItemResource SWORD =
       of("item/diamond_sword", Model.ITEM_HANDHELD, Models.SWORD);
 

@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -30,7 +30,7 @@ public final class Flashlight extends SurvivorGadget {
         Message.FLASHLIGHT_NAME.build(),
         Message.FLASHLIGHT_LORE.build(),
         48,
-        stack -> ItemUtils.setPersistentDataAttribute(
+        stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, 0L));
   }
 
@@ -45,7 +45,7 @@ public final class Flashlight extends SurvivorGadget {
       return;
     }
 
-    final Long last = requireNonNull(ItemUtils.getPersistentDataAttribute(
+    final Long last = requireNonNull(PDCUtils.getPersistentDataAttribute(
         stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG));
     final long current = System.currentTimeMillis();
     if (current - last < 5000) {
@@ -53,7 +53,7 @@ public final class Flashlight extends SurvivorGadget {
     }
 
     final Player player = event.getPlayer();
-    ItemUtils.setPersistentDataAttribute(
+    PDCUtils.setPersistentDataAttribute(
         stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, current);
     this.sprayParticlesInCone(game, player);
   }

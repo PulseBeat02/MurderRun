@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -33,7 +33,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         Message.FLASHBANG_NAME.build(),
         Message.FLASHBANG_LORE.build(),
         8,
-        stack -> ItemUtils.setPersistentDataAttribute(
+        stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true));
     this.game = game;
   }
@@ -47,7 +47,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     }
 
     final ItemStack stack = snowball.getItem();
-    if (!ItemUtils.isFlashBang(stack)) {
+    if (!PDCUtils.isFlashBang(stack)) {
       return;
     }
 

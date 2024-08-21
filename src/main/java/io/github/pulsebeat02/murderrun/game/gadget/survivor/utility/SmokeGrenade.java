@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -34,7 +34,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
         Message.SMOKE_BOMB_NAME.build(),
         Message.SMOKE_BOMB_LORE.build(),
         16,
-        stack -> ItemUtils.setPersistentDataAttribute(
+        stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true));
     this.game = game;
   }
@@ -48,7 +48,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     }
 
     final ItemStack stack = snowball.getItem();
-    if (!ItemUtils.isSmokeGrenade(stack)) {
+    if (!PDCUtils.isSmokeGrenade(stack)) {
       return;
     }
 

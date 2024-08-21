@@ -1,11 +1,9 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
 import static java.util.Objects.requireNonNull;
-import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.awt.Color;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,15 +43,6 @@ public abstract class Trap extends AbstractGadget {
   }
 
   @Override
-  public void onGadgetNearby(final Game game, final GamePlayer activator) {
-    this.onTrapActivate(game, activator);
-    if (this.announcement != null) {
-      final PlayerManager manager = game.getPlayerManager();
-      manager.applyToAllParticipants(player -> player.showTitle(this.announcement, empty()));
-    }
-  }
-
-  @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
 
     super.onGadgetDrop(game, event, false);
@@ -62,23 +51,23 @@ public abstract class Trap extends AbstractGadget {
     final GameScheduler scheduler = game.getScheduler();
     final AtomicBoolean onFloor = new AtomicBoolean(false);
     scheduler.scheduleTaskUntilCondition(
-        () -> {
-          final boolean floor = item.isOnGround();
-          if (floor) {
-            final Location location = item.getLocation();
-            final World world = requireNonNull(location.getWorld());
-            final int r = this.color.getRed();
-            final int g = this.color.getGreen();
-            final int b = this.color.getBlue();
-            final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(r, g, b);
-            scheduler.scheduleTaskUntilCondition(
-                () -> spawnTrapParticles(world, location, bukkitColor), 0, 20, item::isDead);
-            onFloor.set(true);
-          }
-        },
-        0,
-        20L,
-        onFloor::get);
+        () -> this.scheduleParticleTask(item, scheduler, onFloor), 0, 20L, onFloor::get);
+  }
+
+  private void scheduleParticleTask(
+      final Item item, final GameScheduler scheduler, final AtomicBoolean onFloor) {
+    final boolean floor = item.isOnGround();
+    if (floor) {
+      final Location location = item.getLocation();
+      final World world = requireNonNull(location.getWorld());
+      final int r = this.color.getRed();
+      final int g = this.color.getGreen();
+      final int b = this.color.getBlue();
+      final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(r, g, b);
+      scheduler.scheduleTaskUntilCondition(
+          () -> spawnTrapParticles(world, location, bukkitColor), 0, 20, item::isDead);
+      onFloor.set(true);
+    }
   }
 
   private static void spawnTrapParticles(

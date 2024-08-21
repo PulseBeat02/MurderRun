@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,7 +36,7 @@ public final class GamePlayerBlockDamageEvent implements Listener {
     final Player player = event.getPlayer();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack hand = inventory.getItemInMainHand();
-    if (!ItemUtils.canBreakMapBlocks(hand)) {
+    if (!PDCUtils.canBreakMapBlocks(hand)) {
       return;
     }
 

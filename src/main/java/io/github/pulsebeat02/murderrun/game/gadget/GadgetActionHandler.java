@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -85,7 +85,7 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    final Gadget result = getGetClosestTrap(player);
+    final Gadget result = this.getGetClosestTrap(player);
     if (result == null) {
       return;
     }
@@ -94,7 +94,7 @@ public final class GadgetActionHandler implements Listener {
     result.onGadgetNearby(game, player);
   }
 
-  private @Nullable Gadget getGetClosestTrap(GamePlayer player) {
+  private @Nullable Gadget getGetClosestTrap(final GamePlayer player) {
 
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
@@ -144,12 +144,12 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    if (!ItemUtils.isGadget(stack)) {
+    if (!PDCUtils.isGadget(stack)) {
       return;
     }
 
-    final String data = ItemUtils.getPersistentDataAttribute(
-        stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     if (data == null) {
       return;
     }

@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -38,7 +38,7 @@ public final class HackTrap extends SurvivorTrap {
     final ItemStack[] slots = inventory.getContents();
     ItemStack find = null;
     for (final ItemStack stack : slots) {
-      if (!ItemUtils.isSword(stack)) {
+      if (!PDCUtils.isSword(stack)) {
         continue;
       }
       inventory.remove(stack);

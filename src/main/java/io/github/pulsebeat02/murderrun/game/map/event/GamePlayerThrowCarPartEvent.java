@@ -13,7 +13,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -43,7 +43,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    if (!ItemUtils.isCarPart(stack)) {
+    if (!PDCUtils.isCarPart(stack)) {
       return;
     }
 
@@ -106,7 +106,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     final PlayerInventory inventory = thrower.getInventory();
     final ItemStack[] contents = inventory.getContents();
     for (final ItemStack slot : contents) {
-      if (ItemUtils.isCarPart(slot)) {
+      if (PDCUtils.isCarPart(slot)) {
         return true;
       }
     }
