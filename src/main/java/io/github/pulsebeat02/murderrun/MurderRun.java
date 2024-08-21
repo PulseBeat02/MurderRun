@@ -20,7 +20,14 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  Fix:
+  DEBUG
+
+  - Debug all survivor traps
+  - Debug all killer traps
+
+  FIX
+
+  - Add aliases to commands
 
    */
 
