@@ -1,20 +1,19 @@
 package io.github.pulsebeat02.murderrun.resourcepack;
 
 import io.github.pulsebeat02.murderrun.resourcepack.atlas.AtlasResource;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundFile;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ItemModel;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ItemResource;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ItemTexture;
 import io.github.pulsebeat02.murderrun.resourcepack.model.Items;
 import io.github.pulsebeat02.murderrun.resourcepack.model.Models;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundFile;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Set;
-import org.checkerframework.checker.units.qual.A;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.atlas.Atlas;
 import team.unnamed.creative.base.Writable;

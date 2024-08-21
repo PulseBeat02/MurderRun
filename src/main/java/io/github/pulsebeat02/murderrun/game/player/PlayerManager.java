@@ -6,7 +6,6 @@ import static net.kyori.adventure.key.Key.key;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.KillerLocationTracker;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundFile;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;

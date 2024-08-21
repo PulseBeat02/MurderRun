@@ -19,11 +19,20 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Set;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import team.unnamed.creative.base.Writable;
 
 public final class IOUtils {
 
   private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static Writable getWritableStream(final String path) {
+    try (final InputStream stream = IOUtils.getResourceAsStream(path)) {
+      return Writable.copyInputStream(stream);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
   }
 
   public static InputStream getResourceAsStream(final String name) {

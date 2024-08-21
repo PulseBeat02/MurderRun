@@ -14,14 +14,11 @@ public final class AtlasResource {
 
   public Atlas stitchAtlas() {
     final AtlasSource source = this.getSource();
-    return Atlas.atlas()
-        .key(this.key)
-        .addSource(source)
-        .build();
+    return Atlas.atlas().key(this.key).addSource(source).build();
   }
 
   private AtlasSource getSource() {
-    return AtlasSource.directory("murderrun", "murderrun/");
+    return AtlasSource.directory("item", "item/");
   }
 
   public Key getKey() {

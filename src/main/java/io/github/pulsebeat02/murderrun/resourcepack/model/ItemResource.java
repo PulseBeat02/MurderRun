@@ -14,10 +14,16 @@ import team.unnamed.creative.model.ModelTextures;
 public final class ItemResource {
 
   private final ItemModel[] models;
+  private final Key parent;
   private final Key key;
 
   public ItemResource(final String key, final ItemModel[] models) {
+    this(key, Model.ITEM_GENERATED, models);
+  }
+
+  public ItemResource(final String key, final Key parent, final ItemModel[] models) {
     this.models = models;
+    this.parent = parent;
     this.key = key(key);
   }
 
@@ -27,7 +33,7 @@ public final class ItemResource {
     final ModelTextures textures = ModelTextures.builder().addLayer(texture).build();
     return Model.model()
         .key(this.key)
-        .parent(Model.ITEM_GENERATED)
+        .parent(this.parent)
         .overrides(overrides)
         .textures(textures)
         .build();

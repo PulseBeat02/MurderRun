@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
-
 import net.kyori.adventure.key.Key;
 import team.unnamed.creative.sound.Sound;
 import team.unnamed.creative.sound.SoundEntry;

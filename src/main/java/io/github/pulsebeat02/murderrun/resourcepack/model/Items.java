@@ -2,6 +2,8 @@ package io.github.pulsebeat02.murderrun.resourcepack.model;
 
 import java.util.HashSet;
 import java.util.Set;
+import net.kyori.adventure.key.Key;
+import team.unnamed.creative.model.Model;
 
 public final class Items {
 
@@ -14,7 +16,14 @@ public final class Items {
       Models.CAR_PART_3,
       Models.CAR_PART_4,
       Models.CAR_PART_5);
-  public static final ItemResource SWORD = of("item/diamond_sword", Models.SWORD);
+  public static final ItemResource SWORD =
+      of("item/diamond_sword", Model.ITEM_HANDHELD, Models.SWORD);
+
+  private static ItemResource of(final String key, final Key parent, final ItemModel... models) {
+    final ItemResource model = new ItemResource(key, parent, models);
+    ALL.add(model);
+    return model;
+  }
 
   private static ItemResource of(final String key, final ItemModel... models) {
     final ItemResource model = new ItemResource(key, models);
