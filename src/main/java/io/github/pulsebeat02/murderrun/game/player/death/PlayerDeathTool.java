@@ -65,8 +65,9 @@ public final class PlayerDeathTool {
 
   private ArmorStand summonArmorStand(final GamePlayer player) {
     final Location location = player.getLocation();
-    final World world = requireNonNull(location.getWorld());
-    final Entity entity = world.spawnEntity(location, EntityType.ARMOR_STAND);
+    final Location down = location.subtract(0, 1, 0);
+    final World world = requireNonNull(down.getWorld());
+    final Entity entity = world.spawnEntity(down, EntityType.ARMOR_STAND);
     return (ArmorStand) entity;
   }
 
@@ -76,10 +77,12 @@ public final class PlayerDeathTool {
   }
 
   private void setArmorStandRotations(final ArmorStand stand) {
-    stand.setHeadPose(MapUtils.toEulerAngle(300, 0, 0));
-    stand.setBodyPose(MapUtils.toEulerAngle(280, 0, 0));
-    stand.setLeftArmPose(MapUtils.toEulerAngle(250, 0, 0));
-    stand.setRightArmPose(MapUtils.toEulerAngle(250, 360, 30));
+    stand.setHeadPose(MapUtils.toEulerAngle(90, 0, 0));
+    stand.setBodyPose(MapUtils.toEulerAngle(90, 0, 0));
+    stand.setLeftArmPose(MapUtils.toEulerAngle(90, 0, 0));
+    stand.setRightArmPose(MapUtils.toEulerAngle(90, 0, 0));
+    stand.setLeftLegPose(MapUtils.toEulerAngle(90, 0, 0));
+    stand.setRightLegPose(MapUtils.toEulerAngle(90, 0, 0));
   }
 
   private void setArmorStandGear(final Player player, final ArmorStand stand) {

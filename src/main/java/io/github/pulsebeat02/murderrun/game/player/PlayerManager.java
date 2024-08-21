@@ -36,8 +36,8 @@ public final class PlayerManager {
 
   private final Map<UUID, GamePlayer> lookupMap;
   private Collection<GamePlayer> cachedDeadPlayers;
-  private Collection<GamePlayer> cachedAlivePlayers;
   private Collection<Killer> cachedKillers;
+  private Collection<Survivor> cachedAlivePlayers;
   private Collection<Survivor> cachedSurvivors;
 
   public PlayerManager(final Game game) {
@@ -69,18 +69,18 @@ public final class PlayerManager {
   public void resetCachedPlayers() {
     final Collection<GamePlayer> players = this.lookupMap.values();
     this.cachedKillers = players.stream()
-        .filter(player -> player instanceof Killer)
+        .filter(StreamUtils.isInstanceOf(Killer.class))
         .map(murderer -> (Killer) murderer)
         .collect(Collectors.toSet());
     this.cachedDeadPlayers = players.stream()
         .filter(StreamUtils.inverse(GamePlayer::isAlive))
         .collect(Collectors.toSet());
-    this.cachedAlivePlayers =
-        players.stream().filter(GamePlayer::isAlive).collect(Collectors.toSet());
     this.cachedSurvivors = players.stream()
         .filter(player -> player instanceof Survivor)
         .map(murderer -> (Survivor) murderer)
         .collect(Collectors.toSet());
+    this.cachedAlivePlayers =
+        this.cachedSurvivors.stream().filter(GamePlayer::isAlive).collect(Collectors.toSet());
   }
 
   public @Nullable GamePlayer getNearestKiller(final Location origin) {
@@ -175,7 +175,7 @@ public final class PlayerManager {
     return this.cachedSurvivors;
   }
 
-  public Collection<GamePlayer> getAliveInnocentPlayers() {
+  public Collection<Survivor> getAliveInnocentPlayers() {
     return this.cachedAlivePlayers;
   }
 

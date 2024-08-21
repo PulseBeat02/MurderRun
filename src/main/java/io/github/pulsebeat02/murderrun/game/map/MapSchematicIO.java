@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
@@ -12,7 +13,6 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.session.PasteBuilder;
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.bukkit.Location;
+import org.bukkit.World;
 
 public final class MapSchematicIO {
 
@@ -42,13 +44,21 @@ public final class MapSchematicIO {
       final ArenaSchematic schematic = arena.getSchematic();
       final BlockVector3 vector3 = schematic.getOrigin();
       final Clipboard clipboard = this.loadSchematic(schematic);
-      final Region region = clipboard.getRegion();
-      final com.sk89q.worldedit.world.World world = requireNonNull(region.getWorld());
+      final com.sk89q.worldedit.world.World world = this.getWorld();
       final WorldEdit instance = WorldEdit.getInstance();
       this.performResetPaste(instance, world, clipboard, vector3);
     } catch (final WorldEditException | IOException e) {
       throw new AssertionError(e);
     }
+  }
+
+  private com.sk89q.worldedit.world.World getWorld() {
+    final Game game = this.map.getGame();
+    final GameSettings settings = game.getSettings();
+    final Arena arena = requireNonNull(settings.getArena());
+    final Location location = arena.getSpawn();
+    final World world = requireNonNull(location.getWorld());
+    return BukkitAdapter.adapt(world);
   }
 
   private void performResetPaste(

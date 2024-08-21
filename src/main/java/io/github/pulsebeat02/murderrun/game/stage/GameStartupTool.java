@@ -9,6 +9,8 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -67,7 +69,7 @@ public final class GameStartupTool {
 
   private void runFutureTask() {
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleCountdownTask(this::handleCountdownSeconds, 120);
+    scheduler.scheduleCountdownTask(this::handleCountdownSeconds, 60);
   }
 
   private void handleCountdownSeconds(final int time) {
@@ -80,6 +82,7 @@ public final class GameStartupTool {
       case 3 -> GameStartupTool.this.announceCountdown(3);
       case 2 -> GameStartupTool.this.announceCountdown(2);
       case 1 -> GameStartupTool.this.announceCountdown(1);
+      case 0 -> GameStartupTool.this.futureTask();
       default -> {} // Do nothing
     }
     GameStartupTool.this.setTimeRemaining(time);
@@ -106,7 +109,14 @@ public final class GameStartupTool {
     this.teleportMurderers();
     this.announceReleasePhase();
     this.playReleaseSoundEffect();
+    this.spawnCarParts();
     this.startTimer();
+  }
+
+  private void spawnCarParts() {
+    final Map map = this.game.getMap();
+    final PartsManager manager = map.getCarPartManager();
+    manager.spawnParts();
   }
 
   private void teleportMurderers() {
@@ -114,7 +124,7 @@ public final class GameStartupTool {
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllDead(murderer -> murderer.teleport(spawnLocation));
+    manager.applyToAllMurderers(murderer -> murderer.teleport(spawnLocation));
   }
 
   private void announceReleasePhase() {

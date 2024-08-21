@@ -25,7 +25,6 @@ public final class Map {
     this.truckManager = new TruckManager(this);
     this.mapSchematicIO = new MapSchematicIO(this);
     this.eventManager.registerEvents();
-    this.partsManager.spawnParts();
     this.truckManager.spawnParticles();
   }
 

@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.game.player;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import java.util.UUID;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public final class Killer extends GamePlayer {
 
@@ -12,13 +11,8 @@ public final class Killer extends GamePlayer {
     super(game, uuid);
   }
 
-  @Override
-  public void onPlayerAttemptPickupPartEvent(final EntityPickupItemEvent event) {
-    event.setCancelled(true);
-  }
-
   public boolean isIgnoringTraps() {
-    return ignoreTraps;
+    return this.ignoreTraps;
   }
 
   public void setIgnoreTraps(final boolean ignoreTraps) {

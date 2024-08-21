@@ -34,6 +34,8 @@ public final class GameManager {
   }
 
   public void setPlayerToMurderer(final Player murderer) {
+    this.removeParticipantFromLobby(murderer);
+    this.addParticipantToLobby(murderer);
     this.murderers.add(murderer);
     this.giveSpecialItems(murderer);
   }

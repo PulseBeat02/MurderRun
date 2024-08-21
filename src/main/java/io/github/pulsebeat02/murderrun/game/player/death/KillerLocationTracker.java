@@ -5,12 +5,11 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 
 public final class KillerLocationTracker {
@@ -31,7 +30,7 @@ public final class KillerLocationTracker {
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
     final Location murdererLocation = murdererPlayer.getLocation();
     final PlayerManager manager = this.game.getPlayerManager();
-    final Collection<GamePlayer> survivors = manager.getAliveInnocentPlayers();
+    final Collection<Survivor> survivors = manager.getAliveInnocentPlayers();
     for (final GamePlayer survivor : survivors) {
       final Location location = survivor.getLocation();
       if (location.distanceSquared(murdererLocation) > 16) {
@@ -39,7 +38,7 @@ public final class KillerLocationTracker {
       }
       final Location clone = location.clone().add(0, 1, 0);
       final World world = requireNonNull(clone.getWorld());
-      world.spawnParticle(Particle.DUST, clone, 10, 1, 1, 1, new DustOptions(Color.WHITE, 1));
+      world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, clone, 15, 0.5, 0.5, 0.5);
     }
   }
 

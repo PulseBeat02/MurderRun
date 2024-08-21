@@ -24,7 +24,6 @@ import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -46,8 +45,6 @@ public interface Participant {
   Map<org.bukkit.entity.Player, Team> GLOW_TEAMS = new WeakHashMap<>();
   Map<org.bukkit.entity.Player, Team> HIDE_NAME_TAG_TEAMS = new WeakHashMap<>();
   Map<UUID, WorldBorder> WORLD_BORDERS = new WeakHashMap<>();
-
-  void onPlayerAttemptPickupPartEvent(final EntityPickupItemEvent event);
 
   org.bukkit.entity.Player getInternalPlayer();
 

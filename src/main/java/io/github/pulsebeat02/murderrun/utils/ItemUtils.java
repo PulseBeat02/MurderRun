@@ -6,12 +6,14 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.List;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.inventory.EquipmentSlotGroup;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -72,6 +74,11 @@ public final class ItemUtils {
     return getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN) != null;
   }
 
+  public static boolean isTrap(final ItemStack stack) {
+    return getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING)
+        != null;
+  }
+
   public static ItemStack createKillerArrow() {
 
     final Component itemName = Message.ARROW_NAME.build();
@@ -114,7 +121,7 @@ public final class ItemUtils {
     final NamespacedKey key = attribute.getKey();
     final AttributeModifier.Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
-    final AttributeModifier modifier = new AttributeModifier(key, 8, operation, group);
+    final AttributeModifier modifier = new AttributeModifier(key, 16, operation, group);
     meta.addAttributeModifier(attribute, modifier);
   }
 
@@ -123,12 +130,22 @@ public final class ItemUtils {
       final NamespacedKey key,
       final PersistentDataType<P, C> type,
       final C value) {
-    final ItemMeta meta = stack.getItemMeta();
+
+    ItemMeta meta = stack.getItemMeta();
+    if (meta == null) {
+      final Material material = stack.getType();
+      final ItemFactory factory = Bukkit.getItemFactory();
+      meta = factory.getItemMeta(material);
+    }
+
     if (meta == null || value == null) {
       return false;
     }
+
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     container.set(key, type, value);
+    stack.setItemMeta(meta);
+
     return true;
   }
 

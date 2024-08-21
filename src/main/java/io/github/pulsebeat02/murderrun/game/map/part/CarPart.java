@@ -29,30 +29,31 @@ public final class CarPart {
   private @Nullable Item cursedNote;
 
   public CarPart(final Location location) {
-    this.uuid = UUID.randomUUID().toString();
+    final UUID uuid = UUID.randomUUID();
+    this.uuid = uuid.toString();
     this.location = location;
-    this.stack = this.createItemStack();
+    this.stack = this.createItemStack(this.uuid);
   }
 
-  private ItemStack createItemStack(@UnderInitialization CarPart this) {
+  private ItemStack createItemStack(@UnderInitialization CarPart this, final String uuid) {
     final ItemStack stack = new ItemStack(Material.DIAMOND);
-    this.customize(stack);
+    this.customize(stack, uuid);
     return stack;
   }
 
-  private void customize(@UnderInitialization CarPart this, final ItemStack stack) {
+  private void customize(
+      @UnderInitialization CarPart this, final ItemStack stack, final String uuid) {
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    this.tagData(stack);
+    this.tagData(stack, uuid);
     this.setLore(meta);
     this.changeProperties(meta);
     stack.setItemMeta(meta);
   }
 
-  private void tagData(@UnderInitialization CarPart this, final ItemStack stack) {
-    if (this.uuid != null) {
-      ItemUtils.setPersistentDataAttribute(
-          stack, Keys.CAR_PART_UUID, PersistentDataType.STRING, this.uuid);
-    }
+  private void tagData(
+      @UnderInitialization CarPart this, final ItemStack stack, final String uuid) {
+    ItemUtils.setPersistentDataAttribute(
+        stack, Keys.CAR_PART_UUID, PersistentDataType.STRING, uuid);
   }
 
   private void setLore(@UnderInitialization CarPart this, final ItemMeta meta) {

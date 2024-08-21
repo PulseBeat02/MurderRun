@@ -8,10 +8,10 @@ import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
-import java.util.UUID;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,23 +34,8 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerPickupItem(final EntityPickupItemEvent event) {
 
-    if (!(event.getEntity() instanceof Player)) {
-      return;
-    }
-
-    final Item item = event.getItem();
-    final ItemStack stack = item.getItemStack();
-    if (!ItemUtils.isCarPart(stack)) {
-      return;
-    }
-
-    final UUID owner = item.getOwner();
-    if (owner == null) {
-      return;
-    }
-
-    final Player player = Bukkit.getPlayer(owner);
-    if (player == null) {
+    final LivingEntity entity = event.getEntity();
+    if (!(entity instanceof final Player player)) {
       return;
     }
 
@@ -60,8 +45,25 @@ public final class GamePlayerPickupCarPartEvent implements Listener {
       return;
     }
 
+    final Item item = event.getItem();
+    final ItemStack stack = item.getItemStack();
+    final boolean isCarPart = ItemUtils.isCarPart(stack);
+    final boolean isTrap = ItemUtils.isTrap(stack);
+    if (!(isCarPart || isTrap)) {
+      return;
+    }
+
+    if (isTrap) {
+      event.setCancelled(true);
+      return;
+    }
+
     final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
-    gamePlayer.onPlayerAttemptPickupPartEvent(event);
+    if (!(gamePlayer instanceof Survivor survivor)) {
+      event.setCancelled(true);
+      return;
+    }
+    survivor.setHasCarPart(true);
 
     final Map map = this.game.getMap();
     final PartsManager manager = map.getCarPartManager();
