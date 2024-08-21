@@ -73,15 +73,20 @@ public enum SurvivorGadgets {
 
   /*
 
+  SURVIVOR TRAPS DEBUGGED
+
+  Fart Trap -- plays fart sound, gives killer nausea, slowness
+  Jeb Trap -- places herd of rainbow sheep
+  Jump Scare Trap -- jump scares if killer gets too close
+  Hack Trap -- removes sword
+
   SURVIVOR TRAPS IMPLEMENTED:
 
-  Glow Trap -- makes killer glow
-  Hack Trap -- removes sword
   Bear Trap -- makes killer stuck and slowed for 10s
+  Glow Trap -- makes killer glow
   Corpus Warp -- teleports to a dead player
   Distort Trap -- spawn guardians all over murderer until trap destroyed
   Spasm Trap -- makes killer freak out alternating their head up and down
-  Jump Scare Trap -- jump scares if killer gets too close
   Smoke Trap -- makes killer dizzy, blind and slowed
   Med Kit -- instantly heal health
   Diamond Armor -- gear
@@ -98,7 +103,6 @@ public enum SurvivorGadgets {
   Ghost Trap -- makes all survivors invisible temporarily
   Pony Trap -- summons a fast horse
   Firework Trap -- shoots off fireworks when triggered
-  Fart Trap -- plays fart sound, gives killer nausea, slowness
   Decoy -- place fake player with name
   Friend Warp -- teleport to a random survivor
   Cloak -- all player usernames hidden for 30s
@@ -117,7 +121,6 @@ public enum SurvivorGadgets {
   Ice-Skatin -- spawns a boat that has ice underneath it
   Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Bush -- you become a bush for 10s
-  Jeb Trap -- places herd of rainbow sheep
   Shockwave Trap -- sets off massive blast flinging all players
   Tracker -- if activated near killer you can always see them
   Deadringer -- fake player death, fake kill them and then they become invulnerable

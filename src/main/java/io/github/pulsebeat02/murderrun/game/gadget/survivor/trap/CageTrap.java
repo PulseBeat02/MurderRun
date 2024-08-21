@@ -33,12 +33,14 @@ public final class CageTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final Location location = murderer.getLocation();
     final Block block = location.getBlock();
+    final Block down = block.getRelative(BlockFace.DOWN);
     final Block east = block.getRelative(BlockFace.EAST);
     final Block west = block.getRelative(BlockFace.WEST);
     final Block north = block.getRelative(BlockFace.NORTH);
     final Block south = block.getRelative(BlockFace.SOUTH);
     final Block top = block.getRelative(0, 2, 0);
-    final List<Material> history = this.replaceAndSaveOriginalState(east, west, north, south, top);
+    final List<Material> history =
+        this.replaceAndSaveOriginalState(down, east, west, north, south, top);
     final Key key = key("block.anvil.use");
     murderer.playSound(key, Source.MASTER, 1f, 1f);
     final GameScheduler scheduler = game.getScheduler();
