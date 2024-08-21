@@ -96,7 +96,7 @@ public final class MedBot extends SurvivorGadget {
   private void handleParticles(final ArmorStand stand) {
     final Location location = stand.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 5, 8, 8, 8, new DustOptions(Color.PURPLE, 1));
+    world.spawnParticle(Particle.DUST, location, 5, 8, 8, 8, new DustOptions(Color.PURPLE, 4));
   }
 
   private void handleVerticalBobbing(final ArmorStand stand) {

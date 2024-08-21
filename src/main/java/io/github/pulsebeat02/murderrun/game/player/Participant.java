@@ -99,6 +99,8 @@ public interface Participant {
 
   void playSound(final Key key, final Source category, final float volume, final float pitch);
 
+  void stopSound(final Key key);
+
   default void removeAllPotionEffects() {
     this.apply(player -> {
       final Collection<PotionEffect> effects = player.getActivePotionEffects();

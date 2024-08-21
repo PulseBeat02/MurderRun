@@ -68,7 +68,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     if (this.checkIfNotEnoughPlayers(audience, players)) {
       return;
     }
-    manager.startGame();
+    manager.startGame((game, code) -> this.games.remove(sender));
 
     final Component message = Message.GAME_START.build();
     audience.sendMessage(message);

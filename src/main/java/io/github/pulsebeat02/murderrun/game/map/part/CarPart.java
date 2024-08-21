@@ -43,11 +43,13 @@ public final class CarPart {
 
   private void customize(
       @UnderInitialization CarPart this, final ItemStack stack, final String uuid) {
+
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    this.tagData(stack, uuid);
     this.setLore(meta);
     this.changeProperties(meta);
     stack.setItemMeta(meta);
+
+    this.tagData(stack, uuid);
   }
 
   private void tagData(
@@ -76,7 +78,7 @@ public final class CarPart {
 
   public Item spawn() {
     final World world = requireNonNull(this.location.getWorld());
-    final Item item = world.dropItemNaturally(this.location, this.stack);
+    final Item item = world.dropItem(this.location, this.stack);
     this.customizeItemEntity(item);
     this.item = item;
     return item;

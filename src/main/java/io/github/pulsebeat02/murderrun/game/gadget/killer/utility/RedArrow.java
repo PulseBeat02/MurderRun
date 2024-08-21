@@ -73,7 +73,7 @@ public final class RedArrow extends KillerGadget {
 
     for (double y = startY; y <= skyLimit; y += 1.0) {
       final Location particleLocation = new Location(world, x, y, z);
-      world.spawnParticle(Particle.DUST, particleLocation, 1, new DustOptions(Color.RED, 1));
+      world.spawnParticle(Particle.DUST, particleLocation, 1, new DustOptions(Color.RED, 4));
     }
   }
 }

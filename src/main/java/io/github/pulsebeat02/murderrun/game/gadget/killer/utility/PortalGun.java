@@ -199,7 +199,7 @@ public final class PortalGun extends KillerGadget implements Listener {
         final double x = center.getX() + radiusX * radius * Math.cos(angle);
         final double y = center.getY() + radiusY * radius * Math.sin(angle);
         final Location particleLocation = new Location(world, x, y, center.getZ());
-        world.spawnParticle(Particle.DUST, particleLocation, 1, new DustOptions(Color.BLUE, 1));
+        world.spawnParticle(Particle.DUST, particleLocation, 1, new DustOptions(Color.BLUE, 3));
       }
     }
   }
@@ -215,7 +215,7 @@ public final class PortalGun extends KillerGadget implements Listener {
       final double x = center.getX() + radiusX * Math.cos(angle);
       final double y = center.getY() + radiusY * Math.sin(angle);
       final Location particleLocation = new Location(world, x, y, center.getZ());
-      world.spawnParticle(Particle.DUST, particleLocation, 1, new DustOptions(Color.YELLOW, 1));
+      world.spawnParticle(Particle.DUST, particleLocation, 1, new DustOptions(Color.YELLOW, 3));
     }
   }
 }

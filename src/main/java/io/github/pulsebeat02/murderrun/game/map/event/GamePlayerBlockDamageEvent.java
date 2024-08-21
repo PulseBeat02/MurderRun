@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.ItemUtils;
 import org.bukkit.Location;
@@ -13,15 +14,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public final class GamePlayerBlockBreakEvent implements Listener {
+public final class GamePlayerBlockDamageEvent implements Listener {
 
   private final Game game;
 
-  public GamePlayerBlockBreakEvent(final Game game) {
+  public GamePlayerBlockDamageEvent(final Game game) {
     this.game = game;
   }
 
@@ -30,7 +31,7 @@ public final class GamePlayerBlockBreakEvent implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  private void onBlockBreakEvent(final BlockBreakEvent event) {
+  private void onBlockDamage(final BlockDamageEvent event) {
 
     final Player player = event.getPlayer();
     final PlayerInventory inventory = player.getInventory();
@@ -54,10 +55,12 @@ public final class GamePlayerBlockBreakEvent implements Listener {
     final GamePlayer murderer = manager.getGamePlayer(player);
     final Location murdererLocation = murderer.getLocation();
     if (murderer instanceof Killer) {
-      manager.playSoundForAllParticipantsAtLocation(murdererLocation, Sounds.CHAINSAW);
+      final SoundResource sound = Sounds.CHAINSAW;
+      manager.stopSoundsForAllParticipants(sound);
+      manager.playSoundForAllParticipantsAtLocation(murdererLocation, sound);
     }
 
     event.setCancelled(true);
-    block.breakNaturally();
+    block.setType(Material.AIR);
   }
 }

@@ -25,6 +25,7 @@ public final class Game {
   private GameScheduler scheduler;
   private GameStatus status;
   private GadgetManager gadgetManager;
+  private GameFinishCallback callback;
 
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
@@ -39,7 +40,8 @@ public final class Game {
   public void startGame(
       final GameSettings settings,
       final Collection<Player> murderers,
-      final Collection<Player> participants) {
+      final Collection<Player> participants,
+      final GameFinishCallback callback) {
     this.status = GameStatus.IN_PROGRESS;
     this.configuration = settings;
     this.scheduler = new GameScheduler(this);
@@ -49,6 +51,7 @@ public final class Game {
     this.cleanupManager = new GameCleanupTool(this);
     this.murderGameTimer = new GameTimer();
     this.gadgetManager = new GadgetManager(this);
+    this.callback = callback;
     this.map.start();
     this.gadgetManager.start();
     this.playerManager.start(murderers, participants);
@@ -67,6 +70,7 @@ public final class Game {
       this.playerManager.resetAllPlayers();
       this.scheduler.cancelAllTasks();
       this.map.shutdown();
+      this.callback.onGameFinish(this, code);
     }
   }
 

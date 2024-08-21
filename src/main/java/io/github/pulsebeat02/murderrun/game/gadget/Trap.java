@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -60,8 +61,10 @@ public abstract class Trap extends AbstractGadget {
     final Location location = item.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
+    final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(this.color.getRGB());
     scheduler.scheduleTaskUntilCondition(
-        () -> world.spawnParticle(Particle.DUST, location, 10, 0.2, 0.2, 0.2, this.color),
+        () -> world.spawnParticle(
+            Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(bukkitColor, 4)),
         0,
         20,
         item::isDead);

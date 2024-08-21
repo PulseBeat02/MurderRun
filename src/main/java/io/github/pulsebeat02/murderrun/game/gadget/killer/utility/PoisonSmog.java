@@ -63,6 +63,6 @@ public final class PoisonSmog extends KillerGadget {
   }
 
   private void spawnSmogParticles(final World world, final Location origin) {
-    world.spawnParticle(Particle.DUST, origin, 25, 10, 10, 10, new DustOptions(Color.GREEN, 1));
+    world.spawnParticle(Particle.DUST, origin, 25, 10, 10, 10, new DustOptions(Color.GREEN, 4));
   }
 }

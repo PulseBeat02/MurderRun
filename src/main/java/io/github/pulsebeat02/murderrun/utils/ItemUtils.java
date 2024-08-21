@@ -14,6 +14,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -88,6 +89,13 @@ public final class ItemUtils {
 
     final ItemStack stack = new ItemStack(Material.ARROW);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
+    final Attribute attribute = Attribute.GENERIC_MOVEMENT_SPEED;
+    final NamespacedKey key = attribute.getKey();
+    final Operation operation = Operation.ADD_NUMBER;
+    final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
+    final AttributeModifier modifier = new AttributeModifier(key, 0, operation, group);
+    meta.addAttributeModifier(attribute, modifier);
+    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
     meta.setDisplayName(name);
     meta.setLore(rawLore);
     stack.setItemMeta(meta);
@@ -104,6 +112,7 @@ public final class ItemUtils {
     final String name = AdventureUtils.serializeComponentToLegacyString(itemName);
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     setAttributeModifiers(meta);
+    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
     meta.setDisplayName(name);
     meta.setCustomModelData(1);
     stack.setItemMeta(meta);
@@ -151,7 +160,16 @@ public final class ItemUtils {
 
   public static <P, C> @Nullable C getPersistentDataAttribute(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<P, C> type) {
-    final ItemMeta meta = requireNonNull(stack.getItemMeta());
+
+    if (stack == null) {
+      return null;
+    }
+
+    final ItemMeta meta = stack.getItemMeta();
+    if (meta == null) {
+      return null;
+    }
+
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     return container.get(key, type);
   }

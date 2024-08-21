@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import static net.kyori.adventure.text.Component.empty;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -34,7 +32,7 @@ public final class Deadringer extends SurvivorGadget {
     final String name = player.getDisplayName();
     final PlayerManager manager = game.getPlayerManager();
     final Component message = Message.PLAYER_DEATH.build(name);
-    manager.applyToAllParticipants(gamePlayer -> gamePlayer.showTitle(message, empty()));
+    manager.sendMessageToAllParticipants(message);
     player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 15 * 20, 1, true, false));
     player.addPotionEffect(
         new PotionEffect(PotionEffectType.INVISIBILITY, 15 * 20, 1, true, false));

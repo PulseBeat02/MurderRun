@@ -269,16 +269,18 @@ public final class PlayerManager {
   public void playSoundForAllMurderers(final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
-    this.applyToAllDead(player -> {
-      final Location location = player.getLocation();
-      player.playSound(id, Source.MASTER, 1f, 1f);
-    });
+    this.applyToAllDead(player -> player.playSound(id, Source.MASTER, 1f, 1f));
   }
 
   public void playSoundForAllInnocents(final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
     this.applyToAllLivingInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
+  }
+
+  public void stopSoundsForAllParticipants(final SoundResource key) {
+    final Key id = key.getKey();
+    this.applyToAllParticipants(player -> player.stopSound(id));
   }
 
   public void playSoundForAllParticipantsAtLocation(
@@ -293,7 +295,10 @@ public final class PlayerManager {
       final float progress,
       final BossBar.Color color,
       final BossBar.Overlay overlay) {
-    this.applyToAllParticipants(player -> player.showBossBar(name, progress, color, overlay));
+    this.applyToAllParticipants(player -> {
+      player.removeAllBossBars();
+      player.showBossBar(name, progress, color, overlay);
+    });
   }
 
   public Survivor getRandomAliveInnocentPlayer() {

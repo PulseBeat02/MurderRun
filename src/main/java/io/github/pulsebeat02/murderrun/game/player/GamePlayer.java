@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.player;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.bossbar.BossBar.bossBar;
 import static net.kyori.adventure.sound.Sound.sound;
+import static net.kyori.adventure.sound.SoundStop.named;
 import static net.kyori.adventure.title.Title.title;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
@@ -78,6 +79,11 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
     final BossBar bar = bossBar(name, progress, color, overlay);
     this.bars.add(bar);
     this.audience.showBossBar(bar);
+  }
+
+  @Override
+  public void stopSound(final Key key) {
+    this.audience.stopSound(named(key));
   }
 
   @Override

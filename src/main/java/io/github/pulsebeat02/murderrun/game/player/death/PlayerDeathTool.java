@@ -1,7 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.player.death;
 
 import static java.util.Objects.requireNonNull;
-import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.map.Map;
@@ -100,9 +99,8 @@ public final class PlayerDeathTool {
   private void announcePlayerDeath(final Player dead) {
     final String name = dead.getDisplayName();
     final Component title = Message.PLAYER_DEATH.build(name);
-    final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.showTitleForAllParticipants(title, subtitle);
+    manager.sendMessageToAllParticipants(title);
   }
 
   private void summonCarParts(final Player player) {

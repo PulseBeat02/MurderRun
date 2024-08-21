@@ -17,8 +17,10 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 public final class GameStartupTool {
 
@@ -33,7 +35,17 @@ public final class GameStartupTool {
     this.announceHidePhase();
     this.setBossBar();
     this.clearNetherStars();
+    this.setNight();
     this.runFutureTask();
+  }
+
+  private void setNight() {
+    final GameSettings settings = this.game.getSettings();
+    final Arena arena = requireNonNull(settings.getArena());
+    final Location spawnLocation = arena.getSpawn();
+    final World world = requireNonNull(spawnLocation.getWorld());
+    world.setTime(13000);
+    world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
   }
 
   private void teleportInnocentPlayers() {
@@ -46,9 +58,8 @@ public final class GameStartupTool {
 
   private void announceHidePhase() {
     final Component title = Message.PREPARATION_PHASE.build();
-    final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.showTitleForAllParticipants(title, subtitle);
+    manager.sendMessageToAllParticipants(title);
   }
 
   private void setBossBar() {

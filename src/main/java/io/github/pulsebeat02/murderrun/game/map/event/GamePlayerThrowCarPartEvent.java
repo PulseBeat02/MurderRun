@@ -1,7 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import static java.util.Objects.requireNonNull;
-import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
@@ -54,6 +53,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     final Location itemLocation = item.getLocation();
     final double distSquared = itemLocation.distanceSquared(truckLocation);
     if (distSquared > 16) {
+      event.setCancelled(true);
       return;
     }
 
@@ -79,9 +79,8 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private void announceCarPartRetrieval(final int leftOver) {
     final Component title = Message.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
-    final Component subtitle = empty();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.showTitleForAllParticipants(title, subtitle);
+    manager.sendMessageToAllParticipants(title);
     manager.playSoundForAllParticipants("block.anvil.use");
   }
 

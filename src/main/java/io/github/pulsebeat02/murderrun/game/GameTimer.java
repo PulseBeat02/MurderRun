@@ -12,7 +12,7 @@ public final class GameTimer {
 
   public void stopTimer() {
     this.endTime = System.currentTimeMillis();
-    this.elapsedTime = this.endTime - this.startTime / 1000L;
+    this.elapsedTime = (this.endTime - this.startTime) / 1000L;
   }
 
   public void invalidateElapsedTime() {

@@ -24,7 +24,8 @@ public final class GameEventManager {
         new GamePlayerLeaveEvent(this.game),
         new GamePlayerHungerEvent(this.game),
         new GamePlayerBlockDropEvent(this.game),
-        new GamePlayerRegenEvent(this.game));
+        new GamePlayerRegenEvent(this.game),
+        new GamePlayerBlockDamageEvent(this.game));
   }
 
   public Game getGame() {

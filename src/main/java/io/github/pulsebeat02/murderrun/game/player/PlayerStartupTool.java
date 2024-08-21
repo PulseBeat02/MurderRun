@@ -49,6 +49,9 @@ public final class PlayerStartupTool {
     this.handleAll(gamePlayer);
     gamePlayer.addPotionEffects(
         new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
-    gamePlayer.apply(player -> player.setWalkSpeed(0.3f));
+    gamePlayer.apply(player -> {
+      player.setGameMode(GameMode.SURVIVAL);
+      player.setWalkSpeed(0.3f);
+    });
   }
 }

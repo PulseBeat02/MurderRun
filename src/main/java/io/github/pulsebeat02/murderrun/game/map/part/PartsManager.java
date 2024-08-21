@@ -18,6 +18,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -43,11 +44,14 @@ public final class PartsManager {
     final Arena arena = requireNonNull(configuration.getArena());
     final Location first = arena.getFirstCorner();
     final Location second = arena.getSecondCorner();
-    final World world = first.getWorld();
+    final World world = requireNonNull(first.getWorld());
     final int parts = configuration.getCarPartCount();
     for (int i = 0; i < parts; i++) {
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
-      final Location location = new Location(world, coords[0], 320, coords[1]);
+      final Location temp = new Location(world, coords[0], 320, coords[1]);
+      final Block highest = world.getHighestBlockAt(temp);
+      final Location block = highest.getLocation();
+      final Location location = block.add(0, 1, 0);
       final CarPart part = new CarPart(location);
       final String id = part.getUuid();
       part.spawn();
@@ -69,9 +73,9 @@ public final class PartsManager {
 
   private void spawnParticleOnPart(final CarPart stack) {
     final Location location = stack.getLocation();
-    final Location clone = location.clone().add(0, 1, 0);
-    final World world = requireNonNull(clone.getWorld());
-    world.spawnParticle(Particle.DUST, clone, 10, 0.2, 0.2, 0.2, new DustOptions(Color.YELLOW, 1));
+    final World world = requireNonNull(location.getWorld());
+    world.spawnParticle(
+        Particle.DUST, location, 40, 0.2, 1.5, 0.2, new DustOptions(Color.YELLOW, 1));
   }
 
   public Map getMap() {
