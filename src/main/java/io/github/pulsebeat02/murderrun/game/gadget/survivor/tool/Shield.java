@@ -14,6 +14,6 @@ public final class Shield extends SurvivorGadget {
         Message.SHIELD_NAME.build(),
         Message.SHIELD_LORE.build(),
         16,
-        stack -> ItemFactory.setDurability(stack, 5));
+        ItemFactory::createShield);
   }
 }

@@ -15,13 +15,12 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
-import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class GameStartupTool {
@@ -77,10 +76,9 @@ public final class GameStartupTool {
 
   private void clearNetherStars() {
     final PlayerManager manager = this.game.getPlayerManager();
-    final ItemStack currency = ItemFactory.createCurrency();
     manager.applyToAllParticipants(player -> {
       final PlayerInventory inventory = player.getInventory();
-      inventory.remove(currency);
+      inventory.remove(Material.NETHER_STAR);
     });
   }
 

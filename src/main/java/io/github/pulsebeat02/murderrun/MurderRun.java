@@ -25,10 +25,6 @@ public final class MurderRun extends JavaPlugin {
   - Debug all survivor traps
   - Debug all killer traps
 
-  FIX
-
-  - Add aliases to commands
-
    */
 
   private static final int BSTATS_SERVER_ID = 22728;

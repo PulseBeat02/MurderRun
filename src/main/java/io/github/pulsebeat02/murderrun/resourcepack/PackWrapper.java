@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.resourcepack.model.ItemModel;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ItemResource;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ItemTexture;
 import io.github.pulsebeat02.murderrun.resourcepack.model.Items;
+import io.github.pulsebeat02.murderrun.resourcepack.model.JumpScareResource;
 import io.github.pulsebeat02.murderrun.resourcepack.model.Models;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundFile;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
@@ -41,7 +42,14 @@ public final class PackWrapper {
     this.addItems();
     this.addModels();
     this.addAtlases();
+    this.addSpecialResources();
     this.zipPack();
+  }
+
+  private void addSpecialResources() {
+    final JumpScareResource resource = new JumpScareResource();
+    final Texture texture = resource.stitchTexture();
+    this.pack.texture(texture);
   }
 
   private void addAtlases() {

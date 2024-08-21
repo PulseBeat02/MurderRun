@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -20,7 +20,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -88,21 +87,12 @@ public final class FakePart extends KillerGadget {
   }
 
   private Item spawnItem(final Location location) {
-    final ItemStack fake = this.createSimilarCarPart();
+    final ItemStack fake = ItemFactory.createFakePart();
     final World world = requireNonNull(location.getWorld());
     final Item item = world.dropItem(location, fake);
     item.setPickupDelay(Integer.MAX_VALUE);
     item.setUnlimitedLifetime(true);
     return item;
-  }
-
-  private ItemStack createSimilarCarPart() {
-    final ItemStack stack = new ItemStack(Material.DIAMOND);
-    final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    final int id = RandomUtils.generateInt(1, 6);
-    meta.setCustomModelData(id);
-    stack.setItemMeta(meta);
-    return stack;
   }
 
   private void spawnParticleOnPart(final Location location) {

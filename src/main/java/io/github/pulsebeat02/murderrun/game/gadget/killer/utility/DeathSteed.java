@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -16,7 +17,6 @@ import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.HorseInventory;
-import org.bukkit.inventory.ItemStack;
 
 public final class DeathSteed extends KillerGadget {
 
@@ -61,7 +61,7 @@ public final class DeathSteed extends KillerGadget {
 
   private void setSaddle(final Horse horse) {
     final HorseInventory inventory = horse.getInventory();
-    inventory.setSaddle(new ItemStack(Material.SADDLE));
+    inventory.setSaddle(ItemFactory.createSaddle());
   }
 
   private void handleSurvivor(final GamePlayer survivor, final Horse horse) {

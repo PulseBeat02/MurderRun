@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,7 +27,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -82,21 +81,8 @@ public final class CursedNote extends KillerGadget {
     final Location second = arena.getSecondCorner();
     final World world = requireNonNull(first.getWorld());
     final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
-    final ItemStack item = this.getCursedNoteStack();
+    final ItemStack item = ItemFactory.createCursedNote();
     return world.dropItem(new Location(world, coords[0], 320, coords[1]), item);
-  }
-
-  private ItemStack getCursedNoteStack() {
-
-    final Component name = Message.CURSED_NOTE_NAME.build();
-    final String legacy = AdventureUtils.serializeComponentToLegacyString(name);
-
-    final ItemStack item = new ItemStack(Material.PAPER);
-    final ItemMeta meta = requireNonNull(item.getItemMeta());
-    meta.setDisplayName(legacy);
-    item.setItemMeta(meta);
-
-    return item;
   }
 
   private void handleSurvivorCurse(final Game game, final CarPart part) {

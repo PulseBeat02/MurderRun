@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -62,6 +63,6 @@ public final class Decoy extends SurvivorGadget {
           case BOOTS -> inventory.getBoots();
           default -> null;
         };
-    return stack == null ? new ItemStack(Material.AIR) : stack;
+    return stack == null ? ItemBuilder.AIR_STACK : stack;
   }
 }

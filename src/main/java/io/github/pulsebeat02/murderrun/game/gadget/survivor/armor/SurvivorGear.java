@@ -17,6 +17,6 @@ public abstract sealed class SurvivorGear extends SurvivorGadget
         itemName,
         empty(),
         16,
-        stack -> stack.addEnchantment(Enchantment.PROTECTION, 1));
+        stack -> stack.addEnchantment(Enchantment.PROTECTION, 2));
   }
 }

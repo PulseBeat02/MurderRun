@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -86,9 +86,9 @@ public final class IceSpirit extends SurvivorGadget {
 
   private void setEquipment(final Zombie zombie) {
     final EntityEquipment equipment = requireNonNull(zombie.getEquipment());
-    equipment.setHelmet(new ItemStack(Material.DIAMOND_HELMET));
-    equipment.setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
-    equipment.setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
-    equipment.setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+    equipment.setHelmet(ItemBuilder.create(Material.DIAMOND_HELMET));
+    equipment.setChestplate(ItemBuilder.create(Material.DIAMOND_CHESTPLATE));
+    equipment.setLeggings(ItemBuilder.create(Material.DIAMOND_LEGGINGS));
+    equipment.setBoots(ItemBuilder.create(Material.DIAMOND_BOOTS));
   }
 }

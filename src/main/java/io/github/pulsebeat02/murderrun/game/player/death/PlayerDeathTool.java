@@ -10,10 +10,10 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,9 +27,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 public final class PlayerDeathTool {
 
@@ -86,10 +83,10 @@ public final class PlayerDeathTool {
 
   private void setArmorStandGear(final Player player, final ArmorStand stand) {
     final EntityEquipment equipment = requireNonNull(stand.getEquipment());
-    final ItemStack head = this.getHeadItemStack(player);
-    final ItemStack chest = createArmorPiece(Material.LEATHER_CHESTPLATE);
-    final ItemStack legs = createArmorPiece(Material.LEATHER_LEGGINGS);
-    final ItemStack boots = createArmorPiece(Material.LEATHER_BOOTS);
+    final ItemStack head = ItemFactory.createPlayerHead(player);
+    final ItemStack chest = ItemFactory.createDeathGear(Material.LEATHER_CHESTPLATE);
+    final ItemStack legs = ItemFactory.createDeathGear(Material.LEATHER_LEGGINGS);
+    final ItemStack boots = ItemFactory.createDeathGear(Material.LEATHER_BOOTS);
     equipment.setHelmet(head);
     equipment.setChestplate(chest);
     equipment.setLeggings(legs);
@@ -118,26 +115,6 @@ public final class PlayerDeathTool {
       stack.setLocation(death);
       stack.spawn();
     }
-  }
-
-  private ItemStack getHeadItemStack(final Player player) {
-    final ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-    final ItemMeta meta = requireNonNull(head.getItemMeta());
-    if (meta instanceof final SkullMeta skullMeta) {
-      skullMeta.setOwningPlayer(player);
-      head.setItemMeta(skullMeta);
-    }
-    return head;
-  }
-
-  public static ItemStack createArmorPiece(final Material leatherPiece) {
-    final ItemStack item = new ItemStack(leatherPiece);
-    final ItemMeta meta = requireNonNull(item.getItemMeta());
-    if (meta instanceof final LeatherArmorMeta leatherArmorMeta) {
-      leatherArmorMeta.setColor(Color.RED);
-      item.setItemMeta(leatherArmorMeta);
-    }
-    return item;
   }
 
   public void spawnParticles() {

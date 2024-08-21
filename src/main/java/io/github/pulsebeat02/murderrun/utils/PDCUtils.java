@@ -64,7 +64,7 @@ public final class PDCUtils {
       final PersistentDataType<P, C> type,
       final C value) {
 
-    final ItemMeta meta = ItemFactory.createMeta(stack);
+    final ItemMeta meta = stack.getItemMeta();
     if (meta == null || value == null) {
       return false;
     }
@@ -79,7 +79,7 @@ public final class PDCUtils {
   public static <P, C> @Nullable C getPersistentDataAttribute(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<P, C> type) {
 
-    final ItemMeta meta = ItemFactory.createMeta(stack);
+    final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
       return null;
     }

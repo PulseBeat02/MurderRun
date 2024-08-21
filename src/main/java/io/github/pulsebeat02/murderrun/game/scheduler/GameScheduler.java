@@ -4,8 +4,10 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
 
 public final class GameScheduler {
@@ -65,5 +67,22 @@ public final class GameScheduler {
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, 0, 20);
     this.tasks.add(bukkit);
     return bukkit;
+  }
+
+  public BukkitTask scheduleTaskWhenItemFalls(final Runnable runnable, final Item item) {
+    final AtomicBoolean onFloor = new AtomicBoolean(false);
+    final BukkitTask task = this.scheduleTaskUntilCondition(
+        () -> {
+          final boolean floor = item.isOnGround();
+          if (floor) {
+            onFloor.set(true);
+            runnable.run();
+          }
+        },
+        0,
+        20L,
+        onFloor::get);
+    this.tasks.add(task);
+    return task;
   }
 }

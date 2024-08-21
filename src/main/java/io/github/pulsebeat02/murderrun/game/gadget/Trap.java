@@ -6,7 +6,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.awt.Color;
-import java.util.concurrent.atomic.AtomicBoolean;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,25 +48,18 @@ public abstract class Trap extends AbstractGadget {
 
     final Item item = event.getItemDrop();
     final GameScheduler scheduler = game.getScheduler();
-    final AtomicBoolean onFloor = new AtomicBoolean(false);
-    scheduler.scheduleTaskUntilCondition(
-        () -> this.scheduleParticleTask(item, scheduler, onFloor), 0, 20L, onFloor::get);
+    scheduler.scheduleTaskWhenItemFalls(() -> this.scheduleParticleTask(item, scheduler), item);
   }
 
-  private void scheduleParticleTask(
-      final Item item, final GameScheduler scheduler, final AtomicBoolean onFloor) {
-    final boolean floor = item.isOnGround();
-    if (floor) {
-      final Location location = item.getLocation();
-      final World world = requireNonNull(location.getWorld());
-      final int r = this.color.getRed();
-      final int g = this.color.getGreen();
-      final int b = this.color.getBlue();
-      final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(r, g, b);
-      scheduler.scheduleTaskUntilCondition(
-          () -> spawnTrapParticles(world, location, bukkitColor), 0, 20, item::isDead);
-      onFloor.set(true);
-    }
+  private void scheduleParticleTask(final Item item, final GameScheduler scheduler) {
+    final Location location = item.getLocation();
+    final World world = requireNonNull(location.getWorld());
+    final int r = this.color.getRed();
+    final int g = this.color.getGreen();
+    final int b = this.color.getBlue();
+    final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(r, g, b);
+    scheduler.scheduleTaskUntilCondition(
+        () -> spawnTrapParticles(world, location, bukkitColor), 0, 20, item::isDead);
   }
 
   private static void spawnTrapParticles(

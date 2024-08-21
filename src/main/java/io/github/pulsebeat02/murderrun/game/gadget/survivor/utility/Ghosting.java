@@ -11,18 +11,16 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public final class Ghosting extends SurvivorGadget {
 
@@ -75,32 +73,21 @@ public final class Ghosting extends SurvivorGadget {
   private void createWoolSetting(final Game game, final GamePlayer player) {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack wool = new ItemStack(Material.WHITE_WOOL);
+    final ItemStack wool = ItemBuilder.create(Material.WHITE_WOOL);
     scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, 100);
   }
 
   private void giveWhiteBone(final GamePlayer player) {
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = new ItemStack(Material.BONE);
-    stack.addEnchantment(Enchantment.KNOCKBACK, 2);
+    final ItemStack stack = ItemFactory.createKnockBackBone();
     inventory.addItem(stack);
   }
 
   private void giveWhiteLeatherArmor(final GamePlayer player) {
     final PlayerInventory inventory = player.getInventory();
-    inventory.setHelmet(this.createArmorPiece(Material.LEATHER_HELMET));
-    inventory.setChestplate(this.createArmorPiece(Material.LEATHER_CHESTPLATE));
-    inventory.setLeggings(this.createArmorPiece(Material.LEATHER_LEGGINGS));
-    inventory.setBoots(this.createArmorPiece(Material.LEATHER_BOOTS));
-  }
-
-  private ItemStack createArmorPiece(final Material leatherPiece) {
-    final ItemStack item = new ItemStack(leatherPiece);
-    final ItemMeta meta = requireNonNull(item.getItemMeta());
-    if (meta instanceof final LeatherArmorMeta leatherArmorMeta) {
-      leatherArmorMeta.setColor(Color.WHITE);
-      item.setItemMeta(leatherArmorMeta);
-    }
-    return item;
+    inventory.setHelmet(ItemFactory.createGhostGear(Material.LEATHER_HELMET));
+    inventory.setChestplate(ItemFactory.createGhostGear(Material.LEATHER_CHESTPLATE));
+    inventory.setLeggings(ItemFactory.createGhostGear(Material.LEATHER_LEGGINGS));
+    inventory.setBoots(ItemFactory.createGhostGear(Material.LEATHER_BOOTS));
   }
 }
