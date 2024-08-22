@@ -24,7 +24,6 @@ public final class MurderRun extends JavaPlugin {
 
   - Debug all survivor traps
   - Debug all killer traps
-  - Create a command that automatically creates a debug game
 
    */
 

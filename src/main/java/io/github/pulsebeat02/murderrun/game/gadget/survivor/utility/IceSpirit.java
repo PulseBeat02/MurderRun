@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -62,10 +62,12 @@ public final class IceSpirit extends SurvivorGadget {
   }
 
   private void applyDebuffs(final PlayerManager manager, final GamePlayer killer) {
+    final Game game = manager.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    killer.disableJump(scheduler, 7 * 20L);
     killer.apply(player -> player.setFreezeTicks(7 * 20));
     killer.addPotionEffects(
-        new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, Integer.MAX_VALUE),
-        new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20, Integer.MAX_VALUE));
+        new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, Integer.MAX_VALUE));
     manager.applyToAllLivingInnocents(
         innocent -> innocent.sendMessage(Message.FREEZE_ACTIVATE.build()));
   }
@@ -86,9 +88,9 @@ public final class IceSpirit extends SurvivorGadget {
 
   private void setEquipment(final Zombie zombie) {
     final EntityEquipment equipment = requireNonNull(zombie.getEquipment());
-    equipment.setHelmet(ItemBuilder.create(Material.DIAMOND_HELMET));
-    equipment.setChestplate(ItemBuilder.create(Material.DIAMOND_CHESTPLATE));
-    equipment.setLeggings(ItemBuilder.create(Material.DIAMOND_LEGGINGS));
-    equipment.setBoots(ItemBuilder.create(Material.DIAMOND_BOOTS));
+    equipment.setHelmet(Item.create(Material.DIAMOND_HELMET));
+    equipment.setChestplate(Item.create(Material.DIAMOND_CHESTPLATE));
+    equipment.setLeggings(Item.create(Material.DIAMOND_LEGGINGS));
+    equipment.setBoots(Item.create(Material.DIAMOND_BOOTS));
   }
 }

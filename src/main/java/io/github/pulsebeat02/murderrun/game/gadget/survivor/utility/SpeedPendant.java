@@ -4,7 +4,7 @@ import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemFactory;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Material;
 
 public final class SpeedPendant extends SurvivorGadget {

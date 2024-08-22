@@ -12,6 +12,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -58,15 +59,16 @@ public final class EMPBlast extends KillerGadget {
     this.removeAllSurvivorGadgets(entities, mechanism);
 
     final PlayerManager playerManager = game.getPlayerManager();
-    playerManager.applyToAllLivingInnocents(this::stunSurvivors);
+    final GameScheduler scheduler = game.getScheduler();
+    playerManager.applyToAllLivingInnocents(survivor -> this.stunSurvivors(scheduler, survivor));
   }
 
-  private void stunSurvivors(final GamePlayer survivor) {
+  private void stunSurvivors(final GameScheduler scheduler, final GamePlayer survivor) {
     final Component msg = Message.EMP_BLAST_ACTIVATE.build();
+    survivor.disableJump(scheduler, 5 * 20L);
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 1),
-        new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
-        new PotionEffect(PotionEffectType.JUMP_BOOST, 5 * 20, Integer.MAX_VALUE));
+        new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1));
     survivor.sendMessage(msg);
   }
 

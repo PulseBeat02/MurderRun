@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.map.part;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.utils.ItemFactory;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.UUID;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
@@ -49,6 +49,9 @@ public final class CarPart {
   }
 
   public Location getLocation() {
+    if (this.item != null) {
+      return this.item.getLocation();
+    }
     return this.location;
   }
 

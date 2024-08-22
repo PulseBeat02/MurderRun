@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.ItemFactory;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -91,9 +91,7 @@ public abstract class AbstractGadget implements Gadget {
 
     requireNonNull(this.gadget);
 
-    final ItemStack ingredient = ItemFactory.createCurrency();
-    ingredient.setAmount(this.cost);
-
+    final ItemStack ingredient = ItemFactory.createCurrency(this.cost);
     final int uses = Integer.MAX_VALUE;
     final MerchantRecipe recipe = new MerchantRecipe(this.gadget, uses);
     recipe.addIngredient(ingredient);

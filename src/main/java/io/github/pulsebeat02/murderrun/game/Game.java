@@ -26,7 +26,7 @@ public final class Game {
   private GameStatus status;
   private GadgetManager gadgetManager;
   private GameExecutor executor;
-  private GameFinishCallback callback;
+  private GameEndCallback callback;
 
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
@@ -42,7 +42,7 @@ public final class Game {
       final GameSettings settings,
       final Collection<Player> murderers,
       final Collection<Player> participants,
-      final GameFinishCallback callback) {
+      final GameEndCallback callback) {
     this.status = GameStatus.IN_PROGRESS;
     this.configuration = settings;
     this.executor = new GameExecutor();

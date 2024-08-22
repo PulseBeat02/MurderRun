@@ -6,15 +6,14 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -64,12 +63,12 @@ public final class Translocator extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final Item item = event.getItemDrop();
+    final org.bukkit.entity.Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
     final byte[] bytes = this.locationToByteArray(location);
     PDCUtils.setPersistentDataAttribute(
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
-    ItemBuilder.builder(stack).lore(Message.TRANSLOCATOR_LORE1.build()).type(Material.LEVER);
+    Item.builder(stack).lore(Message.TRANSLOCATOR_LORE1.build()).type(Material.LEVER);
   }
 
   private Location byteArrayToLocation(final byte[] array) {

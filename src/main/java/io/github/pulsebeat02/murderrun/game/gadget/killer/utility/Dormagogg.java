@@ -65,9 +65,9 @@ public final class Dormagogg extends KillerGadget {
 
   private void applyDebuffs(
       final GameScheduler scheduler, final GamePlayer killer, final GamePlayer survivor) {
+    survivor.disableJump(scheduler, 7 * 20L);
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, Integer.MAX_VALUE),
-        new PotionEffect(PotionEffectType.JUMP_BOOST, 7 * 20, Integer.MAX_VALUE),
         new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1));
     killer.setEntityGlowingForPlayer(survivor);
     scheduler.scheduleTask(() -> killer.removeEntityGlowingForPlayer(survivor), 7 * 20L);

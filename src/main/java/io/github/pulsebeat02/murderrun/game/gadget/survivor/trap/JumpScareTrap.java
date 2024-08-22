@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
-import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.awt.Color;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
@@ -49,7 +49,7 @@ public final class JumpScareTrap extends SurvivorTrap {
   }
 
   private @Nullable ItemStack setPumpkinItemStack(final GamePlayer player) {
-    final ItemStack stack = ItemBuilder.create(Material.CARVED_PUMPKIN);
+    final ItemStack stack = Item.create(Material.CARVED_PUMPKIN);
     final PlayerInventory inventory = player.getInventory();
     final ItemStack before = inventory.getHelmet();
     inventory.setHelmet(stack);

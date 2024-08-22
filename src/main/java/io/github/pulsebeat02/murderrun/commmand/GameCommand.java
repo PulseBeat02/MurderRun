@@ -107,7 +107,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final GameSettings settings = manager.getSettings();
     settings.setArena(arena);
     settings.setLobby(lobby);
-    manager.addParticipantToLobby(sender);
+    manager.addParticipantToLobby(sender, false);
 
     final Pair<GameManager, Boolean> gamePair = Pair.of(manager, true);
     this.games.put(sender, gamePair);
@@ -269,8 +269,11 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Pair<GameManager, Boolean> ownerData = requireNonNull(this.games.get(owner));
 
     final GameManager manager = ownerData.first();
-    manager.addParticipantToLobby(sender);
+    manager.addParticipantToLobby(sender, false);
     invitations.remove(sender);
+
+    final Pair<GameManager, Boolean> gamePair = Pair.of(manager, false);
+    this.games.put(sender, gamePair);
 
     final Collection<Player> participants = manager.getParticipants();
     final String name = sender.getDisplayName();
@@ -370,6 +373,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final GameManager manager = data.first();
     manager.removeParticipantFromLobby(sender);
     this.games.remove(sender);
+    sender.setHealth(0.0);
 
     final Component message = Message.GAME_LEFT.build();
     audience.sendMessage(message);

@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.ItemFactory;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
@@ -34,9 +34,7 @@ public final class GameManager {
 
   public void setPlayerToMurderer(final Player murderer) {
     this.removeParticipantFromLobby(murderer);
-    this.addParticipantToLobby(murderer);
-    this.murderers.add(murderer);
-    this.giveSpecialItems(murderer);
+    this.addParticipantToLobby(murderer, true);
   }
 
   private void giveSpecialItems(final Player player) {
@@ -48,7 +46,7 @@ public final class GameManager {
 
   public void setPlayerToInnocent(final Player innocent) {
     this.removeParticipantFromLobby(innocent);
-    this.addParticipantToLobby(innocent);
+    this.addParticipantToLobby(innocent, false);
   }
 
   public void removeParticipantFromLobby(final Player player) {
@@ -57,9 +55,15 @@ public final class GameManager {
     this.clearInventory(player);
   }
 
-  public void addParticipantToLobby(final Player player) {
+  public void addParticipantToLobby(final Player player, final boolean killer) {
+
     this.participants.add(player);
     this.teleportPlayerToLobby(player);
+    if (killer) {
+      this.murderers.add(player);
+      this.giveSpecialItems(player);
+    }
+
     this.addCurrency(player);
     this.setResourcePack(player);
   }
@@ -80,8 +84,7 @@ public final class GameManager {
 
   private void addCurrency(final Player player) {
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = ItemFactory.createCurrency();
-    stack.setAmount(64);
+    final ItemStack stack = ItemFactory.createCurrency(64);
     for (int i = 0; i < 4; i++) {
       inventory.addItem(stack);
     }
@@ -93,7 +96,7 @@ public final class GameManager {
     requestFuture.thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request));
   }
 
-  public void startGame(final GameFinishCallback callback) {
+  public void startGame(final GameEndCallback callback) {
     this.setMurdererCount(this.murderers);
     this.game.startGame(this.settings, this.murderers, this.participants, callback);
   }

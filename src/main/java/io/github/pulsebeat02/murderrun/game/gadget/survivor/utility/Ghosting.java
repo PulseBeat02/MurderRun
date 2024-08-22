@@ -11,8 +11,8 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
-import io.github.pulsebeat02.murderrun.utils.ItemFactory;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -73,7 +73,7 @@ public final class Ghosting extends SurvivorGadget {
   private void createWoolSetting(final Game game, final GamePlayer player) {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack wool = ItemBuilder.create(Material.WHITE_WOOL);
+    final ItemStack wool = Item.create(Material.WHITE_WOOL);
     scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, 100);
   }
 

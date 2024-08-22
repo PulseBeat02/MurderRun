@@ -269,13 +269,13 @@ public final class PlayerManager {
   public void playSoundForAllMurderers(final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
-    this.applyToAllDead(player -> player.playSound(id, Source.MASTER, 1f, 1f));
+    this.applyToAllMurderers(player -> player.playSound(id, Source.MASTER, 1f, 1f));
   }
 
   public void playSoundForAllInnocents(final SoundResource... keys) {
     final String key = this.getRandomKey(keys);
     final Key id = key(key);
-    this.applyToAllLivingInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
+    this.applyToAllInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
   }
 
   public void stopSoundsForAllParticipants(final SoundResource key) {

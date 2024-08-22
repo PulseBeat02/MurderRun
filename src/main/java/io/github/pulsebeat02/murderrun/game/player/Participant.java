@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import java.util.Map;
@@ -21,6 +22,8 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -47,6 +50,13 @@ public interface Participant {
   Map<UUID, WorldBorder> WORLD_BORDERS = new WeakHashMap<>();
 
   org.bukkit.entity.Player getInternalPlayer();
+
+  default void disableJump(final GameScheduler scheduler, final long ticks) {
+    final AttributeInstance instance = this.getAttribute(Attribute.GENERIC_JUMP_STRENGTH);
+    final double before = instance.getValue();
+    instance.setBaseValue(0.0);
+    scheduler.scheduleTask(() -> instance.setBaseValue(before), ticks);
+  }
 
   default void apply(final Consumer<org.bukkit.entity.Player> consumer) {
     final org.bukkit.entity.Player player = this.getInternalPlayer();
@@ -85,6 +95,11 @@ public interface Participant {
   default PlayerInventory getInventory() {
     final org.bukkit.entity.Player player = this.getInternalPlayer();
     return player.getInventory();
+  }
+
+  default AttributeInstance getAttribute(final Attribute attribute) {
+    final org.bukkit.entity.Player player = this.getInternalPlayer();
+    return requireNonNull(player.getAttribute(attribute));
   }
 
   void sendMessage(final Component component);

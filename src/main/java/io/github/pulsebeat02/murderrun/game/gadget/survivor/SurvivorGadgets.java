@@ -79,17 +79,17 @@ public enum SurvivorGadgets {
   Jeb Trap -- places herd of rainbow sheep
   Jump Scare Trap -- jump scares if killer gets too close
   Hack Trap -- removes sword
-
-  SURVIVOR TRAPS IMPLEMENTED:
-
   Bear Trap -- makes killer stuck and slowed for 10s
-  Glow Trap -- makes killer glow
-  Corpus Warp -- teleports to a dead player
-  Distort Trap -- spawn guardians all over murderer until trap destroyed
   Spasm Trap -- makes killer freak out alternating their head up and down
   Smoke Trap -- makes killer dizzy, blind and slowed
   Med Kit -- instantly heal health
   Diamond Armor -- gear
+
+  SURVIVOR TRAPS IMPLEMENTED:
+
+  Glow Trap -- makes killer glow
+  Corpus Warp -- teleports to a dead player
+  Distort Trap -- spawn guardians all over murderer until trap destroyed
   Excavator -- destroy 10 blocks
   Levitation Trap -- sends the killer into the sky temporarily
   Cage Trap -- traps the killer in a cage

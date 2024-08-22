@@ -1,9 +1,10 @@
-package io.github.pulsebeat02.murderrun.utils;
+package io.github.pulsebeat02.murderrun.utils.item;
 
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -23,17 +24,15 @@ public final class ItemFactory {
   }
 
   public static ItemStack createSpeedPendant(final ItemStack stack) {
-    return ItemBuilder.builder(stack)
-        .modifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.2)
-        .build();
+    return Item.builder(stack).modifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.2).build();
   }
 
   public static ItemStack createRedArrow(final ItemStack stack) {
-    return ItemBuilder.builder(stack).potionColor(Color.RED).build();
+    return Item.builder(stack).potionColor(Color.RED).build();
   }
 
   public static ItemStack createMedKit(final ItemStack stack) {
-    return ItemBuilder.builder(stack)
+    return Item.builder(stack)
         .potionColor(Color.RED)
         .potion(PotionType.STRONG_HEALING)
         .build();
@@ -45,7 +44,7 @@ public final class ItemFactory {
       final Component itemName,
       final Component itemLore,
       final @Nullable Consumer<ItemStack> consumer) {
-    return ItemBuilder.builder(requireNonNull(material))
+    return Item.builder(requireNonNull(material))
         .name(requireNonNull(itemName))
         .lore(requireNonNull(itemLore))
         .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, requireNonNull(pdcName))
@@ -55,49 +54,43 @@ public final class ItemFactory {
   }
 
   public static ItemStack createSaddle() {
-    return ItemBuilder.builder(Material.SADDLE).build();
+    return Item.builder(Material.SADDLE).build();
   }
 
   public static ItemStack createShield(final ItemStack stack) {
-    return ItemBuilder.builder(stack).durability(5).build();
+    return Item.builder(stack).durability(5).build();
   }
 
   public static ItemStack createExcavator(final ItemStack stack) {
-    return ItemBuilder.builder(stack).durability(10).build();
+    return Item.builder(stack).durability(10).build();
   }
 
   public static ItemStack createDeathGear(final Material armor) {
-    return ItemBuilder.builder(armor).dye(Color.RED).build();
+    return Item.builder(armor).dye(Color.RED).build();
   }
 
   public static ItemStack createPlayerHead(final Player player) {
-    return ItemBuilder.builder(Material.PLAYER_HEAD).head(player).build();
+    return Item.builder(Material.PLAYER_HEAD).head(player).build();
   }
 
   public static ItemStack createGhostGear(final Material armor) {
-    return ItemBuilder.builder(armor).dye(Color.WHITE).build();
+    return Item.builder(armor).dye(Color.WHITE).build();
   }
 
   public static ItemStack createKnockBackBone() {
-    return ItemBuilder.builder(Material.BONE)
-        .enchantment(Enchantment.KNOCKBACK, 2)
-        .build();
+    return Item.builder(Material.BONE).enchantment(Enchantment.KNOCKBACK, 2).build();
   }
 
   public static ItemStack createFakePart() {
-    return ItemBuilder.builder(Material.DIAMOND)
-        .model(RandomUtils.generateInt(1, 6))
-        .build();
+    return Item.builder(Material.DIAMOND).model(RandomUtils.generateInt(1, 6)).build();
   }
 
   public static ItemStack createCursedNote() {
-    return ItemBuilder.builder(Material.PAPER)
-        .name(Message.CURSED_NOTE_NAME.build())
-        .build();
+    return Item.builder(Material.PAPER).name(Message.CURSED_NOTE_NAME.build()).build();
   }
 
   public static ItemStack createCarPart(final String uuid) {
-    return ItemBuilder.builder(Material.DIAMOND)
+    return Item.builder(Material.DIAMOND)
         .name(Message.CAR_PART_ITEM_NAME.build())
         .lore(Message.CAR_PART_ITEM_LORE.build())
         .model(RandomUtils.generateInt(1, 6))
@@ -105,15 +98,16 @@ public final class ItemFactory {
         .build();
   }
 
-  public static ItemStack createCurrency() {
-    return ItemBuilder.builder(Material.NETHER_STAR)
+  public static ItemStack createCurrency(final int amount) {
+    return Item.builder(Material.NETHER_STAR)
         .name(Message.MINEBUCKS.build())
+        .amount(amount)
         .model(1)
         .build();
   }
 
   public static ItemStack createKillerArrow() {
-    return ItemBuilder.builder(Material.ARROW)
+    return Item.builder(Material.ARROW)
         .name(Message.ARROW_NAME.build())
         .lore(Message.ARROW_LORE.build())
         .hideAttributes()
@@ -121,7 +115,7 @@ public final class ItemFactory {
   }
 
   public static ItemStack createKillerSword() {
-    return ItemBuilder.builder(Material.DIAMOND_SWORD)
+    return Item.builder(Material.DIAMOND_SWORD)
         .name(Message.KILLER_SWORD.build())
         .model(1)
         .hideAttributes()

@@ -34,7 +34,7 @@ public final class SpasmTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 10, 7 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 5, 7 * 20L);
   }
 
   private void alternateHead(final GamePlayer murderer) {
@@ -43,6 +43,7 @@ public final class SpasmTrap extends SurvivorTrap {
     final boolean up = atomic.get();
     final Location location = this.getProperLocation(murderer, up);
     murderer.teleport(location);
+    atomic.set(!up);
   }
 
   private Location getProperLocation(final GamePlayer murderer, final boolean up) {

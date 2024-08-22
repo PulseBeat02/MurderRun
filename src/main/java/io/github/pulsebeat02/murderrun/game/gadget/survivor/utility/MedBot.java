@@ -8,7 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -50,7 +50,7 @@ public final class MedBot extends SurvivorGadget {
     armorStand.setMarker(true);
 
     final EntityEquipment equipment = requireNonNull(armorStand.getEquipment());
-    equipment.setHelmet(ItemBuilder.create(Material.CHORUS_FLOWER));
+    equipment.setHelmet(Item.create(Material.CHORUS_FLOWER));
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilCondition(
