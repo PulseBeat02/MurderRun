@@ -1,13 +1,12 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -17,8 +16,6 @@ import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 
 public final class RedArrow extends KillerGadget {
 
@@ -29,13 +26,7 @@ public final class RedArrow extends KillerGadget {
         Message.RED_ARROW_NAME.build(),
         Message.RED_ARROW_LORE.build(),
         64,
-        stack -> {
-          final ItemMeta meta = requireNonNull(stack.getItemMeta());
-          if (meta instanceof final PotionMeta potionMeta) {
-            potionMeta.setColor(Color.RED);
-            stack.setItemMeta(meta);
-          }
-        });
+        ItemFactory::createRedArrow);
   }
 
   @Override

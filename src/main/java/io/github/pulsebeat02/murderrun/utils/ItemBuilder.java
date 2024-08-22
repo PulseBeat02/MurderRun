@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -14,13 +15,12 @@ import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemBuilder {
@@ -52,7 +52,13 @@ public final class ItemBuilder {
     }
 
     private ItemMeta meta() {
-      return requireNonNull(this.stack.getItemMeta());
+      final ItemMeta meta = this.stack.getItemMeta();
+      if (meta == null) {
+        final Material fallback = Material.DIAMOND;
+        final ItemFactory factory = Bukkit.getItemFactory();
+        return requireNonNull(factory.getItemMeta(fallback));
+      }
+      return meta;
     }
 
     public Builder amount(final int amount) {
@@ -83,6 +89,7 @@ public final class ItemBuilder {
         final int max = material.getMaxDurability();
         final int damage = max - durability;
         damageable.setDamage(damage);
+        this.stack.setItemMeta(meta);
       }
       return this;
     }
@@ -114,7 +121,7 @@ public final class ItemBuilder {
       return this;
     }
 
-    public Builder modifier(final Attribute attribute, final int amount) {
+    public Builder modifier(final Attribute attribute, final double amount) {
       final NamespacedKey key = attribute.getKey();
       final Operation operation = Operation.ADD_NUMBER;
       final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
@@ -154,11 +161,34 @@ public final class ItemBuilder {
       return this;
     }
 
+    public Builder potionColor(final Color color) {
+      final ItemMeta meta = this.meta();
+      if (meta instanceof final PotionMeta potionMeta) {
+        potionMeta.setColor(color);
+        this.stack.setItemMeta(potionMeta);
+      }
+      return this;
+    }
+
+    public Builder potion(final PotionType type) {
+      final ItemMeta meta = this.meta();
+      if (meta instanceof final PotionMeta potionMeta) {
+        potionMeta.setBasePotionType(type);
+        this.stack.setItemMeta(potionMeta);
+      }
+      return this;
+    }
+
     public Builder consume(final @Nullable Consumer<ItemStack> consumer) {
       if (consumer == null) {
         return this;
       }
       consumer.accept(this.stack);
+      return this;
+    }
+
+    public Builder type(final Material material) {
+      this.stack.setType(material);
       return this;
     }
 

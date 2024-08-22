@@ -13,12 +13,30 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemFactory {
 
   private ItemFactory() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static ItemStack createSpeedPendant(final ItemStack stack) {
+    return ItemBuilder.builder(stack)
+        .modifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.2)
+        .build();
+  }
+
+  public static ItemStack createRedArrow(final ItemStack stack) {
+    return ItemBuilder.builder(stack).potionColor(Color.RED).build();
+  }
+
+  public static ItemStack createMedKit(final ItemStack stack) {
+    return ItemBuilder.builder(stack)
+        .potionColor(Color.RED)
+        .potion(PotionType.STRONG_HEALING)
+        .build();
   }
 
   public static ItemStack createGadget(

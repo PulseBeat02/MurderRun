@@ -6,12 +6,10 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ItemBuilder;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class Translocator extends SurvivorGadget {
@@ -72,13 +69,7 @@ public final class Translocator extends SurvivorGadget {
     final byte[] bytes = this.locationToByteArray(location);
     PDCUtils.setPersistentDataAttribute(
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
-
-    final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    final Component lore = Message.TRANSLOCATOR_LORE1.build();
-    final String message = AdventureUtils.serializeComponentToLegacyString(lore);
-    final List<String> newLore = List.of(message);
-    meta.setLore(newLore);
-    stack.setType(Material.LEVER);
+    ItemBuilder.builder(stack).lore(Message.TRANSLOCATOR_LORE1.build()).type(Material.LEVER);
   }
 
   private Location byteArrayToLocation(final byte[] array) {

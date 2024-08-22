@@ -55,7 +55,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
 
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.108.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.110.0")
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
