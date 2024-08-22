@@ -39,7 +39,7 @@ public final class TradingUtils {
     return recipes;
   }
 
-  public static List<MerchantRecipe> parseRecipes(final String[] args) {
+  public static List<MerchantRecipe> parseRecipes(final String... args) {
     final Map<String, Pair<Gadget, MethodHandle>> gadgets =
         GadgetLoadingMechanism.getGadgetLookUpMap();
     final List<MerchantRecipe> recipes = new ArrayList<>();

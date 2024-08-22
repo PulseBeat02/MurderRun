@@ -39,7 +39,8 @@ public final class VillagerCommand implements AnnotationCommandFeature {
   @CommandDescription("murder_run.command.villager.spawn.info")
   @Command(value = "murder villager spawn [args]", requiredSender = Player.class)
   public void createMerchant(
-      final Player sender, @Argument(value = "args", suggestions = "gadgets") final String[] args) {
+      final Player sender,
+      @Argument(value = "args", suggestions = "gadget-suggestions") final String[] args) {
     final Location location = sender.getLocation();
     final List<MerchantRecipe> recipes = TradingUtils.parseRecipes(args);
     final LobbyTrader trader = new LobbyTrader(location, recipes);
@@ -60,7 +61,7 @@ public final class VillagerCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @Suggestions("gadgets")
+  @Suggestions("gadget-suggestions")
   public Stream<String> suggestTrades(
       final CommandContext<CommandSender> context, final String input) {
     return TRADE_SUGGESTIONS;

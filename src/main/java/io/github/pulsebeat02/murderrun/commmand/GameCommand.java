@@ -38,8 +38,6 @@ import org.incendo.cloud.type.tuple.Pair;
 
 public final class GameCommand implements AnnotationCommandFeature {
 
-  private static final boolean DEVELOPMENT_SWITCH = true;
-
   private MurderRun plugin;
   private BukkitAudiences audiences;
   private Map<Player, Pair<GameManager, Boolean>> games;
@@ -67,10 +65,8 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final GameManager manager = data.first();
     final Collection<Player> players = manager.getParticipants();
-    if (!DEVELOPMENT_SWITCH) {
-      if (this.checkIfNotEnoughPlayers(audience, players)) {
-        return;
-      }
+    if (this.checkIfNotEnoughPlayers(audience, players)) {
+      return;
     }
     manager.startGame((game, code) -> this.games.remove(sender));
 
