@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameNPCManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -9,8 +10,8 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,7 +49,8 @@ public final class Camera extends KillerGadget {
     final Player player = event.getPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
     final Location location = player.getLocation();
-    final NPC npc = this.spawnNPC(location);
+    final GameNPCManager npcManager = game.getNPCManager();
+    final NPC npc = this.spawnNPC(npcManager, location);
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
 
@@ -83,8 +85,9 @@ public final class Camera extends KillerGadget {
     entity.teleport(origin);
   }
 
-  private NPC spawnNPC(final Location location) {
-    final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "Killer Camera");
+  private NPC spawnNPC(final GameNPCManager manager, final Location location) {
+    final NPCRegistry registry = manager.getRegistry();
+    final NPC npc = registry.createNPC(EntityType.PLAYER, "Killer Camera");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Camera", TEXTURE_SIGNATURE, TEXTURE_DATA);
     npc.spawn(location);

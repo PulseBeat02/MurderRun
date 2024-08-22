@@ -97,19 +97,23 @@ public enum SurvivorGadgets {
   Ghost Trap -- makes all survivors invisible temporarily
   Haunt Trap -- covers killers screen with freaky effects
   Firework Trap -- shoots off fireworks when triggered
+  Levitation Trap -- sends the killer into the sky temporarily
+  Bush -- you become a bush for 10s
+  Decoy -- place fake player with name
+  /TP ME AWAY FROM HERE -- teleports you to a random spot on the map
+  Blast Off -- sends the killer into a rocket into space
+  Life Insurance -- if killer gets close, you teleport away (1 time use)
+  Ice-Skatin -- spawns a boat that has ice underneath it
 
   SURVIVOR TRAPS IMPLEMENTED:
 
   Glow Trap -- makes killer glow
   Corpus Warp -- teleports to a dead player
   Distort Trap -- spawn guardians all over murderer until trap destroyed
-  Levitation Trap -- sends the killer into the sky temporarily
   Star Trap -- buffs all survivors with speed, resistance, and regeneration when hit
   Burrow Trap -- sends killer underground temporarily
-  Decoy -- place fake player with name
   Friend Warp -- teleport to a random survivor
   Cloak -- all player usernames hidden for 30s
-  /TP ME AWAY FROM HERE -- teleports you to a random spot on the map
   Camera -- if killer within  range glow
   Sixth Sense -- if killer is near makes them glow
   Trap Sniffer -- senses detect car parts within 15 blocks
@@ -118,10 +122,7 @@ public enum SurvivorGadgets {
   Murderer Rewind -- rewinds murderer 5 seconds
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Med Bot -- constant regeneration pool in area
-  Life Insurance -- if killer gets close, you teleport away (1 time use)
-  Ice-Skatin -- spawns a boat that has ice underneath it
   Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
-  Bush -- you become a bush for 10s
   Shockwave Trap -- sets off massive blast flinging all players
   Tracker -- if activated near killer you can always see them
   Deadringer -- fake player death, fake kill them and then they become invulnerable
@@ -139,7 +140,6 @@ public enum SurvivorGadgets {
   Magnet Mode -- makes all trap activation range 3 times larger
   Flashlight -- blinds killer if come close, every 5 seconds
   Supply Drop -- get a various assortment of traps
-  Blast Off -- sends the killer into a rocket into space
   Translocator -- one use teleporter, (becomes lever to warp)
   Portal Trap -- teleports trap to killer
   Resurrection Stone -- resurrects a dead player

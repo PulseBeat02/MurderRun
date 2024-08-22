@@ -41,6 +41,8 @@ public final class RandomTeleport extends SurvivorGadget {
     final Location temp = new Location(world, coords[0], 0, coords[1]);
     final Block block = world.getHighestBlockAt(temp);
     final Location top = block.getLocation();
-    player.teleport(top);
+    final Location teleport = top.add(0, 1, 0);
+
+    player.teleport(teleport);
   }
 }

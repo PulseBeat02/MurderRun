@@ -61,7 +61,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final Consumer<Killer> consumer =
         killer -> this.checkKillerDistance(killer, gamePlayer, world, first, second);
     final BukkitTask task =
-        scheduler.scheduleTask(() -> manager.applyToAllMurderers(consumer), 20L);
+        scheduler.scheduleRepeatedTask(() -> manager.applyToAllMurderers(consumer), 0, 20L);
     this.taskMap.put(gamePlayer, task);
   }
 
@@ -82,7 +82,8 @@ public final class LifeInsurance extends SurvivorGadget {
       final Location temp = new Location(world, coords[0], 0, coords[1]);
       final Block block = world.getHighestBlockAt(temp);
       final Location top = block.getLocation();
-      player.teleport(top);
+      final Location teleport = top.add(0, 1, 0);
+      player.teleport(teleport);
 
       final Collection<BukkitTask> tasks = this.taskMap.get(player);
       final Iterator<BukkitTask> iterator = tasks.iterator();

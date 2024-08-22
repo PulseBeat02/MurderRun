@@ -36,7 +36,8 @@ public final class IceSkatin extends SurvivorGadget {
     final World world = requireNonNull(location.getWorld());
     final Boat boat = (Boat) world.spawnEntity(location, EntityType.BOAT);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.spawnIceUnderBoat(boat), 5L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnIceUnderBoat(boat), 0L, 2L);
+    scheduler.scheduleTask(boat::remove, 20 * 20L);
   }
 
   private void spawnIceUnderBoat(final Boat boat) {

@@ -89,7 +89,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
     final int parts = settings.getCarPartCount();
     final int collected = parts - leftOver;
     final Component name = Message.BOSS_BAR.build(collected, parts);
-    final float progress = 0f;
+    final float progress = (float) collected / parts;
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
     final PlayerManager manager = this.game.getPlayerManager();

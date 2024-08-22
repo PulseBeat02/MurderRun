@@ -1,11 +1,12 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameNPCManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.api.trait.trait.Equipment.EquipmentSlot;
 import net.citizensnpcs.trait.MirrorTrait;
@@ -31,13 +32,15 @@ public final class Decoy extends SurvivorGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final String name = player.getDisplayName();
-    final NPC npc = this.customizeNPC(player, name);
+    final GameNPCManager manager = game.getNPCManager();
+    final NPC npc = this.customizeNPC(manager, player, name);
     npc.spawn(location);
   }
 
-  private NPC customizeNPC(final Player player, final String name) {
+  private NPC customizeNPC(final GameNPCManager manager, final Player player, final String name) {
 
-    final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
+    final NPCRegistry registry = manager.getRegistry();
+    final NPC npc = registry.createNPC(EntityType.PLAYER, name);
     final PlayerInventory inventory = player.getInventory();
     final Equipment equipment = npc.getOrAddTrait(Equipment.class);
     equipment.set(EquipmentSlot.HELMET, this.equipArmorSlot(EquipmentSlot.HELMET, inventory));
@@ -46,6 +49,7 @@ public final class Decoy extends SurvivorGadget {
     equipment.set(EquipmentSlot.LEGGINGS, this.equipArmorSlot(EquipmentSlot.LEGGINGS, inventory));
     equipment.set(EquipmentSlot.BOOTS, this.equipArmorSlot(EquipmentSlot.BOOTS, inventory));
     npc.setUseMinecraftAI(true);
+    npc.setProtected(false);
 
     final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);
     mirror.isMirroring(player);

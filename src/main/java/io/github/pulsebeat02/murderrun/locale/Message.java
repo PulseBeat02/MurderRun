@@ -375,4 +375,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> KILLER_SWORD = direct("murder_run.game.sword.name");
   NullComponent<Sender> MINEBUCKS = direct("murder_run.game.currency.name");
   NullComponent<Sender> GADGET_RETRIEVE_ERROR = direct("murder_run.command.gadget.retrieve.error");
+  NullComponent<Sender> GAME_INVITE_ALREADY_ERROR =
+      direct("murder_run.command.game.invite_already_error");
+  NullComponent<Sender> GAME_STARTED_ERROR = direct("murder_run.command.game.start_error");
 }

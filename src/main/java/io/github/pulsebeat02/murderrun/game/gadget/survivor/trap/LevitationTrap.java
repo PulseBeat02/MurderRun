@@ -10,6 +10,7 @@ import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,6 +45,7 @@ public final class LevitationTrap extends SurvivorTrap {
 
   private void spawnParticle(final World world, final GamePlayer player) {
     final Location location = player.getLocation();
-    world.spawnParticle(Particle.DRAGON_BREATH, location, 20, 1, 1, 1);
+    world.spawnParticle(
+        Particle.DUST, location, 20, 1, 1, 1, new DustOptions(org.bukkit.Color.PURPLE, 3));
   }
 }

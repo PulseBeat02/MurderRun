@@ -6,6 +6,7 @@ import static net.kyori.adventure.text.Component.empty;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameNPCManager;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -14,8 +15,8 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -57,11 +58,13 @@ public final class EnderShadows extends KillerGadget {
     final Location spawn = arena.getSpawn();
     final Player player = event.getPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
+    final GameNPCManager npcManager = game.getNPCManager();
     manager.applyToAllLivingInnocents(
-        survivor -> this.handleAllSurvivors(scheduler, killer, survivor, spawn));
+        survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
   }
 
   private void handleAllSurvivors(
+      final GameNPCManager manager,
       final GameScheduler scheduler,
       final GamePlayer killer,
       final GamePlayer survivor,
@@ -70,7 +73,7 @@ public final class EnderShadows extends KillerGadget {
     final Component msg = Message.ENDER_SHADOWS_ACTIVATE.build();
     survivor.sendMessage(msg);
 
-    final Entity shadow = this.getNPCEntity(spawn);
+    final Entity shadow = this.getNPCEntity(manager, spawn);
     scheduler.scheduleRepeatedTask(
         () -> this.handleSurvivorTeleport(scheduler, killer, survivor, shadow), 2 * 20L, 5 * 20L);
   }
@@ -100,15 +103,16 @@ public final class EnderShadows extends KillerGadget {
     });
   }
 
-  private Entity getNPCEntity(final Location location) {
-    final NPC npc = this.spawnNPC(location);
+  private Entity getNPCEntity(final GameNPCManager manager, final Location location) {
+    final NPC npc = this.spawnNPC(manager, location);
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
     return entity;
   }
 
-  private NPC spawnNPC(final Location location) {
-    final NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "");
+  private NPC spawnNPC(final GameNPCManager manager, final Location location) {
+    final NPCRegistry registry = manager.getRegistry();
+    final NPC npc = registry.createNPC(EntityType.PLAYER, "");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Shadow", TEXTURE_SIGNATURE, TEXTURE_VALUE);
     npc.spawn(location);

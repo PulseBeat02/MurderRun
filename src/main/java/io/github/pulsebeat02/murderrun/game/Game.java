@@ -26,6 +26,7 @@ public final class Game {
   private GameStatus status;
   private GadgetManager gadgetManager;
   private GameExecutor executor;
+  private GameNPCManager npcManager;
   private GameEndCallback callback;
 
   public Game(final MurderRun plugin) {
@@ -53,6 +54,7 @@ public final class Game {
     this.cleanupManager = new GameCleanupTool(this);
     this.murderGameTimer = new GameTimer();
     this.gadgetManager = new GadgetManager(this);
+    this.npcManager = new GameNPCManager(this);
     this.callback = callback;
     this.map.start();
     this.gadgetManager.start();
@@ -71,6 +73,7 @@ public final class Game {
       this.cleanupManager.start(code);
       this.playerManager.resetAllPlayers();
       this.scheduler.cancelAllTasks();
+      this.npcManager.shutdown();
       this.map.shutdown();
       this.callback.onGameFinish(this, code);
       this.executor.shutdown();
@@ -123,5 +126,9 @@ public final class Game {
 
   public GameExecutor getExecutor() {
     return this.executor;
+  }
+
+  public GameNPCManager getNPCManager() {
+    return this.npcManager;
   }
 }
