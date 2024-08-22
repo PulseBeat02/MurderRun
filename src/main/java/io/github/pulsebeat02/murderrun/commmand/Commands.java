@@ -9,7 +9,8 @@ public enum Commands {
   HELP(new HelpCommand()),
   GAME(new GameCommand()),
   VILLAGER(new VillagerCommand()),
-  GADGET(new GadgetCommand());
+  GADGET(new GadgetCommand()),
+  DEBUG(new DebugCommand());
 
   private static final List<AnnotationCommandFeature> FEATURES = getValues();
 

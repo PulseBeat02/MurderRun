@@ -30,8 +30,6 @@ import org.incendo.cloud.context.CommandContext;
 
 public final class GadgetCommand implements AnnotationCommandFeature {
 
-  private static final Stream<String> TRADE_SUGGESTIONS = TradingUtils.getTradeSuggestions();
-
   private BukkitAudiences audiences;
 
   @Override
@@ -101,6 +99,6 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @Suggestions("gadget-suggestions")
   public Stream<String> suggestTrades(
       final CommandContext<CommandSender> context, final String input) {
-    return TRADE_SUGGESTIONS;
+    return TradingUtils.getTradeSuggestions();
   }
 }

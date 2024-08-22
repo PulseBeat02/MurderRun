@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotations.AnnotationParser;
@@ -20,7 +21,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
   @Command(value = "murder debug", requiredSender = Player.class)
   public void startDebugGame(final Player sender) {
 
-    sender.performCommand("murder game create TestLobby TestArena");
+    sender.performCommand("murder game create TestArena TestLobby");
     sender.performCommand("murder game set murderer PulseBeat_02");
     sender.performCommand("murder game invite Player1");
 
@@ -28,5 +29,8 @@ public final class DebugCommand implements AnnotationCommandFeature {
     other.performCommand("murder game join PulseBeat_02");
 
     sender.performCommand("murder game start");
+
+    sender.setGameMode(GameMode.CREATIVE);
+    other.setGameMode(GameMode.CREATIVE);
   }
 }

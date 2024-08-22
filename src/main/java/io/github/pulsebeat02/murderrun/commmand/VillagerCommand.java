@@ -23,8 +23,6 @@ import org.incendo.cloud.context.CommandContext;
 
 public final class VillagerCommand implements AnnotationCommandFeature {
 
-  private static final Stream<String> TRADE_SUGGESTIONS = TradingUtils.getTradeSuggestions();
-
   private MurderRun plugin;
   private BukkitAudiences audiences;
 
@@ -64,6 +62,6 @@ public final class VillagerCommand implements AnnotationCommandFeature {
   @Suggestions("gadget-suggestions")
   public Stream<String> suggestTrades(
       final CommandContext<CommandSender> context, final String input) {
-    return TRADE_SUGGESTIONS;
+    return TradingUtils.getTradeSuggestions();
   }
 }
