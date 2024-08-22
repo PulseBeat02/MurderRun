@@ -27,8 +27,11 @@ public final class HauntTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.createSpookyEffect(game, murderer), 0, 14, 7 * 20L);
-    murderer.addPotionEffects(new PotionEffect(PotionEffectType.NAUSEA, 7 * 20, 10));
+    scheduler.scheduleRepeatedTask(() -> this.createSpookyEffect(game, murderer), 0, 20, 10 * 20L);
+    murderer.addPotionEffects(
+        new PotionEffect(PotionEffectType.NAUSEA, 10 * 20, 10),
+        new PotionEffect(PotionEffectType.BLINDNESS, 10 * 20, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 4));
   }
 
   private void createSpookyEffect(final Game game, final GamePlayer gamePlayer) {
@@ -37,7 +40,7 @@ public final class HauntTrap extends SurvivorTrap {
     gamePlayer.addPotionEffects(new PotionEffect(PotionEffectType.DARKNESS, 20, 10));
     gamePlayer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);
     gamePlayer.addFakeWorldBorderEffect();
-    scheduler.scheduleTask(() -> this.removeSpecialEffects(gamePlayer), 20);
+    scheduler.scheduleTask(() -> this.removeSpecialEffects(gamePlayer), 19);
   }
 
   private void removeSpecialEffects(final GamePlayer gamePlayer) {

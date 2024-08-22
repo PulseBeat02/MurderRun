@@ -13,6 +13,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.ArrayList;
@@ -68,7 +69,11 @@ public final class GameCommand implements AnnotationCommandFeature {
     if (this.checkIfNotEnoughPlayers(audience, players)) {
       return;
     }
-    manager.startGame((game, code) -> this.games.remove(sender));
+    manager.startGame((game, code) -> {
+      final PlayerManager playerManager = game.getPlayerManager();
+      playerManager.applyToAllParticipants(
+          gamePlayer -> gamePlayer.apply(player -> this.games.remove(player)));
+    });
 
     final Component message = Message.GAME_START.build();
     audience.sendMessage(message);

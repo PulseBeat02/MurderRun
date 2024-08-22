@@ -97,6 +97,6 @@ public final class FakePart extends KillerGadget {
   private void spawnParticleOnPart(final Location location) {
     final Location clone = location.clone().add(0, 1, 0);
     final World world = requireNonNull(clone.getWorld());
-    world.spawnParticle(Particle.DUST, clone, 40, 0.2, 1.5, 0.2, new DustOptions(Color.YELLOW, 1));
+    world.spawnParticle(Particle.DUST, clone, 40, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 1));
   }
 }

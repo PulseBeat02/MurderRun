@@ -14,6 +14,10 @@ public final class RandomUtils {
     return SPLITTABLE_RANDOM.nextDouble(bound);
   }
 
+  public static float generateFloat() {
+    return SPLITTABLE_RANDOM.nextFloat();
+  }
+
   public static double generateDouble() {
     return SPLITTABLE_RANDOM.nextDouble();
   }

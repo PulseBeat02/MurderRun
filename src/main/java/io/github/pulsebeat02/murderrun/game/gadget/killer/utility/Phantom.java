@@ -52,7 +52,7 @@ public final class Phantom extends KillerGadget implements Listener {
 
   private void setDefault(final GamePlayer player) {
     this.spectatorDisabled.remove(player);
-    player.apply(raw -> raw.setGameMode(GameMode.ADVENTURE));
+    player.apply(raw -> raw.setGameMode(GameMode.SURVIVAL));
   }
 
   @EventHandler

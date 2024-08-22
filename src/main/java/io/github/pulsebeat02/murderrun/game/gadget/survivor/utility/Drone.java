@@ -38,6 +38,6 @@ public final class Drone extends SurvivorGadget {
 
   private void setDefault(final Player player, final Location origin) {
     player.teleport(origin);
-    player.setGameMode(GameMode.ADVENTURE);
+    player.setGameMode(GameMode.SURVIVAL);
   }
 }

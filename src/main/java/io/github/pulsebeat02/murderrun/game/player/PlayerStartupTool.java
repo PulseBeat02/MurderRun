@@ -25,7 +25,7 @@ public final class PlayerStartupTool {
 
   private void handleAll(final GamePlayer gamePlayer) {
     gamePlayer.apply(player -> {
-      player.setGameMode(GameMode.ADVENTURE);
+      player.setGameMode(GameMode.SURVIVAL);
       player.setWalkSpeed(0.2f);
       player.setGravity(true);
       player.setHealth(20f);

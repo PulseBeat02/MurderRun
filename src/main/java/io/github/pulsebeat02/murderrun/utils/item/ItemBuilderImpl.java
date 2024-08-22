@@ -86,6 +86,22 @@ public final class ItemBuilderImpl implements Builder {
   }
 
   @Override
+  public Builder useOneDurability() {
+    final ItemMeta meta = this.meta();
+    if (meta instanceof final Damageable damageable) {
+      final Material material = this.stack.getType();
+      final int maxDamage = material.getMaxDurability();
+      final int damage = damageable.getDamage() + 1;
+      damageable.setDamage(damage);
+      if (damage >= maxDamage) {
+        this.stack.setAmount(0);
+      }
+      this.stack.setItemMeta(meta);
+    }
+    return this;
+  }
+
+  @Override
   public Builder model(final int data) {
     final ItemMeta meta = this.meta();
     meta.setCustomModelData(data);

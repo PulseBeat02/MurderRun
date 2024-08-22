@@ -84,31 +84,32 @@ public enum SurvivorGadgets {
   Smoke Trap -- makes killer dizzy, blind and slowed
   Med Kit -- instantly heal health
   Diamond Armor -- gear
+  Shield -- low durability take extra hits when held
+  Speed Pendant - adds speed pendant
+  Excavator -- destroy 10 blocks
+  Cage Trap -- traps the killer in a cage
+  Blind Trap -- blinds the killer who steps on it
+  Neck Snap Trap -- snaps killer neck to always look up
+  Spawn Trap -- sends killer back to spawn
+  Freeze Trap -- freezes killer into place
+  Pony Trap -- summons a fast horse
+  Random Trap -- gets a random trap
+  Ghost Trap -- makes all survivors invisible temporarily
+  Haunt Trap -- covers killers screen with freaky effects
+  Firework Trap -- shoots off fireworks when triggered
 
   SURVIVOR TRAPS IMPLEMENTED:
 
   Glow Trap -- makes killer glow
   Corpus Warp -- teleports to a dead player
   Distort Trap -- spawn guardians all over murderer until trap destroyed
-  Excavator -- destroy 10 blocks
   Levitation Trap -- sends the killer into the sky temporarily
-  Cage Trap -- traps the killer in a cage
-  Blind Trap -- blinds the killer who steps on it
-  Haunt Trap -- covers killers screen with freaky effects
-  Neck Snap Trap -- snaps killer neck to always look up
   Star Trap -- buffs all survivors with speed, resistance, and regeneration when hit
-  Spawn Trap -- sends killer back to spawn
-  Freeze Trap -- freezes killer into place
   Burrow Trap -- sends killer underground temporarily
-  Ghost Trap -- makes all survivors invisible temporarily
-  Pony Trap -- summons a fast horse
-  Firework Trap -- shoots off fireworks when triggered
   Decoy -- place fake player with name
   Friend Warp -- teleport to a random survivor
   Cloak -- all player usernames hidden for 30s
-  Shield -- low durability take extra hits when held
   /TP ME AWAY FROM HERE -- teleports you to a random spot on the map
-  Speed Pendant - adds speed pendant
   Camera -- if killer within  range glow
   Sixth Sense -- if killer is near makes them glow
   Trap Sniffer -- senses detect car parts within 15 blocks
@@ -136,7 +137,6 @@ public enum SurvivorGadgets {
   Horcrux -- respawn after death
   Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
   Magnet Mode -- makes all trap activation range 3 times larger
-  Random Trap -- gets a random trap
   Flashlight -- blinds killer if come close, every 5 seconds
   Supply Drop -- get a various assortment of traps
   Blast Off -- sends the killer into a rocket into space

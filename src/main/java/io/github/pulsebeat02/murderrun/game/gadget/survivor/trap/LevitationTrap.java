@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public final class LevitationTrap extends SurvivorTrap {
 
@@ -29,30 +31,19 @@ public final class LevitationTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
 
     final Location location = murderer.getLocation();
-    location.add(0, 10, 0);
+    final Location clone = location.clone();
+    clone.add(0, 10, 0);
 
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
-    this.setLevitation(murderer, location);
-    scheduler.scheduleTask(() -> this.teleportBack(murderer, location), 7 * 20L);
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, location), 0, 10, 7 * 20L);
+    murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, 7 * 20, 1));
+    murderer.teleport(clone);
+    scheduler.scheduleTask(() -> murderer.teleport(location), 7 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, murderer), 0, 10, 7 * 20L);
   }
 
-  private void setLevitation(final GamePlayer murderer, final Location location) {
-    murderer.apply(player -> {
-      player.setGravity(false);
-      player.teleport(location);
-    });
-  }
-
-  private void spawnParticle(final World world, final Location location) {
-    world.spawnParticle(Particle.DRAGON_BREATH, location, 10, 0.5, 0.5, 0.5);
-  }
-
-  private void teleportBack(final GamePlayer murderer, final Location clone) {
-    murderer.apply(player -> {
-      player.teleport(clone);
-      player.setGravity(false);
-    });
+  private void spawnParticle(final World world, final GamePlayer player) {
+    final Location location = player.getLocation();
+    world.spawnParticle(Particle.DRAGON_BREATH, location, 20, 1, 1, 1);
   }
 }

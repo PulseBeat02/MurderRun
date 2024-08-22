@@ -39,6 +39,8 @@ public interface Item {
 
     Builder durability(final int durability);
 
+    Builder useOneDurability();
+
     Builder model(final int data);
 
     Builder dummyAttribute();

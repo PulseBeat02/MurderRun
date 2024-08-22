@@ -52,7 +52,7 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
 
   private void resetPlayerState(final GamePlayer player) {
     player.apply(raw -> {
-      raw.setGameMode(GameMode.ADVENTURE);
+      raw.setGameMode(GameMode.SURVIVAL);
       raw.setSpectatorTarget(null);
     });
     this.spectatorDisabled.remove(player);

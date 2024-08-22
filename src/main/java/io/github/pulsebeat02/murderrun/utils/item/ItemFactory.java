@@ -24,7 +24,7 @@ public final class ItemFactory {
   }
 
   public static ItemStack createSpeedPendant(final ItemStack stack) {
-    return Item.builder(stack).modifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.2).build();
+    return Item.builder(stack).modifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.03).build();
   }
 
   public static ItemStack createRedArrow(final ItemStack stack) {
@@ -62,7 +62,10 @@ public final class ItemFactory {
   }
 
   public static ItemStack createExcavator(final ItemStack stack) {
-    return Item.builder(stack).durability(10).build();
+    return Item.builder(stack)
+        .pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true)
+        .durability(10)
+        .build();
   }
 
   public static ItemStack createDeathGear(final Material armor) {

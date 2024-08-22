@@ -8,10 +8,11 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -28,7 +29,7 @@ public final class FireworkTrap extends SurvivorTrap {
         Message.FIREWORK_LORE.build(),
         Message.FIREWORK_ACTIVATE.build(),
         32,
-        Color.RED);
+        java.awt.Color.RED);
   }
 
   @Override
@@ -36,28 +37,43 @@ public final class FireworkTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location, world), 0, 5, 5 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location, world), 0, 5, 10 * 20L);
   }
 
   private void spawnFirework(final Location location, final World world) {
-    world.spawn(location, Firework.class, firework -> {
+    final Location random = this.randomLocation(location);
+    world.spawn(random, Firework.class, firework -> {
       firework.setShotAtAngle(false);
       final FireworkMeta meta = firework.getFireworkMeta();
-      meta.setPower(RandomUtils.generateInt(10));
+      meta.setPower(RandomUtils.generateInt(1, 5));
       meta.addEffect(this.generateRandomFireworkEffect());
       firework.setFireworkMeta(meta);
     });
   }
 
+  private Location randomLocation(final Location location) {
+    final double xOffset = (RandomUtils.generateFloat() * 2 - 1) * 3;
+    final double zOffset = (RandomUtils.generateFloat() * 2 - 1) * 3;
+    return location.add(xOffset, 0, zOffset);
+  }
+
   private FireworkEffect generateRandomFireworkEffect() {
     final List<Color> primary = this.generateRandomColors();
     final List<Color> fade = this.generateRandomColors();
+    final Type type = this.getRandomType();
     return FireworkEffect.builder()
+        .with(type)
         .flicker(true)
         .trail(true)
         .withColor(primary)
         .withFade(fade)
         .build();
+  }
+
+  private Type getRandomType() {
+    final Type[] types = Type.values();
+    final int index = RandomUtils.generateInt(types.length);
+    return types[index];
   }
 
   private ImmutableList<Color> generateRandomColors() {
@@ -67,7 +83,7 @@ public final class FireworkTrap extends SurvivorTrap {
       final int r = RandomUtils.generateInt(0, 256);
       final int g = RandomUtils.generateInt(0, 256);
       final int b = RandomUtils.generateInt(0, 256);
-      final Color color = new Color(r, g, b);
+      final Color color = Color.fromRGB(r, g, b);
       list.add(color);
     }
     return ImmutableList.copyOf(list);
