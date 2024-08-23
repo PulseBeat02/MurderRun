@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -68,7 +69,7 @@ public final class Dormagogg extends KillerGadget {
     survivor.disableJump(scheduler, 7 * 20L);
     survivor.disableWalkWithFOVEffects(10 * 20);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1));
-    killer.setEntityGlowingForPlayer(survivor);
+    killer.setEntityGlowingForPlayer(survivor, ChatColor.RED);
     scheduler.scheduleTask(() -> killer.removeEntityGlowingForPlayer(survivor), 7 * 20L);
   }
 

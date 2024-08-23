@@ -16,6 +16,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -79,7 +80,7 @@ public final class TrapSeeker extends KillerGadget {
       final boolean survivor = gadget instanceof KillerApparatus;
       if (survivor) {
         set.add(item);
-        innocent.setEntityGlowingForPlayer(item);
+        innocent.setEntityGlowingForPlayer(item, ChatColor.YELLOW);
       } else if (set.contains(entity)) {
         set.remove(entity);
         innocent.removeEntityGlowingForPlayer(item);

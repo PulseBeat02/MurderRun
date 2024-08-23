@@ -13,6 +13,7 @@ import java.util.WeakHashMap;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -69,7 +70,7 @@ public final class Camera extends KillerGadget {
       final GamePlayer survivor, final Entity entity, final GamePlayer killer) {
     if (survivor.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(survivor);
-      killer.setEntityGlowingForPlayer(survivor);
+      killer.setEntityGlowingForPlayer(survivor, ChatColor.RED);
       this.setLookDirection(survivor, entity);
     } else if (this.glowPlayers.contains(survivor)) {
       this.glowPlayers.remove(survivor);

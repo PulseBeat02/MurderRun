@@ -15,6 +15,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -63,7 +64,7 @@ public final class TrapSniffer extends SurvivorGadget {
       final double distance = origin.distanceSquared(location);
       if (distance < 36) {
         set.add(entity);
-        player.setEntityGlowingForPlayer(entity);
+        player.setEntityGlowingForPlayer(entity, ChatColor.RED);
       } else if (set.contains(entity)) {
         set.remove(entity);
         player.removeEntityGlowingForPlayer(entity);

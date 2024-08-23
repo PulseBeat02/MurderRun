@@ -54,6 +54,7 @@ dependencies {
     implementation("org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT")
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
+    implementation("fr.skytasul:glowingentities:1.3.5")
 
     testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.110.0")
     testImplementation("team.unnamed:creative-api:1.7.3")
@@ -124,6 +125,7 @@ tasks {
         //        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
         //        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
         //        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
+        //        relocate("fr.skytasul", "io.github.pulsebeat02.murderrun.lib.fr.skytasul")
         relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
 
         dependencies {

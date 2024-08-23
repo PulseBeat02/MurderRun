@@ -13,6 +13,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -59,7 +60,7 @@ public final class Forewarn extends KillerGadget {
 
     if (survivor.hasCarPart()) {
       set.add(survivor);
-      player.setEntityGlowingForPlayer(survivor);
+      player.setEntityGlowingForPlayer(survivor, ChatColor.RED);
     } else if (set.contains(player)) {
       set.remove(player);
       player.removeEntityGlowingForPlayer(survivor);

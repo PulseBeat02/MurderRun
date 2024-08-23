@@ -10,12 +10,8 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
-import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -81,7 +77,7 @@ public final class FakePart extends KillerGadget {
       final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
     survivor.disableJump(scheduler, 5 * 20L);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
-    killer.setEntityGlowingForPlayer(survivor);
+    killer.setEntityGlowingForPlayer(survivor, ChatColor.RED);
     scheduler.scheduleTask(() -> killer.removeEntityGlowingForPlayer(survivor), 5 * 20L);
   }
 

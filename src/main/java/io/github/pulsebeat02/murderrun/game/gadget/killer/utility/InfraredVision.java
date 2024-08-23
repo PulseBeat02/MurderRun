@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -38,7 +39,7 @@ public final class InfraredVision extends KillerGadget {
 
   private void setSurvivorGlow(final GamePlayer survivor, final GamePlayer killer) {
     final Component msg = Message.INFRARED_VISION_ACTIVATE.build();
-    killer.setEntityGlowingForPlayer(survivor);
+    killer.setEntityGlowingForPlayer(survivor, ChatColor.RED);
     survivor.sendMessage(msg);
   }
 

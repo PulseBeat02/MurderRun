@@ -19,6 +19,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -95,7 +96,7 @@ public final class EnderShadows extends KillerGadget {
       if (shadowBox.overlaps(playerBox)) {
         players.add(survivor);
         survivor.showTitle(msg, empty());
-        killer.setEntityGlowingForPlayer(player);
+        killer.setEntityGlowingForPlayer(player, ChatColor.RED);
       } else if (players.contains(survivor)) {
         players.remove(survivor);
         killer.removeEntityGlowingForPlayer(player);

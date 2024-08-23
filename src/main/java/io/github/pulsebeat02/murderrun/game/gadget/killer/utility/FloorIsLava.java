@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -61,7 +62,7 @@ public final class FloorIsLava extends KillerGadget {
     final Collection<GamePlayer> glowing = this.glowPlayerStates.get(killer);
     if (this.checkLocationSame(previous, newLocation)) {
       glowing.add(player);
-      killer.setEntityGlowingForPlayer(player);
+      killer.setEntityGlowingForPlayer(player, ChatColor.RED);
     } else if (glowing.contains(player)) {
       glowing.remove(player);
       killer.removeEntityGlowingForPlayer(player);

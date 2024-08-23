@@ -68,7 +68,7 @@ public final class Camera extends SurvivorGadget {
       final Killer killer, final Entity entity, final Collection<Survivor> survivors) {
     if (killer.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(killer);
-      killer.setGlowColor(ChatColor.RED, survivors);
+      killer.setGlowColorForever(ChatColor.RED, survivors);
       this.setLookDirection(killer, entity);
     } else if (this.glowPlayers.contains(killer)) {
       this.glowPlayers.remove(killer);

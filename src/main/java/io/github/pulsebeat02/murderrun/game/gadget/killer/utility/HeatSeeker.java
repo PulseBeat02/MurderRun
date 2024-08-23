@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -56,10 +57,10 @@ public final class HeatSeeker extends KillerGadget {
     final double distance = location.distanceSquared(other);
     if (distance < 64) {
       visible.add(innocent);
-      state.setEntityGlowingForPlayer(innocent);
+      state.setEntityGlowingForPlayer(innocent, ChatColor.RED);
     } else if (visible.contains(innocent)) {
       visible.remove(innocent);
-      state.setEntityGlowingForPlayer(innocent);
+      state.removeEntityGlowingForPlayer(innocent);
     }
   }
 }

@@ -43,10 +43,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface Participant {
 
-  String GLOW_TEAM_NAME = "glow-color-%s";
   String HIDE_NAME_TAG_TEAM_NAME = "hide-name-tag-%s";
 
-  Map<org.bukkit.entity.Player, Team> GLOW_TEAMS = new WeakHashMap<>();
   Map<org.bukkit.entity.Player, Team> HIDE_NAME_TAG_TEAMS = new WeakHashMap<>();
   Map<UUID, WorldBorder> WORLD_BORDERS = new WeakHashMap<>();
 
@@ -169,38 +167,45 @@ public interface Participant {
     return !type.isSolid();
   }
 
-  default void setGlowColor(
+  default void setGlowColorDuration(
+      final GameScheduler scheduler,
+      final long ticks,
+      final ChatColor color,
+      final Collection<? extends GamePlayer> receivers) {
+    this.setGlowColorForever(color, receivers);
+    scheduler.scheduleTask(() -> this.removeGlow(receivers), ticks);
+  }
+
+  default void setGlowColorForever(
       final ChatColor color, final Collection<? extends GamePlayer> receivers) {
     this.apply(player -> {
-      final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
-      final Scoreboard scoreboard = manager.getMainScoreboard();
-      final UUID glowID = UUID.randomUUID();
-      final String name = GLOW_TEAM_NAME.formatted(glowID);
-      final Team team = scoreboard.registerNewTeam(name);
-      team.setColor(color);
-      team.addEntry(player.getDisplayName());
-      GLOW_TEAMS.put(player, team);
-      receivers.forEach(receiver -> {
-        final org.bukkit.entity.Player receiverPlayer = receiver.getInternalPlayer();
-        PacketToolsProvider.INSTANCE.sendGlowPacket(player, receiverPlayer);
-      });
+      for (final GamePlayer receiver : receivers) {
+        receiver.apply(watcher -> this.setGlowing0(player, watcher, color));
+      }
     });
+  }
+
+  private void setGlowing0(final Entity entity, final Player watcher, final ChatColor color) {
+    try {
+      PacketToolsProvider.GLOWING_API.setGlowing(entity, watcher, color);
+    } catch (final ReflectiveOperationException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private void unsetGlowing0(final Entity entity, final Player watcher) {
+    try {
+      PacketToolsProvider.GLOWING_API.unsetGlowing(entity, watcher);
+    } catch (final ReflectiveOperationException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   default void removeGlow(final Collection<? extends GamePlayer> receivers) {
     this.apply(player -> {
-      final PotionEffectType type = PotionEffectType.GLOWING;
-      player.removePotionEffect(type);
-      final Team team = GLOW_TEAMS.get(player);
-      if (team == null) {
-        return;
+      for (final GamePlayer receiver : receivers) {
+        receiver.apply(watcher -> this.unsetGlowing0(player, watcher));
       }
-      team.unregister();
-      GLOW_TEAMS.remove(player);
-      receivers.forEach(receiver -> {
-        final org.bukkit.entity.Player receiverPlayer = receiver.getInternalPlayer();
-        PacketToolsProvider.INSTANCE.sendRemoveGlowPacket(player, receiverPlayer);
-      });
     });
   }
 
@@ -272,12 +277,16 @@ public interface Participant {
 
   Game getGame();
 
-  void setEntityGlowingForPlayer(final Entity entity);
+  default void setEntityGlowingForPlayer(final Entity entity, final ChatColor color) {
+    this.apply(innocent -> this.setGlowing0(entity, innocent, color));
+  }
 
-  void removeEntityGlowingForPlayer(final Entity entity);
+  default void removeEntityGlowingForPlayer(final Entity entity) {
+    this.apply(innocent -> this.unsetGlowing0(entity, innocent));
+  }
 
-  default void setEntityGlowingForPlayer(final GamePlayer player) {
-    this.apply(player::setEntityGlowingForPlayer);
+  default void setEntityGlowingForPlayer(final GamePlayer gamePlayer, final ChatColor color) {
+    gamePlayer.apply(player -> this.setEntityGlowingForPlayer(player, color));
   }
 
   default void removeEntityGlowingForPlayer(final GamePlayer player) {

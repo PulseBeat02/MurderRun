@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -27,7 +28,8 @@ public final class Chipped extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllLivingInnocents(innocent -> innocent.setEntityGlowingForPlayer(player));
+    manager.applyToAllLivingInnocents(
+        innocent -> innocent.setEntityGlowingForPlayer(player, ChatColor.GREEN));
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.handleSurvivors(manager, player), 5 * 20L);
