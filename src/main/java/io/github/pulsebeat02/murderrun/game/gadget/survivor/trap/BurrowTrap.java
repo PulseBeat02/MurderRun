@@ -29,9 +29,12 @@ public final class BurrowTrap extends SurvivorTrap {
     final Location clone = location.clone();
     clone.subtract(0, 50, 0);
 
+    final GameScheduler scheduler = game.getScheduler();
+    murderer.disableJump(scheduler, 7 * 20L);
+    murderer.disableWalkNoFOVEffects(scheduler, 7 * 20);
+
     murderer.apply(player -> {
-      final GameScheduler scheduler = game.getScheduler();
-      this.burrow(player, location);
+      this.burrow(player, clone);
       scheduler.scheduleTask(() -> this.setBackDefault(player, location), 7 * 20L);
     });
   }

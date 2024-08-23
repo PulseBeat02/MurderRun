@@ -17,8 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public final class IceSpirit extends SurvivorGadget {
 
@@ -66,8 +64,7 @@ public final class IceSpirit extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     killer.disableJump(scheduler, 7 * 20L);
     killer.apply(player -> player.setFreezeTicks(7 * 20));
-    killer.addPotionEffects(
-        new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, Integer.MAX_VALUE));
+    killer.disableWalkWithFOVEffects(10 * 20);
     manager.applyToAllLivingInnocents(
         innocent -> innocent.sendMessage(Message.FREEZE_ACTIVATE.build()));
   }

@@ -27,6 +27,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -56,6 +57,17 @@ public interface Participant {
     final double before = instance.getValue();
     instance.setBaseValue(0.0);
     scheduler.scheduleTask(() -> instance.setBaseValue(before), ticks);
+  }
+
+  default void disableWalkNoFOVEffects(final GameScheduler scheduler, final long ticks) {
+    final Player player = this.getInternalPlayer();
+    final float before = player.getWalkSpeed();
+    player.setWalkSpeed(0.0f);
+    scheduler.scheduleTask(() -> player.setWalkSpeed(before), ticks);
+  }
+
+  default void disableWalkWithFOVEffects(final int ticks) {
+    this.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, ticks, Integer.MAX_VALUE));
   }
 
   default void apply(final Consumer<org.bukkit.entity.Player> consumer) {

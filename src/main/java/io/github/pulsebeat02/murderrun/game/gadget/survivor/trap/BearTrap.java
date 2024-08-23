@@ -6,8 +6,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Material;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public final class BearTrap extends SurvivorTrap {
 
@@ -26,7 +24,6 @@ public final class BearTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final GameScheduler scheduler = game.getScheduler();
     murderer.disableJump(scheduler, 5 * 20L);
-    murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, Integer.MAX_VALUE));
+    murderer.disableWalkWithFOVEffects(5 * 20);
   }
 }
