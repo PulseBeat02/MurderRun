@@ -105,28 +105,30 @@ public enum SurvivorGadgets {
   Life Insurance -- if killer gets close, you teleport away (1 time use)
   Ice-Skatin -- spawns a boat that has ice underneath it
   Cryo-Freeze -- creates a huge ice dome around you
+  Burrow Trap -- sends killer underground temporarily
+  Star Trap -- buffs all survivors with speed, resistance, and regeneration when hit
+  Deadringer -- fake player death, fake kill them and then they become invulnerable
+  Glow Trap -- makes killer glow
+  Friend Warp -- teleport to a random survivor
+  Cloak -- all player usernames hidden for 30s
+  Corpus Warp -- teleports to a dead player
+  Magnet Mode -- makes all trap activation range 3 times larger
+  Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
+  Supply Drop -- get a various assortment of traps
 
   SURVIVOR TRAPS IMPLEMENTED:
 
-  Glow Trap -- makes killer glow
-  Corpus Warp -- teleports to a dead player
   Distort Trap -- spawn guardians all over murderer until trap destroyed
-  Star Trap -- buffs all survivors with speed, resistance, and regeneration when hit
-  Burrow Trap -- sends killer underground temporarily
-  Friend Warp -- teleport to a random survivor
-  Cloak -- all player usernames hidden for 30s
-  Camera -- if killer within  range glow
+  Camera -- if killer within range glow
   Sixth Sense -- if killer is near makes them glow
   Trap Sniffer -- senses detect car parts within 15 blocks
   Chipped -- you can see all alive survivors on the map
   Rewind -- rewinds player 5 seconds (must use circular buffer)
   Murderer Rewind -- rewinds murderer 5 seconds
-  Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Med Bot -- constant regeneration pool in area
   Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Shockwave Trap -- sets off massive blast flinging all players
   Tracker -- if activated near killer you can always see them
-  Deadringer -- fake player death, fake kill them and then they become invulnerable
   Distorter -- fills killer screen with annoying particles until destroyed
   Killer Tracker -- tells you how close the killer is and how much danger you are in
   Flashbang -- stuns
@@ -137,9 +139,7 @@ public enum SurvivorGadgets {
   Ghosting -- become an annoying ghost after death
   Horcrux -- respawn after death
   Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
-  Magnet Mode -- makes all trap activation range 3 times larger
   Flashlight -- blinds killer if come close, every 5 seconds
-  Supply Drop -- get a various assortment of traps
   Translocator -- one use teleporter, (becomes lever to warp)
   Portal Trap -- teleports trap to killer
   Resurrection Stone -- resurrects a dead player

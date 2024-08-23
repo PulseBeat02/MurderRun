@@ -19,7 +19,7 @@ public final class ShockwaveTrap extends SurvivorTrap {
 
   public ShockwaveTrap() {
     super(
-        "shockwave_trap",
+        "shockwave",
         Material.TNT,
         Message.SHOCKWAVE_NAME.build(),
         Message.SHOCKWAVE_LORE.build(),

@@ -39,12 +39,17 @@ public final class Retaliation extends SurvivorGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.checkForDeadPlayers(manager, player), 80L);
+    scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 80L);
   }
 
   private void checkForDeadPlayers(final PlayerManager manager, final Player player) {
+
     final Collection<GamePlayer> deathCount = manager.getDead();
     final int dead = deathCount.size();
+    if (dead == 0) {
+      return;
+    }
+
     final int effectLevel = Math.min(dead, MAX_DEATHS_COUNTED);
     player.addPotionEffect(
         new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, effectLevel));

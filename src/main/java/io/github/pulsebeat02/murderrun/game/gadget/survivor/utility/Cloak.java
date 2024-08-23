@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -24,11 +23,9 @@ public final class Cloak extends SurvivorGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.applyToAllLivingInnocents(GamePlayer::hideNameTag);
+    manager.applyToAllLivingInnocents(player -> player.hideNameTag(scheduler, 7 * 20L));
 
     final Component message = Message.CLOAK_ACTIVATE.build();
     manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
-    scheduler.scheduleTask(
-        () -> manager.applyToAllLivingInnocents(GamePlayer::showNameTag), 7 * 20L);
   }
 }

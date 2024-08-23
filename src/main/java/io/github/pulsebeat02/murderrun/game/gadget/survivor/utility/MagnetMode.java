@@ -32,7 +32,7 @@ public final class MagnetMode extends SurvivorGadget {
     final GadgetManager gadgetManager = game.getGadgetManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final int current = gadgetManager.getActivationRange();
-    gadgetManager.setActivationRange(current * 3);
+    gadgetManager.setActivationRange(current * 2);
 
     final Component message = Message.MAGNET_MODE_ACTIVATE.build();
     gamePlayer.sendMessage(message);

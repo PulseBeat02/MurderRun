@@ -52,6 +52,7 @@ public final class GamePlayerDeathEvent implements Listener {
     event.setKeepInventory(true);
     this.playDeathSoundEffect();
     this.runDeathTasks(gamePlayer);
+    manager.resetCachedPlayers();
 
     if (this.allInnocentDead()) {
       this.game.finishGame(GameResult.MURDERERS);

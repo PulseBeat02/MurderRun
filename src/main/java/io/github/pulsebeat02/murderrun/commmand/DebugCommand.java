@@ -12,7 +12,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -43,14 +42,15 @@ public final class DebugCommand implements AnnotationCommandFeature {
     sender.performCommand("murder game create TestArena TestLobby");
     sender.performCommand("murder game set murderer PulseBeat_02");
     sender.performCommand("murder game invite Player1");
+    sender.performCommand("murder game invite Player2");
 
     final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
     other.performCommand("murder game join PulseBeat_02");
 
-    sender.performCommand("murder game start");
+    final Player other1 = requireNonNull(Bukkit.getPlayer("Player2"));
+    other1.performCommand("murder game join PulseBeat_02");
 
-    sender.setGameMode(GameMode.CREATIVE);
-    other.setGameMode(GameMode.CREATIVE);
+    sender.performCommand("murder game start");
   }
 
   @Command(value = "murder debug gadget <gadgetName>", requiredSender = Player.class)

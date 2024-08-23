@@ -20,6 +20,7 @@ public final class Keys {
   public static NamespacedKey HOOK = createNamespacedPluginKey("hook");
   public static NamespacedKey PORTAL_GUN = createNamespacedPluginKey("portal-gun");
   public static NamespacedKey UUID = createNamespacedPluginKey("uuid");
+  public static NamespacedKey AIR_DROP = createNamespacedPluginKey("air_drop");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

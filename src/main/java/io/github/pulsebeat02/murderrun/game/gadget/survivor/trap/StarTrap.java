@@ -30,8 +30,8 @@ public final class StarTrap extends SurvivorTrap {
 
   private void addPotionEffect(final GamePlayer player) {
     player.addPotionEffects(
-        new PotionEffect(PotionEffectType.SPEED, 5, 2),
-        new PotionEffect(PotionEffectType.RESISTANCE, 5, 2),
-        new PotionEffect(PotionEffectType.REGENERATION, 5, 2));
+        new PotionEffect(PotionEffectType.SPEED, 5 * 20, 2),
+        new PotionEffect(PotionEffectType.RESISTANCE, 5 * 20, 2),
+        new PotionEffect(PotionEffectType.REGENERATION, 5 * 20, 2));
   }
 }

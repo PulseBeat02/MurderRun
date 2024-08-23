@@ -2,8 +2,8 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,8 +28,18 @@ public final class FriendWarp extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final Survivor target = manager.getRandomAliveInnocentPlayer();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final GamePlayer target = this.getRandomSurvivorNotSame(manager, gamePlayer);
     final Location location = target.getLocation();
     player.teleport(location);
+  }
+
+  private GamePlayer getRandomSurvivorNotSame(
+      final PlayerManager manager, final GamePlayer gamePlayer) {
+    GamePlayer random = manager.getRandomAliveInnocentPlayer();
+    while (random == gamePlayer) {
+      random = manager.getRandomAliveInnocentPlayer();
+    }
+    return random;
   }
 }

@@ -8,48 +8,47 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
-public final class SupplyDrop extends SurvivorGadget {
+public final class SupplyDrop extends SurvivorGadget implements Listener {
 
   private static final String[] AIR_DROP_MASKS = {
-    """
-      AXAXAXAXA
-      XAXAXAXAX
-      AXAXAXAXA
-      """,
-    """
-      XXXXAXXXX
-      XAXAAAXAX
-      XXXXAXXXX
-      """,
-    """
-      AAXXAXXAA
-      AXAXAXAXA
-      AAXXAXXAA
-      """
+    "AXAXAXAXAXAXAXAXAXAXAXAXAXA", "XXXXAXXXXXAXAAAXAXXXXXAXXXX", "AAXXAXXAAAXAXAXAXAAAXXAXXAA"
   };
 
-  public SupplyDrop() {
+  private final Game game;
+
+  public SupplyDrop(final Game game) {
     super(
         "supply_drop",
         Material.CHEST,
         Message.SUPPLY_DROP_NAME.build(),
         Message.SUPPLY_DROP_LORE.build(),
         64);
+    this.game = game;
   }
 
   @Override
@@ -59,47 +58,58 @@ public final class SupplyDrop extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final Location spawnLocation = location.add(0, 50, 0);
+    final Location spawnLocation = location.add(0, 30, 0);
     final World world = requireNonNull(spawnLocation.getWorld());
     final BlockData data = Material.CHEST.createBlockData();
     final FallingBlock chest = world.spawnFallingBlock(spawnLocation, data);
+    final PersistentDataContainer container = chest.getPersistentDataContainer();
+    container.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
     chest.setDropItem(false);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticleTrail(game, chest), 0, 2);
+    scheduler.scheduleTaskUntilCondition(
+        () -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
   }
 
-  private void spawnParticleTrail(final Game game, final FallingBlock chest) {
-
+  private void spawnParticleTrail(final FallingBlock chest) {
     final Location location = chest.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.CLOUD, location, 5, 0.2, 0.2, 0.2);
-
-    final boolean grounded = chest.isOnGround() || chest.isDead();
-    if (grounded) {
-      final Location chestLocation = chest.getLocation();
-      this.handleChestInventory(game, chestLocation);
-    }
+    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.WHITE, 2));
   }
 
-  private void handleChestInventory(final Game game, final Location location) {
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onFallingLootCrate(final EntityChangeBlockEvent event) {
 
-    final World world = requireNonNull(location.getWorld());
-    final Block block = world.getBlockAt(location);
-    if (!(block instanceof final Chest chest)) {
+    final Entity entity = event.getEntity();
+    if (!(entity instanceof final FallingBlock fallingBlock)) {
       return;
     }
 
-    final ItemStack[] items = this.generateSupplyDropItems(game);
+    final Material material = event.getTo();
+    if (material != Material.CHEST) {
+      return;
+    }
+
+    final PersistentDataContainer container = fallingBlock.getPersistentDataContainer();
+    final Boolean value = container.get(Keys.AIR_DROP, PersistentDataType.BOOLEAN);
+    if (value == null) {
+      return;
+    }
+
+    final Block block = event.getBlock();
+    block.setType(Material.CHEST);
+
+    final Chest chest = (Chest) block.getState();
+    final ItemStack[] items = this.generateSupplyDropItems();
     final Inventory inventory = chest.getInventory();
     inventory.setStorageContents(items);
   }
 
-  private ItemStack[] generateSupplyDropItems(final Game game) {
+  private ItemStack[] generateSupplyDropItems() {
     final int index = RandomUtils.generateInt(3);
     final String mask = AIR_DROP_MASKS[index];
     final ItemStack[] items = new ItemStack[mask.length()];
-    final GadgetManager manager = game.getGadgetManager();
+    final GadgetManager manager = this.game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     for (int i = 0; i < mask.length(); i++) {
       final char c = mask.charAt(i);

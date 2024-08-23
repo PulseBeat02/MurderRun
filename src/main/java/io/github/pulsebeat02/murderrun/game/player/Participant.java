@@ -58,10 +58,11 @@ public interface Participant {
   }
 
   default void disableWalkNoFOVEffects(final GameScheduler scheduler, final long ticks) {
-    final Player player = this.getInternalPlayer();
-    final float before = player.getWalkSpeed();
-    player.setWalkSpeed(0.0f);
-    scheduler.scheduleTask(() -> player.setWalkSpeed(before), ticks);
+    this.apply(player -> {
+      final float before = player.getWalkSpeed();
+      player.setWalkSpeed(0.0f);
+      scheduler.scheduleTask(() -> player.setWalkSpeed(before), ticks);
+    });
   }
 
   default void disableWalkWithFOVEffects(final int ticks) {
@@ -232,7 +233,7 @@ public interface Participant {
     this.apply(player -> player.setWorldBorder(null));
   }
 
-  default void hideNameTag() {
+  default void hideNameTag(final GameScheduler scheduler, final long ticks) {
     this.apply(player -> {
       final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
       final Scoreboard scoreboard = manager.getMainScoreboard();
@@ -242,10 +243,8 @@ public interface Participant {
       team.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
       team.addEntry(player.getDisplayName());
       HIDE_NAME_TAG_TEAMS.put(player, team);
-      final PotionEffectType type = PotionEffectType.GLOWING;
-      final int duration = Integer.MAX_VALUE;
-      player.addPotionEffect(new PotionEffect(type, duration, 0));
     });
+    scheduler.scheduleTask(this::showNameTag, ticks);
   }
 
   default void showNameTag() {
@@ -297,4 +296,8 @@ public interface Participant {
   ArmorStand getCorpse();
 
   void setCorpse(@Nullable ArmorStand corpse);
+
+  void setForceMineBlocks(final boolean mineBlocks);
+
+  boolean canForceMineBlocks();
 }
