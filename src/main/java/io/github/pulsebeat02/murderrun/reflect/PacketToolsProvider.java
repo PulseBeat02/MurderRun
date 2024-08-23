@@ -5,7 +5,6 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,12 +13,13 @@ public final class PacketToolsProvider {
 
   private static final String CLASS_PATH = "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools";
 
-  public static final PacketToolAPI INSTANCE;
+  public static final PacketToolAPI PACKET_API;
   public static final GlowingEntities GLOWING_API;
 
   static {
+    final Plugin plugin = JavaPlugin.getProvidingPlugin(MurderRun.class);
     final Server server =
-        Bukkit.getServer(); // only supporting latest version for each major release
+        plugin.getServer(); // only supporting latest version for each major release
     final String bukkitVersion = server.getBukkitVersion(); // 1.21-R0.1-SNAPSHOT
     final String minecraftVersion = bukkitVersion.split("-")[0]; // 1.21
     final String packageVersion = "v%s".formatted(minecraftVersion); // v1.21
@@ -38,9 +38,7 @@ public final class PacketToolsProvider {
           "The current server version isn't supported by this plugin! Resorting to fallback adapter",
           e);
     }
-    INSTANCE = api;
-
-    final Plugin plugin = JavaPlugin.getProvidingPlugin(MurderRun.class);
+    PACKET_API = api;
     GLOWING_API = new GlowingEntities(plugin);
   }
 

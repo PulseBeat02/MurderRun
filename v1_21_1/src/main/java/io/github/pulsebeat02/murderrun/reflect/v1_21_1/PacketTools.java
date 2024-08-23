@@ -71,23 +71,4 @@ public class PacketTools implements PacketToolAPI {
       throw new AssertionError(e);
     }
   }
-
-  @Override
-  public void sendGlowPacket(final Player watcher, final Entity glow) {
-    final int id = glow.getEntityId();
-    final CraftPlayer player = (CraftPlayer) watcher;
-    final MobEffectInstance effect = new MobEffectInstance(MobEffects.GLOWING, Integer.MAX_VALUE, 0, true, true);
-    final ClientboundUpdateMobEffectPacket packet = new ClientboundUpdateMobEffectPacket(id,
-        effect, false);
-    player.getHandle().connection.send(packet);
-  }
-
-  @Override
-  public void sendRemoveGlowPacket(final Player watcher, final Entity glow) {
-    final int id = glow.getEntityId();
-    final CraftPlayer player = (CraftPlayer) watcher;
-    final ClientboundRemoveMobEffectPacket effect = new ClientboundRemoveMobEffectPacket(id,
-        MobEffects.GLOWING);
-    player.getHandle().connection.send(effect);
-  }
 }
