@@ -27,6 +27,9 @@ public final class PlayerResetTool {
     final Location location = lobby.getLobbySpawn();
     gamePlayer.removeAllPotionEffects();
     gamePlayer.removeAllBossBars();
+    gamePlayer.showNameTag();
+    gamePlayer.removeFakeWorldBorderEffect();
+    gamePlayer.removeAllGlowing();
     gamePlayer.apply(player -> {
       player.getInventory().clear();
       player.setGameMode(GameMode.SURVIVAL);
@@ -37,6 +40,7 @@ public final class PlayerResetTool {
       player.setExp(0);
       player.setLevel(0);
       player.setSaturation(Float.MAX_VALUE);
+      player.setGlowing(false);
     });
   }
 }

@@ -41,8 +41,8 @@ public final class ShockwaveTrap extends SurvivorTrap {
     final Location location = participant.getLocation();
     final double distance = location.distanceSquared(origin);
     if (distance < SHOCKWAVE_RADIUS) {
-      final Vector direction = location.toVector().subtract(origin.toVector()).normalize();
-      final Vector force = direction.multiply(2);
+      final Vector launchDirection = origin.toVector().add(location.toVector().multiply(-1));
+      final Vector force = launchDirection.multiply(2);
       participant.apply(player -> player.setVelocity(force));
     }
   }

@@ -55,7 +55,12 @@ public abstract class AbstractGadget implements Gadget {
     if (remove) {
       final PlayerInventory inventory = player.getInventory();
       final ItemStack stack = inventory.getItemInMainHand();
-      stack.setType(Material.AIR);
+      final int amount = stack.getAmount();
+      if (amount == 1) {
+        inventory.setItemInMainHand(null);
+      } else {
+        stack.setAmount(amount - 1);
+      }
     } else {
       event.setCancelled(true);
     }
@@ -68,6 +73,8 @@ public abstract class AbstractGadget implements Gadget {
     item.setPickupDelay(Integer.MAX_VALUE);
     if (remove) {
       item.remove();
+    } else {
+      event.setCancelled(true);
     }
   }
 

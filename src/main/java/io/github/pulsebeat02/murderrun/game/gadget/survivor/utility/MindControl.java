@@ -10,6 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public final class MindControl extends SurvivorGadget {
@@ -37,12 +39,19 @@ public final class MindControl extends SurvivorGadget {
 
     final Location origin = player.getLocation();
     final Location location = nearest.getLocation();
+    player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1));
+    player.setInvulnerable(true);
     player.teleport(location);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
         () -> this.applyMindControlEffects(player, nearest), 0L, 1L, 10 * 20L);
-    scheduler.scheduleTask(() -> player.teleport(origin), 20 * 20L);
+    scheduler.scheduleTask(() -> this.resetPlayer(player, origin), 10 * 20L);
+  }
+
+  private void resetPlayer(final Player player, final Location location) {
+    player.teleport(location);
+    player.setInvulnerable(false);
   }
 
   private void applyMindControlEffects(final Player player, final GamePlayer killer) {

@@ -9,11 +9,14 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -32,6 +35,11 @@ public final class Flashlight extends SurvivorGadget {
         48,
         stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, 0L));
+  }
+
+  @Override
+  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+    super.onGadgetDrop(game, event, false);
   }
 
   @Override
@@ -76,7 +84,8 @@ public final class Flashlight extends SurvivorGadget {
         final Location hand = handLocation.clone();
         final Location particleLocation = hand.add(offset);
         final World world = requireNonNull(hand.getWorld());
-        world.spawnParticle(Particle.SMOKE, particleLocation, 1, 0, 0, 0, 0);
+        world.spawnParticle(
+            Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
         manager.applyToAllMurderers(killer -> applyPotionEffects(killer, particleLocation));
       }
     }
@@ -85,8 +94,9 @@ public final class Flashlight extends SurvivorGadget {
   private static void applyPotionEffects(final GamePlayer killer, final Location particleLocation) {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(particleLocation);
-    if (distance < 1) {
-      killer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 10, 0));
+    if (distance < 4) {
+      killer.addPotionEffects(
+          new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));
     }
   }
 }

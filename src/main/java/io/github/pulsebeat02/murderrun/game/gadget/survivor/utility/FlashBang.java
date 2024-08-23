@@ -20,6 +20,7 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
@@ -38,6 +39,11 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true));
     this.game = game;
+  }
+
+  @Override
+  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+    super.onGadgetDrop(game, event, false);
   }
 
   @EventHandler

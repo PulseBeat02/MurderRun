@@ -60,10 +60,8 @@ public final class MedBot extends SurvivorGadget {
   }
 
   private void handleMedBotUpdate(final PlayerManager manager, final ArmorStand stand) {
-    manager.applyToAllLivingInnocents(innocent -> {
-      this.handleInnocentEffects(innocent, stand);
-      this.handleKillerDestroy(manager, innocent, stand);
-    });
+    manager.applyToAllLivingInnocents(innocent -> this.handleInnocentEffects(innocent, stand));
+    manager.applyToAllMurderers(killer -> this.handleKillerDestroy(manager, killer, stand));
   }
 
   private void handleKillerDestroy(
@@ -101,14 +99,14 @@ public final class MedBot extends SurvivorGadget {
 
   private void handleVerticalBobbing(final ArmorStand stand) {
     final Location location = stand.getLocation();
-    location.add(0, Math.sin(System.currentTimeMillis() / 1000.0) * 0.1, 0);
+    location.add(0, Math.sin(System.currentTimeMillis() / 1000.0) * 0.05, 0);
     stand.teleport(location);
   }
 
   private void handleRotation(final ArmorStand stand) {
     final Location location = stand.getLocation();
     final float yaw = ((float) System.currentTimeMillis() / 10) % 360;
-    final float pitch = location.getPitch();
-    stand.setRotation(yaw, pitch);
+    location.setPitch(yaw);
+    stand.teleport(location);
   }
 }

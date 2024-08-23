@@ -51,6 +51,13 @@ public interface Participant {
 
   org.bukkit.entity.Player getInternalPlayer();
 
+  default void removeAllGlowing() {
+    this.apply(player -> {
+      final Collection<? extends Player> viewers = Bukkit.getOnlinePlayers();
+      viewers.forEach(viewer -> this.unsetGlowing0(player, viewer));
+    });
+  }
+
   default void disableJump(final GameScheduler scheduler, final long ticks) {
     final AttributeInstance instance = this.getAttribute(Attribute.GENERIC_JUMP_STRENGTH);
     final double before = instance.getValue();
@@ -305,8 +312,4 @@ public interface Participant {
   ArmorStand getCorpse();
 
   void setCorpse(@Nullable ArmorStand corpse);
-
-  void setForceMineBlocks(final boolean mineBlocks);
-
-  boolean canForceMineBlocks();
 }

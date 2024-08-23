@@ -23,9 +23,9 @@ public final class MurderRun extends JavaPlugin {
   DEBUG
 
   - Debug all survivor traps
-  - Modify tick rate of tasks to fix bagginess
   - Add CompletableFuture to commands
   - Add join game to player in message invite for match
+  - Make configuration for all values of traps
   - Debug all killer traps
 
    */

@@ -24,6 +24,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -49,8 +50,14 @@ public final class GadgetActionHandler implements Listener {
 
   @EventHandler
   public void onRightClick(final PlayerInteractEvent event) {
+
     final Game game = this.manager.getGame();
     final ItemStack stack = event.getItem();
+    final Action action = event.getAction();
+    if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+      return;
+    }
+
     this.handleEventLogic(stack, gadget -> gadget.onGadgetRightClick(game, event, true));
   }
 

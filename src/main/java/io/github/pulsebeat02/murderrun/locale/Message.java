@@ -266,7 +266,7 @@ public interface Message extends LocaleTools {
       direct("murder_run.game.gadget.life_insurance.activate");
   NullComponent<Sender> TRACKER_ACTIVATE = direct("murder_run.game.gadget.tracker.activate");
   NullComponent<Sender> TRACKER_DEACTIVATE = direct("murder_run.game.gadget.tracker.deactivate");
-  UniComponent<Sender, Double> KILLER_TRACKER_ACTIVATE =
+  UniComponent<Sender, Integer> KILLER_TRACKER_ACTIVATE =
       direct("murder_run.game.gadget.killer_tracker.activate", null);
   NullComponent<Sender> PLAYER_TRACKER_NAME = direct("murder_run.game.gadget.player_tracker.name");
   NullComponent<Sender> KILLER_CAMERA_NAME = direct("murder_run.game.gadget.camera_killer.name");

@@ -7,9 +7,12 @@ import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -58,13 +61,17 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final Location spawnLocation = location.add(0, 30, 0);
+    final Location spawnLocation = location.add(0, 100, 0);
     final World world = requireNonNull(spawnLocation.getWorld());
     final BlockData data = Material.CHEST.createBlockData();
     final FallingBlock chest = world.spawnFallingBlock(spawnLocation, data);
     final PersistentDataContainer container = chest.getPersistentDataContainer();
     container.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
     chest.setDropItem(false);
+
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound(Sounds.SUPPLY_DROP);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleConditionalTask(
@@ -74,7 +81,7 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
   private void spawnParticleTrail(final FallingBlock chest) {
     final Location location = chest.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.WHITE, 2));
+    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.GREEN, 4));
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

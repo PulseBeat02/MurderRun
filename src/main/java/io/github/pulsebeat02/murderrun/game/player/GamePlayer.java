@@ -35,14 +35,12 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
   private final Collection<BossBar> bars;
   private @Nullable ArmorStand corpse;
   private boolean alive;
-  private boolean mine;
 
   public GamePlayer(final Game game, final UUID uuid) {
     this.game = game;
     this.uuid = uuid;
     this.audience = this.getAudience(game, uuid);
     this.alive = true;
-    this.mine = true;
     this.bars = new HashSet<>();
     this.tasks = new HashSet<>();
   }
@@ -143,15 +141,5 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
     for (final BossBar bar : this.bars) {
       this.audience.hideBossBar(bar);
     }
-  }
-
-  @Override
-  public boolean canForceMineBlocks() {
-    return this.mine;
-  }
-
-  @Override
-  public void setForceMineBlocks(final boolean mineBlocks) {
-    this.mine = mineBlocks;
   }
 }

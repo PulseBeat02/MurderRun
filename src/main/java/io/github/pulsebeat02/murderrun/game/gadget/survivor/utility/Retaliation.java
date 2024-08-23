@@ -50,7 +50,7 @@ public final class Retaliation extends SurvivorGadget {
       return;
     }
 
-    final int effectLevel = Math.min(dead, MAX_DEATHS_COUNTED);
+    final int effectLevel = Math.min(dead - 1, MAX_DEATHS_COUNTED);
     player.addPotionEffect(
         new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, effectLevel));
     player.addPotionEffect(

@@ -47,9 +47,9 @@ public final class GamePlayerBlockEvent implements Listener {
     }
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (gamePlayer instanceof Killer) {
+    if (gamePlayer instanceof final Killer killer) {
 
-      if (!gamePlayer.canForceMineBlocks()) {
+      if (!killer.canForceMineBlocks()) {
         event.setCancelled(true);
         return;
       }

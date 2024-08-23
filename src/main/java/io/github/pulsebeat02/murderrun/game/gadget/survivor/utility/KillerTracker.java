@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -35,6 +36,11 @@ public final class KillerTracker extends SurvivorGadget {
   }
 
   @Override
+  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+    super.onGadgetDrop(game, event, false);
+  }
+
+  @Override
   public void onGadgetRightClick(
       final Game game, final PlayerInteractEvent event, final boolean remove) {
 
@@ -42,9 +48,9 @@ public final class KillerTracker extends SurvivorGadget {
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Location location = player.getLocation();
-    final double distance = this.getNearestKillerDistance(manager, location);
+    final int distance = (int) Math.round(this.getNearestKillerDistance(manager, location));
     final int count = this.increaseAndGetKillerCount(player);
-    final boolean destroy = count == 5;
+    final boolean destroy = count >= 5;
     super.onGadgetRightClick(game, event, destroy);
 
     final Component message = Message.KILLER_TRACKER_ACTIVATE.build(distance);
@@ -69,7 +75,7 @@ public final class KillerTracker extends SurvivorGadget {
     final Collection<Killer> killers = manager.getMurderers();
     for (final GamePlayer killer : killers) {
       final Location location = killer.getLocation();
-      final double distance = location.distanceSquared(origin);
+      final double distance = location.distance(origin);
       if (distance < min) {
         min = distance;
       }

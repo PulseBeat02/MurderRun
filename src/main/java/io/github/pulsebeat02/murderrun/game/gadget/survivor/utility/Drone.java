@@ -28,7 +28,8 @@ public final class Drone extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final Location origin = player.getLocation();
-    final Location drone = origin.add(0, 20, 0);
+    final Location clone = origin.clone();
+    final Location drone = clone.add(0, 20, 0);
     player.setGameMode(GameMode.SPECTATOR);
     player.teleport(drone);
 
