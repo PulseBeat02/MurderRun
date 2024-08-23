@@ -1,6 +1,8 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
+import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -9,7 +11,6 @@ import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
-import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,11 +26,9 @@ import org.bukkit.inventory.PlayerInventory;
 public final class GamePlayerBlockEvent implements Listener {
 
   private final Game game;
-  private final Set<Material> whitelisted;
 
   public GamePlayerBlockEvent(final Game game) {
     this.game = game;
-    this.whitelisted = Set.of(Material.PACKED_ICE);
   }
 
   public Game getGame() {
@@ -54,9 +53,10 @@ public final class GamePlayerBlockEvent implements Listener {
     }
 
     final Block block = event.getBlock();
-    final Material type = block.getType();
-    final boolean canBreakBlock = this.whitelisted.contains(type);
-    if (!canBreakBlock) {
+    final Map map = this.game.getMap();
+    final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
+    final boolean canBreak = whitelistManager.checkAndRemoveBlock(block);
+    if (!canBreak) {
       event.setCancelled(true);
     }
   }

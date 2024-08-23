@@ -13,6 +13,7 @@ public final class Map {
   private MapResetTool resetManager;
   private TruckManager truckManager;
   private MapSchematicIO mapSchematicIO;
+  private BlockWhitelistManager blockWhitelistManager;
 
   public Map(final Game game) {
     this.game = game;
@@ -24,6 +25,7 @@ public final class Map {
     this.resetManager = new MapResetTool(this);
     this.truckManager = new TruckManager(this);
     this.mapSchematicIO = new MapSchematicIO(this);
+    this.blockWhitelistManager = new BlockWhitelistManager();
     this.eventManager.registerEvents();
     this.truckManager.spawnParticles();
   }
@@ -63,5 +65,9 @@ public final class Map {
 
   public TruckManager getTruckManager() {
     return this.truckManager;
+  }
+
+  public BlockWhitelistManager getBlockWhitelistManager() {
+    return this.blockWhitelistManager;
   }
 }

@@ -15,7 +15,6 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -83,8 +82,8 @@ public final class ArenaSchematic {
     final Location first = corners[0];
     final Location second = corners[1];
     final World world = requireNonNull(first.getWorld());
-    final BlockVector3 firstCorner = MapUtils.toBlockVector3(first);
-    final BlockVector3 secondCorner = MapUtils.toBlockVector3(second);
+    final BlockVector3 firstCorner = BukkitAdapter.asBlockVector(first);
+    final BlockVector3 secondCorner = BukkitAdapter.asBlockVector(second);
     final com.sk89q.worldedit.world.World instance = BukkitAdapter.adapt(world);
     return new CuboidRegion(instance, firstCorner, secondCorner);
   }

@@ -12,8 +12,9 @@ import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
+import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -41,12 +42,16 @@ public final class CryoFreeze extends SurvivorGadget {
     final World world = requireNonNull(location.getWorld());
     final com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
     final WorldEdit worldEdit = WorldEdit.getInstance();
-    final BlockVector3 vector3 = MapUtils.toBlockVector3(location);
+    final BlockVector3 vector3 = BukkitAdapter.asBlockVector(location);
     final BlockType ice = requireNonNull(BlockTypes.PACKED_ICE);
     final BlockState state = ice.getDefaultState();
+
+    final Map map = game.getMap();
+    final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
     try (final EditSession session = worldEdit.newEditSession(weWorld)) {
       try {
         session.makeSphere(vector3, state, 5, false);
+        whitelistManager.addWhitelistedBlocks(session);
       } catch (final MaxChangedBlocksException e) {
         throw new AssertionError(e);
       }
