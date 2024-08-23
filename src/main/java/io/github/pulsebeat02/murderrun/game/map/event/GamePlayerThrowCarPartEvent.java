@@ -61,7 +61,10 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
     final Map map = this.game.getMap();
     final PartsManager manager = map.getCarPartManager();
-    final CarPart carPart = requireNonNull(manager.getCarPartItemStack(stack));
+    final CarPart carPart = manager.getCarPartItemStack(stack);
+    if (carPart == null) {
+      return;
+    }
 
     manager.removeCarPart(carPart);
 

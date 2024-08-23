@@ -42,7 +42,7 @@ public final class CryoFreeze extends SurvivorGadget {
     final com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
     final WorldEdit worldEdit = WorldEdit.getInstance();
     final BlockVector3 vector3 = MapUtils.toBlockVector3(location);
-    final BlockType ice = requireNonNull(BlockTypes.ICE);
+    final BlockType ice = requireNonNull(BlockTypes.PACKED_ICE);
     final BlockState state = ice.getDefaultState();
     try (final EditSession session = worldEdit.newEditSession(weWorld)) {
       try {

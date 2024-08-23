@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
@@ -67,7 +65,9 @@ public final class GamePlayerPickupEvent implements Listener {
 
     final Map map = this.game.getMap();
     final PartsManager manager = map.getCarPartManager();
-    final CarPart carPart = requireNonNull(manager.getCarPartItemStack(stack));
-    carPart.setPickedUp(true);
+    final CarPart carPart = manager.getCarPartItemStack(stack);
+    if (carPart != null) {
+      carPart.setPickedUp(true);
+    }
   }
 }

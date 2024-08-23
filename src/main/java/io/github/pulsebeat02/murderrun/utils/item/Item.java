@@ -26,7 +26,7 @@ public interface Item {
   }
 
   static Builder builder(final ItemStack stack) {
-    return new ItemBuilderImpl(stack);
+    return new ItemBuilder(stack);
   }
 
   interface Builder {

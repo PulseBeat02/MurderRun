@@ -30,11 +30,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class ItemBuilderImpl implements Builder {
+public final class ItemBuilder implements Builder {
 
   private final ItemStack stack;
 
-  ItemBuilderImpl(final ItemStack stack) {
+  ItemBuilder(final ItemStack stack) {
     this.stack = stack;
   }
 

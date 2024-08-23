@@ -104,6 +104,7 @@ public enum SurvivorGadgets {
   Blast Off -- sends the killer into a rocket into space
   Life Insurance -- if killer gets close, you teleport away (1 time use)
   Ice-Skatin -- spawns a boat that has ice underneath it
+  Cryo-Freeze -- creates a huge ice dome around you
 
   SURVIVOR TRAPS IMPLEMENTED:
 
@@ -133,7 +134,6 @@ public enum SurvivorGadgets {
   Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
   Drone -- roots you to the ground, but allows you to fly above and look
   Mind Control -- controls player mind
-  Cryo-Freeze -- creates a huge ice dome around you
   Ghosting -- become an annoying ghost after death
   Horcrux -- respawn after death
   Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
