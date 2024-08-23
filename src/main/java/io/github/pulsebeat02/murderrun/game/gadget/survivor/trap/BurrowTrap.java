@@ -30,7 +30,7 @@ public final class BurrowTrap extends SurvivorTrap {
 
     final GameScheduler scheduler = game.getScheduler();
     murderer.disableJump(scheduler, 7 * 20L);
-    murderer.disableWalkNoFOVEffects(scheduler, 7 * 20);
+    murderer.disableWalkNoFOVEffects(scheduler, 7 * 20L);
     murderer.setForceMineBlocks(false);
 
     murderer.apply(player -> {
