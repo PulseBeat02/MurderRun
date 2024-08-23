@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -34,6 +35,7 @@ public final class PonyTrap extends SurvivorTrap {
     final World world = requireNonNull(location.getWorld());
     final Horse horse = this.spawnCustomisedHorse(world, location);
     this.setHorseSpeed(horse);
+    murderer.playSound(key("entity.horse.angry"));
   }
 
   private void setHorseSpeed(final Horse horse) {

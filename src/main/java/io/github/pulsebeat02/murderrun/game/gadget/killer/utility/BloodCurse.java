@@ -37,7 +37,7 @@ public final class BloodCurse extends KillerGadget {
     survivor.sendMessage(msg);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 20);
+    scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 20L);
   }
 
   private void setBloodBlock(final GamePlayer survivor) {

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -33,5 +34,6 @@ public final class JebTrap extends SurvivorTrap {
     for (int i = 0; i < SHEEP_COUNT; i++) {
       world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
     }
+    murderer.playSound(key("entity.sheep.ambient"));
   }
 }

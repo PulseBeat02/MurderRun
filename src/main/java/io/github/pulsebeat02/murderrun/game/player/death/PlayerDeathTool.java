@@ -14,12 +14,13 @@ import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -121,17 +122,18 @@ public final class PlayerDeathTool {
     final PlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 20);
+        () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 20L);
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {
+
     final Location location = gamePlayer.getDeathLocation();
     if (location == null) {
       throw new AssertionError("Player didn't die! Fake death error?");
     }
+
     final Location clone = location.clone().add(0, 1, 0);
     final World world = requireNonNull(clone.getWorld());
-    final BlockData data = Material.RED_CONCRETE.createBlockData();
-    world.spawnParticle(Particle.BLOCK, clone, 10, 0.5, 0.5, 0.5, data);
+    world.spawnParticle(Particle.DUST, clone, 10, 0.5, 0.5, 0.5, new DustOptions(Color.RED, 4));
   }
 }

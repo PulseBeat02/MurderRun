@@ -57,8 +57,8 @@ public final class BurnTheBody extends KillerGadget {
           world.strikeLightningEffect(deathLocation);
         },
         0,
-        10,
-        100);
+        20L,
+        5 * 20L);
     scheduler.scheduleTask(() -> this.handleBurnTasks(victim), 100);
   }
 

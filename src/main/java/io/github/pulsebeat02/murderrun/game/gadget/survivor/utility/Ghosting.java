@@ -74,7 +74,7 @@ public final class Ghosting extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
-    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, 100);
+    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, 5 * 20L);
   }
 
   private void giveWhiteBone(final GamePlayer player) {

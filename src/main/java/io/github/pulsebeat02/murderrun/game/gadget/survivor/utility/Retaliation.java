@@ -39,7 +39,7 @@ public final class Retaliation extends SurvivorGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 80L);
+    scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L);
   }
 
   private void checkForDeadPlayers(final PlayerManager manager, final Player player) {

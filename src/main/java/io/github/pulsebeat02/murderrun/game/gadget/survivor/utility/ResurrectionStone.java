@@ -56,13 +56,13 @@ public final class ResurrectionStone extends SurvivorGadget {
     }
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 2L, 5 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L);
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L);
   }
 
   private void spawnParticles(final Location location) {
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DRAGON_BREATH, location, 10, 0.5, 0.5, 0.5);
+    world.spawnParticle(Particle.DRAGON_BREATH, location, 5, 0.5, 0.5, 0.5);
     location.add(0, 0.05, 0);
   }
 

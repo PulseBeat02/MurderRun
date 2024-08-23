@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.awt.Color;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -35,7 +34,7 @@ public final class JumpScareTrap extends SurvivorTrap {
     final ItemStack before = this.setPumpkinItemStack(murderer);
     final GameScheduler scheduler = game.getScheduler();
     final Key key = Sounds.JUMP_SCARE.getKey();
-    murderer.playSound(key, Source.MASTER, 1f, 1f);
+    murderer.playSound(key);
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));

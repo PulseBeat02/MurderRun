@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -25,5 +27,6 @@ public final class BearTrap extends SurvivorTrap {
     final GameScheduler scheduler = game.getScheduler();
     murderer.disableJump(scheduler, 5 * 20L);
     murderer.disableWalkWithFOVEffects(5 * 20);
+    murderer.playSound(key("block.anvil.destroy"));
   }
 }

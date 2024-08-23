@@ -58,7 +58,7 @@ public abstract class Trap extends AbstractGadget {
     final int g = this.color.getGreen();
     final int b = this.color.getBlue();
     final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(r, g, b);
-    scheduler.scheduleTaskUntilCondition(
+    scheduler.scheduleConditionalTask(
         () -> spawnTrapParticles(world, location, bukkitColor), 0, 20, item::isDead);
   }
 

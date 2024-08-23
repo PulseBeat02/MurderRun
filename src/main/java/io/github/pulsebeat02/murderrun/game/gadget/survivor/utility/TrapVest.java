@@ -3,7 +3,11 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
@@ -34,23 +38,29 @@ public final class TrapVest extends SurvivorGadget {
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
 
+    super.onGadgetDrop(game, event, true);
+
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final GadgetManager gadgetManager = game.getGadgetManager();
     final PlayerDeathTask task =
-        new PlayerDeathTask(() -> this.handleTraps(gamePlayer, location, world), false);
+        new PlayerDeathTask(() -> this.handleTraps(gadgetManager, gamePlayer, world), false);
     gamePlayer.addDeathTask(task);
 
     final Component message = Message.TRAP_VEST_ACTIVATE.build();
     gamePlayer.sendMessage(message);
   }
 
-  private void handleTraps(final GamePlayer player, final Location location, final World world) {
+  private void handleTraps(
+      final GadgetManager manager, final GamePlayer player, final World world) {
 
     final PlayerInventory inventory = player.getInventory();
+    final Location location = requireNonNull(player.getDeathLocation());
     final ItemStack[] slots = inventory.getContents();
+    final GadgetLoadingMechanism mechanism = manager.getMechanism();
 
     for (final ItemStack slot : slots) {
 
@@ -59,11 +69,15 @@ public final class TrapVest extends SurvivorGadget {
       }
 
       final Item droppedItem = world.dropItem(location, slot);
-      final Vector velocity = new Vector(
-          (RandomUtils.generateDouble() - 0.5) * 2,
-          RandomUtils.generateDouble() * 2,
-          (RandomUtils.generateDouble() - 0.5) * 2);
-      droppedItem.setVelocity(velocity);
+      final ItemStack stack = droppedItem.getItemStack();
+      final Gadget gadget = mechanism.getGadgetFromStack(stack);
+      if (gadget instanceof SurvivorTrap) {
+        final Vector velocity = new Vector(
+            (RandomUtils.generateDouble() - 0.5) * 2,
+            RandomUtils.generateDouble() * 2,
+            (RandomUtils.generateDouble() - 0.5) * 2);
+        droppedItem.setVelocity(velocity);
+      }
     }
   }
 }

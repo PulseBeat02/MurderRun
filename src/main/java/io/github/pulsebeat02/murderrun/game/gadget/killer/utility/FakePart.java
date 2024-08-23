@@ -41,12 +41,12 @@ public final class FakePart extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleTaskUntilCondition(
-        () -> this.spawnParticleOnPart(location), 0, 20, item::isDead);
+    scheduler.scheduleConditionalTask(
+        () -> this.spawnParticleOnPart(location), 0, 20L, item::isDead);
 
     final GamePlayer killer = manager.getGamePlayer(player);
     final Runnable task = () -> this.handlePlayers(scheduler, manager, killer, item);
-    scheduler.scheduleTaskUntilCondition(task, 0, 20, item::isDead);
+    scheduler.scheduleConditionalTask(task, 0, 20L, item::isDead);
   }
 
   private void handlePlayers(

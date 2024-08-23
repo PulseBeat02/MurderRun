@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
@@ -241,41 +240,36 @@ public final class PlayerManager {
   }
 
   public void playSoundForAllParticipants(final SoundResource... keys) {
-    final String key = this.getRandomKey(keys);
-    final Key id = key(key);
-    this.applyToAllParticipants(player -> player.playSound(id, Source.MASTER, 1f, 1f));
+    final SoundResource key = this.getRandomKey(keys);
+    this.applyToAllParticipants(player -> player.playSound(key));
   }
 
-  private String getRandomKey(final SoundResource... keys) {
-    final int bound = keys.length;
-    final int random = RandomUtils.generateInt(bound);
-    final SoundResource chosen = keys[random];
-    final Key key = chosen.getKey();
-    return key.asString();
-  }
-
-  public void playSoundForAllParticipants(final String... keys) {
-    final String id = this.getRandomKey(keys);
-    final Key key = key(id);
-    this.applyToAllParticipants(player -> player.playSound(key, Source.MASTER, 1f, 1f));
-  }
-
-  private String getRandomKey(final String... keys) {
+  private SoundResource getRandomKey(final SoundResource... keys) {
     final int bound = keys.length;
     final int random = RandomUtils.generateInt(bound);
     return keys[random];
   }
 
+  public void playSoundForAllParticipants(final String... keys) {
+    final Key key = this.getRandomKey(keys);
+    this.applyToAllParticipants(player -> player.playSound(key));
+  }
+
+  private Key getRandomKey(final String... keys) {
+    final int bound = keys.length;
+    final int random = RandomUtils.generateInt(bound);
+    final String element = keys[random];
+    return key(element);
+  }
+
   public void playSoundForAllMurderers(final SoundResource... keys) {
-    final String key = this.getRandomKey(keys);
-    final Key id = key(key);
-    this.applyToAllMurderers(player -> player.playSound(id, Source.MASTER, 1f, 1f));
+    final SoundResource key = this.getRandomKey(keys);
+    this.applyToAllMurderers(player -> player.playSound(key));
   }
 
   public void playSoundForAllInnocents(final SoundResource... keys) {
-    final String key = this.getRandomKey(keys);
-    final Key id = key(key);
-    this.applyToAllInnocents(innocent -> innocent.playSound(id, Source.MASTER, 1f, 1f));
+    final SoundResource key = this.getRandomKey(keys);
+    this.applyToAllInnocents(innocent -> innocent.playSound(key));
   }
 
   public void stopSoundsForAllParticipants(final SoundResource key) {
@@ -285,9 +279,11 @@ public final class PlayerManager {
 
   public void playSoundForAllParticipantsAtLocation(
       final Location origin, final SoundResource... keys) {
-    final String key = this.getRandomKey(keys);
+    final SoundResource key = this.getRandomKey(keys);
+    final Key id = key.getKey();
+    final String raw = id.asString();
     final World world = requireNonNull(origin.getWorld());
-    world.playSound(origin, key, SoundCategory.MASTER, 1f, 1f);
+    world.playSound(origin, raw, SoundCategory.MASTER, 1f, 1f);
   }
 
   public void showBossBarForAllParticipants(

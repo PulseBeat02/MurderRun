@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -7,6 +9,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 public final class BurrowTrap extends SurvivorTrap {
 
@@ -32,16 +35,18 @@ public final class BurrowTrap extends SurvivorTrap {
     murderer.disableJump(scheduler, 7 * 20L);
     murderer.disableWalkNoFOVEffects(scheduler, 7 * 20L);
     murderer.setForceMineBlocks(false);
+    murderer.playSound(key("block.rooted_dirt.place"));
 
     murderer.apply(player -> {
       player.teleport(clone);
       player.setGravity(true);
-      scheduler.scheduleTask(
-          () -> {
-            player.teleport(location);
-            murderer.setForceMineBlocks(true);
-          },
-          7 * 20L);
+      scheduler.scheduleTask(() -> this.resetPlayer(murderer, player, location), 7 * 20L);
     });
+  }
+
+  private void resetPlayer(
+      final GamePlayer murderer, final Player player, final Location location) {
+    player.teleport(location);
+    murderer.setForceMineBlocks(true);
   }
 }

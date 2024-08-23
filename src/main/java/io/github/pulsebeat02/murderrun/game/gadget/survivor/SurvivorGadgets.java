@@ -115,6 +115,9 @@ public enum SurvivorGadgets {
   Magnet Mode -- makes all trap activation range 3 times larger
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Supply Drop -- get a various assortment of traps
+  Flashbang -- stuns
+  Smoke Grenade -- creates a huge smoke cloud
+  Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
 
   SURVIVOR TRAPS IMPLEMENTED:
 
@@ -131,14 +134,11 @@ public enum SurvivorGadgets {
   Tracker -- if activated near killer you can always see them
   Distorter -- fills killer screen with annoying particles until destroyed
   Killer Tracker -- tells you how close the killer is and how much danger you are in
-  Flashbang -- stuns
-  Smoke Grenade -- creates a huge smoke cloud
   Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
   Drone -- roots you to the ground, but allows you to fly above and look
   Mind Control -- controls player mind
   Ghosting -- become an annoying ghost after death
   Horcrux -- respawn after death
-  Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
   Flashlight -- blinds killer if come close, every 5 seconds
   Translocator -- one use teleporter, (becomes lever to warp)
   Portal Trap -- teleports trap to killer

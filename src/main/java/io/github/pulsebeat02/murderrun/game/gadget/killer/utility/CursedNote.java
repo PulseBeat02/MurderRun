@@ -65,7 +65,7 @@ public final class CursedNote extends KillerGadget {
       part.setCursed(cursed);
 
       final Supplier<Boolean> condition = () -> !part.isCursed();
-      scheduler.scheduleTaskUntilCondition(
+      scheduler.scheduleConditionalTask(
           () -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
     }
 

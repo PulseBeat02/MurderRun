@@ -5,8 +5,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.awt.Color;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Material;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -26,8 +24,7 @@ public final class FartTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
-    final Key key = Sounds.FART.getKey();
-    murderer.playSound(key, Source.MASTER, 1f, 1f);
+    murderer.playSound(Sounds.FART);
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 3),
         new PotionEffect(PotionEffectType.NAUSEA, 7 * 20, 1));

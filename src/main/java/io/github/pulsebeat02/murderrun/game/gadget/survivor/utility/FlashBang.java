@@ -8,9 +8,11 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -52,22 +54,29 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     }
 
     final Block block = event.getHitBlock();
+    final Entity hitEntity = event.getHitEntity();
+    final Location location;
     if (block == null) {
-      return;
+      if (hitEntity == null) {
+        return;
+      }
+      location = hitEntity.getLocation();
+    } else {
+      location = block.getLocation();
     }
 
-    final Location location = block.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.WHITE_ASH, location, 30, 1, 1, 1, 1);
+    world.spawnParticle(
+        Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final PlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllMurderers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);
-      if (distance < 1) {
+      if (distance < 4) {
         killer.addPotionEffects(
-            PotionEffectType.BLINDNESS.createEffect(10, 0),
-            PotionEffectType.SLOWNESS.createEffect(10, 1));
+            PotionEffectType.BLINDNESS.createEffect(3 * 20, Integer.MAX_VALUE),
+            PotionEffectType.SLOWNESS.createEffect(3 * 20, 4));
       }
     });
   }

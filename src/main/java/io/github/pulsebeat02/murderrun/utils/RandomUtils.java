@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.utils;
 
 import java.util.SplittableRandom;
+import org.intellij.lang.annotations.Subst;
 
 public final class RandomUtils {
 
@@ -22,6 +23,7 @@ public final class RandomUtils {
     return SPLITTABLE_RANDOM.nextDouble();
   }
 
+  @Subst("")
   public static int generateInt(final int bound) {
     return SPLITTABLE_RANDOM.nextInt(bound);
   }

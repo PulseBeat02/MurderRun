@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -37,15 +38,16 @@ public final class LevitationTrap extends SurvivorTrap {
 
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
+    murderer.playSound(key("entity.shulker.ambient"));
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, 7 * 20, 1));
     murderer.teleport(clone);
     scheduler.scheduleTask(() -> murderer.teleport(location), 7 * 20L);
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, murderer), 0, 10, 7 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, murderer), 0, 5, 7 * 20L);
   }
 
   private void spawnParticle(final World world, final GamePlayer player) {
     final Location location = player.getLocation();
     world.spawnParticle(
-        Particle.DUST, location, 20, 1, 1, 1, new DustOptions(org.bukkit.Color.PURPLE, 3));
+        Particle.DUST, location, 10, 1, 1, 1, new DustOptions(org.bukkit.Color.PURPLE, 3));
   }
 }

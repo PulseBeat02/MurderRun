@@ -36,8 +36,8 @@ public final class Parasite extends SurvivorGadget {
     final Location origin = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTaskUntilCondition(
-        () -> this.handleKillers(manager, origin, item), 0, 40, item::isDead);
+    scheduler.scheduleConditionalTask(
+        () -> this.handleKillers(manager, origin, item), 0, 2 * 20L, item::isDead);
   }
 
   private void handleKillers(final PlayerManager manager, final Location origin, final Item item) {

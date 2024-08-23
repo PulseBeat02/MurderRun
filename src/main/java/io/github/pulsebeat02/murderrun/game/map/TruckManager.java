@@ -21,7 +21,7 @@ public final class TruckManager {
   public void spawnParticles() {
     final Game game = this.map.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(this::spawnParticleOnTruck, 0, 20);
+    scheduler.scheduleRepeatedTask(this::spawnParticleOnTruck, 0, 4L);
   }
 
   private void spawnParticleOnTruck() {
@@ -30,7 +30,7 @@ public final class TruckManager {
     final Arena arena = requireNonNull(settings.getArena());
     final Location truck = arena.getTruck();
     final World world = requireNonNull(truck.getWorld());
-    world.spawnParticle(Particle.LAVA, truck, 15, 0.5, 0.5, 0.5);
-    world.spawnParticle(Particle.SMOKE, truck, 15, 0.5, 0.5, 0.5);
+    world.spawnParticle(Particle.LAVA, truck, 3, 0.5, 0.5, 0.5);
+    world.spawnParticle(Particle.SMOKE, truck, 3, 0.5, 0.5, 0.5);
   }
 }

@@ -61,7 +61,7 @@ public final class PartsManager {
   private void spawnParticles() {
     final Game game = this.map.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(this::spawnParticleTask, 0, 20);
+    scheduler.scheduleRepeatedTask(this::spawnParticleTask, 0, 2L);
   }
 
   private void spawnParticleTask() {
@@ -76,7 +76,7 @@ public final class PartsManager {
   private void spawnParticleOnPart(final CarPart stack) {
     final Location location = stack.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 40, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 1));
+    world.spawnParticle(Particle.DUST, location, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 1));
   }
 
   public Map getMap() {

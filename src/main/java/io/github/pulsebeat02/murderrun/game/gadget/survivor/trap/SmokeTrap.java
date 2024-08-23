@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -31,12 +33,13 @@ public final class SmokeTrap extends SurvivorTrap {
         new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 2));
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 2, 7 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 1, 7 * 20L);
+    murderer.playSound(key("entity.blaze.ambient"));
   }
 
   private void spawnSmoke(final GamePlayer murderer) {
     final Location location = murderer.getLocation();
     murderer.apply(player -> player.spawnParticle(
-        Particle.DUST, location, 20, 4, 2, 2, new DustOptions(org.bukkit.Color.GRAY, 4)));
+        Particle.DUST, location, 10, 4, 2, 2, new DustOptions(org.bukkit.Color.GRAY, 4)));
   }
 }

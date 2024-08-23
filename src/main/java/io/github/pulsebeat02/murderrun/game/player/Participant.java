@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -122,6 +123,14 @@ public interface Participant {
       final float progress,
       final BossBar.Color color,
       final BossBar.Overlay overlay);
+
+  default void playSound(final SoundResource key) {
+    this.playSound(key.getKey());
+  }
+
+  default void playSound(final Key key) {
+    this.playSound(key, Source.MASTER, 1.0f, 1.0f);
+  }
 
   void playSound(final Key key, final Source category, final float volume, final float pitch);
 

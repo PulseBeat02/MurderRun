@@ -27,7 +27,7 @@ public final class GameScheduler {
     this.tasks.clear();
   }
 
-  public BukkitTask scheduleTaskUntilCondition(
+  public BukkitTask scheduleConditionalTask(
       final Runnable runnable,
       final long delay,
       final long period,
@@ -71,10 +71,9 @@ public final class GameScheduler {
 
   public BukkitTask scheduleTaskWhenItemFalls(final Runnable runnable, final Item item) {
     final AtomicBoolean onFloor = new AtomicBoolean(false);
-    final BukkitTask task = this.scheduleTaskUntilCondition(
+    final BukkitTask task = this.scheduleConditionalTask(
         () -> {
-          final boolean floor = item.isOnGround();
-          if (floor) {
+          if (item.isOnGround()) {
             onFloor.set(true);
             runnable.run();
           }

@@ -9,8 +9,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -31,6 +29,7 @@ public final class CageTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
+
     final Location location = murderer.getLocation();
     final Block block = location.getBlock();
     final Block down = block.getRelative(BlockFace.DOWN);
@@ -41,8 +40,8 @@ public final class CageTrap extends SurvivorTrap {
     final Block top = block.getRelative(0, 2, 0);
     final List<Material> history =
         this.replaceAndSaveOriginalState(down, east, west, north, south, top);
-    final Key key = key("block.anvil.use");
-    murderer.playSound(key, Source.MASTER, 1f, 1f);
+    murderer.playSound(key("block.anvil.use"));
+
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(
         () -> this.replaceWithOriginal(history, down, east, west, north, south, top), 7 * 20L);

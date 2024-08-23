@@ -168,11 +168,11 @@ public final class PortalGun extends KillerGadget implements Listener {
     final World world = requireNonNull(center.getWorld());
     final double radiusX = 0.5d;
     final double radiusY = 2d;
-    final int particleCount = 20;
-    final int insideParticleCount = 30;
+    final int particleCount = 10;
+    final int insideParticleCount = 15;
     final Runnable task = () -> this.handlePortalEffects(
         center, particleCount, radiusX, radiusY, world, insideParticleCount);
-    scheduler.scheduleRepeatedTask(task, 0L, 4L);
+    scheduler.scheduleRepeatedTask(task, 0L, 2L);
   }
 
   private void handlePortalEffects(

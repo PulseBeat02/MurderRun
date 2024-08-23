@@ -53,9 +53,9 @@ public final class MedBot extends SurvivorGadget {
     equipment.setHelmet(Item.create(Material.CHORUS_FLOWER));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTaskUntilCondition(
+    scheduler.scheduleConditionalTask(
         () -> this.handleArmorStandEffects(armorStand), 0, 2, armorStand::isDead);
-    scheduler.scheduleTaskUntilCondition(
+    scheduler.scheduleConditionalTask(
         () -> this.handleMedBotUpdate(manager, armorStand), 0, 20L, armorStand::isDead);
   }
 
@@ -107,7 +107,7 @@ public final class MedBot extends SurvivorGadget {
 
   private void handleRotation(final ArmorStand stand) {
     final Location location = stand.getLocation();
-    final float yaw = location.getYaw();
+    final float yaw = ((float) System.currentTimeMillis() / 10) % 360;
     final float pitch = location.getPitch();
     stand.setRotation(yaw, pitch);
   }

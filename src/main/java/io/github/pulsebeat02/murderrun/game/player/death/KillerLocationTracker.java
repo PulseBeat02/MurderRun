@@ -26,7 +26,7 @@ public final class KillerLocationTracker {
     final PlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllMurderers(this::spawnParticlesWhenClose), 0, 20);
+        () -> manager.applyToAllMurderers(this::spawnParticlesWhenClose), 0, 20L);
   }
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {

@@ -67,7 +67,7 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     chest.setDropItem(false);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTaskUntilCondition(
+    scheduler.scheduleConditionalTask(
         () -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
   }
 

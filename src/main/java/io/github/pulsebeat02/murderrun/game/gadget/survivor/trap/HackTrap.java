@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -31,6 +33,7 @@ public final class HackTrap extends SurvivorTrap {
     if (stack != null) {
       scheduler.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20L);
     }
+    murderer.playSound(key("entity.witch.celebrate"));
   }
 
   private @Nullable ItemStack removeSwordItemStack(final GamePlayer player) {

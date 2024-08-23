@@ -9,9 +9,11 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -30,7 +32,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
   public SmokeGrenade(final Game game) {
     super(
         "smoke_grenade",
-        Material.EGG,
+        Material.SNOWBALL,
         Message.SMOKE_BOMB_NAME.build(),
         Message.SMOKE_BOMB_LORE.build(),
         16,
@@ -53,22 +55,32 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     }
 
     final Block block = event.getHitBlock();
+    final Entity hitEntity = event.getHitEntity();
+    final Location location;
     if (block == null) {
-      return;
+      if (hitEntity == null) {
+        return;
+      }
+      location = hitEntity.getLocation();
+    } else {
+      location = block.getLocation();
     }
 
-    final Location location = block.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> world.spawnParticle(Particle.SMOKE, location, 50, 2, 2, 2), 10, 5 * 20L);
+        () -> world.spawnParticle(
+            Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4)),
+        0,
+        1,
+        5 * 20L);
 
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllParticipants(player -> {
+    manager.applyToAllMurderers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);
-      if (distance < 1) {
-        player.addPotionEffects(PotionEffectType.BLINDNESS.createEffect(20, 0));
+      if (distance < 4) {
+        player.addPotionEffects(PotionEffectType.BLINDNESS.createEffect(5 * 20, Integer.MAX_VALUE));
       }
     });
   }

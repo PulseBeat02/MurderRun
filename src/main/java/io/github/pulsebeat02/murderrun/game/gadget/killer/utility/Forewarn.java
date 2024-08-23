@@ -48,7 +48,7 @@ public final class Forewarn extends KillerGadget {
         () -> manager.applyToAllLivingInnocents(
             survivor -> this.handleForewarn(survivor, gamePlayer)),
         0,
-        60);
+        3 * 20L);
   }
 
   private void handleForewarn(final GamePlayer gamePlayer, final GamePlayer player) {

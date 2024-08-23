@@ -61,7 +61,7 @@ public final class Corruption extends KillerGadget {
     }
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 2L, 5 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, 5 * 20L);
     scheduler.scheduleTask(() -> this.corruptPlayer(game, closest), 5 * 20L);
   }
 

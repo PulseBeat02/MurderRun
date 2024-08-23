@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
@@ -30,5 +31,6 @@ public final class SpawnTrap extends SurvivorTrap {
     final Arena arena = requireNonNull(settings.getArena());
     final Location spawn = arena.getSpawn();
     murderer.teleport(spawn);
+    murderer.playSound(key("entity.skeleton.ambient"));
   }
 }

@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -28,5 +30,6 @@ public final class GhostTrap extends SurvivorTrap {
     manager.applyToAllLivingInnocents(player -> player.addPotionEffects(
         new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1),
         new PotionEffect(PotionEffectType.SPEED, 10 * 20, 1)));
+    murderer.playSound(key("entity.ghast.hurt"));
   }
 }

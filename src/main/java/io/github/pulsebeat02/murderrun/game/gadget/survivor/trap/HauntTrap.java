@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
+import static net.kyori.adventure.key.Key.key;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -27,11 +29,12 @@ public final class HauntTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.createSpookyEffect(game, murderer), 0, 20, 10 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.createSpookyEffect(game, murderer), 0, 20L, 10 * 20L);
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.NAUSEA, 10 * 20, 10),
         new PotionEffect(PotionEffectType.BLINDNESS, 10 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 4));
+    murderer.playSound(key("entity.ghast.scream"));
   }
 
   private void createSpookyEffect(final Game game, final GamePlayer gamePlayer) {

@@ -71,7 +71,7 @@ public final class BlastOff extends SurvivorGadget implements Listener {
       final GamePlayer killer,
       final Location before) {
     final AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-    scheduler.scheduleTaskUntilCondition(
+    scheduler.scheduleConditionalTask(
         () -> {
           if (firework.isDead()) {
             killer.teleport(before);
@@ -79,7 +79,7 @@ public final class BlastOff extends SurvivorGadget implements Listener {
             atomicBoolean.set(true);
           }
         },
-        45,
+        48,
         2,
         atomicBoolean::get);
   }
