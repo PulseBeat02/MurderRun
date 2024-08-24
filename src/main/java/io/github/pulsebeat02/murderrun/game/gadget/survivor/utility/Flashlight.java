@@ -73,9 +73,10 @@ public final class Flashlight extends SurvivorGadget {
     final Vector direction = handLocation.getDirection();
     final double coneAngle = Math.toRadians(30);
     final double coneLength = 5;
+    final double increment = Math.toRadians(5);
 
     for (double t = 0; t < coneLength; t += 0.5) {
-      for (double angle = -coneAngle; angle <= coneAngle; angle += Math.toRadians(5)) {
+      for (double angle = -coneAngle; angle <= coneAngle; angle += increment) {
 
         final Vector copy = direction.clone();
         final Vector offset = copy.multiply(t);

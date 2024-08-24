@@ -62,7 +62,7 @@ public final class BlastOff extends SurvivorGadget implements Listener {
     });
 
     final Component message = Message.BLAST_OFF_ACTIVATE.build();
-    manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
+    manager.sendMessageToAllSurvivors(message);
   }
 
   private void scheduleTeleportTask(
@@ -72,16 +72,22 @@ public final class BlastOff extends SurvivorGadget implements Listener {
       final Location before) {
     final AtomicBoolean atomicBoolean = new AtomicBoolean(false);
     scheduler.scheduleConditionalTask(
-        () -> {
-          if (firework.isDead()) {
-            killer.teleport(before);
-            this.restrictDismount.remove(killer);
-            atomicBoolean.set(true);
-          }
-        },
-        48,
+        () -> this.checkRideStatus(firework, killer, before, atomicBoolean),
+        2 * 20L,
         2,
         atomicBoolean::get);
+  }
+
+  private void checkRideStatus(
+      final Firework firework,
+      final GamePlayer killer,
+      final Location before,
+      final AtomicBoolean atomicBoolean) {
+    if (firework.isDead()) {
+      killer.teleport(before);
+      this.restrictDismount.remove(killer);
+      atomicBoolean.set(true);
+    }
   }
 
   private Firework spawnRocket(final Player player) {

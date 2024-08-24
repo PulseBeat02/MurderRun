@@ -58,7 +58,7 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    this.handleEventLogic(stack, gadget -> gadget.onGadgetRightClick(game, event, true));
+    this.handleEventLogic(stack, gadget -> gadget.onGadgetRightClick(game, event, false));
   }
 
   @EventHandler
@@ -66,7 +66,7 @@ public final class GadgetActionHandler implements Listener {
     final Game game = this.manager.getGame();
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    this.handleEventLogic(stack, gadget -> gadget.onGadgetDrop(game, event, true));
+    this.handleEventLogic(stack, gadget -> gadget.onGadgetDrop(game, event, false));
   }
 
   private void runGadgetDetectionTask() {

@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -12,9 +10,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Particle.DustOptions;
-import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -43,13 +38,7 @@ public final class Parasite extends SurvivorGadget {
     scheduler.scheduleConditionalTask(
         () -> this.handleKillers(manager, origin, item), 0, 2 * 20L, item::isDead);
 
-    final World world = requireNonNull(origin.getWorld());
-    scheduler.scheduleConditionalTask(
-        () -> world.spawnParticle(
-            Particle.DUST, item.getLocation(), 1, 0.5, 0.5, 0.5, new DustOptions(Color.GREEN, 3)),
-        0L,
-        5L,
-        item::isDead);
+    scheduler.scheduleParticleTask(item, Color.GREEN);
   }
 
   private void handleKillers(final PlayerManager manager, final Location origin, final Item item) {
@@ -66,7 +55,7 @@ public final class Parasite extends SurvivorGadget {
     final double distance = origin.distanceSquared(location);
     if (distance < 4) {
       final Component message = Message.PARASITE_DEACTIVATE.build();
-      manager.applyToAllLivingInnocents(survivor -> survivor.sendMessage(message));
+      manager.sendMessageToAllSurvivors(message);
       item.remove();
     } else if (distance < 100) {
       player.addPotionEffects(

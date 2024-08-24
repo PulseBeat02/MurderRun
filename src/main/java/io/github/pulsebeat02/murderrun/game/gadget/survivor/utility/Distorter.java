@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -13,8 +11,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Particle.DustOptions;
-import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -39,20 +35,14 @@ public final class Distorter extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final Item item = event.getItemDrop();
     scheduler.scheduleConditionalTask(
-        () -> manager.applyToAllMurderers(killer -> {
-          this.applyDistortionEffect(manager, killer, location, item);
-        }),
-        0L,
-        5L,
-        item::isDead);
+        () -> this.handleKillers(manager, location, item), 0L, 5L, item::isDead);
+    scheduler.scheduleParticleTask(item, Color.PURPLE);
+  }
 
-    final World world = requireNonNull(location.getWorld());
-    scheduler.scheduleConditionalTask(
-        () -> world.spawnParticle(
-            Particle.DUST, item.getLocation(), 1, 0.5, 0.5, 0.5, new DustOptions(Color.PURPLE, 3)),
-        0L,
-        5L,
-        item::isDead);
+  private void handleKillers(
+      final PlayerManager manager, final Location location, final Item item) {
+    manager.applyToAllMurderers(
+        killer -> this.applyDistortionEffect(manager, killer, location, item));
   }
 
   private void applyDistortionEffect(
@@ -64,7 +54,7 @@ public final class Distorter extends SurvivorGadget {
     final double distance = location.distanceSquared(origin);
     if (distance < 1) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();
-      manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
+      manager.sendMessageToAllSurvivors(message);
       item.remove();
     } else if (distance < 100) {
       killer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);

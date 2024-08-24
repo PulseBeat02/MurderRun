@@ -7,6 +7,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
+import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -70,18 +75,32 @@ public final class GameScheduler {
   }
 
   public BukkitTask scheduleTaskWhenItemFalls(final Runnable runnable, final Item item) {
+
     final AtomicBoolean onFloor = new AtomicBoolean(false);
-    final BukkitTask task = this.scheduleConditionalTask(
-        () -> {
-          if (item.isOnGround()) {
-            onFloor.set(true);
-            runnable.run();
-          }
-        },
-        0,
-        20L,
-        onFloor::get);
+    final Runnable internal = () -> {
+      if (item.isOnGround()) {
+        onFloor.set(true);
+        runnable.run();
+      }
+    };
+
+    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, onFloor::get);
     this.tasks.add(task);
+
     return task;
+  }
+
+  public BukkitTask scheduleParticleTask(final Item item, final Color color) {
+
+    final World world = item.getWorld();
+    final Runnable particleTask = () -> {
+      final Location location = item.getLocation();
+      world.spawnParticle(Particle.DUST, location, 1, 0.5, 0.5, 0.5, new DustOptions(color, 3));
+    };
+
+    final Runnable conditionalTask =
+        () -> this.scheduleConditionalTask(particleTask, 0L, 5L, item::isDead);
+
+    return this.scheduleTaskWhenItemFalls(conditionalTask, item);
   }
 }

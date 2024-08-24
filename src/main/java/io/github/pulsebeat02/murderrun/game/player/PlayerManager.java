@@ -32,6 +32,7 @@ public final class PlayerManager {
   private final Game game;
   private final PlayerDeathTool deathManager;
   private final KillerLocationTracker killerLocationTracker;
+  private final MovementManager movementManager;
 
   private final Map<UUID, GamePlayer> lookupMap;
   private Collection<GamePlayer> cachedDeadPlayers;
@@ -43,6 +44,7 @@ public final class PlayerManager {
     this.game = game;
     this.deathManager = new PlayerDeathTool(game);
     this.killerLocationTracker = new KillerLocationTracker(game);
+    this.movementManager = new MovementManager(game);
     this.lookupMap = new WeakHashMap<>();
   }
 
@@ -50,6 +52,7 @@ public final class PlayerManager {
     this.assignPlayerRoles(murderers, participants);
     this.resetCachedPlayers();
     this.setupAllPlayers();
+    this.movementManager.start();
     this.killerLocationTracker.spawnParticles();
     this.deathManager.spawnParticles();
   }
@@ -227,6 +230,14 @@ public final class PlayerManager {
     this.applyToAllParticipants(player -> player.sendMessage(message));
   }
 
+  public void sendMessageToAllSurvivors(final Component message) {
+    this.applyToAllInnocents(player -> player.sendMessage(message));
+  }
+
+  public void sendMessageToAllKillers(final Component message) {
+    this.applyToAllMurderers(player -> player.sendMessage(message));
+  }
+
   public void showTitleForAllInnocents(final Component title, final Component subtitle) {
     this.applyToAllLivingInnocents(innocent -> innocent.showTitle(title, subtitle));
   }
@@ -316,5 +327,9 @@ public final class PlayerManager {
     final Killer killer = new Killer(this.game, uuid);
     this.lookupMap.put(uuid, killer);
     this.resetCachedPlayers();
+  }
+
+  public MovementManager getMovementManager() {
+    return this.movementManager;
   }
 }

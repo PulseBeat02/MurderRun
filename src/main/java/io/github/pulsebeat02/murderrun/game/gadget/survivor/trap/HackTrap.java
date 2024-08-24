@@ -28,11 +28,13 @@ public final class HackTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
+
     final ItemStack stack = this.removeSwordItemStack(murderer);
     final GameScheduler scheduler = game.getScheduler();
     if (stack != null) {
       scheduler.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20L);
     }
+
     murderer.playSound(key("entity.witch.celebrate"));
   }
 

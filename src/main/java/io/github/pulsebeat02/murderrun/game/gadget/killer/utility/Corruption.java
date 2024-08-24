@@ -78,7 +78,7 @@ public final class Corruption extends KillerGadget {
     closest.apply(Corruption::resetStats);
 
     final Component message = Message.CORRUPTION_ACTIVATE.build();
-    manager.applyToAllParticipants(gamePlayer -> gamePlayer.sendMessage(message));
+    manager.sendMessageToAllParticipants(message);
   }
 
   private static void resetStats(final Player resurrected) {

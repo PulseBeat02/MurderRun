@@ -33,19 +33,17 @@ public final class BurrowTrap extends SurvivorTrap {
     clone.subtract(0, 50, 0);
 
     final GameScheduler scheduler = game.getScheduler();
-    murderer.disableJump(scheduler, 7 * 20L);
-    murderer.disableWalkNoFOVEffects(scheduler, 7 * 20L);
-
     if (murderer instanceof final Killer killer) {
+      murderer.disableJump(scheduler, 7 * 20L);
+      murderer.disableWalkNoFOVEffects(scheduler, 7 * 20L);
       killer.setForceMineBlocks(false);
+      killer.playSound(key("block.rooted_dirt.place"));
+      killer.apply(player -> {
+        player.teleport(clone);
+        player.setGravity(true);
+        scheduler.scheduleTask(() -> this.resetPlayer(killer, player, location), 7 * 20L);
+      });
     }
-    murderer.playSound(key("block.rooted_dirt.place"));
-
-    murderer.apply(player -> {
-      player.teleport(clone);
-      player.setGravity(true);
-      scheduler.scheduleTask(() -> this.resetPlayer(murderer, player, location), 7 * 20L);
-    });
   }
 
   private void resetPlayer(

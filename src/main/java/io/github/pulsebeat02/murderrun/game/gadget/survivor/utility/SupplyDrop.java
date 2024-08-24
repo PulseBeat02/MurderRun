@@ -81,7 +81,7 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
   private void spawnParticleTrail(final FallingBlock chest) {
     final Location location = chest.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.GREEN, 4));
+    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.RED, 4));
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

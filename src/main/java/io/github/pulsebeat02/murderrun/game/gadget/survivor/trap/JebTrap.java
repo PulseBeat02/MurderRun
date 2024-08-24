@@ -29,11 +29,13 @@ public final class JebTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
+
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
     for (int i = 0; i < SHEEP_COUNT; i++) {
       world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
     }
+
     murderer.playSound(key("entity.sheep.ambient"));
   }
 }

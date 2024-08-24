@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -65,8 +66,9 @@ public final class IceSpirit extends SurvivorGadget {
     killer.disableJump(scheduler, 7 * 20L);
     killer.apply(player -> player.setFreezeTicks(7 * 20));
     killer.disableWalkWithFOVEffects(10 * 20);
-    manager.applyToAllLivingInnocents(
-        innocent -> innocent.sendMessage(Message.FREEZE_ACTIVATE.build()));
+
+    final Component msg = Message.FREEZE_ACTIVATE.build();
+    manager.sendMessageToAllSurvivors(msg);
   }
 
   private Zombie spawnSpirit(final World world, final Location location, final GamePlayer nearest) {

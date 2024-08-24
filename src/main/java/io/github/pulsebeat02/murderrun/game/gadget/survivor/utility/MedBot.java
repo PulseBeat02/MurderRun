@@ -71,7 +71,7 @@ public final class MedBot extends SurvivorGadget {
     final double distance = origin.distanceSquared(location);
     if (distance < 1) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
-      manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
+      manager.sendMessageToAllSurvivors(message);
       stand.remove();
     }
   }

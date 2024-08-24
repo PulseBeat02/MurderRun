@@ -26,6 +26,6 @@ public final class Cloak extends SurvivorGadget {
     manager.applyToAllLivingInnocents(player -> player.hideNameTag(scheduler, 7 * 20L));
 
     final Component message = Message.CLOAK_ACTIVATE.build();
-    manager.applyToAllLivingInnocents(innocent -> innocent.sendMessage(message));
+    manager.sendMessageToAllSurvivors(message);
   }
 }

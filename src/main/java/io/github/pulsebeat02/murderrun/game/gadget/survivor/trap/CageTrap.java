@@ -43,8 +43,9 @@ public final class CageTrap extends SurvivorTrap {
     murderer.playSound(key("block.anvil.use"));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(
-        () -> this.replaceWithOriginal(history, down, east, west, north, south, top), 7 * 20L);
+    final Runnable task =
+        () -> this.replaceWithOriginal(history, down, east, west, north, south, top);
+    scheduler.scheduleTask(task, 7 * 20L);
   }
 
   private void replaceWithOriginal(final List<Material> history, final Block... blocks) {
