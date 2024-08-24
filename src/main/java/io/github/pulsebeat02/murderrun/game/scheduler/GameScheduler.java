@@ -95,11 +95,11 @@ public final class GameScheduler {
     final World world = item.getWorld();
     final Runnable particleTask = () -> {
       final Location location = item.getLocation();
-      world.spawnParticle(Particle.DUST, location, 1, 0.5, 0.5, 0.5, new DustOptions(color, 3));
+      world.spawnParticle(Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(color, 2));
     };
 
     final Runnable conditionalTask =
-        () -> this.scheduleConditionalTask(particleTask, 0L, 5L, item::isDead);
+        () -> this.scheduleConditionalTask(particleTask, 0L, 20L, item::isDead);
 
     return this.scheduleTaskWhenItemFalls(conditionalTask, item);
   }

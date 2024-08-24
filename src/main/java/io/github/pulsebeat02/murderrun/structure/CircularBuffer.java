@@ -26,6 +26,10 @@ public final class CircularBuffer<T> implements Iterable<T> {
     this.buffer.addLast(item);
   }
 
+  public T getOldest() {
+    return this.buffer.getFirst();
+  }
+
   public void remove(final T item) {
     this.buffer.remove(requireNonNull(item));
   }

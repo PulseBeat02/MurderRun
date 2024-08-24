@@ -7,11 +7,9 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.structure.CircularBuffer;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import org.bukkit.Location;
 
 public final class MovementManager {
@@ -53,21 +51,35 @@ public final class MovementManager {
     return requireNonNull(this.playerLocations.get(player));
   }
 
+  private boolean checkReady(
+      final CircularBuffer<Entry<Location, Long>> buffer, final long current) {
+    final Entry<Location, Long> oldest = buffer.getOldest();
+    final long value = oldest.getValue();
+    final long difference = current - value;
+    return difference > 5000;
+  }
+
   public boolean handleRewind(final GamePlayer player) {
+
     final CircularBuffer<Entry<Location, Long>> buffer = this.getBuffer(player);
     final long currentTime = System.currentTimeMillis();
+    if (!this.checkReady(buffer, currentTime)) {
+      return false;
+    }
+
     final Iterator<Entry<Location, Long>> iterator = buffer.iterator();
-    final Set<Entry<Location, Long>> remove = new HashSet<>();
     while (iterator.hasNext()) {
       final Entry<Location, Long> entry = iterator.next();
-      if (currentTime - entry.getValue() <= 5000) {
+      final long value = entry.getValue();
+      final long difference = currentTime - value;
+      if (difference <= 5000) {
         final Location key = entry.getKey();
         player.teleport(key);
-        buffer.removeAll(remove);
-        return true;
+        break;
       }
-      remove.add(entry);
+      iterator.remove();
     }
-    return false;
+
+    return true;
   }
 }

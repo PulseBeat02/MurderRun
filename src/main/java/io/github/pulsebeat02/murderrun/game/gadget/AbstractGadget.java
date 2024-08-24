@@ -95,14 +95,10 @@ public abstract class AbstractGadget implements Gadget {
 
   @Override
   public @NonNull MerchantRecipe createRecipe() {
-
-    requireNonNull(this.gadget);
-
     final ItemStack ingredient = ItemFactory.createCurrency(this.cost);
     final int uses = Integer.MAX_VALUE;
-    final MerchantRecipe recipe = new MerchantRecipe(this.gadget, uses);
+    final MerchantRecipe recipe = new MerchantRecipe(requireNonNull(this.gadget), uses);
     recipe.addIngredient(ingredient);
-
     return recipe;
   }
 }
