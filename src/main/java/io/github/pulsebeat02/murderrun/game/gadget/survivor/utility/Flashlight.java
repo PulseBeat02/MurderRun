@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -64,6 +65,10 @@ public final class Flashlight extends SurvivorGadget {
     PDCUtils.setPersistentDataAttribute(
         stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, current);
     this.sprayParticlesInCone(game, player);
+
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound(Sounds.FLASHLIGHT);
   }
 
   private void sprayParticlesInCone(final Game game, final Player player) {

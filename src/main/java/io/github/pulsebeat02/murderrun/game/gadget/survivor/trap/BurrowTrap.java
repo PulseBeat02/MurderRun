@@ -1,10 +1,9 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
-import static net.kyori.adventure.key.Key.key;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
@@ -37,13 +36,15 @@ public final class BurrowTrap extends SurvivorTrap {
       murderer.disableJump(scheduler, 7 * 20L);
       murderer.disableWalkNoFOVEffects(scheduler, 7 * 20L);
       killer.setForceMineBlocks(false);
-      killer.playSound(key("block.rooted_dirt.place"));
       killer.apply(player -> {
         player.teleport(clone);
         player.setGravity(true);
         scheduler.scheduleTask(() -> this.resetPlayer(killer, player, location), 7 * 20L);
       });
     }
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants("block.rooted_dirt.place");
   }
 
   private void resetPlayer(

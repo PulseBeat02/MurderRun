@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
-import static net.kyori.adventure.key.Key.key;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -32,6 +30,6 @@ public final class GlowTrap extends SurvivorTrap {
     final GameScheduler scheduler = game.getScheduler();
     final Collection<Survivor> players = manager.getInnocentPlayers();
     murderer.setGlowColorDuration(scheduler, 7 * 20L, ChatColor.RED, players);
-    murderer.playSound(key("block.amethyst_block.chime"));
+    manager.playSoundForAllParticipants("block.amethyst_block.chime");
   }
 }

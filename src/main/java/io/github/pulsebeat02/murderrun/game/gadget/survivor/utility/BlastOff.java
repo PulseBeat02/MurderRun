@@ -61,6 +61,9 @@ public final class BlastOff extends SurvivorGadget implements Listener {
       this.scheduleTeleportTask(scheduler, firework, killer, before);
     });
 
+    final GamePlayer owner = manager.getGamePlayer(player);
+    owner.playSound("entity.firework_rocket.blast");
+
     final Component message = Message.BLAST_OFF_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(message);
   }
@@ -85,6 +88,7 @@ public final class BlastOff extends SurvivorGadget implements Listener {
       final AtomicBoolean atomicBoolean) {
     if (firework.isDead()) {
       killer.teleport(before);
+      killer.apply(player -> player.setFallDistance(0.0f));
       this.restrictDismount.remove(killer);
       atomicBoolean.set(true);
     }

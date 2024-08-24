@@ -37,6 +37,10 @@ public final class KillerRewind extends SurvivorGadget {
 
     final MovementManager movementManager = manager.getMovementManager();
     final boolean successful = movementManager.handleRewind(closest);
+    closest.apply(raw -> raw.setFallDistance(0.0f));
     super.onGadgetDrop(game, event, successful);
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("entity.shulker.teleport");
   }
 }

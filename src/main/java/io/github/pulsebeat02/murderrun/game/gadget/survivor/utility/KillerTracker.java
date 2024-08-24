@@ -55,6 +55,7 @@ public final class KillerTracker extends SurvivorGadget {
 
     final Component message = Message.KILLER_TRACKER_ACTIVATE.build(distance);
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("entity.experience_orb.pickup");
   }
 
   private int increaseAndGetKillerCount(final Player player) {

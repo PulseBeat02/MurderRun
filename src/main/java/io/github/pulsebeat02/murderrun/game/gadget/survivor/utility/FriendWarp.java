@@ -32,6 +32,8 @@ public final class FriendWarp extends SurvivorGadget {
     final GamePlayer target = this.getRandomSurvivorNotSame(manager, gamePlayer);
     final Location location = target.getLocation();
     player.teleport(location);
+    gamePlayer.playSound("entity.enderman.teleport");
+    target.playSound("entity.enderman.teleport");
   }
 
   private GamePlayer getRandomSurvivorNotSame(

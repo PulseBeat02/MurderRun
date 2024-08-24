@@ -37,6 +37,9 @@ public final class Distorter extends SurvivorGadget {
     scheduler.scheduleConditionalTask(
         () -> this.handleKillers(manager, location, item), 0L, 5L, item::isDead);
     scheduler.scheduleParticleTask(item, Color.PURPLE);
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("block.lever.click");
   }
 
   private void handleKillers(

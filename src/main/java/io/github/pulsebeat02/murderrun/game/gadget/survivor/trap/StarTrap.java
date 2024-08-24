@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
-import static net.kyori.adventure.key.Key.key;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -28,7 +26,7 @@ public final class StarTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllLivingInnocents(this::addPotionEffect);
-    murderer.playSound(key("entity.firework_rocket.blast"));
+    manager.playSoundForAllParticipants("entity.firework_rocket.blast");
   }
 
   private void addPotionEffect(final GamePlayer player) {

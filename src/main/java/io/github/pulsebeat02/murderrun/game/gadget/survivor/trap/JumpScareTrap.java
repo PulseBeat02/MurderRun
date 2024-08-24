@@ -2,12 +2,12 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.awt.Color;
-import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -30,16 +30,15 @@ public final class JumpScareTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
-
+    final PlayerManager manager = game.getPlayerManager();
     final ItemStack before = this.setPumpkinItemStack(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    final Key key = Sounds.JUMP_SCARE.getKey();
-    murderer.playSound(key);
+    murderer.playSound(Sounds.JUMP_SCARE);
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
-
     scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), 2 * 20L);
+    manager.playSoundForAllParticipants("entity.witch.celebrate");
   }
 
   private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {

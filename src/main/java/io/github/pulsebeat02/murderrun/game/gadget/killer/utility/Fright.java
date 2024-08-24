@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
-import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -40,8 +39,7 @@ public final class Fright extends KillerGadget {
 
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
     final ItemStack before = this.setPumpkinItemStack(survivor);
-    final Key key = Sounds.JUMP_SCARE.getKey();
-    survivor.playSound(key);
+    survivor.playSound(Sounds.JUMP_SCARE);
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));

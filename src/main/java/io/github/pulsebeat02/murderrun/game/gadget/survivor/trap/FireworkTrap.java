@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import com.google.common.collect.ImmutableList;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
@@ -34,9 +35,11 @@ public final class FireworkTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
+    final PlayerManager manager = game.getPlayerManager();
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
+    manager.playSoundForAllParticipants("entity.firework_rocket.blast");
     scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location, world), 0, 5, 10 * 20L);
   }
 

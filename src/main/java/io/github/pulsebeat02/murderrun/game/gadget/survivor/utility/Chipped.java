@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -33,6 +34,9 @@ public final class Chipped extends SurvivorGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.handleSurvivors(manager, player), 5 * 20L);
+
+    final GamePlayer owner = manager.getGamePlayer(player);
+    owner.playSound("block.amethyst_block.chime");
   }
 
   private void handleSurvivors(final PlayerManager manager, final Player target) {

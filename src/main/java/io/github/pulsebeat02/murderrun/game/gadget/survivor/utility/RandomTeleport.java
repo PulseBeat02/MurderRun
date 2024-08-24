@@ -6,6 +6,8 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
@@ -42,7 +44,10 @@ public final class RandomTeleport extends SurvivorGadget {
     final Block block = world.getHighestBlockAt(temp);
     final Location top = block.getLocation();
     final Location teleport = top.add(0, 1, 0);
-
     player.teleport(teleport);
+
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("entity.enderman.teleport");
   }
 }

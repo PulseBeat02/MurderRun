@@ -44,6 +44,7 @@ public final class Ghosting extends SurvivorGadget {
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleGhosting(game, gamePlayer), false);
     gamePlayer.addDeathTask(task);
+    gamePlayer.playSound("block.bone_block.break");
 
     final Component message = Message.GHOSTING_ACTIVATE.build();
     gamePlayer.sendMessage(message);

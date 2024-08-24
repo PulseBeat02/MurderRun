@@ -1,10 +1,10 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
-import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
@@ -31,11 +31,12 @@ public final class PonyTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
+    final PlayerManager manager = game.getPlayerManager();
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
     final Horse horse = this.spawnCustomisedHorse(world, location);
     this.setHorseSpeed(horse);
-    murderer.playSound(key("entity.horse.angry"));
+    manager.playSoundForAllParticipants("entity.horse.angry");
   }
 
   private void setHorseSpeed(final Horse horse) {

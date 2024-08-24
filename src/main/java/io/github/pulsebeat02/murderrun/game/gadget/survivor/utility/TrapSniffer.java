@@ -46,6 +46,7 @@ public final class TrapSniffer extends SurvivorGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Message.TRAP_SNIFFER_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("entity.sniffer.digging");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, gamePlayer), 0, 2 * 20L);

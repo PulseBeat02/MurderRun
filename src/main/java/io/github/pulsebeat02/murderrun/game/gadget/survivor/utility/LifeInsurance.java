@@ -56,6 +56,7 @@ public final class LifeInsurance extends SurvivorGadget {
 
     final Component message = Message.LIFE_INSURANCE_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("item.totem.use");
 
     final GameScheduler scheduler = game.getScheduler();
     final Consumer<Killer> consumer =

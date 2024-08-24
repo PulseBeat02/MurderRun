@@ -54,6 +54,9 @@ public final class Camera extends SurvivorGadget {
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
 
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("entity.ender_eye.death");
+
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
         () -> this.handleAllKillers(manager, entity, players), 0, 3 * 20L);

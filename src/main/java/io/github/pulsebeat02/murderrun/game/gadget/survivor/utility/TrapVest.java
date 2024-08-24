@@ -49,6 +49,7 @@ public final class TrapVest extends SurvivorGadget {
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleTraps(gadgetManager, gamePlayer, world), false);
     gamePlayer.addDeathTask(task);
+    gamePlayer.playSound("item.armor.equip_diamond");
 
     final Component message = Message.TRAP_VEST_ACTIVATE.build();
     gamePlayer.sendMessage(message);

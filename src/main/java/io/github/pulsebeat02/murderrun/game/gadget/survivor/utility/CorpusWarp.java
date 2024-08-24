@@ -1,14 +1,10 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import static net.kyori.adventure.key.Key.key;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,9 +33,7 @@ public final class CorpusWarp extends SurvivorGadget {
     if (location == null) {
       return;
     }
-
-    final Key key = key("entity.enderman.teleport");
     player.teleport(location);
-    target.playSound(key, Source.MASTER, 1f, 1f);
+    target.playSound("entity.enderman.teleport");
   }
 }

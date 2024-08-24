@@ -40,6 +40,7 @@ public final class SixthSense extends SurvivorGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Message.SIXTH_SENSE_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("entity.sniffer.digging");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, gamePlayer), 0, 2 * 20L);

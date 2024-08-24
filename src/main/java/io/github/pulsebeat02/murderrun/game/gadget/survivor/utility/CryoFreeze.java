@@ -14,6 +14,8 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,6 +47,9 @@ public final class CryoFreeze extends SurvivorGadget {
     final BlockVector3 vector3 = BukkitAdapter.asBlockVector(location);
     final BlockType ice = requireNonNull(BlockTypes.PACKED_ICE);
     final BlockState state = ice.getDefaultState();
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer owner = manager.getGamePlayer(player);
+    owner.playSound("block.glass.break");
 
     final Map map = game.getMap();
     final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();

@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
@@ -25,7 +27,7 @@ public final class Translocator extends SurvivorGadget {
   public Translocator() {
     super(
         "translocator",
-        Material.END_ROD,
+        Material.POPPED_CHORUS_FRUIT,
         Message.TRANSLOCATOR_NAME.build(),
         Message.TRANSLOCATOR_LORE.build(),
         64,
@@ -53,14 +55,15 @@ public final class Translocator extends SurvivorGadget {
     final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = this.byteArrayToLocation(data);
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("entity.enderman.teleport");
+
     player.teleport(location);
   }
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
-
-    super.onGadgetDrop(game, event, false);
-
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final org.bukkit.entity.Item item = event.getItemDrop();
@@ -69,6 +72,7 @@ public final class Translocator extends SurvivorGadget {
     PDCUtils.setPersistentDataAttribute(
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
     Item.builder(stack).lore(Message.TRANSLOCATOR_LORE1.build()).type(Material.LEVER);
+    super.onGadgetDrop(game, event, false);
   }
 
   private Location byteArrayToLocation(final byte[] array) {

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
@@ -137,6 +138,10 @@ public interface Participant {
 
   default void playSound(final Key key) {
     this.playSound(key, Source.MASTER, 1.0f, 1.0f);
+  }
+
+  default void playSound(final String key) {
+    this.playSound(key(key));
   }
 
   void playSound(final Key key, final Source category, final float volume, final float pitch);

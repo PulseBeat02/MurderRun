@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -76,6 +77,8 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final PlayerManager manager = this.game.getPlayerManager();
+    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
+
     manager.applyToAllMurderers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);

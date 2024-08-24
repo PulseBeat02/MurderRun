@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.awt.Color;
@@ -24,7 +25,8 @@ public final class FartTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer) {
-    murderer.playSound(Sounds.FART);
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(Sounds.FART);
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 3),
         new PotionEffect(PotionEffectType.NAUSEA, 7 * 20, 1));

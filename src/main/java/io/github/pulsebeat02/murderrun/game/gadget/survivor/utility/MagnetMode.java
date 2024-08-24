@@ -36,5 +36,6 @@ public final class MagnetMode extends SurvivorGadget {
 
     final Component message = Message.MAGNET_MODE_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("block.iron_trapdoor.close");
   }
 }

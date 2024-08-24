@@ -1,10 +1,10 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
-import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
@@ -38,11 +38,13 @@ public final class LevitationTrap extends SurvivorTrap {
 
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
-    murderer.playSound(key("entity.shulker.ambient"));
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, 7 * 20, 1));
     murderer.teleport(clone);
     scheduler.scheduleTask(() -> murderer.teleport(location), 7 * 20L);
     scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, murderer), 0, 5, 7 * 20L);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants("entity.shulker.ambient");
   }
 
   private void spawnParticle(final World world, final GamePlayer player) {

@@ -44,6 +44,9 @@ public final class IceSpirit extends SurvivorGadget {
       return;
     }
 
+    final GamePlayer owner = manager.getGamePlayer(player);
+    owner.playSound("entity.zombie.ambient");
+
     final Zombie iceSpirit = this.spawnSpirit(world, location, nearest);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.checkInteraction(manager, iceSpirit, nearest), 20L);

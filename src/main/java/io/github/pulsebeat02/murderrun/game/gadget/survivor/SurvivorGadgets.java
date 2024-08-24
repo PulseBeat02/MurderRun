@@ -124,23 +124,24 @@ public enum SurvivorGadgets {
   Drone -- roots you to the ground, but allows you to fly above and look
   Distorter -- fills killer screen with annoying particles until destroyed
   Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
+  Rewind -- rewinds player 5 seconds (must use circular buffer)
+  Murderer Rewind -- rewinds murderer 5 seconds
+  Distort Trap -- spawn guardians all over murderer until trap destroyed
+  Translocator -- one use teleporter, (becomes lever to warp)
+
 
   SURVIVOR TRAPS IMPLEMENTED:
 
-  Distort Trap -- spawn guardians all over murderer until trap destroyed
   Camera -- if killer within range glow
   Sixth Sense -- if killer is near makes them glow
   Trap Sniffer -- senses detect car parts within 15 blocks
   Chipped -- you can see all alive survivors on the map
-  Rewind -- rewinds player 5 seconds (must use circular buffer)
-  Murderer Rewind -- rewinds murderer 5 seconds
   Med Bot -- constant regeneration pool in area
   Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Shockwave Trap -- sets off massive blast flinging all players
   Mind Control -- controls player mind
   Ghosting -- become an annoying ghost after death
   Horcrux -- respawn after death
-  Translocator -- one use teleporter, (becomes lever to warp)
   Portal Trap -- teleports trap to killer
   Resurrection Stone -- resurrects a dead player
 

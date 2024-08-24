@@ -27,5 +27,6 @@ public final class Cloak extends SurvivorGadget {
 
     final Component message = Message.CLOAK_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(message);
+    manager.playSoundForAllParticipants("entity.phantom.flap");
   }
 }

@@ -35,6 +35,7 @@ public final class ShockwaveTrap extends SurvivorTrap {
     final World world = requireNonNull(origin.getWorld());
     world.createExplosion(origin, 0, false, false);
     manager.applyToAllParticipants(participant -> this.applyShockwave(participant, origin));
+    manager.playSoundForAllParticipants("entity.creeper.death");
   }
 
   private void applyShockwave(final Participant participant, final Location origin) {

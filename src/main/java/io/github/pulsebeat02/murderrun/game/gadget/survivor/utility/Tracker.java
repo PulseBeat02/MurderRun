@@ -31,6 +31,7 @@ public final class Tracker extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     manager.applyToAllMurderers(killer -> this.handleGlowing(killer, gamePlayer));
+    gamePlayer.playSound("entity.experience_orb.pickup");
   }
 
   private void handleGlowing(final GamePlayer killer, final GamePlayer player) {

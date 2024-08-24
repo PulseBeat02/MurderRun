@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -76,6 +77,8 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
         5 * 20L);
 
     final PlayerManager manager = this.game.getPlayerManager();
+    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
+
     manager.applyToAllMurderers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);

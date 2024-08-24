@@ -23,6 +23,8 @@ public final class Rewind extends SurvivorGadget {
     final MovementManager movementManager = manager.getMovementManager();
     final GamePlayer survivor = manager.getGamePlayer(player);
     final boolean successful = movementManager.handleRewind(survivor);
+    player.setFallDistance(0.0f);
     super.onGadgetDrop(game, event, successful);
+    survivor.playSound("entity.shulker.teleport");
   }
 }
