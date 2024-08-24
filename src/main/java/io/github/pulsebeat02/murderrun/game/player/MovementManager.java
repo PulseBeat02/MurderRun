@@ -30,7 +30,7 @@ public final class MovementManager {
     final GameScheduler scheduler = this.game.getScheduler();
     final PlayerManager manager = this.game.getPlayerManager();
     this.addAllPlayers(manager);
-    scheduler.scheduleRepeatedTask(() -> this.trackMovement(manager), 0, 1);
+    scheduler.scheduleRepeatedTask(() -> this.trackMovement(manager), 0, 5);
   }
 
   private void addAllPlayers(final PlayerManager manager) {
