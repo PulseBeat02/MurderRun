@@ -69,11 +69,11 @@ public abstract class AbstractGadget implements Gadget {
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
     final Item item = event.getItemDrop();
-    item.setUnlimitedLifetime(true);
-    item.setPickupDelay(Integer.MAX_VALUE);
     if (remove) {
       item.remove();
     } else {
+      item.setUnlimitedLifetime(true);
+      item.setPickupDelay(Integer.MAX_VALUE);
       event.setCancelled(true);
     }
   }
