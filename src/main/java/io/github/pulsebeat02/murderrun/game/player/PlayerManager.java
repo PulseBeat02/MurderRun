@@ -6,6 +6,7 @@ import static net.kyori.adventure.key.Key.key;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.KillerLocationTracker;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
@@ -331,5 +333,21 @@ public final class PlayerManager {
 
   public MovementManager getMovementManager() {
     return this.movementManager;
+  }
+
+  public void setEntityGlowingForAliveInnocents(
+      final GamePlayer entity, final ChatColor color, final long duration) {
+    final GameScheduler scheduler = this.game.getScheduler();
+    this.setEntityGlowingForAliveInnocents(entity, color);
+    scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity), duration);
+  }
+
+  public void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
+    this.applyToAllLivingInnocents(
+        innocent -> entity.apply(target -> innocent.setGlowing(target, color)));
+  }
+
+  public void removeEntityGlowingForAliveInnocents(final GamePlayer entity) {
+    this.applyToAllLivingInnocents(innocent -> entity.apply(innocent::removeGlowing));
   }
 }

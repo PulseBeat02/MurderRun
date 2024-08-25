@@ -30,9 +30,9 @@ public abstract sealed class GamePlayer implements Participant permits Survivor,
   private final Game game;
   private final UUID uuid;
   private final Audience audience;
-
   private final Collection<PlayerDeathTask> tasks;
   private final Collection<BossBar> bars;
+
   private @Nullable ArmorStand corpse;
   private boolean alive;
 

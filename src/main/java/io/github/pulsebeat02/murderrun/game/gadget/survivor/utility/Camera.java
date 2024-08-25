@@ -58,24 +58,22 @@ public final class Camera extends SurvivorGadget {
     gamePlayer.playSound("entity.ender_eye.death");
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.handleAllKillers(manager, entity, players), 0, 3 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleAllKillers(manager, entity), 0, 3 * 20L);
   }
 
-  private void handleAllKillers(
-      final PlayerManager manager, final Entity entity, final Collection<Survivor> players) {
-    manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(murderer, entity, players));
+  private void handleAllKillers(final PlayerManager manager, final Entity entity) {
+    manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(manager, murderer, entity));
   }
 
   private void handleGlowMurderer(
-      final Killer killer, final Entity entity, final Collection<Survivor> survivors) {
+      final PlayerManager manager, final Killer killer, final Entity entity) {
     if (killer.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(killer);
-      killer.setGlowColorForever(ChatColor.RED, survivors);
+      manager.setEntityGlowingForAliveInnocents(killer, ChatColor.RED);
       this.setLookDirection(killer, entity);
     } else if (this.glowPlayers.contains(killer)) {
       this.glowPlayers.remove(killer);
-      killer.removeGlow(survivors);
+      manager.removeEntityGlowingForAliveInnocents(killer);
     }
   }
 

@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.reflect;
 
-import fr.skytasul.glowingentities.GlowingEntities;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -14,7 +13,6 @@ public final class PacketToolsProvider {
   private static final String CLASS_PATH = "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools";
 
   public static final PacketToolAPI PACKET_API;
-  public static final GlowingEntities GLOWING_API;
 
   static {
     final Plugin plugin = JavaPlugin.getProvidingPlugin(MurderRun.class);
@@ -39,7 +37,6 @@ public final class PacketToolsProvider {
           e);
     }
     PACKET_API = api;
-    GLOWING_API = new GlowingEntities(plugin);
   }
 
   public static void init() {

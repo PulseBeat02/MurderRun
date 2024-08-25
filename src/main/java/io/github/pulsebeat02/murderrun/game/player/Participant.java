@@ -55,7 +55,7 @@ public interface Participant {
   default void removeAllGlowing() {
     this.apply(player -> {
       final Collection<? extends Player> viewers = Bukkit.getOnlinePlayers();
-      viewers.forEach(viewer -> this.unsetGlowing0(player, viewer));
+      viewers.forEach(this::removeEntityGlowingForPlayer);
     });
   }
 
@@ -189,44 +189,34 @@ public interface Participant {
     return !type.isSolid();
   }
 
-  default void setGlowColorDuration(
-      final GameScheduler scheduler,
-      final long ticks,
-      final ChatColor color,
-      final Collection<? extends GamePlayer> receivers) {
-    this.setGlowColorForever(color, receivers);
-    scheduler.scheduleTask(() -> this.removeGlow(receivers), ticks);
-  }
-
-  default void setGlowColorForever(
-      final ChatColor color, final Collection<? extends GamePlayer> receivers) {
+  default void setEntityGlowingForPlayer(final Entity entity, final ChatColor color) {
     this.apply(player -> {
-      for (final GamePlayer receiver : receivers) {
-        receiver.apply(watcher -> this.setGlowing0(player, watcher, color));
+      final UUID watcherUUID = player.getUniqueId();
+      final String watcherID = watcherUUID.toString();
+      final UUID uuid = entity.getUniqueId();
+      final String id = uuid.toString();
+      final Scoreboard scoreboard = player.getScoreboard();
+      final Team temp = scoreboard.getTeam(id);
+      if (temp != null) {
+        temp.unregister();
       }
+      final Team team = scoreboard.registerNewTeam(id);
+      team.addEntry(id);
+      team.addEntry(watcherID);
+      team.setColor(color);
+      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
     });
   }
 
-  private void setGlowing0(final Entity entity, final Player watcher, final ChatColor color) {
-    try {
-      PacketToolsProvider.GLOWING_API.setGlowing(entity, watcher, color);
-    } catch (final ReflectiveOperationException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  private void unsetGlowing0(final Entity entity, final Player watcher) {
-    try {
-      PacketToolsProvider.GLOWING_API.unsetGlowing(entity, watcher);
-    } catch (final ReflectiveOperationException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  default void removeGlow(final Collection<? extends GamePlayer> receivers) {
+  default void removeEntityGlowingForPlayer(final Entity entity) {
     this.apply(player -> {
-      for (final GamePlayer receiver : receivers) {
-        receiver.apply(watcher -> this.unsetGlowing0(player, watcher));
+      final UUID uuid = entity.getUniqueId();
+      final String id = uuid.toString();
+      final Scoreboard scoreboard = player.getScoreboard();
+      final Team temp = scoreboard.getTeam(id);
+      if (temp != null) {
+        temp.unregister();
+        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
       }
     });
   }
@@ -296,14 +286,6 @@ public interface Participant {
   void setAlive(final boolean alive);
 
   Game getGame();
-
-  default void setEntityGlowingForPlayer(final Entity entity, final ChatColor color) {
-    this.apply(innocent -> this.setGlowing0(entity, innocent, color));
-  }
-
-  default void removeEntityGlowingForPlayer(final Entity entity) {
-    this.apply(innocent -> this.unsetGlowing0(entity, innocent));
-  }
 
   default void setEntityGlowingForPlayer(final GamePlayer gamePlayer, final ChatColor color) {
     gamePlayer.apply(player -> this.setEntityGlowingForPlayer(player, color));

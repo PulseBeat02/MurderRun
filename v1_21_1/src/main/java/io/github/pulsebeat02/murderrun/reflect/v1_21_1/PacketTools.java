@@ -7,6 +7,8 @@ import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
@@ -16,7 +18,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import org.bukkit.Bukkit;
@@ -69,6 +74,26 @@ public class PacketTools implements PacketToolAPI {
       return CraftItemStack.asCraftMirror(stack);
     } catch (final IOException e) {
       throw new AssertionError(e);
+    }
+  }
+
+  @Override
+  public void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing) {
+    final Holder<MobEffect> effect = MobEffects.GLOWING;
+    final CraftPlayer player = (CraftPlayer) watcher;
+    final int id = entity.getEntityId();
+    final ServerPlayer handle = player.getHandle();
+    final ServerGamePacketListenerImpl connection = handle.connection;
+    if (glowing) {
+      final int duration = Integer.MAX_VALUE;
+      final MobEffectInstance instance = new MobEffectInstance(effect, duration, 0, false, false);
+      final ClientboundUpdateMobEffectPacket addPacket = new ClientboundUpdateMobEffectPacket(
+              id, instance, false);
+      connection.send(addPacket);
+    } else {
+      final ClientboundRemoveMobEffectPacket removePacket = new ClientboundRemoveMobEffectPacket(
+              id, effect);
+      connection.send(removePacket);
     }
   }
 }
