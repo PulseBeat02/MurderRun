@@ -8,7 +8,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -92,14 +94,6 @@ public class PacketTools implements PacketToolAPI {
     final SynchedEntityData data = nmsEntity.getEntityData();
     final EntityDataAccessor<Byte> glowingAccessor = new EntityDataAccessor<>(0,
         EntityDataSerializers.BYTE);
-    byte flags = data.get(glowingAccessor);
-    if (glowing) {
-      flags |= 0x40;
-    } else {
-      flags &= ~0x40;
-    }
-    data.set(glowingAccessor, flags);
-
     final CraftPlayer player = (CraftPlayer) watcher;
     final ServerPlayer handle = player.getHandle();
     final ServerGamePacketListenerImpl connection = handle.connection;
@@ -109,7 +103,12 @@ public class PacketTools implements PacketToolAPI {
       return;
     }
 
-    final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, packed);
+    final List<DataValue<?>> copy = new ArrayList<>(packed);
+    final byte newMask = glowing ? 0x40 : (byte) 0;
+    final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
+    copy.set(0, newValue);
+
+    final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);
     connection.send(packet);
   }
 }
