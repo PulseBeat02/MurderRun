@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import net.minecraft.core.Holder;
@@ -106,7 +107,22 @@ public class PacketTools implements PacketToolAPI {
     final List<DataValue<?>> copy = new ArrayList<>(packed);
     final byte newMask = glowing ? 0x40 : (byte) 0;
     final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
-    copy.set(0, newValue);
+
+    int index = -1;
+    for (int i = 0; i < packed.size(); i++) {
+      final DataValue<?> value = packed.get(i);
+      final int valueID = value.id();
+      if (valueID == 0) {
+        index = i;
+        break;
+      }
+    }
+
+    if (index == -1) {
+      copy.addFirst(newValue);
+    } else {
+      copy.set(index, newValue);
+    }
 
     final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);
     connection.send(packet);

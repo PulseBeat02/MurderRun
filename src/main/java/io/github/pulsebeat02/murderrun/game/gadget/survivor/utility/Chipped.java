@@ -29,17 +29,16 @@ public final class Chipped extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer owner = manager.getGamePlayer(player);
     manager.applyToAllLivingInnocents(
-        innocent -> innocent.setEntityGlowingForPlayer(player, ChatColor.GREEN));
+        innocent -> owner.setEntityGlowingForPlayer(innocent, ChatColor.GREEN));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.handleSurvivors(manager, player), 5 * 20L);
-
-    final GamePlayer owner = manager.getGamePlayer(player);
+    scheduler.scheduleTask(() -> this.handleSurvivors(manager, owner), 5 * 20L);
     owner.playSound("block.amethyst_block.chime");
   }
 
-  private void handleSurvivors(final PlayerManager manager, final Player target) {
-    manager.applyToAllLivingInnocents(innocent -> innocent.removeEntityGlowingForPlayer(target));
+  private void handleSurvivors(final PlayerManager manager, final GamePlayer owner) {
+    manager.applyToAllLivingInnocents(owner::removeEntityGlowingForPlayer);
   }
 }

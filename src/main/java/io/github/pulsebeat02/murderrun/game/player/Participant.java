@@ -6,12 +6,9 @@ import static net.kyori.adventure.key.Key.key;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import java.util.Collection;
-import java.util.Map;
 import java.util.UUID;
-import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -23,7 +20,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
@@ -33,22 +29,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-import org.bukkit.scoreboard.Team.Option;
-import org.bukkit.scoreboard.Team.OptionStatus;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface Participant {
-
-  String HIDE_NAME_TAG_TEAM_NAME = "hide-name-tag-%s";
-
-  Map<org.bukkit.entity.Player, Team> HIDE_NAME_TAG_TEAMS = new WeakHashMap<>();
-  Map<UUID, WorldBorder> WORLD_BORDERS = new WeakHashMap<>();
 
   org.bukkit.entity.Player getInternalPlayer();
 
@@ -189,85 +175,19 @@ public interface Participant {
     return !type.isSolid();
   }
 
-  default void setEntityGlowingForPlayer(final Entity entity, final ChatColor color) {
-    this.apply(player -> {
-      final String watcher = player.getName();
-      final UUID uuid = entity.getUniqueId();
-      final String id = uuid.toString();
-      final Scoreboard scoreboard = player.getScoreboard();
-      final Team temp = scoreboard.getTeam(id);
-      if (temp != null) {
-        temp.unregister();
-      }
+  void setEntityGlowingForPlayer(final Entity entity, final ChatColor color);
 
-      final Team team = scoreboard.registerNewTeam(id);
-      team.addEntry(id);
-      team.addEntry(watcher);
-      team.setColor(color);
-      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
-    });
-  }
+  void removeEntityGlowingForPlayer(final Entity entity);
 
-  default void removeEntityGlowingForPlayer(final Entity entity) {
-    this.apply(player -> {
-      final UUID uuid = entity.getUniqueId();
-      final String id = uuid.toString();
-      final Scoreboard scoreboard = player.getScoreboard();
-      final Team temp = scoreboard.getTeam(id);
-      if (temp != null) {
-        temp.unregister();
-        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-      }
-    });
-  }
-
-  default void addFakeWorldBorderEffect() {
-    this.apply(player -> {
-      final World world = player.getWorld();
-      final UUID id = world.getUID();
-      WORLD_BORDERS.computeIfAbsent(id, ignore -> {
-        final WorldBorder worldBorder = world.getWorldBorder();
-        final WorldBorder fakeBorder = Bukkit.createWorldBorder();
-        fakeBorder.setCenter(worldBorder.getCenter());
-        fakeBorder.setDamageAmount(worldBorder.getDamageAmount());
-        fakeBorder.setDamageBuffer(worldBorder.getDamageBuffer());
-        fakeBorder.setSize(worldBorder.getSize());
-        fakeBorder.setWarningDistance(Integer.MAX_VALUE);
-        fakeBorder.setWarningTime(worldBorder.getWarningTime());
-        player.setWorldBorder(fakeBorder);
-        return fakeBorder;
-      });
-    });
-  }
+  void addFakeWorldBorderEffect();
 
   default void removeFakeWorldBorderEffect() {
     this.apply(player -> player.setWorldBorder(null));
   }
 
-  default void hideNameTag(final GameScheduler scheduler, final long ticks) {
-    this.apply(player -> {
-      final ScoreboardManager manager = requireNonNull(Bukkit.getScoreboardManager());
-      final Scoreboard scoreboard = manager.getMainScoreboard();
-      final UUID hideID = UUID.randomUUID();
-      final String name = HIDE_NAME_TAG_TEAM_NAME.formatted(hideID);
-      final Team team = scoreboard.registerNewTeam(name);
-      team.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
-      team.addEntry(player.getName());
-      HIDE_NAME_TAG_TEAMS.put(player, team);
-    });
-    scheduler.scheduleTask(this::showNameTag, ticks);
-  }
+  void hideNameTag(final GameScheduler scheduler, final long ticks);
 
-  default void showNameTag() {
-    this.apply(player -> {
-      final Team team = HIDE_NAME_TAG_TEAMS.get(player);
-      if (team == null) {
-        return;
-      }
-      team.unregister();
-      HIDE_NAME_TAG_TEAMS.remove(player);
-    });
-  }
+  void showNameTag();
 
   default void teleport(final Location location) {
     this.apply(player -> player.teleport(location));
