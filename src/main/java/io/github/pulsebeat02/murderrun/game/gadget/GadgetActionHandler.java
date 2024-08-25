@@ -66,6 +66,8 @@ public final class GadgetActionHandler implements Listener {
     final Game game = this.manager.getGame();
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
+    item.setUnlimitedLifetime(true);
+    item.setPickupDelay(Integer.MAX_VALUE);
     this.handleEventLogic(stack, gadget -> gadget.onGadgetDrop(game, event, false));
   }
 
@@ -138,7 +140,10 @@ public final class GadgetActionHandler implements Listener {
       }
     }
 
-    if (closestItem != null) {
+    if (closest instanceof Trap) {
+      if (closestItem == null) { // checker framework
+        return null;
+      }
       closestItem.remove();
     }
 

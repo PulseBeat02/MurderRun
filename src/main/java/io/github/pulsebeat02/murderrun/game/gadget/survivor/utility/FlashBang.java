@@ -22,6 +22,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
@@ -46,6 +47,9 @@ public final class FlashBang extends SurvivorGadget implements Listener {
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
     super.onGadgetDrop(game, event, false);
   }
+
+  @Override
+  public void onGadgetRightClick(Game game, PlayerInteractEvent event, boolean remove) {}
 
   @EventHandler
   public void onProjectileHitEvent(final ProjectileHitEvent event) {

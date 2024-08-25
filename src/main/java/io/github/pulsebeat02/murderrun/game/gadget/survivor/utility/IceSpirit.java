@@ -18,13 +18,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public final class IceSpirit extends SurvivorGadget {
 
   public IceSpirit() {
     super(
         "ice_spirit",
-        Material.SNOWBALL,
+        Material.ZOMBIE_HEAD,
         Message.ICE_SPIRIT_NAME.build(),
         Message.ICE_SPIRIT_LORE.build(),
         16);
@@ -47,9 +49,12 @@ public final class IceSpirit extends SurvivorGadget {
     final GamePlayer owner = manager.getGamePlayer(player);
     owner.playSound("entity.zombie.ambient");
 
-    final Zombie iceSpirit = this.spawnSpirit(world, location, nearest);
+    final Zombie iceSpirit = this.spawnSpirit(world, location);
+    iceSpirit.setTarget(null);
+
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.checkInteraction(manager, iceSpirit, nearest), 20L);
+    scheduler.scheduleConditionalTask(
+        () -> this.checkInteraction(manager, iceSpirit, nearest), 0, 5L, iceSpirit::isDead);
   }
 
   private void checkInteraction(
@@ -57,7 +62,8 @@ public final class IceSpirit extends SurvivorGadget {
     final Location origin = zombie.getLocation();
     final Location target = nearest.getLocation();
     final double distance = origin.distanceSquared(target);
-    if (distance < 1) {
+    nearest.apply(zombie::setTarget);
+    if (distance < 4) {
       this.applyDebuffs(manager, nearest);
       zombie.remove();
     }
@@ -69,23 +75,19 @@ public final class IceSpirit extends SurvivorGadget {
     killer.disableJump(scheduler, 7 * 20L);
     killer.apply(player -> player.setFreezeTicks(7 * 20));
     killer.disableWalkWithFOVEffects(10 * 20);
-
     final Component msg = Message.FREEZE_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(msg);
   }
 
-  private Zombie spawnSpirit(final World world, final Location location, final GamePlayer nearest) {
+  private Zombie spawnSpirit(final World world, final Location location) {
     return world.spawn(location, Zombie.class, zombie -> {
+      zombie.setInvulnerable(true);
+      zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
       this.setEquipment(zombie);
-      this.setTarget(zombie, nearest);
       if (zombie instanceof final Ageable ageable) {
         ageable.setBaby();
       }
     });
-  }
-
-  private void setTarget(final Zombie zombie, final GamePlayer nearest) {
-    nearest.apply(zombie::setTarget);
   }
 
   private void setEquipment(final Zombie zombie) {

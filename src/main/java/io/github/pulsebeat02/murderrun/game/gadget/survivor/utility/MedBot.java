@@ -81,8 +81,21 @@ public final class MedBot extends SurvivorGadget {
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
     if (distance < 64) {
-      innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 5, 2));
+      innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 20, 2));
     }
+  }
+
+  private void handleRotation(final GameScheduler scheduler, final ArmorStand stand) {
+    // in dev
+    scheduler.scheduleRepeatedTask(
+        () -> {
+          final Location location = stand.getLocation();
+          final float yaw = location.getYaw();
+          location.setYaw(yaw + 6);
+        },
+        0,
+        1,
+        3 * 20L);
   }
 
   private void handleArmorStandEffects(final ArmorStand stand) {
@@ -104,9 +117,9 @@ public final class MedBot extends SurvivorGadget {
   }
 
   private void handleRotation(final ArmorStand stand) {
+    final float yaw = (float) (System.currentTimeMillis() % 360);
     final Location location = stand.getLocation();
-    final float yaw = ((float) System.currentTimeMillis() / 10) % 360;
-    location.setPitch(yaw);
+    location.setYaw(yaw);
     stand.teleport(location);
   }
 }

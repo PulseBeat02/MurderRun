@@ -28,26 +28,23 @@ public final class Horcrux extends SurvivorGadget {
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
-
-    super.onGadgetDrop(game, event, false);
-
     final Player player = event.getPlayer();
-    final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerDeathTask task =
-        new PlayerDeathTask(() -> this.handleHorcrux(gamePlayer, location), true);
-    gamePlayer.addDeathTask(task);
-    gamePlayer.playSound("block.furnace.fire_crackle");
-
     final GameScheduler scheduler = game.getScheduler();
     final Item item = event.getItemDrop();
+    final PlayerDeathTask task =
+        new PlayerDeathTask(() -> this.handleHorcrux(gamePlayer, item), true);
+    gamePlayer.addDeathTask(task);
+    gamePlayer.playSound("block.furnace.fire_crackle");
     scheduler.scheduleParticleTask(item, Color.BLACK);
   }
 
-  private void handleHorcrux(final GamePlayer player, final Location location) {
+  private void handleHorcrux(final GamePlayer player, final Item item) {
     final Component message = Message.HORCRUX_ACTIVATE.build();
-    player.teleport(location);
+    final Location location = item.getLocation();
+    player.apply(raw -> raw.setRespawnLocation(location, true));
     player.sendMessage(message);
+    item.remove();
   }
 }

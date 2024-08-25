@@ -71,6 +71,7 @@ public final class PlayerDeathTool {
   private void customizeArmorStand(final ArmorStand stand) {
     stand.setInvulnerable(true);
     stand.setGravity(false);
+    stand.setBasePlate(false);
   }
 
   private void setArmorStandRotations(final ArmorStand stand) {
@@ -126,12 +127,8 @@ public final class PlayerDeathTool {
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {
-
-    final Location location = gamePlayer.getDeathLocation();
-    if (location == null) {
-      throw new AssertionError("Player didn't die! Fake death error?");
-    }
-
+    final ArmorStand stand = requireNonNull(gamePlayer.getCorpse());
+    final Location location = stand.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
     final World world = requireNonNull(clone.getWorld());
     world.spawnParticle(Particle.DUST, clone, 10, 0.5, 0.5, 0.5, new DustOptions(Color.RED, 4));

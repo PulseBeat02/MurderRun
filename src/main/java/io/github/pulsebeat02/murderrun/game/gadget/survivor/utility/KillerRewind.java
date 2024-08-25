@@ -6,12 +6,17 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MovementManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class KillerRewind extends SurvivorGadget {
+
+  // global cooldown for each player
+  private final Map<GamePlayer, Long> rewindCooldown;
 
   public KillerRewind() {
     super(
@@ -20,6 +25,7 @@ public final class KillerRewind extends SurvivorGadget {
         Message.MURDERER_REWIND_NAME.build(),
         Message.MURDERER_REWIND_LORE.build(),
         16);
+    this.rewindCooldown = new HashMap<>();
   }
 
   @Override
@@ -30,17 +36,39 @@ public final class KillerRewind extends SurvivorGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
+    final MovementManager movementManager = manager.getMovementManager();
     final GamePlayer closest = manager.getNearestKiller(location);
     if (closest == null) {
       return;
     }
 
-    final MovementManager movementManager = manager.getMovementManager();
-    final boolean successful = movementManager.handleRewind(closest);
-    closest.apply(raw -> raw.setFallDistance(0.0f));
-    super.onGadgetDrop(game, event, successful);
+    final long current = System.currentTimeMillis();
+    if (!this.rewindCooldown.containsKey(closest)) {
+      this.rewindCooldown.put(closest, current);
+      this.handleRewind(game, event, movementManager, closest, player, current);
+      return;
+    }
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound("entity.shulker.teleport");
+    final long value = this.rewindCooldown.get(closest);
+    if (current - value < 3000) {
+      super.onGadgetDrop(game, event, false);
+      return;
+    }
+
+    this.handleRewind(game, event, movementManager, closest, player, current);
+  }
+
+  private void handleRewind(
+      final Game game,
+      final PlayerDropItemEvent event,
+      final MovementManager movementManager,
+      final GamePlayer killer,
+      final Player player,
+      final long current) {
+    final boolean successful = movementManager.handleRewind(killer);
+    player.setFallDistance(0.0f);
+    this.rewindCooldown.put(killer, current);
+    super.onGadgetDrop(game, event, successful);
+    killer.playSound("entity.shulker.teleport");
   }
 }

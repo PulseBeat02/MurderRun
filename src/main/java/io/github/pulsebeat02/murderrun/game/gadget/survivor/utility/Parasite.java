@@ -32,25 +32,21 @@ public final class Parasite extends SurvivorGadget {
 
     final Item item = event.getItemDrop();
     final Player player = event.getPlayer();
-    final Location origin = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleConditionalTask(
-        () -> this.handleKillers(manager, origin, item), 0, 2 * 20L, item::isDead);
+        () -> this.handleKillers(manager, item), 0, 2 * 20L, item::isDead);
 
     scheduler.scheduleParticleTask(item, Color.GREEN);
   }
 
-  private void handleKillers(final PlayerManager manager, final Location origin, final Item item) {
-    manager.applyToAllMurderers(
-        killer -> this.checkActivationDistance(killer, origin, manager, item));
+  private void handleKillers(final PlayerManager manager, final Item item) {
+    manager.applyToAllMurderers(killer -> this.checkActivationDistance(killer, manager, item));
   }
 
   private void checkActivationDistance(
-      final GamePlayer player,
-      final Location origin,
-      final PlayerManager manager,
-      final Item item) {
+      final GamePlayer player, final PlayerManager manager, final Item item) {
+    final Location origin = item.getLocation();
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
     if (distance < 4) {

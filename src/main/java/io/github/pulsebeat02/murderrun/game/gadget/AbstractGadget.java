@@ -72,8 +72,6 @@ public abstract class AbstractGadget implements Gadget {
     if (remove) {
       item.remove();
     } else {
-      item.setUnlimitedLifetime(true);
-      item.setPickupDelay(Integer.MAX_VALUE);
       event.setCancelled(true);
     }
   }

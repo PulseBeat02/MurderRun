@@ -30,32 +30,27 @@ public final class Distorter extends SurvivorGadget {
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
 
     final Player player = event.getPlayer();
-    final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     final Item item = event.getItemDrop();
     scheduler.scheduleConditionalTask(
-        () -> this.handleKillers(manager, location, item), 0L, 5L, item::isDead);
+        () -> this.handleKillers(manager, item), 0L, 5L, item::isDead);
     scheduler.scheduleParticleTask(item, Color.PURPLE);
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     gamePlayer.playSound("block.lever.click");
   }
 
-  private void handleKillers(
-      final PlayerManager manager, final Location location, final Item item) {
-    manager.applyToAllMurderers(
-        killer -> this.applyDistortionEffect(manager, killer, location, item));
+  private void handleKillers(final PlayerManager manager, final Item item) {
+    manager.applyToAllMurderers(killer -> this.applyDistortionEffect(manager, killer, item));
   }
 
   private void applyDistortionEffect(
-      final PlayerManager manager,
-      final GamePlayer killer,
-      final Location origin,
-      final Item item) {
+      final PlayerManager manager, final GamePlayer killer, final Item item) {
     final Location location = killer.getLocation();
+    final Location origin = item.getLocation();
     final double distance = location.distanceSquared(origin);
-    if (distance < 1) {
+    if (distance < 4) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       item.remove();

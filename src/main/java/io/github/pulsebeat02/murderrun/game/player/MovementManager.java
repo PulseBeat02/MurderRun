@@ -75,6 +75,7 @@ public final class MovementManager {
       if (difference <= 5000) {
         final Location key = entry.getKey();
         player.teleport(key);
+        iterator.remove();
         break;
       }
       iterator.remove();

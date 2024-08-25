@@ -41,6 +41,7 @@ public final class GamePlayerDeathEvent implements Listener {
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     if (this.checkDeathCancellation(gamePlayer)) {
+      player.spigot().respawn();
       return;
     }
 
@@ -81,6 +82,7 @@ public final class GamePlayerDeathEvent implements Listener {
       final PlayerDeathTask task = iterator.next();
       cancel = task.isCancelDeath();
       if (cancel) {
+        task.run();
         iterator.remove();
         return true;
       }
