@@ -21,6 +21,7 @@ public final class Keys {
   public static NamespacedKey PORTAL_GUN = createNamespacedPluginKey("portal-gun");
   public static NamespacedKey UUID = createNamespacedPluginKey("uuid");
   public static NamespacedKey AIR_DROP = createNamespacedPluginKey("air_drop");
+  public static NamespacedKey ICE_SPIRIT_TARGET = createNamespacedPluginKey("ice-spirit-target");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

@@ -29,7 +29,8 @@ public final class JumpScareTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(
+      final Game game, final GamePlayer murderer, final org.bukkit.entity.Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final ItemStack before = this.setPumpkinItemStack(murderer);
     final GameScheduler scheduler = game.getScheduler();

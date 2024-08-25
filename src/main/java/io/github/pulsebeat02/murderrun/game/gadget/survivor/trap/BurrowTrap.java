@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 public final class BurrowTrap extends SurvivorTrap {
@@ -25,7 +26,7 @@ public final class BurrowTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
     final Location location = murderer.getLocation();
     final Location clone = location.clone();

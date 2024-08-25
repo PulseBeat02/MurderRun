@@ -191,8 +191,7 @@ public interface Participant {
 
   default void setEntityGlowingForPlayer(final Entity entity, final ChatColor color) {
     this.apply(player -> {
-      final UUID watcherUUID = player.getUniqueId();
-      final String watcherID = watcherUUID.toString();
+      final String watcher = player.getName();
       final UUID uuid = entity.getUniqueId();
       final String id = uuid.toString();
       final Scoreboard scoreboard = player.getScoreboard();
@@ -200,9 +199,10 @@ public interface Participant {
       if (temp != null) {
         temp.unregister();
       }
+
       final Team team = scoreboard.registerNewTeam(id);
       team.addEntry(id);
-      team.addEntry(watcherID);
+      team.addEntry(watcher);
       team.setColor(color);
       PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
     });
@@ -252,7 +252,7 @@ public interface Participant {
       final String name = HIDE_NAME_TAG_TEAM_NAME.formatted(hideID);
       final Team team = scoreboard.registerNewTeam(name);
       team.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
-      team.addEntry(player.getDisplayName());
+      team.addEntry(player.getName());
       HIDE_NAME_TAG_TEAMS.put(player, team);
     });
     scheduler.scheduleTask(this::showNameTag, ticks);

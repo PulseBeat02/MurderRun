@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 
 public final class SpawnTrap extends SurvivorTrap {
 
@@ -26,7 +27,7 @@ public final class SpawnTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());

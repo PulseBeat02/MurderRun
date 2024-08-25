@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +17,12 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.SynchedEntityData.DataValue;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -26,6 +32,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import org.bukkit.Bukkit;
 import org.bukkit.UnsafeValues;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
@@ -79,21 +86,30 @@ public class PacketTools implements PacketToolAPI {
 
   @Override
   public void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing) {
-    final Holder<MobEffect> effect = MobEffects.GLOWING;
+
+    final CraftEntity glow = (CraftEntity) entity;
+    final net.minecraft.world.entity.Entity nmsEntity = glow.getHandle();
+    final SynchedEntityData data = nmsEntity.getEntityData();
+    final EntityDataAccessor<Byte> glowingAccessor = new EntityDataAccessor<>(0,
+        EntityDataSerializers.BYTE);
+    byte flags = data.get(glowingAccessor);
+    if (glowing) {
+      flags |= 0x40;
+    } else {
+      flags &= ~0x40;
+    }
+    data.set(glowingAccessor, flags);
+
     final CraftPlayer player = (CraftPlayer) watcher;
-    final int id = entity.getEntityId();
     final ServerPlayer handle = player.getHandle();
     final ServerGamePacketListenerImpl connection = handle.connection;
-    if (glowing) {
-      final int duration = Integer.MAX_VALUE;
-      final MobEffectInstance instance = new MobEffectInstance(effect, duration, 0, false, false);
-      final ClientboundUpdateMobEffectPacket addPacket = new ClientboundUpdateMobEffectPacket(
-              id, instance, false);
-      connection.send(addPacket);
-    } else {
-      final ClientboundRemoveMobEffectPacket removePacket = new ClientboundRemoveMobEffectPacket(
-              id, effect);
-      connection.send(removePacket);
+    final int id = entity.getEntityId();
+    final List<DataValue<?>> packed = data.getNonDefaultValues();
+    if (packed == null) {
+      return;
     }
+
+    final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, packed);
+    connection.send(packet);
   }
 }

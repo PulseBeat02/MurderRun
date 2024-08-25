@@ -52,5 +52,5 @@ public abstract class Trap extends AbstractGadget {
     scheduler.scheduleParticleTask(item, bukkitColor);
   }
 
-  public abstract void onTrapActivate(final Game game, final GamePlayer activee);
+  public abstract void onTrapActivate(final Game game, final GamePlayer activee, final Item item);
 }

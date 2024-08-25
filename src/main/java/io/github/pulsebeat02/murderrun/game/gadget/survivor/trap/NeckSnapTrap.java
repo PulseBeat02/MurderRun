@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
 
 public final class NeckSnapTrap extends SurvivorTrap {
@@ -26,7 +27,7 @@ public final class NeckSnapTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setHeadUp(murderer), 0, 5, 7 * 20L);

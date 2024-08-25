@@ -46,7 +46,7 @@ public abstract class AbstractGadget implements Gadget {
   }
 
   @Override
-  public void onGadgetNearby(final Game game, final GamePlayer activator) {}
+  public void onGadgetNearby(final Game game, final GamePlayer activator, final Item item) {}
 
   @Override
   public void onGadgetRightClick(

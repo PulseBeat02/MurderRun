@@ -14,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.HorseInventory;
 
 public final class PonyTrap extends SurvivorTrap {
@@ -30,7 +31,7 @@ public final class PonyTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());

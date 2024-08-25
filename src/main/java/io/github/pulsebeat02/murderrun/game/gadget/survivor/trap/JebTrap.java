@@ -10,6 +10,7 @@ import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Sheep;
 
 public final class JebTrap extends SurvivorTrap {
@@ -28,7 +29,7 @@ public final class JebTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());

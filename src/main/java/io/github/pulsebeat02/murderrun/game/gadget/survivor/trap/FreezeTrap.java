@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 
 public final class FreezeTrap extends SurvivorTrap {
 
@@ -22,7 +23,7 @@ public final class FreezeTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     murderer.disableJump(scheduler, 7 * 20L);

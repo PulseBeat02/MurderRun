@@ -9,6 +9,7 @@ import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.entity.Item;
 
 public final class DistortTrap extends SurvivorTrap {
 
@@ -24,7 +25,7 @@ public final class DistortTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     manager.playSoundForAllParticipants("entity.elder_guardian.curse");

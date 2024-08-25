@@ -94,16 +94,18 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    final Gadget result = this.getGetClosestTrap(player);
+    final GadgetSearchResult result = this.getGetClosestTrap(player);
     if (result == null) {
       return;
     }
 
+    final Gadget gadget = result.gadget;
+    final Item item = result.item;
     final Game game = this.manager.getGame();
-    result.onGadgetNearby(game, player);
+    gadget.onGadgetNearby(game, player, item);
   }
 
-  private @Nullable Gadget getGetClosestTrap(final GamePlayer player) {
+  private @Nullable GadgetSearchResult getGetClosestTrap(final GamePlayer player) {
 
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
@@ -140,14 +142,15 @@ public final class GadgetActionHandler implements Listener {
       }
     }
 
-    if (closest instanceof Trap) {
-      if (closestItem == null) { // checker framework
-        return null;
-      }
-      closestItem.remove();
+    if (closestItem == null || closest == null) { // checker framework
+      return null;
     }
 
-    return closest;
+    if (closest instanceof Trap) {
+      closestItem.remove(); // checker framework
+    }
+
+    return new GadgetSearchResult(closest, closestItem);
   }
 
   private void handleEventLogic(final @Nullable ItemStack stack, final Consumer<Gadget> gadget) {
@@ -171,4 +174,6 @@ public final class GadgetActionHandler implements Listener {
     final Gadget tool = requireNonNull(gadgets.get(data));
     gadget.accept(tool);
   }
+
+  record GadgetSearchResult(Gadget gadget, Item item) {}
 }

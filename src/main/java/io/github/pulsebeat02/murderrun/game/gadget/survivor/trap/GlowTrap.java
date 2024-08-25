@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 
 public final class GlowTrap extends SurvivorTrap {
 
@@ -22,7 +23,7 @@ public final class GlowTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer) {
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, 7 * 20L);
     manager.playSoundForAllParticipants("block.amethyst_block.chime");

@@ -13,7 +13,6 @@ import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -199,19 +198,22 @@ public final class PlayerManager {
     return this.cachedDeadPlayers;
   }
 
-  private Optional<GamePlayer> getGamePlayer(final UUID uuid) {
-    return Optional.ofNullable(this.lookupMap.get(uuid));
-  }
-
   public GamePlayer getGamePlayer(final Player player) {
     final UUID uuid = player.getUniqueId();
-    final Optional<GamePlayer> optional = this.getGamePlayer(uuid);
-    return optional.orElseThrow();
+    return getGamePlayer(uuid);
+  }
+
+  public GamePlayer getGamePlayer(final UUID uuid) {
+    return requireNonNull(this.lookupMap.get(uuid));
+  }
+
+  public boolean checkPlayerExists(final UUID uuid) {
+    return this.lookupMap.containsKey(uuid);
   }
 
   public boolean checkPlayerExists(final Player player) {
     final UUID uuid = player.getUniqueId();
-    return this.lookupMap.containsKey(uuid);
+    return checkPlayerExists(uuid);
   }
 
   public Game getGame() {
@@ -344,10 +346,11 @@ public final class PlayerManager {
 
   public void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
     this.applyToAllLivingInnocents(
-        innocent -> entity.apply(target -> innocent.setGlowing(target, color)));
+        innocent -> entity.apply(target -> innocent.setEntityGlowingForPlayer(target, color)));
   }
 
   public void removeEntityGlowingForAliveInnocents(final GamePlayer entity) {
-    this.applyToAllLivingInnocents(innocent -> entity.apply(innocent::removeGlowing));
+    this.applyToAllLivingInnocents(
+        innocent -> entity.apply(innocent::removeEntityGlowingForPlayer));
   }
 }

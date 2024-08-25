@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 
 public abstract class KillerTrap extends Trap implements KillerApparatus {
 
@@ -25,8 +26,8 @@ public abstract class KillerTrap extends Trap implements KillerApparatus {
   }
 
   @Override
-  public void onGadgetNearby(final Game game, final GamePlayer activator) {
-    this.onTrapActivate(game, activator);
+  public void onGadgetNearby(final Game game, final GamePlayer activator, final Item item) {
+    this.onTrapActivate(game, activator, item);
     final Component announcement = this.getAnnouncement();
     final Component subtitle = empty();
     if (announcement != null) {

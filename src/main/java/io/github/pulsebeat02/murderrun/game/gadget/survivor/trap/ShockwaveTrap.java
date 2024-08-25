@@ -11,6 +11,7 @@ import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
 
 public final class ShockwaveTrap extends SurvivorTrap {
@@ -29,9 +30,9 @@ public final class ShockwaveTrap extends SurvivorTrap {
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer survivor) {
+  public void onTrapActivate(final Game game, final GamePlayer survivor, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
-    final Location origin = survivor.getLocation();
+    final Location origin = item.getLocation();
     final World world = requireNonNull(origin.getWorld());
     world.createExplosion(origin, 0, false, false);
     manager.applyToAllParticipants(participant -> this.applyShockwave(participant, origin));
@@ -42,9 +43,12 @@ public final class ShockwaveTrap extends SurvivorTrap {
     final Location location = participant.getLocation();
     final double distance = location.distanceSquared(origin);
     if (distance < SHOCKWAVE_RADIUS) {
-      final Vector launchDirection = origin.toVector().add(location.toVector().multiply(-1));
-      final Vector force = launchDirection.multiply(2);
-      participant.apply(player -> player.setVelocity(force));
+      final Vector playerVector = location.toVector();
+      final Vector blockVector = origin.toVector();
+      final Vector vector = playerVector.subtract(blockVector);
+      vector.normalize();
+      vector.multiply(2);
+      participant.apply(player -> player.setVelocity(vector));
     }
   }
 }
