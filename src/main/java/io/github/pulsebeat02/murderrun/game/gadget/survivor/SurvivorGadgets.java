@@ -108,7 +108,6 @@ public enum SurvivorGadgets {
   Burrow Trap -- sends killer underground temporarily
   Star Trap -- buffs all survivors with speed, resistance, and regeneration when hit
   Deadringer -- fake player death, fake kill them and then they become invulnerable
-  Glow Trap -- makes killer glow
   Friend Warp -- teleport to a random survivor
   Cloak -- all player usernames hidden for 30s
   Corpus Warp -- teleports to a dead player
@@ -134,6 +133,7 @@ public enum SurvivorGadgets {
 
   SURVIVOR TRAPS IMPLEMENTED:
 
+  Glow Trap -- makes killer glow
   Portal Trap -- teleports trap to killer
   Med Bot -- constant regeneration pool in area
   Mind Control -- controls player mind
