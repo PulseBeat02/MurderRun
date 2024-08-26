@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -80,10 +82,19 @@ public final class Dormagogg extends KillerGadget {
       final World world, final Location location, final GamePlayer nearest) {
     return world.spawn(location, Zombie.class, zombie -> {
       this.setTarget(zombie, nearest);
+      this.setEquipment(zombie);
       if (zombie instanceof final Ageable ageable) {
         ageable.setBaby();
       }
     });
+  }
+
+  private void setEquipment(final Zombie zombie) {
+    final EntityEquipment equipment = requireNonNull(zombie.getEquipment());
+    equipment.setHelmet(Item.create(Material.WITHER_SKELETON_SKULL));
+    equipment.setChestplate(Item.create(Material.NETHERITE_CHESTPLATE));
+    equipment.setLeggings(Item.create(Material.NETHERITE_LEGGINGS));
+    equipment.setBoots(Item.create(Material.NETHERITE_BOOTS));
   }
 
   private void setTarget(final Zombie zombie, final GamePlayer nearest) {

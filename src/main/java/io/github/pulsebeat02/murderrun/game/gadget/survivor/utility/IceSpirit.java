@@ -143,7 +143,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
 
   private void setEquipment(final Zombie zombie) {
     final EntityEquipment equipment = requireNonNull(zombie.getEquipment());
-    equipment.setHelmet(Item.create(Material.DIAMOND_HELMET));
+    equipment.setHelmet(Item.create(Material.ICE));
     equipment.setChestplate(Item.create(Material.DIAMOND_CHESTPLATE));
     equipment.setLeggings(Item.create(Material.DIAMOND_LEGGINGS));
     equipment.setBoots(Item.create(Material.DIAMOND_BOOTS));
