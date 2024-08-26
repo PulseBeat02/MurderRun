@@ -65,6 +65,8 @@ public interface Item {
 
     Builder type(final Material material);
 
+    Builder unbreakable();
+
     ItemStack build();
   }
 }

@@ -213,6 +213,14 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
+  public Builder unbreakable() {
+    final ItemMeta meta = this.meta();
+    meta.setUnbreakable(true);
+    this.stack.setItemMeta(meta);
+    return this;
+  }
+
+  @Override
   public ItemStack build() {
     return this.stack;
   }

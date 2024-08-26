@@ -3,9 +3,9 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -14,9 +14,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 public final class Hook extends KillerGadget implements Listener {
@@ -30,10 +30,13 @@ public final class Hook extends KillerGadget implements Listener {
         Message.HOOK_NAME.build(),
         Message.HOOK_LORE.build(),
         32,
-        stack -> PDCUtils.setPersistentDataAttribute(
-            stack, Keys.HOOK, PersistentDataType.BOOLEAN, true));
+        ItemFactory::createHook);
     this.game = game;
   }
+
+  @Override
+  public void onGadgetRightClick(
+      final Game game, final PlayerInteractEvent event, final boolean remove) {}
 
   @EventHandler
   public void onPlayerFish(final PlayerFishEvent event) {

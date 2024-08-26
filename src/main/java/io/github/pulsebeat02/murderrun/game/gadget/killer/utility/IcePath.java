@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
@@ -22,12 +23,13 @@ public final class IcePath extends KillerGadget {
     super.onGadgetDrop(game, event, true);
     final Player player = event.getPlayer();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.setIceTrail(player), 0, 10);
+    scheduler.scheduleRepeatedTask(() -> this.setIceTrail(player), 0, 4);
   }
 
   private void setIceTrail(final Player player) {
     final Location location = player.getLocation();
     final Block block = location.getBlock();
-    block.setType(Material.ICE);
+    final Block lower = block.getRelative(BlockFace.DOWN);
+    lower.setType(Material.ICE);
   }
 }

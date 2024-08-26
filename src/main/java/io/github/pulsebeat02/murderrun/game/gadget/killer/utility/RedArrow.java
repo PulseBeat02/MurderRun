@@ -39,7 +39,7 @@ public final class RedArrow extends KillerGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, 2 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, 10 * 20L);
 
     final Component message = Message.RED_ARROW_ACTIVATE.build();
     gamePlayer.sendMessage(message);

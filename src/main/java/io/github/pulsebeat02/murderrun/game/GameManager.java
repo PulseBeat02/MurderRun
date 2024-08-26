@@ -57,6 +57,10 @@ public final class GameManager {
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
 
+    if (!this.participants.contains(player)) {
+      this.setResourcePack(player);
+    }
+
     this.participants.add(player);
     this.teleportPlayerToLobby(player);
     if (killer) {
@@ -65,7 +69,6 @@ public final class GameManager {
     }
 
     this.addCurrency(player);
-    this.setResourcePack(player);
   }
 
   private void clearInventory(final Player player) {

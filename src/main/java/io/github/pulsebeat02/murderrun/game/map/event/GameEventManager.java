@@ -23,7 +23,8 @@ public final class GameEventManager {
         new GamePlayerLeaveEvent(this.game),
         new GamePlayerHungerEvent(this.game),
         new GamePlayerRegenEvent(this.game),
-        new GamePlayerBlockEvent(this.game));
+        new GamePlayerBlockEvent(this.game),
+        new GameMobSpawnEvent(this.game));
   }
 
   public Game getGame() {

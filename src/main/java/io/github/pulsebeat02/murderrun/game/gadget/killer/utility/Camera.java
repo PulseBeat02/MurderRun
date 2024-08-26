@@ -58,8 +58,7 @@ public final class Camera extends KillerGadget {
     entity.setInvulnerable(true);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.handleCameraWatch(manager, entity, killer), 0, 3 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleCameraWatch(manager, entity, killer), 0, 20L);
   }
 
   private void handleCameraWatch(
@@ -83,17 +82,17 @@ public final class Camera extends KillerGadget {
     });
   }
 
-  private void setLookDirection(final GamePlayer killer, final Entity entity) {
+  private void setLookDirection(final GamePlayer survivor, final Entity entity) {
     final Location origin = entity.getLocation();
-    final Location look = killer.getLocation();
-    final Vector direction = look.getDirection().subtract(origin.toVector());
+    final Location look = survivor.getLocation();
+    final Vector direction = look.toVector().subtract(origin.toVector());
     origin.setDirection(direction);
     entity.teleport(origin);
   }
 
   private NPC spawnNPC(final CitizensManager manager, final Location location) {
     final NPCRegistry registry = manager.getRegistry();
-    final NPC npc = registry.createNPC(EntityType.PLAYER, "Killer Camera");
+    final NPC npc = registry.createNPC(EntityType.PLAYER, "");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Camera", TEXTURE_SIGNATURE, TEXTURE_DATA);
     npc.spawn(location);

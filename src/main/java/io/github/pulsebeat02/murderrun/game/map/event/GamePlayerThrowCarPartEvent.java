@@ -46,7 +46,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
     final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
     final double distSquared = itemLocation.distanceSquared(truckLocation);
-    if (distSquared > 16) {
+    if (distSquared > 25) {
       event.setCancelled(true);
       return;
     }

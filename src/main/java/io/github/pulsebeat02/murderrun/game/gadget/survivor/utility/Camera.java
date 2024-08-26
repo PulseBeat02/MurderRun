@@ -94,7 +94,7 @@ public final class Camera extends SurvivorGadget {
 
   private NPC spawnNPC(final CitizensManager manager, final Location location) {
     final NPCRegistry registry = manager.getRegistry();
-    final NPC npc = registry.createNPC(EntityType.PLAYER, "Camera");
+    final NPC npc = registry.createNPC(EntityType.PLAYER, "");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Camera", TEXTURE_SIGNATURE, TEXTURE_DATA);
     npc.spawn(location);

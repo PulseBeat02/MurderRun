@@ -73,6 +73,8 @@ public interface Participant {
 
   void stopSound(final Key key);
 
+  void stopSound(final SoundResource key);
+
   void removeAllPotionEffects();
 
   void removeAllBossBars();

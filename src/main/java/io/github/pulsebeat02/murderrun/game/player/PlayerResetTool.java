@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 
@@ -31,6 +32,7 @@ public final class PlayerResetTool {
     metadata.shutdown();
     gamePlayer.removeAllPotionEffects();
     gamePlayer.removeAllBossBars();
+    gamePlayer.stopSound(Sounds.BACKGROUND);
     gamePlayer.apply(player -> {
       player.getInventory().clear();
       player.setGameMode(GameMode.SURVIVAL);
@@ -42,6 +44,8 @@ public final class PlayerResetTool {
       player.setLevel(0);
       player.setSaturation(Float.MAX_VALUE);
       player.setGlowing(false);
+      player.setFireTicks(0);
+      player.setFreezeTicks(0);
     });
   }
 }

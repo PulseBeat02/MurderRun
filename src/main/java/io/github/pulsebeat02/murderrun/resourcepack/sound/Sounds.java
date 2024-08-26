@@ -19,6 +19,7 @@ public final class Sounds {
   public static final SoundResource SUPPLY_DROP = of("supply_drop");
   public static final SoundResource FLASHBANG = of("flashbang");
   public static final SoundResource FLASHLIGHT = of("flashlight");
+  public static final SoundResource BACKGROUND = of("background");
 
   private static SoundResource of(final String name) {
     final SoundFile sound = new SoundFile(name);

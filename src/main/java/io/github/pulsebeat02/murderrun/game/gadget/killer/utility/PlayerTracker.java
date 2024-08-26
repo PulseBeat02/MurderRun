@@ -6,9 +6,11 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,9 +42,9 @@ public final class PlayerTracker extends KillerGadget {
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Location location = player.getLocation();
-    final double distance = this.getNearestSurvivorDistance(manager, location);
+    final int distance = (int) Math.round(this.getNearestSurvivorDistance(manager, location));
     final int count = this.increaseAndGetSurvivorCount(player);
-    final boolean destroy = count == 5;
+    final boolean destroy = count >= 5;
     super.onGadgetRightClick(game, event, destroy);
 
     final Component message = Message.PLAYER_TRACKER_ACTIVATE.build(distance);
@@ -63,14 +65,15 @@ public final class PlayerTracker extends KillerGadget {
   }
 
   private double getNearestSurvivorDistance(final PlayerManager manager, final Location origin) {
-    final double[] min = {Double.MAX_VALUE};
-    manager.applyToAllLivingInnocents(survivor -> {
+    double min = Double.MAX_VALUE;
+    final Collection<Survivor> survivors = manager.getAliveInnocentPlayers();
+    for (final Survivor survivor : survivors) {
       final Location location = survivor.getLocation();
-      final double distance = location.distanceSquared(origin);
-      if (distance < min[0]) {
-        min[0] = distance;
+      final double distance = location.distance(origin);
+      if (distance < min) {
+        min = distance;
       }
-    });
-    return min[0];
+    }
+    return min;
   }
 }

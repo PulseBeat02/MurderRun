@@ -41,27 +41,31 @@ public enum KillerGadgets {
 
   /*
 
-  KILLER TRAPS IMPLEMENTED
+  KILLER TRAPS DEBUGGED
 
   Red Arrow: Places a red beacon above any survivor nearby
   Player Tracker: Tells the Killer how close opponents are to the Killer
   Warp Distort: Swaps two opponents with each other to cause confusion
   Murderous Warp: Swaps the Killer and opponent's positions with teleportation
   Camera: Alerts the Killer if an opponent crosses the camera
-  Infrared Vision: Gives the Killer infrared vision, to see where someone is hiding
   Fright: Puts an illusion in-front of everyone suddenly, jump scaring them
   Blood Curse: Causes the opponent to bleed profusely permanently, leaving a trail behind for the killer to follow
-  Trap Seeker: Allows the Killer to detect hidden traps
-  Death Steed: Summons a Death Steed that follows where the survivors are, can ride on the horse
-  All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing them to track their location and plans
   Health Cut: Reduces the health of all opponents to 1, allowing for them to be one-shot even if they have comparable durability
-  Phantom: Allows the Killer to fly and float through walls for 15 seconds
-  Death Hound: Summons a wolf that sniffs out and kills opponents
   Heat Seeker: Allows the killer to see all opponents within a certain range of him.
   Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move faster
   Fire Trail: Leaves a trail of fire wherever the Killer walks
-  Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
   Hook: Drags opponents closer to the killer
+  Phantom: Allows the Killer to fly and float through walls for 15 seconds
+
+
+  KILLER TRAPS IMPLEMENTED
+
+  Infrared Vision: Gives the Killer infrared vision, to see where someone is hiding
+  Trap Seeker: Allows the Killer to detect hidden traps
+  Death Steed: Summons a Death Steed that follows where the survivors are, can ride on the horse
+  All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing them to track their location and plans
+  Death Hound: Summons a wolf that sniffs out and kills opponents
+  Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
   EMP Blast: Destroys all traps on the map and stuns all opponents.
   Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
   Forewarn: If an opponent grabs a truck part, they will start to glow

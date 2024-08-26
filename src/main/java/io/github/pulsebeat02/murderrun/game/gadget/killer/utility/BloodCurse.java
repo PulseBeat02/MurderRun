@@ -10,7 +10,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class BloodCurse extends KillerGadget {
@@ -37,13 +36,12 @@ public final class BloodCurse extends KillerGadget {
     survivor.sendMessage(msg);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 20L);
+    scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 10L);
   }
 
   private void setBloodBlock(final GamePlayer survivor) {
     final Location location = survivor.getLocation();
     final Block block = location.getBlock();
-    final Block replace = block.getRelative(BlockFace.UP);
-    replace.setType(Material.REDSTONE);
+    block.setType(Material.REDSTONE_WIRE);
   }
 }

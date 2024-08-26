@@ -23,6 +23,7 @@ public final class MurderRun extends JavaPlugin {
 
   DEBUG
 
+  - Fix glowing bugs
   - Debug all killer traps
 
    */

@@ -11,11 +11,15 @@ import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import java.util.function.Consumer;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
@@ -89,7 +93,7 @@ public final class GameStartupTool {
 
   private void handleCountdownSeconds(final int time) {
     switch (time) {
-      case 5 -> startAudioCountdown();
+      case 5 -> this.startAudioCountdown();
       case 4 -> GameStartupTool.this.announceCountdown(4);
       case 3 -> GameStartupTool.this.announceCountdown(3);
       case 2 -> GameStartupTool.this.announceCountdown(2);
@@ -127,7 +131,18 @@ public final class GameStartupTool {
     this.announceReleasePhase();
     this.playReleaseSoundEffect();
     this.spawnCarParts();
+    this.playMusic();
     this.startTimer();
+  }
+
+  private void playMusic() {
+    final GameScheduler scheduler = this.game.getScheduler();
+    final PlayerManager manager = this.game.getPlayerManager();
+    final Consumer<GamePlayer> sound = gamePlayer -> {
+      final Key key = Sounds.BACKGROUND.getKey();
+      gamePlayer.playSound(key, Source.MUSIC, 0.1f, 1.0f);
+    };
+    scheduler.scheduleTask(() -> manager.applyToAllParticipants(sound), 5 * 20L);
   }
 
   private void spawnCarParts() {

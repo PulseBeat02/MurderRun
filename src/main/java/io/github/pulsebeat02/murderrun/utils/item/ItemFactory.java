@@ -23,6 +23,13 @@ public final class ItemFactory {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static ItemStack createHook(final ItemStack stack) {
+    return Item.builder(stack)
+        .pdc(Keys.HOOK, PersistentDataType.BOOLEAN, true)
+        .unbreakable()
+        .build();
+  }
+
   public static ItemStack createSpeedPendant(final ItemStack stack) {
     return Item.builder(stack).modifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.03).build();
   }
@@ -127,6 +134,7 @@ public final class ItemFactory {
         .pdc(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true)
         .pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true)
         .enchantment(Enchantment.VANISHING_CURSE, 1)
+        .unbreakable()
         .build();
   }
 }

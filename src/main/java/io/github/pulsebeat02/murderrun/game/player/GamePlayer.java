@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
@@ -82,6 +83,11 @@ public class GamePlayer extends AbstractPlayer {
     final BossBar bar = bossBar(name, progress, color, overlay);
     this.bars.add(bar);
     this.audience.showBossBar(bar);
+  }
+
+  @Override
+  public void stopSound(final SoundResource key) {
+    this.stopSound(key.getKey());
   }
 
   @Override

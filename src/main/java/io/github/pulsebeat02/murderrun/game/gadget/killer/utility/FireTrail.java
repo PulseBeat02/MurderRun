@@ -7,7 +7,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.potion.PotionEffect;
@@ -34,13 +33,12 @@ public final class FireTrail extends KillerGadget {
         new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 10);
+    scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4);
   }
 
   private void spawnFire(final Player player) {
     final Location location = player.getLocation();
     final Block block = location.getBlock();
-    final Block replace = block.getRelative(BlockFace.UP);
-    replace.setType(Material.FIRE);
+    block.setType(Material.FIRE);
   }
 }

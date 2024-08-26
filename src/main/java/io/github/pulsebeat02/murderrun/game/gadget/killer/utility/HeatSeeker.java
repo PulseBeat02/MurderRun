@@ -57,7 +57,7 @@ public final class HeatSeeker extends KillerGadget {
     final Collection<GamePlayer> visible = this.glowPlayerStates.get(state);
     final double distance = location.distanceSquared(other);
     final MetadataManager metadata = state.getMetadataManager();
-    if (distance < 64) {
+    if (distance < 100) {
       visible.add(innocent);
       metadata.setEntityGlowing(innocent, ChatColor.RED, true);
     } else if (visible.contains(innocent)) {

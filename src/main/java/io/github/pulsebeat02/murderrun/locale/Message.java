@@ -340,7 +340,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> DORMAGOGG_LORE = direct("murder_run.game.gadget.dormagogg.lore");
   NullComponent<Sender> CURSED_NOTE_LORE = direct("murder_run.game.gadget.cursed_note.lore");
   NullComponent<Sender> RED_ARROW_LORE = direct("murder_run.game.gadget.red_arrow.lore");
-  UniComponent<Sender, Double> PLAYER_TRACKER_ACTIVATE =
+  UniComponent<Sender, Integer> PLAYER_TRACKER_ACTIVATE =
       direct("murder_run.game.gadget.player_tracker.activate", null);
   NullComponent<Sender> WARP_DISTORT_ACTIVATE =
       direct("murder_run.game.gadget.warp_distort.activate");

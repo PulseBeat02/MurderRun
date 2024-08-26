@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
 import org.bukkit.Location;
+import org.bukkit.util.BoundingBox;
 import org.checkerframework.common.value.qual.MinLen;
 
 public final class Arena {
@@ -58,5 +59,9 @@ public final class Arena {
 
   public ArenaSchematic getSchematic() {
     return this.schematic;
+  }
+
+  public BoundingBox createBox() {
+    return BoundingBox.of(this.corners[0], this.corners[1]);
   }
 }

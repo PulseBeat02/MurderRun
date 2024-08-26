@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,12 +47,14 @@ public final class Phantom extends KillerGadget implements Listener {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     this.spectatorDisabled.add(gamePlayer);
 
+    final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setDefault(gamePlayer), 15 * 20L);
+    scheduler.scheduleTask(() -> this.setDefault(gamePlayer, old), 15 * 20L);
   }
 
-  private void setDefault(final GamePlayer player) {
+  private void setDefault(final GamePlayer player, final Location location) {
     this.spectatorDisabled.remove(player);
+    player.teleport(location);
     player.apply(raw -> raw.setGameMode(GameMode.SURVIVAL));
   }
 
