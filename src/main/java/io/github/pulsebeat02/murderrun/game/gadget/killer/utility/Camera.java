@@ -1,9 +1,10 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
+import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameNPCManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -50,7 +51,7 @@ public final class Camera extends KillerGadget {
     final Player player = event.getPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
     final Location location = player.getLocation();
-    final GameNPCManager npcManager = game.getNPCManager();
+    final CitizensManager npcManager = game.getNPCManager();
     final NPC npc = this.spawnNPC(npcManager, location);
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
@@ -68,13 +69,14 @@ public final class Camera extends KillerGadget {
 
   private void handleGlowInnocent(
       final GamePlayer survivor, final Entity entity, final GamePlayer killer) {
+    final MetadataManager metadata = killer.getMetadataManager();
     if (survivor.canSeeEntity(entity, 64d)) {
       this.glowPlayers.add(survivor);
-      killer.setEntityGlowingForPlayer(survivor, ChatColor.RED);
+      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
       this.setLookDirection(survivor, entity);
     } else if (this.glowPlayers.contains(survivor)) {
       this.glowPlayers.remove(survivor);
-      killer.removeEntityGlowingForPlayer(survivor);
+      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
     }
   }
 
@@ -86,7 +88,7 @@ public final class Camera extends KillerGadget {
     entity.teleport(origin);
   }
 
-  private NPC spawnNPC(final GameNPCManager manager, final Location location) {
+  private NPC spawnNPC(final CitizensManager manager, final Location location) {
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, "Killer Camera");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);

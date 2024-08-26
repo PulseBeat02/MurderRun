@@ -13,7 +13,7 @@ import org.bukkit.plugin.PluginManager;
 public final class GameEventManager {
 
   private final Game game;
-  private final Collection<Listener> events;
+  private final Collection<GameEvent> events;
 
   public GameEventManager(final Map map) {
     this.game = map.getGame();
@@ -23,7 +23,6 @@ public final class GameEventManager {
         new GamePlayerThrowCarPartEvent(this.game),
         new GamePlayerLeaveEvent(this.game),
         new GamePlayerHungerEvent(this.game),
-        new GamePlayerBlockDropEvent(this.game),
         new GamePlayerRegenEvent(this.game),
         new GamePlayerBlockEvent(this.game));
   }
@@ -32,7 +31,7 @@ public final class GameEventManager {
     return this.game;
   }
 
-  public Collection<Listener> getEvents() {
+  public Collection<GameEvent> getEvents() {
     return this.events;
   }
 
@@ -40,14 +39,16 @@ public final class GameEventManager {
     final MurderRun plugin = this.game.getPlugin();
     final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
-    for (final Listener listener : this.events) {
-      manager.registerEvents(listener, plugin);
+    for (final GameEvent listener : this.events) {
+      final Listener gameListener = (Listener) listener;
+      manager.registerEvents(gameListener, plugin);
     }
   }
 
   public void unregisterEvents() {
-    for (final Listener listener : this.events) {
-      HandlerList.unregisterAll(listener);
+    for (final GameEvent listener : this.events) {
+      final Listener gameListener = (Listener) listener;
+      HandlerList.unregisterAll(gameListener);
     }
   }
 }

@@ -378,4 +378,8 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GAME_INVITE_ALREADY_ERROR =
       direct("murder_run.command.game.invite_already_error");
   NullComponent<Sender> GAME_STARTED_ERROR = direct("murder_run.command.game.start_error");
+  UniComponent<Sender, String> MIND_CONTROL_ACTIVATE_KILLER =
+      direct("murder_run.game.gadget.mind_control.activate_killer", null);
+  UniComponent<Sender, String> MIND_CONTROL_ACTIVATE_SURVIVOR =
+      direct("murder_run.game.gadget.mind_control.activate_survivor", null);
 }

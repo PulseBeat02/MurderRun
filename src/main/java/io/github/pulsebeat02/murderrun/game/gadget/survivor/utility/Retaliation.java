@@ -53,10 +53,10 @@ public final class Retaliation extends SurvivorGadget {
 
     final int effectLevel = Math.min(dead - 1, MAX_DEATHS_COUNTED);
     player.addPotionEffect(
-        new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, effectLevel));
+        new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel));
+    player.addPotionEffect(new PotionEffect(
+        PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel));
     player.addPotionEffect(
-        new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, effectLevel));
-    player.addPotionEffect(
-        new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, effectLevel));
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel));
   }
 }

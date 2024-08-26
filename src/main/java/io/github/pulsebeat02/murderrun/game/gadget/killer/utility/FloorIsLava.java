@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -60,12 +61,13 @@ public final class FloorIsLava extends KillerGadget {
       final Location previous, final GamePlayer player, final GamePlayer killer) {
     final Location newLocation = player.getLocation();
     final Collection<GamePlayer> glowing = this.glowPlayerStates.get(killer);
+    final MetadataManager metadata = player.getMetadataManager();
     if (this.checkLocationSame(previous, newLocation)) {
       glowing.add(player);
-      killer.setEntityGlowingForPlayer(player, ChatColor.RED);
+      metadata.setEntityGlowing(player, ChatColor.RED, true);
     } else if (glowing.contains(player)) {
       glowing.remove(player);
-      killer.removeEntityGlowingForPlayer(player);
+      metadata.setEntityGlowing(player, ChatColor.RED, false);
     }
   }
 

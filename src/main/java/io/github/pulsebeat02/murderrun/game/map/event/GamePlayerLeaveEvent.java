@@ -6,33 +6,26 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public final class GamePlayerLeaveEvent implements Listener {
-
-  private final Game game;
+public final class GamePlayerLeaveEvent extends GameEvent {
 
   public GamePlayerLeaveEvent(final Game game) {
-    this.game = game;
-  }
-
-  public Game getGame() {
-    return this.game;
+    super(game);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onPlayerDisconnect(final PlayerQuitEvent event) {
 
-    final PlayerManager manager = this.game.getPlayerManager();
     final Player player = event.getPlayer();
-    final boolean valid = manager.checkPlayerExists(player);
-    if (!valid) {
+    if (!this.isGamePlayer(player)) {
       return;
     }
 
     player.setHealth(0f);
 
+    final Game game = this.getGame();
+    final PlayerManager manager = game.getPlayerManager();
     final UUID uuid = player.getUniqueId();
     manager.removePlayer(uuid);
   }

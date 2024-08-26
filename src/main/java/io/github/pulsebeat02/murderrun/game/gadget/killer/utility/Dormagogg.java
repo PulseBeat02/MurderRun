@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -66,11 +67,13 @@ public final class Dormagogg extends KillerGadget {
 
   private void applyDebuffs(
       final GameScheduler scheduler, final GamePlayer killer, final GamePlayer survivor) {
+
     survivor.disableJump(scheduler, 7 * 20L);
     survivor.disableWalkWithFOVEffects(10 * 20);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1));
-    killer.setEntityGlowingForPlayer(survivor, ChatColor.RED);
-    scheduler.scheduleTask(() -> killer.removeEntityGlowingForPlayer(survivor), 7 * 20L);
+
+    final MetadataManager metadata = killer.getMetadataManager();
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, 7 * 20L);
   }
 
   private Zombie spawnDormagogg(

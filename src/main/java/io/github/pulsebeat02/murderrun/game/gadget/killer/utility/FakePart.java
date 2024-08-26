@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -75,10 +76,12 @@ public final class FakePart extends KillerGadget {
 
   private void handleDebuff(
       final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
+
     survivor.disableJump(scheduler, 5 * 20L);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
-    killer.setEntityGlowingForPlayer(survivor, ChatColor.RED);
-    scheduler.scheduleTask(() -> killer.removeEntityGlowingForPlayer(survivor), 5 * 20L);
+
+    final MetadataManager metadata = killer.getMetadataManager();
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, 5 * 20L);
   }
 
   private Item spawnItem(final Location location) {

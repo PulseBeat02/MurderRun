@@ -21,21 +21,14 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public final class GamePlayerThrowCarPartEvent implements Listener {
-
-  private final Game game;
+public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
   public GamePlayerThrowCarPartEvent(final Game game) {
-    this.game = game;
-  }
-
-  public Game getGame() {
-    return this.game;
+    super(game);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -47,7 +40,8 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
       return;
     }
 
-    final GameSettings configuration = this.game.getSettings();
+    final Game game = this.getGame();
+    final GameSettings configuration = game.getSettings();
     final Arena arena = requireNonNull(configuration.getArena());
     final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
@@ -59,7 +53,7 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
     item.remove();
 
-    final Map map = this.game.getMap();
+    final Map map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final CarPart carPart = manager.getCarPartItemStack(stack);
     if (carPart == null) {
@@ -81,27 +75,30 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
   }
 
   private void announceCarPartRetrieval(final int leftOver) {
+    final Game game = this.getGame();
     final Component title = Message.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
-    final PlayerManager manager = this.game.getPlayerManager();
+    final PlayerManager manager = game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);
     manager.playSoundForAllParticipants("block.anvil.use");
   }
 
   private void setBossBar(final int leftOver) {
-    final GameSettings settings = this.game.getSettings();
+    final Game game = this.getGame();
+    final GameSettings settings = game.getSettings();
     final int parts = settings.getCarPartCount();
     final int collected = parts - leftOver;
     final Component name = Message.BOSS_BAR.build(collected, parts);
     final float progress = (float) collected / parts;
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
-    final PlayerManager manager = this.game.getPlayerManager();
+    final PlayerManager manager = game.getPlayerManager();
     manager.showBossBarForAllParticipants(name, progress, color, overlay);
   }
 
   private void checkGameEnd(final int leftOver) {
     if (leftOver == 0) {
-      this.game.finishGame(GameResult.INNOCENTS);
+      final Game game = this.getGame();
+      game.finishGame(GameResult.INNOCENTS);
     }
   }
 
@@ -118,12 +115,12 @@ public final class GamePlayerThrowCarPartEvent implements Listener {
 
   private void setPlayerCarPartStatus(final Player thrower) {
 
-    final PlayerManager manager = this.game.getPlayerManager();
-    final boolean exists = manager.checkPlayerExists(thrower);
-    if (!exists) {
+    if (!this.isGamePlayer(thrower)) {
       return;
     }
 
+    final Game game = this.getGame();
+    final PlayerManager manager = game.getPlayerManager();
     final GamePlayer player = manager.getGamePlayer(thrower);
     if (player instanceof final Survivor survivor) {
       survivor.setHasCarPart(false);

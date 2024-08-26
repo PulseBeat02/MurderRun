@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameNPCManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -32,12 +32,12 @@ public final class Decoy extends SurvivorGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final String name = player.getDisplayName();
-    final GameNPCManager manager = game.getNPCManager();
+    final CitizensManager manager = game.getNPCManager();
     final NPC npc = this.customizeNPC(manager, player, name);
     npc.spawn(location);
   }
 
-  private NPC customizeNPC(final GameNPCManager manager, final Player player, final String name) {
+  private NPC customizeNPC(final CitizensManager manager, final Player player, final String name) {
 
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, name);

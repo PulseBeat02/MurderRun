@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.ChatColor;
@@ -38,8 +39,9 @@ public final class Tracker extends SurvivorGadget {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = origin.distanceSquared(killerLocation);
+    final MetadataManager metadata = player.getMetadataManager();
     if (distance < 25) {
-      player.setEntityGlowingForPlayer(killer, ChatColor.RED);
+      metadata.setEntityGlowing(killer, ChatColor.RED, true);
       player.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {
       player.sendMessage(Message.TRACKER_DEACTIVATE.build());

@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
@@ -46,10 +47,11 @@ public final class Gamble extends KillerGadget {
 
   private void applyGamble(
       final GadgetLoadingMechanism mechanism, final GamePlayer survivor, final GamePlayer killer) {
+    final DeathManager manager = survivor.getDeathManager();
     final Gadget random = mechanism.getRandomInnocentGadget();
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.giveKillerItem(killer, random), false);
-    survivor.addDeathTask(task);
+    manager.addDeathTask(task);
   }
 
   private void giveKillerItem(final GamePlayer killer, final Gadget gadget) {

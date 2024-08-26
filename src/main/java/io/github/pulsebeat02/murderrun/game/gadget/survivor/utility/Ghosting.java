@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -41,9 +42,10 @@ public final class Ghosting extends SurvivorGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final DeathManager deathManager = gamePlayer.getDeathManager();
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleGhosting(game, gamePlayer), false);
-    gamePlayer.addDeathTask(task);
+    deathManager.addDeathTask(task);
     gamePlayer.playSound("block.bone_block.break");
 
     final Component message = Message.GHOSTING_ACTIVATE.build();

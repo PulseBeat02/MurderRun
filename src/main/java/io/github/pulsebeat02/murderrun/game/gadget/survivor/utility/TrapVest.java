@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
@@ -46,9 +47,10 @@ public final class TrapVest extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final GadgetManager gadgetManager = game.getGadgetManager();
+    final DeathManager deathManager = gamePlayer.getDeathManager();
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleTraps(gadgetManager, gamePlayer, world), false);
-    gamePlayer.addDeathTask(task);
+    deathManager.addDeathTask(task);
     gamePlayer.playSound("item.armor.equip_diamond");
 
     final Component message = Message.TRAP_VEST_ACTIVATE.build();

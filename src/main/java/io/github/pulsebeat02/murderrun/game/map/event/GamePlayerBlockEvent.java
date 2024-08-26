@@ -17,59 +17,60 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public final class GamePlayerBlockEvent implements Listener {
-
-  private final Game game;
+public final class GamePlayerBlockEvent extends GameEvent {
 
   public GamePlayerBlockEvent(final Game game) {
-    this.game = game;
+    super(game);
   }
 
-  public Game getGame() {
-    return this.game;
+  @EventHandler(priority = EventPriority.LOWEST)
+  private void onBlockDropEvent(final BlockDropItemEvent event) {
+
+    final Player player = event.getPlayer();
+    if (this.isGamePlayer(player)) {
+      return;
+    }
+
+    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onBlockDestroy(final BlockBreakEvent event) {
 
     final Player player = event.getPlayer();
-    final PlayerManager manager = this.game.getPlayerManager();
-    final boolean valid = manager.checkPlayerExists(player);
-    if (!valid) {
+    if (this.isGamePlayer(player)) {
       return;
     }
 
+    final Game game = this.getGame();
+    final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     if (gamePlayer instanceof final Killer killer) {
-
       if (!killer.canForceMineBlocks()) {
         event.setCancelled(true);
         return;
       }
-
       final Location murdererLocation = gamePlayer.getLocation();
       final SoundResource sound = Sounds.CHAINSAW;
       manager.stopSoundsForAllParticipants(sound);
       manager.playSoundForAllParticipantsAtLocation(murdererLocation, sound);
       event.setDropItems(false);
       event.setExpToDrop(0);
-
-      return;
-    }
-
-    final Block block = event.getBlock();
-    final Map map = this.game.getMap();
-    final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
-    final boolean canBreak = whitelistManager.checkAndRemoveBlock(block);
-    if (!canBreak) {
-      event.setCancelled(true);
+    } else {
+      final Block block = event.getBlock();
+      final Map map = game.getMap();
+      final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
+      final boolean canBreak = whitelistManager.checkAndRemoveBlock(block);
+      if (!canBreak) {
+        event.setCancelled(true);
+      }
     }
   }
 
@@ -77,12 +78,12 @@ public final class GamePlayerBlockEvent implements Listener {
   private void onBlockDamage(final BlockDamageEvent event) {
 
     final Player player = event.getPlayer();
-    final PlayerManager manager = this.game.getPlayerManager();
-    final boolean valid = manager.checkPlayerExists(player);
-    if (!valid) {
+    if (!this.isGamePlayer(player)) {
       return;
     }
 
+    final Game game = this.getGame();
+    final PlayerManager manager = game.getPlayerManager();
     final GamePlayer murderer = manager.getGamePlayer(player);
     if (murderer instanceof Survivor) {
       return;
@@ -110,9 +111,7 @@ public final class GamePlayerBlockEvent implements Listener {
   private void onBlackPlace(final BlockPlaceEvent event) {
 
     final Player player = event.getPlayer();
-    final PlayerManager manager = this.game.getPlayerManager();
-    final boolean valid = manager.checkPlayerExists(player);
-    if (!valid) {
+    if (!this.isGamePlayer(player)) {
       return;
     }
 

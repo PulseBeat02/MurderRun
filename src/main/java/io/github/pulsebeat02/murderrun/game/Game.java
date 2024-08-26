@@ -26,7 +26,7 @@ public final class Game {
   private GameStatus status;
   private GadgetManager gadgetManager;
   private GameExecutor executor;
-  private GameNPCManager npcManager;
+  private CitizensManager npcManager;
   private GameEndCallback callback;
 
   public Game(final MurderRun plugin) {
@@ -54,7 +54,7 @@ public final class Game {
     this.cleanupManager = new GameCleanupTool(this);
     this.murderGameTimer = new GameTimer();
     this.gadgetManager = new GadgetManager(this);
-    this.npcManager = new GameNPCManager(this);
+    this.npcManager = new CitizensManager(this);
     this.callback = callback;
     this.map.start();
     this.gadgetManager.start();
@@ -67,8 +67,8 @@ public final class Game {
   }
 
   public void finishGame(final GameResult code) {
-    this.status = GameStatus.FINISHED;
-    if (this.scheduler != null) {
+    if (this.status != GameStatus.NOT_STARTED) {
+      this.status = GameStatus.FINISHED;
       this.gadgetManager.shutdown();
       this.cleanupManager.start(code);
       this.playerManager.resetAllPlayers();
@@ -104,7 +104,7 @@ public final class Game {
     return this.cleanupManager;
   }
 
-  public UUID getGameID() {
+  public UUID getGameUUID() {
     return this.gameID;
   }
 
@@ -128,7 +128,7 @@ public final class Game {
     return this.executor;
   }
 
-  public GameNPCManager getNPCManager() {
+  public CitizensManager getNPCManager() {
     return this.npcManager;
   }
 }

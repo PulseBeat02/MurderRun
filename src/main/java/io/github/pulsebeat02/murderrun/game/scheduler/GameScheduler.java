@@ -75,32 +75,30 @@ public final class GameScheduler {
   }
 
   public BukkitTask scheduleTaskWhenItemFalls(final Runnable runnable, final Item item) {
-
     final AtomicBoolean onFloor = new AtomicBoolean(false);
-    final Runnable internal = () -> {
-      if (item.isOnGround()) {
-        onFloor.set(true);
-        runnable.run();
-      }
-    };
-
+    final Runnable internal = () -> this.waitForFall0(runnable, item, onFloor);
     final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, onFloor::get);
     this.tasks.add(task);
-
     return task;
   }
 
+  private void waitForFall0(final Runnable runnable, final Item item, final AtomicBoolean onFloor) {
+    if (item.isOnGround()) {
+      onFloor.set(true);
+      runnable.run();
+    }
+  }
+
   public BukkitTask scheduleParticleTask(final Item item, final Color color) {
-
     final World world = item.getWorld();
-    final Runnable particleTask = () -> {
-      final Location location = item.getLocation();
-      world.spawnParticle(Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(color, 2));
-    };
-
+    final Runnable particleTask = () -> spawnParticles0(item, color, world);
     final Runnable conditionalTask =
         () -> this.scheduleConditionalTask(particleTask, 0L, 20L, item::isDead);
-
     return this.scheduleTaskWhenItemFalls(conditionalTask, item);
+  }
+
+  private static void spawnParticles0(final Item item, final Color color, final World world) {
+    final Location location = item.getLocation();
+    world.spawnParticle(Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(color, 2));
   }
 }

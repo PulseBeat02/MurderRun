@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -78,12 +79,13 @@ public final class TrapSeeker extends KillerGadget {
 
       final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
       final boolean survivor = gadget instanceof KillerApparatus;
+      final MetadataManager metadata = innocent.getMetadataManager();
       if (survivor) {
         set.add(item);
-        innocent.setEntityGlowingForPlayer(item, ChatColor.YELLOW);
+        metadata.setEntityGlowing(item, ChatColor.YELLOW, true);
       } else if (set.contains(entity)) {
         set.remove(entity);
-        innocent.removeEntityGlowingForPlayer(item);
+        metadata.setEntityGlowing(item, ChatColor.YELLOW, false);
       }
     }
   }

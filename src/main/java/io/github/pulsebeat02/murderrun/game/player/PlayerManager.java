@@ -132,6 +132,7 @@ public final class PlayerManager {
     for (final Player player : murderers) {
       final UUID uuid = player.getUniqueId();
       final Killer killer = new Killer(this.game, uuid);
+      killer.start();
       this.lookupMap.put(uuid, killer);
     }
   }
@@ -145,6 +146,7 @@ public final class PlayerManager {
         continue;
       }
       final Survivor survivor = new Survivor(this.game, uuid);
+      survivor.start();
       this.lookupMap.put(uuid, survivor);
     }
   }
@@ -200,7 +202,7 @@ public final class PlayerManager {
 
   public GamePlayer getGamePlayer(final Player player) {
     final UUID uuid = player.getUniqueId();
-    return getGamePlayer(uuid);
+    return this.getGamePlayer(uuid);
   }
 
   public GamePlayer getGamePlayer(final UUID uuid) {
@@ -213,7 +215,7 @@ public final class PlayerManager {
 
   public boolean checkPlayerExists(final Player player) {
     final UUID uuid = player.getUniqueId();
-    return checkPlayerExists(uuid);
+    return this.checkPlayerExists(uuid);
   }
 
   public Game getGame() {
@@ -327,8 +329,9 @@ public final class PlayerManager {
   }
 
   public void promoteToKiller(final GamePlayer player) {
-    final UUID uuid = player.getUuid();
+    final UUID uuid = player.getUUID();
     final Killer killer = new Killer(this.game, uuid);
+    killer.start();
     this.lookupMap.put(uuid, killer);
     this.resetCachedPlayers();
   }
@@ -341,16 +344,21 @@ public final class PlayerManager {
       final GamePlayer entity, final ChatColor color, final long duration) {
     final GameScheduler scheduler = this.game.getScheduler();
     this.setEntityGlowingForAliveInnocents(entity, color);
-    scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity), duration);
+    scheduler.scheduleTask(
+        () -> this.removeEntityGlowingForAliveInnocents(entity, color), duration);
   }
 
   public void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
-    this.applyToAllLivingInnocents(
-        innocent -> entity.apply(target -> innocent.setEntityGlowingForPlayer(target, color)));
+    this.applyToAllLivingInnocents(innocent -> {
+      final MetadataManager metadata = innocent.getMetadataManager();
+      entity.apply(target -> metadata.setEntityGlowing(target, color, true));
+    });
   }
 
-  public void removeEntityGlowingForAliveInnocents(final GamePlayer entity) {
-    this.applyToAllLivingInnocents(
-        innocent -> entity.apply(innocent::removeEntityGlowingForPlayer));
+  public void removeEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
+    this.applyToAllLivingInnocents(innocent -> {
+      final MetadataManager metadata = innocent.getMetadataManager();
+      entity.apply(target -> metadata.setEntityGlowing(target, color, false));
+    });
   }
 }

@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -33,9 +34,10 @@ public final class Horcrux extends SurvivorGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final GameScheduler scheduler = game.getScheduler();
     final Item item = event.getItemDrop();
+    final DeathManager deathManager = gamePlayer.getDeathManager();
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleHorcrux(gamePlayer, item), true);
-    gamePlayer.addDeathTask(task);
+    deathManager.addDeathTask(task);
     gamePlayer.playSound("block.furnace.fire_crackle");
     scheduler.scheduleParticleTask(item, Color.BLACK);
   }

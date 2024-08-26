@@ -5,13 +5,13 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 
-public final class GameNPCManager {
+public final class CitizensManager {
 
   private final Game game;
   private final NPCRegistry registry;
 
-  public GameNPCManager(final Game game) {
-    final UUID uuid = game.getGameID();
+  public CitizensManager(final Game game) {
+    final UUID uuid = game.getGameUUID();
     final String str = uuid.toString();
     final String id = "murderrun-%s".formatted(str);
     this.game = game;

@@ -23,8 +23,10 @@ public final class MurderRun extends JavaPlugin {
   DEBUG
 
   - Debug all survivor traps
+  - Clean up survivor classes, create helper classes
+
+
   - Add join game to player in message invite for match
-  - Make configuration for all values of traps
   - Debug all killer traps
 
    */

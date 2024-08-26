@@ -25,14 +25,20 @@ public final class GameCleanupTool {
   private void initiateEndingSequence(final GameResult winCode) {
     this.stopTimer();
     switch (winCode) {
-      case INNOCENTS -> {
-        this.announceInnocentVictory();
-        this.invalidateTimer();
-      }
-      case MURDERERS -> this.announceMurdererVictory();
+      case INNOCENTS -> this.handleInnocentVictory();
+      case MURDERERS -> this.handleKillerVictory();
       default -> {} // do nothing
     }
+  }
+
+  private void handleKillerVictory() {
+    this.announceMurdererVictory();
     this.announceMurdererTime();
+  }
+
+  private void handleInnocentVictory() {
+    this.announceInnocentVictory();
+    this.invalidateTimer();
   }
 
   private void stopTimer() {

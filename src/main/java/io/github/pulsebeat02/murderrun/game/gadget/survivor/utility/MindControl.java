@@ -4,8 +4,10 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,21 +39,38 @@ public final class MindControl extends SurvivorGadget {
       return;
     }
 
-    final Location origin = player.getLocation();
-    final Location location = nearest.getLocation();
-    player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1));
-    player.setInvulnerable(true);
-    player.teleport(location);
+    final String name = player.getDisplayName();
+    final Component msg = Message.MIND_CONTROL_ACTIVATE_KILLER.build(name);
+    nearest.sendMessage(msg);
 
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.applyMindControlEffects(player, nearest), 0L, 1L, 10 * 20L);
-    scheduler.scheduleTask(() -> this.resetPlayer(player, origin), 10 * 20L);
+    final GamePlayer owner = manager.getGamePlayer(player);
+    if (owner instanceof final Survivor survivor) {
+
+      survivor.setCanPickupCarPart(false);
+
+      final Location origin = player.getLocation();
+      final Location location = nearest.getLocation();
+      player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1));
+      player.setInvulnerable(true);
+      player.teleport(location);
+
+      final GameScheduler scheduler = game.getScheduler();
+      scheduler.scheduleRepeatedTask(
+          () -> this.applyMindControlEffects(player, nearest), 0L, 1L, 10 * 20L);
+      scheduler.scheduleTask(() -> this.resetPlayer(survivor, origin), 10 * 20L);
+
+      final String targetName = nearest.getDisplayName();
+      final Component msg1 = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
+      owner.sendMessage(msg1);
+    }
   }
 
-  private void resetPlayer(final Player player, final Location location) {
-    player.teleport(location);
-    player.setInvulnerable(false);
+  private void resetPlayer(final Survivor player, final Location location) {
+    player.apply(raw -> {
+      raw.teleport(location);
+      raw.setInvulnerable(false);
+    });
+    player.setCanPickupCarPart(true);
   }
 
   private void applyMindControlEffects(final Player player, final GamePlayer killer) {

@@ -50,7 +50,7 @@ public final class PlayerStartupTool {
   public void handleMurderer(final GamePlayer gamePlayer) {
     this.handleAll(gamePlayer);
     gamePlayer.addPotionEffects(
-        new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
+        new PotionEffect(PotionEffectType.NIGHT_VISION, PotionEffect.INFINITE_DURATION, 1));
     gamePlayer.apply(player -> {
       player.setGameMode(GameMode.SURVIVAL);
       player.setWalkSpeed(0.3f);

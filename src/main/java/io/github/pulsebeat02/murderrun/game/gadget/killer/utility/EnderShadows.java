@@ -5,12 +5,13 @@ import static net.kyori.adventure.text.Component.empty;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameNPCManager;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -59,13 +60,13 @@ public final class EnderShadows extends KillerGadget {
     final Location spawn = arena.getSpawn();
     final Player player = event.getPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
-    final GameNPCManager npcManager = game.getNPCManager();
+    final CitizensManager npcManager = game.getNPCManager();
     manager.applyToAllLivingInnocents(
         survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
   }
 
   private void handleAllSurvivors(
-      final GameNPCManager manager,
+      final CitizensManager manager,
       final GameScheduler scheduler,
       final GamePlayer killer,
       final GamePlayer survivor,
@@ -91,27 +92,28 @@ public final class EnderShadows extends KillerGadget {
     final BoundingBox shadowBox = shadow.getBoundingBox();
     final Collection<GamePlayer> players = this.shadows.get(survivor);
     final Component msg = Message.ENDER_SHADOWS_EFFECT.build();
+    final MetadataManager metadata = killer.getMetadataManager();
     survivor.apply(player -> {
       final BoundingBox playerBox = player.getBoundingBox();
       if (shadowBox.overlaps(playerBox)) {
         players.add(survivor);
         survivor.showTitle(msg, empty());
-        killer.setEntityGlowingForPlayer(player, ChatColor.RED);
+        metadata.setEntityGlowing(player, ChatColor.RED, true);
       } else if (players.contains(survivor)) {
         players.remove(survivor);
-        killer.removeEntityGlowingForPlayer(player);
+        metadata.setEntityGlowing(player, ChatColor.RED, false);
       }
     });
   }
 
-  private Entity getNPCEntity(final GameNPCManager manager, final Location location) {
+  private Entity getNPCEntity(final CitizensManager manager, final Location location) {
     final NPC npc = this.spawnNPC(manager, location);
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
     return entity;
   }
 
-  private NPC spawnNPC(final GameNPCManager manager, final Location location) {
+  private NPC spawnNPC(final CitizensManager manager, final Location location) {
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, "");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);

@@ -127,14 +127,15 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
 
   private void customizeAttributes(final Zombie zombie) {
     zombie.setInvulnerable(true);
-    zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+    zombie.addPotionEffect(
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
     if (zombie instanceof final Ageable ageable) {
       ageable.setBaby();
     }
   }
 
   private void setTargetMetadata(final GamePlayer nearest, final Zombie zombie) {
-    final UUID uuid = nearest.getUuid();
+    final UUID uuid = nearest.getUUID();
     final String data = uuid.toString();
     final PersistentDataContainer container = zombie.getPersistentDataContainer();
     container.set(Keys.ICE_SPIRIT_TARGET, PersistentDataType.STRING, data);

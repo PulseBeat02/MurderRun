@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -55,12 +56,13 @@ public final class HeatSeeker extends KillerGadget {
     final Location other = state.getLocation();
     final Collection<GamePlayer> visible = this.glowPlayerStates.get(state);
     final double distance = location.distanceSquared(other);
+    final MetadataManager metadata = state.getMetadataManager();
     if (distance < 64) {
       visible.add(innocent);
-      state.setEntityGlowingForPlayer(innocent, ChatColor.RED);
+      metadata.setEntityGlowing(innocent, ChatColor.RED, true);
     } else if (visible.contains(innocent)) {
       visible.remove(innocent);
-      state.removeEntityGlowingForPlayer(innocent);
+      metadata.setEntityGlowing(innocent, ChatColor.RED, false);
     }
   }
 }

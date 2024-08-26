@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -41,14 +42,16 @@ public final class HauntTrap extends SurvivorTrap {
   private void createSpookyEffect(final Game game, final GamePlayer gamePlayer) {
     final Location location = gamePlayer.getLocation();
     final GameScheduler scheduler = game.getScheduler();
+    final MetadataManager metadata = gamePlayer.getMetadataManager();
     gamePlayer.addPotionEffects(new PotionEffect(PotionEffectType.DARKNESS, 20, 10));
     gamePlayer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);
-    gamePlayer.addFakeWorldBorderEffect();
+    metadata.setWorldBorderEffect(true);
     scheduler.scheduleTask(() -> this.removeSpecialEffects(gamePlayer), 19);
   }
 
   private void removeSpecialEffects(final GamePlayer gamePlayer) {
+    final MetadataManager metadata = gamePlayer.getMetadataManager();
     gamePlayer.apply(player -> player.removePotionEffect(PotionEffectType.DARKNESS));
-    gamePlayer.removeFakeWorldBorderEffect();
+    metadata.setWorldBorderEffect(false);
   }
 }

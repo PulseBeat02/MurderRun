@@ -51,8 +51,10 @@ public final class DeathHound extends KillerGadget {
       entity.setCustomNameVisible(true);
       entity.setTamed(true);
       entity.setAngry(true);
-      entity.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, Integer.MAX_VALUE, 1));
-      entity.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, Integer.MAX_VALUE, 2));
+      entity.addPotionEffect(
+          new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
+      entity.addPotionEffect(
+          new PotionEffect(PotionEffectType.STRENGTH, PotionEffect.INFINITE_DURATION, 2));
     });
     target.apply(wolf::setTarget);
   }

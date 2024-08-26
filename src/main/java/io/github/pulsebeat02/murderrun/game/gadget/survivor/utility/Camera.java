@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameNPCManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -49,7 +49,7 @@ public final class Camera extends SurvivorGadget {
     final Collection<Survivor> players = manager.getInnocentPlayers();
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final GameNPCManager npcManager = game.getNPCManager();
+    final CitizensManager npcManager = game.getNPCManager();
     final NPC npc = this.spawnNPC(npcManager, location);
     final Entity entity = npc.getEntity();
     entity.setInvulnerable(true);
@@ -73,7 +73,7 @@ public final class Camera extends SurvivorGadget {
       this.setLookDirection(killer, entity);
     } else if (this.glowPlayers.contains(killer)) {
       this.glowPlayers.remove(killer);
-      manager.removeEntityGlowingForAliveInnocents(killer);
+      manager.removeEntityGlowingForAliveInnocents(killer, ChatColor.RED);
     }
   }
 
@@ -85,7 +85,7 @@ public final class Camera extends SurvivorGadget {
     entity.teleport(origin);
   }
 
-  private NPC spawnNPC(final GameNPCManager manager, final Location location) {
+  private NPC spawnNPC(final CitizensManager manager, final Location location) {
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, "Camera");
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);

@@ -25,11 +25,12 @@ public final class PlayerResetTool {
     final GameSettings configuration = game.getSettings();
     final Lobby lobby = requireNonNull(configuration.getLobby());
     final Location location = lobby.getLobbySpawn();
+    final MetadataManager metadata = gamePlayer.getMetadataManager();
+    metadata.setWorldBorderEffect(false);
+    metadata.setNameTagStatus(false);
+    metadata.shutdown();
     gamePlayer.removeAllPotionEffects();
     gamePlayer.removeAllBossBars();
-    gamePlayer.showNameTag();
-    gamePlayer.removeFakeWorldBorderEffect();
-    gamePlayer.removeAllGlowing();
     gamePlayer.apply(player -> {
       player.getInventory().clear();
       player.setGameMode(GameMode.SURVIVAL);

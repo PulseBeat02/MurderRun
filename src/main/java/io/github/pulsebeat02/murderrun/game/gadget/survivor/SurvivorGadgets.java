@@ -130,19 +130,18 @@ public enum SurvivorGadgets {
   Horcrux -- respawn after death
   Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Shockwave Trap -- sets off massive blast flinging all players
+  Chipped -- you can see all alive survivors on the map
+  Glow Trap -- makes killer glow
+  Sixth Sense -- if killer is near makes them glow
+  Trap Sniffer -- senses detect car parts within 15 blocks
+  Mind Control -- controls player mind
 
   SURVIVOR TRAPS IMPLEMENTED:
 
-  Glow Trap -- makes killer glow
   Portal Trap -- teleports trap to killer
   Med Bot -- constant regeneration pool in area
-  Mind Control -- controls player mind
   Ghosting -- become an annoying ghost after death
   Resurrection Stone -- resurrects a dead player
-
-  Chipped -- you can see all alive survivors on the map
-  Sixth Sense -- if killer is near makes them glow
-  Trap Sniffer -- senses detect car parts within 15 blocks
   Camera -- if killer within range glow
 
    */

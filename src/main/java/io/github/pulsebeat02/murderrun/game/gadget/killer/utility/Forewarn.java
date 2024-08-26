@@ -7,6 +7,7 @@ import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -58,12 +59,13 @@ public final class Forewarn extends KillerGadget {
       return;
     }
 
+    final MetadataManager metadata = player.getMetadataManager();
     if (survivor.hasCarPart()) {
       set.add(survivor);
-      player.setEntityGlowingForPlayer(survivor, ChatColor.RED);
+      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
     } else if (set.contains(player)) {
       set.remove(player);
-      player.removeEntityGlowingForPlayer(survivor);
+      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
     }
   }
 }

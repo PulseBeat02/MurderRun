@@ -105,23 +105,25 @@ public class PacketTools implements PacketToolAPI {
     }
 
     final List<DataValue<?>> copy = new ArrayList<>(packed);
-    final byte newMask = glowing ? 0x40 : (byte) 0;
-    final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
 
-    int index = -1;
+    boolean found = false;
     for (int i = 0; i < packed.size(); i++) {
       final DataValue<?> value = packed.get(i);
       final int valueID = value.id();
       if (valueID == 0) {
-        index = i;
+        final byte valueMask = (byte) value.value();
+        final byte newMask = (byte) (glowing ? (valueMask | 0x40) : (valueMask & ~0x40));
+        final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
+        copy.set(i, newValue);
+        found = true;
         break;
       }
     }
 
-    if (index == -1) {
+    if (!found) {
+      final byte newMask = glowing ? 0x40 : (byte) 0;
+      final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
       copy.addFirst(newValue);
-    } else {
-      copy.set(index, newValue);
     }
 
     final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);

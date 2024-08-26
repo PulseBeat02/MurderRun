@@ -89,10 +89,7 @@ public final class GameStartupTool {
 
   private void handleCountdownSeconds(final int time) {
     switch (time) {
-      case 5 -> {
-        GameStartupTool.this.countDownAudio();
-        GameStartupTool.this.announceCountdown(5);
-      }
+      case 5 -> startAudioCountdown();
       case 4 -> GameStartupTool.this.announceCountdown(4);
       case 3 -> GameStartupTool.this.announceCountdown(3);
       case 2 -> GameStartupTool.this.announceCountdown(2);
@@ -101,6 +98,11 @@ public final class GameStartupTool {
       default -> {} // Do nothing
     }
     GameStartupTool.this.setTimeRemaining(time);
+  }
+
+  private void startAudioCountdown() {
+    GameStartupTool.this.countDownAudio();
+    GameStartupTool.this.announceCountdown(5);
   }
 
   private void setTimeRemaining(final int time) {

@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -63,12 +64,13 @@ public final class TrapSniffer extends SurvivorGadget {
       final Item entity = stack.getItem();
       final Collection<Item> set = requireNonNull(this.glowItemStates.get(player));
       final double distance = origin.distanceSquared(location);
-      if (distance < 36) {
+      final MetadataManager metadata = player.getMetadataManager();
+      if (distance < 225) {
         set.add(entity);
-        player.setEntityGlowingForPlayer(entity, ChatColor.RED);
+        metadata.setEntityGlowing(entity, ChatColor.RED, true);
       } else if (set.contains(entity)) {
         set.remove(entity);
-        player.removeEntityGlowingForPlayer(entity);
+        metadata.setEntityGlowing(entity, ChatColor.RED, false);
       }
     }
   }
