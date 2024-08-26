@@ -42,8 +42,7 @@ public final class FakePart extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleConditionalTask(
-        () -> this.spawnParticleOnPart(location), 0, 20L, item::isDead);
+    scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(item), 0, 20L, item::isDead);
 
     final GamePlayer killer = manager.getGamePlayer(player);
     final Runnable task = () -> this.handlePlayers(scheduler, manager, killer, item);
@@ -67,21 +66,26 @@ public final class FakePart extends KillerGadget {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < 1) {
-      this.handleDebuff(scheduler, survivor, killer);
+    if (distance < 4) {
+      this.handleDebuff(scheduler, survivor, killer, item);
       final Component msg = Message.FAKE_PART_ACTIVATE.build();
       survivor.sendMessage(msg);
     }
   }
 
   private void handleDebuff(
-      final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
+      final GameScheduler scheduler,
+      final GamePlayer survivor,
+      final GamePlayer killer,
+      final Item item) {
 
-    survivor.disableJump(scheduler, 5 * 20L);
-    survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));
+    item.remove();
+    survivor.disableJump(scheduler, 8 * 20L);
+    survivor.disableWalkWithFOVEffects(8 * 20);
+    survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 8 * 20, 1));
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, 5 * 20L);
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, 8 * 20L);
   }
 
   private Item spawnItem(final Location location) {
@@ -93,8 +97,9 @@ public final class FakePart extends KillerGadget {
     return item;
   }
 
-  private void spawnParticleOnPart(final Location location) {
-    final Location clone = location.clone().add(0, 1, 0);
+  private void spawnParticleOnPart(final Item item) {
+    final Location location = item.getLocation();
+    final Location clone = location.add(0, 1, 0);
     final World world = requireNonNull(clone.getWorld());
     world.spawnParticle(Particle.DUST, clone, 40, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 1));
   }

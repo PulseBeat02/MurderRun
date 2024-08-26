@@ -41,7 +41,7 @@ public final class DeathSteed extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
     scheduler.scheduleConditionalTask(
-        () -> this.handleSurvivors(manager, horse), 0, 20L, horse::isDead);
+        () -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
   }
 
   private void handleSurvivors(final PlayerManager manager, final Horse horse) {
@@ -66,23 +66,24 @@ public final class DeathSteed extends KillerGadget {
 
   private void handleSurvivor(final GamePlayer survivor, final Horse horse) {
     final Location survivorLocation = survivor.getLocation();
+    final Location updated = survivorLocation.add(0, 2, 0);
     final Location horseLocation = horse.getLocation();
-    final double distance = survivorLocation.distanceSquared(horseLocation);
-    if (distance < 100) {
-      this.spawnParticleLine(survivorLocation, horseLocation);
+    final double distance = updated.distanceSquared(horseLocation);
+    if (distance < 400) {
+      this.spawnParticleLine(updated, horseLocation);
     }
   }
 
   private void spawnParticleLine(final Location start, final Location end) {
     final World world = requireNonNull(start.getWorld());
     final double distance = start.distance(end) - 3;
-    final double step = 0.5;
+    final double step = 0.1;
     for (double d = 0; d < distance; d += step) {
       final double t = d / distance;
       final double x = start.getX() + (end.getX() - start.getX()) * t;
       final double y = start.getY() + (end.getY() - start.getY()) * t;
       final double z = start.getZ() + (end.getZ() - start.getZ()) * t;
-      world.spawnParticle(Particle.BUBBLE_POP, x, y, z, 1);
+      world.spawnParticle(Particle.BUBBLE, x, y, z, 5);
     }
   }
 }

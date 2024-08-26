@@ -56,24 +56,24 @@ public enum KillerGadgets {
   Fire Trail: Leaves a trail of fire wherever the Killer walks
   Hook: Drags opponents closer to the killer
   Phantom: Allows the Killer to fly and float through walls for 15 seconds
+  Death Steed: Summons a Death Steed that follows where the survivors are, can ride on the horse
+  Part Warp: Teleports the closest car part to the trap where the Killer put it.
+  Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
 
 
   KILLER TRAPS IMPLEMENTED
 
   Infrared Vision: Gives the Killer infrared vision, to see where someone is hiding
   Trap Seeker: Allows the Killer to detect hidden traps
-  Death Steed: Summons a Death Steed that follows where the survivors are, can ride on the horse
   All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing them to track their location and plans
   Death Hound: Summons a wolf that sniffs out and kills opponents
   Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
   EMP Blast: Destroys all traps on the map and stuns all opponents.
   Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
   Forewarn: If an opponent grabs a truck part, they will start to glow
-  Part Warp: Teleports the closest car part to the trap where the Killer put it.
   The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
-  Dormagogg: An evil being that blind, stu ns, and illuminates opponents
+  Dormagogg: An evil being that blind, stuns, and illuminates opponents
   Gamble: Killing a player causes them to drop a random killer trap.
-  Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
   Poison Smog: Covers the area in a poisonous smog
   Ender Shadows: Creates animated shadows which causes opponents to light up when touched
   Portal Gun: Allows the user to create portals wherever they please

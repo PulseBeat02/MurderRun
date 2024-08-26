@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import java.util.UUID;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -21,6 +22,16 @@ public final class ItemFactory {
 
   private ItemFactory() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static ItemStack createPortalGun(final ItemStack stack) {
+    final UUID uuid = UUID.randomUUID();
+    final String data = uuid.toString();
+    return Item.builder(stack)
+        .pdc(Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true)
+        .pdc(Keys.UUID, PersistentDataType.STRING, data)
+        .enchantment(Enchantment.INFINITY, 1)
+        .build();
   }
 
   public static ItemStack createHook(final ItemStack stack) {

@@ -12,22 +12,22 @@ import io.github.pulsebeat02.murderrun.immutable.Holder;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -45,17 +45,14 @@ public final class PortalGun extends KillerGadget implements Listener {
         Message.PORTAL_GUN_NAME.build(),
         Message.PORTAL_GUN_LORE.build(),
         64,
-        stack -> {
-          final UUID uuid = UUID.randomUUID();
-          final String data = uuid.toString();
-          PDCUtils.setPersistentDataAttribute(
-              stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true);
-          PDCUtils.setPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING, data);
-          stack.addEnchantment(Enchantment.INFINITY, 1);
-        });
+        ItemFactory::createPortalGun);
     this.portals = new HashMap<>();
     this.game = game;
   }
+
+  @Override
+  public void onGadgetRightClick(
+      final Game game, final PlayerInteractEvent event, final boolean remove) {}
 
   @EventHandler
   public void onProjectileHit(final ProjectileHitEvent event) {
