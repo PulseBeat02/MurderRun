@@ -49,7 +49,10 @@ public final class FlashBang extends SurvivorGadget implements Listener {
   }
 
   @Override
-  public void onGadgetRightClick(Game game, PlayerInteractEvent event, boolean remove) {}
+  public void onGadgetRightClick(
+      final Game game, final PlayerInteractEvent event, final boolean remove) {
+    // ignore impl
+  }
 
   @EventHandler
   public void onProjectileHitEvent(final ProjectileHitEvent event) {

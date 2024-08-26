@@ -51,15 +51,13 @@ public final class BurnTheBody extends KillerGadget {
   private void destroyBody(
       final GameScheduler scheduler, final GamePlayer victim, final Location deathLocation) {
     final World world = requireNonNull(deathLocation.getWorld());
-    scheduler.scheduleRepeatedTask(
-        () -> {
-          world.spawnParticle(Particle.LAVA, deathLocation, 15, 1, 1, 1);
-          world.strikeLightningEffect(deathLocation);
-        },
-        0,
-        20L,
-        5 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.summonEffects(deathLocation, world), 0, 20L, 5 * 20L);
     scheduler.scheduleTask(() -> this.handleBurnTasks(victim), 100);
+  }
+
+  private void summonEffects(final Location deathLocation, final World world) {
+    world.spawnParticle(Particle.LAVA, deathLocation, 15, 1, 1, 1);
+    world.strikeLightningEffect(deathLocation);
   }
 
   private void handleBurnTasks(final GamePlayer victim) {

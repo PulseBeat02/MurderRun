@@ -22,6 +22,7 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
@@ -40,6 +41,12 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
         stack -> PDCUtils.setPersistentDataAttribute(
             stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true));
     this.game = game;
+  }
+
+  @Override
+  public void onGadgetRightClick(
+      final Game game, final PlayerInteractEvent event, final boolean remove) {
+    // ignore impl
   }
 
   @EventHandler

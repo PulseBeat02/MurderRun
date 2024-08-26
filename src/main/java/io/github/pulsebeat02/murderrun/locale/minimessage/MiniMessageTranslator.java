@@ -34,7 +34,6 @@ public abstract class MiniMessageTranslator implements Translator {
   @Override
   public @Nullable Component translate(
       final TranslatableComponent component, final @NonNull Locale locale) {
-
     final String key = component.key();
     final String miniMessageString = requireNonNull(this.getMiniMessageString(key, locale));
     final List<? extends ComponentLike> args = component.arguments();
