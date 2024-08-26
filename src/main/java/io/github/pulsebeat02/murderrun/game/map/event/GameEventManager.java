@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Set;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
 public final class GameEventManager {
@@ -40,15 +39,13 @@ public final class GameEventManager {
     final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     for (final GameEvent listener : this.events) {
-      final Listener gameListener = (Listener) listener;
-      manager.registerEvents(gameListener, plugin);
+      manager.registerEvents(listener, plugin);
     }
   }
 
   public void unregisterEvents() {
     for (final GameEvent listener : this.events) {
-      final Listener gameListener = (Listener) listener;
-      HandlerList.unregisterAll(gameListener);
+      HandlerList.unregisterAll(listener);
     }
   }
 }

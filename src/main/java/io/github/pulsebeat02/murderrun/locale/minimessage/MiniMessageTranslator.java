@@ -9,13 +9,17 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.translation.Translator;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class MiniMessageTranslator implements Translator {
 
-  final MiniMessage miniMessage;
+  private static PlainTextComponentSerializer PLAIN_TEST_SERIALIZER =
+      PlainTextComponentSerializer.plainText();
+
+  private final MiniMessage miniMessage;
 
   public MiniMessageTranslator() {
     this(MiniMessage.miniMessage());
@@ -36,14 +40,26 @@ public abstract class MiniMessageTranslator implements Translator {
       final TranslatableComponent component, final @NonNull Locale locale) {
     final String key = component.key();
     final String miniMessageString = requireNonNull(this.getMiniMessageString(key, locale));
+    final String content = this.checkIfSpecialString(miniMessageString, component);
     final List<? extends ComponentLike> args = component.arguments();
     final boolean empty = args.isEmpty();
     final MiniMessage parser = MiniMessage.miniMessage();
     final ArgumentTag tag = new ArgumentTag(args);
     final Component resultingComponent =
-        empty ? parser.deserialize(miniMessageString) : parser.deserialize(miniMessageString, tag);
+        empty ? parser.deserialize(content) : parser.deserialize(content, tag);
     final List<Component> children = component.children();
     return children.isEmpty() ? resultingComponent : resultingComponent.children(children);
+  }
+
+  private String checkIfSpecialString(final String value, final TranslatableComponent component) {
+    final List<? extends ComponentLike> args = component.arguments();
+    if (value.contains("$PLAYER_NAME$")) {
+      final ComponentLike arg = args.getFirst();
+      final Component comp = arg.asComponent();
+      final String name = PLAIN_TEST_SERIALIZER.serialize(comp);
+      return value.replace("$PLAYER_NAME$", name);
+    }
+    return value;
   }
 
   protected abstract String getMiniMessageString(final String key, final Locale locale);

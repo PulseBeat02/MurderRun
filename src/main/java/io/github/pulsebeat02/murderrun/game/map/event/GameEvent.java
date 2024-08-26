@@ -2,8 +2,8 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import java.net.http.WebSocket.Listener;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 public abstract class GameEvent implements Listener {
 
@@ -19,6 +19,6 @@ public abstract class GameEvent implements Listener {
   }
 
   public Game getGame() {
-    return game;
+    return this.game;
   }
 }
