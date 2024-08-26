@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -21,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.util.Vector;
@@ -51,36 +53,41 @@ public final class Camera extends SurvivorGadget {
     final Location location = player.getLocation();
     final CitizensManager npcManager = game.getNPCManager();
     final NPC npc = this.spawnNPC(npcManager, location);
-    final Entity entity = npc.getEntity();
+    final LivingEntity entity = (LivingEntity) npc.getEntity();
     entity.setInvulnerable(true);
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     gamePlayer.playSound("entity.ender_eye.death");
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleAllKillers(manager, entity), 0, 3 * 20L);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleAllKillers(manager, gamePlayer, entity), 0, 20L);
   }
 
-  private void handleAllKillers(final PlayerManager manager, final Entity entity) {
-    manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(manager, murderer, entity));
+  private void handleAllKillers(
+      final PlayerManager manager, final GamePlayer survivor, final LivingEntity entity) {
+    manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(survivor, murderer, entity));
   }
 
   private void handleGlowMurderer(
-      final PlayerManager manager, final Killer killer, final Entity entity) {
-    if (killer.canSeeEntity(entity, 64d)) {
-      this.glowPlayers.add(killer);
-      manager.setEntityGlowingForAliveInnocents(killer, ChatColor.RED);
-      this.setLookDirection(killer, entity);
-    } else if (this.glowPlayers.contains(killer)) {
-      this.glowPlayers.remove(killer);
-      manager.removeEntityGlowingForAliveInnocents(killer, ChatColor.RED);
-    }
+      final GamePlayer survivor, final Killer killer, final LivingEntity entity) {
+    killer.apply(player -> {
+      final MetadataManager metadata = survivor.getMetadataManager();
+      if (entity.hasLineOfSight(player)) {
+        this.glowPlayers.add(killer);
+        metadata.setEntityGlowing(killer, ChatColor.RED, true);
+        this.setLookDirection(killer, entity);
+      } else if (this.glowPlayers.contains(killer)) {
+        this.glowPlayers.remove(killer);
+        metadata.setEntityGlowing(killer, ChatColor.RED, false);
+      }
+    });
   }
 
   private void setLookDirection(final Killer killer, final Entity entity) {
     final Location origin = entity.getLocation();
     final Location look = killer.getLocation();
-    final Vector direction = look.getDirection().subtract(origin.toVector());
+    final Vector direction = look.toVector().subtract(origin.toVector());
     origin.setDirection(direction);
     entity.teleport(origin);
   }

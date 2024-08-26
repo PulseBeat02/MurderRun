@@ -19,6 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.util.Vector;
@@ -53,7 +54,7 @@ public final class Camera extends KillerGadget {
     final Location location = player.getLocation();
     final CitizensManager npcManager = game.getNPCManager();
     final NPC npc = this.spawnNPC(npcManager, location);
-    final Entity entity = npc.getEntity();
+    final LivingEntity entity = (LivingEntity) npc.getEntity();
     entity.setInvulnerable(true);
 
     final GameScheduler scheduler = game.getScheduler();
@@ -62,22 +63,24 @@ public final class Camera extends KillerGadget {
   }
 
   private void handleCameraWatch(
-      final PlayerManager manager, final Entity entity, final GamePlayer killer) {
+      final PlayerManager manager, final LivingEntity entity, final GamePlayer killer) {
     manager.applyToAllLivingInnocents(
         survivor -> this.handleGlowInnocent(survivor, entity, killer));
   }
 
   private void handleGlowInnocent(
-      final GamePlayer survivor, final Entity entity, final GamePlayer killer) {
-    final MetadataManager metadata = killer.getMetadataManager();
-    if (survivor.canSeeEntity(entity, 64d)) {
-      this.glowPlayers.add(survivor);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
-      this.setLookDirection(survivor, entity);
-    } else if (this.glowPlayers.contains(survivor)) {
-      this.glowPlayers.remove(survivor);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
-    }
+      final GamePlayer survivor, final LivingEntity entity, final GamePlayer killer) {
+    survivor.apply(player -> {
+      final MetadataManager metadata = killer.getMetadataManager();
+      if (entity.hasLineOfSight(player)) {
+        this.glowPlayers.add(survivor);
+        metadata.setEntityGlowing(survivor, ChatColor.RED, true);
+        this.setLookDirection(survivor, entity);
+      } else if (this.glowPlayers.contains(survivor)) {
+        this.glowPlayers.remove(survivor);
+        metadata.setEntityGlowing(survivor, ChatColor.RED, false);
+      }
+    });
   }
 
   private void setLookDirection(final GamePlayer killer, final Entity entity) {

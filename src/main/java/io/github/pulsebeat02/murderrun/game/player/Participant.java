@@ -15,7 +15,6 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -77,8 +76,6 @@ public interface Participant {
   void removeAllPotionEffects();
 
   void removeAllBossBars();
-
-  boolean canSeeEntity(final Entity entity, final double maxRangeSquared);
 
   void teleport(final Location location);
 

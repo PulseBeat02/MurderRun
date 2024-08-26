@@ -10,19 +10,13 @@ import java.util.function.Consumer;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.RayTraceResult;
-import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -125,36 +119,6 @@ public abstract class AbstractPlayer implements Participant {
         player.removePotionEffect(type);
       });
     });
-  }
-
-  @Override
-  public boolean canSeeEntity(final Entity entity, final double maxRangeSquared) {
-
-    final Location entityLocation = entity.getLocation();
-    final Location playerLocation = this.getLocation();
-    final double distanceSquared = entityLocation.distanceSquared(playerLocation);
-    if (distanceSquared > maxRangeSquared) {
-      return false;
-    }
-
-    final World world = entity.getWorld();
-    final Vector playerVector = playerLocation.toVector();
-    final Vector entityVector = entityLocation.toVector();
-    final Vector direction = playerVector.subtract(entityVector);
-    final Vector normalizedDirection = direction.normalize();
-    final RayTraceResult result =
-        world.rayTraceBlocks(entityLocation, normalizedDirection, maxRangeSquared);
-    if (result == null) {
-      return true;
-    }
-
-    final Block block = result.getHitBlock();
-    if (block == null) {
-      return true;
-    }
-
-    final Material type = block.getType();
-    return !type.isSolid();
   }
 
   @Override

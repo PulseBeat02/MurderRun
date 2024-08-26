@@ -81,7 +81,7 @@ public final class ItemFactory {
   }
 
   public static ItemStack createKnockBackBone() {
-    return Item.builder(Material.BONE).enchantment(Enchantment.KNOCKBACK, 2).build();
+    return Item.builder(Material.BONE).enchantment(Enchantment.KNOCKBACK, 0).build();
   }
 
   public static ItemStack createFakePart() {

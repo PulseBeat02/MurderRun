@@ -115,6 +115,15 @@ public final class GamePlayerBlockEvent extends GameEvent {
       return;
     }
 
+    final Game game = this.getGame();
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (gamePlayer instanceof Survivor survivor) {
+      if (survivor.canPlaceBlocks()) {
+        return;
+      }
+    }
+
     event.setCancelled(true);
   }
 }

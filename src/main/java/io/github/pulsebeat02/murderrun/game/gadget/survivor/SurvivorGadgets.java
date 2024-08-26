@@ -135,14 +135,15 @@ public enum SurvivorGadgets {
   Sixth Sense -- if killer is near makes them glow
   Trap Sniffer -- senses detect car parts within 15 blocks
   Mind Control -- controls player mind
+  Med Bot -- constant regeneration pool in area
+  Portal Trap -- teleports trap to killer
+  Camera -- if killer within range glow
+
 
   SURVIVOR TRAPS IMPLEMENTED:
 
-  Portal Trap -- teleports trap to killer
-  Med Bot -- constant regeneration pool in area
   Ghosting -- become an annoying ghost after death
   Resurrection Stone -- resurrects a dead player
-  Camera -- if killer within range glow
 
    */
 

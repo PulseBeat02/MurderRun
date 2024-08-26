@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.EulerAngle;
 
 public final class MedBot extends SurvivorGadget {
 
@@ -72,7 +73,7 @@ public final class MedBot extends SurvivorGadget {
       manager.applyToAllLivingInnocents(consumer);
       manager.applyToAllMurderers(killerConsumer);
     };
-    scheduler.scheduleConditionalTask(task, 0, 20L, stand::isDead);
+    scheduler.scheduleConditionalTask(task, 0, 5L, stand::isDead);
   }
 
   private void handleKillerDestroy(
@@ -112,7 +113,7 @@ public final class MedBot extends SurvivorGadget {
   }
 
   private void handleParticles(final GameScheduler scheduler, final ArmorStand stand) {
-    scheduler.scheduleConditionalTask(() -> this.spawnParticle(stand), 0, 5, stand::isDead);
+    scheduler.scheduleConditionalTask(() -> this.spawnParticle(stand), 0, 2, stand::isDead);
   }
 
   private void spawnParticle(final ArmorStand stand) {
@@ -123,14 +124,14 @@ public final class MedBot extends SurvivorGadget {
 
   private double moveVerticallyOneIteration(
       final ArmorStand stand, final long current, final double lastYOffset) {
-    final double yOffset = Math.sin(Math.toRadians(current * 9));
+    final double yOffset = Math.sin(Math.toRadians(current * 5));
     stand.teleport(stand.getLocation().add(0, (yOffset - lastYOffset), 0));
     return yOffset;
   }
 
   private void rotateOneIteration(final ArmorStand stand) {
-    final Location location = stand.getLocation();
-    final float yaw = location.getYaw();
-    location.setYaw(yaw + 6);
+    final EulerAngle angle = stand.getHeadPose();
+    final EulerAngle result = angle.add(0, 0.1, 0);
+    stand.setHeadPose(result);
   }
 }

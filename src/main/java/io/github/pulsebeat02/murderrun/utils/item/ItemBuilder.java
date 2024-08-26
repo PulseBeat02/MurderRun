@@ -152,7 +152,7 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder enchantment(final Enchantment enchantment, final int level) {
-    this.stack.addEnchantment(enchantment, level);
+    this.stack.addUnsafeEnchantment(enchantment, level);
     return this;
   }
 
