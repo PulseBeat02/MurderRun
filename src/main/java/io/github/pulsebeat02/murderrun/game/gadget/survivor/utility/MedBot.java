@@ -124,7 +124,7 @@ public final class MedBot extends SurvivorGadget {
 
   private double moveVerticallyOneIteration(
       final ArmorStand stand, final long current, final double lastYOffset) {
-    final double yOffset = Math.sin(Math.toRadians(current * 5));
+    final double yOffset = Math.sin(Math.toRadians(current * 5.0d));
     stand.teleport(stand.getLocation().add(0, (yOffset - lastYOffset), 0));
     return yOffset;
   }

@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor("org.incendo:cloud-annotations:2.0.0-SNAPSHOT")
+    annotationProcessor("org.incendo:cloud-annotations:2.0.0")
 
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
@@ -49,13 +49,13 @@ dependencies {
     implementation("team.unnamed:creative-api:1.7.3")
     implementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     implementation("team.unnamed:creative-server:1.7.3")
-    implementation("org.incendo:cloud-annotations:2.0.0-SNAPSHOT")
+    implementation("org.incendo:cloud-annotations:2.0.0")
     implementation("org.incendo:cloud-paper:2.0.0-SNAPSHOT")
     implementation("org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT")
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
 
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.110.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.113.0")
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
