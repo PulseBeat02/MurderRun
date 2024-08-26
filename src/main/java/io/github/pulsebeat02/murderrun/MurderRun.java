@@ -28,7 +28,6 @@ public final class MurderRun extends JavaPlugin {
   FIX
 
   - Glowing bugs
-  - Killer wins and players aren't teleported.
   - "Chat disabled in client options."
 
    */

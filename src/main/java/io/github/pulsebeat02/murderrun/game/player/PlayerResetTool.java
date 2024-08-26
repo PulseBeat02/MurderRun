@@ -33,10 +33,10 @@ public final class PlayerResetTool {
     gamePlayer.removeAllPotionEffects();
     gamePlayer.removeAllBossBars();
     gamePlayer.stopSound(Sounds.BACKGROUND);
+    gamePlayer.teleport(location);
     gamePlayer.apply(player -> {
       player.getInventory().clear();
       player.setGameMode(GameMode.SURVIVAL);
-      player.teleport(location);
       player.setHealth(20f);
       player.setFoodLevel(20);
       player.setWalkSpeed(0.2f);
