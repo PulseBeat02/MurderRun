@@ -76,11 +76,14 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Triplet<GameManager, Boolean, Boolean> triplet = Triplet.of(manager, owner, true);
     this.games.put(sender, triplet);
 
-    manager.startGame((game, code) -> {
+    final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
+    final Game runningGame = manager.startGame((game, code) -> {
       final PlayerManager playerManager = game.getPlayerManager();
       playerManager.applyToAllParticipants(
           gamePlayer -> gamePlayer.apply(player -> this.games.remove(player)));
+      shutdownManager.removeGame(game);
     });
+    shutdownManager.addGame(runningGame);
 
     final Component message = Message.GAME_START.build();
     audience.sendMessage(message);

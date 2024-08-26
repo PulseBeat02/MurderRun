@@ -2,13 +2,17 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -53,15 +57,22 @@ public final class MedBot extends SurvivorGadget {
     equipment.setHelmet(Item.create(Material.CHORUS_FLOWER));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleConditionalTask(
-        () -> this.handleArmorStandEffects(armorStand), 0, 2, armorStand::isDead);
-    scheduler.scheduleConditionalTask(
-        () -> this.handleMedBotUpdate(manager, armorStand), 0, 20L, armorStand::isDead);
+    this.handleRotation(scheduler, armorStand);
+    this.handleVerticalMotion(scheduler, armorStand);
+    this.handleParticles(scheduler, armorStand);
+    this.handleMedBotUpdate(scheduler, manager, armorStand);
   }
 
-  private void handleMedBotUpdate(final PlayerManager manager, final ArmorStand stand) {
-    manager.applyToAllLivingInnocents(innocent -> this.handleInnocentEffects(innocent, stand));
-    manager.applyToAllMurderers(killer -> this.handleKillerDestroy(manager, killer, stand));
+  private void handleMedBotUpdate(
+      final GameScheduler scheduler, final PlayerManager manager, final ArmorStand stand) {
+    final Consumer<GamePlayer> consumer = survivor -> this.handleInnocentEffects(survivor, stand);
+    final Consumer<Killer> killerConsumer =
+        killer -> this.handleKillerDestroy(manager, killer, stand);
+    final Runnable task = () -> {
+      manager.applyToAllLivingInnocents(consumer);
+      manager.applyToAllMurderers(killerConsumer);
+    };
+    scheduler.scheduleConditionalTask(task, 0, 20L, stand::isDead);
   }
 
   private void handleKillerDestroy(
@@ -69,7 +80,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < 1) {
+    if (distance < 4) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       stand.remove();
@@ -81,45 +92,45 @@ public final class MedBot extends SurvivorGadget {
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
     if (distance < 64) {
-      innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 20, 2));
+      innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20, 2));
     }
   }
 
   private void handleRotation(final GameScheduler scheduler, final ArmorStand stand) {
-    // in dev
-    scheduler.scheduleRepeatedTask(
-        () -> {
-          final Location location = stand.getLocation();
-          final float yaw = location.getYaw();
-          location.setYaw(yaw + 6);
-        },
+    scheduler.scheduleConditionalTask(() -> this.rotateOneIteration(stand), 0, 1, stand::isDead);
+  }
+
+  private void handleVerticalMotion(final GameScheduler scheduler, final ArmorStand stand) {
+    final AtomicDouble lastYOffset = new AtomicDouble();
+    final AtomicLong currentTick = new AtomicLong();
+    scheduler.scheduleConditionalTask(
+        () -> lastYOffset.set(this.moveVerticallyOneIteration(
+            stand, currentTick.getAndIncrement(), lastYOffset.get())),
         0,
         1,
-        3 * 20L);
+        stand::isDead);
   }
 
-  private void handleArmorStandEffects(final ArmorStand stand) {
-    this.handleRotation(stand);
-    this.handleVerticalBobbing(stand);
-    this.handleParticles(stand);
+  private void handleParticles(final GameScheduler scheduler, final ArmorStand stand) {
+    scheduler.scheduleConditionalTask(() -> this.spawnParticle(stand), 0, 5, stand::isDead);
   }
 
-  private void handleParticles(final ArmorStand stand) {
+  private void spawnParticle(final ArmorStand stand) {
     final Location location = stand.getLocation();
     final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.DUST, location, 5, 8, 8, 8, new DustOptions(Color.PURPLE, 4));
   }
 
-  private void handleVerticalBobbing(final ArmorStand stand) {
-    final Location location = stand.getLocation();
-    location.add(0, Math.sin(System.currentTimeMillis() / 1000.0) * 0.05, 0);
-    stand.teleport(location);
+  private double moveVerticallyOneIteration(
+      final ArmorStand stand, final long current, final double lastYOffset) {
+    final double yOffset = Math.sin(Math.toRadians(current * 9));
+    stand.teleport(stand.getLocation().add(0, (yOffset - lastYOffset), 0));
+    return yOffset;
   }
 
-  private void handleRotation(final ArmorStand stand) {
-    final float yaw = (float) (System.currentTimeMillis() % 360);
+  private void rotateOneIteration(final ArmorStand stand) {
     final Location location = stand.getLocation();
-    location.setYaw(yaw);
-    stand.teleport(location);
+    final float yaw = location.getYaw();
+    location.setYaw(yaw + 6);
   }
 }

@@ -96,9 +96,10 @@ public final class GameManager {
     requestFuture.thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request));
   }
 
-  public void startGame(final GameEndCallback callback) {
+  public Game startGame(final GameEndCallback callback) {
     this.setMurdererCount(this.murderers);
     this.game.startGame(this.settings, this.murderers, this.participants, callback);
+    return this.game;
   }
 
   private void setMurdererCount(final Collection<Player> murderers) {

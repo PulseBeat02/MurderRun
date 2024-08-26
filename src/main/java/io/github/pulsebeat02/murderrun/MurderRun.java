@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
+import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
@@ -23,8 +24,6 @@ public final class MurderRun extends JavaPlugin {
   DEBUG
 
   - Debug all survivor traps
-  - Shutdown all running games in Commands
-
   - Add join game to player in message invite for match
   - Debug all killer traps
 
@@ -39,10 +38,12 @@ public final class MurderRun extends JavaPlugin {
   private ArenaManager arenaManager;
   private LobbyManager lobbyManager;
   private Metrics metrics;
+  private GameShutdownManager gameShutdownManager;
   private ResourcePackProvider provider;
 
   @Override
   public void onDisable() {
+    this.shutdownGames();
     this.updatePluginData();
     this.shutdownPluginData();
     this.stopHostingDaemon();
@@ -58,6 +59,10 @@ public final class MurderRun extends JavaPlugin {
     this.handlePackHosting();
     this.registerCommands();
     this.enableBStats();
+  }
+
+  private void shutdownGames() {
+    this.gameShutdownManager.shutdown();
   }
 
   private void registerLookUpMaps() {
@@ -95,6 +100,7 @@ public final class MurderRun extends JavaPlugin {
   private void registerCommands() {
     final AnnotationParserHandler commandHandler = new AnnotationParserHandler(this);
     commandHandler.registerCommands();
+    this.gameShutdownManager = new GameShutdownManager();
   }
 
   private void registerAudienceHandler() {
@@ -139,5 +145,9 @@ public final class MurderRun extends JavaPlugin {
 
   public LobbyManager getLobbyManager() {
     return this.lobbyManager;
+  }
+
+  public GameShutdownManager getGameShutdownManager() {
+    return this.gameShutdownManager;
   }
 }
