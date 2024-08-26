@@ -113,6 +113,7 @@ public final class ItemFactory {
     return Item.builder(Material.ARROW)
         .name(Message.ARROW_NAME.build())
         .lore(Message.ARROW_LORE.build())
+        .enchantment(Enchantment.VANISHING_CURSE, 1)
         .hideAttributes()
         .build();
   }
@@ -125,6 +126,7 @@ public final class ItemFactory {
         .modifier(Attribute.GENERIC_ATTACK_DAMAGE, 8)
         .pdc(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true)
         .pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true)
+        .enchantment(Enchantment.VANISHING_CURSE, 1)
         .build();
   }
 }

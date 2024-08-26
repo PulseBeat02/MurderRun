@@ -23,10 +23,6 @@ public final class MurderRun extends JavaPlugin {
 
   DEBUG
 
-  - Finish debugging all command gadgets
-  - Test all survivor gadgets
-  - Give killer gadgets
-
   - Debug all killer traps
 
    */

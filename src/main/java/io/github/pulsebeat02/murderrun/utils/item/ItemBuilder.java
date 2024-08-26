@@ -126,7 +126,8 @@ public final class ItemBuilder implements Builder {
   public Builder hideAttributes() {
     this.dummyAttribute();
     final ItemMeta meta = this.meta();
-    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+    meta.addItemFlags(
+        ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ENCHANTS);
     this.stack.setItemMeta(meta);
     return this;
   }

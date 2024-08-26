@@ -1,12 +1,19 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.awt.Color;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
+import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -26,10 +33,18 @@ public final class FartTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
+
     final PlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.FART);
     murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 3),
+        new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 4),
         new PotionEffect(PotionEffectType.NAUSEA, 7 * 20, 1));
+
+    final GameScheduler scheduler = game.getScheduler();
+    final Location location = murderer.getLocation();
+    final World world = requireNonNull(location.getWorld());
+    final Runnable task = () -> world.spawnParticle(
+        Particle.DUST, location, 10, 2, 2, 2, new DustOptions(org.bukkit.Color.GREEN, 4));
+    scheduler.scheduleRepeatedTask(task, 0, 5, 4 * 20L);
   }
 }

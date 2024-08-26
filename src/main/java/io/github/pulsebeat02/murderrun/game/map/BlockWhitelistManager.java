@@ -45,6 +45,12 @@ public final class BlockWhitelistManager {
     }
   }
 
+  public void addWhitelistedBlock(final Block block) {
+    final Location location = block.getLocation();
+    final BlockVector3 vector = BukkitAdapter.asBlockVector(location);
+    this.whitelisted.add(vector);
+  }
+
   private void addVector(final Change change) {
     if (change instanceof final BlockChange blockChange) {
       final BlockVector3 vector = blockChange.position();

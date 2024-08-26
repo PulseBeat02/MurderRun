@@ -117,7 +117,7 @@ public final class PlayerManager {
   public @Nullable GamePlayer getNearestDeadSurvivor(final Location origin) {
     GamePlayer nearest = null;
     double min = Double.MAX_VALUE;
-    for (final GamePlayer survivor : this.cachedAlivePlayers) {
+    for (final GamePlayer survivor : this.cachedDeadPlayers) {
       final Location location = requireNonNull(survivor.getDeathLocation());
       final double distance = location.distanceSquared(origin);
       if (distance < min) {

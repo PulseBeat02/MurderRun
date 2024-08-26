@@ -31,7 +31,7 @@ public final class PlayerStartupTool {
       player.setHealth(20f);
       player.setFoodLevel(20);
       player.setSaturation(20);
-      player.setRespawnLocation(this.getSpawnLocation());
+      player.setRespawnLocation(this.getSpawnLocation(), true);
     });
   }
 
@@ -50,7 +50,8 @@ public final class PlayerStartupTool {
   public void handleMurderer(final GamePlayer gamePlayer) {
     this.handleAll(gamePlayer);
     gamePlayer.addPotionEffects(
-        new PotionEffect(PotionEffectType.NIGHT_VISION, PotionEffect.INFINITE_DURATION, 1));
+        new PotionEffect(PotionEffectType.NIGHT_VISION, PotionEffect.INFINITE_DURATION, 1),
+        new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 5));
     gamePlayer.apply(player -> {
       player.setGameMode(GameMode.SURVIVAL);
       player.setWalkSpeed(0.3f);

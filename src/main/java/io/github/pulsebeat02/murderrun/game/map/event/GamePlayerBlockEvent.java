@@ -45,7 +45,7 @@ public final class GamePlayerBlockEvent extends GameEvent {
   private void onBlockDestroy(final BlockBreakEvent event) {
 
     final Player player = event.getPlayer();
-    if (this.isGamePlayer(player)) {
+    if (!this.isGamePlayer(player)) {
       return;
     }
 
@@ -118,8 +118,12 @@ public final class GamePlayerBlockEvent extends GameEvent {
     final Game game = this.getGame();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (gamePlayer instanceof Survivor survivor) {
+    if (gamePlayer instanceof final Survivor survivor) {
       if (survivor.canPlaceBlocks()) {
+        final Map map = game.getMap();
+        final BlockWhitelistManager whitelist = map.getBlockWhitelistManager();
+        final Block block = event.getBlock();
+        whitelist.addWhitelistedBlock(block);
         return;
       }
     }

@@ -11,13 +11,17 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.PlayerInventory;
 
 public final class ResurrectionStone extends SurvivorGadget {
 
@@ -33,8 +37,6 @@ public final class ResurrectionStone extends SurvivorGadget {
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
-
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
@@ -45,11 +47,8 @@ public final class ResurrectionStone extends SurvivorGadget {
       return;
     }
 
-    final Location closestLocation = closest.getDeathLocation();
-    if (closestLocation == null) {
-      return;
-    }
-
+    final ArmorStand corpse = requireNonNull(closest.getCorpse());
+    final Location closestLocation = corpse.getLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
       return;
@@ -58,12 +57,15 @@ public final class ResurrectionStone extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L);
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L);
+
+    super.onGadgetDrop(game, event, true);
   }
 
   private void spawnParticles(final Location location) {
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DRAGON_BREATH, location, 5, 0.5, 0.5, 0.5);
-    location.add(0, 0.05, 0);
+    world.spawnParticle(
+        Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
+    location.add(0, 0.5, 0);
   }
 
   private void resurrectPlayer(final Game game, final GamePlayer closest) {
@@ -76,12 +78,17 @@ public final class ResurrectionStone extends SurvivorGadget {
 
     closest.apply(resurrected -> {
       final Location death = requireNonNull(resurrected.getLastDeathLocation());
+      final PlayerInventory inventory = resurrected.getInventory();
+      inventory.clear();
       resurrected.setHealth(20);
       resurrected.setFoodLevel(20);
       resurrected.setSaturation(20);
       resurrected.teleport(death);
       resurrected.setGameMode(GameMode.SURVIVAL);
     });
+
+    final ArmorStand corpse = requireNonNull(closest.getCorpse());
+    corpse.remove();
 
     final Component message = Message.RESURRECTION_STONE_ACTIVATE.build();
     playerManager.applyToAllParticipants(gamePlayer -> gamePlayer.sendMessage(message));

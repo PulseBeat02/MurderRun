@@ -73,7 +73,7 @@ public enum SurvivorGadgets {
 
   /*
 
-  SURVIVOR TRAPS DEBUGGED
+  SURVIVOR TRAPS COMPLETELY DONE
 
   Fart Trap -- plays fart sound, gives killer nausea, slowness
   Jeb Trap -- places herd of rainbow sheep
@@ -138,10 +138,6 @@ public enum SurvivorGadgets {
   Med Bot -- constant regeneration pool in area
   Portal Trap -- teleports trap to killer
   Camera -- if killer within range glow
-
-
-  SURVIVOR TRAPS IMPLEMENTED:
-
   Ghosting -- become an annoying ghost after death
   Resurrection Stone -- resurrects a dead player
 
