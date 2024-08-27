@@ -13,6 +13,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -59,6 +60,7 @@ public final class EMPBlast extends KillerGadget {
     final PlayerManager playerManager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     playerManager.applyToAllLivingInnocents(survivor -> this.stunSurvivors(scheduler, survivor));
+    playerManager.playSoundForAllParticipants(Sounds.FLASHBANG);
   }
 
   private void stunSurvivors(final GameScheduler scheduler, final GamePlayer survivor) {

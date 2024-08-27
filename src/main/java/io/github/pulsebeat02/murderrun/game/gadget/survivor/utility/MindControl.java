@@ -62,6 +62,7 @@ public final class MindControl extends SurvivorGadget {
       final String targetName = nearest.getDisplayName();
       final Component msg1 = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
       owner.sendMessage(msg1);
+      owner.playSound("entity.enderman.scream");
     }
   }
 

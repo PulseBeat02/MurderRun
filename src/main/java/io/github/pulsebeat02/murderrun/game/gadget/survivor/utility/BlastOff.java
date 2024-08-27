@@ -11,7 +11,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -63,9 +62,6 @@ public final class BlastOff extends SurvivorGadget implements Listener {
 
     final GamePlayer owner = manager.getGamePlayer(player);
     owner.playSound("entity.firework_rocket.blast");
-
-    final Component message = Message.BLAST_OFF_ACTIVATE.build();
-    manager.sendMessageToAllSurvivors(message);
   }
 
   private void scheduleTeleportTask(

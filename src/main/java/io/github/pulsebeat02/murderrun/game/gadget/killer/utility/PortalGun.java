@@ -124,7 +124,7 @@ public final class PortalGun extends KillerGadget implements Listener {
       final GameScheduler scheduler,
       final Pair<Holder<Location>, Holder<Location>> parent,
       final Location center) {
-    this.spawnPortalParticles(scheduler, center);
+    this.spawnPortalEffects(scheduler, center);
     this.handlePortalTeleportationLogic(manager, scheduler, parent);
   }
 
@@ -182,7 +182,7 @@ public final class PortalGun extends KillerGadget implements Listener {
     }
   }
 
-  private void spawnPortalParticles(final GameScheduler scheduler, final Location center) {
+  private void spawnPortalEffects(final GameScheduler scheduler, final Location center) {
     final World world = requireNonNull(center.getWorld());
     final double radiusX = 0.75d;
     final double radiusY = 1.5d;

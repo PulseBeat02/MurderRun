@@ -46,6 +46,8 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
     final Survivor random = manager.getRandomAliveInnocentPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
     final Location before = player.getLocation();
+    killer.playSound("entity.ender_eye.death");
+    random.playSound("entity.ender_eye.launch");
     this.setPlayerState(killer, random);
 
     final GameScheduler scheduler = game.getScheduler();

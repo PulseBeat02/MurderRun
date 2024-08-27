@@ -39,6 +39,7 @@ public final class FloorIsLava extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
+    manager.playSoundForAllParticipants("entity.magma_cube.jump");
 
     final GameScheduler scheduler = game.getScheduler();
     final Player player = event.getPlayer();

@@ -44,6 +44,7 @@ public final class BurnTheBody extends KillerGadget {
     final double distance = location.distanceSquared(deathLocation);
     if (distance <= 4) {
       final GameScheduler scheduler = game.getScheduler();
+      manager.playSoundForAllParticipants("block.fire.ambient");
       this.destroyBody(scheduler, closest, deathLocation);
     }
   }

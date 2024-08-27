@@ -42,6 +42,9 @@ public final class PoisonSmog extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     scheduler.scheduleRepeatedTask(
         () -> this.handleSmog(world, location, manager), 0, 10, 60 * 20L);
+
+    final GamePlayer owner = manager.getGamePlayer(player);
+    owner.playSound("entity.slime.jump");
   }
 
   private void handleSmog(final World world, final Location location, final PlayerManager manager) {

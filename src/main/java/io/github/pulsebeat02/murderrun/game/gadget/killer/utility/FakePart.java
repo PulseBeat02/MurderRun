@@ -45,6 +45,8 @@ public final class FakePart extends KillerGadget {
     scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(item), 0, 20L, item::isDead);
 
     final GamePlayer killer = manager.getGamePlayer(player);
+    killer.playSound("block.lever.click");
+
     final Runnable task = () -> this.handlePlayers(scheduler, manager, killer, item);
     scheduler.scheduleConditionalTask(task, 0, 20L, item::isDead);
   }

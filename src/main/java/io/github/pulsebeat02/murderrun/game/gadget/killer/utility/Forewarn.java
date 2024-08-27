@@ -43,6 +43,7 @@ public final class Forewarn extends KillerGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component msg = Message.FOREWARN_ACTIVATE.build();
     gamePlayer.sendMessage(msg);
+    gamePlayer.playSound("entity.phantom.ambient");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(

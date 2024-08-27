@@ -56,6 +56,7 @@ public final class Camera extends KillerGadget {
     final NPC npc = this.spawnNPC(npcManager, location);
     final LivingEntity entity = (LivingEntity) npc.getEntity();
     entity.setInvulnerable(true);
+    killer.playSound("entity.ender_eye.death");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleCameraWatch(manager, entity, killer), 0, 20L);

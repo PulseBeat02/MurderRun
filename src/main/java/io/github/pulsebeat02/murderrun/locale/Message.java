@@ -244,7 +244,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> CLOAK_ACTIVATE = direct("murder_run.game.gadget.cloak.activate");
   NullComponent<Sender> SIXTH_SENSE_ACTIVATE =
       direct("murder_run.game.gadget.sixth_sense.activate");
-  NullComponent<Sender> BLAST_OFF_ACTIVATE = direct("murder_run.game.gadget.blast_off.activate");
   NullComponent<Sender> TRAP_SNIFFER_ACTIVATE =
       direct("murder_run.game.gadget.trap_sniffer.activate");
   NullComponent<Sender> JEB_ACTIVATE = direct("murder_run.game.gadget.jeb.activate");

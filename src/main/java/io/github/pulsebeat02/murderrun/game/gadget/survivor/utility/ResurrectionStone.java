@@ -52,8 +52,12 @@ public final class ResurrectionStone extends SurvivorGadget {
     final Location closestLocation = corpse.getLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
+      super.onGadgetDrop(game, event, false);
       return;
     }
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("block.end_portal_frame.fill");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L);

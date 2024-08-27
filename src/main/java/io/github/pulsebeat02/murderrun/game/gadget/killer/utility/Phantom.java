@@ -46,6 +46,7 @@ public final class Phantom extends KillerGadget implements Listener {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     this.spectatorDisabled.add(gamePlayer);
+    gamePlayer.playSound("entity.phantom.ambient");
 
     final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();

@@ -2,6 +2,8 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
@@ -24,6 +26,9 @@ public final class IcePath extends KillerGadget {
     final Player player = event.getPlayer();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(player), 0, 4);
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("block.glass.break");
   }
 
   private void setIceTrail(final Player player) {

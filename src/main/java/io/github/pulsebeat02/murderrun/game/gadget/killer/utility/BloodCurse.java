@@ -27,6 +27,7 @@ public final class BloodCurse extends KillerGadget {
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
     super.onGadgetDrop(game, event, true);
     final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants("entity.wither.ambient");
     manager.applyToAllLivingInnocents(survivor -> this.scheduleTaskForSurvivors(game, survivor));
   }
 

@@ -43,6 +43,7 @@ public final class RedArrow extends KillerGadget {
 
     final Component message = Message.RED_ARROW_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("entity.arrow.hit");
   }
 
   private void handleSurvivors(final PlayerManager manager) {

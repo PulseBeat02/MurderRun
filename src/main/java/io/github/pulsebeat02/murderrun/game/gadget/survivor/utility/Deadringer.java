@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -33,10 +34,13 @@ public final class Deadringer extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Component message = Message.PLAYER_DEATH.build(name);
     manager.sendMessageToAllParticipants(message);
-    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 15 * 20, 1, true, false));
-    player.addPotionEffect(
-        new PotionEffect(PotionEffectType.INVISIBILITY, 15 * 20, 1, true, false));
     player.setInvulnerable(true);
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.addPotionEffects(
+        new PotionEffect(PotionEffectType.SPEED, 15 * 20, 1, true, false),
+        new PotionEffect(PotionEffectType.INVISIBILITY, 15 * 20, 1, true, false));
+    gamePlayer.playSound("item.totem.use");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> player.setInvulnerable(false), 15 * 20L);

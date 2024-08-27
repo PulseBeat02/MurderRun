@@ -80,6 +80,9 @@ public final class DeathHound extends KillerGadget implements Listener {
       return;
     }
 
+    final GamePlayer owner = manager.getGamePlayer(player);
+    owner.playSound("entity.wolf.howl");
+
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     this.spawnWolf(location, gamePlayer, nearest);
   }

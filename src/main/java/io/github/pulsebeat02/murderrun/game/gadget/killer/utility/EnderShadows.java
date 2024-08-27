@@ -62,6 +62,7 @@ public final class EnderShadows extends KillerGadget {
     final CitizensManager npcManager = game.getNPCManager();
     manager.applyToAllLivingInnocents(
         survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
+    manager.playSoundForAllParticipants("entity.elder_guardian.curse");
   }
 
   private void handleAllSurvivors(

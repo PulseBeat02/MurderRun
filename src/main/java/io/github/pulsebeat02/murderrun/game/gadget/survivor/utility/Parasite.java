@@ -37,6 +37,9 @@ public final class Parasite extends SurvivorGadget {
     scheduler.scheduleConditionalTask(
         () -> this.handleKillers(manager, item), 0, 2 * 20L, item::isDead);
 
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("block.lever.click");
+
     scheduler.scheduleParticleTask(item, Color.GREEN);
   }
 

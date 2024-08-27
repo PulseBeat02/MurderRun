@@ -35,6 +35,8 @@ public final class WarpDistort extends KillerGadget {
     final Location second = random2.getLocation();
     random.teleport(second);
     random2.teleport(first);
+    random.playSound("entity.enderman.teleport");
+    random2.playSound("entity.enderman.teleport");
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     random.sendMessage(msg);

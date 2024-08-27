@@ -55,6 +55,7 @@ public final class EagleEye extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("entity.phantom.flap");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.resetState(gamePlayer, previous, before), 10 * 20L);

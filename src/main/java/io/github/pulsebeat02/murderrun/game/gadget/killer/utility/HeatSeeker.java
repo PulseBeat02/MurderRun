@@ -41,6 +41,7 @@ public final class HeatSeeker extends KillerGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Message.HEAT_SEEKER_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("block.amethyst_block.chime");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.scheduleTasks(manager, gamePlayer), 0, 2 * 20L);

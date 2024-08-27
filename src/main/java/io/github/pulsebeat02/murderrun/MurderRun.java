@@ -27,11 +27,6 @@ public final class MurderRun extends JavaPlugin {
   - Add configurations values to all traps
   - Make code neater (SRP, SOLID, etc)
 
-  FIX
-
-  - Fix death hound, ice spirit, dormagogg
-      - if target dies, need to remove target
-
    */
 
   private static final int BSTATS_SERVER_ID = 22728;

@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class HealthCut extends KillerGadget {
@@ -29,6 +30,10 @@ public final class HealthCut extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToAllLivingInnocents(survivor -> this.setState(survivor, scheduler));
+
+    final Player player = event.getPlayer();
+    final GamePlayer killer = manager.getGamePlayer(player);
+    killer.playSound("entity.ghast.hurt");
   }
 
   private void setState(final GamePlayer survivor, final GameScheduler scheduler) {

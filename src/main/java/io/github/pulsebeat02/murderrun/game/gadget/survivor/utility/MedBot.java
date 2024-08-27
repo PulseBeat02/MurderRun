@@ -57,6 +57,9 @@ public final class MedBot extends SurvivorGadget {
     final EntityEquipment equipment = requireNonNull(armorStand.getEquipment());
     equipment.setHelmet(Item.create(Material.CHORUS_FLOWER));
 
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("block.beehive.enter");
+
     final GameScheduler scheduler = game.getScheduler();
     this.handleRotation(scheduler, armorStand);
     this.handleVerticalMotion(scheduler, armorStand);

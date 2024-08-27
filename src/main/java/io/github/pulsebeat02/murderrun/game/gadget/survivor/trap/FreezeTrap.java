@@ -29,6 +29,6 @@ public final class FreezeTrap extends SurvivorTrap {
     murderer.disableJump(scheduler, 7 * 20L);
     murderer.disableWalkWithFOVEffects(10 * 20);
     murderer.apply(player -> player.setFreezeTicks(7 * 20));
-    manager.playSoundForAllParticipants("entity.player.hurt_freeze");
+    manager.playSoundForAllParticipants("block.glass.break");
   }
 }

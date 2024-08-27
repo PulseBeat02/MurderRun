@@ -42,6 +42,9 @@ public final class DeathSteed extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     scheduler.scheduleConditionalTask(
         () -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.playSound("entity.horse.angry");
   }
 
   private void handleSurvivors(final PlayerManager manager, final Horse horse) {

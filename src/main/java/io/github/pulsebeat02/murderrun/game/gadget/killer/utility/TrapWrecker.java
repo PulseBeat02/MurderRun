@@ -39,6 +39,7 @@ public final class TrapWrecker extends KillerGadget {
 
     final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();
     killer.sendMessage(msg);
+    killer.playSound("block.bone_block.break");
 
     final GameScheduler scheduler = game.getScheduler();
     final Consumer<Integer> consumer = (time) -> {

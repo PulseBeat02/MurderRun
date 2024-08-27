@@ -40,6 +40,7 @@ public final class Gamble extends KillerGadget {
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     playerManager.applyToAllLivingInnocents(
         survivor -> this.applyGamble(mechanism, survivor, killer));
+    killer.playSound("block.smithing_table.use");
 
     final Component msg = Message.GAMBLE_ACTIVATE.build();
     killer.sendMessage(msg);

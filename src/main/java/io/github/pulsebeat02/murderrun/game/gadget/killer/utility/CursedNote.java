@@ -54,6 +54,10 @@ public final class CursedNote extends KillerGadget {
       return;
     }
 
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer killer = manager.getGamePlayer(player);
+    killer.playSound("block.lever.click");
+
     final GameSettings settings = game.getSettings();
     final Item cursed = this.spawnCursedNote(settings);
 
@@ -79,8 +83,6 @@ public final class CursedNote extends KillerGadget {
         },
         cursed);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer killer = manager.getGamePlayer(player);
     final Component msg = Message.CURSED_NOTE_DROP.build();
     killer.sendMessage(msg);
   }

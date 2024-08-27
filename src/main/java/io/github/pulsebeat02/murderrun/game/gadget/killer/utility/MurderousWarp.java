@@ -36,6 +36,7 @@ public final class MurderousWarp extends KillerGadget {
     final Location second = killer.getLocation();
     random.teleport(second);
     killer.teleport(first);
+    random.playSound("entity.enderman.teleport");
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     random.sendMessage(msg);

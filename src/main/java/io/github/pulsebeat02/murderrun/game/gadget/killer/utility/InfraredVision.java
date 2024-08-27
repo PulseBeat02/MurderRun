@@ -33,6 +33,7 @@ public final class InfraredVision extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToAllLivingInnocents(
         innocent -> this.setSurvivorGlow(scheduler, innocent, killer));
+    killer.playSound("block.amethyst_block.chime");
   }
 
   private void setSurvivorGlow(

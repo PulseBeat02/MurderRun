@@ -52,6 +52,7 @@ public final class TrapSeeker extends KillerGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Message.TRAP_SEEKER_ACTIVATE.build();
     gamePlayer.sendMessage(message);
+    gamePlayer.playSound("block.amethyst_block.chime");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, gamePlayer), 0, 20L);

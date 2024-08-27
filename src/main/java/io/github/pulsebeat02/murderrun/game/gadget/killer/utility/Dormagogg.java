@@ -130,6 +130,8 @@ public final class Dormagogg extends KillerGadget implements Listener {
       return;
     }
 
+    killer.playSound("entity.zombie.ambient");
+
     this.spawnDormagogg(world, location, killer, nearest);
   }
 
