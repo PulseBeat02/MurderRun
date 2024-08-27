@@ -13,8 +13,10 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,6 +40,14 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class SupplyDrop extends SurvivorGadget implements Listener {
+
+  private static final String SUPPLY_DROP_SOUND;
+
+  static {
+    final SoundResource resource = Sounds.SUPPLY_DROP;
+    final Key key = resource.getKey();
+    SUPPLY_DROP_SOUND = key.asString();
+  }
 
   private static final String[] AIR_DROP_MASKS = {
     "AXAXAXAXAXAXAXAXAXAXAXAXAXA", "XXXXAXXXXXAXAAAXAXXXXXAXXXX", "AAXXAXXAAAXAXAXAXAAAXXAXXAA"
@@ -73,7 +83,7 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound(Sounds.SUPPLY_DROP);
+    audience.playSound(SUPPLY_DROP_SOUND);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleConditionalTask(

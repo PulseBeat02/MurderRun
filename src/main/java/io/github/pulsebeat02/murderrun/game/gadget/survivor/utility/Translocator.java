@@ -26,6 +26,8 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class Translocator extends SurvivorGadget {
 
+  private static final String TRANSLOCATOR_SOUND = "entity.enderman.teleport";
+
   public Translocator() {
     super(
         "translocator",
@@ -59,7 +61,7 @@ public final class Translocator extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.enderman.teleport");
+    audience.playSound(TRANSLOCATOR_SOUND);
 
     player.teleport(location);
   }

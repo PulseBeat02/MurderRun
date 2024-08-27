@@ -26,6 +26,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class TrapSniffer extends SurvivorGadget {
 
+  private static final double TRAP_SNIFFER_RADIUS = 15D;
+  private static final String TRAP_SNIFFER_SOUND = "entity.sniffer.digging";
+
   private final Multimap<GamePlayer, Item> glowItemStates;
 
   public TrapSniffer() {
@@ -46,13 +49,14 @@ public final class TrapSniffer extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
-    final Component message = Message.TRAP_SNIFFER_ACTIVATE.build();
-    audience.sendMessage(message);
-    audience.playSound("entity.sniffer.digging");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, gamePlayer), 0, 2 * 20L);
+
+    final PlayerAudience audience = gamePlayer.getAudience();
+    final Component message = Message.TRAP_SNIFFER_ACTIVATE.build();
+    audience.sendMessage(message);
+    audience.playSound(TRAP_SNIFFER_SOUND);
   }
 
   private void handleTrapSniffing(final Game game, final GamePlayer player) {
@@ -67,7 +71,7 @@ public final class TrapSniffer extends SurvivorGadget {
       final Collection<Item> set = requireNonNull(this.glowItemStates.get(player));
       final double distance = origin.distanceSquared(location);
       final MetadataManager metadata = player.getMetadataManager();
-      if (distance < 225) {
+      if (distance < TRAP_SNIFFER_RADIUS * TRAP_SNIFFER_RADIUS) {
         set.add(entity);
         metadata.setEntityGlowing(entity, ChatColor.RED, true);
       } else if (set.contains(entity)) {

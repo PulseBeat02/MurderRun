@@ -28,6 +28,8 @@ import org.bukkit.util.Vector;
 
 public final class TrapVest extends SurvivorGadget {
 
+  private static final String TRAP_VEST_SOUND = "item.armor.equip_diamond";
+
   public TrapVest() {
     super(
         "trap_vest",
@@ -56,7 +58,7 @@ public final class TrapVest extends SurvivorGadget {
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.TRAP_VEST_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound("item.armor.equip_diamond");
+    audience.playSound(TRAP_VEST_SOUND);
   }
 
   private void handleTraps(

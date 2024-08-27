@@ -24,9 +24,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class SmokeGrenade extends SurvivorGadget implements Listener {
+
+  private static final double SMOKE_GRENADE_RADIUS = 2D;
+  private static final int SMOKE_GRENADE_EFFECT_DURATION = 5 * 20;
 
   private final Game game;
 
@@ -63,12 +67,9 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final Location location = EventUtils.getProjectileLocation(event);
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> world.spawnParticle(
-            Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4)),
-        0,
-        1,
-        5 * 20L);
+    final Runnable task = () ->
+        world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
+    scheduler.scheduleRepeatedTask(task, 0, 1, SMOKE_GRENADE_EFFECT_DURATION);
 
     final PlayerManager manager = this.game.getPlayerManager();
     manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
@@ -76,8 +77,9 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     manager.applyToAllMurderers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);
-      if (distance < 4) {
-        player.addPotionEffects(PotionEffectType.BLINDNESS.createEffect(5 * 20, Integer.MAX_VALUE));
+      if (distance < SMOKE_GRENADE_RADIUS * SMOKE_GRENADE_RADIUS) {
+        player.addPotionEffects(new PotionEffect(
+            PotionEffectType.BLINDNESS, SMOKE_GRENADE_EFFECT_DURATION, Integer.MAX_VALUE));
       }
     });
   }
