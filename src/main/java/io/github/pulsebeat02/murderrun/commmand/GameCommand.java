@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.commmand;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -50,7 +50,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.games = new WeakHashMap<>();
-    this.invites = ArrayListMultimap.create();
+    this.invites = HashMultimap.create();
     this.plugin = plugin;
   }
 

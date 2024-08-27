@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -27,7 +27,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.util.BoundingBox;
 
 public final class EnderShadows extends KillerGadget {
 
@@ -45,7 +44,7 @@ public final class EnderShadows extends KillerGadget {
         Message.ENDER_SHADOWS_NAME.build(),
         Message.ENDER_SHADOWS_LORE.build(),
         48);
-    this.shadows = ArrayListMultimap.create();
+    this.shadows = HashMultimap.create();
   }
 
   @Override
@@ -77,25 +76,28 @@ public final class EnderShadows extends KillerGadget {
 
     final Entity shadow = this.getNPCEntity(manager, spawn);
     scheduler.scheduleRepeatedTask(
-        () -> this.handleSurvivorTeleport(scheduler, killer, survivor, shadow), 2 * 20L, 5 * 20L);
+        () -> this.handleSurvivorTeleport(killer, survivor, shadow), 2 * 20L, 20L);
+
+    final Location[] old = {survivor.getLocation()};
+    scheduler.scheduleRepeatedTask(
+        () -> {
+          shadow.teleport(old[0]);
+          old[0] = survivor.getLocation();
+        },
+        0,
+        10 * 20L);
   }
 
   private void handleSurvivorTeleport(
-      final GameScheduler scheduler,
-      final GamePlayer killer,
-      final GamePlayer survivor,
-      final Entity shadow) {
-
-    final Location old = survivor.getLocation();
-    scheduler.scheduleTask(() -> shadow.teleport(old), 5 * 20L);
-
-    final BoundingBox shadowBox = shadow.getBoundingBox();
+      final GamePlayer killer, final GamePlayer survivor, final Entity shadow) {
     final Collection<GamePlayer> players = this.shadows.get(survivor);
     final Component msg = Message.ENDER_SHADOWS_EFFECT.build();
     final MetadataManager metadata = killer.getMetadataManager();
     survivor.apply(player -> {
-      final BoundingBox playerBox = player.getBoundingBox();
-      if (shadowBox.overlaps(playerBox)) {
+      final Location location = player.getLocation();
+      final Location other = shadow.getLocation();
+      final double distance = location.distanceSquared(other);
+      if (distance < 1) {
         players.add(survivor);
         survivor.showTitle(msg, empty());
         metadata.setEntityGlowing(player, ChatColor.RED, true);

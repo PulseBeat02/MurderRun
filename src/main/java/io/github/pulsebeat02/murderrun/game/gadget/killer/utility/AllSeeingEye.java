@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,16 +45,18 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
     final PlayerManager manager = game.getPlayerManager();
     final Survivor random = manager.getRandomAliveInnocentPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
+    final Location before = player.getLocation();
     this.setPlayerState(killer, random);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetPlayerState(killer), 7 * 20L);
+    scheduler.scheduleTask(() -> this.resetPlayerState(killer, before), 7 * 20L);
   }
 
-  private void resetPlayerState(final GamePlayer player) {
+  private void resetPlayerState(final GamePlayer player, final Location location) {
+    player.teleport(location);
     player.apply(raw -> {
-      raw.setGameMode(GameMode.SURVIVAL);
       raw.setSpectatorTarget(null);
+      raw.setGameMode(GameMode.SURVIVAL);
     });
     this.spectatorDisabled.remove(player);
   }

@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -34,7 +34,7 @@ public final class TrapSniffer extends SurvivorGadget {
         Message.TRAP_SNIFFER_NAME.build(),
         Message.TRAP_SNIFFER_LORE.build(),
         64);
-    this.glowItemStates = ArrayListMultimap.create();
+    this.glowItemStates = HashMultimap.create();
   }
 
   @Override

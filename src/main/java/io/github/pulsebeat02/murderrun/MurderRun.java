@@ -24,11 +24,13 @@ public final class MurderRun extends JavaPlugin {
   DEBUG
 
   - Debug all killer traps
+  - Add special effects to killer traps
 
   FIX
 
-  - Glowing bugs
-  - "Chat disabled in client options."
+  - Fix death hound, ice spirit, dormagogg
+      - if target dies, need to remove target
+  -
 
    */
 

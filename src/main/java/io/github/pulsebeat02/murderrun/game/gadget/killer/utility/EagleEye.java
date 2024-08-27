@@ -6,6 +6,8 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
@@ -18,7 +20,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class EagleEye extends KillerGadget {
 
-  public EagleEye() {
+  public EagleEye(final Game game) {
     super(
         "eagle_eye",
         Material.FEATHER,
@@ -46,13 +48,25 @@ public final class EagleEye extends KillerGadget {
     final Location previous = player.getLocation();
     player.setGravity(false);
     player.teleport(teleport);
+    player.setAllowFlight(true);
+
+    final float before = player.getFlySpeed();
+    player.setFlySpeed(0.0f);
+
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetState(player, previous), 10 * 20L);
+    scheduler.scheduleTask(() -> this.resetState(gamePlayer, previous, before), 10 * 20L);
   }
 
-  private void resetState(final Player player, final Location previous) {
-    player.teleport(previous);
-    player.setGravity(true);
+  private void resetState(
+      final GamePlayer gamePlayer, final Location previous, final float flySpeed) {
+    gamePlayer.teleport(previous);
+    gamePlayer.apply(player -> {
+      player.setGravity(true);
+      player.setAllowFlight(false);
+      player.setFlySpeed(flySpeed);
+    });
   }
 }

@@ -2,14 +2,14 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -38,7 +38,7 @@ public final class TrapSeeker extends KillerGadget {
         Message.TRAP_SEEKER_NAME.build(),
         Message.TRAP_SEEKER_LORE.build(),
         64);
-    this.glowItemStates = ArrayListMultimap.create();
+    this.glowItemStates = HashMultimap.create();
   }
 
   @Override
@@ -53,7 +53,7 @@ public final class TrapSeeker extends KillerGadget {
     gamePlayer.sendMessage(message);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, gamePlayer), 0, 2 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, gamePlayer), 0, 20L);
   }
 
   private void handleTrapSeeking(final Game game, final GamePlayer innocent) {
@@ -78,7 +78,7 @@ public final class TrapSeeker extends KillerGadget {
       }
 
       final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
-      final boolean survivor = gadget instanceof KillerApparatus;
+      final boolean survivor = gadget instanceof SurvivorApparatus;
       final MetadataManager metadata = innocent.getMetadataManager();
       if (survivor) {
         set.add(item);

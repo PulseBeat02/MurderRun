@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
@@ -37,7 +37,7 @@ public final class LifeInsurance extends SurvivorGadget {
         Message.LIFE_INSURANCE_NAME.build(),
         Message.LIFE_INSURANCE_LORE.build(),
         32);
-    this.taskMap = ArrayListMultimap.create();
+    this.taskMap = HashMultimap.create();
   }
 
   @Override

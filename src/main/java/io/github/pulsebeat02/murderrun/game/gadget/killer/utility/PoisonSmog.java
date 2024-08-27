@@ -56,9 +56,8 @@ public final class PoisonSmog extends KillerGadget {
   private void handleDebuffs(final GamePlayer survivor, final Location origin) {
     final Location location = survivor.getLocation();
     final double distance = location.distanceSquared(origin);
-    if (distance < 25) {
-      survivor.addPotionEffects(new PotionEffect(PotionEffectType.WITHER, 3 * 20, 1));
-      survivor.addPotionEffects(new PotionEffect(PotionEffectType.POISON, 3 * 20, 1));
+    if (distance < 100) {
+      survivor.addPotionEffects(new PotionEffect(PotionEffectType.POISON, 3 * 20, 0));
     }
   }
 

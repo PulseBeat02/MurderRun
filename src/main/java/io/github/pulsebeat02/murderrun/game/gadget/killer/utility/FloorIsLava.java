@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -29,7 +29,7 @@ public final class FloorIsLava extends KillerGadget {
         Message.THE_FLOOR_IS_LAVA_NAME.build(),
         Message.THE_FLOOR_IS_LAVA_LORE.build(),
         64);
-    this.glowPlayerStates = ArrayListMultimap.create();
+    this.glowPlayerStates = HashMultimap.create();
   }
 
   @Override

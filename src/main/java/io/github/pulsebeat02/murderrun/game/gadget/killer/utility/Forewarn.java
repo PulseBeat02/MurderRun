@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -30,7 +30,7 @@ public final class Forewarn extends KillerGadget {
         Message.FOREWARN_NAME.build(),
         Message.FOREWARN_LORE.build(),
         128);
-    this.glowStates = ArrayListMultimap.create();
+    this.glowStates = HashMultimap.create();
   }
 
   @Override
@@ -49,7 +49,7 @@ public final class Forewarn extends KillerGadget {
         () -> manager.applyToAllLivingInnocents(
             survivor -> this.handleForewarn(survivor, gamePlayer)),
         0,
-        3 * 20L);
+        20L);
   }
 
   private void handleForewarn(final GamePlayer gamePlayer, final GamePlayer player) {
@@ -63,7 +63,7 @@ public final class Forewarn extends KillerGadget {
     if (survivor.hasCarPart()) {
       set.add(survivor);
       metadata.setEntityGlowing(survivor, ChatColor.RED, true);
-    } else if (set.contains(player)) {
+    } else if (set.contains(survivor)) {
       set.remove(player);
       metadata.setEntityGlowing(survivor, ChatColor.RED, false);
     }

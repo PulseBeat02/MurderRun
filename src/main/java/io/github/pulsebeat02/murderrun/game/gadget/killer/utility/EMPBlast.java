@@ -9,7 +9,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -50,8 +49,7 @@ public final class EMPBlast extends KillerGadget {
 
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
-    final Location[] corners = arena.getCorners();
-    final BoundingBox box = BoundingBox.of(corners[0], corners[1]);
+    final BoundingBox box = arena.createBox();
 
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
@@ -66,9 +64,8 @@ public final class EMPBlast extends KillerGadget {
   private void stunSurvivors(final GameScheduler scheduler, final GamePlayer survivor) {
     final Component msg = Message.EMP_BLAST_ACTIVATE.build();
     survivor.disableJump(scheduler, 5 * 20L);
-    survivor.addPotionEffects(
-        new PotionEffect(PotionEffectType.SLOWNESS, 7 * 20, 1),
-        new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1));
+    survivor.disableWalkWithFOVEffects(5 * 20);
+    survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1));
     survivor.sendMessage(msg);
   }
 
@@ -87,7 +84,7 @@ public final class EMPBlast extends KillerGadget {
         continue;
       }
 
-      if (!(gadget instanceof SurvivorGadget)) {
+      if (gadget instanceof KillerGadget) {
         continue;
       }
 

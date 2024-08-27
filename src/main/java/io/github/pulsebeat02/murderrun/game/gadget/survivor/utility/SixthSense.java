@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -29,7 +29,7 @@ public final class SixthSense extends SurvivorGadget {
         Message.SIXTH_SENSE_NAME.build(),
         Message.SIXTH_SENSE_LORE.build(),
         48);
-    this.glowPlayerStates = ArrayListMultimap.create();
+    this.glowPlayerStates = HashMultimap.create();
   }
 
   @Override

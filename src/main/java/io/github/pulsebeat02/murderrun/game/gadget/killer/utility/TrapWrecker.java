@@ -45,6 +45,7 @@ public final class TrapWrecker extends KillerGadget {
       if (time == 0) {
         killer.setIgnoreTraps(false);
       }
+      killer.apply(raw -> raw.setLevel(time));
     };
     scheduler.scheduleCountdownTask(consumer, 30);
   }

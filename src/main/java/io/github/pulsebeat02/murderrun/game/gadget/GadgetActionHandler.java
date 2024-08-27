@@ -90,10 +90,6 @@ public final class GadgetActionHandler implements Listener {
 
   private void handlePlayerGadgetLogic(final GamePlayer player) {
 
-    if (player instanceof final Killer killer && killer.isIgnoringTraps()) {
-      return;
-    }
-
     final GadgetSearchResult result = this.getGetClosestTrap(player);
     if (result == null) {
       return;
@@ -101,6 +97,11 @@ public final class GadgetActionHandler implements Listener {
 
     final Gadget gadget = result.gadget;
     final Item item = result.item;
+    if (player instanceof final Killer killer && killer.isIgnoringTraps()) {
+      item.remove();
+      return;
+    }
+
     final Game game = this.manager.getGame();
     gadget.onGadgetNearby(game, player, item);
   }

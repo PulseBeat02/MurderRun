@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -28,7 +28,7 @@ public final class HeatSeeker extends KillerGadget {
         Message.HEAT_SEEKER_NAME.build(),
         Message.HEAT_SEEKER_LORE.build(),
         48);
-    this.glowPlayerStates = ArrayListMultimap.create();
+    this.glowPlayerStates = HashMultimap.create();
   }
 
   @Override

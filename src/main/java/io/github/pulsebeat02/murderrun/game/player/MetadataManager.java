@@ -2,6 +2,8 @@ package io.github.pulsebeat02.murderrun.game.player;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
@@ -24,6 +26,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 public final class MetadataManager {
 
   private final GamePlayer gamePlayer;
+  private final Multimap<ChatColor, Entity> glowEntities;
   private final Map<ChatColor, Team> glowTeams;
   private final WorldBorder shadyWorldBorder;
   private final Team hideNameTagTeam;
@@ -33,6 +36,7 @@ public final class MetadataManager {
     this.glowTeams = this.createGlowTeams(gamePlayer);
     this.shadyWorldBorder = this.createWorldBorder(gamePlayer);
     this.hideNameTagTeam = this.createHideNameTagTeam();
+    this.glowEntities = HashMultimap.create();
   }
 
   private WorldBorder createWorldBorder(
@@ -97,12 +101,19 @@ public final class MetadataManager {
   }
 
   public void shutdown() {
+    final Collection<ChatColor> keys = this.glowTeams.keySet();
     this.gamePlayer.apply(player -> {
-      final Collection<Team> teams = this.glowTeams.values();
-      for (final Team team : teams) {
+      for (final ChatColor key : keys) {
+        final Collection<Entity> stillGlowing = this.glowEntities.get(key);
+        for (final Entity entity : stillGlowing) {
+          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+        }
+        final Team team = requireNonNull(this.glowTeams.get(key));
         team.unregister();
       }
     });
+    this.glowEntities.clear();
+    this.glowTeams.clear();
     this.hideNameTagTeam.unregister();
   }
 
@@ -126,10 +137,12 @@ public final class MetadataManager {
       final String name = this.getMemberID(entity);
       final String watcher = player.getName();
       if (glowing) {
+        this.glowEntities.put(color, entity);
         team.addEntry(name);
         team.addEntry(watcher);
         PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
       } else {
+        this.glowEntities.remove(color, entity);
         team.removeEntry(name);
         team.removeEntry(watcher);
         PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
