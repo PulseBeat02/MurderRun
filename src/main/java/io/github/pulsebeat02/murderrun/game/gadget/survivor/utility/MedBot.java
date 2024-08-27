@@ -6,7 +6,6 @@ import com.google.common.util.concurrent.AtomicDouble;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -31,6 +30,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.EulerAngle;
 
 public final class MedBot extends SurvivorGadget {
+
+  private static final double MED_BOT_RANGE = 8D;
+  private static final double MED_BOT_DESTROY_RANGE = 2D;
+
+  private static final String MED_BOT_SOUND = "block.beehive.enter";
 
   public MedBot() {
     super(
@@ -58,21 +62,21 @@ public final class MedBot extends SurvivorGadget {
     final EntityEquipment equipment = requireNonNull(armorStand.getEquipment());
     equipment.setHelmet(Item.create(Material.CHORUS_FLOWER));
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.beehive.enter");
-
     final GameScheduler scheduler = game.getScheduler();
     this.handleRotation(scheduler, armorStand);
     this.handleVerticalMotion(scheduler, armorStand);
     this.handleParticles(scheduler, armorStand);
     this.handleMedBotUpdate(scheduler, manager, armorStand);
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(MED_BOT_SOUND);
   }
 
   private void handleMedBotUpdate(
       final GameScheduler scheduler, final PlayerManager manager, final ArmorStand stand) {
     final Consumer<GamePlayer> consumer = survivor -> this.handleInnocentEffects(survivor, stand);
-    final Consumer<Killer> killerConsumer =
+    final Consumer<GamePlayer> killerConsumer =
         killer -> this.handleKillerDestroy(manager, killer, stand);
     final Runnable task = () -> {
       manager.applyToAllLivingInnocents(consumer);
@@ -86,7 +90,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < 4) {
+    if (distance < MED_BOT_DESTROY_RANGE * MED_BOT_DESTROY_RANGE) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       stand.remove();
@@ -97,7 +101,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < 64) {
+    if (distance < MED_BOT_RANGE * MED_BOT_RANGE) {
       innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20, 2));
     }
   }
@@ -109,12 +113,9 @@ public final class MedBot extends SurvivorGadget {
   private void handleVerticalMotion(final GameScheduler scheduler, final ArmorStand stand) {
     final AtomicDouble lastYOffset = new AtomicDouble();
     final AtomicLong currentTick = new AtomicLong();
-    scheduler.scheduleConditionalTask(
-        () -> lastYOffset.set(this.moveVerticallyOneIteration(
-            stand, currentTick.getAndIncrement(), lastYOffset.get())),
-        0,
-        1,
-        stand::isDead);
+    final Runnable task = () -> lastYOffset.set(
+        this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
+    scheduler.scheduleConditionalTask(task, 0, 1, stand::isDead);
   }
 
   private void handleParticles(final GameScheduler scheduler, final ArmorStand stand) {

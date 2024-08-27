@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,6 +29,10 @@ import org.bukkit.util.Vector;
 
 public final class Flashlight extends SurvivorGadget {
 
+  private static final double FLASHLIGHT_CONE_ANGLE = Math.toRadians(30);
+  private static final double FLASHLIGHT_CONE_LENGTH = 5D;
+  private static final double FLASHLIGHT_RADIUS = 2D;
+
   public Flashlight() {
     super(
         "flashlight",
@@ -35,8 +40,7 @@ public final class Flashlight extends SurvivorGadget {
         Message.FLASHLIGHT_NAME.build(),
         Message.FLASHLIGHT_LORE.build(),
         48,
-        stack -> PDCUtils.setPersistentDataAttribute(
-            stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, 0L));
+        ItemFactory::createFlashlight);
   }
 
   @Override
@@ -55,16 +59,22 @@ public final class Flashlight extends SurvivorGadget {
       return;
     }
 
-    final Long last = requireNonNull(PDCUtils.getPersistentDataAttribute(
-        stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG));
-    final long current = System.currentTimeMillis();
-    if (current - last < 5000) {
+    final Long last =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG);
+    if (last == null) {
       return;
     }
 
-    final Player player = event.getPlayer();
+    final long current = System.currentTimeMillis();
+    final long difference = current - last;
+    if (difference < 5000) {
+      return;
+    }
+
     PDCUtils.setPersistentDataAttribute(
-        stack, Keys.FLASH_LIGHT_LAST_USE, PersistentDataType.LONG, current);
+        stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG, current);
+
+    final Player player = event.getPlayer();
     this.sprayParticlesInCone(game, player);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -74,35 +84,39 @@ public final class Flashlight extends SurvivorGadget {
   }
 
   private void sprayParticlesInCone(final Game game, final Player player) {
-
     final PlayerManager manager = game.getPlayerManager();
     final Location handLocation = player.getEyeLocation();
+    final World world = requireNonNull(handLocation.getWorld());
     final Vector direction = handLocation.getDirection();
-    final double coneAngle = Math.toRadians(30);
-    final double coneLength = 5;
     final double increment = Math.toRadians(5);
-
-    for (double t = 0; t < coneLength; t += 0.5) {
-      for (double angle = -coneAngle; angle <= coneAngle; angle += increment) {
-
-        final Vector copy = direction.clone();
-        final Vector offset = copy.multiply(t);
-        offset.rotateAroundY(angle);
-
-        final Location hand = handLocation.clone();
-        final Location particleLocation = hand.add(offset);
-        final World world = requireNonNull(hand.getWorld());
+    for (double t = 0; t < FLASHLIGHT_CONE_LENGTH; t += 0.5) {
+      for (double angle = -FLASHLIGHT_CONE_ANGLE;
+          angle <= FLASHLIGHT_CONE_ANGLE;
+          angle += increment) {
+        final Location particleLocation =
+            this.getParticleLocation(direction, handLocation, t, angle);
         world.spawnParticle(
             Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
-        manager.applyToAllMurderers(killer -> applyPotionEffects(killer, particleLocation));
+        manager.applyToAllMurderers(killer -> this.applyPotionEffects(killer, particleLocation));
       }
     }
   }
 
-  private static void applyPotionEffects(final GamePlayer killer, final Location particleLocation) {
+  private Location getParticleLocation(
+      final Vector direction, final Location handLocation, final double t, final double angle) {
+
+    final Vector copy = direction.clone();
+    final Vector offset = copy.multiply(t);
+    offset.rotateAroundY(angle);
+
+    final Location hand = handLocation.clone();
+    return hand.add(offset);
+  }
+
+  private void applyPotionEffects(final GamePlayer killer, final Location particleLocation) {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(particleLocation);
-    if (distance < 4) {
+    if (distance < FLASHLIGHT_RADIUS * FLASHLIGHT_RADIUS) {
       killer.addPotionEffects(
           new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));
     }

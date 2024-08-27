@@ -4,7 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.function.Consumer;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -125,5 +127,38 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void setVelocity(final Vector vector) {
     this.apply(player -> player.setVelocity(vector));
+  }
+
+  @Override
+  public UUID getUUID() {
+    final Player player = this.getInternalPlayer();
+    return player.getUniqueId();
+  }
+
+  @Override
+  public void setFallDistance(final float distance) {
+    this.apply(player -> player.setFallDistance(distance));
+  }
+
+  @Override
+  public void setInvulnerable(final boolean invulnerable) {
+    this.apply(player -> player.setInvulnerable(invulnerable));
+  }
+
+  @Override
+  public void setGameMode(final GameMode mode) {
+    this.apply(player -> player.setGameMode(mode));
+  }
+
+  @Override
+  public void setRespawnLocation(final Location location, final boolean force) {
+    this.apply(player -> player.setRespawnLocation(location, force));
+  }
+
+  @Override
+  public void clearInventory() {
+    final Player player = this.getInternalPlayer();
+    final PlayerInventory inventory = player.getInventory();
+    inventory.clear();
   }
 }

@@ -20,6 +20,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class IceSkatin extends SurvivorGadget {
 
+  private static final int ICE_SKATIN_DURATION = 20 * 20;
+  private static final String ICE_SKATIN_SOUND = "block.glass.break";
+
   public IceSkatin() {
     super(
         "ice_skatin",
@@ -40,12 +43,12 @@ public final class IceSkatin extends SurvivorGadget {
     final Boat boat = (Boat) world.spawnEntity(location, EntityType.BOAT);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnIceUnderBoat(boat), 0L, 2L);
-    scheduler.scheduleTask(boat::remove, 20 * 20L);
+    scheduler.scheduleTask(boat::remove, ICE_SKATIN_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.glass.break");
+    audience.playSound(ICE_SKATIN_SOUND);
   }
 
   private void spawnIceUnderBoat(final Boat boat) {

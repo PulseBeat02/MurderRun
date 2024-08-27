@@ -24,6 +24,42 @@ public final class ItemFactory {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static ItemStack createPlayerTracker(final ItemStack stack) {
+    return Item.builder(stack)
+        .pdc(Keys.PLAYER_TRACKER, PersistentDataType.INTEGER, 0)
+        .build();
+  }
+
+  public static ItemStack createTranslocator(final ItemStack stack) {
+    return Item.builder(stack)
+        .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0])
+        .build();
+  }
+
+  public static ItemStack createKillerTracker(final ItemStack stack) {
+    return Item.builder(stack)
+        .pdc(Keys.KILLER_TRACKER, PersistentDataType.INTEGER, 0)
+        .build();
+  }
+
+  public static ItemStack createSmokeGrenade(final ItemStack stack) {
+    return Item.builder(stack)
+        .pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true)
+        .build();
+  }
+
+  public static ItemStack createFlashlight(final ItemStack stack) {
+    return Item.builder(stack)
+        .pdc(Keys.FLASHLIGHT_USE, PersistentDataType.LONG, 0L)
+        .build();
+  }
+
+  public static ItemStack createFlashBang(final ItemStack stack) {
+    return Item.builder(stack)
+        .pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true)
+        .build();
+  }
+
   public static ItemStack createSurvivorGear(final ItemStack stack) {
     return Item.builder(stack).enchantment(Enchantment.PROTECTION, 2).build();
   }

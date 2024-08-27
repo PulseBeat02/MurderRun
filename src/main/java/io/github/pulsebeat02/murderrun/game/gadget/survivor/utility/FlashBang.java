@@ -5,17 +5,19 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import io.github.pulsebeat02.murderrun.utils.EventUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
+import net.kyori.adventure.key.Key;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -24,10 +26,20 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class FlashBang extends SurvivorGadget implements Listener {
+
+  private static final double FLASHBANG_RADIUS = 2D;
+  private static final int FLASHBANG_DURATION = 3 * 20;
+  private static final String FLASHBANG_SOUND;
+
+  static {
+    final SoundResource sound = Sounds.FLASHBANG;
+    final Key key = sound.getKey();
+    FLASHBANG_SOUND = key.asString();
+  }
 
   private final Game game;
 
@@ -38,8 +50,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         Message.FLASHBANG_NAME.build(),
         Message.FLASHBANG_LORE.build(),
         8,
-        stack -> PDCUtils.setPersistentDataAttribute(
-            stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true));
+        ItemFactory::createFlashBang);
     this.game = game;
   }
 
@@ -67,32 +78,20 @@ public final class FlashBang extends SurvivorGadget implements Listener {
       return;
     }
 
-    final Block block = event.getHitBlock();
-    final Entity hitEntity = event.getHitEntity();
-    final Location location;
-    if (block == null) {
-      if (hitEntity == null) {
-        return;
-      }
-      location = hitEntity.getLocation();
-    } else {
-      location = block.getLocation();
-    }
-
+    final Location location = EventUtils.getProjectileLocation(event);
     final World world = requireNonNull(location.getWorld());
     world.spawnParticle(
         Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
-
+    manager.playSoundForAllParticipantsAtLocation(location, FLASHBANG_SOUND);
     manager.applyToAllMurderers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);
-      if (distance < 4) {
+      if (distance < FLASHBANG_RADIUS * FLASHBANG_RADIUS) {
         killer.addPotionEffects(
-            PotionEffectType.BLINDNESS.createEffect(3 * 20, Integer.MAX_VALUE),
-            PotionEffectType.SLOWNESS.createEffect(3 * 20, 4));
+            new PotionEffect(PotionEffectType.BLINDNESS, FLASHBANG_DURATION, 0),
+            new PotionEffect(PotionEffectType.SLOWNESS, FLASHBANG_DURATION, 4));
       }
     });
   }

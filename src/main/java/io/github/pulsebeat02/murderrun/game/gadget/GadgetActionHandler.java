@@ -110,7 +110,7 @@ public final class GadgetActionHandler implements Listener {
 
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
-    final int range = this.manager.getActivationRange();
+    final double range = this.manager.getActivationRange();
     final Collection<Entity> entities = world.getNearbyEntities(origin, range, range, range);
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final boolean isSurvivor = player instanceof Survivor;

@@ -17,6 +17,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Bush extends SurvivorGadget {
 
+  private static final int BUSH_DURATION = 10 * 20;
+  private static final String BUSH_SOUND = "block.sweet_berry_bush.place";
+
   public Bush() {
     super("bush", Material.OAK_LEAVES, Message.BUSH_NAME.build(), Message.BUSH_LORE.build(), 8);
   }
@@ -26,19 +29,20 @@ public final class Bush extends SurvivorGadget {
 
     super.onGadgetDrop(game, event, true);
 
-    final GameScheduler scheduler = game.getScheduler();
     final Player player = event.getPlayer();
-    final Location location = player.getLocation();
-    player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1));
-    scheduler.scheduleRepeatedTask(() -> player.teleport(location), 0, 5, 10 * 20L);
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer owner = manager.getGamePlayer(player);
+    owner.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, BUSH_DURATION, 1));
+
+    final Location location = owner.getLocation();
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(() -> owner.teleport(location), 0, 5, BUSH_DURATION);
 
     final Block block = location.getBlock();
     block.setType(Material.OAK_LEAVES);
-    scheduler.scheduleTask(() -> block.setType(Material.AIR), 10 * 20L);
+    scheduler.scheduleTask(() -> block.setType(Material.AIR), BUSH_DURATION);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer owner = manager.getGamePlayer(player);
     final PlayerAudience audience = owner.getAudience();
-    audience.playSound("block.sweet_berry_bush.place");
+    audience.playSound(BUSH_SOUND);
   }
 }

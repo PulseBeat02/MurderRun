@@ -15,6 +15,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Drone extends SurvivorGadget {
 
+  private static final int DRONE_DURATION = 15 * 20;
+  private static final String DRONE_SOUND = "entity.phantom.flap";
+
   public Drone() {
     super(
         "drone",
@@ -30,22 +33,23 @@ public final class Drone extends SurvivorGadget {
     super.onGadgetDrop(game, event, true);
 
     final Player player = event.getPlayer();
-    final Location origin = player.getLocation();
-    final Location clone = origin.clone();
-    final Location drone = clone.add(0, 20, 0);
-    player.setGameMode(GameMode.SPECTATOR);
-    player.teleport(drone);
-
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setDefault(player, origin), 15 * 20L);
-
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final Location origin = gamePlayer.getLocation();
+    final Location clone = origin.clone();
+    clone.add(0, 20, 0);
+
+    gamePlayer.setGameMode(GameMode.SPECTATOR);
+    gamePlayer.teleport(clone);
+
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(() -> this.resetPlayer(gamePlayer, origin), DRONE_DURATION);
+
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.phantom.flap");
+    audience.playSound(DRONE_SOUND);
   }
 
-  private void setDefault(final Player player, final Location origin) {
+  private void resetPlayer(final GamePlayer player, final Location origin) {
     player.teleport(origin);
     player.setGameMode(GameMode.SURVIVAL);
   }

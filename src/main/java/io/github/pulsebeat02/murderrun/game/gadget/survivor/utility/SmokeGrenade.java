@@ -6,17 +6,17 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import io.github.pulsebeat02.murderrun.utils.EventUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
@@ -24,7 +24,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 
 public final class SmokeGrenade extends SurvivorGadget implements Listener {
@@ -38,8 +37,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
         Message.SMOKE_BOMB_NAME.build(),
         Message.SMOKE_BOMB_LORE.build(),
         16,
-        stack -> PDCUtils.setPersistentDataAttribute(
-            stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true));
+        ItemFactory::createSmokeGrenade);
     this.game = game;
   }
 
@@ -62,18 +60,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
       return;
     }
 
-    final Block block = event.getHitBlock();
-    final Entity hitEntity = event.getHitEntity();
-    final Location location;
-    if (block == null) {
-      if (hitEntity == null) {
-        return;
-      }
-      location = hitEntity.getLocation();
-    } else {
-      location = block.getLocation();
-    }
-
+    final Location location = EventUtils.getProjectileLocation(event);
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(

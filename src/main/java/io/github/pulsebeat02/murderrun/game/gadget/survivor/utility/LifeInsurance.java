@@ -9,7 +9,6 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -28,6 +27,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 public final class LifeInsurance extends SurvivorGadget {
+
+  private static final double LIFE_INSURANCE_ACTIVATION_RANGE = 4D;
+  private static final String LIFE_INSURANCE_SOUND = "item.totem.use";
 
   private final Multimap<GamePlayer, BukkitTask> taskMap;
 
@@ -55,17 +57,17 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location second = arena.getSecondCorner();
     final World world = requireNonNull(first.getWorld());
 
+    final GameScheduler scheduler = game.getScheduler();
+    final Consumer<GamePlayer> consumer =
+        killer -> this.checkKillerDistance(killer, gamePlayer, world, first, second);
+    final Runnable internalTask = () -> manager.applyToAllMurderers(consumer);
+    final BukkitTask task = scheduler.scheduleRepeatedTask(internalTask, 0, 20L);
+    this.taskMap.put(gamePlayer, task);
+
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.LIFE_INSURANCE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound("item.totem.use");
-
-    final GameScheduler scheduler = game.getScheduler();
-    final Consumer<Killer> consumer =
-        killer -> this.checkKillerDistance(killer, gamePlayer, world, first, second);
-    final BukkitTask task =
-        scheduler.scheduleRepeatedTask(() -> manager.applyToAllMurderers(consumer), 0, 20L);
-    this.taskMap.put(gamePlayer, task);
+    audience.playSound(LIFE_INSURANCE_SOUND);
   }
 
   private void checkKillerDistance(
@@ -79,7 +81,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);
 
-    if (distance < 16) {
+    if (distance < LIFE_INSURANCE_ACTIVATION_RANGE * LIFE_INSURANCE_ACTIVATION_RANGE) {
 
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
       final Location temp = new Location(world, coords[0], 0, coords[1]);

@@ -15,6 +15,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Tracker extends SurvivorGadget {
 
+  private static final double TRACKER_RADIUS = 5D;
+  private static final String TRACKER_SOUND = "entity.experience_orb.pickup";
+
   public Tracker() {
     super(
         "tracker",
@@ -35,7 +38,7 @@ public final class Tracker extends SurvivorGadget {
     manager.applyToAllMurderers(killer -> this.handleGlowing(killer, gamePlayer));
 
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.experience_orb.pickup");
+    audience.playSound(TRACKER_SOUND);
   }
 
   private void handleGlowing(final GamePlayer killer, final GamePlayer player) {
@@ -44,7 +47,7 @@ public final class Tracker extends SurvivorGadget {
     final double distance = origin.distanceSquared(killerLocation);
     final MetadataManager metadata = player.getMetadataManager();
     final PlayerAudience audience = player.getAudience();
-    if (distance < 25) {
+    if (distance < TRACKER_RADIUS * TRACKER_RADIUS) {
       metadata.setEntityGlowing(killer, ChatColor.RED, true);
       audience.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {

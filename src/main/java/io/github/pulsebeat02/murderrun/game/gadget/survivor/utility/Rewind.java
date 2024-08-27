@@ -15,6 +15,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Rewind extends SurvivorGadget {
 
+  private static final int REWIND_COOLDOWN = 3000;
+  private static final String REWIND_SOUND = "entity.shulker.teleport";
+
   // global cooldown for each player
   private final Map<GamePlayer, Long> rewindCooldown;
 
@@ -34,17 +37,17 @@ public final class Rewind extends SurvivorGadget {
     final long current = System.currentTimeMillis();
     if (!this.rewindCooldown.containsKey(survivor)) {
       this.rewindCooldown.put(survivor, current);
-      this.handleRewind(game, event, movementManager, survivor, player, current);
+      this.handleRewind(game, event, movementManager, survivor, current);
       return;
     }
 
     final long value = this.rewindCooldown.get(survivor);
-    if (current - value < 3000) {
+    if (current - value < REWIND_COOLDOWN) {
       super.onGadgetDrop(game, event, false);
       return;
     }
 
-    this.handleRewind(game, event, movementManager, survivor, player, current);
+    this.handleRewind(game, event, movementManager, survivor, current);
   }
 
   private void handleRewind(
@@ -52,13 +55,15 @@ public final class Rewind extends SurvivorGadget {
       final PlayerDropItemEvent event,
       final MovementManager movementManager,
       final GamePlayer survivor,
-      final Player player,
       final long current) {
-    final boolean successful = movementManager.handleRewind(survivor);
-    player.setFallDistance(0.0f);
+
     this.rewindCooldown.put(survivor, current);
+    survivor.setFallDistance(0.0f);
+
+    final boolean successful = movementManager.handleRewind(survivor);
     super.onGadgetDrop(game, event, successful);
+
     final PlayerAudience audience = survivor.getAudience();
-    audience.playSound("entity.shulker.teleport");
+    audience.playSound(REWIND_SOUND);
   }
 }

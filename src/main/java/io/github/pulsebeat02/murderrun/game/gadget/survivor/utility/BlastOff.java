@@ -9,35 +9,25 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-public final class BlastOff extends SurvivorGadget implements Listener {
+public final class BlastOff extends SurvivorGadget {
 
-  private final Set<GamePlayer> restrictDismount;
-  private final Game game;
+  private static final String BLAST_OFF_SOUND = "entity.firework_rocket.blast";
 
-  public BlastOff(final Game game) {
+  public BlastOff() {
     super(
         "blast_off",
         Material.FIREWORK_ROCKET,
         Message.BLAST_OFF_NAME.build(),
         Message.BLAST_OFF_LORE.build(),
         32);
-    this.game = game;
-    this.restrictDismount = new HashSet<>();
   }
 
   @Override
@@ -54,72 +44,40 @@ public final class BlastOff extends SurvivorGadget implements Listener {
     }
 
     final Location before = killer.getLocation();
-    this.restrictDismount.add(killer);
-    killer.apply(murderer -> {
-      final Firework firework = this.spawnRocket(murderer);
-      final GameScheduler scheduler = game.getScheduler();
-      this.scheduleTeleportTask(scheduler, firework, killer, before);
-    });
+    final Firework firework = this.spawnRocket(killer);
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleAfterDeath(
+        () -> {
+          killer.teleport(before);
+          killer.setFallDistance(0.0f);
+          killer.setCanDismount(true);
+        },
+        firework);
 
     final GamePlayer owner = manager.getGamePlayer(player);
     final PlayerAudience audience = owner.getAudience();
-    audience.playSound("entity.firework_rocket.blast");
+    audience.playSound(BLAST_OFF_SOUND);
   }
 
-  private void scheduleTeleportTask(
-      final GameScheduler scheduler,
-      final Firework firework,
-      final GamePlayer killer,
-      final Location before) {
-    final AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-    scheduler.scheduleConditionalTask(
-        () -> this.checkRideStatus(firework, killer, before, atomicBoolean),
-        2 * 20L,
-        2,
-        atomicBoolean::get);
-  }
-
-  private void checkRideStatus(
-      final Firework firework,
-      final GamePlayer killer,
-      final Location before,
-      final AtomicBoolean atomicBoolean) {
-    if (firework.isDead()) {
-      killer.teleport(before);
-      killer.apply(player -> player.setFallDistance(0.0f));
-      this.restrictDismount.remove(killer);
-      atomicBoolean.set(true);
-    }
-  }
-
-  private Firework spawnRocket(final Player player) {
+  private Firework spawnRocket(final GamePlayer player) {
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     return world.spawn(location, Firework.class, firework -> {
-      final FireworkMeta meta = firework.getFireworkMeta();
-      meta.setPower(4);
-      firework.setShotAtAngle(false);
-      firework.setFireworkMeta(meta);
-      firework.addPassenger(player);
+      this.customizeMeta(firework);
+      this.customizeProperties(player, firework);
+      player.setCanDismount(false);
     });
   }
 
-  @EventHandler
-  public void onEntityDismount(final EntityDismountEvent event) {
+  private void customizeProperties(final GamePlayer player, final Firework firework) {
+    final Player internal = player.getInternalPlayer();
+    firework.setShotAtAngle(false);
+    firework.addPassenger(internal);
+  }
 
-    final Entity entity = event.getEntity();
-    if (!(entity instanceof final Player player)) {
-      return;
-    }
-
-    final PlayerManager manager = this.game.getPlayerManager();
-    if (!manager.checkPlayerExists(player)) {
-      return;
-    }
-
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (this.restrictDismount.contains(gamePlayer)) {
-      event.setCancelled(true);
-    }
+  private void customizeMeta(final Firework firework) {
+    final FireworkMeta meta = firework.getFireworkMeta();
+    meta.setPower(4);
+    firework.setFireworkMeta(meta);
   }
 }

@@ -16,6 +16,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Deadringer extends SurvivorGadget {
 
+  private static final int DEADRINGER_DURATION = 15 * 20;
+  private static final String DEADRINGER_SOUND = "item.totem.use";
+
   public Deadringer() {
     super(
         "deadringer",
@@ -31,20 +34,21 @@ public final class Deadringer extends SurvivorGadget {
     super.onGadgetDrop(game, event, true);
 
     final Player player = event.getPlayer();
-    final String name = player.getDisplayName();
     final PlayerManager manager = game.getPlayerManager();
-    final Component message = Message.PLAYER_DEATH.build(name);
-    manager.sendMessageToAllParticipants(message);
-    player.setInvulnerable(true);
-
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    gamePlayer.setInvulnerable(true);
     gamePlayer.addPotionEffects(
-        new PotionEffect(PotionEffectType.SPEED, 15 * 20, 1, true, false),
-        new PotionEffect(PotionEffectType.INVISIBILITY, 15 * 20, 1, true, false));
-    audience.playSound("item.totem.use");
+        new PotionEffect(PotionEffectType.SPEED, DEADRINGER_DURATION, 1, true, false),
+        new PotionEffect(PotionEffectType.INVISIBILITY, DEADRINGER_DURATION, 1, true, false));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> player.setInvulnerable(false), 15 * 20L);
+    scheduler.scheduleTask(() -> gamePlayer.setInvulnerable(false), DEADRINGER_DURATION);
+
+    final String name = gamePlayer.getDisplayName();
+    final Component message = Message.PLAYER_DEATH.build(name);
+    manager.sendMessageToAllParticipants(message);
+
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(DEADRINGER_SOUND);
   }
 }

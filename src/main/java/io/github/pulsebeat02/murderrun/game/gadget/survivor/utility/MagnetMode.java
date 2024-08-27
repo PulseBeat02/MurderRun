@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class MagnetMode extends SurvivorGadget {
 
+  private static final int MAGNET_MODE_MULTIPLIER = 2;
+
   public MagnetMode() {
     super(
         "magnet_mode",
@@ -32,8 +34,8 @@ public final class MagnetMode extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final int current = gadgetManager.getActivationRange();
-    gadgetManager.setActivationRange(current * 2);
+    final double current = gadgetManager.getActivationRange();
+    gadgetManager.setActivationRange(current * MAGNET_MODE_MULTIPLIER);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.MAGNET_MODE_ACTIVATE.build();

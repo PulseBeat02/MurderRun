@@ -90,20 +90,27 @@ public final class GameScheduler {
     }
   }
 
+  public BukkitTask scheduleTaskUntilDeath(final Runnable runnable, final Entity entity) {
+    final AtomicBoolean dead = new AtomicBoolean(false);
+    final Runnable internal = () -> this.waitForDeath(runnable, entity, dead);
+    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 10L, dead::get);
+    this.tasks.add(task);
+    return task;
+  }
+
   public BukkitTask scheduleParticleTask(final Item item, final Color color) {
     final World world = item.getWorld();
-    final Runnable particleTask = () -> spawnParticles0(item, color, world);
-    final Runnable conditionalTask =
-        () -> this.scheduleConditionalTask(particleTask, 0L, 20L, item::isDead);
+    final Runnable particleTask = () -> this.spawnParticles0(item, color, world);
+    final Runnable conditionalTask = () -> this.scheduleTaskUntilDeath(particleTask, item);
     return this.scheduleTaskWhenItemFalls(conditionalTask, item);
   }
 
-  private static void spawnParticles0(final Item item, final Color color, final World world) {
+  private void spawnParticles0(final Item item, final Color color, final World world) {
     final Location location = item.getLocation();
     world.spawnParticle(Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(color, 2));
   }
 
-  public BukkitTask scheduleAfterDead(final Runnable runnable, final Entity item) {
+  public BukkitTask scheduleAfterDeath(final Runnable runnable, final Entity item) {
     final AtomicBoolean dead = new AtomicBoolean(false);
     final Runnable internal = () -> this.waitForDeath(runnable, item, dead);
     final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, dead::get);

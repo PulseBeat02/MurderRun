@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -31,8 +32,7 @@ public final class PlayerTracker extends KillerGadget {
         Message.PLAYER_TRACKER_NAME.build(),
         Message.PLAYER_TRACKER_LORE.build(),
         32,
-        stack -> PDCUtils.setPersistentDataAttribute(
-            stack, Keys.PLAYER_TRACKER, PersistentDataType.INTEGER, 0));
+        ItemFactory::createPlayerTracker);
   }
 
   @Override

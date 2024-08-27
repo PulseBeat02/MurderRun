@@ -1,14 +1,14 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public final class GadgetManager {
 
   private final MurderRun plugin;
   private final Game game;
-  private final AtomicInteger activationRange;
+  private final AtomicDouble activationRange;
 
   private GadgetLoadingMechanism mechanism;
   private GadgetActionHandler actionHandler;
@@ -17,7 +17,7 @@ public final class GadgetManager {
     final MurderRun plugin = game.getPlugin();
     this.game = game;
     this.plugin = plugin;
-    this.activationRange = new AtomicInteger(2);
+    this.activationRange = new AtomicDouble(2);
   }
 
   public void start() {
@@ -43,11 +43,11 @@ public final class GadgetManager {
     return this.game;
   }
 
-  public int getActivationRange() {
+  public double getActivationRange() {
     return this.activationRange.get();
   }
 
-  public void setActivationRange(final int range) {
+  public void setActivationRange(final double range) {
     this.activationRange.getAndSet(range);
   }
 }

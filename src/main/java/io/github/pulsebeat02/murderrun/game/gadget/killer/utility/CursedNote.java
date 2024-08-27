@@ -75,7 +75,7 @@ public final class CursedNote extends KillerGadget {
           () -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
     }
 
-    scheduler.scheduleAfterDead(
+    scheduler.scheduleAfterDeath(
         () -> {
           for (final CarPart part : closeParts) {
             final Item item = part.getItem();

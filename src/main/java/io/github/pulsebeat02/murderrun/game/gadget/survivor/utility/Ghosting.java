@@ -27,6 +27,9 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class Ghosting extends SurvivorGadget {
 
+  private static final int GHOSTING_WOOL_DELAY = 10 * 20;
+  private static final String GHOSTING_SOUND = "block.bone_block.break";
+
   public Ghosting() {
     super(
         "ghosting",
@@ -44,18 +47,19 @@ public final class Ghosting extends SurvivorGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (gamePlayer instanceof final Survivor survivor) {
-
-      final DeathManager deathManager = gamePlayer.getDeathManager();
-      final PlayerDeathTask task =
-          new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
-      deathManager.addDeathTask(task);
-
-      final PlayerAudience audience = survivor.getAudience();
-      final Component message = Message.GHOSTING_ACTIVATE.build();
-      audience.sendMessage(message);
-      audience.playSound("block.bone_block.break");
+    if (!(gamePlayer instanceof final Survivor survivor)) {
+      return;
     }
+
+    final DeathManager deathManager = gamePlayer.getDeathManager();
+    final PlayerDeathTask task =
+        new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
+    deathManager.addDeathTask(task);
+
+    final PlayerAudience audience = survivor.getAudience();
+    final Component message = Message.GHOSTING_ACTIVATE.build();
+    audience.sendMessage(message);
+    audience.playSound(GHOSTING_SOUND);
   }
 
   private void handleGhosting(final Game game, final Survivor gamePlayer) {
@@ -70,13 +74,12 @@ public final class Ghosting extends SurvivorGadget {
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location location = arena.getSpawn();
-    gamePlayer.apply(player -> player.setRespawnLocation(location, true));
+    gamePlayer.setRespawnLocation(location, true);
   }
 
   private void setPlayerAttributes(final Survivor gamePlayer) {
-    final PlayerInventory inventory = gamePlayer.getInventory();
-    inventory.clear();
-    gamePlayer.apply(player -> player.setGameMode(GameMode.SURVIVAL));
+    gamePlayer.clearInventory();
+    gamePlayer.setGameMode(GameMode.SURVIVAL);
     gamePlayer.setCanPickupCarPart(false);
     gamePlayer.setCanPlaceBlocks(true);
   }
@@ -85,7 +88,7 @@ public final class Ghosting extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
-    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, 10 * 20L);
+    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, GHOSTING_WOOL_DELAY);
   }
 
   private void giveWhiteBone(final GamePlayer player) {

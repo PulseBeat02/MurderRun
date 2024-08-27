@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class RandomTeleport extends SurvivorGadget {
 
+  private static final String RANDOM_TELEPORT_SOUND = "entity.enderman.teleport";
+
   public RandomTeleport() {
     super(
         "random_teleport",
@@ -50,6 +52,6 @@ public final class RandomTeleport extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.enderman.teleport");
+    audience.playSound(RANDOM_TELEPORT_SOUND);
   }
 }

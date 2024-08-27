@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class FriendWarp extends SurvivorGadget {
 
+  private static final String FRIEND_WARP_SOUND = "entity.enderman.teleport";
+
   public FriendWarp() {
     super(
         "friend_warp",
@@ -32,13 +34,13 @@ public final class FriendWarp extends SurvivorGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final GamePlayer target = this.getRandomSurvivorNotSame(manager, gamePlayer);
     final Location location = target.getLocation();
-    player.teleport(location);
+    gamePlayer.teleport(location);
 
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.enderman.teleport");
+    audience.playSound(FRIEND_WARP_SOUND);
 
     final PlayerAudience targetAudience = target.getAudience();
-    targetAudience.playSound("entity.enderman.teleport");
+    targetAudience.playSound(FRIEND_WARP_SOUND);
   }
 
   private GamePlayer getRandomSurvivorNotSame(

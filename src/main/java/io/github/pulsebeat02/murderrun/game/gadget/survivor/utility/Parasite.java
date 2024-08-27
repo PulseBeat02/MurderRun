@@ -19,6 +19,10 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Parasite extends SurvivorGadget {
 
+  private static final double PARASITE_DESTROY_DISTANCE = 2D;
+  private static final double PARASITE_RADIUS = 10D;
+  private static final String PARASITE_SOUND = "block.lever.click";
+
   public Parasite() {
     super(
         "parasite",
@@ -35,14 +39,12 @@ public final class Parasite extends SurvivorGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleConditionalTask(
-        () -> this.handleKillers(manager, item), 0, 2 * 20L, item::isDead);
+    scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
+    scheduler.scheduleParticleTask(item, Color.GREEN);
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.lever.click");
-
-    scheduler.scheduleParticleTask(item, Color.GREEN);
+    audience.playSound(PARASITE_SOUND);
   }
 
   private void handleKillers(final PlayerManager manager, final Item item) {
@@ -54,11 +56,11 @@ public final class Parasite extends SurvivorGadget {
     final Location origin = item.getLocation();
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < 4) {
+    if (distance < PARASITE_DESTROY_DISTANCE * PARASITE_DESTROY_DISTANCE) {
       final Component message = Message.PARASITE_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       item.remove();
-    } else if (distance < 100) {
+    } else if (distance < PARASITE_RADIUS * PARASITE_RADIUS) {
       player.addPotionEffects(
           new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 0),
           new PotionEffect(PotionEffectType.POISON, 10 * 20, 0),

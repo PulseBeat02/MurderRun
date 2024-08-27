@@ -15,6 +15,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Chipped extends SurvivorGadget {
 
+  private static final int CHIPPED_DURATION = 5 * 20;
+  private static final String CHIPPED_SOUND = "block.amethyst_block.chime";
+
   public Chipped() {
     super(
         "chipped",
@@ -26,16 +29,23 @@ public final class Chipped extends SurvivorGadget {
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+
     super.onGadgetDrop(game, event, true);
+
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer owner = manager.getGamePlayer(player);
     final MetadataManager metadata = owner.getMetadataManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.applyToAllLivingInnocents(
-        innocent -> metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, 5 * 20L));
+    this.setOtherSurvivorsGlowing(manager, metadata, scheduler);
 
     final PlayerAudience audience = owner.getAudience();
-    audience.playSound("block.amethyst_block.chime");
+    audience.playSound(CHIPPED_SOUND);
+  }
+
+  private void setOtherSurvivorsGlowing(
+      final PlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
+    manager.applyToAllLivingInnocents(innocent ->
+        metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, CHIPPED_DURATION));
   }
 }

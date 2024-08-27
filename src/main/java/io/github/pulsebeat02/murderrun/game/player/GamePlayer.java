@@ -17,6 +17,7 @@ public class GamePlayer extends AbstractPlayer {
   private DeathManager deathManager;
   private PlayerAudience audience;
 
+  private boolean canDismount;
   private boolean alive;
 
   public GamePlayer(final Game game, final UUID uuid) {
@@ -34,11 +35,6 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public Player getInternalPlayer() {
     return requireNonNull(Bukkit.getPlayer(this.uuid));
-  }
-
-  @Override
-  public UUID getUUID() {
-    return this.uuid;
   }
 
   @Override
@@ -69,5 +65,15 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public PlayerAudience getAudience() {
     return this.audience;
+  }
+
+  @Override
+  public boolean canDismount() {
+    return this.canDismount;
+  }
+
+  @Override
+  public void setCanDismount(final boolean canDismount) {
+    this.canDismount = canDismount;
   }
 }

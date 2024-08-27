@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,7 +18,8 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Retaliation extends SurvivorGadget {
 
-  private static final int MAX_DEATHS_COUNTED = 3;
+  private static final int RETALATION_MAX_AMPLIFIER = 3;
+  private static final String RETALIATION_SOUND = "entity.experience_orb.pickup";
 
   public Retaliation() {
     super(
@@ -39,7 +41,7 @@ public final class Retaliation extends SurvivorGadget {
     final Component message = Message.RETALIATION_ACTIVATE.build();
     final PlayerAudience audience = gamePlayer.getAudience();
     audience.sendMessage(message);
-    audience.playSound("entity.experience_orb.pickup");
+    audience.playSound(RETALIATION_SOUND);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L);
@@ -53,12 +55,11 @@ public final class Retaliation extends SurvivorGadget {
       return;
     }
 
-    final int effectLevel = Math.min(dead - 1, MAX_DEATHS_COUNTED);
-    player.addPotionEffect(
-        new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel));
-    player.addPotionEffect(new PotionEffect(
-        PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel));
-    player.addPotionEffect(
-        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel));
+    final int effectLevel = Math.min(dead - 1, RETALATION_MAX_AMPLIFIER);
+    player.addPotionEffects(Set.of(
+        new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
+        new PotionEffect(
+            PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel)));
   }
 }

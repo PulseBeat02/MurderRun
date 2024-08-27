@@ -187,7 +187,7 @@ public final class PlayerManager {
     return this.cachedAlivePlayers;
   }
 
-  public void applyToAllMurderers(final Consumer<Killer> consumer) {
+  public void applyToAllMurderers(final Consumer<GamePlayer> consumer) {
     this.getMurderers().forEach(consumer);
   }
 
@@ -329,6 +329,13 @@ public final class PlayerManager {
     });
   }
 
+  public void playSoundForAllParticipantsAtLocation(final Location origin, final String... keys) {
+    final Key key = this.getRandomKey(keys);
+    final String raw = key.asString();
+    final World world = requireNonNull(origin.getWorld());
+    world.playSound(origin, raw, SoundCategory.MASTER, 1f, 1f);
+  }
+
   public void playSoundForAllParticipantsAtLocation(
       final Location origin, final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
@@ -357,11 +364,12 @@ public final class PlayerManager {
     return list.getFirst();
   }
 
-  public Survivor getRandomDeadPlayer() {
-    final List<Survivor> list = this.cachedSurvivors.stream()
-        .filter(StreamUtils.inverse(Survivor::isAlive))
+  public @Nullable Survivor getRandomDeadPlayer() {
+    final List<Survivor> list = this.cachedDeadPlayers.stream()
+        .filter(StreamUtils.isInstanceOf(Survivor.class))
+        .map(player -> (Survivor) player)
         .collect(StreamUtils.toShuffledList());
-    return list.getFirst();
+    return list.isEmpty() ? null : list.getFirst();
   }
 
   public void promoteToKiller(final GamePlayer player) {
@@ -395,6 +403,14 @@ public final class PlayerManager {
     this.applyToAllLivingInnocents(innocent -> {
       final MetadataManager metadata = innocent.getMetadataManager();
       entity.apply(target -> metadata.setEntityGlowing(target, color, false));
+    });
+  }
+
+  public void hideNameTagForAliveInnocents(final long ticks) {
+    final GameScheduler scheduler = this.game.getScheduler();
+    this.applyToAllLivingInnocents(innocent -> {
+      final MetadataManager metadata = innocent.getMetadataManager();
+      metadata.hideNameTag(scheduler, ticks);
     });
   }
 }

@@ -19,6 +19,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Horcrux extends SurvivorGadget {
 
+  private static final String HORCRUX_SOUND = "block.furnace.fire_crackle";
+
   public Horcrux() {
     super(
         "horcrux",
@@ -30,26 +32,32 @@ public final class Horcrux extends SurvivorGadget {
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final GameScheduler scheduler = game.getScheduler();
+
     final Item item = event.getItemDrop();
     final DeathManager deathManager = gamePlayer.getDeathManager();
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleHorcrux(gamePlayer, item), true);
     deathManager.addDeathTask(task);
-    final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.furnace.fire_crackle");
+
+    final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleParticleTask(item, Color.BLACK);
+
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(HORCRUX_SOUND);
   }
 
   private void handleHorcrux(final GamePlayer player, final Item item) {
-    final Component message = Message.HORCRUX_ACTIVATE.build();
+
     final Location location = item.getLocation();
-    final PlayerAudience audience = player.getAudience();
     player.apply(raw -> raw.setRespawnLocation(location, true));
-    audience.sendMessage(message);
     item.remove();
+
+    final PlayerAudience audience = player.getAudience();
+    final Component message = Message.HORCRUX_ACTIVATE.build();
+    audience.sendMessage(message);
   }
 }

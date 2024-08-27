@@ -18,6 +18,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Distorter extends SurvivorGadget {
 
+  private static final double DISTORTER_DESTROY_RADIUS = 2;
+  private static final double DISTORTER_EFFECT_RADIUS = 10;
+  private static final String DISTORTER_SOUND = "block.lever.click";
+
   public Distorter() {
     super(
         "distorter",
@@ -32,15 +36,15 @@ public final class Distorter extends SurvivorGadget {
 
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+
     final GameScheduler scheduler = game.getScheduler();
     final Item item = event.getItemDrop();
-    scheduler.scheduleConditionalTask(
-        () -> this.handleKillers(manager, item), 0L, 5L, item::isDead);
+    scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
     scheduler.scheduleParticleTask(item, Color.PURPLE);
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.lever.click");
+    audience.playSound(DISTORTER_SOUND);
   }
 
   private void handleKillers(final PlayerManager manager, final Item item) {
@@ -52,11 +56,11 @@ public final class Distorter extends SurvivorGadget {
     final Location location = killer.getLocation();
     final Location origin = item.getLocation();
     final double distance = location.distanceSquared(origin);
-    if (distance < 4) {
+    if (distance < DISTORTER_DESTROY_RADIUS * DISTORTER_DESTROY_RADIUS) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       item.remove();
-    } else if (distance < 100) {
+    } else if (distance < DISTORTER_EFFECT_RADIUS * DISTORTER_EFFECT_RADIUS) {
       killer.spawnPlayerSpecificParticle(Particle.ELDER_GUARDIAN);
     }
   }

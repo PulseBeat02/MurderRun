@@ -25,12 +25,15 @@ public final class RandomTrap extends SurvivorGadget {
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+
     super.onGadgetDrop(game, event, true);
+
     final Player player = event.getPlayer();
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     final Gadget gadget = mechanism.getRandomInnocentGadget();
     final ItemStack stack = gadget.getGadget();
+
     final PlayerInventory inventory = player.getInventory();
     inventory.addItem(stack);
   }

@@ -42,7 +42,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
-    final int range = gadgetManager.getActivationRange();
+    final double range = gadgetManager.getActivationRange();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {

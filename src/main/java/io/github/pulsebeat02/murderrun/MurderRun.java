@@ -25,15 +25,12 @@ public final class MurderRun extends JavaPlugin {
 
   - Add configuration values to all traps
   - Make code neater (SRP, SOLID, etc)
-    - fix duplicate classes
-      - Camera
-      - Death Hound, Ice Spirit, Dormagogg
-      - Player Tracker
     - move events to their own classes
-      - modify Survivor/Killer when doing event
     - create constants for each class to prepare for configuration
     - add methods to Participant to avoid apply() method
 
+
+  - Test all gadgets
    */
 
   private static final int BSTATS_SERVER_ID = 22728;

@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class CorpusWarp extends SurvivorGadget {
 
+  private static final String CORPUS_WARP_SOUND = "entity.enderman.teleport";
+
   public CorpusWarp() {
     super(
         "corpus_warp",
@@ -30,13 +32,20 @@ public final class CorpusWarp extends SurvivorGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer target = manager.getRandomDeadPlayer();
+    if (target == null) {
+      super.onGadgetDrop(game, event, false);
+      return;
+    }
+
     final Location location = target.getDeathLocation();
     if (location == null) {
       return;
     }
-    player.teleport(location);
 
-    final PlayerAudience audience = target.getAudience();
-    audience.playSound("entity.enderman.teleport");
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    gamePlayer.teleport(location);
+
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(CORPUS_WARP_SOUND);
   }
 }

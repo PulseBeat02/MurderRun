@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import org.bukkit.Bukkit;
@@ -32,8 +33,7 @@ public final class Translocator extends SurvivorGadget {
         Message.TRANSLOCATOR_NAME.build(),
         Message.TRANSLOCATOR_LORE.build(),
         64,
-        stack -> PDCUtils.setPersistentDataAttribute(
-            stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]));
+        ItemFactory::createTranslocator);
   }
 
   @Override

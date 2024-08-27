@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.UUID;
 import java.util.function.Consumer;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -70,4 +71,18 @@ public interface Participant {
   void removePotionEffect(final PotionEffectType type);
 
   void setVelocity(final Vector vector);
+
+  void setCanDismount(final boolean canDismount);
+
+  boolean canDismount();
+
+  void setFallDistance(final float distance);
+
+  void setInvulnerable(final boolean invulnerable);
+
+  void setGameMode(final GameMode mode);
+
+  void clearInventory();
+
+  void setRespawnLocation(final Location location, final boolean force);
 }
