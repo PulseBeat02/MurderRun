@@ -9,10 +9,11 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -28,13 +29,7 @@ public interface Participant {
 
   void apply(final Consumer<Player> consumer);
 
-  void spawnParticle(
-      final Particle particle,
-      final Location location,
-      final int count,
-      final double offSetX,
-      final double offSetY,
-      final double offSetZ);
+  void spawnPlayerSpecificParticle(final Particle particle);
 
   void addPotionEffects(final PotionEffect... effects);
 
@@ -60,11 +55,6 @@ public interface Participant {
 
   Game getGame();
 
-  @Nullable
-  ArmorStand getCorpse();
-
-  void setCorpse(@Nullable ArmorStand corpse);
-
   MetadataManager getMetadataManager();
 
   DeathManager getDeathManager();
@@ -72,4 +62,12 @@ public interface Participant {
   PlayerAudience getAudience();
 
   String getDisplayName();
+
+  void setGravity(final boolean gravity);
+
+  void setFreezeTicks(final int ticks);
+
+  void removePotionEffect(final PotionEffectType type);
+
+  void setVelocity(final Vector vector);
 }

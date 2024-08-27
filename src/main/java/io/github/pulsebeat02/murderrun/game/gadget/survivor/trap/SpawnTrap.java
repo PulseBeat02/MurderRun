@@ -15,6 +15,8 @@ import org.bukkit.entity.Item;
 
 public final class SpawnTrap extends SurvivorTrap {
 
+  private static final String SPASM_TRAP_SOUND = "entity.skeleton.ambient";
+
   public SpawnTrap() {
     super(
         "spawn",
@@ -28,11 +30,13 @@ public final class SpawnTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final PlayerManager manager = game.getPlayerManager();
+
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location spawn = arena.getSpawn();
     murderer.teleport(spawn);
-    manager.playSoundForAllParticipants("entity.skeleton.ambient");
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(SPASM_TRAP_SOUND);
   }
 }

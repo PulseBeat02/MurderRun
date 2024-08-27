@@ -9,12 +9,16 @@ import java.awt.Color;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
 
 public final class SpasmTrap extends SurvivorTrap {
+
+  private static final int SPASM_TRAP_DURATION = 7 * 20;
+  private static final String SPASM_TRAP_SOUND = "entity.elder_guardian.curse";
 
   private static final Vector UP = new Vector(0, 1, 0);
   private static final Vector DOWN = new Vector(0, -1, 0);
@@ -35,15 +39,17 @@ public final class SpasmTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final PlayerManager manager = game.getPlayerManager();
+
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 5, 7 * 20L);
-    manager.playSoundForAllParticipants("entity.elder_guardian.curse");
+    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 5, SPASM_TRAP_DURATION);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(SPASM_TRAP_SOUND);
   }
 
   private void alternateHead(final GamePlayer murderer) {
-    final AtomicBoolean atomic =
-        this.states.computeIfAbsent(murderer, fun -> new AtomicBoolean(false));
+    final Function<GamePlayer, AtomicBoolean> function = ignored -> new AtomicBoolean(false);
+    final AtomicBoolean atomic = this.states.computeIfAbsent(murderer, function);
     final boolean up = atomic.get();
     final Location location = this.getProperLocation(murderer, up);
     murderer.teleport(location);

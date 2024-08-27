@@ -1,17 +1,17 @@
 package io.github.pulsebeat02.murderrun.game.player.death;
 
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import org.bukkit.entity.ArmorStand;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class DeathManager {
 
-  private final GamePlayer gamePlayer;
+  private @Nullable ArmorStand corpse;
   private final Collection<PlayerDeathTask> tasks;
 
-  public DeathManager(final GamePlayer gamePlayer) {
-    this.gamePlayer = gamePlayer;
+  public DeathManager() {
     this.tasks = new HashSet<>();
   }
 
@@ -49,5 +49,13 @@ public final class DeathManager {
 
   public Collection<PlayerDeathTask> getDeathTasks() {
     return this.tasks;
+  }
+
+  public @Nullable ArmorStand getCorpse() {
+    return this.corpse;
+  }
+
+  public void setCorpse(final @Nullable ArmorStand corpse) {
+    this.corpse = corpse;
   }
 }

@@ -11,6 +11,9 @@ import org.bukkit.entity.Item;
 
 public final class GlowTrap extends SurvivorTrap {
 
+  private static final int GLOW_TRAP_DURATION = 7 * 20;
+  private static final String GLOW_TRAP_SOUND = "block.amethyst_block.chime";
+
   public GlowTrap() {
     super(
         "glow",
@@ -25,7 +28,7 @@ public final class GlowTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
-    manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, 7 * 20L);
-    manager.playSoundForAllParticipants("block.amethyst_block.chime");
+    manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, GLOW_TRAP_DURATION);
+    manager.playSoundForAllParticipants(GLOW_TRAP_SOUND);
   }
 }

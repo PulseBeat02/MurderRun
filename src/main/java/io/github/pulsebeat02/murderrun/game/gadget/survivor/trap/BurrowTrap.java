@@ -10,9 +10,11 @@ import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 
 public final class BurrowTrap extends SurvivorTrap {
+
+  private static final int BURROW_TRAP_DURATION = 7 * 20;
+  private static final String BURROW_TRAP_SOUND = "block.rooted_dirt.place";
 
   public BurrowTrap() {
     super(
@@ -33,26 +35,23 @@ public final class BurrowTrap extends SurvivorTrap {
     clone.subtract(0, 50, 0);
 
     final GameScheduler scheduler = game.getScheduler();
-    if (murderer instanceof final Killer killer) {
-      murderer.disableJump(scheduler, 7 * 20L);
-      murderer.disableWalkNoFOVEffects(scheduler, 7 * 20L);
-      killer.setForceMineBlocks(false);
-      killer.apply(player -> {
-        player.teleport(clone);
-        player.setGravity(true);
-        scheduler.scheduleTask(() -> this.resetPlayer(killer, player, location), 7 * 20L);
-      });
+    if (!(murderer instanceof final Killer killer)) {
+      return;
     }
+
+    killer.disableJump(scheduler, BURROW_TRAP_DURATION);
+    killer.disableWalkNoFOVEffects(scheduler, BURROW_TRAP_DURATION);
+    killer.setForceMineBlocks(false);
+    killer.teleport(clone);
+    killer.setGravity(true);
+    scheduler.scheduleTask(() -> this.resetState(killer, location), BURROW_TRAP_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants("block.rooted_dirt.place");
+    manager.playSoundForAllParticipants(BURROW_TRAP_SOUND);
   }
 
-  private void resetPlayer(
-      final GamePlayer murderer, final Player player, final Location location) {
-    player.teleport(location);
-    if (murderer instanceof final Killer killer) {
-      killer.setForceMineBlocks(true);
-    }
+  private void resetState(final Killer killer, final Location location) {
+    killer.teleport(location);
+    killer.setForceMineBlocks(true);
   }
 }

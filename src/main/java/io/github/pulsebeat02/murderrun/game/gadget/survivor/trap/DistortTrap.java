@@ -6,12 +6,14 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Item;
 
 public final class DistortTrap extends SurvivorTrap {
+
+  private static final int DISTORT_TRAP_DURATION = 7 * 20;
+  private static final String DISTORT_TRAP_SOUND = "entity.elder_guardian.curse";
 
   public DistortTrap() {
     super(
@@ -28,12 +30,11 @@ public final class DistortTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.playSoundForAllParticipants("entity.elder_guardian.curse");
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(murderer), 0, 5, 7 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(murderer), 0, 5, DISTORT_TRAP_DURATION);
+    manager.playSoundForAllParticipants(DISTORT_TRAP_SOUND);
   }
 
   private void spawnParticle(final GamePlayer murderer) {
-    final Location dummy = murderer.getLocation();
-    murderer.spawnParticle(Particle.ELDER_GUARDIAN, dummy, 1, 0, 0, 0);
+    murderer.spawnPlayerSpecificParticle(Particle.ELDER_GUARDIAN);
   }
 }

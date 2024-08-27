@@ -19,6 +19,9 @@ import org.bukkit.inventory.HorseInventory;
 
 public final class PonyTrap extends SurvivorTrap {
 
+  private static final double PONY_TRAP_HORSE_SPEED = 0.5D;
+  private static final String PONY_TRAP_SOUND = "entity.horse.angry";
+
   public PonyTrap() {
     super(
         "pony",
@@ -32,27 +35,33 @@ public final class PonyTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final PlayerManager manager = game.getPlayerManager();
+
     final Location location = murderer.getLocation();
+    this.spawnHorse(location);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(PONY_TRAP_SOUND);
+  }
+
+  private void spawnHorse(final Location location) {
     final World world = requireNonNull(location.getWorld());
-    final Horse horse = this.spawnCustomisedHorse(world, location);
-    this.setHorseSpeed(horse);
-    manager.playSoundForAllParticipants("entity.horse.angry");
-  }
-
-  private void setHorseSpeed(final Horse horse) {
-    final AttributeInstance attribute =
-        requireNonNull(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
-    attribute.setBaseValue(0.5);
-  }
-
-  private Horse spawnCustomisedHorse(final World world, final Location location) {
-    return world.spawn(location, Horse.class, horse -> {
-      horse.setTamed(true);
-      horse.setJumpStrength(2);
-      horse.setAdult();
+    world.spawn(location, Horse.class, horse -> {
+      this.customizeProperties(horse);
       this.setSaddle(horse);
     });
+  }
+
+  private void customizeProperties(final Horse horse) {
+    horse.setTamed(true);
+    horse.setJumpStrength(2);
+    horse.setAdult();
+    this.setSpeed(horse);
+  }
+
+  private void setSpeed(final Horse horse) {
+    final AttributeInstance attribute =
+        requireNonNull(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
+    attribute.setBaseValue(PONY_TRAP_HORSE_SPEED);
   }
 
   private void setSaddle(final Horse horse) {

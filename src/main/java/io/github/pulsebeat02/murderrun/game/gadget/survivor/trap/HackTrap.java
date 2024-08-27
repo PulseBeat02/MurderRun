@@ -15,6 +15,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class HackTrap extends SurvivorTrap {
 
+  private static final int HACK_TRAP_DURATION = 7 * 20;
+  private static final String HACK_TRAP_SOUND = "entity.witch.celebrate";
+
   public HackTrap() {
     super(
         "hack",
@@ -29,34 +32,29 @@ public final class HackTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
-    final ItemStack stack = this.removeSwordItemStack(murderer);
-    final GameScheduler scheduler = game.getScheduler();
-    if (stack != null) {
-      scheduler.scheduleTask(() -> this.giveSwordBack(murderer, stack), 7 * 20L);
+    final PlayerInventory inventory = murderer.getInventory();
+    final ItemStack stack = this.getSword(inventory);
+    if (stack == null) {
+      return;
     }
 
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(() -> inventory.addItem(stack), HACK_TRAP_DURATION);
+
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants("entity.witch.celebrate");
+    manager.playSoundForAllParticipants(HACK_TRAP_SOUND);
   }
 
-  private @Nullable ItemStack removeSwordItemStack(final GamePlayer player) {
-    final PlayerInventory inventory = player.getInventory();
+  private @Nullable ItemStack getSword(final PlayerInventory inventory) {
     final ItemStack[] slots = inventory.getContents();
     ItemStack find = null;
     for (final ItemStack stack : slots) {
-      if (!PDCUtils.isSword(stack)) {
-        continue;
+      if (PDCUtils.isSword(stack)) {
+        find = stack;
+        inventory.remove(find);
+        break;
       }
-      inventory.remove(stack);
-      find = stack;
     }
     return find;
-  }
-
-  private void giveSwordBack(final GamePlayer player, final ItemStack stack) {
-    final PlayerInventory inventory = player.getInventory();
-    if (stack != null) {
-      inventory.addItem(stack);
-    }
   }
 }

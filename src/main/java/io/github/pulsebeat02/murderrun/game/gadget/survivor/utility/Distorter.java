@@ -57,7 +57,7 @@ public final class Distorter extends SurvivorGadget {
       manager.sendMessageToAllSurvivors(message);
       item.remove();
     } else if (distance < 100) {
-      killer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);
+      killer.spawnPlayerSpecificParticle(Particle.ELDER_GUARDIAN);
     }
   }
 }

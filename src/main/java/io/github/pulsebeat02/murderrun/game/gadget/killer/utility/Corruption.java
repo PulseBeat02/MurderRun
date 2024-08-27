@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerResetTool;
 import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -79,7 +80,8 @@ public final class Corruption extends KillerGadget {
     temp.handleMurderer(closest);
     closest.apply(this::resetStats);
 
-    final ArmorStand stand = closest.getCorpse();
+    final DeathManager deathManager = closest.getDeathManager();
+    final ArmorStand stand = deathManager.getCorpse();
     if (stand != null) {
       stand.remove();
     }

@@ -12,6 +12,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class BlindTrap extends SurvivorTrap {
 
+  private static final int BLIND_TRAP_DURATION = 7 * 20;
+  private static final String BLIND_TRAP_SOUND = "entity.ghast.scream";
+
   public BlindTrap() {
     super(
         "blind",
@@ -26,7 +29,7 @@ public final class BlindTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
-    murderer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 0));
-    manager.playSoundForAllParticipants("entity.ghast.scream");
+    murderer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, BLIND_TRAP_DURATION, 0));
+    manager.playSoundForAllParticipants(BLIND_TRAP_SOUND);
   }
 }

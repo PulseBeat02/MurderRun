@@ -19,7 +19,9 @@ import org.bukkit.entity.Sheep;
 
 public final class JebTrap extends SurvivorTrap {
 
-  private static final int SHEEP_COUNT = 15;
+  private static final int JEB_TRAP_DURATION = 4 * 20;
+  private static final int JEB_TRAP_SHEEP_COUNT = 15;
+  private static final String JEB_TRAP_SOUND = "entity.sheep.ambient";
 
   public JebTrap() {
     super(
@@ -37,24 +39,23 @@ public final class JebTrap extends SurvivorTrap {
 
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
-    for (int i = 0; i < SHEEP_COUNT; i++) {
+    for (int i = 0; i < JEB_TRAP_SHEEP_COUNT; i++) {
       world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
     }
 
-    final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants("entity.sheep.ambient");
-
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> {
-          final int r = RandomUtils.generateInt(255);
-          final int g = RandomUtils.generateInt(255);
-          final int b = RandomUtils.generateInt(255);
-          final org.bukkit.Color color = org.bukkit.Color.fromRGB(r, g, b);
-          world.spawnParticle(Particle.DUST, location, 15, 3, 3, 3, new DustOptions(color, 4));
-        },
-        0,
-        5,
-        4 * 20L);
+    scheduler.scheduleRepeatedTask(() -> spawnRainbowParticles(location), 0, 5, JEB_TRAP_DURATION);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(JEB_TRAP_SOUND);
+  }
+
+  private void spawnRainbowParticles(Location location) {
+    final World world = requireNonNull(location.getWorld());
+    final int r = RandomUtils.generateInt(255);
+    final int g = RandomUtils.generateInt(255);
+    final int b = RandomUtils.generateInt(255);
+    final org.bukkit.Color color = org.bukkit.Color.fromRGB(r, g, b);
+    world.spawnParticle(Particle.DUST, location, 15, 3, 3, 3, new DustOptions(color, 4));
   }
 }

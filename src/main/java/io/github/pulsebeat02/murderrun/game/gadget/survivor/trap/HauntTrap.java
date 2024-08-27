@@ -7,7 +7,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Item;
@@ -15,6 +14,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class HauntTrap extends SurvivorTrap {
+
+  private static final int HAUNT_TRAP_DURATION = 10 * 20;
+  private static final String HAUNT_TRAP_SOUND = "entity.ghast.scream";
 
   public HauntTrap() {
     super(
@@ -29,29 +31,36 @@ public final class HauntTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final PlayerManager manager = game.getPlayerManager();
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.createSpookyEffect(game, murderer), 0, 20L, 10 * 20L);
+
     murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.NAUSEA, 10 * 20, 10),
-        new PotionEffect(PotionEffectType.BLINDNESS, 10 * 20, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 4));
-    manager.playSoundForAllParticipants("entity.ghast.scream");
-  }
+        new PotionEffect(PotionEffectType.NAUSEA, HAUNT_TRAP_DURATION, 10),
+        new PotionEffect(PotionEffectType.BLINDNESS, HAUNT_TRAP_DURATION, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, HAUNT_TRAP_DURATION, 4));
 
-  private void createSpookyEffect(final Game game, final GamePlayer gamePlayer) {
-    final Location location = gamePlayer.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    final MetadataManager metadata = gamePlayer.getMetadataManager();
-    gamePlayer.addPotionEffects(new PotionEffect(PotionEffectType.DARKNESS, 20, 10));
-    gamePlayer.spawnParticle(Particle.ELDER_GUARDIAN, location, 1, 0, 0, 0);
-    metadata.setWorldBorderEffect(true);
-    scheduler.scheduleTask(() -> this.removeSpecialEffects(gamePlayer), 19);
+    scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, HAUNT_TRAP_DURATION);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(HAUNT_TRAP_SOUND);
   }
 
-  private void removeSpecialEffects(final GamePlayer gamePlayer) {
+  private void spook(final Game game, final GamePlayer gamePlayer) {
+
+    gamePlayer.addPotionEffects(new PotionEffect(PotionEffectType.DARKNESS, 20, 0));
+    gamePlayer.spawnPlayerSpecificParticle(Particle.ELDER_GUARDIAN);
+
     final MetadataManager metadata = gamePlayer.getMetadataManager();
-    gamePlayer.apply(player -> player.removePotionEffect(PotionEffectType.DARKNESS));
+    metadata.setWorldBorderEffect(true);
+
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(() -> this.unspook(gamePlayer), 19);
+  }
+
+  private void unspook(final GamePlayer gamePlayer) {
+
+    gamePlayer.removePotionEffect(PotionEffectType.DARKNESS);
+
+    final MetadataManager metadata = gamePlayer.getMetadataManager();
     metadata.setWorldBorderEffect(false);
   }
 }

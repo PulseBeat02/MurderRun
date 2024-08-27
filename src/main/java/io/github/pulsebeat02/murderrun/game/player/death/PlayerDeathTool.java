@@ -42,6 +42,7 @@ public final class PlayerDeathTool {
   }
 
   public void initiateDeathSequence(final GamePlayer gamePlayer) {
+    final DeathManager manager = gamePlayer.getDeathManager();
     gamePlayer.apply(player -> {
       final ArmorStand stand = this.summonArmorStand(gamePlayer);
       this.preparePlayer(player);
@@ -50,7 +51,7 @@ public final class PlayerDeathTool {
       this.setArmorStandGear(player, stand);
       this.announcePlayerDeath(player);
       this.summonCarParts(player);
-      gamePlayer.setCorpse(stand);
+      manager.setCorpse(stand);
     });
   }
 
@@ -128,13 +129,15 @@ public final class PlayerDeathTool {
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {
 
-    final ArmorStand stand = gamePlayer.getCorpse();
+    final DeathManager manager = gamePlayer.getDeathManager();
+    final ArmorStand stand = manager.getCorpse();
     if (stand == null) {
       return;
     }
 
     if (stand.isDead()) {
-      gamePlayer.setCorpse(null);
+      final DeathManager deathManager = gamePlayer.getDeathManager();
+      manager.setCorpse(null);
       return;
     }
 

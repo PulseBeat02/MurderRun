@@ -19,6 +19,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class LevitationTrap extends SurvivorTrap {
 
+  private static final int LEVITATION_TRAP_DURATION = 7 * 20;
+  private static final String LEVITATION_TRAP_SOUND = "entity.shulker.ambient";
+
   public LevitationTrap() {
     super(
         "levitation",
@@ -37,19 +40,22 @@ public final class LevitationTrap extends SurvivorTrap {
     final Location clone = location.clone();
     clone.add(0, 10, 0);
 
-    final World world = requireNonNull(location.getWorld());
-    final GameScheduler scheduler = game.getScheduler();
-    murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, 7 * 20, 1));
+    murderer.addPotionEffects(
+        new PotionEffect(PotionEffectType.LEVITATION, LEVITATION_TRAP_DURATION, 1));
     murderer.teleport(clone);
-    scheduler.scheduleTask(() -> murderer.teleport(location), 7 * 20L);
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(world, murderer), 0, 5, 7 * 20L);
+
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(() -> murderer.teleport(location), LEVITATION_TRAP_DURATION);
+    scheduler.scheduleRepeatedTask(
+        () -> this.spawnParticles(murderer), 0, 5, LEVITATION_TRAP_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants("entity.shulker.ambient");
+    manager.playSoundForAllParticipants(LEVITATION_TRAP_SOUND);
   }
 
-  private void spawnParticle(final World world, final GamePlayer player) {
+  private void spawnParticles(final GamePlayer player) {
     final Location location = player.getLocation();
+    final World world = requireNonNull(location.getWorld());
     world.spawnParticle(
         Particle.DUST, location, 10, 1, 1, 1, new DustOptions(org.bukkit.Color.PURPLE, 3));
   }

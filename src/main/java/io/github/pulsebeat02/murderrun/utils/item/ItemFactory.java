@@ -24,6 +24,10 @@ public final class ItemFactory {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static ItemStack createSurvivorGear(final ItemStack stack) {
+    return Item.builder(stack).enchantment(Enchantment.PROTECTION, 2).build();
+  }
+
   public static ItemStack createPortalGun(final ItemStack stack) {
     final UUID uuid = UUID.randomUUID();
     final String data = uuid.toString();

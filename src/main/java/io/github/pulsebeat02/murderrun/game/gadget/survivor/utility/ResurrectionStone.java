@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
@@ -49,7 +50,8 @@ public final class ResurrectionStone extends SurvivorGadget {
       return;
     }
 
-    final ArmorStand corpse = requireNonNull(closest.getCorpse());
+    final DeathManager deathManager = closest.getDeathManager();
+    final ArmorStand corpse = requireNonNull(deathManager.getCorpse());
     final Location closestLocation = corpse.getLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
@@ -94,7 +96,8 @@ public final class ResurrectionStone extends SurvivorGadget {
       resurrected.setGameMode(GameMode.SURVIVAL);
     });
 
-    final ArmorStand corpse = requireNonNull(closest.getCorpse());
+    final DeathManager manager = closest.getDeathManager();
+    final ArmorStand corpse = requireNonNull(manager.getCorpse());
     corpse.remove();
 
     final Component message = Message.RESURRECTION_STONE_ACTIVATE.build();

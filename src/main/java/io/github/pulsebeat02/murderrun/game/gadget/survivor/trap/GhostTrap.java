@@ -12,6 +12,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class GhostTrap extends SurvivorTrap {
 
+  private static final int GHOST_TRAP_DURATION = 10 * 20;
+  private static final String GHOST_TRAP_SOUND = "entity.ghast.hurt";
+
   public GhostTrap() {
     super(
         "ghost",
@@ -27,8 +30,8 @@ public final class GhostTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllLivingInnocents(player -> player.addPotionEffects(
-        new PotionEffect(PotionEffectType.INVISIBILITY, 10 * 20, 1),
-        new PotionEffect(PotionEffectType.SPEED, 10 * 20, 1)));
-    manager.playSoundForAllParticipants("entity.ghast.hurt");
+        new PotionEffect(PotionEffectType.INVISIBILITY, GHOST_TRAP_DURATION, 1),
+        new PotionEffect(PotionEffectType.SPEED, GHOST_TRAP_DURATION, 1)));
+    manager.playSoundForAllParticipants(GHOST_TRAP_SOUND);
   }
 }

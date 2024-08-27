@@ -23,6 +23,9 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public final class FireworkTrap extends SurvivorTrap {
 
+  private static final int FIREWORK_TRAP_DURATION = 10 * 20;
+  private static final String FIREWORK_TRAP_SOUND = "entity.firework_rocket.blast";
+
   public FireworkTrap() {
     super(
         "firework",
@@ -36,23 +39,34 @@ public final class FireworkTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final PlayerManager manager = game.getPlayerManager();
+
     final Location location = murderer.getLocation();
-    final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
-    manager.playSoundForAllParticipants("entity.firework_rocket.blast");
-    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location, world), 0, 5, 10 * 20L);
+    scheduler.scheduleRepeatedTask(
+        () -> this.spawnFirework(location), 0, 5, FIREWORK_TRAP_DURATION);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(FIREWORK_TRAP_SOUND);
   }
 
-  private void spawnFirework(final Location location, final World world) {
+  private void spawnFirework(final Location location) {
+    final World world = requireNonNull(location.getWorld());
     final Location random = this.randomLocation(location);
     world.spawn(random, Firework.class, firework -> {
-      firework.setShotAtAngle(false);
-      final FireworkMeta meta = firework.getFireworkMeta();
-      meta.setPower(RandomUtils.generateInt(1, 5));
-      meta.addEffect(this.generateRandomFireworkEffect());
-      firework.setFireworkMeta(meta);
+      this.customizeMeta(firework);
+      this.customizeProperties(firework);
     });
+  }
+
+  private void customizeProperties(final Firework firework) {
+    firework.setShotAtAngle(false);
+  }
+
+  private void customizeMeta(final Firework firework) {
+    final FireworkMeta meta = firework.getFireworkMeta();
+    meta.setPower(RandomUtils.generateInt(1, 5));
+    meta.addEffect(this.generateRandomFireworkEffect());
+    firework.setFireworkMeta(meta);
   }
 
   private Location randomLocation(final Location location) {

@@ -13,6 +13,9 @@ import org.bukkit.util.Vector;
 
 public final class NeckSnapTrap extends SurvivorTrap {
 
+  private static final int NECK_SNAP_TRAP_DURATION = 7 * 20;
+  private static final String NECK_SNAP_TRAP_SOUND = "block.glass.break";
+
   private static final Vector UP = new Vector(0, 1, 0);
 
   public NeckSnapTrap() {
@@ -30,11 +33,12 @@ public final class NeckSnapTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.setHeadUp(murderer), 0, 5, 7 * 20L);
-    manager.playSoundForAllParticipants("block.glass.break");
+    scheduler.scheduleRepeatedTask(
+        () -> this.setLookDirection(murderer), 0, 5, NECK_SNAP_TRAP_DURATION);
+    manager.playSoundForAllParticipants(NECK_SNAP_TRAP_SOUND);
   }
 
-  private void setHeadUp(final GamePlayer player) {
+  private void setLookDirection(final GamePlayer player) {
     final Location location = player.getLocation();
     location.setDirection(UP);
     player.teleport(location);

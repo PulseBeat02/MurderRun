@@ -11,6 +11,10 @@ import org.bukkit.entity.Item;
 
 public final class FreezeTrap extends SurvivorTrap {
 
+  private static final int FREEZE_TRAP_DURATION = 7 * 20;
+  private static final int FREEZE_TRAP_EFFECT_DURATION = 10 * 20;
+  private static final String FREEZE_TRAP_SOUND = "block.glass.break";
+
   public FreezeTrap() {
     super(
         "freeze",
@@ -24,11 +28,13 @@ public final class FreezeTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final PlayerManager manager = game.getPlayerManager();
+
     final GameScheduler scheduler = game.getScheduler();
-    murderer.disableJump(scheduler, 7 * 20L);
-    murderer.disableWalkWithFOVEffects(10 * 20);
-    murderer.apply(player -> player.setFreezeTicks(7 * 20));
-    manager.playSoundForAllParticipants("block.glass.break");
+    murderer.disableJump(scheduler, FREEZE_TRAP_DURATION);
+    murderer.disableWalkWithFOVEffects(FREEZE_TRAP_EFFECT_DURATION);
+    murderer.setFreezeTicks(FREEZE_TRAP_DURATION);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(FREEZE_TRAP_SOUND);
   }
 }

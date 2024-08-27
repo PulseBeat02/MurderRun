@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
@@ -62,8 +63,9 @@ public final class BurnTheBody extends KillerGadget {
   }
 
   private void handleBurnTasks(final GamePlayer victim) {
+    final DeathManager manager = victim.getDeathManager();
     victim.apply(player -> {
-      final ArmorStand stand = victim.getCorpse();
+      final ArmorStand stand = manager.getCorpse();
       if (stand != null) {
         stand.remove();
       }

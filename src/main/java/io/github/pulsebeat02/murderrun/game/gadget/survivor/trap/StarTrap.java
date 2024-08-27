@@ -12,6 +12,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class StarTrap extends SurvivorTrap {
 
+  private static final int STAR_TRAP_DURATION = 5 * 20;
+  private static final String STAR_TRAP_SOUND = "entity.firework_rocket.blast";
+
   public StarTrap() {
     super(
         "star",
@@ -27,13 +30,13 @@ public final class StarTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllLivingInnocents(this::addPotionEffect);
-    manager.playSoundForAllParticipants("entity.firework_rocket.blast");
+    manager.playSoundForAllParticipants(STAR_TRAP_SOUND);
   }
 
   private void addPotionEffect(final GamePlayer player) {
     player.addPotionEffects(
-        new PotionEffect(PotionEffectType.SPEED, 5 * 20, 2),
-        new PotionEffect(PotionEffectType.RESISTANCE, 5 * 20, 2),
-        new PotionEffect(PotionEffectType.REGENERATION, 5 * 20, 2));
+        new PotionEffect(PotionEffectType.SPEED, STAR_TRAP_DURATION, 2),
+        new PotionEffect(PotionEffectType.RESISTANCE, STAR_TRAP_DURATION, 2),
+        new PotionEffect(PotionEffectType.REGENERATION, STAR_TRAP_DURATION, 2));
   }
 }

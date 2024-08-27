@@ -6,16 +6,13 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import java.util.UUID;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class GamePlayer extends AbstractPlayer {
 
   private final Game game;
   private final UUID uuid;
 
-  private @Nullable ArmorStand corpse;
   private MetadataManager metadata;
   private DeathManager deathManager;
   private PlayerAudience audience;
@@ -31,7 +28,7 @@ public class GamePlayer extends AbstractPlayer {
   public void start() {
     this.audience = new PlayerAudience(this.game, this.uuid);
     this.metadata = new MetadataManager(this);
-    this.deathManager = new DeathManager(this);
+    this.deathManager = new DeathManager();
   }
 
   @Override
@@ -57,17 +54,6 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public Game getGame() {
     return this.game;
-  }
-
-  @Override
-  @Nullable
-  public ArmorStand getCorpse() {
-    return this.corpse;
-  }
-
-  @Override
-  public void setCorpse(final @Nullable ArmorStand corpse) {
-    this.corpse = corpse;
   }
 
   @Override

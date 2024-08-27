@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -47,15 +48,8 @@ public abstract class AbstractPlayer implements Participant {
   }
 
   @Override
-  public void spawnParticle(
-      final Particle particle,
-      final Location location,
-      final int count,
-      final double offSetX,
-      final double offSetY,
-      final double offSetZ) {
-    this.apply(
-        player -> player.spawnParticle(particle, location, count, offSetX, offSetY, offSetZ));
+  public void spawnPlayerSpecificParticle(final Particle particle) {
+    this.apply(player -> player.spawnParticle(particle, 1, 0, 0, 0));
   }
 
   @Override
@@ -111,5 +105,25 @@ public abstract class AbstractPlayer implements Participant {
   public String getDisplayName() {
     final Player player = this.getInternalPlayer();
     return player.getDisplayName();
+  }
+
+  @Override
+  public void setGravity(final boolean gravity) {
+    this.apply(player -> player.setGravity(gravity));
+  }
+
+  @Override
+  public void setFreezeTicks(final int ticks) {
+    this.apply(player -> player.setFreezeTicks(ticks));
+  }
+
+  @Override
+  public void removePotionEffect(final PotionEffectType type) {
+    this.apply(player -> player.removePotionEffect(type));
+  }
+
+  @Override
+  public void setVelocity(final Vector vector) {
+    this.apply(player -> player.setVelocity(vector));
   }
 }

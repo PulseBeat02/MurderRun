@@ -6,15 +6,31 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
+import org.incendo.cloud.type.tuple.Triplet;
 
 public final class CageTrap extends SurvivorTrap {
+
+  private static final int CAGE_TRAP_DURATION = 7 * 20;
+  private static final String CAGE_TRAP_SOUND = "block.anvil.use";
+
+  private static final Set<BlockFace> faces =
+      Set.of(BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH);
+  private static final List<Triplet<Integer, Integer, Integer>> CAGE_TRAP_VECTORS;
+
+  static {
+    CAGE_TRAP_VECTORS = faces.stream()
+        .map(face -> Triplet.of(face.getModX(), face.getModY(), face.getModZ()))
+        .collect(Collectors.toList());
+    CAGE_TRAP_VECTORS.add(Triplet.of(0, 2, 0));
+  }
 
   public CageTrap() {
     super(
@@ -32,39 +48,49 @@ public final class CageTrap extends SurvivorTrap {
 
     final Location location = murderer.getLocation();
     final Block block = location.getBlock();
-    final Block down = block.getRelative(BlockFace.DOWN);
-    final Block east = block.getRelative(BlockFace.EAST);
-    final Block west = block.getRelative(BlockFace.WEST);
-    final Block north = block.getRelative(BlockFace.NORTH);
-    final Block south = block.getRelative(BlockFace.SOUTH);
-    final Block top = block.getRelative(0, 2, 0);
-    final List<Material> history =
-        this.replaceAndSaveOriginalState(down, east, west, north, south, top);
-
-    final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants("block.anvil.use");
+    final Block[] blocks = this.getBlocksInOrder(block);
+    final Material[] history = this.getBlockHistory(blocks);
 
     final GameScheduler scheduler = game.getScheduler();
-    final Runnable task =
-        () -> this.replaceWithOriginal(history, down, east, west, north, south, top);
-    scheduler.scheduleTask(task, 7 * 20L);
+    final Runnable task = () -> this.resetBlocks(history, blocks);
+    scheduler.scheduleTask(task, CAGE_TRAP_DURATION);
+
+    final PlayerManager manager = game.getPlayerManager();
+    manager.playSoundForAllParticipants(CAGE_TRAP_SOUND);
   }
 
-  private void replaceWithOriginal(final List<Material> history, final Block... blocks) {
-    for (int i = 0; i < history.size(); i++) {
-      final Material material = history.get(i);
+  private Block[] getBlocksInOrder(final Block origin) {
+    final int length = CAGE_TRAP_VECTORS.size();
+    final Block[] blocks = new Block[length];
+    for (int i = 0; i < length; i++) {
+      final Triplet<Integer, Integer, Integer> direction = CAGE_TRAP_VECTORS.get(i);
+      final int x = direction.first();
+      final int y = direction.second();
+      final int z = direction.third();
+      final Block block = origin.getRelative(x, y, z);
+      blocks[i] = block;
+    }
+    return blocks;
+  }
+
+  private void resetBlocks(final Material[] history, final Block[] blocks) {
+    final int length = history.length;
+    for (int i = 0; i < length; i++) {
+      final Material material = history[i];
       final Block block = blocks[i];
       block.setType(material);
     }
   }
 
-  private List<Material> replaceAndSaveOriginalState(final Block... blocks) {
-    final List<Material> list = new ArrayList<>();
-    for (final Block block : blocks) {
+  private Material[] getBlockHistory(final Block[] blocks) {
+    final int length = blocks.length;
+    final Material[] original = new Material[length];
+    for (int i = 0; i < length; i++) {
+      final Block block = blocks[i];
       final Material type = block.getType();
-      list.add(type);
+      original[i] = type;
       block.setType(Material.BEDROCK);
     }
-    return list;
+    return original;
   }
 }

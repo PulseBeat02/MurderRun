@@ -11,6 +11,9 @@ import org.bukkit.entity.Item;
 
 public final class BearTrap extends SurvivorTrap {
 
+  private static final int BEAR_TRAP_DURATION = 5 * 20;
+  private static final String BEAR_TRAP_SOUND = "block.anvil.destroy";
+
   public BearTrap() {
     super(
         "bear",
@@ -26,8 +29,8 @@ public final class BearTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    murderer.disableJump(scheduler, 5 * 20L);
-    murderer.disableWalkWithFOVEffects(5 * 20);
-    manager.playSoundForAllParticipants("block.anvil.destroy");
+    murderer.disableJump(scheduler, BEAR_TRAP_DURATION);
+    murderer.disableWalkWithFOVEffects(BEAR_TRAP_DURATION);
+    manager.playSoundForAllParticipants(BEAR_TRAP_SOUND);
   }
 }
