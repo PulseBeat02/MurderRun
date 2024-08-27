@@ -69,14 +69,14 @@ public enum KillerGadgets {
   Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
   Ender Shadows: Creates animated shadows which causes opponents to light up when touched
   Forewarn: If an opponent grabs a truck part, they will start to glow
+  Trap Seeker: Allows the Killer to detect hidden traps
+  Portal Gun: Allows the user to create portals wherever they please
 
   KILLER TRAPS IMPLEMENTED
 
-  Trap Seeker: Allows the Killer to detect hidden traps
-  Death Hound: Summons a wolf that sniffs out and kills opponents
   The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
+  Death Hound: Summons a wolf that sniffs out and kills opponents
   Dormagogg: An evil being that blind, stuns, and illuminates opponents
-  Portal Gun: Allows the user to create portals wherever they please
   Burn the Body: Completely destroys the body of an opponent
   Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
   Corruption: Can resurrect dead opponents and corrupt them into joining his side

@@ -31,6 +31,7 @@ public final class ItemFactory {
         .pdc(Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true)
         .pdc(Keys.UUID, PersistentDataType.STRING, data)
         .enchantment(Enchantment.INFINITY, 1)
+        .unbreakable()
         .build();
   }
 

@@ -30,7 +30,6 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix death hound, ice spirit, dormagogg
       - if target dies, need to remove target
-  -
 
    */
 

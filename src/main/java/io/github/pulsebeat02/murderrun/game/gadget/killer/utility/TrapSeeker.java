@@ -9,13 +9,14 @@ import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -61,9 +62,10 @@ public final class TrapSeeker extends KillerGadget {
     final GadgetManager manager = game.getGadgetManager();
     final Location origin = innocent.getLocation();
     final World world = requireNonNull(origin.getWorld());
-    final int range = 7;
+    final int range = 15;
     final Collection<Entity> entities = world.getNearbyEntities(origin, range, range, range);
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
+    final Set<Item> gadgets = new HashSet<>();
 
     for (final Entity entity : entities) {
 
@@ -77,15 +79,26 @@ public final class TrapSeeker extends KillerGadget {
         continue;
       }
 
-      final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
-      final boolean survivor = gadget instanceof SurvivorApparatus;
-      final MetadataManager metadata = innocent.getMetadataManager();
-      if (survivor) {
+      if (gadget instanceof KillerGadget) {
+        return;
+      }
+
+      gadgets.add(item);
+    }
+
+    final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
+    final MetadataManager metadata = innocent.getMetadataManager();
+    for (final Item item : gadgets) {
+      if (!set.contains(item)) {
         set.add(item);
         metadata.setEntityGlowing(item, ChatColor.YELLOW, true);
-      } else if (set.contains(entity)) {
+      }
+    }
+
+    for (final Item entity : set) {
+      if (!gadgets.contains(entity)) {
         set.remove(entity);
-        metadata.setEntityGlowing(item, ChatColor.YELLOW, false);
+        metadata.setEntityGlowing(entity, ChatColor.YELLOW, false);
       }
     }
   }
