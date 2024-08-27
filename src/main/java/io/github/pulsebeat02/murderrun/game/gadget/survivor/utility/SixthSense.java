@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -40,8 +41,9 @@ public final class SixthSense extends SurvivorGadget {
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Message.SIXTH_SENSE_ACTIVATE.build();
-    gamePlayer.sendMessage(message);
-    gamePlayer.playSound("entity.sniffer.digging");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.sendMessage(message);
+    audience.playSound("entity.sniffer.digging");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, gamePlayer), 0, 2 * 20L);

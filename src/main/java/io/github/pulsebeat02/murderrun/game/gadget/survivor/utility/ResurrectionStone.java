@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -57,7 +58,8 @@ public final class ResurrectionStone extends SurvivorGadget {
     }
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound("block.end_portal_frame.fill");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("block.end_portal_frame.fill");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L);
@@ -96,6 +98,6 @@ public final class ResurrectionStone extends SurvivorGadget {
     corpse.remove();
 
     final Component message = Message.RESURRECTION_STONE_ACTIVATE.build();
-    playerManager.applyToAllParticipants(gamePlayer -> gamePlayer.sendMessage(message));
+    playerManager.sendMessageToAllParticipants(message);
   }
 }

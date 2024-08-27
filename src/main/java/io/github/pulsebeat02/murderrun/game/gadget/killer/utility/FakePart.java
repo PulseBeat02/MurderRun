@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -45,7 +46,8 @@ public final class FakePart extends KillerGadget {
     scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(item), 0, 20L, item::isDead);
 
     final GamePlayer killer = manager.getGamePlayer(player);
-    killer.playSound("block.lever.click");
+    final PlayerAudience audience = killer.getAudience();
+    audience.playSound("block.lever.click");
 
     final Runnable task = () -> this.handlePlayers(scheduler, manager, killer, item);
     scheduler.scheduleConditionalTask(task, 0, 20L, item::isDead);
@@ -70,8 +72,9 @@ public final class FakePart extends KillerGadget {
     final double distance = origin.distanceSquared(location);
     if (distance < 4) {
       this.handleDebuff(scheduler, survivor, killer, item);
+      final PlayerAudience audience = survivor.getAudience();
       final Component msg = Message.FAKE_PART_ACTIVATE.build();
-      survivor.sendMessage(msg);
+      audience.sendMessage(msg);
     }
   }
 

@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -68,7 +69,8 @@ public final class Flashlight extends SurvivorGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound(Sounds.FLASHLIGHT);
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(Sounds.FLASHLIGHT);
   }
 
   private void sprayParticlesInCone(final Game game, final Player player) {

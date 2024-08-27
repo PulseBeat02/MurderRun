@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MovementManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.HashMap;
@@ -57,6 +58,7 @@ public final class Rewind extends SurvivorGadget {
     player.setFallDistance(0.0f);
     this.rewindCooldown.put(survivor, current);
     super.onGadgetDrop(game, event, successful);
-    survivor.playSound("entity.shulker.teleport");
+    final PlayerAudience audience = survivor.getAudience();
+    audience.playSound("entity.shulker.teleport");
   }
 }

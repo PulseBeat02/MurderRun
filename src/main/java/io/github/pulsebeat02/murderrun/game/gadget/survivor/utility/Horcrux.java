@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
@@ -38,15 +39,17 @@ public final class Horcrux extends SurvivorGadget {
     final PlayerDeathTask task =
         new PlayerDeathTask(() -> this.handleHorcrux(gamePlayer, item), true);
     deathManager.addDeathTask(task);
-    gamePlayer.playSound("block.furnace.fire_crackle");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("block.furnace.fire_crackle");
     scheduler.scheduleParticleTask(item, Color.BLACK);
   }
 
   private void handleHorcrux(final GamePlayer player, final Item item) {
     final Component message = Message.HORCRUX_ACTIVATE.build();
     final Location location = item.getLocation();
+    final PlayerAudience audience = player.getAudience();
     player.apply(raw -> raw.setRespawnLocation(location, true));
-    player.sendMessage(message);
+    audience.sendMessage(message);
     item.remove();
   }
 }

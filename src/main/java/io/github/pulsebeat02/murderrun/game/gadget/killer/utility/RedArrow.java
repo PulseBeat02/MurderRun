@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -41,9 +42,10 @@ public final class RedArrow extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, 10 * 20L);
 
+    final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.RED_ARROW_ACTIVATE.build();
-    gamePlayer.sendMessage(message);
-    gamePlayer.playSound("entity.arrow.hit");
+    audience.sendMessage(message);
+    audience.playSound("entity.arrow.hit");
   }
 
   private void handleSurvivors(final PlayerManager manager) {

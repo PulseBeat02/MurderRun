@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -56,7 +57,8 @@ public final class CursedNote extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer killer = manager.getGamePlayer(player);
-    killer.playSound("block.lever.click");
+    final PlayerAudience audience = killer.getAudience();
+    audience.playSound("block.lever.click");
 
     final GameSettings settings = game.getSettings();
     final Item cursed = this.spawnCursedNote(settings);
@@ -84,7 +86,7 @@ public final class CursedNote extends KillerGadget {
         cursed);
 
     final Component msg = Message.CURSED_NOTE_DROP.build();
-    killer.sendMessage(msg);
+    audience.sendMessage(msg);
   }
 
   private Item spawnCursedNote(final GameSettings settings) {
@@ -106,8 +108,9 @@ public final class CursedNote extends KillerGadget {
       if (distance <= 16) {
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 1));
+        final PlayerAudience audience = survivor.getAudience();
         final Component message = Message.CURSED_NOTE_ACTIVATE.build();
-        survivor.sendMessage(message);
+        audience.sendMessage(message);
       }
     });
   }

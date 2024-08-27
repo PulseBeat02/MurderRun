@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -44,7 +45,8 @@ public final class DeathSteed extends KillerGadget {
         () -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound("entity.horse.angry");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("entity.horse.angry");
   }
 
   private void handleSurvivors(final PlayerManager manager, final Horse horse) {

@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -39,9 +40,10 @@ public final class HeatSeeker extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.HEAT_SEEKER_ACTIVATE.build();
-    gamePlayer.sendMessage(message);
-    gamePlayer.playSound("block.amethyst_block.chime");
+    audience.sendMessage(message);
+    audience.playSound("block.amethyst_block.chime");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.scheduleTasks(manager, gamePlayer), 0, 2 * 20L);

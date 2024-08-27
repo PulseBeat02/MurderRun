@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
@@ -36,10 +37,14 @@ public final class MurderousWarp extends KillerGadget {
     final Location second = killer.getLocation();
     random.teleport(second);
     killer.teleport(first);
-    random.playSound("entity.enderman.teleport");
+
+    final PlayerAudience audienceRand = random.getAudience();
+    audienceRand.playSound("entity.enderman.teleport");
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
-    random.sendMessage(msg);
-    killer.sendMessage(msg);
+    audienceRand.sendMessage(msg);
+
+    final PlayerAudience audienceKiller = random.getAudience();
+    audienceKiller.sendMessage(msg);
   }
 }

@@ -12,6 +12,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -142,7 +143,8 @@ public final class GameStartupTool {
     final PlayerManager manager = this.game.getPlayerManager();
     final Consumer<GamePlayer> sound = gamePlayer -> {
       final Key key = Sounds.BACKGROUND.getKey();
-      gamePlayer.playSound(key, Source.MUSIC, 0.1f, 1.0f);
+      final PlayerAudience audience = gamePlayer.getAudience();
+      audience.playSound(key, Source.MUSIC, 0.1f, 1.0f);
     };
     scheduler.scheduleTask(() -> manager.applyToAllParticipants(sound), 5 * 20L);
   }

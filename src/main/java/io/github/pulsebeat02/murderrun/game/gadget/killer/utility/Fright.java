@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -39,7 +40,8 @@ public final class Fright extends KillerGadget {
 
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
     final ItemStack before = this.setPumpkinItemStack(survivor);
-    survivor.playSound(Sounds.JUMP_SCARE);
+    final PlayerAudience audience = survivor.getAudience();
+    audience.playSound(Sounds.JUMP_SCARE);
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));

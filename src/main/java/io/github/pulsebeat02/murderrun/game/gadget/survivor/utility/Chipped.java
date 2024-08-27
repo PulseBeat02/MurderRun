@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -33,6 +34,8 @@ public final class Chipped extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToAllLivingInnocents(
         innocent -> metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, 5 * 20L));
-    owner.playSound("block.amethyst_block.chime");
+
+    final PlayerAudience audience = owner.getAudience();
+    audience.playSound("block.amethyst_block.chime");
   }
 }

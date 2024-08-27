@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -56,7 +57,9 @@ public final class Camera extends KillerGadget {
     final NPC npc = this.spawnNPC(npcManager, location);
     final LivingEntity entity = (LivingEntity) npc.getEntity();
     entity.setInvulnerable(true);
-    killer.playSound("entity.ender_eye.death");
+
+    final PlayerAudience audience = killer.getAudience();
+    audience.playSound("entity.ender_eye.death");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleCameraWatch(manager, entity, killer), 0, 20L);

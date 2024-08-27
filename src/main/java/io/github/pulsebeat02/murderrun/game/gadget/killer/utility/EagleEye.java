@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -55,7 +56,8 @@ public final class EagleEye extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound("entity.phantom.flap");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("entity.phantom.flap");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.resetState(gamePlayer, previous, before), 10 * 20L);

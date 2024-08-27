@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -34,7 +35,8 @@ public final class BloodCurse extends KillerGadget {
   private void scheduleTaskForSurvivors(final Game game, final GamePlayer survivor) {
 
     final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
-    survivor.sendMessage(msg);
+    final PlayerAudience audience = survivor.getAudience();
+    audience.sendMessage(msg);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 10L);

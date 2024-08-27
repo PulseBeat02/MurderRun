@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -49,6 +50,10 @@ public final class DeathHound extends KillerGadget implements Listener {
 
     final PersistentDataContainer container = wolf.getPersistentDataContainer();
     final String target = container.get(Keys.DEATH_HOUND_OWNER, PersistentDataType.STRING);
+    if (target == null) {
+      return;
+    }
+
     final UUID uuid = UUID.fromString(target);
     final PlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(uuid)) {
@@ -81,7 +86,8 @@ public final class DeathHound extends KillerGadget implements Listener {
     }
 
     final GamePlayer owner = manager.getGamePlayer(player);
-    owner.playSound("entity.wolf.howl");
+    final PlayerAudience audience = owner.getAudience();
+    audience.playSound("entity.wolf.howl");
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     this.spawnWolf(location, gamePlayer, nearest);

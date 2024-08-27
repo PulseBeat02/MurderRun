@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -33,12 +34,14 @@ public final class HealthCut extends KillerGadget {
 
     final Player player = event.getPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
-    killer.playSound("entity.ghast.hurt");
+    final PlayerAudience audience = killer.getAudience();
+    audience.playSound("entity.ghast.hurt");
   }
 
   private void setState(final GamePlayer survivor, final GameScheduler scheduler) {
+    final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.HEALTH_CUT_ACTIVATE.build();
-    survivor.sendMessage(msg);
+    audience.sendMessage(msg);
     this.resetState(survivor, scheduler);
   }
 

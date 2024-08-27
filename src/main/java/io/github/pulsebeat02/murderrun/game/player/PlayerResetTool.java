@@ -27,12 +27,13 @@ public final class PlayerResetTool {
     final Lobby lobby = requireNonNull(configuration.getLobby());
     final Location location = lobby.getLobbySpawn();
     final MetadataManager metadata = gamePlayer.getMetadataManager();
+    final PlayerAudience audience = gamePlayer.getAudience();
     metadata.setWorldBorderEffect(false);
     metadata.setNameTagStatus(false);
     metadata.shutdown();
+    audience.removeAllBossBars();
+    audience.stopSound(Sounds.BACKGROUND);
     gamePlayer.removeAllPotionEffects();
-    gamePlayer.removeAllBossBars();
-    gamePlayer.stopSound(Sounds.BACKGROUND);
     gamePlayer.teleport(location);
     gamePlayer.apply(player -> {
       player.getInventory().clear();

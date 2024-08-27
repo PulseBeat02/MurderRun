@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -46,8 +47,10 @@ public final class AllSeeingEye extends KillerGadget implements Listener {
     final Survivor random = manager.getRandomAliveInnocentPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
     final Location before = player.getLocation();
-    killer.playSound("entity.ender_eye.death");
-    random.playSound("entity.ender_eye.launch");
+
+    final PlayerAudience audience = killer.getAudience();
+    audience.playSound("entity.ender_eye.death");
+    audience.playSound("entity.ender_eye.launch");
     this.setPlayerState(killer, random);
 
     final GameScheduler scheduler = game.getScheduler();

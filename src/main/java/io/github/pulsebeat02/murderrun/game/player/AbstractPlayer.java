@@ -1,14 +1,10 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
 import static java.util.Objects.requireNonNull;
-import static net.kyori.adventure.key.Key.key;
 
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import java.util.Collection;
 import java.util.function.Consumer;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound.Source;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -93,21 +89,6 @@ public abstract class AbstractPlayer implements Participant {
   public AttributeInstance getAttribute(final Attribute attribute) {
     final Player player = this.getInternalPlayer();
     return requireNonNull(player.getAttribute(attribute));
-  }
-
-  @Override
-  public void playSound(final SoundResource key) {
-    this.playSound(key.getKey());
-  }
-
-  @Override
-  public void playSound(final Key key) {
-    this.playSound(key, Source.MASTER, 1.0f, 1.0f);
-  }
-
-  @Override
-  public void playSound(final String key) {
-    this.playSound(key(key));
   }
 
   @Override

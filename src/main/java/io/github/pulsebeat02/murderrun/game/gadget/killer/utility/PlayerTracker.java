@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -47,9 +48,10 @@ public final class PlayerTracker extends KillerGadget {
     final boolean destroy = count >= 5;
     super.onGadgetRightClick(game, event, destroy);
 
+    final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.PLAYER_TRACKER_ACTIVATE.build(distance);
-    gamePlayer.sendMessage(message);
-    gamePlayer.playSound("entity.experience_orb.pickup");
+    audience.sendMessage(message);
+    audience.playSound("entity.experience_orb.pickup");
   }
 
   private int increaseAndGetSurvivorCount(final Player player) {

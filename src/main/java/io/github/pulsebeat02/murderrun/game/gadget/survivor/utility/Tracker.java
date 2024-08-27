@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.ChatColor;
@@ -32,7 +33,9 @@ public final class Tracker extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     manager.applyToAllMurderers(killer -> this.handleGlowing(killer, gamePlayer));
-    gamePlayer.playSound("entity.experience_orb.pickup");
+
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("entity.experience_orb.pickup");
   }
 
   private void handleGlowing(final GamePlayer killer, final GamePlayer player) {
@@ -40,11 +43,12 @@ public final class Tracker extends SurvivorGadget {
     final Location killerLocation = killer.getLocation();
     final double distance = origin.distanceSquared(killerLocation);
     final MetadataManager metadata = player.getMetadataManager();
+    final PlayerAudience audience = player.getAudience();
     if (distance < 25) {
       metadata.setEntityGlowing(killer, ChatColor.RED, true);
-      player.sendMessage(Message.TRACKER_ACTIVATE.build());
+      audience.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {
-      player.sendMessage(Message.TRACKER_DEACTIVATE.build());
+      audience.sendMessage(Message.TRACKER_DEACTIVATE.build());
     }
   }
 }

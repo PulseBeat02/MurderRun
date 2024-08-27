@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -80,7 +81,8 @@ public final class FloorIsLava extends KillerGadget {
   }
 
   private void sendFloorIsLavaMessage(final Participant participant) {
+    final PlayerAudience audience = participant.getAudience();
     final Component msg = Message.THE_FLOOR_IS_LAVA_ACTIVATE.build();
-    participant.sendMessage(msg);
+    audience.sendMessage(msg);
   }
 }

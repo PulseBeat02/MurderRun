@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -38,7 +39,8 @@ public final class Distorter extends SurvivorGadget {
     scheduler.scheduleParticleTask(item, Color.PURPLE);
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound("block.lever.click");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("block.lever.click");
   }
 
   private void handleKillers(final PlayerManager manager, final Item item) {

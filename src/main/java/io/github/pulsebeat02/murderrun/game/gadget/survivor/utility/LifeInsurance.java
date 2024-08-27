@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -54,9 +55,10 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location second = arena.getSecondCorner();
     final World world = requireNonNull(first.getWorld());
 
+    final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.LIFE_INSURANCE_ACTIVATE.build();
-    gamePlayer.sendMessage(message);
-    gamePlayer.playSound("item.totem.use");
+    audience.sendMessage(message);
+    audience.playSound("item.totem.use");
 
     final GameScheduler scheduler = game.getScheduler();
     final Consumer<Killer> consumer =

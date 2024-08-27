@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -58,7 +59,8 @@ public final class MedBot extends SurvivorGadget {
     equipment.setHelmet(Item.create(Material.CHORUS_FLOWER));
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound("block.beehive.enter");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("block.beehive.enter");
 
     final GameScheduler scheduler = game.getScheduler();
     this.handleRotation(scheduler, armorStand);

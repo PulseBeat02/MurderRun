@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -123,7 +124,8 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
     }
 
     final GamePlayer owner = manager.getGamePlayer(player);
-    owner.playSound("entity.zombie.ambient");
+    final PlayerAudience audience = owner.getAudience();
+    audience.playSound("entity.zombie.ambient");
 
     world.spawn(location, Zombie.class, zombie -> {
       this.customizeAttributes(zombie);

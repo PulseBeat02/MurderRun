@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -64,11 +65,12 @@ public final class EMPBlast extends KillerGadget {
   }
 
   private void stunSurvivors(final GameScheduler scheduler, final GamePlayer survivor) {
+    final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.EMP_BLAST_ACTIVATE.build();
     survivor.disableJump(scheduler, 5 * 20L);
     survivor.disableWalkWithFOVEffects(5 * 20);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1));
-    survivor.sendMessage(msg);
+    audience.sendMessage(msg);
   }
 
   private void removeAllSurvivorGadgets(

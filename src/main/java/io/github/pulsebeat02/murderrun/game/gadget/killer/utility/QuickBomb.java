@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
@@ -36,7 +37,8 @@ public final class QuickBomb extends KillerGadget {
     final Player player = event.getPlayer();
     final PlayerManager playerManager = game.getPlayerManager();
     final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
-    gamePlayer.playSound("entity.creeper.primed");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("entity.creeper.primed");
   }
 
   private void spawnPrimedTnt(final GamePlayer survivor) {

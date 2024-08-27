@@ -3,13 +3,8 @@ package io.github.pulsebeat02.murderrun.game.player;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import java.util.UUID;
 import java.util.function.Consumer;
-import net.kyori.adventure.bossbar.BossBar;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound.Source;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -53,31 +48,7 @@ public interface Participant {
 
   AttributeInstance getAttribute(final Attribute attribute);
 
-  void sendMessage(final Component component);
-
-  void showTitle(final Component title, final Component subtitle);
-
-  void showBossBar(
-      final Component name,
-      final float progress,
-      final BossBar.Color color,
-      final BossBar.Overlay overlay);
-
-  void playSound(final SoundResource key);
-
-  void playSound(final Key key);
-
-  void playSound(final String key);
-
-  void playSound(final Key key, final Source category, final float volume, final float pitch);
-
-  void stopSound(final Key key);
-
-  void stopSound(final SoundResource key);
-
   void removeAllPotionEffects();
-
-  void removeAllBossBars();
 
   void teleport(final Location location);
 
@@ -97,6 +68,8 @@ public interface Participant {
   MetadataManager getMetadataManager();
 
   DeathManager getDeathManager();
+
+  PlayerAudience getAudience();
 
   String getDisplayName();
 }

@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -41,7 +42,8 @@ public final class MindControl extends SurvivorGadget {
 
     final String name = player.getDisplayName();
     final Component msg = Message.MIND_CONTROL_ACTIVATE_KILLER.build(name);
-    nearest.sendMessage(msg);
+    final PlayerAudience audience = nearest.getAudience();
+    audience.sendMessage(msg);
 
     final GamePlayer owner = manager.getGamePlayer(player);
     if (owner instanceof final Survivor survivor) {
@@ -61,8 +63,9 @@ public final class MindControl extends SurvivorGadget {
 
       final String targetName = nearest.getDisplayName();
       final Component msg1 = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
-      owner.sendMessage(msg1);
-      owner.playSound("entity.enderman.scream");
+      final PlayerAudience audience1 = owner.getAudience();
+      audience1.sendMessage(msg1);
+      audience1.playSound("entity.enderman.scream");
     }
   }
 

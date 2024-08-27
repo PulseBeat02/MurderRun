@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
@@ -47,7 +48,8 @@ public final class PartWarp extends KillerGadget {
 
     final PlayerManager playerManager = game.getPlayerManager();
     final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
-    gamePlayer.playSound("block.lever.click");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("block.lever.click");
   }
 
   public CarPart getRandomCarPart(final List<CarPart> shuffled) {

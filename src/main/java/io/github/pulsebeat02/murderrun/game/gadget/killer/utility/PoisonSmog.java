@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -44,7 +45,8 @@ public final class PoisonSmog extends KillerGadget {
         () -> this.handleSmog(world, location, manager), 0, 10, 60 * 20L);
 
     final GamePlayer owner = manager.getGamePlayer(player);
-    owner.playSound("entity.slime.jump");
+    final PlayerAudience audience = owner.getAudience();
+    audience.playSound("entity.slime.jump");
   }
 
   private void handleSmog(final World world, final Location location, final PlayerManager manager) {

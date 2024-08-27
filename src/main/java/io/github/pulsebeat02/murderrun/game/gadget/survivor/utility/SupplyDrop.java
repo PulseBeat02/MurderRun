@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -71,7 +72,8 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound(Sounds.SUPPLY_DROP);
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(Sounds.SUPPLY_DROP);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleConditionalTask(

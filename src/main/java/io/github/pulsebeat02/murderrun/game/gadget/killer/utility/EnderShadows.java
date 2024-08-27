@@ -12,6 +12,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -72,8 +73,9 @@ public final class EnderShadows extends KillerGadget {
       final GamePlayer survivor,
       final Location spawn) {
 
+    final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.ENDER_SHADOWS_ACTIVATE.build();
-    survivor.sendMessage(msg);
+    audience.sendMessage(msg);
 
     final Entity shadow = this.getNPCEntity(manager, spawn);
     scheduler.scheduleRepeatedTask(
@@ -100,7 +102,8 @@ public final class EnderShadows extends KillerGadget {
       final double distance = location.distanceSquared(other);
       if (distance < 1) {
         players.add(survivor);
-        survivor.showTitle(msg, empty());
+        final PlayerAudience audience = survivor.getAudience();
+        audience.showTitle(msg, empty());
         metadata.setEntityGlowing(player, ChatColor.RED, true);
       } else if (players.contains(survivor)) {
         players.remove(survivor);

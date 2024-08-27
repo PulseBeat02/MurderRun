@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -37,9 +38,10 @@ public final class TrapWrecker extends KillerGadget {
     }
     killer.setIgnoreTraps(true);
 
+    final PlayerAudience audience = killer.getAudience();
     final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();
-    killer.sendMessage(msg);
-    killer.playSound("block.bone_block.break");
+    audience.sendMessage(msg);
+    audience.playSound("block.bone_block.break");
 
     final GameScheduler scheduler = game.getScheduler();
     final Consumer<Integer> consumer = (time) -> {

@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
@@ -40,10 +41,11 @@ public final class Gamble extends KillerGadget {
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     playerManager.applyToAllLivingInnocents(
         survivor -> this.applyGamble(mechanism, survivor, killer));
-    killer.playSound("block.smithing_table.use");
 
+    final PlayerAudience audience = killer.getAudience();
     final Component msg = Message.GAMBLE_ACTIVATE.build();
-    killer.sendMessage(msg);
+    audience.sendMessage(msg);
+    audience.playSound("block.smithing_table.use");
   }
 
   private void applyGamble(

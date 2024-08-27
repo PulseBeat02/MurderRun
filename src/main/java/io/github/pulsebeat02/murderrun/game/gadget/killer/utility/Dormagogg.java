@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -55,6 +56,10 @@ public final class Dormagogg extends KillerGadget implements Listener {
 
     final PersistentDataContainer container = zombie.getPersistentDataContainer();
     final String target = container.get(Keys.DORMAGOGG_OWNER, PersistentDataType.STRING);
+    if (target == null) {
+      return;
+    }
+
     final UUID uuid = UUID.fromString(target);
     final PlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(uuid)) {
@@ -130,7 +135,8 @@ public final class Dormagogg extends KillerGadget implements Listener {
       return;
     }
 
-    killer.playSound("entity.zombie.ambient");
+    final PlayerAudience audience = killer.getAudience();
+    audience.playSound("entity.zombie.ambient");
 
     this.spawnDormagogg(world, location, killer, nearest);
   }

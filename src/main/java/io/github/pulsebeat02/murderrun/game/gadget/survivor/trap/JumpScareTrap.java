@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -34,7 +35,8 @@ public final class JumpScareTrap extends SurvivorTrap {
     final PlayerManager manager = game.getPlayerManager();
     final ItemStack before = this.setPumpkinItemStack(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    murderer.playSound(Sounds.JUMP_SCARE);
+    final PlayerAudience audience = murderer.getAudience();
+    audience.playSound(Sounds.JUMP_SCARE);
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, 1));

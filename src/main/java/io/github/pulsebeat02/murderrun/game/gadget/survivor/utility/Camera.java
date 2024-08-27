@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -57,7 +58,8 @@ public final class Camera extends SurvivorGadget {
     entity.setInvulnerable(true);
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.playSound("entity.ender_eye.death");
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("entity.ender_eye.death");
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(

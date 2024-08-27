@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
@@ -34,6 +35,8 @@ public final class CorpusWarp extends SurvivorGadget {
       return;
     }
     player.teleport(location);
-    target.playSound("entity.enderman.teleport");
+
+    final PlayerAudience audience = target.getAudience();
+    audience.playSound("entity.enderman.teleport");
   }
 }

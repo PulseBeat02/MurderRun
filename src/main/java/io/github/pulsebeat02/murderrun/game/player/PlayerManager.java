@@ -236,32 +236,53 @@ public final class PlayerManager {
   }
 
   public void sendMessageToAllParticipants(final Component message) {
-    this.applyToAllParticipants(player -> player.sendMessage(message));
+    this.applyToAllParticipants(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
   }
 
   public void sendMessageToAllSurvivors(final Component message) {
-    this.applyToAllInnocents(player -> player.sendMessage(message));
+    this.applyToAllInnocents(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
   }
 
   public void sendMessageToAllKillers(final Component message) {
-    this.applyToAllMurderers(player -> player.sendMessage(message));
+    this.applyToAllMurderers(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
   }
 
   public void showTitleForAllInnocents(final Component title, final Component subtitle) {
-    this.applyToAllLivingInnocents(innocent -> innocent.showTitle(title, subtitle));
+    this.applyToAllLivingInnocents(innocent -> {
+      final PlayerAudience audience = innocent.getAudience();
+      audience.showTitle(title, subtitle);
+    });
   }
 
   public void showTitleForAllMurderers(final Component title, final Component subtitle) {
-    this.applyToAllMurderers(murderer -> murderer.showTitle(title, subtitle));
+    this.applyToAllMurderers(murderer -> {
+      final PlayerAudience audience = murderer.getAudience();
+      audience.showTitle(title, subtitle);
+    });
   }
 
   public void showTitleForAllParticipants(final Component title, final Component subtitle) {
-    this.applyToAllParticipants(player -> player.showTitle(title, subtitle));
+    this.applyToAllParticipants(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.showTitle(title, subtitle);
+    });
   }
 
   public void playSoundForAllParticipants(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
-    this.applyToAllParticipants(player -> player.playSound(key));
+    this.applyToAllParticipants(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.playSound(key);
+    });
   }
 
   private SoundResource getRandomKey(final SoundResource... keys) {
@@ -272,7 +293,10 @@ public final class PlayerManager {
 
   public void playSoundForAllParticipants(final String... keys) {
     final Key key = this.getRandomKey(keys);
-    this.applyToAllParticipants(player -> player.playSound(key));
+    this.applyToAllParticipants(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.playSound(key);
+    });
   }
 
   private Key getRandomKey(final String... keys) {
@@ -284,17 +308,25 @@ public final class PlayerManager {
 
   public void playSoundForAllMurderers(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
-    this.applyToAllMurderers(player -> player.playSound(key));
+    this.applyToAllMurderers(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.playSound(key);
+    });
   }
 
   public void playSoundForAllInnocents(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
-    this.applyToAllInnocents(innocent -> innocent.playSound(key));
+    this.applyToAllInnocents(innocent -> {
+      final PlayerAudience audience = innocent.getAudience();
+      audience.playSound(key);
+    });
   }
 
   public void stopSoundsForAllParticipants(final SoundResource key) {
-    final Key id = key.getKey();
-    this.applyToAllParticipants(player -> player.stopSound(id));
+    this.applyToAllParticipants(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.stopSound(key);
+    });
   }
 
   public void playSoundForAllParticipantsAtLocation(
@@ -312,8 +344,9 @@ public final class PlayerManager {
       final BossBar.Color color,
       final BossBar.Overlay overlay) {
     this.applyToAllParticipants(player -> {
-      player.removeAllBossBars();
-      player.showBossBar(name, progress, color, overlay);
+      final PlayerAudience audience = player.getAudience();
+      audience.removeAllBossBars();
+      audience.showBossBar(name, progress, color, overlay);
     });
   }
 
