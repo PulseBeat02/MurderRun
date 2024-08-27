@@ -77,6 +77,7 @@ public enum KillerGadgets {
 
   Death Hound: Summons a wolf that sniffs out and kills opponents
   Dormagogg: An evil being that blind, stuns, and illuminates opponents
+
   Burn the Body: Completely destroys the body of an opponent
   Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
   Corruption: Can resurrect dead opponents and corrupt them into joining his side

@@ -127,7 +127,17 @@ public final class PlayerDeathTool {
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {
-    final ArmorStand stand = requireNonNull(gamePlayer.getCorpse());
+
+    final ArmorStand stand = gamePlayer.getCorpse();
+    if (stand == null) {
+      return;
+    }
+
+    if (stand.isDead()) {
+      gamePlayer.setCorpse(null);
+      return;
+    }
+
     final Location location = stand.getLocation();
     final Location clone = location.clone().add(0, 1, 0);
     final World world = requireNonNull(clone.getWorld());

@@ -25,6 +25,8 @@ public final class MurderRun extends JavaPlugin {
 
   - Debug all killer traps
   - Add special effects to killer traps
+  - Add configurations values to all traps
+  - Make code neater (SRP, SOLID, etc)
 
   FIX
 
