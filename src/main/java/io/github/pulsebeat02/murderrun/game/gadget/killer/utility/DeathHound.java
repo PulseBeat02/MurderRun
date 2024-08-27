@@ -48,18 +48,21 @@ public final class DeathHound extends KillerGadget implements Listener {
     }
 
     final PersistentDataContainer container = wolf.getPersistentDataContainer();
-    final String target = container.get(Keys.DEATH_HOUND_TARGET, PersistentDataType.STRING);
-    if (target == null) {
-      return;
-    }
-
+    final String target = container.get(Keys.DEATH_HOUND_OWNER, PersistentDataType.STRING);
     final UUID uuid = UUID.fromString(target);
     final PlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(uuid)) {
+      entity.remove();
       return;
     }
 
-    final GamePlayer nearest = manager.getGamePlayer(uuid);
+    final Location location = entity.getLocation();
+    final GamePlayer nearest = manager.getNearestSurvivor(location);
+    if (nearest == null) {
+      entity.remove();
+      return;
+    }
+
     event.setCancelled(true);
     nearest.apply(wolf::setTarget);
   }
@@ -77,24 +80,25 @@ public final class DeathHound extends KillerGadget implements Listener {
       return;
     }
 
-    this.spawnWolf(location, player, nearest);
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    this.spawnWolf(location, gamePlayer, nearest);
   }
 
-  private void spawnWolf(final Location location, final Player owner, final GamePlayer target) {
+  private void spawnWolf(final Location location, final GamePlayer owner, final GamePlayer target) {
     final World world = requireNonNull(location.getWorld());
     final Wolf wolf = world.spawn(location, Wolf.class, entity -> {
       this.customizeProperties(owner, entity);
       this.addPotionEffects(entity);
-      this.addMetadata(entity, target);
+      this.addMetadata(entity, owner);
     });
     target.apply(wolf::setTarget);
   }
 
-  private void addMetadata(final Wolf entity, final GamePlayer target) {
-    final UUID uuid = target.getUUID();
+  private void addMetadata(final Wolf entity, final GamePlayer owner) {
+    final UUID uuid = owner.getUUID();
     final String data = uuid.toString();
     final PersistentDataContainer container = entity.getPersistentDataContainer();
-    container.set(Keys.DEATH_HOUND_TARGET, PersistentDataType.STRING, data);
+    container.set(Keys.DEATH_HOUND_OWNER, PersistentDataType.STRING, data);
   }
 
   private void addPotionEffects(final Wolf entity) {
@@ -104,8 +108,8 @@ public final class DeathHound extends KillerGadget implements Listener {
         new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
   }
 
-  private void customizeProperties(final Player owner, final Wolf entity) {
-    entity.setOwner(owner);
+  private void customizeProperties(final GamePlayer owner, final Wolf entity) {
+    owner.apply(entity::setOwner);
     entity.setTamed(true);
     entity.setAngry(true);
     entity.setVariant(Variant.BLACK);

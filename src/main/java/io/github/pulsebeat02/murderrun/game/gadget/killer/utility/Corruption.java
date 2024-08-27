@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -47,6 +48,7 @@ public final class Corruption extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
+      super.onGadgetDrop(game, event, false);
       return;
     }
 
@@ -75,13 +77,18 @@ public final class Corruption extends KillerGadget {
 
     final PlayerStartupTool temp = new PlayerStartupTool(manager);
     temp.handleMurderer(closest);
-    closest.apply(Corruption::resetStats);
+    closest.apply(this::resetStats);
+
+    final ArmorStand stand = closest.getCorpse();
+    if (stand != null) {
+      stand.remove();
+    }
 
     final Component message = Message.CORRUPTION_ACTIVATE.build();
     manager.sendMessageToAllParticipants(message);
   }
 
-  private static void resetStats(final Player resurrected) {
+  private void resetStats(final Player resurrected) {
 
     final Location death = requireNonNull(resurrected.getLastDeathLocation());
     resurrected.teleport(death);

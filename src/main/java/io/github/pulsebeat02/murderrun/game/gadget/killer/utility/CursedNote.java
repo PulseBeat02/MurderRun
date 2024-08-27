@@ -69,6 +69,16 @@ public final class CursedNote extends KillerGadget {
           () -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
     }
 
+    scheduler.scheduleAfterDead(
+        () -> {
+          for (final CarPart part : closeParts) {
+            final Item item = part.getItem();
+            item.setPickupDelay(10);
+            part.setCursed(null);
+          }
+        },
+        cursed);
+
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer killer = manager.getGamePlayer(player);
     final Component msg = Message.CURSED_NOTE_DROP.build();

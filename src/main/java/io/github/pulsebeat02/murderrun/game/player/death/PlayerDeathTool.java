@@ -62,7 +62,7 @@ public final class PlayerDeathTool {
 
   private ArmorStand summonArmorStand(final GamePlayer player) {
     final Location location = player.getLocation();
-    final Location down = location.subtract(0, 1, 0);
+    final Location down = location.subtract(0, 1.5, 0);
     final World world = requireNonNull(down.getWorld());
     final Entity entity = world.spawnEntity(down, EntityType.ARMOR_STAND);
     return (ArmorStand) entity;

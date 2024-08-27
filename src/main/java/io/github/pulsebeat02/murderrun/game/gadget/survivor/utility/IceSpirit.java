@@ -53,7 +53,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
     }
 
     final PersistentDataContainer container = zombie.getPersistentDataContainer();
-    final String target = container.get(Keys.ICE_SPIRIT_TARGET, PersistentDataType.STRING);
+    final String target = container.get(Keys.ICE_SPIRIT_OWNER, PersistentDataType.STRING);
     if (target == null) {
       return;
     }
@@ -61,10 +61,17 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
     final UUID uuid = UUID.fromString(target);
     final PlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(uuid)) {
+      entity.remove();
       return;
     }
 
-    final GamePlayer nearest = manager.getGamePlayer(uuid);
+    final Location location = entity.getLocation();
+    final GamePlayer nearest = manager.getNearestKiller(location);
+    if (nearest == null) {
+      entity.remove();
+      return;
+    }
+
     event.setCancelled(true);
     nearest.apply(zombie::setTarget);
   }
@@ -78,7 +85,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
     }
 
     final PersistentDataContainer container = zombie.getPersistentDataContainer();
-    final String target = container.get(Keys.ICE_SPIRIT_TARGET, PersistentDataType.STRING);
+    final String target = container.get(Keys.ICE_SPIRIT_OWNER, PersistentDataType.STRING);
     if (target == null) {
       return;
     }
@@ -120,7 +127,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
 
     world.spawn(location, Zombie.class, zombie -> {
       this.customizeAttributes(zombie);
-      this.setTargetMetadata(nearest, zombie);
+      this.setTargetMetadata(owner, zombie);
       this.setEquipment(zombie);
     });
   }
@@ -134,11 +141,11 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
     }
   }
 
-  private void setTargetMetadata(final GamePlayer nearest, final Zombie zombie) {
-    final UUID uuid = nearest.getUUID();
+  private void setTargetMetadata(final GamePlayer owner, final Zombie zombie) {
+    final UUID uuid = owner.getUUID();
     final String data = uuid.toString();
     final PersistentDataContainer container = zombie.getPersistentDataContainer();
-    container.set(Keys.ICE_SPIRIT_TARGET, PersistentDataType.STRING, data);
+    container.set(Keys.ICE_SPIRIT_OWNER, PersistentDataType.STRING, data);
   }
 
   private void setEquipment(final Zombie zombie) {

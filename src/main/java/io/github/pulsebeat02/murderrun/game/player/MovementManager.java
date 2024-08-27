@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.structure.CircularBuffer;
@@ -11,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.bukkit.Location;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class MovementManager {
 
@@ -27,28 +26,22 @@ public final class MovementManager {
   public void start() {
     final GameScheduler scheduler = this.game.getScheduler();
     final PlayerManager manager = this.game.getPlayerManager();
-    this.addAllPlayers(manager);
     scheduler.scheduleRepeatedTask(() -> this.trackMovement(manager), 0, 5);
-  }
-
-  private void addAllPlayers(final PlayerManager manager) {
-    manager.applyToAllParticipants(
-        player -> this.playerLocations.put(player, new CircularBuffer<>(BUFFER_SIZE)));
   }
 
   private void trackMovement(final PlayerManager manager) {
     manager.applyToAllParticipants(player -> {
       final Location location = player.getLocation();
       final long timestamp = System.currentTimeMillis();
-      final CircularBuffer<Entry<Location, Long>> entries =
-          requireNonNull(this.playerLocations.get(player));
+      this.playerLocations.putIfAbsent(player, new CircularBuffer<>(BUFFER_SIZE));
+      final CircularBuffer<Entry<Location, Long>> entries = this.playerLocations.get(player);
       final SimpleEntry<Location, Long> entry = new SimpleEntry<>(location, timestamp);
       entries.add(entry);
     });
   }
 
-  public CircularBuffer<Entry<Location, Long>> getBuffer(final GamePlayer player) {
-    return requireNonNull(this.playerLocations.get(player));
+  public @Nullable CircularBuffer<Entry<Location, Long>> getBuffer(final GamePlayer player) {
+    return this.playerLocations.get(player);
   }
 
   private boolean checkReady(
@@ -62,6 +55,10 @@ public final class MovementManager {
   public boolean handleRewind(final GamePlayer player) {
 
     final CircularBuffer<Entry<Location, Long>> buffer = this.getBuffer(player);
+    if (buffer == null) {
+      return false;
+    }
+
     final long currentTime = System.currentTimeMillis();
     if (!this.checkReady(buffer, currentTime)) {
       return false;

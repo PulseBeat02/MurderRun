@@ -51,6 +51,8 @@ public final class GameStartupTool {
     final World world = requireNonNull(spawnLocation.getWorld());
     world.setTime(13000);
     world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+    world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+    world.setGameRule(GameRule.DO_INSOMNIA, false);
   }
 
   private void teleportInnocentPlayers() {

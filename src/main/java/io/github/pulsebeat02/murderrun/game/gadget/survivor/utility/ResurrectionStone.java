@@ -44,6 +44,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
+      super.onGadgetDrop(game, event, false);
       return;
     }
 

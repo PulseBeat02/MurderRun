@@ -78,7 +78,7 @@ public final class CarPart {
     return this.cursedNote != null;
   }
 
-  public void setCursed(final Item cursedNote) {
+  public void setCursed(final @Nullable Item cursedNote) {
     this.cursedNote = cursedNote;
   }
 }

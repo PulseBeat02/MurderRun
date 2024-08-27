@@ -21,8 +21,9 @@ public final class Keys {
   public static NamespacedKey PORTAL_GUN = createNamespacedPluginKey("portal-gun");
   public static NamespacedKey UUID = createNamespacedPluginKey("uuid");
   public static NamespacedKey AIR_DROP = createNamespacedPluginKey("air_drop");
-  public static NamespacedKey ICE_SPIRIT_TARGET = createNamespacedPluginKey("ice-spirit-target");
-  public static NamespacedKey DEATH_HOUND_TARGET = createNamespacedPluginKey("death-hound-target");
+  public static NamespacedKey ICE_SPIRIT_OWNER = createNamespacedPluginKey("ice-spirit-owner");
+  public static NamespacedKey DEATH_HOUND_OWNER = createNamespacedPluginKey("death-hound-owner");
+  public static NamespacedKey DORMAGOGG_OWNER = createNamespacedPluginKey("dormagogg-owner");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

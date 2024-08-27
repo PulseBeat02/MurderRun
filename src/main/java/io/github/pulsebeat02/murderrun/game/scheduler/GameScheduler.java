@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -100,5 +101,21 @@ public final class GameScheduler {
   private static void spawnParticles0(final Item item, final Color color, final World world) {
     final Location location = item.getLocation();
     world.spawnParticle(Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(color, 2));
+  }
+
+  public BukkitTask scheduleAfterDead(final Runnable runnable, final Entity item) {
+    final AtomicBoolean dead = new AtomicBoolean(false);
+    final Runnable internal = () -> this.waitForDeath(runnable, item, dead);
+    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, dead::get);
+    this.tasks.add(task);
+    return task;
+  }
+
+  private void waitForDeath(
+      final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
+    if (entity.isDead()) {
+      dead.set(true);
+      runnable.run();
+    }
   }
 }
