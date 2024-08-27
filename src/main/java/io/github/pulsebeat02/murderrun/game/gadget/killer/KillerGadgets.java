@@ -71,10 +71,10 @@ public enum KillerGadgets {
   Forewarn: If an opponent grabs a truck part, they will start to glow
   Trap Seeker: Allows the Killer to detect hidden traps
   Portal Gun: Allows the user to create portals wherever they please
+  The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
 
   KILLER TRAPS IMPLEMENTED
 
-  The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
   Death Hound: Summons a wolf that sniffs out and kills opponents
   Dormagogg: An evil being that blind, stuns, and illuminates opponents
   Burn the Body: Completely destroys the body of an opponent

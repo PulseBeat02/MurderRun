@@ -43,7 +43,8 @@ public final class FloorIsLava extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final Player player = event.getPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
-    this.handleSurvivors(manager, scheduler, killer);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleSurvivors(manager, scheduler, killer), 0, 6 * 20L);
   }
 
   private void handleSurvivors(
@@ -54,14 +55,14 @@ public final class FloorIsLava extends KillerGadget {
   private void handleMovement(
       final GameScheduler scheduler, final GamePlayer player, final GamePlayer killer) {
     final Location previous = player.getLocation();
-    scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 3 * 20L);
+    scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 5 * 20L);
   }
 
   private void handleLocationChecking(
       final Location previous, final GamePlayer player, final GamePlayer killer) {
     final Location newLocation = player.getLocation();
     final Collection<GamePlayer> glowing = this.glowPlayerStates.get(killer);
-    final MetadataManager metadata = player.getMetadataManager();
+    final MetadataManager metadata = killer.getMetadataManager();
     if (this.checkLocationSame(previous, newLocation)) {
       glowing.add(player);
       metadata.setEntityGlowing(player, ChatColor.RED, true);
