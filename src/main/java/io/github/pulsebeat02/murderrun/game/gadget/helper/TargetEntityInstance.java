@@ -94,7 +94,7 @@ public final class TargetEntityInstance {
     final GamePlayer nearest = manager.getGamePlayer(uuid);
     final GameScheduler scheduler = this.game.getScheduler();
     nearest.disableJump(scheduler, 7 * 20L);
-    nearest.apply(player -> player.setFreezeTicks(7 * 20));
+    nearest.setFreezeTicks(7 * 20);
     nearest.disableWalkWithFOVEffects(10 * 20);
 
     final Component msg = Message.FREEZE_ACTIVATE.build();
@@ -166,6 +166,8 @@ public final class TargetEntityInstance {
     }
 
     event.setCancelled(true);
-    nearest.apply(entity::setTarget);
+
+    final Player internal = nearest.getInternalPlayer();
+    entity.setTarget(internal);
   }
 }

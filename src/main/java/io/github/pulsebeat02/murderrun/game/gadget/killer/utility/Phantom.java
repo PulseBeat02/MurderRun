@@ -7,33 +7,21 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.Collections;
-import java.util.Set;
-import java.util.WeakHashMap;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-public final class Phantom extends KillerGadget implements Listener {
+public final class Phantom extends KillerGadget {
 
-  private final Set<GamePlayer> spectatorDisabled;
-  private final Game game;
-
-  public Phantom(final Game game) {
+  public Phantom() {
     super(
         "phantom",
         Material.PHANTOM_MEMBRANE,
         Message.PHANTOM_NAME.build(),
         Message.PHANTOM_LORE.build(),
         48);
-    this.spectatorDisabled = Collections.newSetFromMap(new WeakHashMap<>());
-    this.game = game;
   }
 
   @Override
@@ -46,45 +34,19 @@ public final class Phantom extends KillerGadget implements Listener {
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
-    this.spectatorDisabled.add(gamePlayer);
-    audience.playSound("entity.phantom.ambient");
+    gamePlayer.setAllowSpectatorTeleport(false);
 
     final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.setDefault(gamePlayer, old), 15 * 20L);
+
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound("entity.phantom.ambient");
   }
 
   private void setDefault(final GamePlayer player, final Location location) {
-    this.spectatorDisabled.remove(player);
+    player.setAllowSpectatorTeleport(true);
     player.teleport(location);
     player.setGameMode(GameMode.SURVIVAL);
-  }
-
-  @EventHandler
-  public void onPlayerTeleportEvent(final PlayerTeleportEvent event) {
-
-    final Player player = event.getPlayer();
-    final PlayerManager manager = this.game.getPlayerManager();
-    if (!manager.checkPlayerExists(player)) {
-      return;
-    }
-
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!this.spectatorDisabled.contains(gamePlayer)) {
-      return;
-    }
-
-    final GameMode mode = player.getGameMode();
-    if (mode != GameMode.SPECTATOR) {
-      return;
-    }
-
-    final TeleportCause cause = event.getCause();
-    if (cause != TeleportCause.SPECTATE) {
-      return;
-    }
-
-    event.setCancelled(true);
   }
 }

@@ -78,7 +78,13 @@ public final class Corruption extends KillerGadget {
 
     final PlayerStartupTool temp = new PlayerStartupTool(manager);
     temp.handleMurderer(closest);
-    closest.apply(this::resetStats);
+
+    final Location death = requireNonNull(closest.getDeathLocation());
+    closest.teleport(death);
+
+    final ItemStack stack = ItemFactory.createKillerSword();
+    final PlayerInventory inventory = closest.getInventory();
+    inventory.addItem(stack);
 
     final DeathManager deathManager = closest.getDeathManager();
     final ArmorStand stand = deathManager.getCorpse();
@@ -88,16 +94,6 @@ public final class Corruption extends KillerGadget {
 
     final Component message = Message.CORRUPTION_ACTIVATE.build();
     manager.sendMessageToAllParticipants(message);
-  }
-
-  private void resetStats(final Player resurrected) {
-
-    final Location death = requireNonNull(resurrected.getLastDeathLocation());
-    resurrected.teleport(death);
-
-    final ItemStack stack = ItemFactory.createKillerSword();
-    final PlayerInventory inventory = resurrected.getInventory();
-    inventory.addItem(stack);
   }
 
   private void spawnParticles(final Location location) {

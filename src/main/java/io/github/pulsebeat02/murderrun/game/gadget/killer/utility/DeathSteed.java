@@ -21,6 +21,8 @@ import org.bukkit.inventory.HorseInventory;
 
 public final class DeathSteed extends KillerGadget {
 
+  private static final String DEATH_STEED_SOUND = "entity.horse.angry";
+
   public DeathSteed() {
     super(
         "death_steed",
@@ -46,7 +48,7 @@ public final class DeathSteed extends KillerGadget {
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.horse.angry");
+    audience.playSound(DEATH_STEED_SOUND);
   }
 
   private void handleSurvivors(final PlayerManager manager, final Horse horse) {

@@ -87,7 +87,8 @@ public final class DeathHound extends KillerGadget implements Listener {
   }
 
   private void customizeProperties(final GamePlayer owner, final Wolf entity) {
-    owner.apply(entity::setOwner);
+    final Player internal = owner.getInternalPlayer();
+    entity.setOwner(internal);
     entity.setTamed(true);
     entity.setAngry(true);
     entity.setVariant(Variant.BLACK);

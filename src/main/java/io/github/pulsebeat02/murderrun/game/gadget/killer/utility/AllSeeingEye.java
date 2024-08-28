@@ -54,8 +54,9 @@ public final class AllSeeingEye extends KillerGadget {
   }
 
   private void setPlayerState(final GamePlayer player, final GamePlayer survivor) {
+    final Player internal = survivor.getInternalPlayer();
     player.setGameMode(GameMode.SPECTATOR);
     player.setAllowSpectatorTeleport(false);
-    survivor.apply(player::setSpectatorTarget);
+    player.setSpectatorTarget(internal);
   }
 }

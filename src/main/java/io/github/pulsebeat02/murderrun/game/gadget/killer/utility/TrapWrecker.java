@@ -16,6 +16,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class TrapWrecker extends KillerGadget {
 
+  private static final String TRAP_WRECKER_SOUND = "block.bone_block.break";
+  private static final int TRAP_WRECKER_TIME = 30;
+
   public TrapWrecker() {
     super(
         "trap_wrecker",
@@ -38,18 +41,18 @@ public final class TrapWrecker extends KillerGadget {
     }
     killer.setIgnoreTraps(true);
 
-    final PlayerAudience audience = killer.getAudience();
-    final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();
-    audience.sendMessage(msg);
-    audience.playSound("block.bone_block.break");
-
     final GameScheduler scheduler = game.getScheduler();
     final Consumer<Integer> consumer = (time) -> {
       if (time == 0) {
         killer.setIgnoreTraps(false);
       }
-      killer.apply(raw -> raw.setLevel(time));
+      killer.setLevel(time);
     };
-    scheduler.scheduleCountdownTask(consumer, 30);
+    scheduler.scheduleCountdownTask(consumer, TRAP_WRECKER_TIME);
+
+    final PlayerAudience audience = killer.getAudience();
+    final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();
+    audience.sendMessage(msg);
+    audience.playSound(TRAP_WRECKER_SOUND);
   }
 }

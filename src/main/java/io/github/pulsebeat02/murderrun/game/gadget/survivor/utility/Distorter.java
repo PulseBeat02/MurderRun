@@ -18,8 +18,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Distorter extends SurvivorGadget {
 
-  private static final double DISTORTER_DESTROY_RADIUS = 2;
-  private static final double DISTORTER_EFFECT_RADIUS = 10;
+  private static final double DISTORTER_DESTROY_RADIUS = 2D;
+  private static final double DISTORTER_EFFECT_RADIUS = 10D;
   private static final String DISTORTER_SOUND = "block.lever.click";
 
   public Distorter() {

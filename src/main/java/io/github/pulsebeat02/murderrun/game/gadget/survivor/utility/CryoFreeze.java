@@ -27,7 +27,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 public final class CryoFreeze extends SurvivorGadget {
 
   private static final String CRYO_FREEZE_SOUND = "block.glass.break";
-  private static final int CRYO_FREEZE_RADIUS = 5;
+  private static final double CRYO_FREEZE_RADIUS = 5D;
 
   public CryoFreeze() {
     super(

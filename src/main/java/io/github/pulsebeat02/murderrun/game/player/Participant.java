@@ -89,6 +89,8 @@ public interface Participant {
 
   void setHealth(final double health);
 
+  double getHealth();
+
   void setFoodLevel(final int foodLevel);
 
   void setSaturation(final float saturation);
@@ -98,4 +100,12 @@ public interface Participant {
   boolean canSpectatorTeleport();
 
   void setSpectatorTarget(final Entity entity);
+
+  void setLastDeathLocation(final Location location);
+
+  void setAllowFlight(final boolean allow);
+
+  void setFlySpeed(final float speed);
+
+  void setLevel(final int level);
 }

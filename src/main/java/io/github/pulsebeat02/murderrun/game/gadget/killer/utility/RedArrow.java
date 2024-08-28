@@ -20,6 +20,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class RedArrow extends KillerGadget {
 
+  private static final String RED_ARROW_SOUND = "entity.arrow.hit";
+  private static final int RED_ARROW_DURATION = 10 * 20;
+
   public RedArrow() {
     super(
         "red_arrow",
@@ -40,12 +43,12 @@ public final class RedArrow extends KillerGadget {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, 10 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, RED_ARROW_DURATION);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.RED_ARROW_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound("entity.arrow.hit");
+    audience.playSound(RED_ARROW_SOUND);
   }
 
   private void handleSurvivors(final PlayerManager manager) {

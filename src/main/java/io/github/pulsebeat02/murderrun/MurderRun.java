@@ -23,14 +23,13 @@ public final class MurderRun extends JavaPlugin {
 
   DEBUG
 
-  - Add configuration values to all traps
   - Make code neater (SRP, SOLID, etc)
-    - move events to their own classes
     - create constants for each class to prepare for configuration
-    - add methods to Participant to avoid apply() method
-
-
+    - fix PlayerManager class
+    - revise killer gadgets
   - Test all gadgets
+
+
    */
 
   private static final int BSTATS_SERVER_ID = 22728;

@@ -182,4 +182,30 @@ public abstract class AbstractPlayer implements Participant {
   public void setSpectatorTarget(final Entity entity) {
     this.apply(player -> player.setSpectatorTarget(entity));
   }
+
+  @Override
+  public void setLastDeathLocation(final Location location) {
+    this.apply(player -> player.setLastDeathLocation(location));
+  }
+
+  @Override
+  public double getHealth() {
+    final Player player = this.getInternalPlayer();
+    return player.getHealth();
+  }
+
+  @Override
+  public void setFlySpeed(final float speed) {
+    this.apply(player -> player.setFlySpeed(speed));
+  }
+
+  @Override
+  public void setAllowFlight(final boolean allow) {
+    this.apply(player -> player.setAllowFlight(allow));
+  }
+
+  @Override
+  public void setLevel(final int level) {
+    this.apply(player -> player.setLevel(level));
+  }
 }

@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class WarpDistort extends KillerGadget {
 
+  private static final String WARP_DISTORT_SOUND = "entity.enderman.teleport";
+
   public WarpDistort() {
     super(
         "warp_distort",
@@ -39,8 +41,8 @@ public final class WarpDistort extends KillerGadget {
 
     final PlayerAudience randomAudience = random.getAudience();
     final PlayerAudience random2Audience = random2.getAudience();
-    randomAudience.playSound("entity.enderman.teleport");
-    random2Audience.playSound("entity.enderman.teleport");
+    randomAudience.playSound(WARP_DISTORT_SOUND);
+    random2Audience.playSound(WARP_DISTORT_SOUND);
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     randomAudience.sendMessage(msg);

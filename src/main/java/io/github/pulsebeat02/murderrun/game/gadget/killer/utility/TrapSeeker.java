@@ -31,6 +31,9 @@ import org.bukkit.inventory.ItemStack;
 
 public final class TrapSeeker extends KillerGadget {
 
+  private static final String TRAP_SEEKER_SOUND = "block.amethyst_block.chime";
+  private static final double TRAP_SEEKER_RANGE = 15D;
+
   private final Multimap<GamePlayer, Item> glowItemStates;
 
   public TrapSeeker() {
@@ -54,7 +57,7 @@ public final class TrapSeeker extends KillerGadget {
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.TRAP_SEEKER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound("block.amethyst_block.chime");
+    audience.playSound(TRAP_SEEKER_SOUND);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, gamePlayer), 0, 20L);
@@ -65,8 +68,8 @@ public final class TrapSeeker extends KillerGadget {
     final GadgetManager manager = game.getGadgetManager();
     final Location origin = innocent.getLocation();
     final World world = requireNonNull(origin.getWorld());
-    final int range = 15;
-    final Collection<Entity> entities = world.getNearbyEntities(origin, range, range, range);
+    final Collection<Entity> entities =
+        world.getNearbyEntities(origin, TRAP_SEEKER_RANGE, TRAP_SEEKER_RANGE, TRAP_SEEKER_RANGE);
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     final Set<Item> gadgets = new HashSet<>();
 

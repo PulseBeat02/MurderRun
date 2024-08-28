@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class QuickBomb extends KillerGadget {
 
+  private static final String QUICK_BOMB_SOUND = "entity.creeper.primed";
+
   public QuickBomb() {
     super(
         "quick_bomb",
@@ -38,7 +40,7 @@ public final class QuickBomb extends KillerGadget {
     final PlayerManager playerManager = game.getPlayerManager();
     final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.creeper.primed");
+    audience.playSound(QUICK_BOMB_SOUND);
   }
 
   private void spawnPrimedTnt(final GamePlayer survivor) {

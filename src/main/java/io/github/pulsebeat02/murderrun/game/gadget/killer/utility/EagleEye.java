@@ -21,7 +21,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class EagleEye extends KillerGadget {
 
-  public EagleEye(final Game game) {
+  private static final int EAGLE_EYE_DURATION = 10 * 20;
+  private static final String EAGLE_EYE_SOUND = "entity.phantom.flap";
+
+  public EagleEye() {
     super(
         "eagle_eye",
         Material.FEATHER,
@@ -57,19 +60,17 @@ public final class EagleEye extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.phantom.flap");
+    audience.playSound(EAGLE_EYE_SOUND);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetState(gamePlayer, previous, before), 10 * 20L);
+    scheduler.scheduleTask(() -> this.resetState(gamePlayer, previous, before), EAGLE_EYE_DURATION);
   }
 
   private void resetState(
       final GamePlayer gamePlayer, final Location previous, final float flySpeed) {
     gamePlayer.teleport(previous);
-    gamePlayer.apply(player -> {
-      player.setGravity(true);
-      player.setAllowFlight(false);
-      player.setFlySpeed(flySpeed);
-    });
+    gamePlayer.setGravity(false);
+    gamePlayer.setAllowFlight(true);
+    gamePlayer.setFlySpeed(flySpeed);
   }
 }

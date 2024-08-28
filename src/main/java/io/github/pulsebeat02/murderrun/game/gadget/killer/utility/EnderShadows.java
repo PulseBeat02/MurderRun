@@ -31,6 +31,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class EnderShadows extends KillerGadget {
 
+  private static final String ENDER_SHADOWS_SOUND = "entity.elder_guardian.curse";
+
   private static final String TEXTURE_SIGNATURE =
       "JJLyJh0n4sr4EwvWlIHu6Rz+eiCv6gIte/HZa4z1XH0CSnUBcrKXfIlzaLKo24k6OmJMysIRRtGVjhBYpyTe0ggCdFSibp6hDOfH1j/BR8ZmJkBn4ylpZZZmc4fxqsEc04AuxhkAUkGqpseirS2p44eQb60CyVwCf8kfh4sSSvmgaORx+aEENpwALbx6aUBJ2DRlzBRtftTo3kSTWnyKJznbQyMQcFHyCXHuT96gfavJ1acavZtFcMw/xBpZM4X36Z8jR9srOF2W3y0RttyJkMR7xuWaidVg7X17GoRDkChsnK0KdawkWD+u/LVZM2mzdOSqKKHXMle2qLCLdWYTrmCufT+t/G6BrvyEtmflnP81ciVbfA7utpKH6XDzEKpA4mRIHtIRIfctO2ltTbWft5/VhXWqB+dgBuOErdUtW9qkGlg5au5LK/laDgTTQprnpq8Hd287X4AL2aAghMPCcTfIrE0Wnd2n6JbkIrXx5kA4F8K2f+N78TkXhGbbtMh1ktNzNvZXi47PFijuqalBPhhaAjCOJiWQx5b6PoCg6FWXhdZxC8ndCPB2xHtiqOKUWnCLkhBBtg/Lj+WETVvUP/GLjbMzKxljMycZHHxq9fZlWvnFtOnoiTWrljVUO5oLnR5bO0+MelTb7vN3pswLU2qO71okwCndfMhvXEnhZTs=";
   private static final String TEXTURE_VALUE =
@@ -63,7 +65,7 @@ public final class EnderShadows extends KillerGadget {
     final CitizensManager npcManager = game.getNPCManager();
     manager.applyToAllLivingInnocents(
         survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
-    manager.playSoundForAllParticipants("entity.elder_guardian.curse");
+    manager.playSoundForAllParticipants(ENDER_SHADOWS_SOUND);
   }
 
   private void handleAllSurvivors(
@@ -96,20 +98,18 @@ public final class EnderShadows extends KillerGadget {
     final Collection<GamePlayer> players = this.shadows.get(survivor);
     final Component msg = Message.ENDER_SHADOWS_EFFECT.build();
     final MetadataManager metadata = killer.getMetadataManager();
-    survivor.apply(player -> {
-      final Location location = player.getLocation();
-      final Location other = shadow.getLocation();
-      final double distance = location.distanceSquared(other);
-      if (distance < 1) {
-        players.add(survivor);
-        final PlayerAudience audience = survivor.getAudience();
-        audience.showTitle(msg, empty());
-        metadata.setEntityGlowing(player, ChatColor.RED, true);
-      } else if (players.contains(survivor)) {
-        players.remove(survivor);
-        metadata.setEntityGlowing(player, ChatColor.RED, false);
-      }
-    });
+    final Location location = survivor.getLocation();
+    final Location other = shadow.getLocation();
+    final double distance = location.distanceSquared(other);
+    if (distance < 1) {
+      players.add(survivor);
+      final PlayerAudience audience = survivor.getAudience();
+      audience.showTitle(msg, empty());
+      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
+    } else if (players.contains(survivor)) {
+      players.remove(survivor);
+      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
+    }
   }
 
   private Entity getNPCEntity(final CitizensManager manager, final Location location) {

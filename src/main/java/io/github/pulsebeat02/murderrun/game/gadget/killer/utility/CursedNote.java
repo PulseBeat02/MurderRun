@@ -33,6 +33,10 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class CursedNote extends KillerGadget {
 
+  private static final double CURSED_NOTE_EFFECT_RADIUS = 4D;
+  private static final double CURSED_NOTE_RADIUS = 20D;
+  private static final String CURSED_NOTE_SOUND = "block.lever.click";
+
   public CursedNote() {
     super(
         "cursed_note",
@@ -55,38 +59,41 @@ public final class CursedNote extends KillerGadget {
       return;
     }
 
+    final GameSettings settings = game.getSettings();
+    final Item cursed = this.spawnCursedNote(settings);
+    final GameScheduler scheduler = game.getScheduler();
+    for (final CarPart part : closeParts) {
+      this.scheduleItemTask(game, part, cursed, scheduler);
+    }
+    scheduler.scheduleAfterDeath(() -> this.resetAllParts(closeParts), cursed);
+
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer killer = manager.getGamePlayer(player);
     final PlayerAudience audience = killer.getAudience();
-    audience.playSound("block.lever.click");
-
-    final GameSettings settings = game.getSettings();
-    final Item cursed = this.spawnCursedNote(settings);
-
-    final GameScheduler scheduler = game.getScheduler();
-    for (final CarPart part : closeParts) {
-
-      final Item item = part.getItem();
-      item.setPickupDelay(Integer.MAX_VALUE);
-      part.setCursed(cursed);
-
-      final Supplier<Boolean> condition = () -> !part.isCursed();
-      scheduler.scheduleConditionalTask(
-          () -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
-    }
-
-    scheduler.scheduleAfterDeath(
-        () -> {
-          for (final CarPart part : closeParts) {
-            final Item item = part.getItem();
-            item.setPickupDelay(10);
-            part.setCursed(null);
-          }
-        },
-        cursed);
+    audience.playSound(CURSED_NOTE_SOUND);
 
     final Component msg = Message.CURSED_NOTE_DROP.build();
     audience.sendMessage(msg);
+  }
+
+  private void resetAllParts(final Collection<CarPart> closeParts) {
+    for (final CarPart part : closeParts) {
+      final Item item = part.getItem();
+      item.setPickupDelay(10);
+      part.setCursed(null);
+    }
+  }
+
+  private void scheduleItemTask(
+      final Game game, final CarPart part, final Item cursed, final GameScheduler scheduler) {
+
+    final Item item = part.getItem();
+    item.setPickupDelay(Integer.MAX_VALUE);
+    part.setCursed(cursed);
+
+    final Supplier<Boolean> condition = () -> !part.isCursed();
+    scheduler.scheduleConditionalTask(
+        () -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
   }
 
   private Item spawnCursedNote(final GameSettings settings) {
@@ -105,7 +112,7 @@ public final class CursedNote extends KillerGadget {
       final Location partLocation = part.getLocation();
       final Location survivorLocation = survivor.getLocation();
       final double distance = partLocation.distanceSquared(survivorLocation);
-      if (distance <= 16) {
+      if (distance <= CURSED_NOTE_EFFECT_RADIUS * CURSED_NOTE_EFFECT_RADIUS) {
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 1));
         final PlayerAudience audience = survivor.getAudience();
@@ -124,7 +131,7 @@ public final class CursedNote extends KillerGadget {
     for (final CarPart part : parts) {
       final Location location = part.getLocation();
       final double distance = origin.distanceSquared(location);
-      if (distance <= 400) {
+      if (distance < CURSED_NOTE_RADIUS * CURSED_NOTE_RADIUS) {
         closeParts.add(part);
       }
     }

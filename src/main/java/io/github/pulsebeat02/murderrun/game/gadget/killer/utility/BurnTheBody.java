@@ -19,6 +19,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class BurnTheBody extends KillerGadget {
 
+  private static final double BURN_THE_BODY_RADIUS = 2D;
+  private static final String BURN_THE_BODY_SOUND = "block.fire.ambient";
+
   public BurnTheBody() {
     super(
         "burn_the_body",
@@ -31,8 +34,6 @@ public final class BurnTheBody extends KillerGadget {
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
-
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
@@ -43,11 +44,16 @@ public final class BurnTheBody extends KillerGadget {
 
     final Location deathLocation = requireNonNull(closest.getDeathLocation());
     final double distance = location.distanceSquared(deathLocation);
-    if (distance <= 4) {
-      final GameScheduler scheduler = game.getScheduler();
-      manager.playSoundForAllParticipants("block.fire.ambient");
-      this.destroyBody(scheduler, closest, deathLocation);
+    if (distance > BURN_THE_BODY_RADIUS * BURN_THE_BODY_RADIUS) {
+      super.onGadgetDrop(game, event, false);
+      return;
     }
+
+    final GameScheduler scheduler = game.getScheduler();
+    this.destroyBody(scheduler, closest, deathLocation);
+    super.onGadgetDrop(game, event, true);
+
+    manager.playSoundForAllParticipants(BURN_THE_BODY_SOUND);
   }
 
   private void destroyBody(
@@ -63,13 +69,13 @@ public final class BurnTheBody extends KillerGadget {
   }
 
   private void handleBurnTasks(final GamePlayer victim) {
+
     final DeathManager manager = victim.getDeathManager();
-    victim.apply(player -> {
-      final ArmorStand stand = manager.getCorpse();
-      if (stand != null) {
-        stand.remove();
-      }
-      player.setLastDeathLocation(null);
-    });
+    final ArmorStand stand = manager.getCorpse();
+    if (stand != null) {
+      stand.remove();
+    }
+
+    victim.setLastDeathLocation(null);
   }
 }
