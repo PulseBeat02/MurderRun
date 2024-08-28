@@ -41,7 +41,7 @@ public final class Distorter extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final Item item = event.getItemDrop();
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
-    scheduler.scheduleParticleTask(item, Color.PURPLE);
+    scheduler.scheduleParticleTaskUntilDeath(item, Color.PURPLE);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     audience.playSound(DISTORTER_SOUND);

@@ -75,7 +75,7 @@ public final class GameScheduler {
     return bukkit;
   }
 
-  public BukkitTask scheduleTaskWhenItemFalls(final Runnable runnable, final Item item) {
+  public BukkitTask scheduleTaskAfterOnGround(final Runnable runnable, final Entity item) {
     final AtomicBoolean onFloor = new AtomicBoolean(false);
     final Runnable internal = () -> this.waitForFall0(runnable, item, onFloor);
     final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, onFloor::get);
@@ -83,7 +83,8 @@ public final class GameScheduler {
     return task;
   }
 
-  private void waitForFall0(final Runnable runnable, final Item item, final AtomicBoolean onFloor) {
+  private void waitForFall0(
+      final Runnable runnable, final Entity item, final AtomicBoolean onFloor) {
     if (item.isOnGround()) {
       onFloor.set(true);
       runnable.run();
@@ -98,11 +99,11 @@ public final class GameScheduler {
     return task;
   }
 
-  public BukkitTask scheduleParticleTask(final Item item, final Color color) {
+  public BukkitTask scheduleParticleTaskUntilDeath(final Item item, final Color color) {
     final World world = item.getWorld();
     final Runnable particleTask = () -> this.spawnParticles0(item, color, world);
     final Runnable conditionalTask = () -> this.scheduleTaskUntilDeath(particleTask, item);
-    return this.scheduleTaskWhenItemFalls(conditionalTask, item);
+    return this.scheduleTaskAfterOnGround(conditionalTask, item);
   }
 
   private void spawnParticles0(final Item item, final Color color, final World world) {

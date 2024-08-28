@@ -41,7 +41,7 @@ public abstract class Trap extends AbstractGadget {
     final Item item = event.getItemDrop();
     item.setUnlimitedLifetime(true);
     item.setPickupDelay(Integer.MAX_VALUE);
-    scheduler.scheduleTaskWhenItemFalls(() -> this.scheduleParticleTask(item, scheduler), item);
+    scheduler.scheduleTaskAfterOnGround(() -> this.scheduleParticleTask(item, scheduler), item);
   }
 
   private void scheduleParticleTask(final Item item, final GameScheduler scheduler) {
@@ -49,7 +49,7 @@ public abstract class Trap extends AbstractGadget {
     final int g = this.color.getGreen();
     final int b = this.color.getBlue();
     final org.bukkit.Color bukkitColor = org.bukkit.Color.fromRGB(r, g, b);
-    scheduler.scheduleParticleTask(item, bukkitColor);
+    scheduler.scheduleParticleTaskUntilDeath(item, bukkitColor);
   }
 
   public abstract void onTrapActivate(final Game game, final GamePlayer activee, final Item item);

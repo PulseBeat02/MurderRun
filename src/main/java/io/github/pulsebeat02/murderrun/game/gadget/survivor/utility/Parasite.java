@@ -40,7 +40,7 @@ public final class Parasite extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
-    scheduler.scheduleParticleTask(item, Color.GREEN);
+    scheduler.scheduleParticleTaskUntilDeath(item, Color.GREEN);
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();

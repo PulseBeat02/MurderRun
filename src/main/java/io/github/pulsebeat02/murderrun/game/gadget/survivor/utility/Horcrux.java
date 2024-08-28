@@ -44,7 +44,7 @@ public final class Horcrux extends SurvivorGadget {
     deathManager.addDeathTask(task);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleParticleTask(item, Color.BLACK);
+    scheduler.scheduleParticleTaskUntilDeath(item, Color.BLACK);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     audience.playSound(HORCRUX_SOUND);
