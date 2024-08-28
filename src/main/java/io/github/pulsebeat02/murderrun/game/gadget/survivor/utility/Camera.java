@@ -9,16 +9,18 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Camera extends SurvivorGadget {
 
-  private final CameraGadget gadget;
+  private CameraGadget gadget;
 
   public Camera() {
     super(
         "camera", Material.OBSERVER, Message.CAMERA_NAME.build(), Message.CAMERA_LORE.build(), 48);
-    this.gadget = new CameraGadget(this);
   }
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+    if (this.gadget == null) {
+      this.gadget = new CameraGadget(this);
+    }
     this.gadget.handleCamera(game, event);
   }
 }

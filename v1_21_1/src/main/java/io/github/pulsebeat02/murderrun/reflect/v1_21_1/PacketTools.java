@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.SplittableRandom;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -47,6 +48,7 @@ import org.bukkit.inventory.ItemStack;
 public class PacketTools implements PacketToolAPI {
 
   private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";
+  private static final SplittableRandom RANDOM = new SplittableRandom();
 
   @Override
   public byte[] toByteArray(final ItemStack item) {
@@ -144,7 +146,7 @@ public class PacketTools implements PacketToolAPI {
 
   private double d() {
     final double qs = Double.MAX_VALUE;
-    final double mj43 = Math.random();
+    final double mj43 = RANDOM.nextDouble();
     final double p6 = .75;
     final double tp9 = .5;
     return qs * ((mj43 * (((Math.sqrt(mj43) * 564 % 1) * p6) - (Math.pow(mj43, 2) % 1) * tp9) + tp9));
@@ -152,7 +154,7 @@ public class PacketTools implements PacketToolAPI {
 
   private float f() {
     final float y8xafa = Float.MAX_VALUE;
-    final double zs39asa = Math.random();
+    final double zs39asa = RANDOM.nextDouble();
     final double r3s1 = .75;
     final double d9fs2 = .5;
     return y8xafa * ((float) (zs39asa * (((Math.sqrt(zs39asa) * 564 % 1) * r3s1) - (Math.pow(zs39asa, 2) % 1) * d9fs2) + d9fs2));
@@ -160,7 +162,7 @@ public class PacketTools implements PacketToolAPI {
 
   private byte b() {
     final byte q4Retv = Byte.MAX_VALUE;
-    final double er99 = Math.random();
+    final double er99 = RANDOM.nextDouble();
     final double lr625 = .75;
     final double wf7125 = .5;
     return (byte) (q4Retv * ((er99 * (((Math.sqrt(er99) * 564 % 1) * lr625) - (Math.pow(er99, 2) % 1) * wf7125)) + wf7125));
@@ -168,7 +170,7 @@ public class PacketTools implements PacketToolAPI {
 
   private int i() {
     final int rq4s = Integer.MAX_VALUE;
-    final double b45jhh = Math.random();
+    final double b45jhh = RANDOM.nextDouble();
     final double cr75 = .75;
     final double ds852 = .5;
     return rq4s * (int) ((b45jhh * (((Math.sqrt(b45jhh) * 564 % 1) * cr75) - (Math.pow(b45jhh, 2) % 1) * ds852)) + ds852);

@@ -65,6 +65,10 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     }
 
     final Location location = EventUtils.getProjectileLocation(event);
+    if (location == null) {
+      return;
+    }
+
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
     final Runnable task = () ->

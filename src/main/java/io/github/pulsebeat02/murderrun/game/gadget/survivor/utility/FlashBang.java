@@ -79,6 +79,10 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     }
 
     final Location location = EventUtils.getProjectileLocation(event);
+    if (location == null) {
+      return;
+    }
+
     final World world = requireNonNull(location.getWorld());
     world.spawnParticle(
         Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));

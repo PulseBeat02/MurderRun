@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -17,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class Decoy extends SurvivorGadget {
@@ -71,9 +73,14 @@ public final class Decoy extends SurvivorGadget {
   private void setNPCArmor(final Player player, final NPC npc) {
     final PlayerInventory inventory = player.getInventory();
     final Equipment equipment = npc.getOrAddTrait(Equipment.class);
-    equipment.set(EquipmentSlot.HELMET, inventory.getHelmet());
-    equipment.set(EquipmentSlot.CHESTPLATE, inventory.getChestplate());
-    equipment.set(EquipmentSlot.LEGGINGS, inventory.getLeggings());
-    equipment.set(EquipmentSlot.BOOTS, inventory.getBoots());
+    final ItemStack helmet = inventory.getHelmet();
+    final ItemStack chestplate = inventory.getChestplate();
+    final ItemStack leggings = inventory.getLeggings();
+    final ItemStack boots = inventory.getBoots();
+    final ItemStack air = Item.create(Material.AIR);
+    equipment.set(EquipmentSlot.HELMET, helmet == null ? air : helmet);
+    equipment.set(EquipmentSlot.CHESTPLATE, chestplate == null ? air : chestplate);
+    equipment.set(EquipmentSlot.LEGGINGS, leggings == null ? air : leggings);
+    equipment.set(EquipmentSlot.BOOTS, boots == null ? air : boots);
   }
 }

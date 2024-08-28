@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.util;
 
+import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
@@ -38,7 +39,7 @@ public final class TrollGadget extends SurvivorTrap {
         Material.STRUCTURE_VOID,
         text("Troll Gadget", RED),
         text("Crashes the client"),
-        null,
+        empty(),
         128,
         Color.RED);
   }

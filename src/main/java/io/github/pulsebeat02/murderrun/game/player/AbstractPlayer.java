@@ -179,12 +179,12 @@ public abstract class AbstractPlayer implements Participant {
   }
 
   @Override
-  public void setSpectatorTarget(final Entity entity) {
+  public void setSpectatorTarget(final @Nullable Entity entity) {
     this.apply(player -> player.setSpectatorTarget(entity));
   }
 
   @Override
-  public void setLastDeathLocation(final Location location) {
+  public void setLastDeathLocation(final @Nullable Location location) {
     this.apply(player -> player.setLastDeathLocation(location));
   }
 
