@@ -3,19 +3,22 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.util.TargetableEntityInstance;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.UUID;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -29,11 +32,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public final class IceSpirit extends SurvivorGadget implements Listener {
+public final class IceSpirit extends SurvivorGadget implements Listener, TargetableEntity {
 
   private static final String ICE_SPIRIT_SOUND = "entity.zombie.ambient";
 
-  private final TargetableEntityInstance target;
+  private final Game game;
 
   public IceSpirit(final Game game) {
     super(
@@ -42,17 +45,55 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
         Message.ICE_SPIRIT_NAME.build(),
         Message.ICE_SPIRIT_LORE.build(),
         16);
-    this.target = new TargetableEntityInstance(game);
+    this.game = game;
   }
 
   @EventHandler
   public void onTargetChange(final EntityTargetEvent event) {
-    this.target.onIceSpiritTarget(event);
+
+    final Entity entity = event.getEntity();
+    if (!(entity instanceof final Zombie zombie)) {
+      return;
+    }
+
+    final PersistentDataContainer container = zombie.getPersistentDataContainer();
+    final String target = container.get(Keys.ICE_SPIRIT_OWNER, PersistentDataType.STRING);
+    if (target == null) {
+      return;
+    }
+
+    this.handle(event, target, zombie);
   }
 
   @EventHandler
   public void onEntityDamage(final EntityDamageByEntityEvent event) {
-    this.target.onIceSpiritDamage(event);
+
+    final Entity entity = event.getDamager();
+    if (!(entity instanceof final Zombie zombie)) {
+      return;
+    }
+
+    final PersistentDataContainer container = zombie.getPersistentDataContainer();
+    final String target = container.get(Keys.ICE_SPIRIT_OWNER, PersistentDataType.STRING);
+    if (target == null) {
+      return;
+    }
+    zombie.remove();
+
+    final UUID uuid = UUID.fromString(target);
+    final PlayerManager manager = this.game.getPlayerManager();
+    if (!manager.checkPlayerExists(uuid)) {
+      return;
+    }
+
+    final GamePlayer nearest = manager.getGamePlayer(uuid);
+    final GameScheduler scheduler = this.game.getScheduler();
+    nearest.disableJump(scheduler, 7 * 20L);
+    nearest.setFreezeTicks(7 * 20);
+    nearest.disableWalkWithFOVEffects(10 * 20);
+
+    final Component msg = Message.FREEZE_ACTIVATE.build();
+    manager.sendMessageToAllSurvivors(msg);
   }
 
   @Override
@@ -97,5 +138,10 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
     equipment.setChestplate(Item.create(Material.DIAMOND_CHESTPLATE));
     equipment.setLeggings(Item.create(Material.DIAMOND_LEGGINGS));
     equipment.setBoots(Item.create(Material.DIAMOND_BOOTS));
+  }
+
+  @Override
+  public Game getGame() {
+    return this.game;
   }
 }

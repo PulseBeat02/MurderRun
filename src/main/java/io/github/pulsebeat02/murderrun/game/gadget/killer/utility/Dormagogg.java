@@ -4,18 +4,22 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.util.TargetableEntityInstance;
+import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.UUID;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -29,11 +33,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public final class Dormagogg extends KillerGadget implements Listener {
+public final class Dormagogg extends KillerGadget implements Listener, TargetableEntity {
 
   private static final String DORMAGOGG_SOUND = "entity.zombie.ambient";
-
-  private final TargetableEntityInstance target;
+  private final Game game;
 
   public Dormagogg(final Game game) {
     super(
@@ -42,17 +45,65 @@ public final class Dormagogg extends KillerGadget implements Listener {
         Message.DORMAGOGG_NAME.build(),
         Message.DORMAGOGG_LORE.build(),
         16);
-    this.target = new TargetableEntityInstance(game);
+    this.game = game;
   }
 
   @EventHandler
   public void onTargetChange(final EntityTargetEvent event) {
-    this.target.onDormagoggTarget(event);
+
+    final Entity entity = event.getEntity();
+    if (!(entity instanceof final Zombie zombie)) {
+      return;
+    }
+
+    final PersistentDataContainer container = zombie.getPersistentDataContainer();
+    final String target = container.get(Keys.DORMAGOGG_OWNER, PersistentDataType.STRING);
+    if (target == null) {
+      return;
+    }
+
+    this.handle(event, target, zombie);
   }
 
   @EventHandler
   public void onEntityDamage(final EntityDamageByEntityEvent event) {
-    this.target.onDormagoggDamage(event);
+
+    final Entity entity = event.getDamager();
+    if (!(entity instanceof final Zombie zombie)) {
+      return;
+    }
+
+    final Entity attacked = event.getEntity();
+    if (!(attacked instanceof final Player player)) {
+      return;
+    }
+
+    final PlayerManager manager = this.game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final PersistentDataContainer container = zombie.getPersistentDataContainer();
+    final String owner = container.get(Keys.DORMAGOGG_OWNER, PersistentDataType.STRING);
+    if (owner == null) {
+      return;
+    }
+    zombie.remove();
+
+    final UUID ownerUuid = UUID.fromString(owner);
+    if (!manager.checkPlayerExists(ownerUuid)) {
+      return;
+    }
+
+    final GamePlayer nearest = manager.getGamePlayer(player);
+    final GamePlayer killer = manager.getGamePlayer(ownerUuid);
+    final GameScheduler scheduler = this.game.getScheduler();
+    nearest.disableJump(scheduler, 7 * 20L);
+    nearest.disableWalkWithFOVEffects(10 * 20);
+    nearest.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1));
+
+    final MetadataManager metadata = killer.getMetadataManager();
+    metadata.setEntityGlowing(scheduler, nearest, ChatColor.RED, 7 * 20L);
   }
 
   @Override
@@ -104,5 +155,10 @@ public final class Dormagogg extends KillerGadget implements Listener {
     equipment.setChestplate(Item.create(Material.NETHERITE_CHESTPLATE));
     equipment.setLeggings(Item.create(Material.NETHERITE_LEGGINGS));
     equipment.setBoots(Item.create(Material.NETHERITE_BOOTS));
+  }
+
+  @Override
+  public Game getGame() {
+    return this.game;
   }
 }

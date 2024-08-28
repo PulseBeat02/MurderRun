@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.util.TargetableEntityInstance;
+import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -15,6 +15,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Wolf.Variant;
@@ -27,11 +28,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public final class DeathHound extends KillerGadget implements Listener {
+public final class DeathHound extends KillerGadget implements Listener, TargetableEntity {
 
   private static final String DEATH_HOUND_SOUND = "entity.wolf.howl";
 
-  private final TargetableEntityInstance target;
+  private final Game game;
 
   public DeathHound(final Game game) {
     super(
@@ -40,12 +41,24 @@ public final class DeathHound extends KillerGadget implements Listener {
         Message.DEATH_HOUND_NAME.build(),
         Message.DEATH_HOUND_LORE.build(),
         16);
-    this.target = new TargetableEntityInstance(game);
+    this.game = game;
   }
 
   @EventHandler
   public void onTargetChange(final EntityTargetEvent event) {
-    this.target.onDeathHoundTarget(event);
+
+    final Entity entity = event.getEntity();
+    if (!(entity instanceof final Wolf wolf)) {
+      return;
+    }
+
+    final PersistentDataContainer container = wolf.getPersistentDataContainer();
+    final String target = container.get(Keys.DEATH_HOUND_OWNER, PersistentDataType.STRING);
+    if (target == null) {
+      return;
+    }
+
+    this.handle(event, target, wolf);
   }
 
   @Override
@@ -93,5 +106,10 @@ public final class DeathHound extends KillerGadget implements Listener {
     entity.setAngry(true);
     entity.setVariant(Variant.BLACK);
     entity.setInvulnerable(true);
+  }
+
+  @Override
+  public Game getGame() {
+    return game;
   }
 }

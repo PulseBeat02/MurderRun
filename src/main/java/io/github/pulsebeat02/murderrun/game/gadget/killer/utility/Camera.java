@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.util.CameraGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.misc.CameraGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerDropItemEvent;

@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.util;
+package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
@@ -17,7 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
-public final class TrollGadget extends SurvivorTrap {
+public final class CrashTrap extends SurvivorTrap {
 
   private static final MethodHandle CRASH_HANDLE;
 
@@ -33,12 +33,12 @@ public final class TrollGadget extends SurvivorTrap {
     }
   }
 
-  public TrollGadget() {
+  public CrashTrap() {
     super(
-        "troll",
+        "crash",
         Material.STRUCTURE_VOID,
-        text("Troll Gadget", RED),
-        text("Crashes the client"),
+        text("Crash Trap", RED),
+        text("Crashes the client (wtf, use at your own risk)", RED),
         empty(),
         128,
         Color.RED);
