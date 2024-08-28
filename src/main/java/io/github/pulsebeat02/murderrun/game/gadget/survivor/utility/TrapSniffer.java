@@ -1,9 +1,5 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import static java.util.Objects.requireNonNull;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.map.Map;
@@ -13,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
@@ -29,8 +26,6 @@ public final class TrapSniffer extends SurvivorGadget {
   private static final double TRAP_SNIFFER_RADIUS = 15D;
   private static final String TRAP_SNIFFER_SOUND = "entity.sniffer.digging";
 
-  private final Multimap<GamePlayer, Item> glowItemStates;
-
   public TrapSniffer() {
     super(
         "trap_sniffer",
@@ -38,7 +33,6 @@ public final class TrapSniffer extends SurvivorGadget {
         Message.TRAP_SNIFFER_NAME.build(),
         Message.TRAP_SNIFFER_LORE.build(),
         64);
-    this.glowItemStates = HashMultimap.create();
   }
 
   @Override
@@ -49,9 +43,12 @@ public final class TrapSniffer extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!(gamePlayer instanceof Survivor survivor)) {
+      return;
+    }
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, gamePlayer), 0, 2 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, survivor), 0, 2 * 20L);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.TRAP_SNIFFER_ACTIVATE.build();
@@ -59,16 +56,16 @@ public final class TrapSniffer extends SurvivorGadget {
     audience.playSound(TRAP_SNIFFER_SOUND);
   }
 
-  private void handleTrapSniffing(final Game game, final GamePlayer player) {
+  private void handleTrapSniffing(final Game game, final Survivor player) {
     final Location origin = player.getLocation();
     final Map map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();
+    final Collection<Item> set = player.getGlowingCarParts();
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();
-      final Collection<Item> set = requireNonNull(this.glowItemStates.get(player));
       final double distance = origin.distanceSquared(location);
       final MetadataManager metadata = player.getMetadataManager();
       if (distance < TRAP_SNIFFER_RADIUS * TRAP_SNIFFER_RADIUS) {

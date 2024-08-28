@@ -23,9 +23,10 @@ import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.inventory.PlayerInventory;
 
 public final class ResurrectionStone extends SurvivorGadget {
+
+  private static final String RESSURECTION_STONE_SOUND = "block.end_portal_frame.fill";
 
   public ResurrectionStone() {
     super(
@@ -59,15 +60,14 @@ public final class ResurrectionStone extends SurvivorGadget {
       return;
     }
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.end_portal_frame.fill");
-
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L);
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L);
-
     super.onGadgetDrop(game, event, true);
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(RESSURECTION_STONE_SOUND);
   }
 
   private void spawnParticles(final Location location) {
@@ -85,16 +85,13 @@ public final class ResurrectionStone extends SurvivorGadget {
     closest.setAlive(true);
     playerManager.resetCachedPlayers();
 
-    closest.apply(resurrected -> {
-      final Location death = requireNonNull(resurrected.getLastDeathLocation());
-      final PlayerInventory inventory = resurrected.getInventory();
-      inventory.clear();
-      resurrected.setHealth(20);
-      resurrected.setFoodLevel(20);
-      resurrected.setSaturation(20);
-      resurrected.teleport(death);
-      resurrected.setGameMode(GameMode.SURVIVAL);
-    });
+    final Location death = requireNonNull(closest.getDeathLocation());
+    closest.clearInventory();
+    closest.setGameMode(GameMode.SURVIVAL);
+    closest.setHealth(20);
+    closest.setFoodLevel(20);
+    closest.setSaturation(20);
+    closest.teleport(death);
 
     final DeathManager manager = closest.getDeathManager();
     final ArmorStand corpse = requireNonNull(manager.getCorpse());

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -85,4 +86,16 @@ public interface Participant {
   void clearInventory();
 
   void setRespawnLocation(final Location location, final boolean force);
+
+  void setHealth(final double health);
+
+  void setFoodLevel(final int foodLevel);
+
+  void setSaturation(final float saturation);
+
+  void setAllowSpectatorTeleport(final boolean allow);
+
+  boolean canSpectatorTeleport();
+
+  void setSpectatorTarget(final Entity entity);
 }

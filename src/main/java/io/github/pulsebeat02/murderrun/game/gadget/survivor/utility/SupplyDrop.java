@@ -80,14 +80,14 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     container.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
     chest.setDropItem(false);
 
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleConditionalTask(
+        () -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
+
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
     audience.playSound(SUPPLY_DROP_SOUND);
-
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleConditionalTask(
-        () -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
   }
 
   private void spawnParticleTrail(final FallingBlock chest) {

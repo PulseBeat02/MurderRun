@@ -7,6 +7,7 @@ public final class Killer extends GamePlayer {
 
   private boolean ignoreTraps;
   private boolean forceMine;
+  private long killerCooldown;
 
   public Killer(final Game game, final UUID uuid) {
     super(game, uuid);
@@ -27,5 +28,13 @@ public final class Killer extends GamePlayer {
 
   public boolean canForceMineBlocks() {
     return this.forceMine;
+  }
+
+  public long getKillerRewindCooldown() {
+    return this.killerCooldown;
+  }
+
+  public void setKillerRewindCooldown(final long cooldown) {
+    this.killerCooldown = cooldown;
   }
 }

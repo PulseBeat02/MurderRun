@@ -37,14 +37,15 @@ public final class Retaliation extends SurvivorGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
+
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L);
+
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Message.RETALIATION_ACTIVATE.build();
     final PlayerAudience audience = gamePlayer.getAudience();
     audience.sendMessage(message);
     audience.playSound(RETALIATION_SOUND);
-
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L);
   }
 
   private void checkForDeadPlayers(final PlayerManager manager, final Player player) {

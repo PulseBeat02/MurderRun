@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 public final class MagnetMode extends SurvivorGadget {
 
   private static final int MAGNET_MODE_MULTIPLIER = 2;
+  private static final String MAGNET_MODE_SOUND = "block.iron_trapdoor.close";
 
   public MagnetMode() {
     super(
@@ -40,6 +41,6 @@ public final class MagnetMode extends SurvivorGadget {
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.MAGNET_MODE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound("block.iron_trapdoor.close");
+    audience.playSound(MAGNET_MODE_SOUND);
   }
 }

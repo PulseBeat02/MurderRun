@@ -25,7 +25,8 @@ public final class GameEventManager {
         new GamePlayerRegenEvent(this.game),
         new GamePlayerBlockEvent(this.game),
         new GameMobSpawnEvent(this.game),
-        new GamePlayerDismountEvent(this.game));
+        new GamePlayerDismountEvent(this.game),
+        new GamePlayerTeleportEvent(this.game));
   }
 
   public Game getGame() {

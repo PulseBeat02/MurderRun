@@ -18,6 +18,7 @@ public class GamePlayer extends AbstractPlayer {
   private PlayerAudience audience;
 
   private boolean canDismount;
+  private boolean canSpectatorTeleport;
   private boolean alive;
 
   public GamePlayer(final Game game, final UUID uuid) {
@@ -75,5 +76,15 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public void setCanDismount(final boolean canDismount) {
     this.canDismount = canDismount;
+  }
+
+  @Override
+  public void setAllowSpectatorTeleport(final boolean allow) {
+    this.canSpectatorTeleport = allow;
+  }
+
+  @Override
+  public boolean canSpectatorTeleport() {
+    return this.canSpectatorTeleport;
   }
 }

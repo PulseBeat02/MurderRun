@@ -49,13 +49,13 @@ public final class MindControl extends SurvivorGadget {
     }
     survivor.setCanPickupCarPart(false);
 
-    final Location origin = player.getLocation();
     final Location location = nearest.getLocation();
     owner.addPotionEffects(
         new PotionEffect(PotionEffectType.INVISIBILITY, MIND_CONTROL_DURATION, 1));
     owner.setInvulnerable(true);
     owner.teleport(location);
 
+    final Location origin = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
         () -> this.applyMindControlEffects(player, nearest), 0L, 1L, MIND_CONTROL_DURATION);

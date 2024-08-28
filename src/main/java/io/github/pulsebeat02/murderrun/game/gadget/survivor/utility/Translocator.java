@@ -9,15 +9,12 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -57,61 +54,28 @@ public final class Translocator extends SurvivorGadget {
 
     final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(
         stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
-    final Location location = this.byteArrayToLocation(data);
+    final Location location = MapUtils.byteArrayToLocation(data);
+    player.teleport(location);
+
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
     audience.playSound(TRANSLOCATOR_SOUND);
-
-    player.teleport(location);
   }
 
   @Override
   public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+
     final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final org.bukkit.entity.Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    final byte[] bytes = this.locationToByteArray(location);
-    PDCUtils.setPersistentDataAttribute(
-        stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes);
-    Item.builder(stack).lore(Message.TRANSLOCATOR_LORE1.build()).type(Material.LEVER);
+    final byte[] bytes = MapUtils.locationToByteArray(location);
+    Item.builder(stack)
+        .lore(Message.TRANSLOCATOR_LORE1.build())
+        .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
+        .type(Material.LEVER);
+
     super.onGadgetDrop(game, event, false);
-  }
-
-  private Location byteArrayToLocation(final byte[] array) {
-
-    final ByteBuffer buffer = ByteBuffer.wrap(array);
-    final int worldNameLength = buffer.getInt();
-    final byte[] worldBytes = new byte[worldNameLength];
-    buffer.get(worldBytes);
-
-    final String worldName = new String(worldBytes, StandardCharsets.UTF_8);
-    final World world = Bukkit.getWorld(worldName);
-    final double x = buffer.getDouble();
-    final double y = buffer.getDouble();
-    final double z = buffer.getDouble();
-    final float pitch = (float) buffer.getDouble();
-    final float yaw = (float) buffer.getDouble();
-
-    return new Location(world, x, y, z, yaw, pitch);
-  }
-
-  private byte[] locationToByteArray(final Location location) {
-
-    final World world = requireNonNull(location.getWorld());
-    final String name = world.getName();
-    final byte[] worldBytes = name.getBytes(StandardCharsets.UTF_8);
-    final ByteBuffer buffer =
-        ByteBuffer.allocate(Double.BYTES * 5 + Integer.BYTES + worldBytes.length);
-    buffer.putInt(worldBytes.length);
-    buffer.put(worldBytes);
-    buffer.putDouble(location.getX());
-    buffer.putDouble(location.getY());
-    buffer.putDouble(location.getZ());
-    buffer.putDouble(location.getPitch());
-    buffer.putDouble(location.getYaw());
-
-    return buffer.array();
   }
 }

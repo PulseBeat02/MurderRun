@@ -58,10 +58,8 @@ public final class Gamble extends KillerGadget {
   }
 
   private void giveKillerItem(final GamePlayer killer, final Gadget gadget) {
-    killer.apply(player -> {
-      final ItemStack stack = gadget.getGadget();
-      final PlayerInventory inventory = player.getInventory();
-      inventory.addItem(stack);
-    });
+    final ItemStack stack = gadget.getGadget();
+    final PlayerInventory inventory = killer.getInventory();
+    inventory.addItem(stack);
   }
 }

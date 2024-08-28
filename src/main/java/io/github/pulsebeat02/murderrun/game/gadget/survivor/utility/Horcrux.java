@@ -53,7 +53,7 @@ public final class Horcrux extends SurvivorGadget {
   private void handleHorcrux(final GamePlayer player, final Item item) {
 
     final Location location = item.getLocation();
-    player.apply(raw -> raw.setRespawnLocation(location, true));
+    player.setRespawnLocation(location, true);
     item.remove();
 
     final PlayerAudience audience = player.getAudience();

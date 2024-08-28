@@ -46,17 +46,17 @@ public final class BlastOff extends SurvivorGadget {
     final Location before = killer.getLocation();
     final Firework firework = this.spawnRocket(killer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleAfterDeath(
-        () -> {
-          killer.teleport(before);
-          killer.setFallDistance(0.0f);
-          killer.setCanDismount(true);
-        },
-        firework);
+    scheduler.scheduleAfterDeath(() -> this.resetPlayer(killer, before), firework);
 
     final GamePlayer owner = manager.getGamePlayer(player);
     final PlayerAudience audience = owner.getAudience();
     audience.playSound(BLAST_OFF_SOUND);
+  }
+
+  private void resetPlayer(final GamePlayer killer, final Location before) {
+    killer.teleport(before);
+    killer.setFallDistance(0.0f);
+    killer.setCanDismount(true);
   }
 
   private Firework spawnRocket(final GamePlayer player) {

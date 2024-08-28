@@ -1,13 +1,12 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
@@ -23,8 +22,6 @@ public final class SixthSense extends SurvivorGadget {
   private static final double SIXTH_SENSE_RADIUS = 10D;
   private static final String SIXTH_SENSE_SOUND = "entity.sniffer.digging";
 
-  private final Multimap<GamePlayer, GamePlayer> glowPlayerStates;
-
   public SixthSense() {
     super(
         "sixth_sense",
@@ -32,7 +29,6 @@ public final class SixthSense extends SurvivorGadget {
         Message.SIXTH_SENSE_NAME.build(),
         Message.SIXTH_SENSE_LORE.build(),
         48);
-    this.glowPlayerStates = HashMultimap.create();
   }
 
   @Override
@@ -43,8 +39,12 @@ public final class SixthSense extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!(gamePlayer instanceof final Survivor survivor)) {
+      return;
+    }
+
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, gamePlayer), 0, 2 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, survivor), 0, 2 * 20L);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.SIXTH_SENSE_ACTIVATE.build();
@@ -52,16 +52,16 @@ public final class SixthSense extends SurvivorGadget {
     audience.playSound(SIXTH_SENSE_SOUND);
   }
 
-  private void handleKillers(final PlayerManager manager, final GamePlayer player) {
+  private void handleKillers(final PlayerManager manager, final Survivor player) {
     manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(murderer, player));
   }
 
-  private void handleGlowMurderer(final GamePlayer killer, final GamePlayer state) {
-    final Location location = state.getLocation();
+  private void handleGlowMurderer(final GamePlayer killer, final Survivor survivor) {
+    final Location location = survivor.getLocation();
     final Location other = killer.getLocation();
-    final Collection<GamePlayer> visible = this.glowPlayerStates.get(state);
+    final Collection<GamePlayer> visible = survivor.getGlowingKillers();
     final double distance = location.distanceSquared(other);
-    final MetadataManager metadata = state.getMetadataManager();
+    final MetadataManager metadata = survivor.getMetadataManager();
     if (distance < SIXTH_SENSE_RADIUS * SIXTH_SENSE_RADIUS) {
       visible.add(killer);
       metadata.setEntityGlowing(killer, ChatColor.BLUE, true);

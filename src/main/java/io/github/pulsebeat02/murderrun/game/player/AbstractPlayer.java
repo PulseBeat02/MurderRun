@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -160,5 +161,25 @@ public abstract class AbstractPlayer implements Participant {
     final Player player = this.getInternalPlayer();
     final PlayerInventory inventory = player.getInventory();
     inventory.clear();
+  }
+
+  @Override
+  public void setSaturation(final float saturation) {
+    this.apply(player -> player.setSaturation(saturation));
+  }
+
+  @Override
+  public void setFoodLevel(final int foodLevel) {
+    this.apply(player -> player.setFoodLevel(foodLevel));
+  }
+
+  @Override
+  public void setHealth(final double health) {
+    this.apply(player -> player.setHealth(health));
+  }
+
+  @Override
+  public void setSpectatorTarget(final Entity entity) {
+    this.apply(player -> player.setSpectatorTarget(entity));
   }
 }
