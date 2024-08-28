@@ -17,6 +17,8 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FireTrail extends KillerGadget {
 
+  private static final String FIRE_TRAIL_SOUND = "item.flintandsteel.use";
+
   public FireTrail() {
     super(
         "fire_trail",
@@ -35,13 +37,13 @@ public final class FireTrail extends KillerGadget {
     player.addPotionEffect(
         new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
 
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4);
+
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("item.flintandsteel.use");
-
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4);
+    audience.playSound(FIRE_TRAIL_SOUND);
   }
 
   private void spawnFire(final Player player) {

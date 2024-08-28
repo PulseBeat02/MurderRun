@@ -3,8 +3,8 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.helper.TargetEntityInstance;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.util.TargetableEntityInstance;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -33,7 +33,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
 
   private static final String ICE_SPIRIT_SOUND = "entity.zombie.ambient";
 
-  private final TargetEntityInstance target;
+  private final TargetableEntityInstance target;
 
   public IceSpirit(final Game game) {
     super(
@@ -42,7 +42,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener {
         Message.ICE_SPIRIT_NAME.build(),
         Message.ICE_SPIRIT_LORE.build(),
         16);
-    this.target = new TargetEntityInstance(game);
+    this.target = new TargetableEntityInstance(game);
   }
 
   @EventHandler

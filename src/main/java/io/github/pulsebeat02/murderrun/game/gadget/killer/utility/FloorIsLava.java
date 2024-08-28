@@ -1,10 +1,9 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -21,7 +20,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class FloorIsLava extends KillerGadget {
 
-  private final Multimap<GamePlayer, GamePlayer> glowPlayerStates;
+  private static final String FLOOR_IS_LAVA_SOUND = "entity.magma_cube.jump";
 
   public FloorIsLava() {
     super(
@@ -30,7 +29,6 @@ public final class FloorIsLava extends KillerGadget {
         Message.THE_FLOOR_IS_LAVA_NAME.build(),
         Message.THE_FLOOR_IS_LAVA_LORE.build(),
         64);
-    this.glowPlayerStates = HashMultimap.create();
   }
 
   @Override
@@ -39,31 +37,35 @@ public final class FloorIsLava extends KillerGadget {
     super.onGadgetDrop(game, event, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
-    manager.playSoundForAllParticipants("entity.magma_cube.jump");
-
     final GameScheduler scheduler = game.getScheduler();
     final Player player = event.getPlayer();
-    final GamePlayer killer = manager.getGamePlayer(player);
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!(gamePlayer instanceof final Killer killer)) {
+      return;
+    }
+
     scheduler.scheduleRepeatedTask(
         () -> this.handleSurvivors(manager, scheduler, killer), 0, 6 * 20L);
+
+    manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
+    manager.playSoundForAllParticipants(FLOOR_IS_LAVA_SOUND);
   }
 
   private void handleSurvivors(
-      final PlayerManager manager, final GameScheduler scheduler, final GamePlayer killer) {
+      final PlayerManager manager, final GameScheduler scheduler, final Killer killer) {
     manager.applyToAllLivingInnocents(survivor -> this.handleMovement(scheduler, survivor, killer));
   }
 
   private void handleMovement(
-      final GameScheduler scheduler, final GamePlayer player, final GamePlayer killer) {
+      final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
     final Location previous = player.getLocation();
     scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 5 * 20L);
   }
 
   private void handleLocationChecking(
-      final Location previous, final GamePlayer player, final GamePlayer killer) {
+      final Location previous, final GamePlayer player, final Killer killer) {
     final Location newLocation = player.getLocation();
-    final Collection<GamePlayer> glowing = this.glowPlayerStates.get(killer);
+    final Collection<GamePlayer> glowing = killer.getFloorIsLavaGlowing();
     final MetadataManager metadata = killer.getMetadataManager();
     if (this.checkLocationSame(previous, newLocation)) {
       glowing.add(player);

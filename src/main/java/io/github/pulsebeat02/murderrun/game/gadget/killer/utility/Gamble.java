@@ -20,6 +20,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class Gamble extends KillerGadget {
 
+  private static final String GAMBLE_SOUND = "block.smithing_table.use";
+
   public Gamble() {
     super(
         "gamble",
@@ -45,7 +47,7 @@ public final class Gamble extends KillerGadget {
     final PlayerAudience audience = killer.getAudience();
     final Component msg = Message.GAMBLE_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound("block.smithing_table.use");
+    audience.playSound(GAMBLE_SOUND);
   }
 
   private void applyGamble(

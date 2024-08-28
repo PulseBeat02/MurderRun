@@ -15,6 +15,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Phantom extends KillerGadget {
 
+  private static final String PHANTOM_SOUND = "entity.phantom.ambient";
+  private static final int PHANTOM_DURATION = 15 * 20;
+
   public Phantom() {
     super(
         "phantom",
@@ -38,10 +41,10 @@ public final class Phantom extends KillerGadget {
 
     final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setDefault(gamePlayer, old), 15 * 20L);
+    scheduler.scheduleTask(() -> this.setDefault(gamePlayer, old), PHANTOM_DURATION);
 
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("entity.phantom.ambient");
+    audience.playSound(PHANTOM_SOUND);
   }
 
   private void setDefault(final GamePlayer player, final Location location) {

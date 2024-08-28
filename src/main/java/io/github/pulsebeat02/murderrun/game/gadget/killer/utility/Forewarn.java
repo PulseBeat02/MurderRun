@@ -1,12 +1,9 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
-import static java.util.Objects.requireNonNull;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -22,7 +19,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Forewarn extends KillerGadget {
 
-  private final Multimap<GamePlayer, GamePlayer> glowStates;
+  private static final String FOREWARN_SOUND = "entity.phantom.ambient";
 
   public Forewarn() {
     super(
@@ -31,7 +28,6 @@ public final class Forewarn extends KillerGadget {
         Message.FOREWARN_NAME.build(),
         Message.FOREWARN_LORE.build(),
         128);
-    this.glowStates = HashMultimap.create();
   }
 
   @Override
@@ -42,22 +38,26 @@ public final class Forewarn extends KillerGadget {
     final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!(gamePlayer instanceof final Killer killer)) {
+      return;
+    }
+
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(() -> this.handleInnocents(manager, killer), 0, 20L);
+
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component msg = Message.FOREWARN_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound("entity.phantom.ambient");
-
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllLivingInnocents(
-            survivor -> this.handleForewarn(survivor, gamePlayer)),
-        0,
-        20L);
+    audience.playSound(FOREWARN_SOUND);
   }
 
-  private void handleForewarn(final GamePlayer gamePlayer, final GamePlayer player) {
+  private void handleInnocents(final PlayerManager manager, final Killer gamePlayer) {
+    manager.applyToAllLivingInnocents(survivor -> this.handleForewarn(survivor, gamePlayer));
+  }
 
-    final Collection<GamePlayer> set = requireNonNull(this.glowStates.get(player));
+  private void handleForewarn(final GamePlayer gamePlayer, final Killer player) {
+
+    final Collection<GamePlayer> set = player.getForewarnGlowing();
     if (!(gamePlayer instanceof final Survivor survivor)) {
       return;
     }

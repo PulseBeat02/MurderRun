@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class MurderousWarp extends KillerGadget {
 
+  private static final String MURDEROUS_WARP_SOUND = "entity.enderman.teleport";
+
   public MurderousWarp() {
     super(
         "murderous_warp",
@@ -39,7 +41,7 @@ public final class MurderousWarp extends KillerGadget {
     killer.teleport(first);
 
     final PlayerAudience audienceRand = random.getAudience();
-    audienceRand.playSound("entity.enderman.teleport");
+    audienceRand.playSound(MURDEROUS_WARP_SOUND);
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     audienceRand.sendMessage(msg);

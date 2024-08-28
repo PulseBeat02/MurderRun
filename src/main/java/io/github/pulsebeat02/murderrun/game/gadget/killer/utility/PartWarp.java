@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class PartWarp extends KillerGadget {
 
+  private static final String PART_WARP_SOUND = "block.lever.click";
+
   public PartWarp() {
     super(
         "part_warp",
@@ -49,7 +51,7 @@ public final class PartWarp extends KillerGadget {
     final PlayerManager playerManager = game.getPlayerManager();
     final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.lever.click");
+    audience.playSound(PART_WARP_SOUND);
   }
 
   public CarPart getRandomCarPart(final List<CarPart> shuffled) {

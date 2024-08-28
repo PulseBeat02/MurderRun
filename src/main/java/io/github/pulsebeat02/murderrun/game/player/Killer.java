@@ -1,7 +1,10 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
+import org.bukkit.entity.Item;
 
 public final class Killer extends GamePlayer {
 
@@ -9,9 +12,20 @@ public final class Killer extends GamePlayer {
   private boolean forceMine;
   private long killerCooldown;
 
+  private final Collection<GamePlayer> forewarnGlowing;
+  private final Collection<GamePlayer> heatSeekerGlowing;
+  private final Collection<GamePlayer> floorIsLavaGlowing;
+  private final Collection<GamePlayer> enderShadowsGlowing;
+  private final Collection<Item> glowingTraps;
+
   public Killer(final Game game, final UUID uuid) {
     super(game, uuid);
     this.forceMine = true;
+    this.forewarnGlowing = new HashSet<>();
+    this.heatSeekerGlowing = new HashSet<>();
+    this.floorIsLavaGlowing = new HashSet<>();
+    this.enderShadowsGlowing = new HashSet<>();
+    this.glowingTraps = new HashSet<>();
   }
 
   public boolean isIgnoringTraps() {
@@ -36,5 +50,25 @@ public final class Killer extends GamePlayer {
 
   public void setKillerRewindCooldown(final long cooldown) {
     this.killerCooldown = cooldown;
+  }
+
+  public Collection<GamePlayer> getFloorIsLavaGlowing() {
+    return this.floorIsLavaGlowing;
+  }
+
+  public Collection<Item> getGlowingTraps() {
+    return this.glowingTraps;
+  }
+
+  public Collection<GamePlayer> getForewarnGlowing() {
+    return this.forewarnGlowing;
+  }
+
+  public Collection<GamePlayer> getHeatSeekerGlowing() {
+    return this.heatSeekerGlowing;
+  }
+
+  public Collection<GamePlayer> getEnderShadowsGlowing() {
+    return this.enderShadowsGlowing;
   }
 }

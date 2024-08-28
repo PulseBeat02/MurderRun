@@ -16,6 +16,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class IcePath extends KillerGadget {
 
+  private static final String ICE_PATH_SOUND = "block.glass.break";
+
   public IcePath() {
     super(
         "ice_path", Material.ICE, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build(), 32);
@@ -30,7 +32,7 @@ public final class IcePath extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound("block.glass.break");
+    audience.playSound(ICE_PATH_SOUND);
   }
 
   private void setIceTrail(final Player player) {

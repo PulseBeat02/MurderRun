@@ -108,4 +108,8 @@ public interface Participant {
   void setFlySpeed(final float speed);
 
   void setLevel(final int level);
+
+  void setLastPortalUse(final long cooldown);
+
+  long getLastPortalUse();
 }

@@ -1,10 +1,9 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -20,7 +19,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class HeatSeeker extends KillerGadget {
 
-  private final Multimap<GamePlayer, GamePlayer> glowPlayerStates;
+  private static final String HEAT_SEEKER_SOUND = "block.amethyst_block.chime";
+  private static final double HEAT_SEEKER_RADIUS = 10D;
 
   public HeatSeeker() {
     super(
@@ -29,7 +29,6 @@ public final class HeatSeeker extends KillerGadget {
         Message.HEAT_SEEKER_NAME.build(),
         Message.HEAT_SEEKER_LORE.build(),
         48);
-    this.glowPlayerStates = HashMultimap.create();
   }
 
   @Override
@@ -40,26 +39,30 @@ public final class HeatSeeker extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!(gamePlayer instanceof final Killer killer)) {
+      return;
+    }
+
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(() -> this.scheduleTasks(manager, killer), 0, 2 * 20L);
+
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.HEAT_SEEKER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound("block.amethyst_block.chime");
-
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.scheduleTasks(manager, gamePlayer), 0, 2 * 20L);
+    audience.playSound(HEAT_SEEKER_SOUND);
   }
 
-  private void scheduleTasks(final PlayerManager manager, final GamePlayer player) {
+  private void scheduleTasks(final PlayerManager manager, final Killer player) {
     manager.applyToAllLivingInnocents(innocent -> this.handleGlowInnocent(innocent, player));
   }
 
-  private void handleGlowInnocent(final GamePlayer innocent, final GamePlayer state) {
+  private void handleGlowInnocent(final GamePlayer innocent, final Killer owner) {
     final Location location = innocent.getLocation();
-    final Location other = state.getLocation();
-    final Collection<GamePlayer> visible = this.glowPlayerStates.get(state);
+    final Location other = owner.getLocation();
+    final Collection<GamePlayer> visible = owner.getHeatSeekerGlowing();
     final double distance = location.distanceSquared(other);
-    final MetadataManager metadata = state.getMetadataManager();
-    if (distance < 100) {
+    final MetadataManager metadata = owner.getMetadataManager();
+    if (distance < HEAT_SEEKER_RADIUS * HEAT_SEEKER_RADIUS) {
       visible.add(innocent);
       metadata.setEntityGlowing(innocent, ChatColor.RED, true);
     } else if (visible.contains(innocent)) {

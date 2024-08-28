@@ -17,6 +17,7 @@ public class GamePlayer extends AbstractPlayer {
   private DeathManager deathManager;
   private PlayerAudience audience;
 
+  private long lastPortalUse;
   private boolean canDismount;
   private boolean canSpectatorTeleport;
   private boolean alive;
@@ -86,5 +87,15 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public boolean canSpectatorTeleport() {
     return this.canSpectatorTeleport;
+  }
+
+  @Override
+  public void setLastPortalUse(final long cooldown) {
+    this.lastPortalUse = cooldown;
+  }
+
+  @Override
+  public long getLastPortalUse() {
+    return this.lastPortalUse;
   }
 }

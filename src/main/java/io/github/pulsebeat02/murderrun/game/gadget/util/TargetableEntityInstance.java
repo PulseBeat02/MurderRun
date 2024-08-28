@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.helper;
+package io.github.pulsebeat02.murderrun.game.gadget.util;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -23,11 +23,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public final class TargetEntityInstance {
+public final class TargetableEntityInstance {
 
   private final Game game;
 
-  public TargetEntityInstance(final Game game) {
+  public TargetableEntityInstance(final Game game) {
     this.game = game;
   }
 

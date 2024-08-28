@@ -23,6 +23,10 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FakePart extends KillerGadget {
 
+  private static final String FAKE_PART_SOUND = "block.lever.click";
+  private static final double FAKE_PART_RADIUS = 2D;
+  private static final int FAKE_PART_DURATION = 8 * 20;
+
   public FakePart() {
     super(
         "fake_part",
@@ -46,11 +50,11 @@ public final class FakePart extends KillerGadget {
     scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(item), 0, 20L, item::isDead);
 
     final GamePlayer killer = manager.getGamePlayer(player);
-    final PlayerAudience audience = killer.getAudience();
-    audience.playSound("block.lever.click");
-
     final Runnable task = () -> this.handlePlayers(scheduler, manager, killer, item);
     scheduler.scheduleConditionalTask(task, 0, 20L, item::isDead);
+
+    final PlayerAudience audience = killer.getAudience();
+    audience.playSound(FAKE_PART_SOUND);
   }
 
   private void handlePlayers(
@@ -70,7 +74,7 @@ public final class FakePart extends KillerGadget {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < 4) {
+    if (distance < FAKE_PART_RADIUS * FAKE_PART_RADIUS) {
       this.handleDebuff(scheduler, survivor, killer, item);
       final PlayerAudience audience = survivor.getAudience();
       final Component msg = Message.FAKE_PART_ACTIVATE.build();
@@ -87,10 +91,10 @@ public final class FakePart extends KillerGadget {
     item.remove();
     survivor.disableJump(scheduler, 8 * 20L);
     survivor.disableWalkWithFOVEffects(8 * 20);
-    survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 8 * 20, 1));
+    survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, FAKE_PART_DURATION, 1));
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, 8 * 20L);
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, FAKE_PART_DURATION);
   }
 
   private Item spawnItem(final Location location) {

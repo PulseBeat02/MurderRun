@@ -2,14 +2,13 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -34,8 +33,6 @@ public final class TrapSeeker extends KillerGadget {
   private static final String TRAP_SEEKER_SOUND = "block.amethyst_block.chime";
   private static final double TRAP_SEEKER_RANGE = 15D;
 
-  private final Multimap<GamePlayer, Item> glowItemStates;
-
   public TrapSeeker() {
     super(
         "trap_seeker",
@@ -43,7 +40,6 @@ public final class TrapSeeker extends KillerGadget {
         Message.TRAP_SEEKER_NAME.build(),
         Message.TRAP_SEEKER_LORE.build(),
         64);
-    this.glowItemStates = HashMultimap.create();
   }
 
   @Override
@@ -54,19 +50,23 @@ public final class TrapSeeker extends KillerGadget {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    if (!(gamePlayer instanceof Killer killer)) {
+      return;
+    }
+
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, killer), 0, 20L);
+
+    final PlayerAudience audience = killer.getAudience();
     final Component message = Message.TRAP_SEEKER_ACTIVATE.build();
     audience.sendMessage(message);
     audience.playSound(TRAP_SEEKER_SOUND);
-
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, gamePlayer), 0, 20L);
   }
 
-  private void handleTrapSeeking(final Game game, final GamePlayer innocent) {
+  private void handleTrapSeeking(final Game game, final Killer killer) {
 
     final GadgetManager manager = game.getGadgetManager();
-    final Location origin = innocent.getLocation();
+    final Location origin = killer.getLocation();
     final World world = requireNonNull(origin.getWorld());
     final Collection<Entity> entities =
         world.getNearbyEntities(origin, TRAP_SEEKER_RANGE, TRAP_SEEKER_RANGE, TRAP_SEEKER_RANGE);
@@ -92,8 +92,8 @@ public final class TrapSeeker extends KillerGadget {
       gadgets.add(item);
     }
 
-    final Collection<Item> set = requireNonNull(this.glowItemStates.get(innocent));
-    final MetadataManager metadata = innocent.getMetadataManager();
+    final Collection<Item> set = killer.getGlowingTraps();
+    final MetadataManager metadata = killer.getMetadataManager();
     for (final Item item : gadgets) {
       if (!set.contains(item)) {
         set.add(item);

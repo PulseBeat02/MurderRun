@@ -16,6 +16,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class InfraredVision extends KillerGadget {
 
+  private static final String INFRARED_VISION_SOUND = "block.amethyst_block.chime";
+  private static final int INFRARED_VISION_DURATION = 7 * 20;
+
   public InfraredVision() {
     super(
         "infrared_vision",
@@ -35,7 +38,7 @@ public final class InfraredVision extends KillerGadget {
     manager.applyToAllLivingInnocents(
         innocent -> this.setSurvivorGlow(scheduler, innocent, killer));
     final PlayerAudience audience = killer.getAudience();
-    audience.playSound("block.amethyst_block.chime");
+    audience.playSound(INFRARED_VISION_SOUND);
   }
 
   private void setSurvivorGlow(
@@ -43,7 +46,7 @@ public final class InfraredVision extends KillerGadget {
     final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.INFRARED_VISION_ACTIVATE.build();
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, 7 * 20L);
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, INFRARED_VISION_DURATION);
     audience.sendMessage(msg);
   }
 }

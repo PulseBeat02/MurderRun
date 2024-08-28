@@ -23,12 +23,7 @@ public final class MurderRun extends JavaPlugin {
 
   DEBUG
 
-  - Make code neater (SRP, SOLID, etc)
-    - create constants for each class to prepare for configuration
-    - fix PlayerManager class
-    - revise killer gadgets
   - Test all gadgets
-
 
    */
 

@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class HealthCut extends KillerGadget {
 
+  private static final String HEALTH_CUT_SOUND = "entity.ghast.hurt";
+
   public HealthCut() {
     super(
         "health_cut",
@@ -35,7 +37,7 @@ public final class HealthCut extends KillerGadget {
     final Player player = event.getPlayer();
     final GamePlayer killer = manager.getGamePlayer(player);
     final PlayerAudience audience = killer.getAudience();
-    audience.playSound("entity.ghast.hurt");
+    audience.playSound(HEALTH_CUT_SOUND);
   }
 
   private void setState(final GamePlayer survivor, final GameScheduler scheduler) {

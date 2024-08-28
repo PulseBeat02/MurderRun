@@ -3,14 +3,13 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -38,8 +37,6 @@ public final class EnderShadows extends KillerGadget {
   private static final String TEXTURE_VALUE =
       "ewogICJ0aW1lc3RhbXAiIDogMTY3Mjc3NTg4Mzk5MywKICAicHJvZmlsZUlkIiA6ICI2MDJmMjA0M2YzYjU0OGU1ODQyYjE4ZjljMDg2Y2U0ZiIsCiAgInByb2ZpbGVOYW1lIiA6ICJCb3J5c18iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTM5M2Q2NzU2M2VlNTYwMTg3NjZkMjFiMzY2OTJjYmU1NjNkYzBhOTFiYWNmYzBkYjU0YjMwYzJiOWEyNDg3MyIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9";
 
-  private final Multimap<GamePlayer, GamePlayer> shadows;
-
   public EnderShadows() {
     super(
         "ender_shadows",
@@ -47,7 +44,6 @@ public final class EnderShadows extends KillerGadget {
         Message.ENDER_SHADOWS_NAME.build(),
         Message.ENDER_SHADOWS_LORE.build(),
         48);
-    this.shadows = HashMultimap.create();
   }
 
   @Override
@@ -61,7 +57,11 @@ public final class EnderShadows extends KillerGadget {
     final Arena arena = requireNonNull(settings.getArena());
     final Location spawn = arena.getSpawn();
     final Player player = event.getPlayer();
-    final GamePlayer killer = manager.getGamePlayer(player);
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!(gamePlayer instanceof final Killer killer)) {
+      return;
+    }
+
     final CitizensManager npcManager = game.getNPCManager();
     manager.applyToAllLivingInnocents(
         survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
@@ -71,7 +71,7 @@ public final class EnderShadows extends KillerGadget {
   private void handleAllSurvivors(
       final CitizensManager manager,
       final GameScheduler scheduler,
-      final GamePlayer killer,
+      final Killer killer,
       final GamePlayer survivor,
       final Location spawn) {
 
@@ -84,18 +84,18 @@ public final class EnderShadows extends KillerGadget {
         () -> this.handleSurvivorTeleport(killer, survivor, shadow), 2 * 20L, 20L);
 
     final Location[] old = {survivor.getLocation()};
-    scheduler.scheduleRepeatedTask(
-        () -> {
-          shadow.teleport(old[0]);
-          old[0] = survivor.getLocation();
-        },
-        0,
-        10 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.teleportShadow(survivor, shadow, old), 0, 10 * 20L);
+  }
+
+  private void teleportShadow(
+      final GamePlayer survivor, final Entity shadow, final Location[] old) {
+    shadow.teleport(old[0]);
+    old[0] = survivor.getLocation();
   }
 
   private void handleSurvivorTeleport(
-      final GamePlayer killer, final GamePlayer survivor, final Entity shadow) {
-    final Collection<GamePlayer> players = this.shadows.get(survivor);
+      final Killer killer, final GamePlayer survivor, final Entity shadow) {
+    final Collection<GamePlayer> players = killer.getEnderShadowsGlowing();
     final Component msg = Message.ENDER_SHADOWS_EFFECT.build();
     final MetadataManager metadata = killer.getMetadataManager();
     final Location location = survivor.getLocation();

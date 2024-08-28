@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.helper;
+package io.github.pulsebeat02.murderrun.game.gadget.util;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
