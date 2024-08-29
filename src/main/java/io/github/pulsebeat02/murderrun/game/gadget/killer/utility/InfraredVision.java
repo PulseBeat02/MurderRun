@@ -11,8 +11,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class InfraredVision extends KillerGadget {
 
@@ -29,16 +28,20 @@ public final class InfraredVision extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
-    super.onGadgetDrop(game, event, true);
-    final Player player = event.getPlayer();
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+
+    super.onGadgetDrop(game, player, item, true);
+
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer killer = manager.getGamePlayer(player);
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToAllLivingInnocents(
-        innocent -> this.setSurvivorGlow(scheduler, innocent, killer));
-    final PlayerAudience audience = killer.getAudience();
+        innocent -> this.setSurvivorGlow(scheduler, innocent, player));
+
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(INFRARED_VISION_SOUND);
+
+    return false;
   }
 
   private void setSurvivorGlow(

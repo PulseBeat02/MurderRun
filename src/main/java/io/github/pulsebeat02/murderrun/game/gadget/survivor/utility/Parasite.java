@@ -12,8 +12,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -33,18 +31,18 @@ public final class Parasite extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    final Item item = event.getItemDrop();
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
     scheduler.scheduleParticleTaskUntilDeath(item, Color.GREEN);
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(PARASITE_SOUND);
+
+    return false;
   }
 
   private void handleKillers(final PlayerManager manager, final Item item) {

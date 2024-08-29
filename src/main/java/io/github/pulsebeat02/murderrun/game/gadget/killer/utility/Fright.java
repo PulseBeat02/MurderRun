@@ -12,7 +12,6 @@ import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -40,13 +39,19 @@ public final class Fright extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game,
+      final GamePlayer player,
+      final org.bukkit.entity.Item item,
+      final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToAllLivingInnocents(survivor -> this.jumpScareSurvivor(survivor, scheduler));
+
+    return false;
   }
 
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {

@@ -4,15 +4,13 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class IcePath extends KillerGadget {
 
@@ -24,18 +22,21 @@ public final class IcePath extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
-    super.onGadgetDrop(game, event, true);
-    final Player player = event.getPlayer();
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+
+    super.onGadgetDrop(game, player, item, true);
+
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(player), 0, 4);
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(ICE_PATH_SOUND);
+
+    return false;
   }
 
-  private void setIceTrail(final Player player) {
+  private void setIceTrail(final GamePlayer player) {
     final Location location = player.getLocation();
     final Block block = location.getBlock();
     final Block lower = block.getRelative(BlockFace.DOWN);

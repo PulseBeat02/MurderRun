@@ -208,4 +208,16 @@ public abstract class AbstractPlayer implements Participant {
   public void setLevel(final int level) {
     this.apply(player -> player.setLevel(level));
   }
+
+  @Override
+  public float getFlySpeed() {
+    final Player player = this.getInternalPlayer();
+    return player.getFlySpeed();
+  }
+
+  @Override
+  public Vector getVelocity() {
+    final Player player = this.getInternalPlayer();
+    return player.getVelocity();
+  }
 }

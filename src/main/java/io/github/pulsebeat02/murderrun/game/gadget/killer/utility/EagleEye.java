@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
@@ -16,8 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class EagleEye extends KillerGadget {
 
@@ -34,9 +32,10 @@ public final class EagleEye extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
@@ -48,7 +47,6 @@ public final class EagleEye extends KillerGadget {
     final Location location = highest.getLocation();
     final Location teleport = location.add(0, 50, 0);
 
-    final Player player = event.getPlayer();
     final Location previous = player.getLocation();
     player.setGravity(false);
     player.teleport(teleport);
@@ -57,13 +55,13 @@ public final class EagleEye extends KillerGadget {
     final float before = player.getFlySpeed();
     player.setFlySpeed(0.0f);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(EAGLE_EYE_SOUND);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetState(gamePlayer, previous, before), EAGLE_EYE_DURATION);
+    scheduler.scheduleTask(() -> this.resetState(player, previous, before), EAGLE_EYE_DURATION);
+
+    return false;
   }
 
   private void resetState(

@@ -11,7 +11,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class BloodCurse extends KillerGadget {
 
@@ -27,9 +27,10 @@ public final class BloodCurse extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
@@ -40,6 +41,8 @@ public final class BloodCurse extends KillerGadget {
 
     final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(msg);
+
+    return false;
   }
 
   private void setBloodBlock(final GamePlayer survivor) {

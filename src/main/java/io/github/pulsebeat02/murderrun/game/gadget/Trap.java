@@ -7,7 +7,6 @@ import java.awt.Color;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 public abstract class Trap extends AbstractGadget {
 
@@ -36,12 +35,13 @@ public abstract class Trap extends AbstractGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final GameScheduler scheduler = game.getScheduler();
-    final Item item = event.getItemDrop();
     item.setUnlimitedLifetime(true);
     item.setPickupDelay(Integer.MAX_VALUE);
     scheduler.scheduleTaskAfterOnGround(() -> this.scheduleParticleTask(item, scheduler), item);
+    return false;
   }
 
   private void scheduleParticleTask(final Item item, final GameScheduler scheduler) {

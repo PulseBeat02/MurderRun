@@ -11,9 +11,8 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class QuickBomb extends KillerGadget {
 
@@ -29,18 +28,18 @@ public final class QuickBomb extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllLivingInnocents(this::spawnPrimedTnt);
 
-    final Player player = event.getPlayer();
-    final PlayerManager playerManager = game.getPlayerManager();
-    final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(QUICK_BOMB_SOUND);
+
+    return false;
   }
 
   private void spawnPrimedTnt(final GamePlayer survivor) {

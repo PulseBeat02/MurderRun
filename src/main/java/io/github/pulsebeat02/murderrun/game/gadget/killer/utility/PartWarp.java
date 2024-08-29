@@ -6,7 +6,6 @@ import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.util.Collection;
@@ -15,8 +14,6 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class PartWarp extends KillerGadget {
 
@@ -32,9 +29,10 @@ public final class PartWarp extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final io.github.pulsebeat02.murderrun.game.map.Map map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
@@ -42,16 +40,15 @@ public final class PartWarp extends KillerGadget {
     final Collection<CarPart> values = parts.values();
     final List<CarPart> shuffled = values.stream().collect(StreamUtils.toShuffledList());
     final CarPart part = this.getRandomCarPart(shuffled);
-    final Item item = part.getItem();
+    final Item carPartItem = part.getItem();
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    item.teleport(location);
+    carPartItem.teleport(location);
 
-    final PlayerManager playerManager = game.getPlayerManager();
-    final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(PART_WARP_SOUND);
+
+    return false;
   }
 
   public CarPart getRandomCarPart(final List<CarPart> shuffled) {

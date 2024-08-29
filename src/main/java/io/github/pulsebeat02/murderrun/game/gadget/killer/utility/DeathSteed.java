@@ -15,8 +15,8 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.HorseInventory;
 
 public final class DeathSteed extends KillerGadget {
@@ -33,11 +33,11 @@ public final class DeathSteed extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final Horse horse = this.spawnHorse(world, location, player);
@@ -46,24 +46,28 @@ public final class DeathSteed extends KillerGadget {
     scheduler.scheduleConditionalTask(
         () -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(DEATH_STEED_SOUND);
+
+    return false;
   }
 
   private void handleSurvivors(final PlayerManager manager, final Horse horse) {
     manager.applyToAllLivingInnocents(survivor -> this.handleSurvivor(survivor, horse));
   }
 
-  private Horse spawnHorse(final World world, final Location location, final Player player) {
+  private Horse spawnHorse(final World world, final Location location, final GamePlayer player) {
     return world.spawn(location, Horse.class, entity -> {
-      entity.setOwner(player);
-      entity.setCustomName("Death Steed");
-      entity.setCustomNameVisible(true);
-      entity.setTamed(true);
-      entity.addPassenger(player);
+      final Player owner = player.getInternalPlayer();
+      this.customizeAttributes(entity, owner);
       this.setSaddle(entity);
     });
+  }
+
+  private void customizeAttributes(final Horse entity, final Player owner) {
+    entity.setTamed(true);
+    entity.setOwner(owner);
+    entity.addPassenger(owner);
   }
 
   private void setSaddle(final Horse horse) {

@@ -3,9 +3,10 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.CameraGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class Camera extends SurvivorGadget {
 
@@ -17,10 +18,11 @@ public final class Camera extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
     if (this.gadget == null) {
       this.gadget = new CameraGadget(this);
     }
-    this.gadget.handleCamera(game, event);
+    return this.gadget.handleCamera(game, player, item, remove);
   }
 }

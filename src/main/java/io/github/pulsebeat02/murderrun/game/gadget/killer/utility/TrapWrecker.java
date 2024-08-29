@@ -5,14 +5,12 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class TrapWrecker extends KillerGadget {
 
@@ -29,16 +27,15 @@ public final class TrapWrecker extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final Player player = event.getPlayer();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!(gamePlayer instanceof final Killer killer)) {
-      return;
+    if (!(player instanceof final Killer killer)) {
+      return true;
     }
+
     killer.setIgnoreTraps(true);
 
     final GameScheduler scheduler = game.getScheduler();
@@ -54,5 +51,7 @@ public final class TrapWrecker extends KillerGadget {
     final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();
     audience.sendMessage(msg);
     audience.playSound(TRAP_WRECKER_SOUND);
+
+    return false;
   }
 }

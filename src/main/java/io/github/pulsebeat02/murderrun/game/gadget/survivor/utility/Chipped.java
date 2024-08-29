@@ -10,8 +10,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class Chipped extends SurvivorGadget {
 
@@ -28,19 +27,20 @@ public final class Chipped extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer owner = manager.getGamePlayer(player);
-    final MetadataManager metadata = owner.getMetadataManager();
+    final MetadataManager metadata = player.getMetadataManager();
     final GameScheduler scheduler = game.getScheduler();
     this.setOtherSurvivorsGlowing(manager, metadata, scheduler);
 
-    final PlayerAudience audience = owner.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(CHIPPED_SOUND);
+
+    return false;
   }
 
   private void setOtherSurvivorsGlowing(

@@ -16,13 +16,11 @@ import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class CryoFreeze extends SurvivorGadget {
 
@@ -39,11 +37,11 @@ public final class CryoFreeze extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final BlockVector3 vector3 = BukkitAdapter.asBlockVector(location);
     final World world = requireNonNull(location.getWorld());
@@ -54,10 +52,10 @@ public final class CryoFreeze extends SurvivorGadget {
     final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
     this.createSphere(weWorld, vector3, state, whitelistManager);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer owner = manager.getGamePlayer(player);
-    final PlayerAudience audience = owner.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(CRYO_FREEZE_SOUND);
+
+    return false;
   }
 
   private void createSphere(

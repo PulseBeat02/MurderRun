@@ -9,7 +9,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -28,12 +27,11 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -66,11 +64,11 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final Location spawnLocation = location.add(0, 100, 0);
     final World world = requireNonNull(spawnLocation.getWorld());
@@ -84,10 +82,10 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     scheduler.scheduleConditionalTask(
         () -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(SUPPLY_DROP_SOUND);
+
+    return false;
   }
 
   private void spawnParticleTrail(final FallingBlock chest) {

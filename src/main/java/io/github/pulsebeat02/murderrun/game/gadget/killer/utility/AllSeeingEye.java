@@ -11,8 +11,8 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class AllSeeingEye extends KillerGadget {
 
@@ -28,22 +28,23 @@ public final class AllSeeingEye extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final Survivor random = manager.getRandomAliveInnocentPlayer();
-    final GamePlayer killer = manager.getGamePlayer(player);
     final Location before = player.getLocation();
-    this.setPlayerState(killer, random);
+    this.setPlayerState(player, random);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetPlayerState(killer, before), 7 * 20L);
+    scheduler.scheduleTask(() -> this.resetPlayerState(player, before), 7 * 20L);
 
-    final PlayerAudience audience = killer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(ALL_SEEING_EYE_SOUND);
+
+    return false;
   }
 
   private void resetPlayerState(final GamePlayer player, final Location location) {

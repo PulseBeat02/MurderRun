@@ -4,7 +4,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -14,8 +13,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 public final class Horcrux extends SurvivorGadget {
 
@@ -31,23 +28,20 @@ public final class Horcrux extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    final Player player = event.getPlayer();
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-
-    final Item item = event.getItemDrop();
-    final DeathManager deathManager = gamePlayer.getDeathManager();
-    final PlayerDeathTask task =
-        new PlayerDeathTask(() -> this.handleHorcrux(gamePlayer, item), true);
+    final DeathManager deathManager = player.getDeathManager();
+    final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleHorcrux(player, item), true);
     deathManager.addDeathTask(task);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleParticleTaskUntilDeath(item, Color.BLACK);
 
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(HORCRUX_SOUND);
+
+    return false;
   }
 
   private void handleHorcrux(final GamePlayer player, final Item item) {

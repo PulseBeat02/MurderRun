@@ -22,8 +22,6 @@ import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -46,12 +44,15 @@ public final class MedBot extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game,
+      final GamePlayer player,
+      final org.bukkit.entity.Item item,
+      final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final ArmorStand armorStand = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
@@ -68,9 +69,10 @@ public final class MedBot extends SurvivorGadget {
     this.handleParticles(scheduler, armorStand);
     this.handleMedBotUpdate(scheduler, manager, armorStand);
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(MED_BOT_SOUND);
+
+    return false;
   }
 
   private void handleMedBotUpdate(

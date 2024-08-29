@@ -16,8 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -33,18 +31,17 @@ public final class PortalTrap extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final Collection<Item> items = this.getTrapItemStackEntities(location, world, range);
     final Item closest = this.getClosestEntity(location, items);
     if (closest == null) {
-      super.onGadgetDrop(game, event, false);
-      return;
+      return true;
     }
 
     final PlayerManager playerManager = game.getPlayerManager();
@@ -52,7 +49,7 @@ public final class PortalTrap extends SurvivorGadget {
     final Location killerLocation = killer.getLocation();
     closest.teleport(killerLocation);
 
-    super.onGadgetDrop(game, event, true);
+    return super.onGadgetDrop(game, player, item, true);
   }
 
   private @Nullable Item getClosestEntity(final Location location, final Collection<Item> items) {

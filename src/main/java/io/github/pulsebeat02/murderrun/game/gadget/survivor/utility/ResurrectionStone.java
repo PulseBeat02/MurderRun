@@ -21,8 +21,7 @@ import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class ResurrectionStone extends SurvivorGadget {
 
@@ -38,17 +37,16 @@ public final class ResurrectionStone extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
-      super.onGadgetDrop(game, event, false);
-      return;
+      return super.onGadgetDrop(game, player, item, false);
     }
 
     final DeathManager deathManager = closest.getDeathManager();
@@ -56,18 +54,18 @@ public final class ResurrectionStone extends SurvivorGadget {
     final Location closestLocation = corpse.getLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
-      super.onGadgetDrop(game, event, false);
-      return;
+      return super.onGadgetDrop(game, player, item, false);
     }
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L);
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L);
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(RESSURECTION_STONE_SOUND);
+
+    return false;
   }
 
   private void spawnParticles(final Location location) {

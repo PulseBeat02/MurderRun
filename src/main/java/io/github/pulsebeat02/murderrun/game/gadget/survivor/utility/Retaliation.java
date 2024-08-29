@@ -8,11 +8,9 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
-import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -31,24 +29,24 @@ public final class Retaliation extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Player player = event.getPlayer();
-
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L);
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final Component message = Message.RETALIATION_ACTIVATE.build();
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.sendMessage(message);
     audience.playSound(RETALIATION_SOUND);
+
+    return false;
   }
 
-  private void checkForDeadPlayers(final PlayerManager manager, final Player player) {
+  private void checkForDeadPlayers(final PlayerManager manager, final GamePlayer player) {
 
     final Collection<GamePlayer> deathCount = manager.getDead();
     final int dead = deathCount.size();
@@ -57,10 +55,10 @@ public final class Retaliation extends SurvivorGadget {
     }
 
     final int effectLevel = Math.min(dead - 1, RETALATION_MAX_AMPLIFIER);
-    player.addPotionEffects(Set.of(
+    player.addPotionEffects(
         new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
         new PotionEffect(
             PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),
-        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel)));
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel));
   }
 }

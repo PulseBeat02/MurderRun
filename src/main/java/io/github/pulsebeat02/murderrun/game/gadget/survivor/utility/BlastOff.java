@@ -13,8 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 public final class BlastOff extends SurvivorGadget {
@@ -31,16 +31,16 @@ public final class BlastOff extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer killer = manager.getNearestKiller(location);
     if (killer == null) {
-      return;
+      return true;
     }
 
     final Location before = killer.getLocation();
@@ -48,9 +48,10 @@ public final class BlastOff extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleAfterDeath(() -> this.resetPlayer(killer, before), firework);
 
-    final GamePlayer owner = manager.getGamePlayer(player);
-    final PlayerAudience audience = owner.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(BLAST_OFF_SOUND);
+
+    return false;
   }
 
   private void resetPlayer(final GamePlayer killer, final Location before) {

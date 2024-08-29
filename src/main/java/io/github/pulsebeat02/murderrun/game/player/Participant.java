@@ -112,4 +112,8 @@ public interface Participant {
   void setLastPortalUse(final long cooldown);
 
   long getLastPortalUse();
+
+  float getFlySpeed();
+
+  Vector getVelocity();
 }

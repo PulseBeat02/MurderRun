@@ -8,8 +8,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class CorpusWarp extends SurvivorGadget {
 
@@ -25,27 +24,27 @@ public final class CorpusWarp extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer target = manager.getRandomDeadPlayer();
     if (target == null) {
-      super.onGadgetDrop(game, event, false);
-      return;
+      super.onGadgetDrop(game, player, item, false);
+      return true;
     }
 
     final Location location = target.getDeathLocation();
     if (location == null) {
-      return;
+      return true;
     }
+    player.teleport(location);
 
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.teleport(location);
-
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(CORPUS_WARP_SOUND);
+
+    return false;
   }
 }

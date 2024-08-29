@@ -15,8 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class RedArrow extends KillerGadget {
 
@@ -34,21 +33,21 @@ public final class RedArrow extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, RED_ARROW_DURATION);
 
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     final Component message = Message.RED_ARROW_ACTIVATE.build();
     audience.sendMessage(message);
     audience.playSound(RED_ARROW_SOUND);
+
+    return false;
   }
 
   private void handleSurvivors(final PlayerManager manager) {

@@ -15,8 +15,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -37,24 +35,26 @@ public final class FakePart extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final Item item = this.spawnItem(location);
+    final Item fakeItem = this.spawnItem(location);
 
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(item), 0, 20L, item::isDead);
+    scheduler.scheduleConditionalTask(
+        () -> this.spawnParticleOnPart(fakeItem), 0, 20L, fakeItem::isDead);
 
-    final GamePlayer killer = manager.getGamePlayer(player);
-    final Runnable task = () -> this.handlePlayers(scheduler, manager, killer, item);
-    scheduler.scheduleConditionalTask(task, 0, 20L, item::isDead);
+    final Runnable task = () -> this.handlePlayers(scheduler, manager, player, fakeItem);
+    scheduler.scheduleConditionalTask(task, 0, 20L, fakeItem::isDead);
 
-    final PlayerAudience audience = killer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(FAKE_PART_SOUND);
+
+    return false;
   }
 
   private void handlePlayers(

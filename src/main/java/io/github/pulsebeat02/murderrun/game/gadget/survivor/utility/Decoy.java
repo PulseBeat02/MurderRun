@@ -5,7 +5,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import net.citizensnpcs.api.npc.NPC;
@@ -17,7 +16,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -30,25 +28,28 @@ public final class Decoy extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game,
+      final GamePlayer player,
+      final org.bukkit.entity.Item item,
+      final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
-    final PlayerManager playerManager = game.getPlayerManager();
-    final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
     final CitizensManager manager = game.getNPCManager();
-
-    final String name = gamePlayer.getDisplayName();
+    final String name = player.getDisplayName();
     final NPC npc = this.customizeNPC(manager, player, name);
     final Location location = player.getLocation();
     npc.spawn(location);
 
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(DECOY_SOUND);
+
+    return false;
   }
 
-  private NPC customizeNPC(final CitizensManager manager, final Player player, final String name) {
+  private NPC customizeNPC(
+      final CitizensManager manager, final GamePlayer player, final String name) {
 
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, name);
@@ -64,13 +65,14 @@ public final class Decoy extends SurvivorGadget {
     npc.setProtected(false);
   }
 
-  private void setMirrorTrait(final Player player, final NPC npc) {
+  private void setMirrorTrait(final GamePlayer player, final NPC npc) {
+    final Player internal = player.getInternalPlayer();
     final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);
-    mirror.isMirroring(player);
+    mirror.isMirroring(internal);
     mirror.setMirrorName(true);
   }
 
-  private void setNPCArmor(final Player player, final NPC npc) {
+  private void setNPCArmor(final GamePlayer player, final NPC npc) {
     final PlayerInventory inventory = player.getInventory();
     final Equipment equipment = npc.getOrAddTrait(Equipment.class);
     final ItemStack helmet = inventory.getHelmet();

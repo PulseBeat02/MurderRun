@@ -9,7 +9,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class WarpDistort extends KillerGadget {
 
@@ -25,9 +25,10 @@ public final class WarpDistort extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer[] players = this.getRandomPlayers(manager);
@@ -47,6 +48,8 @@ public final class WarpDistort extends KillerGadget {
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     randomAudience.sendMessage(msg);
     random2Audience.sendMessage(msg);
+
+    return false;
   }
 
   private GamePlayer[] getRandomPlayers(final PlayerManager manager) {

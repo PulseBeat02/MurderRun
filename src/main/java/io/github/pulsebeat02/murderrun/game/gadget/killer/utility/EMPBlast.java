@@ -24,8 +24,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -52,11 +50,11 @@ public final class EMPBlast extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
 
@@ -73,6 +71,8 @@ public final class EMPBlast extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     playerManager.applyToAllLivingInnocents(survivor -> this.stunSurvivors(scheduler, survivor));
     playerManager.playSoundForAllParticipants(EMP_BLAST_SOUND);
+
+    return false;
   }
 
   private void stunSurvivors(final GameScheduler scheduler, final GamePlayer survivor) {

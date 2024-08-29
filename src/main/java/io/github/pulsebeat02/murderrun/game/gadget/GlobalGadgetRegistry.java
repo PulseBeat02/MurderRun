@@ -29,7 +29,7 @@ public final class GlobalGadgetRegistry {
   private final Map<String, Pair<Gadget, MethodHandle>> gadgetRegistry;
   private final AtomicBoolean frozen;
 
-  GlobalGadgetRegistry() {
+  private GlobalGadgetRegistry() {
     this.gadgetRegistry = new HashMap<>();
     this.frozen = new AtomicBoolean(true);
     this.load();

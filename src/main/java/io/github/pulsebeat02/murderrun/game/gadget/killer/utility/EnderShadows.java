@@ -25,8 +25,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class EnderShadows extends KillerGadget {
 
@@ -47,25 +46,26 @@ public final class EnderShadows extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location spawn = arena.getSpawn();
-    final Player player = event.getPlayer();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!(gamePlayer instanceof final Killer killer)) {
-      return;
+    if (!(player instanceof final Killer killer)) {
+      return true;
     }
 
     final CitizensManager npcManager = game.getNPCManager();
     manager.applyToAllLivingInnocents(
         survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
     manager.playSoundForAllParticipants(ENDER_SHADOWS_SOUND);
+
+    return false;
   }
 
   private void handleAllSurvivors(

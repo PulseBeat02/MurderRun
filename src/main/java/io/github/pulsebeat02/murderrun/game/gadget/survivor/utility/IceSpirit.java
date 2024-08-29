@@ -19,13 +19,11 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -97,23 +95,27 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game,
+      final GamePlayer player,
+      final org.bukkit.entity.Item item,
+      final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
-    final GamePlayer owner = manager.getGamePlayer(player);
     world.spawn(location, Zombie.class, zombie -> {
       this.customizeAttributes(zombie);
-      this.setTargetMetadata(owner, zombie);
+      this.setTargetMetadata(player, zombie);
       this.setEquipment(zombie);
     });
 
-    final PlayerAudience audience = owner.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(ICE_SPIRIT_SOUND);
+
+    return false;
   }
 
   private void customizeAttributes(final Zombie zombie) {

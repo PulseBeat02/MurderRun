@@ -26,7 +26,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -107,19 +106,23 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game,
+      final GamePlayer player,
+      final org.bukkit.entity.Item item,
+      final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
-    final GamePlayer killer = manager.getGamePlayer(player);
-    this.spawnDormagogg(world, location, killer);
+    this.spawnDormagogg(world, location, player);
 
-    final PlayerAudience audience = killer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(DORMAGOGG_SOUND);
+
+    return false;
   }
 
   private void spawnDormagogg(final World world, final Location location, final GamePlayer killer) {

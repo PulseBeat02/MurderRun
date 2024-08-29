@@ -14,8 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class BurnTheBody extends KillerGadget {
 
@@ -32,28 +31,30 @@ public final class BurnTheBody extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
-      return;
+      return true;
     }
 
     final Location deathLocation = requireNonNull(closest.getDeathLocation());
     final double distance = location.distanceSquared(deathLocation);
     if (distance > BURN_THE_BODY_RADIUS * BURN_THE_BODY_RADIUS) {
-      super.onGadgetDrop(game, event, false);
-      return;
+      super.onGadgetDrop(game, player, item, false);
+      return true;
     }
 
     final GameScheduler scheduler = game.getScheduler();
     this.destroyBody(scheduler, closest, deathLocation);
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     manager.playSoundForAllParticipants(BURN_THE_BODY_SOUND);
+
+    return false;
   }
 
   private void destroyBody(

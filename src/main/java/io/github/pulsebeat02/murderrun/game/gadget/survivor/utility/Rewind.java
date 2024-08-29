@@ -9,8 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class Rewind extends SurvivorGadget {
 
@@ -22,45 +21,44 @@ public final class Rewind extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
     final MovementManager movementManager = manager.getMovementManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-
-    if (!(gamePlayer instanceof Survivor survivor)) {
-      return;
+    if (!(player instanceof final Survivor survivor)) {
+      return true;
     }
 
     final long current = System.currentTimeMillis();
     final long last = survivor.getRewindCooldown();
     if (last == 0) {
       survivor.setRewindCooldown(current);
-      this.handleRewind(game, event, movementManager, survivor, current);
-      return;
+      this.handleRewind(game, movementManager, survivor, item, current);
+      return false;
     }
 
     if (current - last < REWIND_COOLDOWN) {
-      super.onGadgetDrop(game, event, false);
-      return;
+      return super.onGadgetDrop(game, player, item, false);
     }
 
-    this.handleRewind(game, event, movementManager, survivor, current);
+    this.handleRewind(game, movementManager, survivor, item, current);
+
+    return false;
   }
 
   private void handleRewind(
       final Game game,
-      final PlayerDropItemEvent event,
       final MovementManager movementManager,
       final Survivor survivor,
+      final Item item,
       final long current) {
 
     survivor.setRewindCooldown(current);
     survivor.setFallDistance(0.0f);
 
     final boolean successful = movementManager.handleRewind(survivor);
-    super.onGadgetDrop(game, event, successful);
+    super.onGadgetDrop(game, survivor, item, successful);
 
     final PlayerAudience audience = survivor.getAudience();
     audience.playSound(REWIND_SOUND);

@@ -14,8 +14,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 
 public final class SixthSense extends SurvivorGadget {
 
@@ -32,24 +31,25 @@ public final class SixthSense extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Player player = event.getPlayer();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!(gamePlayer instanceof final Survivor survivor)) {
-      return;
+    if (!(player instanceof final Survivor survivor)) {
+      return true;
     }
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, survivor), 0, 2 * 20L);
 
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     final Component message = Message.SIXTH_SENSE_ACTIVATE.build();
     audience.sendMessage(message);
     audience.playSound(SIXTH_SENSE_SOUND);
+
+    return false;
   }
 
   private void handleKillers(final PlayerManager manager, final Survivor player) {

@@ -25,8 +25,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -47,16 +45,16 @@ public final class CursedNote extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final io.github.pulsebeat02.murderrun.game.map.Map map = game.getMap();
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final Collection<CarPart> closeParts = this.getCarPartsInRange(map, location);
     if (closeParts.isEmpty()) {
-      return;
+      return true;
     }
 
     final GameSettings settings = game.getSettings();
@@ -67,13 +65,13 @@ public final class CursedNote extends KillerGadget {
     }
     scheduler.scheduleAfterDeath(() -> this.resetAllParts(closeParts), cursed);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer killer = manager.getGamePlayer(player);
-    final PlayerAudience audience = killer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(CURSED_NOTE_SOUND);
 
     final Component msg = Message.CURSED_NOTE_DROP.build();
     audience.sendMessage(msg);
+
+    return false;
   }
 
   private void resetAllParts(final Collection<CarPart> closeParts) {

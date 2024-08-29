@@ -9,8 +9,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -29,26 +28,27 @@ public final class Deadringer extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    gamePlayer.setInvulnerable(true);
-    gamePlayer.addPotionEffects(
+    player.setInvulnerable(true);
+    player.addPotionEffects(
         new PotionEffect(PotionEffectType.SPEED, DEADRINGER_DURATION, 1, true, false),
         new PotionEffect(PotionEffectType.INVISIBILITY, DEADRINGER_DURATION, 1, true, false));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> gamePlayer.setInvulnerable(false), DEADRINGER_DURATION);
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), DEADRINGER_DURATION);
 
-    final String name = gamePlayer.getDisplayName();
+    final PlayerManager manager = game.getPlayerManager();
+    final String name = player.getDisplayName();
     final Component message = Message.PLAYER_DEATH.build(name);
     manager.sendMessageToAllParticipants(message);
 
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(DEADRINGER_SOUND);
+
+    return false;
   }
 }

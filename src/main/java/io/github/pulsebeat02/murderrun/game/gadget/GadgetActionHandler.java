@@ -21,6 +21,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -63,12 +64,21 @@ public final class GadgetActionHandler implements Listener {
 
   @EventHandler
   public void onDropItem(final PlayerDropItemEvent event) {
+
     final Game game = this.manager.getGame();
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
     item.setUnlimitedLifetime(true);
     item.setPickupDelay(Integer.MAX_VALUE);
-    this.handleEventLogic(stack, gadget -> gadget.onGadgetDrop(game, event, false));
+
+    final PlayerManager manager = game.getPlayerManager();
+    final Player player = event.getPlayer();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+
+    this.handleEventLogic(stack, gadget -> {
+      final boolean cancel = gadget.onGadgetDrop(game, gamePlayer, item, false);
+      event.setCancelled(cancel);
+    });
   }
 
   private void runGadgetDetectionTask() {

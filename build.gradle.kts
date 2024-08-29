@@ -91,9 +91,12 @@ tasks.withType<JavaCompile>().configureEach {
 tasks {
 
     assemble {
-        dependsOn("spotlessApply")
         dependsOn(":v1_21_1:reobfJar")
         dependsOn("shadowJar")
+    }
+
+    build {
+        dependsOn("spotlessApply")
     }
 
     runServer {

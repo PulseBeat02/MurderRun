@@ -11,8 +11,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -32,28 +31,28 @@ public final class MindControl extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer nearest = manager.getNearestKiller(player.getLocation());
+    final Location originLoc = player.getLocation();
+    final GamePlayer nearest = manager.getNearestKiller(originLoc);
     if (nearest == null) {
-      return;
+      return true;
     }
 
-    final GamePlayer owner = manager.getGamePlayer(player);
-    if (!(owner instanceof final Survivor survivor)) {
-      return;
+    if (!(player instanceof final Survivor survivor)) {
+      return true;
     }
     survivor.setCanPickupCarPart(false);
 
     final Location location = nearest.getLocation();
-    owner.addPotionEffects(
+    player.addPotionEffects(
         new PotionEffect(PotionEffectType.INVISIBILITY, MIND_CONTROL_DURATION, 1));
-    owner.setInvulnerable(true);
-    owner.teleport(location);
+    player.setInvulnerable(true);
+    player.teleport(location);
 
     final Location origin = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
@@ -63,7 +62,7 @@ public final class MindControl extends SurvivorGadget {
 
     final String targetName = nearest.getDisplayName();
     final Component targetMsg = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
-    final PlayerAudience audience1 = owner.getAudience();
+    final PlayerAudience audience1 = player.getAudience();
     audience1.sendMessage(targetMsg);
     audience1.playSound(MIND_CONTROL_SOUND);
 
@@ -71,6 +70,8 @@ public final class MindControl extends SurvivorGadget {
     final Component msg = Message.MIND_CONTROL_ACTIVATE_KILLER.build(name);
     final PlayerAudience audience = nearest.getAudience();
     audience.sendMessage(msg);
+
+    return false;
   }
 
   private void resetPlayer(final Survivor player, final Location location) {
@@ -79,7 +80,7 @@ public final class MindControl extends SurvivorGadget {
     player.setCanPickupCarPart(true);
   }
 
-  private void applyMindControlEffects(final Player player, final GamePlayer killer) {
+  private void applyMindControlEffects(final GamePlayer player, final GamePlayer killer) {
     final Location location = player.getLocation();
     final Vector velocity = player.getVelocity();
     killer.teleport(location);

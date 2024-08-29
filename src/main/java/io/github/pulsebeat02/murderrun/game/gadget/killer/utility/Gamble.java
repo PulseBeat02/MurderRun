@@ -13,8 +13,7 @@ import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -32,22 +31,23 @@ public final class Gamble extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager playerManager = game.getPlayerManager();
-    final Player player = event.getPlayer();
-    final GamePlayer killer = playerManager.getGamePlayer(player);
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     playerManager.applyToAllLivingInnocents(
-        survivor -> this.applyGamble(mechanism, survivor, killer));
+        survivor -> this.applyGamble(mechanism, survivor, player));
 
-    final PlayerAudience audience = killer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     final Component msg = Message.GAMBLE_ACTIVATE.build();
     audience.sendMessage(msg);
     audience.playSound(GAMBLE_SOUND);
+
+    return false;
   }
 
   private void applyGamble(

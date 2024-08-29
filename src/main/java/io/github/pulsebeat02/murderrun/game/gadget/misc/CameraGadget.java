@@ -20,9 +20,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.util.Vector;
 
 public class CameraGadget {
@@ -42,14 +42,12 @@ public class CameraGadget {
     this.glowingPlayers = HashMultimap.create();
   }
 
-  public void handleCamera(final Game game, final PlayerDropItemEvent event) {
+  public boolean handleCamera(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    this.gadget.onGadgetDrop(game, event, true);
+    this.gadget.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-
     final Location location = player.getLocation();
     final CitizensManager npcManager = game.getNPCManager();
     final NPC npc = this.customizeNPC(npcManager);
@@ -57,19 +55,20 @@ public class CameraGadget {
 
     final LivingEntity entity = (LivingEntity) npc.getEntity();
     final GameScheduler scheduler = game.getScheduler();
-    final Consumer<GamePlayer> handleGlow =
-        opponent -> this.handleGlow(gamePlayer, opponent, entity);
+    final Consumer<GamePlayer> handleGlow = opponent -> this.handleGlow(player, opponent, entity);
 
     final Runnable task;
-    if (gamePlayer instanceof Survivor) {
+    if (player instanceof Survivor) {
       task = () -> manager.applyToAllMurderers(handleGlow);
     } else {
       task = () -> manager.applyToAllInnocents(handleGlow);
     }
     scheduler.scheduleRepeatedTask(task, 0, 20L);
 
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(CAMERA_SOUND);
+
+    return false;
   }
 
   private void handleGlow(

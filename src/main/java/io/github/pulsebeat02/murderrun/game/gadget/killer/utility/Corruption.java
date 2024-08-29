@@ -21,8 +21,7 @@ import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -38,34 +37,36 @@ public final class Corruption extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
-      super.onGadgetDrop(game, event, false);
-      return;
+      super.onGadgetDrop(game, player, item, false);
+      return true;
     }
 
     final Location closestLocation = closest.getDeathLocation();
     if (closestLocation == null) {
-      return;
+      return true;
     }
 
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
-      return;
+      return true;
     }
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, 5 * 20L);
     scheduler.scheduleTask(() -> this.corruptPlayer(game, closest), 5 * 20L);
+
+    return false;
   }
 
   private void corruptPlayer(final Game game, final GamePlayer closest) {

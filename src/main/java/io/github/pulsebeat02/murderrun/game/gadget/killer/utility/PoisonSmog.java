@@ -15,8 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -36,11 +35,11 @@ public final class PoisonSmog extends KillerGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    super.onGadgetDrop(game, event, true);
+    super.onGadgetDrop(game, player, item, true);
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
@@ -48,9 +47,10 @@ public final class PoisonSmog extends KillerGadget {
     scheduler.scheduleRepeatedTask(
         () -> this.handleSmog(world, location, manager), 0, 10, POISON_SMOG_DURATION);
 
-    final GamePlayer owner = manager.getGamePlayer(player);
-    final PlayerAudience audience = owner.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(POISON_SMOG_SOUND);
+
+    return false;
   }
 
   private void handleSmog(final World world, final Location location, final PlayerManager manager) {

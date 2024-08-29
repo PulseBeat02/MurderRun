@@ -16,7 +16,6 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -64,11 +63,13 @@ public final class Translocator extends SurvivorGadget {
   }
 
   @Override
-  public void onGadgetDrop(final Game game, final PlayerDropItemEvent event, final boolean remove) {
+  public boolean onGadgetDrop(
+      final Game game,
+      final GamePlayer player,
+      final org.bukkit.entity.Item item,
+      final boolean remove) {
 
-    final Player player = event.getPlayer();
     final Location location = player.getLocation();
-    final org.bukkit.entity.Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
     final byte[] bytes = MapUtils.locationToByteArray(location);
     Item.builder(stack)
@@ -76,6 +77,6 @@ public final class Translocator extends SurvivorGadget {
         .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
         .type(Material.LEVER);
 
-    super.onGadgetDrop(game, event, false);
+    return super.onGadgetDrop(game, player, item, false);
   }
 }
