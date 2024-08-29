@@ -28,7 +28,7 @@ import org.bukkit.inventory.ItemStack;
 public final class TrapSeeker extends KillerGadget {
 
   private static final String TRAP_SEEKER_SOUND = "block.amethyst_block.chime";
-  private static final double TRAP_SEEKER_RANGE = 15D;
+  private static final double TRAP_SEEKER_RADIUS = 15D;
 
   public TrapSeeker() {
     super(
@@ -66,7 +66,7 @@ public final class TrapSeeker extends KillerGadget {
     final Location origin = killer.getLocation();
     final World world = requireNonNull(origin.getWorld());
     final Collection<Entity> entities =
-        world.getNearbyEntities(origin, TRAP_SEEKER_RANGE, TRAP_SEEKER_RANGE, TRAP_SEEKER_RANGE);
+        world.getNearbyEntities(origin, TRAP_SEEKER_RADIUS, TRAP_SEEKER_RADIUS, TRAP_SEEKER_RADIUS);
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     final Set<Item> gadgets = new HashSet<>();
 

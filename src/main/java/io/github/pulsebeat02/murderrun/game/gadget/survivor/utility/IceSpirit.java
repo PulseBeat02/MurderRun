@@ -33,6 +33,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class IceSpirit extends SurvivorGadget implements Listener, TargetableEntity {
 
   private static final String ICE_SPIRIT_SOUND = "entity.zombie.ambient";
+  private static final int ICE_SPIRIT_DURATION = 140;
 
   private final Game game;
 
@@ -86,9 +87,9 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
     final GamePlayer nearest = manager.getGamePlayer(uuid);
     final GameScheduler scheduler = this.game.getScheduler();
-    nearest.disableJump(scheduler, 7 * 20L);
-    nearest.setFreezeTicks(7 * 20);
-    nearest.disableWalkWithFOVEffects(10 * 20);
+    nearest.disableJump(scheduler, ICE_SPIRIT_DURATION);
+    nearest.setFreezeTicks(ICE_SPIRIT_DURATION);
+    nearest.disableWalkWithFOVEffects(ICE_SPIRIT_DURATION);
 
     final Component msg = Message.FREEZE_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(msg);

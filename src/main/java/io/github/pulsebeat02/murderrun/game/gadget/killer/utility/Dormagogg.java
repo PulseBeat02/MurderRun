@@ -35,6 +35,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class Dormagogg extends KillerGadget implements Listener, TargetableEntity {
 
   private static final String DORMAGOGG_SOUND = "entity.zombie.ambient";
+
   private final Game game;
 
   public Dormagogg(final Game game) {

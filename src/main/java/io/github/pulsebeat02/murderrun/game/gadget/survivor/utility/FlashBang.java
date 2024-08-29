@@ -7,12 +7,10 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.EventUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import net.kyori.adventure.key.Key;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,13 +32,6 @@ public final class FlashBang extends SurvivorGadget implements Listener {
 
   private static final double FLASHBANG_RADIUS = 2D;
   private static final int FLASHBANG_DURATION = 3 * 20;
-  private static final String FLASHBANG_SOUND;
-
-  static {
-    final SoundResource sound = Sounds.FLASHBANG;
-    final Key key = sound.getKey();
-    FLASHBANG_SOUND = key.asString();
-  }
 
   private final Game game;
 
@@ -90,7 +81,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.playSoundForAllParticipantsAtLocation(location, FLASHBANG_SOUND);
+    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
     manager.applyToAllMurderers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);

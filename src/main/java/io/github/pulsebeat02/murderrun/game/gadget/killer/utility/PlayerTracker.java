@@ -26,7 +26,7 @@ import org.bukkit.persistence.PersistentDataType;
 public final class PlayerTracker extends KillerGadget {
 
   private static final String PLAYER_TRACKER_SOUND = "entity.experience_orb.pickup";
-  private static final int PLAYER_TRACKER_COUNT = 5;
+  private static final int PLAYER_TRACKER_USES = 5;
 
   public PlayerTracker() {
     super(
@@ -48,7 +48,7 @@ public final class PlayerTracker extends KillerGadget {
     final Location location = player.getLocation();
     final int distance = (int) Math.round(this.getNearestSurvivorDistance(manager, location));
     final int count = this.increaseAndGetSurvivorCount(player);
-    final boolean destroy = count >= PLAYER_TRACKER_COUNT;
+    final boolean destroy = count >= PLAYER_TRACKER_USES;
     super.onGadgetRightClick(game, event, destroy);
 
     final PlayerAudience audience = gamePlayer.getAudience();

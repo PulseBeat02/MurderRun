@@ -7,10 +7,8 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
-import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -21,13 +19,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class Fright extends KillerGadget {
 
   private static final int FRIGHT_DURATION = 5 * 20;
-  private static final String FRIGHT_SOUND;
-
-  static {
-    final SoundResource sound = Sounds.JUMP_SCARE;
-    final Key key = sound.getKey();
-    FRIGHT_SOUND = key.asString();
-  }
 
   public Fright() {
     super(
@@ -55,13 +46,15 @@ public final class Fright extends KillerGadget {
   }
 
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
+
     final ItemStack before = this.setPumpkinItemStack(survivor);
-    final PlayerAudience audience = survivor.getAudience();
-    audience.playSound(FRIGHT_SOUND);
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, FRIGHT_DURATION, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, FRIGHT_DURATION, 1));
     scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L);
+
+    final PlayerAudience audience = survivor.getAudience();
+    audience.playSound(Sounds.JUMP_SCARE);
   }
 
   private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {

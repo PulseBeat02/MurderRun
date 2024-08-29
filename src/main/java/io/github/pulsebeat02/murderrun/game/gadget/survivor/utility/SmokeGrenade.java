@@ -30,7 +30,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class SmokeGrenade extends SurvivorGadget implements Listener {
 
   private static final double SMOKE_GRENADE_RADIUS = 2D;
-  private static final int SMOKE_GRENADE_EFFECT_DURATION = 5 * 20;
+  private static final int SMOKE_GRENADE_DURATION = 5 * 20;
 
   private final Game game;
 
@@ -73,7 +73,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final GameScheduler scheduler = this.game.getScheduler();
     final Runnable task = () ->
         world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
-    scheduler.scheduleRepeatedTask(task, 0, 1, SMOKE_GRENADE_EFFECT_DURATION);
+    scheduler.scheduleRepeatedTask(task, 0, 1, SMOKE_GRENADE_DURATION);
 
     final PlayerManager manager = this.game.getPlayerManager();
     manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
@@ -83,7 +83,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
       final double distance = playerLocation.distanceSquared(location);
       if (distance < SMOKE_GRENADE_RADIUS * SMOKE_GRENADE_RADIUS) {
         player.addPotionEffects(new PotionEffect(
-            PotionEffectType.BLINDNESS, SMOKE_GRENADE_EFFECT_DURATION, Integer.MAX_VALUE));
+            PotionEffectType.BLINDNESS, SMOKE_GRENADE_DURATION, Integer.MAX_VALUE));
       }
     });
   }

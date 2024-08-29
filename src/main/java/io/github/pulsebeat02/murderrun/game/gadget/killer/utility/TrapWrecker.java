@@ -15,7 +15,7 @@ import org.bukkit.entity.Item;
 public final class TrapWrecker extends KillerGadget {
 
   private static final String TRAP_WRECKER_SOUND = "block.bone_block.break";
-  private static final int TRAP_WRECKER_TIME = 30;
+  private static final int TRAP_WRECKER_DURATION = 20 * 30;
 
   public TrapWrecker() {
     super(
@@ -45,7 +45,7 @@ public final class TrapWrecker extends KillerGadget {
       }
       killer.setLevel(time);
     };
-    scheduler.scheduleCountdownTask(consumer, TRAP_WRECKER_TIME);
+    scheduler.scheduleCountdownTask(consumer, TRAP_WRECKER_DURATION);
 
     final PlayerAudience audience = killer.getAudience();
     final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();

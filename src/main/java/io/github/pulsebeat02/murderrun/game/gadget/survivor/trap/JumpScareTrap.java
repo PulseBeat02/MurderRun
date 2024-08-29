@@ -6,11 +6,9 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.awt.Color;
-import net.kyori.adventure.key.Key;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -22,13 +20,6 @@ public final class JumpScareTrap extends SurvivorTrap {
 
   private static final int JUMP_SCARE_TRAP_DURATION = 2 * 20;
   private static final int JUMP_SCARE_TRAP_EFFECT_DURATION = 5 * 20;
-  private static final String JUMP_SCARE_TRAP_SOUND;
-
-  static {
-    final SoundResource resource = Sounds.JUMP_SCARE;
-    final Key key = resource.getKey();
-    JUMP_SCARE_TRAP_SOUND = key.asString();
-  }
 
   public JumpScareTrap() {
     super(
@@ -51,7 +42,7 @@ public final class JumpScareTrap extends SurvivorTrap {
 
     final ItemStack before = this.getHelmet(murderer);
     final PlayerAudience audience = murderer.getAudience();
-    audience.playSound(JUMP_SCARE_TRAP_SOUND);
+    audience.playSound(Sounds.JUMP_SCARE);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), JUMP_SCARE_TRAP_DURATION);

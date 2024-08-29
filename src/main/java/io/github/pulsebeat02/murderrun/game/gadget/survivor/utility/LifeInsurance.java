@@ -26,7 +26,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class LifeInsurance extends SurvivorGadget {
 
-  private static final double LIFE_INSURANCE_ACTIVATION_RANGE = 4D;
+  private static final double LIFE_INSURANCE_RADIUS = 4D;
   private static final String LIFE_INSURANCE_SOUND = "item.totem.use";
 
   public LifeInsurance() {
@@ -82,7 +82,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);
 
-    if (distance < LIFE_INSURANCE_ACTIVATION_RANGE * LIFE_INSURANCE_ACTIVATION_RANGE) {
+    if (distance < LIFE_INSURANCE_RADIUS * LIFE_INSURANCE_RADIUS) {
 
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
       final Location temp = new Location(world, coords[0], 0, coords[1]);

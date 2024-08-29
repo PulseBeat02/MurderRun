@@ -14,10 +14,8 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Collection;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,13 +30,6 @@ import org.bukkit.util.BoundingBox;
 public final class EMPBlast extends KillerGadget {
 
   private static final int EMP_BLAST_DURATION = 5 * 20;
-  private static final String EMP_BLAST_SOUND;
-
-  static {
-    final SoundResource resource = Sounds.FLASHBANG;
-    final Key key = resource.getKey();
-    EMP_BLAST_SOUND = key.asString();
-  }
 
   public EMPBlast() {
     super(
@@ -70,7 +61,7 @@ public final class EMPBlast extends KillerGadget {
     final PlayerManager playerManager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     playerManager.applyToAllLivingInnocents(survivor -> this.stunSurvivors(scheduler, survivor));
-    playerManager.playSoundForAllParticipants(EMP_BLAST_SOUND);
+    playerManager.playSoundForAllParticipants(Sounds.FLASHBANG);
 
     return false;
   }

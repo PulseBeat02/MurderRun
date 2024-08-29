@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Parasite extends SurvivorGadget {
 
-  private static final double PARASITE_DESTROY_DISTANCE = 2D;
+  private static final double PARASITE_DESTROY_RADIUS = 2D;
   private static final double PARASITE_RADIUS = 10D;
   private static final String PARASITE_SOUND = "block.lever.click";
 
@@ -54,7 +54,7 @@ public final class Parasite extends SurvivorGadget {
     final Location origin = item.getLocation();
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < PARASITE_DESTROY_DISTANCE * PARASITE_DESTROY_DISTANCE) {
+    if (distance < PARASITE_DESTROY_RADIUS * PARASITE_DESTROY_RADIUS) {
       final Component message = Message.PARASITE_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       item.remove();

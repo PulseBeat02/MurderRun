@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class PoisonSmog extends KillerGadget {
 
   private static final String POISON_SMOG_SOUND = "entity.slime.jump";
-  private static final double POISON_SMOG_RANGE = 10;
+  private static final double POISON_SMOG_RADIUS = 10D;
   private static final int POISON_SMOG_DURATION = 60 * 20;
 
   public PoisonSmog() {
@@ -65,7 +65,7 @@ public final class PoisonSmog extends KillerGadget {
   private void handleDebuffs(final GamePlayer survivor, final Location origin) {
     final Location location = survivor.getLocation();
     final double distance = location.distanceSquared(origin);
-    if (distance < POISON_SMOG_RANGE * POISON_SMOG_RANGE) {
+    if (distance < POISON_SMOG_RADIUS * POISON_SMOG_RADIUS) {
       survivor.addPotionEffects(new PotionEffect(PotionEffectType.POISON, 3 * 20, 0));
     }
   }

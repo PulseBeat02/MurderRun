@@ -63,6 +63,10 @@ public final class GlobalGadgetRegistry {
     this.frozen.set(true);
   }
 
+  public boolean isFrozen() {
+    return this.frozen.get();
+  }
+
   private void checkState() {
     final boolean state = this.frozen.get();
     if (state) {

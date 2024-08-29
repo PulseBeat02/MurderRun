@@ -29,8 +29,8 @@ import org.bukkit.util.EulerAngle;
 
 public final class MedBot extends SurvivorGadget {
 
-  private static final double MED_BOT_RANGE = 8D;
-  private static final double MED_BOT_DESTROY_RANGE = 2D;
+  private static final double MED_BOT_RADIUS = 8D;
+  private static final double MED_BOT_DESTROY_RADIUS = 2D;
 
   private static final String MED_BOT_SOUND = "block.beehive.enter";
 
@@ -92,7 +92,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < MED_BOT_DESTROY_RANGE * MED_BOT_DESTROY_RANGE) {
+    if (distance < MED_BOT_DESTROY_RADIUS * MED_BOT_DESTROY_RADIUS) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       stand.remove();
@@ -103,7 +103,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < MED_BOT_RANGE * MED_BOT_RANGE) {
+    if (distance < MED_BOT_RADIUS * MED_BOT_RADIUS) {
       innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20, 2));
     }
   }
