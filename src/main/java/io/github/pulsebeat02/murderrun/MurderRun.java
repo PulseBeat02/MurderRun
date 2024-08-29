@@ -25,10 +25,6 @@ public final class MurderRun extends JavaPlugin {
 
   - Test all gadgets
 
-  CODE
-
-  - Allow for configuration of all gadgets
-
    */
 
   private static final int BSTATS_SERVER_ID = 22728;
