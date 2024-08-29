@@ -70,7 +70,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.TrapSniffer;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.TrapVest;
 
 public enum SurvivorGadgets {
-
   SURVIVOR_BOOTS(SurvivorBoots.class),
   SURVIVOR_CHESTPLATE(SurvivorChestplate.class),
   SURVIVOR_HELMET(SurvivorHelmet.class),
@@ -139,7 +138,6 @@ public enum SurvivorGadgets {
   SPASM_TRAP(SpasmTrap.class),
   SPAWN_TRAP(SpawnTrap.class),
   STAR_TRAP(StarTrap.class);
-
 
   /*
 

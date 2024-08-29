@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
+import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
@@ -68,7 +68,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void registerLookUpMaps() {
-    GadgetLoadingMechanism.init();
+    GlobalGadgetRegistry.init();
     PacketToolsProvider.init();
   }
 
