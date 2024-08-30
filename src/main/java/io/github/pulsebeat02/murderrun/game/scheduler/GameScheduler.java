@@ -102,8 +102,8 @@ public final class GameScheduler {
   public BukkitTask scheduleParticleTaskUntilDeath(final Item item, final Color color) {
     final World world = item.getWorld();
     final Runnable particleTask = () -> this.spawnParticles0(item, color, world);
-    final Runnable conditionalTask = () -> this.scheduleTaskUntilDeath(particleTask, item);
-    return this.scheduleTaskAfterOnGround(conditionalTask, item);
+    final Runnable afterOnGround = () -> this.scheduleTaskAfterOnGround(particleTask, item);
+    return this.scheduleTaskUntilDeath(afterOnGround, item);
   }
 
   private void spawnParticles0(final Item item, final Color color, final World world) {

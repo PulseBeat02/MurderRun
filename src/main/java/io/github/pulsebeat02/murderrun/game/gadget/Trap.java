@@ -37,10 +37,12 @@ public abstract class Trap extends AbstractGadget {
   @Override
   public boolean onGadgetDrop(
       final Game game, final GamePlayer player, final Item item, final boolean remove) {
+
     final GameScheduler scheduler = game.getScheduler();
     item.setUnlimitedLifetime(true);
     item.setPickupDelay(Integer.MAX_VALUE);
-    scheduler.scheduleTaskAfterOnGround(() -> this.scheduleParticleTask(item, scheduler), item);
+    this.scheduleParticleTask(item, scheduler);
+
     return false;
   }
 

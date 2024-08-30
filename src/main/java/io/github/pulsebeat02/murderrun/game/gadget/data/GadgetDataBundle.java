@@ -48,7 +48,7 @@ public final class GadgetDataBundle {
   private ResourceBundle loadGadgetProperties(
       @UnderInitialization GadgetDataBundle this, final Path resourcePath) {
     try {
-      this.checkExistance(resourcePath);
+      this.checkExistence(resourcePath);
       try (final InputStream in = Files.newInputStream(resourcePath);
           final FastBufferedInputStream fast = new FastBufferedInputStream(in)) {
         return new PropertyResourceBundle(fast);
@@ -58,7 +58,7 @@ public final class GadgetDataBundle {
     }
   }
 
-  private void checkExistance(@UnderInitialization GadgetDataBundle this, final Path resourcePath)
+  private void checkExistence(@UnderInitialization GadgetDataBundle this, final Path resourcePath)
       throws IOException {
     if (IOUtils.createFile(resourcePath)) {
       try (final InputStream in = IOUtils.getResourceAsStream(GADGETS_PROPERTIES)) {
