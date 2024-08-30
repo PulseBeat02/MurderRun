@@ -30,7 +30,7 @@ public final class MCPackHosting extends ResourcePackProvider {
   }
 
   @Override
-  String getRawUrl(final Path zip) {
+  public String getRawUrl(final Path zip) {
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     final PackInfo info = this.checkFileUrl(lock);
     return this.updateAndRetrievePackJSON(lock, info == null ? this.createNewPackInfo(zip) : info);

@@ -36,4 +36,10 @@ public final class FallbackPacketTools implements PacketToolAPI {
   public void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing) {
     entity.setGlowing(glowing); // limited functionality
   }
+
+  @Override
+  public void injectNettyHandler(final Object handler) {
+    throw new AssertionError(
+        "Can't inject into Netty handler! Use a different pack provider solution");
+  }
 }

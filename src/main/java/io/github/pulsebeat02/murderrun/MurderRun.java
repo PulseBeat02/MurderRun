@@ -15,18 +15,11 @@ import io.github.pulsebeat02.murderrun.resourcepack.provider.MCPackHosting;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ServerPackHosting;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.NettyHosting;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
-
-  /*
-
-  DEBUG
-
-  - Test resourcepacks
-
-   */
 
   private static final int BSTATS_SERVER_ID = 22728;
 
@@ -92,6 +85,7 @@ public final class MurderRun extends JavaPlugin {
         final int port = this.configuration.getPort();
         this.provider = new ServerPackHosting(hostName, port);
       }
+      case ON_SERVER -> this.provider = new NettyHosting();
       default -> {} // Do nothing
     }
     this.provider.start();

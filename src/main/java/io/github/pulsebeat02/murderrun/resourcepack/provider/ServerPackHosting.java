@@ -17,7 +17,7 @@ import team.unnamed.creative.server.ResourcePackServer;
 
 public final class ServerPackHosting extends ResourcePackProvider {
 
-  private static final String HOST_URL = "%s:%s";
+  private static final String HOST_URL = "http://%s:%s";
 
   private final String hostName;
   private final int port;
@@ -31,7 +31,12 @@ public final class ServerPackHosting extends ResourcePackProvider {
   }
 
   @Override
-  String getRawUrl(final Path zip) {
+  public String getRawUrl(final Path zip) {
+
+    if (this.server != null) {
+      return HOST_URL.formatted(this.hostName, this.port);
+    }
+
     try (final InputStream stream = Files.newInputStream(zip);
         final InputStream fast = new FastBufferedInputStream(stream)) {
       final String hash = IOUtils.generateFileHash(zip);
@@ -43,6 +48,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
           .pack(pack)
           .executor(service)
           .build();
+      this.server.start();
       return HOST_URL.formatted(this.hostName, this.port);
     } catch (final IOException | NoSuchAlgorithmException e) {
       throw new AssertionError(e);
@@ -51,11 +57,17 @@ public final class ServerPackHosting extends ResourcePackProvider {
 
   @Override
   public void start() {
+    if (this.server == null) {
+      return;
+    }
     this.server.start();
   }
 
   @Override
   public void shutdown() {
+    if (this.server == null) {
+      return;
+    }
     this.server.stop(0);
   }
 

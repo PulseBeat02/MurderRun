@@ -1,16 +1,22 @@
 # MurderRun Configuration File
 
 # Sets the method to host the pack that is used by the plugin
-# Valid options are MC_PACK_HOSTING and LOCALLY_HOSTED_DAEMON
+# Valid options are MC_PACK_HOSTING, LOCALLY_HOSTED_DAEMON, and ON_SERVER
 
 # MC_PACK_HOSTING will upload the pack on https://mc-packs.net/ and cache the pack link
+# This option doesn't require port-forwarding, but may be limited by web requests
+
 # LOCALLY_HOSTED_DAEMON will start a local daemon that will host the pack using the below options
-pack-provider: MC_PACK_HOSTING
+# This option requires port-forwarding to work properly
+
+# ON_SERVER will automatically use the current server's IP and port to host the pack
+# This option doesn't require port-forwarding and is the recommended approach
+pack-provider: ON_SERVER
 
 # If using LOCALLY_HOSTED_DAEMON, the below options will be used
 server:
 
-  # The host name of the daemon (for example: https://google.com)
+  # The host name of the daemon (for example: google.com)
   host-name: localhost
 
   # The port of the daemon (for example, 7270)

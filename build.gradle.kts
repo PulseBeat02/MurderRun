@@ -56,6 +56,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
+    implementation("io.netty:netty-codec-http:4.1.97.Final")
 
     testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.118.1")
     testImplementation("team.unnamed:creative-api:1.7.3")
@@ -133,6 +134,10 @@ tasks {
         relocate(
             "com.github.stefvanschie",
             "io.github.pulsebeat02.murderrun.lib.com.github.stefvanschie"
+        )
+        relocate(
+            "io.netty.handler.codec.http",
+            "io.github.pulsebeat02.murderrun.lib.io.netty.handler.codec.http"
         )
         relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
 

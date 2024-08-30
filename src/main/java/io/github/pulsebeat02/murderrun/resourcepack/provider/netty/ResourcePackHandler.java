@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.DefaultFileRegion;
@@ -14,6 +15,7 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 
+@ChannelHandler.Sharable
 public final class ResourcePackHandler extends ChannelInboundHandlerAdapter {
 
   private final Path path;
@@ -40,8 +42,8 @@ public final class ResourcePackHandler extends ChannelInboundHandlerAdapter {
       final long length = file.length();
       final FileChannel channel = file.getChannel();
       final DefaultFileRegion region = new DefaultFileRegion(channel, 0, length);
-      final HttpResponse response = new DefaultHttpResponse(
-          HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+      final HttpResponse response =
+          new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
       HttpUtil.setContentLength(response, length);
       ctx.write(response);
       ctx.write(region);
