@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
+import io.github.pulsebeat02.murderrun.commmand.shop.ShopCommand;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,8 +9,8 @@ public enum Commands {
   LOBBY(new LobbyCommand()),
   HELP(new HelpCommand()),
   GAME(new GameCommand()),
-  VILLAGER(new VillagerCommand()),
   GADGET(new GadgetCommand()),
+  SHOP(new ShopCommand()),
   DEBUG(new DebugCommand());
 
   private static final List<AnnotationCommandFeature> FEATURES = getValues();

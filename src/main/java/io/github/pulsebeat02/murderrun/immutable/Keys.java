@@ -23,6 +23,7 @@ public final class Keys {
   public static NamespacedKey ICE_SPIRIT_OWNER = createNamespacedPluginKey("ice-spirit-owner");
   public static NamespacedKey DEATH_HOUND_OWNER = createNamespacedPluginKey("death-hound-owner");
   public static NamespacedKey DORMAGOGG_OWNER = createNamespacedPluginKey("dormagogg-owner");
+  public static NamespacedKey SHOP_GUI = createNamespacedPluginKey("shop-gui");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

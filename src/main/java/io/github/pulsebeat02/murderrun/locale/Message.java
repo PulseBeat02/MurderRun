@@ -381,4 +381,12 @@ public interface Message extends LocaleTools {
       direct("murder_run.game.gadget.mind_control.activate_killer", null);
   UniComponent<Sender, String> MIND_CONTROL_ACTIVATE_SURVIVOR =
       direct("murder_run.game.gadget.mind_control.activate_survivor", null);
+  NullComponent<Sender> SHOP_GUI_TITLE = direct("murder_run.gui.shop.name");
+  NullComponent<Sender> SHOP_GUI_CANCEL = direct("murder_run.gui.shop.cancel");
+  NullComponent<Sender> SHOP_GUI_FORWARD = direct("murder_run.gui.shop.forward");
+  NullComponent<Sender> SHOP_GUI_BACK = direct("murder_run.gui.shop.back");
+  UniComponent<Sender, Integer> SHOP_GUI_COST_LORE = direct("murder_run.gui.shop.lore", null);
+  NullComponent<Sender> SHOP_GUI_ERROR = direct("murder_run.gui.shop.error");
+  NullComponent<Sender> GRIM_REAPER_NPC = direct("murder_run.npc.killer.name");
+  NullComponent<Sender> GUARDIAN_ANGEL_NPC = direct("murder_run.npc.survivor.name");
 }
