@@ -2,6 +2,10 @@ package io.github.pulsebeat02.murderrun.game.gadget.data;
 
 public interface GadgetConstants {
 
+  static void init() {
+    // init bundle
+  }
+
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
   int BEAR_DURATION = num("bear.duration");

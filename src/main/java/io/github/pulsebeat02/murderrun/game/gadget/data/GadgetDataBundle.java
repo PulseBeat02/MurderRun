@@ -1,15 +1,17 @@
 package io.github.pulsebeat02.murderrun.game.gadget.data;
 
-import com.google.common.primitives.Doubles;
-import com.google.common.primitives.Ints;
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GadgetDataBundle {
 
@@ -21,29 +23,33 @@ public final class GadgetDataBundle {
   public GadgetDataBundle() {
     final Path pluginDataFolder = IOUtils.getPluginDataFolderPath();
     this.resourcePath = pluginDataFolder.resolve(GADGETS_PROPERTIES);
-    this.bundle = this.loadGadgetProperties();
+    this.bundle = this.loadGadgetProperties(this.resourcePath);
   }
 
   public String getString(final String key) {
+    requireNonNull(key);
     return this.bundle.getString(key);
   }
 
-  public Integer getInt(final String key) {
-    return Ints.tryParse(this.getString(key));
+  public int getInt(final String key) {
+    final String raw = requireNonNull(this.getString(key));
+    return Integer.parseInt(raw);
   }
 
   public boolean getBoolean(final String key) {
     return Boolean.parseBoolean(this.getString(key));
   }
 
-  public Double getDouble(final String key) {
-    return Doubles.tryParse(this.getString(key));
+  public double getDouble(final String key) {
+    final String raw = requireNonNull(this.getString(key));
+    return Double.parseDouble(raw);
   }
 
-  private ResourceBundle loadGadgetProperties() {
+  private ResourceBundle loadGadgetProperties(
+      @UnderInitialization GadgetDataBundle this, final Path resourcePath) {
     try {
-      this.checkExistance();
-      try (final InputStream in = Files.newInputStream(this.resourcePath);
+      this.checkExistance(resourcePath);
+      try (final InputStream in = Files.newInputStream(resourcePath);
           final FastBufferedInputStream fast = new FastBufferedInputStream(in)) {
         return new PropertyResourceBundle(fast);
       }
@@ -52,11 +58,11 @@ public final class GadgetDataBundle {
     }
   }
 
-  private void checkExistance() throws IOException {
-    IOUtils.createFolder(this.resourcePath);
-    if (Files.notExists(this.resourcePath)) {
+  private void checkExistance(@UnderInitialization GadgetDataBundle this, final Path resourcePath)
+      throws IOException {
+    if (IOUtils.createFile(resourcePath)) {
       try (final InputStream in = IOUtils.getResourceAsStream(GADGETS_PROPERTIES)) {
-        Files.copy(in, this.resourcePath);
+        Files.copy(in, resourcePath, StandardCopyOption.REPLACE_EXISTING);
       }
     }
   }

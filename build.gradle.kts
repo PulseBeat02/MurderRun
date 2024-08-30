@@ -102,7 +102,7 @@ tasks {
     runServer {
         downloadPlugins {
             url("https://cdn.modrinth.com/data/1u6JkXh5/versions/yAujLUIK/worldedit-bukkit-7.3.6.jar")
-            url("https://ci.citizensnpcs.co/job/Citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3519.jar")
+            url("https://ci.citizensnpcs.co/job/citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3535.jar")
         }
         minecraftVersion("1.21.1")
     }
