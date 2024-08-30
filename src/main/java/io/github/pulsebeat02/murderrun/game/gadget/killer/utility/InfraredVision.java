@@ -36,8 +36,7 @@ public final class InfraredVision extends KillerGadget {
     manager.applyToAllLivingInnocents(
         innocent -> this.setSurvivorGlow(scheduler, innocent, player));
 
-    final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.INFRARED_VISION_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.INFRARED_VISION_SOUND);
 
     return false;
   }

@@ -43,7 +43,7 @@ public final class FakePart extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
     scheduler.scheduleConditionalTask(
-        () -> this.spawnParticleOnPart(fakeItem), 0, 20L, fakeItem::isDead);
+        () -> this.spawnParticleOnPart(fakeItem), 0, 2, fakeItem::isDead);
 
     final Runnable task = () -> this.handlePlayers(scheduler, manager, player, fakeItem);
     scheduler.scheduleConditionalTask(task, 0, 20L, fakeItem::isDead);
@@ -77,6 +77,7 @@ public final class FakePart extends KillerGadget {
       final PlayerAudience audience = survivor.getAudience();
       final Component msg = Message.FAKE_PART_ACTIVATE.build();
       audience.sendMessage(msg);
+      audience.playSound(GadgetConstants.FAKE_PART_EFFECT_SOUND);
     }
   }
 
@@ -87,8 +88,8 @@ public final class FakePart extends KillerGadget {
       final Item item) {
 
     final int duration = GadgetConstants.FAKE_PART_DURATION;
-    survivor.disableJump(scheduler, 8 * 20L);
-    survivor.disableWalkWithFOVEffects(8 * 20);
+    survivor.disableJump(scheduler, duration);
+    survivor.disableWalkWithFOVEffects(duration);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
     item.remove();
 
@@ -107,8 +108,7 @@ public final class FakePart extends KillerGadget {
 
   private void spawnParticleOnPart(final Item item) {
     final Location location = item.getLocation();
-    final Location clone = location.add(0, 1, 0);
-    final World world = requireNonNull(clone.getWorld());
-    world.spawnParticle(Particle.DUST, clone, 40, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 1));
+    final World world = requireNonNull(location.getWorld());
+    world.spawnParticle(Particle.DUST, location, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 1));
   }
 }

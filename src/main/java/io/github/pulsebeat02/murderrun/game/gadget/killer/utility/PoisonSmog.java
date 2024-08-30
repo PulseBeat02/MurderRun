@@ -44,7 +44,7 @@ public final class PoisonSmog extends KillerGadget {
     scheduler.scheduleRepeatedTask(
         () -> this.handleSmog(world, location, manager),
         0,
-        10,
+        2 * 20L,
         GadgetConstants.POISON_SMOG_DURATION);
 
     final PlayerAudience audience = player.getAudience();

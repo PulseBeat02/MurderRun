@@ -51,32 +51,32 @@ public enum KillerGadgets {
   Fright: Puts an illusion in-front of everyone suddenly, jump scaring them
   Blood Curse: Causes the opponent to bleed profusely permanently, leaving a trail behind for the killer to follow
   Health Cut: Reduces the health of all opponents to 1, allowing for them to be one-shot even if they have comparable durability
-  Heat Seeker: Allows the killer to see all opponents within a certain range of him.
   Ice Path: Leaves a trail of ice wherever the Killer walks, allowing them to move faster
   Fire Trail: Leaves a trail of fire wherever the Killer walks
   Hook: Drags opponents closer to the killer
+  Heat Seeker: Allows the killer to see all opponents within a certain range of him.
   Phantom: Allows the Killer to fly and float through walls for 15 seconds
   Death Steed: Summons a Death Steed that follows where the survivors are, can ride on the horse
   Part Warp: Teleports the closest car part to the trap where the Killer put it.
-  Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
   Gamble: Killing a player causes them to drop a random killer trap.
-  Infrared Vision: Gives the Killer infrared vision, to see where someone is hiding
   Quick Bomb: Creates a bomb near all opponents, they have 2 seconds to escape before being blown up.
   Eagle Eye: Allows the killer an airborne view of the area, showing hiding spots of opponents.
-  All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing them to track their location and plans
   Poison Smog: Covers the area in a poisonous smog
   EMP Blast: Destroys all traps on the map and stuns all opponents.
   Trap Wrecker: Nullifies and destroys all nearby traps for 30 seconds
   Ender Shadows: Creates animated shadows which causes opponents to light up when touched
   Forewarn: If an opponent grabs a truck part, they will start to glow
+  Fake Part: Places a fake part, anyone who tries to pick it up will be slowed.
   Trap Seeker: Allows the Killer to detect hidden traps
-  Portal Gun: Allows the user to create portals wherever they please
   The Floor is Lava: Any opponents standing still for an extended period of time will be illuminated, allowing the killer to see them no matter where they are.
   Burn the Body: Completely destroys the body of an opponent
   Corruption: Can resurrect dead opponents and corrupt them into joining his side
-  Death Hound: Summons a wolf that sniffs out and kills opponents
-  Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
+  Infrared Vision: Gives the Killer infrared vision, to see where someone is hiding
   Dormagogg: An evil being that blind, stuns, and illuminates opponents
+  Cursed Note: Curses all close-by car parts to sabotage opponents if they approach them. If the opponent wants to get rid of the curse they need to find the Cursed Note.
+  All-Seeing Eye: Allows the Killer to see through their opponent's eyes, allowing them to track their location and plans
+  Death Hound: Summons a wolf that sniffs out and kills opponents
+  Portal Gun: Allows the user to create portals wherever they please
 
   */
 

@@ -42,7 +42,7 @@ public final class FloorIsLava extends KillerGadget {
     }
 
     scheduler.scheduleRepeatedTask(
-        () -> this.handleSurvivors(manager, scheduler, killer), 0, 6 * 20L);
+        () -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L);
 
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
     manager.playSoundForAllParticipants(GadgetConstants.FLOOR_IS_LAVA_SOUND);
@@ -58,7 +58,7 @@ public final class FloorIsLava extends KillerGadget {
   private void handleMovement(
       final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
     final Location previous = player.getLocation();
-    scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 5 * 20L);
+    scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 3 * 20L);
   }
 
   private void handleLocationChecking(

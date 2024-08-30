@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.Horse.Color;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.HorseInventory;
@@ -67,6 +68,7 @@ public final class DeathSteed extends KillerGadget {
     entity.setTamed(true);
     entity.setOwner(owner);
     entity.addPassenger(owner);
+    entity.setColor(Color.BLACK);
   }
 
   private void setSaddle(final Horse horse) {

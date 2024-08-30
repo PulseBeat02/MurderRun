@@ -11,7 +11,8 @@ import org.bukkit.event.entity.EntityTargetEvent;
 
 public interface TargetableEntity {
 
-  default void handle(final EntityTargetEvent event, final String target, final Mob entity) {
+  default void handle(
+      final EntityTargetEvent event, final String target, final Mob entity, final boolean killer) {
 
     final Game game = this.getGame();
     final UUID uuid = UUID.fromString(target);
@@ -22,7 +23,13 @@ public interface TargetableEntity {
     }
 
     final Location location = entity.getLocation();
-    final GamePlayer nearest = manager.getNearestKiller(location);
+    final GamePlayer nearest;
+    if (killer) {
+      nearest = manager.getNearestKiller(location);
+    } else {
+      nearest = manager.getNearestSurvivor(location);
+    }
+
     if (nearest == null) {
       entity.remove();
       return;

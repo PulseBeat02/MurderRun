@@ -61,7 +61,7 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
       return;
     }
 
-    this.handle(event, target, zombie);
+    this.handle(event, target, zombie, false);
   }
 
   @EventHandler
@@ -136,7 +136,6 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   }
 
   private void customizeAttributes(final Zombie zombie) {
-    zombie.setInvulnerable(true);
     zombie.addPotionEffect(
         new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
     if (zombie instanceof final Ageable ageable) {

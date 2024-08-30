@@ -119,6 +119,7 @@ public interface GadgetConstants {
   String TRAP_SNIFFER_SOUND = str("trap_sniffer.sound");
   String TRAP_VEST_SOUND = str("trap_vest.sound");
   String ALL_SEEING_EYE_SOUND = str("all_seeing_eye.sound");
+  int ALL_SEEING_EYE_DURATION = num("all_seeing_eye.duration");
   String BLOOD_CURSE_SOUND = str("blood_curse.sound");
   double BURN_THE_BODY_RADIUS = dec("burn_the_body.radius");
   String BURN_THE_BODY_SOUND = str("burn_the_body.sound");
@@ -133,6 +134,7 @@ public interface GadgetConstants {
   int EMP_BLAST_DURATION = num("emp_blast.duration");
   String ENDER_SHADOWS_SOUND = str("ender_shadows.sound");
   String FAKE_PART_SOUND = str("fake_part.sound");
+  String FAKE_PART_EFFECT_SOUND = str("fake_part.effect.sound");
   double FAKE_PART_RADIUS = dec("fake_part.radius");
   int FAKE_PART_DURATION = num("fake_part.duration");
   String FIRE_TRAIL_SOUND = str("fire_trail.sound");

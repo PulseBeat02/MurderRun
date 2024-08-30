@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
+import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Set;
@@ -56,7 +57,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
       return;
     }
 
-    this.handle(event, target, wolf);
+    this.handle(event, target, wolf, false);
   }
 
   @Override
@@ -65,8 +66,14 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
 
     super.onGadgetDrop(game, player, item, true);
 
+    final PlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
-    this.spawnWolf(location, player);
+    final GamePlayer nearest = manager.getNearestSurvivor(location);
+    if (nearest == null) {
+      return true;
+    }
+
+    this.spawnWolf(location, player, nearest);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GadgetConstants.DEATH_HOUND_SOUND);
@@ -74,10 +81,11 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     return false;
   }
 
-  private void spawnWolf(final Location location, final GamePlayer owner) {
+  private void spawnWolf(
+      final Location location, final GamePlayer owner, final GamePlayer nearest) {
     final World world = requireNonNull(location.getWorld());
     world.spawn(location, Wolf.class, entity -> {
-      this.customizeProperties(owner, entity);
+      this.customizeProperties(entity, owner, nearest);
       this.addPotionEffects(entity);
       this.addMetadata(entity, owner);
     });
@@ -92,17 +100,19 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
 
   private void addPotionEffects(final Wolf entity) {
     entity.addPotionEffects(Set.of(
-        new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 1),
-        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2)));
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2),
+        new PotionEffect(PotionEffectType.WEAKNESS, PotionEffect.INFINITE_DURATION, 1)));
   }
 
-  private void customizeProperties(final GamePlayer owner, final Wolf entity) {
+  private void customizeProperties(
+      final Wolf entity, final GamePlayer owner, final GamePlayer target) {
     final Player internal = owner.getInternalPlayer();
+    final Player internalTarget = target.getInternalPlayer();
     entity.setOwner(internal);
+    entity.setTarget(internalTarget);
     entity.setTamed(true);
     entity.setAngry(true);
     entity.setVariant(Variant.BLACK);
-    entity.setInvulnerable(true);
   }
 
   @Override

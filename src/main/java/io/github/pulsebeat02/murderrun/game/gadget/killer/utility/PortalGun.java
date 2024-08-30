@@ -98,6 +98,12 @@ public final class PortalGun extends KillerGadget implements Listener {
     final Location raw = arrow.getLocation();
     final Location teleportLocation = raw.add(0, -1, 0);
     final Holder<Location> holder = Holder.of(teleportLocation);
+
+    final Holder<Location> check = pair.first();
+    if (status && check.isPresent()) {
+      return;
+    }
+
     if (status) {
       final Holder<Location> receiving = pair.second();
       final Pair<Holder<Location>, Holder<Location>> value = Pair.of(holder, receiving);

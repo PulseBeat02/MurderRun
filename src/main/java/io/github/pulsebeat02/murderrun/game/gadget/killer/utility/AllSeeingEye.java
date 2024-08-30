@@ -38,7 +38,10 @@ public final class AllSeeingEye extends KillerGadget {
     this.setPlayerState(player, random);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetPlayerState(player, before), 7 * 20L);
+    final Player target = random.getInternalPlayer();
+    final int duration = GadgetConstants.ALL_SEEING_EYE_DURATION;
+    scheduler.scheduleRepeatedTask(() -> player.setSpectatorTarget(target), 0, 10, duration);
+    scheduler.scheduleTask(() -> this.resetPlayerState(player, before), duration);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GadgetConstants.ALL_SEEING_EYE_SOUND);
@@ -48,9 +51,9 @@ public final class AllSeeingEye extends KillerGadget {
 
   private void resetPlayerState(final GamePlayer player, final Location location) {
     player.teleport(location);
-    player.setGameMode(GameMode.SURVIVAL);
     player.setSpectatorTarget(null);
     player.setAllowSpectatorTeleport(true);
+    player.setGameMode(GameMode.SURVIVAL);
   }
 
   private void setPlayerState(final GamePlayer player, final GamePlayer survivor) {

@@ -60,7 +60,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
       return;
     }
 
-    this.handle(event, target, zombie);
+    this.handle(event, target, zombie, true);
   }
 
   @EventHandler

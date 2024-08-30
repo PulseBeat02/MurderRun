@@ -99,6 +99,7 @@ public class CameraGadget {
 
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, "");
+    npc.setAlwaysUseNameHologram(false);
     this.addSkinTrait(npc);
 
     return npc;
