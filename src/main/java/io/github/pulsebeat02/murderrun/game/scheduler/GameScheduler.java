@@ -123,7 +123,7 @@ public final class GameScheduler {
       final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
     if (entity.isDead()) {
       dead.set(true);
-      runnable.run();
     }
+    runnable.run();
   }
 }
