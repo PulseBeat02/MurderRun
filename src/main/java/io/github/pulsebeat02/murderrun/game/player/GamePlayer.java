@@ -26,6 +26,7 @@ public class GamePlayer extends AbstractPlayer {
     this.game = game;
     this.uuid = uuid;
     this.alive = true;
+    this.canDismount = true;
   }
 
   public void start() {

@@ -176,38 +176,38 @@ public enum SurvivorGadgets {
   Burrow Trap -- sends killer underground temporarily
   Star Trap -- buffs all survivors with speed, resistance, and regeneration when hit
   Deadringer -- fake player death, fake kill them and then they become invulnerable
+  Resurrection Stone -- resurrects a dead player
   Friend Warp -- teleport to a random survivor
   Cloak -- all player usernames hidden for 30s
-  Corpus Warp -- teleports to a dead player
   Magnet Mode -- makes all trap activation range 3 times larger
+  Corpus Warp -- teleports to a dead player
   Retaliation -- for each teammate death, you gain speed, resistance, and regeneration
   Flashbang -- stuns
   Smoke Grenade -- creates a huge smoke cloud
-  Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
   Supply Drop -- get a various assortment of traps
-  Tracker -- if activated near killer you can always see them
+  Trap Vest -- if a survivor uses it and dies, explodes all remaining traps on ground
   Killer Tracker -- tells you how close the killer is and how much danger you are in
   Flashlight -- blinds killer if come close, every 5 seconds
-  Drone -- roots you to the ground, but allows you to fly above and look
-  Distorter -- fills killer screen with annoying particles until destroyed
-  Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
+  Drone -- surveys map and fly around
   Distort Trap -- spawn guardians all over murderer until trap destroyed
   Translocator -- one use teleporter, (becomes lever to warp)
   Rewind -- rewinds player 5 seconds (must use circular buffer)
   Murderer Rewind -- rewinds murderer 5 seconds
   Horcrux -- respawn after death
-  Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
   Shockwave Trap -- sets off massive blast flinging all players
   Chipped -- you can see all alive survivors on the map
   Glow Trap -- makes killer glow
   Sixth Sense -- if killer is near makes them glow
-  Trap Sniffer -- senses detect car parts within 15 blocks
   Mind Control -- controls player mind
+  Trap Sniffer -- senses detect car parts within 15 blocks
   Med Bot -- constant regeneration pool in area
   Portal Trap -- teleports trap to killer
   Camera -- if killer within range glow
   Ghosting -- become an annoying ghost after death
-  Resurrection Stone -- resurrects a dead player
+  Ice Spirit -- spawns an ice spirit that runs to the killer and freezes them
+  Tracker -- if activated near killer you can always see them
+  Distorter -- fills killer screen with annoying particles until destroyed
+  Parasite -- spawns a parsetic vine that leeches player if too close (lower health, slow)
 
    */
 

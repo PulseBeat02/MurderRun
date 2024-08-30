@@ -1,9 +1,11 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public final class MedKit extends SurvivorGadget {
 
@@ -15,5 +17,11 @@ public final class MedKit extends SurvivorGadget {
         Message.MED_KIT_LORE.build(),
         16,
         ItemFactory::createMedKit);
+  }
+
+  @Override
+  public void onGadgetRightClick(
+      final Game game, final PlayerInteractEvent event, final boolean remove) {
+    // allow right click
   }
 }

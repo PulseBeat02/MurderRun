@@ -66,7 +66,7 @@ public final class EagleEye extends KillerGadget {
   private void resetState(
       final GamePlayer gamePlayer, final Location previous, final float flySpeed) {
     gamePlayer.teleport(previous);
-    gamePlayer.setGravity(false);
+    gamePlayer.setGravity(true);
     gamePlayer.setAllowFlight(true);
     gamePlayer.setFlySpeed(flySpeed);
   }

@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -29,9 +31,15 @@ public final class Bush extends SurvivorGadget {
     final int duration = GadgetConstants.BUSH_DURATION;
     player.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1));
 
+    final PlayerInventory inventory = player.getInventory();
     final Location location = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> player.teleport(location), 0, 5, duration);
+
+    final ItemStack[] before = inventory.getArmorContents();
+    final ItemStack[] empty = new ItemStack[4];
+    inventory.setArmorContents(empty);
+    scheduler.scheduleTask(() -> inventory.setArmorContents(before), duration);
 
     final Block block = location.getBlock();
     block.setType(Material.OAK_LEAVES);

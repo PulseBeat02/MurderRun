@@ -67,6 +67,15 @@ public final class GamePlayerBlockEvent extends GameEvent {
       manager.playSoundForAllParticipantsAtLocation(murdererLocation, sound);
 
     } else {
+
+      final PlayerInventory inventory = player.getInventory();
+      final ItemStack hand = inventory.getItemInMainHand();
+      if (PDCUtils.canBreakMapBlocks(hand)) {
+        event.setDropItems(false);
+        event.setExpToDrop(0);
+        return;
+      }
+
       final Block block = event.getBlock();
       final Map map = game.getMap();
       final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
@@ -74,6 +83,9 @@ public final class GamePlayerBlockEvent extends GameEvent {
       if (!canBreak) {
         event.setCancelled(true);
       }
+
+      event.setDropItems(false);
+      event.setExpToDrop(0);
     }
   }
 
@@ -85,17 +97,12 @@ public final class GamePlayerBlockEvent extends GameEvent {
       return;
     }
 
+    final PlayerInventory inventory = player.getInventory();
+    final ItemStack hand = inventory.getItemInMainHand();
     final Game game = this.getGame();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer murderer = manager.getGamePlayer(player);
     if (murderer instanceof Survivor) {
-      return;
-    }
-
-    final PlayerInventory inventory = player.getInventory();
-    final ItemStack hand = inventory.getItemInMainHand();
-    if (!PDCUtils.canBreakMapBlocks(hand)) {
-      event.setCancelled(true);
       return;
     }
 
@@ -105,9 +112,8 @@ public final class GamePlayerBlockEvent extends GameEvent {
       return;
     }
 
-    event.setInstaBreak(true);
-
     Item.builder(hand).useOneDurability();
+    event.setInstaBreak(true);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

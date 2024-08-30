@@ -47,7 +47,7 @@ public final class Tracker extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final double radius = GadgetConstants.TRACKER_RADIUS;
     if (distance < radius * radius) {
-      metadata.setEntityGlowing(killer, ChatColor.RED, true);
+      metadata.setEntityGlowing(killer, ChatColor.DARK_PURPLE, true);
       audience.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {
       audience.sendMessage(Message.TRACKER_DEACTIVATE.build());

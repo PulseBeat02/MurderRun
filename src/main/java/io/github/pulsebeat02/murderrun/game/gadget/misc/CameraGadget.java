@@ -44,13 +44,12 @@ public class CameraGadget {
   public boolean handleCamera(
       final Game game, final GamePlayer player, final Item item, final boolean remove) {
 
-    this.gadget.onGadgetDrop(game, player, item, true);
-
     final PlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
     final CitizensManager npcManager = game.getNPCManager();
     final NPC npc = this.customizeNPC(npcManager);
     npc.spawn(location);
+    item.remove();
 
     final LivingEntity entity = (LivingEntity) npc.getEntity();
     final GameScheduler scheduler = game.getScheduler();

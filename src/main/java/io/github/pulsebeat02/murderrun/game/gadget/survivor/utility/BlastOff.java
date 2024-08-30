@@ -77,7 +77,7 @@ public final class BlastOff extends SurvivorGadget {
 
   private void customizeMeta(final Firework firework) {
     final FireworkMeta meta = firework.getFireworkMeta();
-    meta.setPower(4);
+    meta.setPower(5);
     firework.setFireworkMeta(meta);
   }
 }

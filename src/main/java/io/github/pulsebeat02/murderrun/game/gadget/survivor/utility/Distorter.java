@@ -8,6 +8,8 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import java.util.HashSet;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -17,6 +19,8 @@ import org.bukkit.entity.Item;
 
 public final class Distorter extends SurvivorGadget {
 
+  private final Set<Integer> removed;
+
   public Distorter() {
     super(
         "distorter",
@@ -24,6 +28,7 @@ public final class Distorter extends SurvivorGadget {
         Message.DISTORTER_NAME.build(),
         Message.DISTORTER_LORE.build(),
         32);
+    this.removed = new HashSet<>();
   }
 
   @Override
@@ -52,10 +57,12 @@ public final class Distorter extends SurvivorGadget {
     final double distance = location.distanceSquared(origin);
     final double destroyRadius = GadgetConstants.DISTORTER_DESTROY_RADIUS;
     final double effectRadius = GadgetConstants.DISTORTER_EFFECT_RADIUS;
-    if (distance < destroyRadius * destroyRadius) {
+    final int id = item.getEntityId();
+    if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       item.remove();
+      this.removed.add(id);
     } else if (distance < effectRadius * effectRadius) {
       killer.spawnPlayerSpecificParticle(Particle.ELDER_GUARDIAN);
     }

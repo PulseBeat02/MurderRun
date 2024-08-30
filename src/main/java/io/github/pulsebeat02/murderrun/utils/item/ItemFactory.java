@@ -61,7 +61,7 @@ public final class ItemFactory {
   }
 
   public static ItemStack createSurvivorGear(final ItemStack stack) {
-    return Item.builder(stack).enchantment(Enchantment.PROTECTION, 2).build();
+    return Item.builder(stack).enchantment(Enchantment.PROTECTION, 3).build();
   }
 
   public static ItemStack createPortalGun(final ItemStack stack) {

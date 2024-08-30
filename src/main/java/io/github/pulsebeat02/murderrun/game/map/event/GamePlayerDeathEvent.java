@@ -46,6 +46,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
     event.setDroppedExp(0);
     event.setKeepInventory(true);
+    event.setDeathMessage(null);
     this.playDeathSoundEffect();
     deathManager.runDeathTasks();
     manager.resetCachedPlayers();

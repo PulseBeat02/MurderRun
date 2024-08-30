@@ -8,6 +8,8 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import java.util.HashSet;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -18,6 +20,8 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Parasite extends SurvivorGadget {
 
+  private final Set<Integer> removed;
+
   public Parasite() {
     super(
         "parasite",
@@ -25,6 +29,7 @@ public final class Parasite extends SurvivorGadget {
         Message.PARASITE_NAME.build(),
         Message.PARASITE_LORE.build(),
         48);
+    this.removed = new HashSet<>();
   }
 
   @Override
@@ -53,10 +58,12 @@ public final class Parasite extends SurvivorGadget {
     final double distance = origin.distanceSquared(location);
     final double destroyRadius = GadgetConstants.PARASITE_DESTROY_RADIUS;
     final double radius = GadgetConstants.PARASITE_RADIUS;
-    if (distance < destroyRadius * destroyRadius) {
+    final int id = item.getEntityId();
+    if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.PARASITE_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       item.remove();
+      this.removed.add(id);
     } else if (distance < radius * radius) {
       player.addPotionEffects(
           new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 0),

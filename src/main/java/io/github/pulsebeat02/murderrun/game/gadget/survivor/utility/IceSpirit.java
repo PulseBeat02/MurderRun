@@ -20,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -70,6 +71,11 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
       return;
     }
 
+    final Entity damaged = event.getEntity();
+    if (!(damaged instanceof final Player player)) {
+      return;
+    }
+
     final PersistentDataContainer container = zombie.getPersistentDataContainer();
     final String target = container.get(Keys.ICE_SPIRIT_OWNER, PersistentDataType.STRING);
     if (target == null) {
@@ -83,7 +89,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
       return;
     }
 
-    final GamePlayer nearest = manager.getGamePlayer(uuid);
+    final GamePlayer nearest = manager.getGamePlayer(player);
     final GameScheduler scheduler = this.game.getScheduler();
     final int duration = GadgetConstants.ICE_SPIRIT_DURATION;
     nearest.disableJump(scheduler, duration);
