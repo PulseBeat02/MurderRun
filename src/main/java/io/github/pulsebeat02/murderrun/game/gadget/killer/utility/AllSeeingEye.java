@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -15,8 +16,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 public final class AllSeeingEye extends KillerGadget {
-
-  private static final String ALL_SEEING_EYE_SOUND = "entity.ender_eye.death";
 
   public AllSeeingEye() {
     super(
@@ -42,7 +41,7 @@ public final class AllSeeingEye extends KillerGadget {
     scheduler.scheduleTask(() -> this.resetPlayerState(player, before), 7 * 20L);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(ALL_SEEING_EYE_SOUND);
+    audience.playSound(GadgetConstants.ALL_SEEING_EYE_SOUND);
 
     return false;
   }

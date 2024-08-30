@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -25,9 +26,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
 
 public final class LifeInsurance extends SurvivorGadget {
-
-  private static final double LIFE_INSURANCE_RADIUS = 4D;
-  private static final String LIFE_INSURANCE_SOUND = "item.totem.use";
 
   public LifeInsurance() {
     super(
@@ -66,7 +64,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.LIFE_INSURANCE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(LIFE_INSURANCE_SOUND);
+    audience.playSound(GadgetConstants.LIFE_INSURANCE_SOUND);
 
     return false;
   }
@@ -81,8 +79,8 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);
-
-    if (distance < LIFE_INSURANCE_RADIUS * LIFE_INSURANCE_RADIUS) {
+    final double radius = GadgetConstants.LIFE_INSURANCE_RADIUS;
+    if (distance < radius * radius) {
 
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
       final Location temp = new Location(world, coords[0], 0, coords[1]);

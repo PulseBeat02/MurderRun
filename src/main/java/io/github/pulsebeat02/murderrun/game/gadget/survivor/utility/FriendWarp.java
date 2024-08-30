@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -11,8 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class FriendWarp extends SurvivorGadget {
-
-  private static final String FRIEND_WARP_SOUND = "entity.enderman.teleport";
 
   public FriendWarp() {
     super(
@@ -34,11 +33,12 @@ public final class FriendWarp extends SurvivorGadget {
     final Location location = target.getLocation();
     player.teleport(location);
 
+    final String sound = GadgetConstants.FRIEND_WARP_SOUND;
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(FRIEND_WARP_SOUND);
+    audience.playSound(sound);
 
     final PlayerAudience targetAudience = target.getAudience();
-    targetAudience.playSound(FRIEND_WARP_SOUND);
+    targetAudience.playSound(sound);
 
     return false;
   }

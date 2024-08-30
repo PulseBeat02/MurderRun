@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -20,10 +21,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class FakePart extends KillerGadget {
-
-  private static final String FAKE_PART_SOUND = "block.lever.click";
-  private static final double FAKE_PART_RADIUS = 2D;
-  private static final int FAKE_PART_DURATION = 8 * 20;
 
   public FakePart() {
     super(
@@ -52,7 +49,7 @@ public final class FakePart extends KillerGadget {
     scheduler.scheduleConditionalTask(task, 0, 20L, fakeItem::isDead);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(FAKE_PART_SOUND);
+    audience.playSound(GadgetConstants.FAKE_PART_SOUND);
 
     return false;
   }
@@ -74,7 +71,8 @@ public final class FakePart extends KillerGadget {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < FAKE_PART_RADIUS * FAKE_PART_RADIUS) {
+    final double radius = GadgetConstants.FAKE_PART_RADIUS;
+    if (distance < radius * radius) {
       this.handleDebuff(scheduler, survivor, killer, item);
       final PlayerAudience audience = survivor.getAudience();
       final Component msg = Message.FAKE_PART_ACTIVATE.build();
@@ -88,13 +86,14 @@ public final class FakePart extends KillerGadget {
       final GamePlayer killer,
       final Item item) {
 
-    item.remove();
+    final int duration = GadgetConstants.FAKE_PART_DURATION;
     survivor.disableJump(scheduler, 8 * 20L);
     survivor.disableWalkWithFOVEffects(8 * 20);
-    survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, FAKE_PART_DURATION, 1));
+    survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
+    item.remove();
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, FAKE_PART_DURATION);
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, duration);
   }
 
   private Item spawnItem(final Location location) {

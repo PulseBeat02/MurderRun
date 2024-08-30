@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -13,9 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Tracker extends SurvivorGadget {
-
-  private static final double TRACKER_RADIUS = 5D;
-  private static final String TRACKER_SOUND = "entity.experience_orb.pickup";
 
   public Tracker() {
     super(
@@ -36,7 +34,7 @@ public final class Tracker extends SurvivorGadget {
     manager.applyToAllMurderers(killer -> this.handleGlowing(killer, player));
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(TRACKER_SOUND);
+    audience.playSound(GadgetConstants.TRACKER_SOUND);
 
     return false;
   }
@@ -47,7 +45,8 @@ public final class Tracker extends SurvivorGadget {
     final double distance = origin.distanceSquared(killerLocation);
     final MetadataManager metadata = player.getMetadataManager();
     final PlayerAudience audience = player.getAudience();
-    if (distance < TRACKER_RADIUS * TRACKER_RADIUS) {
+    final double radius = GadgetConstants.TRACKER_RADIUS;
+    if (distance < radius * radius) {
       metadata.setEntityGlowing(killer, ChatColor.RED, true);
       audience.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {

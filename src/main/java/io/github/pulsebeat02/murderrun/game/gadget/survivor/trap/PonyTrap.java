@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -18,9 +19,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.HorseInventory;
 
 public final class PonyTrap extends SurvivorTrap {
-
-  private static final double PONY_TRAP_HORSE_SPEED = 0.5D;
-  private static final String PONY_TRAP_SOUND = "entity.horse.angry";
 
   public PonyTrap() {
     super(
@@ -40,7 +38,7 @@ public final class PonyTrap extends SurvivorTrap {
     this.spawnHorse(location);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(PONY_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.PONY_SOUND);
   }
 
   private void spawnHorse(final Location location) {
@@ -61,7 +59,7 @@ public final class PonyTrap extends SurvivorTrap {
   private void setSpeed(final Horse horse) {
     final AttributeInstance attribute =
         requireNonNull(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
-    attribute.setBaseValue(PONY_TRAP_HORSE_SPEED);
+    attribute.setBaseValue(GadgetConstants.PONY_HORSE_SPEED);
   }
 
   private void setSaddle(final Horse horse) {

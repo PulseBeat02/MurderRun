@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -12,9 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class BurrowTrap extends SurvivorTrap {
-
-  private static final int BURROW_TRAP_DURATION = 7 * 20;
-  private static final String BURROW_TRAP_SOUND = "block.rooted_dirt.place";
 
   public BurrowTrap() {
     super(
@@ -39,15 +37,16 @@ public final class BurrowTrap extends SurvivorTrap {
       return;
     }
 
-    killer.disableJump(scheduler, BURROW_TRAP_DURATION);
-    killer.disableWalkNoFOVEffects(scheduler, BURROW_TRAP_DURATION);
+    final int duration = GadgetConstants.BURROW_DURATION;
+    killer.disableJump(scheduler, duration);
+    killer.disableWalkNoFOVEffects(scheduler, duration);
     killer.setForceMineBlocks(false);
     killer.teleport(clone);
     killer.setGravity(true);
-    scheduler.scheduleTask(() -> this.resetState(killer, location), BURROW_TRAP_DURATION);
+    scheduler.scheduleTask(() -> this.resetState(killer, location), duration);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(BURROW_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.BURROW_SOUND);
   }
 
   private void resetState(final Killer killer, final Location location) {

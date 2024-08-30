@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -17,8 +18,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
 public final class RandomTeleport extends SurvivorGadget {
-
-  private static final String RANDOM_TELEPORT_SOUND = "entity.enderman.teleport";
 
   public RandomTeleport() {
     super(
@@ -48,7 +47,7 @@ public final class RandomTeleport extends SurvivorGadget {
     player.teleport(teleport);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(RANDOM_TELEPORT_SOUND);
+    audience.playSound(GadgetConstants.RANDOM_TELEPORT_SOUND);
 
     return false;
   }

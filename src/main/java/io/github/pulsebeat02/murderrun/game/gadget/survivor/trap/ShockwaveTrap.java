@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -15,10 +16,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
 
 public final class ShockwaveTrap extends SurvivorTrap {
-
-  private static final double SHOCKWAVE_TRAP_EXPLOSION_RADIUS = 10D;
-  private static final double SHOCKWAVE_TRAP_EXPLOSION_POWER = 2D;
-  private static final String SHOCKWAVE_TRAP_SOUND = "entity.creeper.death";
 
   public ShockwaveTrap() {
     super(
@@ -40,18 +37,19 @@ public final class ShockwaveTrap extends SurvivorTrap {
 
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(participant -> this.applyShockwave(participant, origin));
-    manager.playSoundForAllParticipants(SHOCKWAVE_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.SHOCKWAVE_SOUND);
   }
 
   private void applyShockwave(final Participant participant, final Location origin) {
     final Location location = participant.getLocation();
     final double distance = location.distanceSquared(origin);
-    if (distance < SHOCKWAVE_TRAP_EXPLOSION_RADIUS * SHOCKWAVE_TRAP_EXPLOSION_RADIUS) {
+    final double radius = GadgetConstants.SHOCKWAVE_EXPLOSION_RADIUS;
+    if (distance < radius * radius) {
       final Vector playerVector = location.toVector();
       final Vector blockVector = origin.toVector();
       final Vector vector = playerVector.subtract(blockVector);
       vector.normalize();
-      vector.multiply(SHOCKWAVE_TRAP_EXPLOSION_POWER);
+      vector.multiply(GadgetConstants.SHOCKWAVE_EXPLOSION_POWER);
       participant.setVelocity(vector);
     }
   }

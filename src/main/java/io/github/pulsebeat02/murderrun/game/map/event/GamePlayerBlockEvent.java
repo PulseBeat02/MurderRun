@@ -57,12 +57,15 @@ public final class GamePlayerBlockEvent extends GameEvent {
         event.setCancelled(true);
         return;
       }
+
+      event.setDropItems(false);
+      event.setExpToDrop(0);
+
       final Location murdererLocation = gamePlayer.getLocation();
       final SoundResource sound = Sounds.CHAINSAW;
       manager.stopSoundsForAllParticipants(sound);
       manager.playSoundForAllParticipantsAtLocation(murdererLocation, sound);
-      event.setDropItems(false);
-      event.setExpToDrop(0);
+
     } else {
       final Block block = event.getBlock();
       final Map map = game.getMap();

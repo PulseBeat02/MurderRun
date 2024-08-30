@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -24,8 +25,6 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 
 public final class ResurrectionStone extends SurvivorGadget {
-
-  private static final String RESSURECTION_STONE_SOUND = "block.end_portal_frame.fill";
 
   public ResurrectionStone() {
     super(
@@ -63,7 +62,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(RESSURECTION_STONE_SOUND);
+    audience.playSound(GadgetConstants.RESSURECTION_STONE_SOUND);
 
     return false;
   }

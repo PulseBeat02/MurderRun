@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -12,8 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class HealthCut extends KillerGadget {
-
-  private static final String HEALTH_CUT_SOUND = "entity.ghast.hurt";
 
   public HealthCut() {
     super(
@@ -35,7 +34,7 @@ public final class HealthCut extends KillerGadget {
     manager.applyToAllLivingInnocents(survivor -> this.setState(survivor, scheduler));
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(HEALTH_CUT_SOUND);
+    audience.playSound(GadgetConstants.HEALTH_CUT_SOUND);
 
     return false;
   }

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -17,8 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Forewarn extends KillerGadget {
-
-  private static final String FOREWARN_SOUND = "entity.phantom.ambient";
 
   public Forewarn() {
     super(
@@ -46,7 +45,7 @@ public final class Forewarn extends KillerGadget {
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.FOREWARN_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(FOREWARN_SOUND);
+    audience.playSound(GadgetConstants.FOREWARN_SOUND);
 
     return false;
   }

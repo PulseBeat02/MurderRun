@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -10,10 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class FreezeTrap extends SurvivorTrap {
-
-  private static final int FREEZE_TRAP_DURATION = 7 * 20;
-  private static final int FREEZE_TRAP_EFFECT_DURATION = 10 * 20;
-  private static final String FREEZE_TRAP_SOUND = "block.glass.break";
 
   public FreezeTrap() {
     super(
@@ -30,11 +27,12 @@ public final class FreezeTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
     final GameScheduler scheduler = game.getScheduler();
-    murderer.disableJump(scheduler, FREEZE_TRAP_DURATION);
-    murderer.disableWalkWithFOVEffects(FREEZE_TRAP_EFFECT_DURATION);
-    murderer.setFreezeTicks(FREEZE_TRAP_DURATION);
+    final int duration = GadgetConstants.FREEZE_EFFECT_DURATION;
+    murderer.disableJump(scheduler, duration);
+    murderer.setFreezeTicks(duration);
+    murderer.disableWalkWithFOVEffects(GadgetConstants.FREEZE_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(FREEZE_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.FREEZE_SOUND);
   }
 }

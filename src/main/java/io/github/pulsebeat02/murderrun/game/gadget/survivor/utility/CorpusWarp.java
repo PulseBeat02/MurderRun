@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -11,8 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class CorpusWarp extends SurvivorGadget {
-
-  private static final String CORPUS_WARP_SOUND = "entity.enderman.teleport";
 
   public CorpusWarp() {
     super(
@@ -43,7 +42,7 @@ public final class CorpusWarp extends SurvivorGadget {
     player.teleport(location);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(CORPUS_WARP_SOUND);
+    audience.playSound(GadgetConstants.CORPUS_WARP_SOUND);
 
     return false;
   }

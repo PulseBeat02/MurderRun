@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -25,9 +26,6 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class PlayerTracker extends KillerGadget {
 
-  private static final String PLAYER_TRACKER_SOUND = "entity.experience_orb.pickup";
-  private static final int PLAYER_TRACKER_USES = 5;
-
   public PlayerTracker() {
     super(
         "player_tracker",
@@ -48,13 +46,13 @@ public final class PlayerTracker extends KillerGadget {
     final Location location = player.getLocation();
     final int distance = (int) Math.round(this.getNearestSurvivorDistance(manager, location));
     final int count = this.increaseAndGetSurvivorCount(player);
-    final boolean destroy = count >= PLAYER_TRACKER_USES;
+    final boolean destroy = count >= GadgetConstants.PLAYER_TRACKER_USES;
     super.onGadgetRightClick(game, event, destroy);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.PLAYER_TRACKER_ACTIVATE.build(distance);
     audience.sendMessage(message);
-    audience.playSound(PLAYER_TRACKER_SOUND);
+    audience.playSound(GadgetConstants.PLAYER_TRACKER_SOUND);
   }
 
   private int increaseAndGetSurvivorCount(final Player player) {

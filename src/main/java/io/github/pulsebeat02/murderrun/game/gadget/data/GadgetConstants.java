@@ -5,8 +5,7 @@ public interface GadgetConstants {
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
   int BEAR_DURATION = num("bear.duration");
-  int BEAR_TRAP_DURATION = num("bear.duration");
-  String BEAR_TRAP_SOUND = str("bear.sound");
+  String BEAR_SOUND = str("bear.sound");
   int BLIND_DURATION = num("blind.duration");
   String BLIND_SOUND = str("blind.sound");
   int BURROW_DURATION = num("burrow.duration");
@@ -160,6 +159,7 @@ public interface GadgetConstants {
   String TRAP_WRECKER_SOUND = str("trap_wrecker.sound");
   int TRAP_WRECKER_DURATION = num("trap_wrecker.duration");
   String WARP_DISTORT_SOUND = str("warp_distort.sound");
+  String CAMERA_SOUND = str("camera.sound");
 
   private static int num(final String key) {
     return GADGET_DATA_BUNDLE.getInt(key);

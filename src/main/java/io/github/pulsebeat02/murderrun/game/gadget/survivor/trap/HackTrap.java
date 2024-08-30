@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -14,9 +15,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class HackTrap extends SurvivorTrap {
-
-  private static final int HACK_TRAP_DURATION = 7 * 20;
-  private static final String HACK_TRAP_SOUND = "entity.witch.celebrate";
 
   public HackTrap() {
     super(
@@ -39,10 +37,10 @@ public final class HackTrap extends SurvivorTrap {
     }
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> inventory.addItem(stack), HACK_TRAP_DURATION);
+    scheduler.scheduleTask(() -> inventory.addItem(stack), GadgetConstants.HACK_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(HACK_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.HACK_SOUND);
   }
 
   private @Nullable ItemStack getSword(final PlayerInventory inventory) {

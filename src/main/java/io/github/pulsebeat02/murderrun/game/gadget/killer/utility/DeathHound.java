@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -28,8 +29,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class DeathHound extends KillerGadget implements Listener, TargetableEntity {
-
-  private static final String DEATH_HOUND_SOUND = "entity.wolf.howl";
 
   private final Game game;
 
@@ -70,7 +69,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     this.spawnWolf(location, player);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(DEATH_HOUND_SOUND);
+    audience.playSound(GadgetConstants.DEATH_HOUND_SOUND);
 
     return false;
   }

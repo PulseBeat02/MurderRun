@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -17,9 +18,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 
 public final class IceSkatin extends SurvivorGadget {
-
-  private static final int ICE_SKATIN_DURATION = 20 * 20;
-  private static final String ICE_SKATIN_SOUND = "block.glass.break";
 
   public IceSkatin() {
     super(
@@ -41,10 +39,10 @@ public final class IceSkatin extends SurvivorGadget {
     final Boat boat = (Boat) world.spawnEntity(location, EntityType.BOAT);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnIceUnderBoat(boat), 0L, 2L);
-    scheduler.scheduleTask(boat::remove, ICE_SKATIN_DURATION);
+    scheduler.scheduleTask(boat::remove, GadgetConstants.ICE_SKATIN_DURATION);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(ICE_SKATIN_SOUND);
+    audience.playSound(GadgetConstants.ICE_SKATIN_SOUND);
 
     return false;
   }

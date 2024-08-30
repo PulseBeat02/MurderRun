@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -28,8 +29,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BoundingBox;
 
 public final class EMPBlast extends KillerGadget {
-
-  private static final int EMP_BLAST_DURATION = 5 * 20;
 
   public EMPBlast() {
     super(
@@ -69,9 +68,10 @@ public final class EMPBlast extends KillerGadget {
   private void stunSurvivors(final GameScheduler scheduler, final GamePlayer survivor) {
     final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.EMP_BLAST_ACTIVATE.build();
-    survivor.disableJump(scheduler, EMP_BLAST_DURATION);
-    survivor.disableWalkWithFOVEffects(EMP_BLAST_DURATION);
-    survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, EMP_BLAST_DURATION, 1));
+    final int duration = GadgetConstants.EMP_BLAST_DURATION;
+    survivor.disableJump(scheduler, duration);
+    survivor.disableWalkWithFOVEffects(duration);
+    survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 1));
     audience.sendMessage(msg);
   }
 

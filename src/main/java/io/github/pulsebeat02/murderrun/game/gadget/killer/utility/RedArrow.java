@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -18,9 +19,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Item;
 
 public final class RedArrow extends KillerGadget {
-
-  private static final String RED_ARROW_SOUND = "entity.arrow.hit";
-  private static final int RED_ARROW_DURATION = 10 * 20;
 
   public RedArrow() {
     super(
@@ -40,12 +38,13 @@ public final class RedArrow extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, RED_ARROW_DURATION);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleSurvivors(manager), 0, GadgetConstants.RED_ARROW_DURATION);
 
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.RED_ARROW_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(RED_ARROW_SOUND);
+    audience.playSound(GadgetConstants.RED_ARROW_SOUND);
 
     return false;
   }

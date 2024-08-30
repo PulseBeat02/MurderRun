@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -14,9 +15,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class Deadringer extends SurvivorGadget {
-
-  private static final int DEADRINGER_DURATION = 15 * 20;
-  private static final String DEADRINGER_SOUND = "item.totem.use";
 
   public Deadringer() {
     super(
@@ -33,13 +31,14 @@ public final class Deadringer extends SurvivorGadget {
 
     super.onGadgetDrop(game, player, item, true);
 
+    final int duration = GadgetConstants.DEADRINGER_DURATION;
     player.setInvulnerable(true);
     player.addPotionEffects(
-        new PotionEffect(PotionEffectType.SPEED, DEADRINGER_DURATION, 1, true, false),
-        new PotionEffect(PotionEffectType.INVISIBILITY, DEADRINGER_DURATION, 1, true, false));
+        new PotionEffect(PotionEffectType.SPEED, duration, 1, true, false),
+        new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1, true, false));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> player.setInvulnerable(false), DEADRINGER_DURATION);
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), duration);
 
     final PlayerManager manager = game.getPlayerManager();
     final String name = player.getDisplayName();
@@ -47,7 +46,7 @@ public final class Deadringer extends SurvivorGadget {
     manager.sendMessageToAllParticipants(message);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(DEADRINGER_SOUND);
+    audience.playSound(GadgetConstants.DEADRINGER_SOUND);
 
     return false;
   }

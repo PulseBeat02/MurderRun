@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -31,9 +32,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class IceSpirit extends SurvivorGadget implements Listener, TargetableEntity {
-
-  private static final String ICE_SPIRIT_SOUND = "entity.zombie.ambient";
-  private static final int ICE_SPIRIT_DURATION = 140;
 
   private final Game game;
 
@@ -87,9 +85,10 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
     final GamePlayer nearest = manager.getGamePlayer(uuid);
     final GameScheduler scheduler = this.game.getScheduler();
-    nearest.disableJump(scheduler, ICE_SPIRIT_DURATION);
-    nearest.setFreezeTicks(ICE_SPIRIT_DURATION);
-    nearest.disableWalkWithFOVEffects(ICE_SPIRIT_DURATION);
+    final int duration = GadgetConstants.ICE_SPIRIT_DURATION;
+    nearest.disableJump(scheduler, duration);
+    nearest.setFreezeTicks(duration);
+    nearest.disableWalkWithFOVEffects(duration);
 
     final Component msg = Message.FREEZE_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(msg);
@@ -104,7 +103,6 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
     super.onGadgetDrop(game, player, item, true);
 
-    final PlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     world.spawn(location, Zombie.class, zombie -> {
@@ -114,7 +112,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
     });
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(ICE_SPIRIT_SOUND);
+    audience.playSound(GadgetConstants.ICE_SPIRIT_SOUND);
 
     return false;
   }

@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -18,8 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class Gamble extends KillerGadget {
-
-  private static final String GAMBLE_SOUND = "block.smithing_table.use";
 
   public Gamble() {
     super(
@@ -45,7 +44,7 @@ public final class Gamble extends KillerGadget {
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.GAMBLE_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(GAMBLE_SOUND);
+    audience.playSound(GadgetConstants.GAMBLE_SOUND);
 
     return false;
   }

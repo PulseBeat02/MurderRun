@@ -5,10 +5,10 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
@@ -24,9 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class Ghosting extends SurvivorGadget {
-
-  private static final int GHOSTING_WOOL_DELAY = 10 * 20;
-  private static final String GHOSTING_SOUND = "block.bone_block.break";
 
   public Ghosting() {
     super(
@@ -46,7 +43,6 @@ public final class Ghosting extends SurvivorGadget {
 
     super.onGadgetDrop(game, player, item, true);
 
-    final PlayerManager manager = game.getPlayerManager();
     if (!(player instanceof final Survivor survivor)) {
       return true;
     }
@@ -59,7 +55,7 @@ public final class Ghosting extends SurvivorGadget {
     final PlayerAudience audience = survivor.getAudience();
     final Component message = Message.GHOSTING_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GHOSTING_SOUND);
+    audience.playSound(GadgetConstants.GHOSTING_SOUND);
 
     return false;
   }
@@ -90,7 +86,8 @@ public final class Ghosting extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
-    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, GHOSTING_WOOL_DELAY);
+    scheduler.scheduleRepeatedTask(
+        () -> inventory.addItem(wool), 0, GadgetConstants.GHOSTING_WOOL_DELAY);
   }
 
   private void giveWhiteBone(final GamePlayer player) {

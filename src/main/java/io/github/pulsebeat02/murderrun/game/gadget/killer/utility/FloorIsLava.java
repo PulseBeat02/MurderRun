@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -18,8 +19,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class FloorIsLava extends KillerGadget {
-
-  private static final String FLOOR_IS_LAVA_SOUND = "entity.magma_cube.jump";
 
   public FloorIsLava() {
     super(
@@ -46,7 +45,7 @@ public final class FloorIsLava extends KillerGadget {
         () -> this.handleSurvivors(manager, scheduler, killer), 0, 6 * 20L);
 
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
-    manager.playSoundForAllParticipants(FLOOR_IS_LAVA_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.FLOOR_IS_LAVA_SOUND);
 
     return false;
   }

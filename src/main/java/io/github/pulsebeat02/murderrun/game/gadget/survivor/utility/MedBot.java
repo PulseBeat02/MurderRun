@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -28,11 +29,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.EulerAngle;
 
 public final class MedBot extends SurvivorGadget {
-
-  private static final double MED_BOT_RADIUS = 8D;
-  private static final double MED_BOT_DESTROY_RADIUS = 2D;
-
-  private static final String MED_BOT_SOUND = "block.beehive.enter";
 
   public MedBot() {
     super(
@@ -70,7 +66,7 @@ public final class MedBot extends SurvivorGadget {
     this.handleMedBotUpdate(scheduler, manager, armorStand);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(MED_BOT_SOUND);
+    audience.playSound(GadgetConstants.MED_BOT_SOUND);
 
     return false;
   }
@@ -92,7 +88,8 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < MED_BOT_DESTROY_RADIUS * MED_BOT_DESTROY_RADIUS) {
+    final double radius = GadgetConstants.MED_BOT_DESTROY_RADIUS;
+    if (distance < radius * radius) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
       stand.remove();
@@ -103,7 +100,8 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
-    if (distance < MED_BOT_RADIUS * MED_BOT_RADIUS) {
+    final double radius = GadgetConstants.MED_BOT_RADIUS;
+    if (distance < radius * radius) {
       innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20, 2));
     }
   }

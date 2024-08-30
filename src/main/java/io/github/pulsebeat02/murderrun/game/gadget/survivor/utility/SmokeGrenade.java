@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -28,9 +29,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class SmokeGrenade extends SurvivorGadget implements Listener {
-
-  private static final double SMOKE_GRENADE_RADIUS = 2D;
-  private static final int SMOKE_GRENADE_DURATION = 5 * 20;
 
   private final Game game;
 
@@ -71,20 +69,22 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
 
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
+    final int duration = GadgetConstants.SMOKE_GRENADE_DURATION;
     final Runnable task = () ->
         world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
-    scheduler.scheduleRepeatedTask(task, 0, 1, SMOKE_GRENADE_DURATION);
+    scheduler.scheduleRepeatedTask(task, 0, 1, duration);
 
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
-
     manager.applyToAllMurderers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);
-      if (distance < SMOKE_GRENADE_RADIUS * SMOKE_GRENADE_RADIUS) {
-        player.addPotionEffects(new PotionEffect(
-            PotionEffectType.BLINDNESS, SMOKE_GRENADE_DURATION, Integer.MAX_VALUE));
+      final double radius = GadgetConstants.SMOKE_GRENADE_RADIUS;
+      if (distance < radius * radius) {
+        player.addPotionEffects(
+            new PotionEffect(PotionEffectType.BLINDNESS, duration, Integer.MAX_VALUE));
       }
     });
+
+    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
   }
 }

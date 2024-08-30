@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -12,8 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class WarpDistort extends KillerGadget {
-
-  private static final String WARP_DISTORT_SOUND = "entity.enderman.teleport";
 
   public WarpDistort() {
     super(
@@ -40,10 +39,11 @@ public final class WarpDistort extends KillerGadget {
     random.teleport(second);
     random2.teleport(first);
 
+    final String sound = GadgetConstants.WARP_DISTORT_SOUND;
     final PlayerAudience randomAudience = random.getAudience();
     final PlayerAudience random2Audience = random2.getAudience();
-    randomAudience.playSound(WARP_DISTORT_SOUND);
-    random2Audience.playSound(WARP_DISTORT_SOUND);
+    randomAudience.playSound(sound);
+    random2Audience.playSound(sound);
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     randomAudience.sendMessage(msg);

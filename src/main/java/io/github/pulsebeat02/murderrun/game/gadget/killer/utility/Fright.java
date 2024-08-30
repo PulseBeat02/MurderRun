@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -17,8 +18,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Fright extends KillerGadget {
-
-  private static final int FRIGHT_DURATION = 5 * 20;
 
   public Fright() {
     super(
@@ -48,9 +47,10 @@ public final class Fright extends KillerGadget {
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
 
     final ItemStack before = this.setPumpkinItemStack(survivor);
+    final int duration = GadgetConstants.FRIGHT_DURATION;
     survivor.addPotionEffects(
-        new PotionEffect(PotionEffectType.BLINDNESS, FRIGHT_DURATION, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, FRIGHT_DURATION, 1));
+        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
     scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L);
 
     final PlayerAudience audience = survivor.getAudience();

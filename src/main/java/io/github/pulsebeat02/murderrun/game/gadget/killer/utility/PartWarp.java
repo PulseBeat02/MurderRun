@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
@@ -16,8 +17,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class PartWarp extends KillerGadget {
-
-  private static final String PART_WARP_SOUND = "block.lever.click";
 
   public PartWarp() {
     super(
@@ -46,7 +45,7 @@ public final class PartWarp extends KillerGadget {
     carPartItem.teleport(location);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(PART_WARP_SOUND);
+    audience.playSound(GadgetConstants.PART_WARP_SOUND);
 
     return false;
   }

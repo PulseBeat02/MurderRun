@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -18,8 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 public final class BlastOff extends SurvivorGadget {
-
-  private static final String BLAST_OFF_SOUND = "entity.firework_rocket.blast";
 
   public BlastOff() {
     super(
@@ -49,7 +48,7 @@ public final class BlastOff extends SurvivorGadget {
     scheduler.scheduleAfterDeath(() -> this.resetPlayer(killer, before), firework);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(BLAST_OFF_SOUND);
+    audience.playSound(GadgetConstants.BLASTOFF_SOUND);
 
     return false;
   }

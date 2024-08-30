@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -18,10 +19,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Sheep;
 
 public final class JebTrap extends SurvivorTrap {
-
-  private static final int JEB_TRAP_DURATION = 4 * 20;
-  private static final int JEB_TRAP_SHEEP_COUNT = 15;
-  private static final String JEB_TRAP_SOUND = "entity.sheep.ambient";
 
   public JebTrap() {
     super(
@@ -39,15 +36,16 @@ public final class JebTrap extends SurvivorTrap {
 
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
-    for (int i = 0; i < JEB_TRAP_SHEEP_COUNT; i++) {
+    for (int i = 0; i < GadgetConstants.JEB_SHEEP_COUNT; i++) {
       world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
     }
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> spawnRainbowParticles(location), 0, 5, JEB_TRAP_DURATION);
+    scheduler.scheduleRepeatedTask(
+        () -> spawnRainbowParticles(location), 0, 5, GadgetConstants.JEB_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(JEB_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.JEB_SOUND);
   }
 
   private void spawnRainbowParticles(Location location) {

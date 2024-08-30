@@ -11,6 +11,7 @@ import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
@@ -23,9 +24,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Item;
 
 public final class CryoFreeze extends SurvivorGadget {
-
-  private static final String CRYO_FREEZE_SOUND = "block.glass.break";
-  private static final double CRYO_FREEZE_RADIUS = 5D;
 
   public CryoFreeze() {
     super(
@@ -53,7 +51,7 @@ public final class CryoFreeze extends SurvivorGadget {
     this.createSphere(weWorld, vector3, state, whitelistManager);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(CRYO_FREEZE_SOUND);
+    audience.playSound(GadgetConstants.CRYO_FREEZE_SOUND);
 
     return false;
   }
@@ -66,7 +64,7 @@ public final class CryoFreeze extends SurvivorGadget {
     final WorldEdit worldEdit = WorldEdit.getInstance();
     try (final EditSession session = worldEdit.newEditSession(weWorld)) {
       try {
-        session.makeSphere(vector3, state, CRYO_FREEZE_RADIUS, false);
+        session.makeSphere(vector3, state, GadgetConstants.CRYO_FREEZE_RADIUS, false);
         whitelistManager.addWhitelistedBlocks(session);
       } catch (final MaxChangedBlocksException e) {
         throw new AssertionError(e);

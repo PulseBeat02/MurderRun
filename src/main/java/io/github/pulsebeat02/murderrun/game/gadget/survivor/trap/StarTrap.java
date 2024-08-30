@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -11,9 +12,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class StarTrap extends SurvivorTrap {
-
-  private static final int STAR_TRAP_DURATION = 5 * 20;
-  private static final String STAR_TRAP_SOUND = "entity.firework_rocket.blast";
 
   public StarTrap() {
     super(
@@ -30,13 +28,14 @@ public final class StarTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllLivingInnocents(this::addPotionEffect);
-    manager.playSoundForAllParticipants(STAR_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.STAR_SOUND);
   }
 
   private void addPotionEffect(final GamePlayer player) {
+    final int duration = GadgetConstants.STAR_DURATION;
     player.addPotionEffects(
-        new PotionEffect(PotionEffectType.SPEED, STAR_TRAP_DURATION, 2),
-        new PotionEffect(PotionEffectType.RESISTANCE, STAR_TRAP_DURATION, 2),
-        new PotionEffect(PotionEffectType.REGENERATION, STAR_TRAP_DURATION, 2));
+        new PotionEffect(PotionEffectType.SPEED, duration, 2),
+        new PotionEffect(PotionEffectType.RESISTANCE, duration, 2),
+        new PotionEffect(PotionEffectType.REGENERATION, duration, 2));
   }
 }

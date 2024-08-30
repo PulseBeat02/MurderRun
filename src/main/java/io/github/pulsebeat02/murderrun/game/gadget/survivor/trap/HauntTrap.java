@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -14,9 +15,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class HauntTrap extends SurvivorTrap {
-
-  private static final int HAUNT_TRAP_DURATION = 10 * 20;
-  private static final String HAUNT_TRAP_SOUND = "entity.ghast.scream";
 
   public HauntTrap() {
     super(
@@ -32,16 +30,17 @@ public final class HauntTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
+    final int duration = GadgetConstants.HAUNT_DURATION;
     murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.NAUSEA, HAUNT_TRAP_DURATION, 10),
-        new PotionEffect(PotionEffectType.BLINDNESS, HAUNT_TRAP_DURATION, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, HAUNT_TRAP_DURATION, 4));
+        new PotionEffect(PotionEffectType.NAUSEA, duration, 10),
+        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, HAUNT_TRAP_DURATION);
+    scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, duration);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(HAUNT_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.HAUNT_SOUND);
   }
 
   private void spook(final Game game, final GamePlayer gamePlayer) {

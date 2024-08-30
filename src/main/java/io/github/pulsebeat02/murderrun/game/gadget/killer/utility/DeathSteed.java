@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,8 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.HorseInventory;
 
 public final class DeathSteed extends KillerGadget {
-
-  private static final String DEATH_STEED_SOUND = "entity.horse.angry";
 
   public DeathSteed() {
     super(
@@ -47,7 +46,7 @@ public final class DeathSteed extends KillerGadget {
         () -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(DEATH_STEED_SOUND);
+    audience.playSound(GadgetConstants.DEATH_STEED_SOUND);
 
     return false;
   }

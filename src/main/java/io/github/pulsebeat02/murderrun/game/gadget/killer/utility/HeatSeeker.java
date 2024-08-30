@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -17,9 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class HeatSeeker extends KillerGadget {
-
-  private static final String HEAT_SEEKER_SOUND = "block.amethyst_block.chime";
-  private static final double HEAT_SEEKER_RADIUS = 10D;
 
   public HeatSeeker() {
     super(
@@ -47,7 +45,7 @@ public final class HeatSeeker extends KillerGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.HEAT_SEEKER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(HEAT_SEEKER_SOUND);
+    audience.playSound(GadgetConstants.HEAT_SEEKER_SOUND);
 
     return false;
   }
@@ -62,7 +60,8 @@ public final class HeatSeeker extends KillerGadget {
     final Collection<GamePlayer> visible = owner.getHeatSeekerGlowing();
     final double distance = location.distanceSquared(other);
     final MetadataManager metadata = owner.getMetadataManager();
-    if (distance < HEAT_SEEKER_RADIUS * HEAT_SEEKER_RADIUS) {
+    final double radius = GadgetConstants.HEAT_SEEKER_RADIUS;
+    if (distance < radius * radius) {
       visible.add(innocent);
       metadata.setEntityGlowing(innocent, ChatColor.RED, true);
     } else if (visible.contains(innocent)) {

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
@@ -20,9 +21,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class TrapSniffer extends SurvivorGadget {
-
-  private static final double TRAP_SNIFFER_RADIUS = 15D;
-  private static final String TRAP_SNIFFER_SOUND = "entity.sniffer.digging";
 
   public TrapSniffer() {
     super(
@@ -50,7 +48,7 @@ public final class TrapSniffer extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.TRAP_SNIFFER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(TRAP_SNIFFER_SOUND);
+    audience.playSound(GadgetConstants.TRAP_SNIFFER_SOUND);
 
     return false;
   }
@@ -62,12 +60,13 @@ public final class TrapSniffer extends SurvivorGadget {
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();
     final Collection<Item> set = player.getGlowingCarParts();
+    final double radius = GadgetConstants.TRAP_SNIFFER_RADIUS;
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();
       final double distance = origin.distanceSquared(location);
       final MetadataManager metadata = player.getMetadataManager();
-      if (distance < TRAP_SNIFFER_RADIUS * TRAP_SNIFFER_RADIUS) {
+      if (distance < radius * radius) {
         set.add(entity);
         metadata.setEntityGlowing(entity, ChatColor.RED, true);
       } else if (set.contains(entity)) {

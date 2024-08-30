@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -29,9 +30,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class FlashBang extends SurvivorGadget implements Listener {
-
-  private static final double FLASHBANG_RADIUS = 2D;
-  private static final int FLASHBANG_DURATION = 3 * 20;
 
   private final Game game;
 
@@ -81,15 +79,18 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
     manager.applyToAllMurderers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);
-      if (distance < FLASHBANG_RADIUS * FLASHBANG_RADIUS) {
+      final double radius = GadgetConstants.FLASHBANG_RADIUS;
+      if (distance < radius * radius) {
+        final int duration = GadgetConstants.FLASHBANG_DURATION;
         killer.addPotionEffects(
-            new PotionEffect(PotionEffectType.BLINDNESS, FLASHBANG_DURATION, 0),
-            new PotionEffect(PotionEffectType.SLOWNESS, FLASHBANG_DURATION, 4));
+            new PotionEffect(PotionEffectType.BLINDNESS, duration, 0),
+            new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));
       }
     });
+
+    manager.playSoundForAllParticipantsAtLocation(location, Sounds.FLASHBANG);
   }
 }

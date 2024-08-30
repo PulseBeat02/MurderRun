@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -15,8 +16,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.TNTPrimed;
 
 public final class QuickBomb extends KillerGadget {
-
-  private static final String QUICK_BOMB_SOUND = "entity.creeper.primed";
 
   public QuickBomb() {
     super(
@@ -37,7 +36,7 @@ public final class QuickBomb extends KillerGadget {
     manager.applyToAllLivingInnocents(this::spawnPrimedTnt);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(QUICK_BOMB_SOUND);
+    audience.playSound(GadgetConstants.QUICK_BOMB_SOUND);
 
     return false;
   }

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -15,9 +16,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class Retaliation extends SurvivorGadget {
-
-  private static final int RETALATION_MAX_AMPLIFIER = 3;
-  private static final String RETALIATION_SOUND = "entity.experience_orb.pickup";
 
   public Retaliation() {
     super(
@@ -41,7 +39,7 @@ public final class Retaliation extends SurvivorGadget {
     final Component message = Message.RETALIATION_ACTIVATE.build();
     final PlayerAudience audience = player.getAudience();
     audience.sendMessage(message);
-    audience.playSound(RETALIATION_SOUND);
+    audience.playSound(GadgetConstants.RETALIATION_SOUND);
 
     return false;
   }
@@ -54,7 +52,7 @@ public final class Retaliation extends SurvivorGadget {
       return;
     }
 
-    final int effectLevel = Math.min(dead - 1, RETALATION_MAX_AMPLIFIER);
+    final int effectLevel = Math.min(dead - 1, GadgetConstants.RETALIATION_MAX_AMPLIFIER);
     player.addPotionEffects(
         new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
         new PotionEffect(

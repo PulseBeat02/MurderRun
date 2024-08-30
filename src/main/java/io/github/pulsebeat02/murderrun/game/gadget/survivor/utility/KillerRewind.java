@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -13,9 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class KillerRewind extends SurvivorGadget {
-
-  private static final int KILLER_REWIND_COOLDOWN = 3000;
-  private static final String KILLER_REWIND_SOUND = "entity.shulker.teleport";
 
   public KillerRewind() {
     super(
@@ -53,7 +51,7 @@ public final class KillerRewind extends SurvivorGadget {
     }
 
     final long difference = current - last;
-    if (difference < KILLER_REWIND_COOLDOWN) {
+    if (difference < GadgetConstants.KILLER_REWIND_COOLDOWN) {
       super.onGadgetDrop(game, player, item, false);
       return true;
     }
@@ -77,6 +75,6 @@ public final class KillerRewind extends SurvivorGadget {
     super.onGadgetDrop(game, killer, item, successful);
 
     final PlayerAudience audience = killer.getAudience();
-    audience.playSound(KILLER_REWIND_SOUND);
+    audience.playSound(GadgetConstants.KILLER_REWIND_SOUND);
   }
 }

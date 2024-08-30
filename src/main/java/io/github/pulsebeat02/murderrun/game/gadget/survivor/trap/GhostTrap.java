@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -11,9 +12,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class GhostTrap extends SurvivorTrap {
-
-  private static final int GHOST_TRAP_DURATION = 10 * 20;
-  private static final String GHOST_TRAP_SOUND = "entity.ghast.hurt";
 
   public GhostTrap() {
     super(
@@ -29,9 +27,10 @@ public final class GhostTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
+    final int duration = GadgetConstants.GHOST_DURATION;
     manager.applyToAllLivingInnocents(player -> player.addPotionEffects(
-        new PotionEffect(PotionEffectType.INVISIBILITY, GHOST_TRAP_DURATION, 1),
-        new PotionEffect(PotionEffectType.SPEED, GHOST_TRAP_DURATION, 1)));
-    manager.playSoundForAllParticipants(GHOST_TRAP_SOUND);
+        new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1),
+        new PotionEffect(PotionEffectType.SPEED, duration, 1)));
+    manager.playSoundForAllParticipants(GadgetConstants.GHOST_SOUND);
   }
 }

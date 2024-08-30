@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -15,8 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Horcrux extends SurvivorGadget {
-
-  private static final String HORCRUX_SOUND = "block.furnace.fire_crackle";
 
   public Horcrux() {
     super(
@@ -39,7 +38,7 @@ public final class Horcrux extends SurvivorGadget {
     scheduler.scheduleParticleTaskUntilDeath(item, Color.BLACK);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(HORCRUX_SOUND);
+    audience.playSound(GadgetConstants.HORCRUX_SOUND);
 
     return false;
   }

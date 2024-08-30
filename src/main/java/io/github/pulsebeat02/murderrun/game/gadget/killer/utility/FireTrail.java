@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -14,8 +15,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class FireTrail extends KillerGadget {
-
-  private static final String FIRE_TRAIL_SOUND = "item.flintandsteel.use";
 
   public FireTrail() {
     super(
@@ -39,7 +38,7 @@ public final class FireTrail extends KillerGadget {
     scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(FIRE_TRAIL_SOUND);
+    audience.playSound(GadgetConstants.FIRE_TRAIL_SOUND);
 
     return false;
   }

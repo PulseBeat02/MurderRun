@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -33,8 +34,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public final class Dormagogg extends KillerGadget implements Listener, TargetableEntity {
-
-  private static final String DORMAGOGG_SOUND = "entity.zombie.ambient";
 
   private final Game game;
 
@@ -115,13 +114,12 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
 
     super.onGadgetDrop(game, player, item, true);
 
-    final PlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     this.spawnDormagogg(world, location, player);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(DORMAGOGG_SOUND);
+    audience.playSound(GadgetConstants.DORMAGOGG_SOUND);
 
     return false;
   }

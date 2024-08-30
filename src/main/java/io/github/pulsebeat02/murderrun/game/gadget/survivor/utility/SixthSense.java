@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -17,9 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class SixthSense extends SurvivorGadget {
-
-  private static final double SIXTH_SENSE_RADIUS = 10D;
-  private static final String SIXTH_SENSE_SOUND = "entity.sniffer.digging";
 
   public SixthSense() {
     super(
@@ -47,7 +45,7 @@ public final class SixthSense extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.SIXTH_SENSE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(SIXTH_SENSE_SOUND);
+    audience.playSound(GadgetConstants.SIXTH_SENSE_SOUND);
 
     return false;
   }
@@ -62,7 +60,8 @@ public final class SixthSense extends SurvivorGadget {
     final Collection<GamePlayer> visible = survivor.getGlowingKillers();
     final double distance = location.distanceSquared(other);
     final MetadataManager metadata = survivor.getMetadataManager();
-    if (distance < SIXTH_SENSE_RADIUS * SIXTH_SENSE_RADIUS) {
+    final double radius = GadgetConstants.SIXTH_SENSE_RADIUS;
+    if (distance < radius * radius) {
       visible.add(killer);
       metadata.setEntityGlowing(killer, ChatColor.BLUE, true);
     } else if (visible.contains(killer)) {

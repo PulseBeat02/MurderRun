@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -24,8 +25,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.Vector;
 
 public final class TrapVest extends SurvivorGadget {
-
-  private static final String TRAP_VEST_SOUND = "item.armor.equip_diamond";
 
   public TrapVest() {
     super(
@@ -53,7 +52,7 @@ public final class TrapVest extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.TRAP_VEST_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(TRAP_VEST_SOUND);
+    audience.playSound(GadgetConstants.TRAP_VEST_SOUND);
 
     return false;
   }

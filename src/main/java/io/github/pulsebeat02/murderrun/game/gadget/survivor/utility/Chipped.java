@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -13,9 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Chipped extends SurvivorGadget {
-
-  private static final int CHIPPED_DURATION = 5 * 20;
-  private static final String CHIPPED_SOUND = "block.amethyst_block.chime";
 
   public Chipped() {
     super(
@@ -38,14 +36,14 @@ public final class Chipped extends SurvivorGadget {
     this.setOtherSurvivorsGlowing(manager, metadata, scheduler);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(CHIPPED_SOUND);
+    audience.playSound(GadgetConstants.CHIPPED_SOUND);
 
     return false;
   }
 
   private void setOtherSurvivorsGlowing(
       final PlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
-    manager.applyToAllLivingInnocents(innocent ->
-        metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, CHIPPED_DURATION));
+    manager.applyToAllLivingInnocents(innocent -> metadata.setEntityGlowing(
+        scheduler, innocent, ChatColor.GREEN, GadgetConstants.CHIPPED_DURATION));
   }
 }

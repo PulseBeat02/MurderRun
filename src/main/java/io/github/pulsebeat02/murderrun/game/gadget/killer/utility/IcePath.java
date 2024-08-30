@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -13,8 +14,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
 
 public final class IcePath extends KillerGadget {
-
-  private static final String ICE_PATH_SOUND = "block.glass.break";
 
   public IcePath() {
     super(
@@ -31,7 +30,7 @@ public final class IcePath extends KillerGadget {
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(player), 0, 4);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(ICE_PATH_SOUND);
+    audience.playSound(GadgetConstants.ICE_PATH_SOUND);
 
     return false;
   }

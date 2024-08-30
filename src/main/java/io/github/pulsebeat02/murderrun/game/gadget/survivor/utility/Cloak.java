@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -10,9 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Cloak extends SurvivorGadget {
-
-  private static final int CLOAK_DURATION = 7 * 20;
-  private static final String CLOAK_SOUND = "entity.phantom.flap";
 
   public Cloak() {
     super(
@@ -26,11 +24,11 @@ public final class Cloak extends SurvivorGadget {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.hideNameTagForAliveInnocents(CLOAK_DURATION);
+    manager.hideNameTagForAliveInnocents(GadgetConstants.CLOAK_DURATION);
 
     final Component message = Message.CLOAK_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(message);
-    manager.playSoundForAllParticipants(CLOAK_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.CLOAK_SOUND);
 
     return false;
   }

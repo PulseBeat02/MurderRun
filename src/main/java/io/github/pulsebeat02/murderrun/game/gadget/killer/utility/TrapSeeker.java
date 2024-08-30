@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -26,9 +27,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 public final class TrapSeeker extends KillerGadget {
-
-  private static final String TRAP_SEEKER_SOUND = "block.amethyst_block.chime";
-  private static final double TRAP_SEEKER_RADIUS = 15D;
 
   public TrapSeeker() {
     super(
@@ -55,7 +53,7 @@ public final class TrapSeeker extends KillerGadget {
     final PlayerAudience audience = killer.getAudience();
     final Component message = Message.TRAP_SEEKER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(TRAP_SEEKER_SOUND);
+    audience.playSound(GadgetConstants.TRAP_SEEKER_SOUND);
 
     return false;
   }
@@ -65,8 +63,8 @@ public final class TrapSeeker extends KillerGadget {
     final GadgetManager manager = game.getGadgetManager();
     final Location origin = killer.getLocation();
     final World world = requireNonNull(origin.getWorld());
-    final Collection<Entity> entities =
-        world.getNearbyEntities(origin, TRAP_SEEKER_RADIUS, TRAP_SEEKER_RADIUS, TRAP_SEEKER_RADIUS);
+    final double radius = GadgetConstants.TRAP_SEEKER_RADIUS;
+    final Collection<Entity> entities = world.getNearbyEntities(origin, radius, radius, radius);
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     final Set<Item> gadgets = new HashSet<>();
 

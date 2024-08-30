@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -17,9 +18,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public final class MindControl extends SurvivorGadget {
-
-  private static final int MIND_CONTROL_DURATION = 10 * 20;
-  private static final String MIND_CONTROL_SOUND = "entity.enderman.scream";
 
   public MindControl() {
     super(
@@ -49,22 +47,22 @@ public final class MindControl extends SurvivorGadget {
     survivor.setCanPickupCarPart(false);
 
     final Location location = nearest.getLocation();
-    player.addPotionEffects(
-        new PotionEffect(PotionEffectType.INVISIBILITY, MIND_CONTROL_DURATION, 1));
+    final int duration = GadgetConstants.MIND_CONTROL_DURATION;
+    player.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1));
     player.setInvulnerable(true);
     player.teleport(location);
 
     final Location origin = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> this.applyMindControlEffects(player, nearest), 0L, 1L, MIND_CONTROL_DURATION);
-    scheduler.scheduleTask(() -> this.resetPlayer(survivor, origin), MIND_CONTROL_DURATION);
+        () -> this.applyMindControlEffects(player, nearest), 0L, 1L, duration);
+    scheduler.scheduleTask(() -> this.resetPlayer(survivor, origin), duration);
 
     final String targetName = nearest.getDisplayName();
     final Component targetMsg = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
     final PlayerAudience audience1 = player.getAudience();
     audience1.sendMessage(targetMsg);
-    audience1.playSound(MIND_CONTROL_SOUND);
+    audience1.playSound(GadgetConstants.MIND_CONTROL_SOUND);
 
     final String name = player.getDisplayName();
     final Component msg = Message.MIND_CONTROL_ACTIVATE_KILLER.build(name);

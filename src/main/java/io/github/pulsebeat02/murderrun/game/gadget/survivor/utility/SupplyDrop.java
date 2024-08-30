@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -36,10 +37,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class SupplyDrop extends SurvivorGadget implements Listener {
-
-  private static final String[] AIR_DROP_MASKS = {
-    "AXAXAXAXAXAXAXAXAXAXAXAXAXA", "XXXXAXXXXXAXAAAXAXXXXXAXXXX", "AAXXAXXAAAXAXAXAXAAAXXAXXAA"
-  };
 
   private final Game game;
 
@@ -114,7 +111,9 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
   private ItemStack[] generateSupplyDropItems() {
     final int index = RandomUtils.generateInt(3);
-    final String mask = AIR_DROP_MASKS[index];
+    final String all = GadgetConstants.SUPPLY_DROP_MASKS;
+    final String[] masks = all.split(",");
+    final String mask = masks[index];
     final ItemStack[] items = new ItemStack[mask.length()];
     final GadgetManager manager = this.game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();

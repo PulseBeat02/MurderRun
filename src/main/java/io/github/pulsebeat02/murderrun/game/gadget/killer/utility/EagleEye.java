@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -18,9 +19,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
 public final class EagleEye extends KillerGadget {
-
-  private static final int EAGLE_EYE_DURATION = 10 * 20;
-  private static final String EAGLE_EYE_SOUND = "entity.phantom.flap";
 
   public EagleEye() {
     super(
@@ -55,11 +53,12 @@ public final class EagleEye extends KillerGadget {
     final float before = player.getFlySpeed();
     player.setFlySpeed(0.0f);
 
-    final PlayerAudience audience = player.getAudience();
-    audience.playSound(EAGLE_EYE_SOUND);
-
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetState(player, previous, before), EAGLE_EYE_DURATION);
+    scheduler.scheduleTask(
+        () -> this.resetState(player, previous, before), GadgetConstants.EAGLE_EYE_DURATION);
+
+    final PlayerAudience audience = player.getAudience();
+    audience.playSound(GadgetConstants.EAGLE_EYE_SOUND);
 
     return false;
   }

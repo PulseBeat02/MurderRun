@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -14,8 +15,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class SpawnTrap extends SurvivorTrap {
-
-  private static final String SPASM_TRAP_SOUND = "entity.skeleton.ambient";
 
   public SpawnTrap() {
     super(
@@ -37,6 +36,6 @@ public final class SpawnTrap extends SurvivorTrap {
     murderer.teleport(spawn);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(SPASM_TRAP_SOUND);
+    manager.playSoundForAllParticipants(GadgetConstants.SPAWN_SOUND);
   }
 }

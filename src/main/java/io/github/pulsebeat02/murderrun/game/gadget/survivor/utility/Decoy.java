@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,8 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class Decoy extends SurvivorGadget {
-
-  private static final String DECOY_SOUND = "block.beehive.enter";
 
   public Decoy() {
     super("decoy", Material.PLAYER_HEAD, Message.DECOY_NAME.build(), Message.DECOY_LORE.build(), 8);
@@ -43,7 +42,7 @@ public final class Decoy extends SurvivorGadget {
     npc.spawn(location);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(DECOY_SOUND);
+    audience.playSound(GadgetConstants.DECOY_SOUND);
 
     return false;
   }

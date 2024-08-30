@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -10,9 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class GlowTrap extends SurvivorTrap {
-
-  private static final int GLOW_TRAP_DURATION = 7 * 20;
-  private static final String GLOW_TRAP_SOUND = "block.amethyst_block.chime";
 
   public GlowTrap() {
     super(
@@ -28,7 +26,8 @@ public final class GlowTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
-    manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, GLOW_TRAP_DURATION);
-    manager.playSoundForAllParticipants(GLOW_TRAP_SOUND);
+    manager.setEntityGlowingForAliveInnocents(
+        murderer, ChatColor.RED, GadgetConstants.GLOW_DURATION);
+    manager.playSoundForAllParticipants(GadgetConstants.GLOW_SOUND);
   }
 }
