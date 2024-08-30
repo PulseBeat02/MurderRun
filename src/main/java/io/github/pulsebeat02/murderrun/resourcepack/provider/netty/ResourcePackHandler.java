@@ -5,10 +5,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.DefaultHttpResponse;
+import io.netty.handler.codec.http.HttpHeaderNames;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import java.io.RandomAccessFile;
@@ -44,7 +45,8 @@ public final class ResourcePackHandler extends ChannelInboundHandlerAdapter {
       final DefaultFileRegion region = new DefaultFileRegion(channel, 0, length);
       final HttpResponse response =
           new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-      HttpUtil.setContentLength(response, length);
+      final HttpHeaders headers = response.headers();
+      headers.set(HttpHeaderNames.CONTENT_LENGTH, String.valueOf(length));
       ctx.write(response);
       ctx.write(region);
       ctx.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);

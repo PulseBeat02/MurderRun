@@ -36,7 +36,7 @@ dependencies {
     compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT") {
         exclude(group = "*", module = "*")
     }
-    compileOnly("io.netty:netty-all:4.1.97.Final")
+    compileOnly("io.netty:netty-all:5.0.0.Alpha2")
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_1"))
@@ -56,9 +56,9 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
-    implementation("io.netty:netty-codec-http:4.1.97.Final")
+    implementation("io.netty:netty-codec-http:5.0.0.Alpha2")
 
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.118.1")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.119.2")
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
