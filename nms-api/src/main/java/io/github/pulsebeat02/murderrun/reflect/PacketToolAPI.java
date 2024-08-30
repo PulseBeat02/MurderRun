@@ -11,4 +11,6 @@ public interface PacketToolAPI {
   ItemStack fromByteArray(final byte[] bytes);
 
   void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing);
+
+  void injectNettyHandler(final Object handler);
 }

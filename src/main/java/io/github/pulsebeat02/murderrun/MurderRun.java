@@ -24,7 +24,7 @@ public final class MurderRun extends JavaPlugin {
 
   DEBUG
 
-  - Test all gadgets
+  - Test resourcepacks
 
    */
 

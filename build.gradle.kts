@@ -36,6 +36,7 @@ dependencies {
     compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT") {
         exclude(group = "*", module = "*")
     }
+    compileOnly("io.netty:netty-all:4.1.97.Final")
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_1"))

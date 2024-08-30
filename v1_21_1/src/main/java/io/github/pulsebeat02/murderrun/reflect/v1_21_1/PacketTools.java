@@ -4,37 +4,34 @@ import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelPipeline;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.SplittableRandom;
-import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
-import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
-import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.DataValue;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerConnectionListener;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.RelativeMovement;
 import org.bukkit.Bukkit;
 import org.bukkit.UnsafeValues;
@@ -132,6 +129,18 @@ public class PacketTools implements PacketToolAPI {
 
     final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);
     connection.send(packet);
+  }
+
+  @Override
+  public void injectNettyHandler(final Object handler) {
+    final MinecraftServer server = MinecraftServer.getServer();
+    final ServerConnectionListener serverConnection = server.getConnection();
+    final List<Connection> connections = serverConnection.getConnections();
+    for (final Connection connection : connections) {
+      final Channel channel = connection.channel;
+      final ChannelPipeline pipeline = channel.pipeline();
+      pipeline.addFirst((ChannelHandler) handler);
+    }
   }
 
   // wtf??!?!??!!? troll?!?!?

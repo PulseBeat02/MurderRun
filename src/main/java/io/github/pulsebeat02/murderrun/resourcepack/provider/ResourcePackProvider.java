@@ -35,7 +35,7 @@ public abstract class ResourcePackProvider implements PackProvider {
     this.zip = SERVER_PACK.getPath();
   }
 
-  abstract String getRawUrl(final Path zip);
+  public abstract String getRawUrl(final Path zip);
 
   @Override
   public CompletableFuture<ResourcePackRequest> getResourcePackRequest() {
