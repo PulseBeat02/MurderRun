@@ -23,7 +23,9 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  - Add permissions to all commands
+  Code different gadget spawn locations for arena
+  Test on server pack hosting method
+
 
    */
 

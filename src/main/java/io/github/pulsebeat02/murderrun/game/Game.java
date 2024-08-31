@@ -71,12 +71,12 @@ public final class Game {
       this.status = GameStatus.FINISHED;
       this.gadgetManager.shutdown();
       this.cleanupManager.start(code);
-      this.playerManager.resetAllPlayers();
       this.scheduler.cancelAllTasks();
       this.npcManager.shutdown();
       this.map.shutdown();
-      this.callback.onGameFinish(this, code);
+      this.playerManager.resetAllPlayers();
       this.executor.shutdown();
+      this.callback.onGameFinish(this, code);
     }
   }
 

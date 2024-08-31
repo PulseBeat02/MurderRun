@@ -57,6 +57,9 @@ public final class GameManager {
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
 
+    final PlayerInventory inventory = player.getInventory();
+    inventory.clear();
+
     if (!this.participants.contains(player)) {
       this.setResourcePack(player);
     }

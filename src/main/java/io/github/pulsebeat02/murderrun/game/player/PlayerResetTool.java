@@ -35,18 +35,18 @@ public final class PlayerResetTool {
     audience.stopSound(Sounds.BACKGROUND);
     gamePlayer.removeAllPotionEffects();
     gamePlayer.teleport(location);
+    gamePlayer.clearInventory();
+    gamePlayer.setGameMode(GameMode.SURVIVAL);
+    gamePlayer.setHealth(20f);
+    gamePlayer.setFoodLevel(20);
+    gamePlayer.setLevel(0);
+    gamePlayer.setSaturation(Float.MAX_VALUE);
+    gamePlayer.setFreezeTicks(0);
     gamePlayer.apply(player -> {
-      player.getInventory().clear();
-      player.setGameMode(GameMode.SURVIVAL);
-      player.setHealth(20f);
-      player.setFoodLevel(20);
       player.setWalkSpeed(0.2f);
       player.setExp(0);
-      player.setLevel(0);
-      player.setSaturation(Float.MAX_VALUE);
       player.setGlowing(false);
       player.setFireTicks(0);
-      player.setFreezeTicks(0);
     });
   }
 }
