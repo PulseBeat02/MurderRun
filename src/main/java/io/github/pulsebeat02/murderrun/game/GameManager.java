@@ -57,9 +57,7 @@ public final class GameManager {
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
 
-    final PlayerInventory inventory = player.getInventory();
-    inventory.clear();
-
+    this.clearInventory(player);
     if (!this.participants.contains(player)) {
       this.setResourcePack(player);
     }
@@ -76,10 +74,7 @@ public final class GameManager {
 
   private void clearInventory(final Player player) {
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack[] slots = inventory.getContents();
-    for (final ItemStack slot : slots) {
-      inventory.remove(slot);
-    }
+    inventory.clear();
   }
 
   private void teleportPlayerToLobby(final Player player) {
