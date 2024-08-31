@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Path;
+import org.bukkit.Bukkit;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class NettyHosting extends ResourcePackProvider {
@@ -28,8 +29,9 @@ public final class NettyHosting extends ResourcePackProvider {
     }
 
     final String ip = this.getPublicAddress();
+    final int port = Bukkit.getPort();
     if (ip != null) {
-      return "http://" + ip + ":25565/resourcepack";
+      return "http://%s:%s/resourcepack".formatted(ip, port);
     }
 
     throw new AssertionError("Failed to get public address");

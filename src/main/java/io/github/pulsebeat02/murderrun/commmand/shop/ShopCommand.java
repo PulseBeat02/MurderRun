@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.annotations.Permission;
 
 public final class ShopCommand implements AnnotationCommandFeature {
 
@@ -45,14 +46,16 @@ public final class ShopCommand implements AnnotationCommandFeature {
     this.event = new NPCShopEvent(plugin);
   }
 
-  @CommandDescription("murder_run.command.npc.spawn.survivor.info")
+  @Permission("murderrun.command.npc.spawn.survivor")
+  @CommandDescription("murderrun.command.npc.spawn.survivor.info")
   @Command(value = "murder npc spawn survivor", requiredSender = Player.class)
   public void createSurvivorMerchant(final Player sender) {
     final Location location = sender.getLocation();
     this.createNPC(location, true);
   }
 
-  @CommandDescription("murder_run.command.npc.spawn.killer.info")
+  @Permission("murderrun.command.npc.spawn.killer")
+  @CommandDescription("murderrun.command.npc.spawn.killer.info")
   @Command(value = "murder npc spawn killer", requiredSender = Player.class)
   public void createKillerMerchant(final Player sender) {
     final Location location = sender.getLocation();

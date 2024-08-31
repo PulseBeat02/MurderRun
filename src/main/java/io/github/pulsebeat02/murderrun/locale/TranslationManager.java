@@ -24,7 +24,7 @@ public final class TranslationManager {
 
   private static final java.util.Locale DEFAULT_LOCALE = Locale.ENGLISH;
   private static final Key ADVENTURE_KEY = key(Keys.NAMESPACE, "main");
-  private static final String PROPERTIES_PATH = "locale/murder_run_en.properties";
+  private static final String PROPERTIES_PATH = "locale/murderrun_en.properties";
 
   private final ResourceBundle bundle;
   private final PluginTranslator translator;

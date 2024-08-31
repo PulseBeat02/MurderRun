@@ -33,6 +33,7 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.type.tuple.Triplet;
@@ -54,7 +55,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @CommandDescription("murder_run.command.game.start.info")
+  @Permission("murderrun.command.game.start")
+  @CommandDescription("murderrun.command.game.start.info")
   @Command(value = "murder game start", requiredSender = Player.class)
   public void startGame(final Player sender) {
 
@@ -111,7 +113,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.game.create.info")
+  @Permission("murderrun.command.game.create")
+  @CommandDescription("murderrun.command.game.create.info")
   @Command(value = "murder game create <arenaName> <lobbyName>", requiredSender = Player.class)
   public void createGame(
       final Player sender,
@@ -198,7 +201,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.games = games;
   }
 
-  @CommandDescription("murder_run.command.game.cancel.info")
+  @Permission("murderrun.command.game.cancel")
+  @CommandDescription("murderrun.command.game.cancel.info")
   @Command(value = "murder game cancel", requiredSender = Player.class)
   public void cancelGame(final Player sender) {
 
@@ -246,7 +250,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.game.invite.info")
+  @Permission("murderrun.command.game.invite")
+  @CommandDescription("murderrun.command.game.invite.info")
   @Command(value = "murder game invite <invite>", requiredSender = Player.class)
   public void invitePlayer(final Player sender, final Player invite) {
 
@@ -303,7 +308,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.game.join.info")
+  @Permission("murderrun.command.game.join")
+  @CommandDescription("murderrun.command.game.join.info")
   @Command(value = "murder game join <owner>", requiredSender = Player.class)
   public void joinGame(final Player sender, final Player owner) {
 
@@ -354,7 +360,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.game.list.info")
+  @Permission("murderrun.command.game.list")
+  @CommandDescription("murderrun.command.game.list.info")
   @Command(value = "murder game list", requiredSender = Player.class)
   public void listPlayers(final Player sender) {
 
@@ -382,7 +389,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     return names;
   }
 
-  @CommandDescription("murder_run.command.game.kick.info")
+  @Permission("murderrun.command.game.kick")
+  @CommandDescription("murderrun.command.game.kick.info")
   @Command(value = "murder game kick <kick>", requiredSender = Player.class)
   public void kickPlayer(final Player sender, final Player kick) {
 
@@ -409,7 +417,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     player.sendMessage(kickedMessage);
   }
 
-  @CommandDescription("murder_run.command.game.leave.info")
+  @Permission("murderrun.command.game.leave")
+  @CommandDescription("murderrun.command.game.leave.info")
   @Command(value = "murder game leave", requiredSender = Player.class)
   public void leaveGame(final Player sender) {
 
@@ -439,7 +448,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.game.set.killer.info")
+  @Permission("murderrun.command.game.set.killer")
+  @CommandDescription("murderrun.command.game.set.killer.info")
   @Command(value = "murder game set murderer <murderer>", requiredSender = Player.class)
   public void setMurderer(final Player sender, final Player murderer) {
 
@@ -457,7 +467,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
-  @CommandDescription("murder_run.command.game.set.survivor.info")
+  @Permission("murderrun.command.game.set.survivor")
+  @CommandDescription("murderrun.command.game.set.survivor.info")
   @Command(value = "murder game set innocent <innocent>", requiredSender = Player.class)
   public void setInnocent(final Player sender, final Player innocent) {
 
@@ -475,7 +486,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
-  @CommandDescription("murder_run.command.game.set.car_part_count.info")
+  @Permission("murderrun.command.game.set.car-part-count")
+  @CommandDescription("murderrun.command.game.set.car_part_count.info")
   @Command(value = "murder game set car-part-count <count>", requiredSender = Player.class)
   public void setCarPartCount(final Player sender, final int count) {
 

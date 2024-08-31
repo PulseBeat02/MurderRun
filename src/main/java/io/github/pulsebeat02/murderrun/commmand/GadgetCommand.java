@@ -25,6 +25,7 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
@@ -39,7 +40,8 @@ public final class GadgetCommand implements AnnotationCommandFeature {
     this.audiences = handler.retrieve();
   }
 
-  @CommandDescription("murder_run.command.gadget.retrieve-all.info")
+  @Permission("murderrun.command.gadget.retrieve-all")
+  @CommandDescription("murderrun.command.gadget.retrieve-all.info")
   @Command(value = "murder gadget retrieve-all", requiredSender = Player.class)
   public void giveAllGadgets(final Player sender) {
     final PlayerInventory inventory = sender.getInventory();
@@ -63,7 +65,8 @@ public final class GadgetCommand implements AnnotationCommandFeature {
     }
   }
 
-  @CommandDescription("murder_run.command.gadget.retrieve.info")
+  @Permission("murderrun.command.gadget.retrieve")
+  @CommandDescription("murderrun.command.gadget.retrieve.info")
   @Command(value = "murder gadget retrieve <gadgetName>", requiredSender = Player.class)
   public void retrieveGadget(
       final Player sender,

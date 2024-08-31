@@ -19,6 +19,7 @@ import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.annotations.Permission;
 
 public final class LobbyCommand implements AnnotationCommandFeature {
 
@@ -35,7 +36,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @CommandDescription("murder_run.command.lobby.list.info")
+  @Permission("murderrun.command.lobby.list")
+  @CommandDescription("murderrun.command.lobby.list.info")
   @Command(value = "murder lobby list", requiredSender = Player.class)
   public void listLobbies(final Player sender) {
     final LobbyManager manager = this.plugin.getLobbyManager();
@@ -50,7 +52,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     audience.sendMessage(component);
   }
 
-  @CommandDescription("murder_run.command.lobby.remove.info")
+  @Permission("murderrun.command.lobby.remove")
+  @CommandDescription("murderrun.command.lobby.remove.info")
   @Command(value = "murder lobby remove <name>", requiredSender = Player.class)
   public void removeLobby(final Player sender, final String name) {
     final Audience audience = this.audiences.player(sender);
@@ -75,7 +78,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.lobby.create.info")
+  @Permission("murderrun.command.lobby.create")
+  @CommandDescription("murderrun.command.lobby.create.info")
   @Command(value = "murder lobby create", requiredSender = Player.class)
   public void createLobby(final Player sender) {
     final Audience audience = this.audiences.player(sender);
@@ -107,7 +111,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  @CommandDescription("murder_run.command.lobby.set.name.info")
+  @Permission("murderrun.command.lobby.set.name")
+  @CommandDescription("murderrun.command.lobby.set.name.info")
   @Command(value = "murder lobby set name <name>", requiredSender = Player.class)
   public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
@@ -127,7 +132,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     return this.spawn;
   }
 
-  @CommandDescription("murder_run.command.lobby.set.spawn.info")
+  @Permission("murderrun.command.lobby.set.spawn")
+  @CommandDescription("murderrun.command.lobby.set.spawn.info")
   @Command(value = "murder lobby set spawn", requiredSender = Player.class)
   public void setSpawn(final Player sender) {
     final Location location = sender.getLocation();

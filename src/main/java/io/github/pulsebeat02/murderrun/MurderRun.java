@@ -21,6 +21,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
 
+  /*
+
+  - Add permissions to all commands
+
+   */
+
   private static final int BSTATS_SERVER_ID = 22728;
 
   private PluginDataConfigurationMapper configuration;

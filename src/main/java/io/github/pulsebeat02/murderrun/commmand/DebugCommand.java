@@ -22,6 +22,7 @@ import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
 import org.incendo.cloud.annotations.Command;
+import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
@@ -36,6 +37,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
     this.audiences = handler.retrieve();
   }
 
+  @Permission("murderrun.command.debug.start")
   @Command(value = "murder debug start", requiredSender = Player.class)
   public void startDebugGame(final Player sender) {
 
@@ -53,6 +55,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
     sender.performCommand("murder game start");
   }
 
+  @Permission("murderrun.command.debug.gadget")
   @Command(value = "murder debug gadget <gadgetName>", requiredSender = Player.class)
   public void debugGadget(
       final Player sender,
