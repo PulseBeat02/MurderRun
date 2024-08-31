@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 
 import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.DefaultFileRegion;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -17,7 +17,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 
 @ChannelHandler.Sharable
-public final class ResourcePackHandler extends ChannelInboundHandlerAdapter {
+public final class ResourcePackHandler extends ChannelHandlerAdapter {
 
   private final Path path;
 
