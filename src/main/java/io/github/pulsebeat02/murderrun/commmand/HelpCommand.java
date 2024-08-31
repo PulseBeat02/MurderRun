@@ -37,8 +37,7 @@ public final class HelpCommand implements AnnotationCommandFeature {
     final TranslationManager manager = LocaleTools.MANAGER;
     final Map<String, String> bundle = new HashMap<>();
     bundle.put(MESSAGE_HELP_TITLE, manager.getProperty("murderrun.command.game.help.command"));
-    bundle.put(
-        MESSAGE_DESCRIPTION, manager.getProperty("murderrun.command.game.help.description"));
+    bundle.put(MESSAGE_DESCRIPTION, manager.getProperty("murderrun.command.game.help.description"));
     bundle.put(MESSAGE_ARGUMENTS, manager.getProperty("murderrun.command.game.help.arguments"));
     bundle.put(MESSAGE_OPTIONAL, manager.getProperty("murderrun.command.game.help.optional"));
     bundle.put(
@@ -53,8 +52,7 @@ public final class HelpCommand implements AnnotationCommandFeature {
     bundle.put(
         MESSAGE_CLICK_TO_SHOW_HELP, manager.getProperty("murderrun.command.game.help.show_help"));
     bundle.put(
-        MESSAGE_PAGE_OUT_OF_RANGE,
-        manager.getProperty("murderrun.command.game.help.page_invalid"));
+        MESSAGE_PAGE_OUT_OF_RANGE, manager.getProperty("murderrun.command.game.help.page_invalid"));
     bundle.put(
         MESSAGE_CLICK_FOR_NEXT_PAGE, manager.getProperty("murderrun.command.game.help.next_page"));
     bundle.put(
