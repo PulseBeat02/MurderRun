@@ -60,7 +60,9 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void shutdownGames() {
-    this.gameShutdownManager.shutdown();
+    if (this.gameShutdownManager != null) {
+      this.gameShutdownManager.shutdown();
+    }
   }
 
   private void registerLookUpMaps() {
