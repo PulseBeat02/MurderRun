@@ -12,5 +12,5 @@ public interface PacketToolAPI {
 
   void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing);
 
-  void injectNettyHandler(final Object handler);
+  void injectNettyHandler(final String key, final Object handler);
 }

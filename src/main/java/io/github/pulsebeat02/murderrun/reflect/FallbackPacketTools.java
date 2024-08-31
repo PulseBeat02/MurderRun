@@ -38,7 +38,7 @@ public final class FallbackPacketTools implements PacketToolAPI {
   }
 
   @Override
-  public void injectNettyHandler(final Object handler) {
+  public void injectNettyHandler(final String key, final Object handler) {
     throw new AssertionError(
         "Can't inject into Netty handler! Use a different pack provider solution");
   }

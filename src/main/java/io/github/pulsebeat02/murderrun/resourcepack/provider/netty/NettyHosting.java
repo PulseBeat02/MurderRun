@@ -3,10 +3,6 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +14,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class NettyHosting extends ResourcePackProvider {
 
-  private ResourcePackHandler handler;
+  private NettyChannelInitializer handler;
 
   public NettyHosting() {
     super(ProviderMethod.ON_SERVER);
@@ -28,8 +24,8 @@ public final class NettyHosting extends ResourcePackProvider {
   public String getRawUrl(final Path zip) {
 
     if (this.handler == null) {
-      this.handler = new ResourcePackHandler(zip);
-      PacketToolsProvider.PACKET_API.injectNettyHandler(this.handler);
+      this.handler = new NettyChannelInitializer(zip);
+      PacketToolsProvider.PACKET_API.injectNettyHandler("resourcePackInitializer", this.handler);
     }
 
     final String ip = this.getPublicAddress();

@@ -132,14 +132,14 @@ public class PacketTools implements PacketToolAPI {
   }
 
   @Override
-  public void injectNettyHandler(final Object handler) {
+  public void injectNettyHandler(final String key, final Object handler) {
     final MinecraftServer server = MinecraftServer.getServer();
     final ServerConnectionListener serverConnection = server.getConnection();
     final List<Connection> connections = serverConnection.getConnections();
     for (final Connection connection : connections) {
       final Channel channel = connection.channel;
       final ChannelPipeline pipeline = channel.pipeline();
-      pipeline.addFirst((ChannelHandler) handler);
+      pipeline.addFirst(key, (ChannelHandler) handler);
     }
   }
 
