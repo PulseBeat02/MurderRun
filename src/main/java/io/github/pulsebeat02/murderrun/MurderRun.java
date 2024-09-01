@@ -26,6 +26,10 @@ public final class MurderRun extends JavaPlugin {
   Task List
   - Fix Netty Hosting
 
+  - Player Death not working on fall damage, not getting teleported
+  - Trap Vest Glitchy
+  - Supply drop getting destroyed with blood curse
+
    */
 
   private static final int BSTATS_SERVER_ID = 22728;

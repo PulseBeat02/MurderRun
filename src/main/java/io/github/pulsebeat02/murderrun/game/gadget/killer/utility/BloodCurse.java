@@ -7,14 +7,18 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import java.util.Set;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
 
 public final class BloodCurse extends KillerGadget {
+
+  private static final Set<Material> BLACKLISTED_MATERIALS = Set.of(Material.AIR, Material.CHEST);
 
   public BloodCurse() {
     super(
@@ -34,7 +38,7 @@ public final class BloodCurse extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
     final Consumer<GamePlayer> task =
-        survivor -> scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 10L);
+        survivor -> scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 7L);
     manager.applyToAllLivingInnocents(task);
     manager.playSoundForAllParticipants(GadgetConstants.BLOOD_CURSE_SOUND);
 
@@ -45,8 +49,15 @@ public final class BloodCurse extends KillerGadget {
   }
 
   private void setBloodBlock(final GamePlayer survivor) {
+
     final Location location = survivor.getLocation();
     final Block block = location.getBlock();
+    final Block below = block.getRelative(BlockFace.DOWN);
+    final Material type = below.getType();
+    if (BLACKLISTED_MATERIALS.contains(type)) {
+      return;
+    }
+
     block.setType(Material.REDSTONE_WIRE);
   }
 }

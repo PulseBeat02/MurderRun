@@ -70,11 +70,11 @@ public final class Game {
     if (this.status != GameStatus.NOT_STARTED) {
       this.status = GameStatus.FINISHED;
       this.gadgetManager.shutdown();
-      this.cleanupManager.start(code);
       this.scheduler.cancelAllTasks();
       this.npcManager.shutdown();
       this.map.shutdown();
       this.playerManager.resetAllPlayers();
+      this.cleanupManager.start(code);
       this.executor.shutdown();
       this.callback.onGameFinish(this, code);
     }

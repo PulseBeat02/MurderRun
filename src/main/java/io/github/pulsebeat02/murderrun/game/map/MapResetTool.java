@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

@@ -116,4 +116,14 @@ public interface Participant {
   float getFlySpeed();
 
   Vector getVelocity();
+
+  void setWalkSpeed(final float speed);
+
+  void setExp(final float exp);
+
+  void setGlowing(final boolean glowing);
+
+  void setFireTicks(final int ticks);
+
+  void stopAllSounds();
 }

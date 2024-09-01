@@ -220,4 +220,29 @@ public abstract class AbstractPlayer implements Participant {
     final Player player = this.getInternalPlayer();
     return player.getVelocity();
   }
+
+  @Override
+  public void stopAllSounds() {
+    this.apply(Player::stopAllSounds);
+  }
+
+  @Override
+  public void setFireTicks(final int ticks) {
+    this.apply(player -> player.setFireTicks(ticks));
+  }
+
+  @Override
+  public void setGlowing(final boolean glowing) {
+    this.apply(player -> player.setGlowing(glowing));
+  }
+
+  @Override
+  public void setExp(final float exp) {
+    this.apply(player -> player.setExp(exp));
+  }
+
+  @Override
+  public void setWalkSpeed(final float speed) {
+    this.apply(player -> player.setWalkSpeed(speed));
+  }
 }
