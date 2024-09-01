@@ -27,6 +27,12 @@ public final class MurderRun extends JavaPlugin {
   Task List
   - Fix Netty Hosting
 
+  Features List
+  - Rename gadgets.properties to game.properties
+  - Add a ticking timer configurable in the game.properties with a Crunch expression
+  - Add all prices of gadgets into game.properties
+  - Configure starting currency in game.properties
+
    */
 
   private static final int BSTATS_SERVER_ID = 22728;
