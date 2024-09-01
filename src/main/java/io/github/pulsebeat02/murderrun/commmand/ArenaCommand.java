@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
@@ -7,6 +9,7 @@ import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +46,31 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.audiences = handler.retrieve();
     this.plugin = plugin;
     this.itemLocations = new HashSet<>();
+  }
+
+  @Permission("murderrun.command.arena.copy")
+  @CommandDescription("murderrun.command.arena.copy.info")
+  @Command(value = "murder arena copy <name>", requiredSender = Player.class)
+  public void copyArenaSettings(final Player sender, @Quoted final String name) {
+
+    final Audience audience = this.audiences.player(sender);
+    if (this.checkInvalidArena(audience, name)) {
+      return;
+    }
+
+    final ArenaManager manager = this.plugin.getArenaManager();
+    final Map<String, Arena> arenas = manager.getArenas();
+    final Arena arena = requireNonNull(arenas.get(name));
+    final List<Location> locations = Arrays.asList(arena.getCarPartLocations());
+    this.name = arena.getName();
+    this.spawn = arena.getSpawn();
+    this.truck = arena.getTruck();
+    this.first = arena.getFirstCorner();
+    this.second = arena.getSecondCorner();
+    this.itemLocations = new ArrayList<>(locations);
+
+    final Component msg = Message.ARENA_COPY.build();
+    audience.sendMessage(msg);
   }
 
   @Permission("murderrun.command.arena.set.item.add")

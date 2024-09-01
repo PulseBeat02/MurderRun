@@ -384,4 +384,5 @@ public interface Message extends LocaleTools {
       direct("murderrun.command.arena.item.remove.error");
   UniComponent<Sender, List<String>> ARENA_ITEM_LIST =
       direct("murderrun.command.arena.item.list", null);
+  NullComponent<Sender> ARENA_COPY = direct("murderrun.command.arena.copy");
 }

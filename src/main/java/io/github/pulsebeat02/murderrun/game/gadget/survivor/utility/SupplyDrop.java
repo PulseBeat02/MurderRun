@@ -103,12 +103,13 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
     final Location location = fallingBlock.getLocation();
     final Block block = location.getBlock();
-    block.setType(Material.AIR);
+    block.setType(Material.CHEST);
+    fallingBlock.remove();
 
-    final World world = requireNonNull(location.getWorld());
-    final FallingBlock chest = world.spawnFallingBlock(location, data);
-    final PersistentDataContainer newContainer = chest.getPersistentDataContainer();
-    newContainer.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
+    final Chest chest = (Chest) block.getState();
+    final ItemStack[] items = this.generateSupplyDropItems();
+    final Inventory inventory = chest.getInventory();
+    inventory.setStorageContents(items);
 
     event.setCancelled(true);
   }
