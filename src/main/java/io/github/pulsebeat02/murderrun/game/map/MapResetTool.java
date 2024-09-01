@@ -8,6 +8,8 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
@@ -35,7 +37,7 @@ public final class MapResetTool {
     final World world = requireNonNull(first.getWorld());
     final Collection<Entity> entities = world.getNearbyEntities(box);
     for (final Entity entity : entities) {
-      if (entity instanceof Player) {
+      if (entity instanceof Player || entity instanceof Display) {
         continue;
       }
       entity.remove();
