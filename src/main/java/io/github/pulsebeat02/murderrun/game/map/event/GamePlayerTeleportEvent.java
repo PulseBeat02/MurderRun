@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
@@ -15,7 +16,7 @@ public final class GamePlayerTeleportEvent extends GameEvent {
     super(game);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerTeleportEvent(final PlayerTeleportEvent event) {
 
     final Player player = event.getPlayer();

@@ -23,6 +23,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -49,7 +50,7 @@ public final class GadgetActionHandler implements Listener {
     HandlerList.unregisterAll(this);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onRightClick(final PlayerInteractEvent event) {
 
     final Game game = this.manager.getGame();
@@ -62,7 +63,7 @@ public final class GadgetActionHandler implements Listener {
     this.handleEventLogic(stack, gadget -> gadget.onGadgetRightClick(game, event, false));
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onDropItem(final PlayerDropItemEvent event) {
 
     final Game game = this.manager.getGame();

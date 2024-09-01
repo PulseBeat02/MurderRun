@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Wolf.Variant;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -43,7 +44,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     this.game = game;
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onTargetChange(final EntityTargetEvent event) {
 
     final Entity entity = event.getEntity();

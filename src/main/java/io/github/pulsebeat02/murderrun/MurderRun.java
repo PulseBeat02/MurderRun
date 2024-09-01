@@ -26,9 +26,12 @@ public final class MurderRun extends JavaPlugin {
   Task List
   - Fix Netty Hosting
 
-  - Player Death not working on fall damage, not getting teleported
-  - Trap Vest Glitchy
-  - Supply drop getting destroyed with blood curse
+  Bugs to Squash
+  - Player Death not working on fall damage, not getting teleported (verify)
+  - Trap Vest Glitchy (verify)
+  - Supply drop getting destroyed with blood curse (verify)
+  - Make player create stick that shows glow blocks of item drop locations
+  - Add command to copy existing arena configuration
 
    */
 

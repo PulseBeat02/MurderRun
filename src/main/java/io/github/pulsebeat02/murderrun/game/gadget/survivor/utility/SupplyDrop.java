@@ -31,6 +31,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -63,7 +64,6 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     final FallingBlock chest = world.spawnFallingBlock(spawnLocation, data);
     final PersistentDataContainer container = chest.getPersistentDataContainer();
     container.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
-    chest.setDropItem(false);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleConditionalTask(
@@ -79,6 +79,38 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     final Location location = chest.getLocation();
     final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.RED, 4));
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onEntityDropItemEvent(final EntityDropItemEvent event) {
+
+    final Entity entity = event.getEntity();
+    if (!(entity instanceof final FallingBlock fallingBlock)) {
+      return;
+    }
+
+    final BlockData data = fallingBlock.getBlockData();
+    final Material material = data.getMaterial();
+    if (material != Material.CHEST) {
+      return;
+    }
+
+    final PersistentDataContainer container = fallingBlock.getPersistentDataContainer();
+    final Boolean value = container.get(Keys.AIR_DROP, PersistentDataType.BOOLEAN);
+    if (value == null) {
+      return;
+    }
+
+    final Location location = fallingBlock.getLocation();
+    final Block block = location.getBlock();
+    block.setType(Material.AIR);
+
+    final World world = requireNonNull(location.getWorld());
+    final FallingBlock chest = world.spawnFallingBlock(location, data);
+    final PersistentDataContainer newContainer = chest.getPersistentDataContainer();
+    newContainer.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
+
+    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

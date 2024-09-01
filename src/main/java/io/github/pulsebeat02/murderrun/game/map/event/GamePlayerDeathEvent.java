@@ -34,8 +34,8 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
+    final Spigot spigot = player.spigot();
     if (deathManager.checkDeathCancellation()) {
-      final Spigot spigot = player.spigot();
       spigot.respawn();
       return;
     }
@@ -53,10 +53,12 @@ public final class GamePlayerDeathEvent extends GameEvent {
     manager.resetCachedPlayers();
 
     if (this.allInnocentDead()) {
+      spigot.respawn();
       game.finishGame(GameResult.MURDERERS);
     }
 
     if (this.allKillersDead()) {
+      spigot.respawn();
       game.finishGame(GameResult.INNOCENTS);
     }
   }

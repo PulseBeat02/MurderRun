@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
@@ -38,7 +39,7 @@ public final class Hook extends KillerGadget implements Listener {
   public void onGadgetRightClick(
       final Game game, final PlayerInteractEvent event, final boolean remove) {}
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerFish(final PlayerFishEvent event) {
 
     final State state = event.getState();

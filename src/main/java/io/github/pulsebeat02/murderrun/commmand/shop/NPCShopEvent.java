@@ -7,6 +7,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
@@ -21,7 +22,7 @@ public final class NPCShopEvent implements Listener {
     manager.registerEvents(this, plugin);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onNPCRightClick(final NPCRightClickEvent event) {
 
     final NPC npc = event.getNPC();

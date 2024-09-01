@@ -34,6 +34,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.RelativeMovement;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.UnsafeValues;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -141,6 +142,11 @@ public class PacketTools implements PacketToolAPI {
       final ChannelPipeline pipeline = channel.pipeline();
       pipeline.addFirst(key, (ChannelHandler) handler);
     }
+  }
+
+  @Override
+  public void setBlockGlowing(final Player watcher, final Location target) {
+    
   }
 
   // wtf??!?!??!!? troll?!?!?

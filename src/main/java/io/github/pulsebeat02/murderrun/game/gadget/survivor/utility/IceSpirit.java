@@ -23,6 +23,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -46,7 +47,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
     this.game = game;
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onTargetChange(final EntityTargetEvent event) {
 
     final Entity entity = event.getEntity();
@@ -63,7 +64,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
     this.handle(event, target, zombie, true);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onEntityDamage(final EntityDamageByEntityEvent event) {
 
     final Entity entity = event.getDamager();

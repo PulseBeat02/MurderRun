@@ -25,6 +25,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -56,7 +57,7 @@ public final class PortalGun extends KillerGadget implements Listener {
   public void onGadgetRightClick(
       final Game game, final PlayerInteractEvent event, final boolean remove) {}
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onProjectileHit(final ProjectileHitEvent event) {
 
     final Entity entity = event.getEntity();

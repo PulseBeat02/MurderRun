@@ -22,6 +22,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -56,7 +57,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     // ignore impl
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onProjectileHitEvent(final ProjectileHitEvent event) {
 
     final Entity entity = event.getEntity();

@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDismountEvent;
 
 public final class GamePlayerDismountEvent extends GameEvent {
@@ -14,7 +15,7 @@ public final class GamePlayerDismountEvent extends GameEvent {
     super(game);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onEntityDismount(final EntityDismountEvent event) {
 
     final Entity entity = event.getEntity();

@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.util.BoundingBox;
@@ -19,7 +20,7 @@ public final class GameMobSpawnEvent extends GameEvent {
     super(game);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onEntitySpawn(final CreatureSpawnEvent event) {
 
     final Game game = this.getGame();
