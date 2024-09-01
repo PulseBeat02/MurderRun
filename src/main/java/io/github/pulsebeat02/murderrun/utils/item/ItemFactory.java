@@ -45,6 +45,7 @@ public final class ItemFactory {
   public static ItemStack createSmokeGrenade(final ItemStack stack) {
     return Item.builder(stack)
         .pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true)
+        .model(2)
         .build();
   }
 
@@ -57,6 +58,7 @@ public final class ItemFactory {
   public static ItemStack createFlashBang(final ItemStack stack) {
     return Item.builder(stack)
         .pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true)
+        .model(1)
         .build();
   }
 

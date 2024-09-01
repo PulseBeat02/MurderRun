@@ -3,9 +3,13 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
 import java.nio.file.Path;
 
 public final class NettyChannelInitializer extends ChannelInitializer<Channel> {
+
+  private static final int MAX_CONTENT_LENGTH = 512 * 1024;
 
   private final Path path;
 
@@ -16,7 +20,8 @@ public final class NettyChannelInitializer extends ChannelInitializer<Channel> {
   @Override
   protected void initChannel(final Channel channel) throws Exception {
     final ChannelPipeline pipeline = channel.pipeline();
-    final ResourcePackHandler handler = new ResourcePackHandler(path);
-    pipeline.addFirst("resourcePack", handler);
+    pipeline.addLast("httpcodec", new HttpServerCodec());
+    pipeline.addLast("httpaggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
+    pipeline.addLast("resourcePack", new ResourcePackHandler(this.path));
   }
 }

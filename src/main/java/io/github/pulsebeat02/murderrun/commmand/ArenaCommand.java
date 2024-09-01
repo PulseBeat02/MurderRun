@@ -7,12 +7,15 @@ import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotation.specifier.Quoted;
@@ -31,6 +34,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   private Location truck;
   private Location first;
   private Location second;
+  private Collection<Location> itemLocations;
 
   @Override
   public void registerFeature(
@@ -38,6 +42,54 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
+    this.itemLocations = new HashSet<>();
+  }
+
+  @Permission("murderrun.command.arena.set.item.add")
+  @CommandDescription("murderrun.command.arena.set.item.add.info")
+  @Command(value = "murder arena set item add", requiredSender = Player.class)
+  public void addItemLocation(final Player sender) {
+
+    final Location location = sender.getLocation();
+    final Block block = location.getBlock();
+    final Location blockLoc = block.getLocation();
+    this.itemLocations.add(blockLoc);
+
+    final Component msg = AdventureUtils.createLocationComponent(Message.ARENA_ITEM_ADD, blockLoc);
+    this.sendMessage(sender, msg);
+  }
+
+  @Permission("murderrun.command.arena.set.item.remove")
+  @CommandDescription("murderrun.command.arena.set.item.remove.info")
+  @Command(value = "murder arena set item remove", requiredSender = Player.class)
+  public void removeItemLocation(final Player sender) {
+    final Location location = sender.getLocation();
+    final Block block = location.getBlock();
+    final Location blockLoc = block.getLocation();
+    if (this.itemLocations.remove(blockLoc)) {
+      final Component msg =
+          AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
+      this.sendMessage(sender, msg);
+    } else {
+      final Component err = Message.ARENA_ITEM_REMOVE_ERROR.build();
+      this.sendMessage(sender, err);
+    }
+  }
+
+  @Permission("murderrun.command.arena.set.item.list")
+  @CommandDescription("murderrun.command.arena.set.item.list.info")
+  @Command(value = "murder arena set item list", requiredSender = Player.class)
+  public void listItemLocations(final Player sender) {
+    final List<String> msgs = new ArrayList<>();
+    for (final Location location : this.itemLocations) {
+      final int x = location.getBlockX();
+      final int y = location.getBlockY();
+      final int z = location.getBlockZ();
+      final String raw = "(%s,%s,%s)".formatted(x, y, z);
+      msgs.add(raw);
+    }
+    final Component msg = Message.ARENA_ITEM_LIST.build(msgs);
+    this.sendMessage(sender, msg);
   }
 
   @Permission("murderrun.command.arena.list")
@@ -48,7 +100,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Map<String, Arena> arenas = manager.getArenas();
     final List<String> keys = new ArrayList<>(arenas.keySet());
     final Component message = Message.ARENA_LIST.build(keys);
-    this.sendSuccessMessage(sender, message);
+    this.sendMessage(sender, message);
   }
 
   @Permission("murderrun.command.arena.remove")
@@ -62,7 +114,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final ArenaManager manager = this.plugin.getArenaManager();
     manager.removeArena(name);
     final Component message = Message.ARENA_REMOVE.build(name);
-    this.sendSuccessMessage(sender, message);
+    this.sendMessage(sender, message);
   }
 
   private boolean checkInvalidArena(final Audience audience, final String name) {
@@ -77,7 +129,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     return false;
   }
 
-  private void sendSuccessMessage(final Player player, final Component component) {
+  private void sendMessage(final Player player, final Component component) {
     final Audience audience = this.audiences.player(player);
     audience.sendMessage(component);
   }
@@ -95,7 +147,8 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     }
     final Location[] corners = new Location[] {this.first, this.second};
     final ArenaManager manager = this.plugin.getArenaManager();
-    manager.addArena(this.name, corners, this.spawn, this.truck);
+    final Location[] locations = this.itemLocations.toArray(new Location[0]);
+    manager.addArena(this.name, corners, locations, this.spawn, this.truck);
     final Component message = Message.ARENA_BUILT.build();
     audience.sendMessage(message);
     this.plugin.updatePluginData();
@@ -143,7 +196,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
     final Component message = Message.ARENA_NAME.build(name);
-    this.sendSuccessMessage(sender, message);
+    this.sendMessage(sender, message);
   }
 
   @Permission("murderrun.command.arena.set.spawn")
@@ -153,7 +206,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.spawn = location;
     final Component message = AdventureUtils.createLocationComponent(Message.ARENA_SPAWN, location);
-    this.sendSuccessMessage(sender, message);
+    this.sendMessage(sender, message);
   }
 
   @Permission("murderrun.command.arena.set.truck")
@@ -163,7 +216,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.truck = location;
     final Component message = AdventureUtils.createLocationComponent(Message.ARENA_TRUCK, location);
-    this.sendSuccessMessage(sender, message);
+    this.sendMessage(sender, message);
   }
 
   @Permission("murderrun.command.arena.set.first-corner")
@@ -174,7 +227,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.first = location;
     final Component message =
         AdventureUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
-    this.sendSuccessMessage(sender, message);
+    this.sendMessage(sender, message);
   }
 
   @Permission("murderrun.command.arena.set.second-corner")
@@ -185,6 +238,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.second = location;
     final Component message =
         AdventureUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
-    this.sendSuccessMessage(sender, message);
+    this.sendMessage(sender, message);
   }
 }

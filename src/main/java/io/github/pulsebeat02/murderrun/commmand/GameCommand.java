@@ -26,6 +26,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.annotation.specifier.Quoted;
@@ -221,6 +222,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Component kickedMessage = Message.GAME_PLAYER_KICK.build();
     for (final Player player : participants) {
       this.games.remove(player);
+      final PlayerInventory inventory = player.getInventory();
+      inventory.clear();
       final Audience kicked = this.audiences.player(player);
       kicked.sendMessage(kickedMessage);
     }

@@ -14,7 +14,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.HashSet;
@@ -93,12 +92,10 @@ public final class CursedNote extends KillerGadget {
 
   private Item spawnCursedNote(final GameSettings settings) {
     final Arena arena = requireNonNull(settings.getArena());
-    final Location first = arena.getFirstCorner();
-    final Location second = arena.getSecondCorner();
-    final World world = requireNonNull(first.getWorld());
-    final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
+    final Location drop = arena.getRandomItemLocation();
+    final World world = requireNonNull(drop.getWorld());
     final ItemStack item = ItemFactory.createCursedNote();
-    return world.dropItem(new Location(world, coords[0], 320, coords[1]), item);
+    return world.dropItem(drop, item);
   }
 
   private void handleSurvivorCurse(final Game game, final CarPart part) {

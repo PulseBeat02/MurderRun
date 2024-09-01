@@ -16,6 +16,8 @@ public final class Models {
   public static final ItemModel CAR_PART_5 = of("car_part_5", 5);
   public static final ItemModel MINEBUCKS = of("minebucks", 1);
   public static final ItemModel SWORD = of("sword", Model.ITEM_HANDHELD, 1);
+  public static final ItemModel FLASHBANG = of("flashbang", 1);
+  public static final ItemModel SMOKE_BOMB = of("smoke_bomb", 2);
 
   private static ItemModel of(final String name, final int id) {
     final ItemTexture texture = new ItemTexture(name);

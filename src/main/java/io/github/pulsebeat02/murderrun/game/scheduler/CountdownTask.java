@@ -21,7 +21,7 @@ public final class CountdownTask extends GameScheduledTask {
     super.run();
     final int seconds = this.seconds.decrementAndGet();
     this.tasks.accept(seconds);
-    if (seconds == 0) {
+    if (seconds <= 0) {
       this.cancel();
     }
   }

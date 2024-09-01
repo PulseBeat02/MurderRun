@@ -22,6 +22,9 @@ public final class Items {
   public static final ItemResource SWORD =
       of("item/diamond_sword", Model.ITEM_HANDHELD, Models.SWORD);
 
+  public static final ItemResource PROJECTILE =
+      of("item/snowball", Models.FLASHBANG, Models.SMOKE_BOMB);
+
   private static ItemResource of(final String key, final Key parent, final ItemModel... models) {
     final ItemResource model = new ItemResource(key, parent, models);
     ALL.add(model);

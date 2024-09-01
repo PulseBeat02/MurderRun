@@ -1,14 +1,15 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
+import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;
-import org.checkerframework.common.value.qual.MinLen;
 
 public final class Arena {
 
   private final ArenaSchematic schematic;
   private final String name;
-  private final @MinLen(2) Location[] corners;
+  private final Location[] corners;
+  private final Location[] carPartLocations;
   private final Location spawn;
   private final Location truck;
 
@@ -16,11 +17,13 @@ public final class Arena {
       final ArenaSchematic schematic,
       final String name,
       final Location[] corners,
+      final Location[] carPartLocations,
       final Location spawn,
       final Location truck) {
     this.schematic = schematic;
     this.name = name;
     this.corners = corners;
+    this.carPartLocations = carPartLocations;
     this.spawn = spawn;
     this.truck = truck;
     this.checkArray();
@@ -63,5 +66,20 @@ public final class Arena {
 
   public BoundingBox createBox() {
     return BoundingBox.of(this.corners[0], this.corners[1]);
+  }
+
+  public Location[] getCarPartLocations() {
+    return this.carPartLocations;
+  }
+
+  public Location getRandomItemLocation() {
+
+    final int length = this.carPartLocations.length;
+    if (length == 0) {
+      return this.spawn;
+    }
+
+    final int index = RandomUtils.generateInt(length);
+    return this.carPartLocations[index];
   }
 }
