@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.commmand.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
@@ -57,21 +58,27 @@ public final class GameManager {
     this.clearInventory(player);
   }
 
-  public void addParticipantToLobby(final Player player, final boolean killer) {
-
-    this.teleportPlayerToLobby(player);
-
-    this.clearInventory(player);
-    if (!this.participants.contains(player)) {
+  public void loadResourcePack(final Player player) {
+    final PlayerResourcePackChecker checker = this.plugin.getPlayerResourcePackChecker();
+    if (!checker.isLoaded(player)) {
       this.setResourcePack(player);
+      checker.markLoaded(player);
     }
+  }
 
+  public void addParticipantToLobby(final Player player, final boolean killer) {
     this.participants.add(player);
+    this.teleportPlayerToLobby(player);
+    this.clearInventory(player);
+    this.loadResourcePack(player);
+    this.giveItems(player, killer);
+  }
+
+  private void giveItems(final Player player, final boolean killer) {
     if (killer) {
       this.murderers.add(player);
       this.giveSpecialItems(player);
     }
-
     this.addCurrency(player);
   }
 

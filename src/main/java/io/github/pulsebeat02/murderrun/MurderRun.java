@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
+import io.github.pulsebeat02.murderrun.commmand.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
@@ -29,7 +30,6 @@ public final class MurderRun extends JavaPlugin {
   Bugs to Squash
   - Allow users to edit resources of resourcepack
 
-
    */
 
   private static final int BSTATS_SERVER_ID = 22728;
@@ -42,6 +42,7 @@ public final class MurderRun extends JavaPlugin {
   private LobbyManager lobbyManager;
   private Metrics metrics;
   private GameShutdownManager gameShutdownManager;
+  private PlayerResourcePackChecker playerResourcePackChecker;
   private ResourcePackProvider provider;
 
   @Override
@@ -108,6 +109,7 @@ public final class MurderRun extends JavaPlugin {
     final AnnotationParserHandler commandHandler = new AnnotationParserHandler(this);
     commandHandler.registerCommands();
     this.gameShutdownManager = new GameShutdownManager();
+    this.playerResourcePackChecker = new PlayerResourcePackChecker();
   }
 
   private void registerAudienceHandler() {
@@ -156,5 +158,9 @@ public final class MurderRun extends JavaPlugin {
 
   public GameShutdownManager getGameShutdownManager() {
     return this.gameShutdownManager;
+  }
+
+  public PlayerResourcePackChecker getPlayerResourcePackChecker() {
+    return this.playerResourcePackChecker;
   }
 }

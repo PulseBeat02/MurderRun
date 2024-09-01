@@ -7,8 +7,8 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import org.bukkit.Location;
@@ -32,7 +32,7 @@ public final class SpasmTrap extends SurvivorTrap {
         Message.SPASM_ACTIVATE.build(),
         32,
         Color.RED);
-    this.states = new WeakHashMap<>();
+    this.states = new HashMap<>();
   }
 
   @Override

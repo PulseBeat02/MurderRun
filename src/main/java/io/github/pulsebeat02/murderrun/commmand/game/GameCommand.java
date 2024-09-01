@@ -1,10 +1,12 @@
-package io.github.pulsebeat02.murderrun.commmand;
+package io.github.pulsebeat02.murderrun.commmand.game;
 
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.commmand.AnnotationCommandFeature;
+import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameManager;
 import io.github.pulsebeat02.murderrun.game.GameResult;
