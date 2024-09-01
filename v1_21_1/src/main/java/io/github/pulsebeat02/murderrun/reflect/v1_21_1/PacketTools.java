@@ -1,5 +1,8 @@
 package io.github.pulsebeat02.murderrun.reflect.v1_21_1;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import com.google.common.primitives.Ints;
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
@@ -10,9 +13,11 @@ import io.netty.channel.ChannelPipeline;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.SplittableRandom;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -21,32 +26,69 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
+import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.DataValue;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerConnectionListener;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.entity.monster.Slime;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.UnsafeValues;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.Team.Option;
+import org.bukkit.scoreboard.Team.OptionStatus;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public class PacketTools implements PacketToolAPI {
 
   private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";
   private static final SplittableRandom RANDOM = new SplittableRandom();
+
+  private final Table<Player, Location, Slime> glowBlocks;
+  private final Team noCollisions;
+
+  public PacketTools() {
+    this.glowBlocks = HashBasedTable.create();
+    this.noCollisions = this.registerTeam();
+  }
+
+  private Team registerTeam(@UnderInitialization PacketTools this) {
+
+    final ScoreboardManager manager = Bukkit.getScoreboardManager();
+    final Scoreboard scoreboard = manager.getMainScoreboard();
+    final Team team = scoreboard.getTeam("NoCollisions");
+    if (team != null) {
+      return team;
+    }
+
+    final Team newTeam = scoreboard.registerNewTeam("NoCollisions");
+    newTeam.setOption(Option.COLLISION_RULE, OptionStatus.NEVER);
+
+    return newTeam;
+  }
 
   @Override
   public byte[] toByteArray(final ItemStack item) {
@@ -144,9 +186,82 @@ public class PacketTools implements PacketToolAPI {
     }
   }
 
+  @Override
+  public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
 
-  public void setBlockGlowing(final Player watcher, final Location target) {
-    
+    if (!this.noCollisions.hasEntity(watcher)) {
+      final String name = watcher.getName();
+      this.noCollisions.addEntry(name);
+    }
+
+    final CraftPlayer player = (CraftPlayer) watcher;
+    final ServerPlayer handle = player.getHandle();
+    final ServerGamePacketListenerImpl connection = handle.connection;
+
+    if (glowing) {
+
+      final Slime existing = this.glowBlocks.get(player, target);
+      if (existing != null) {
+        return;
+      }
+
+      final World world = target.getWorld();
+      final CraftWorld craftWorld = (CraftWorld) world;
+      final ServerLevel nmsWorld = craftWorld.getHandle();
+      final Slime slime = new Slime(EntityType.SLIME, nmsWorld);
+      slime.setInvisible(true);
+      slime.setGlowingTag(true);
+      slime.setSize(2, false);
+      slime.setInvulnerable(true);
+      slime.setNoAi(true);
+      slime.setRot(0, 0);
+      slime.setPos(target.getX() + 0.5, target.getY(), target.getZ() + 0.5);
+      slime.setYBodyRot(0);
+      slime.setYHeadRot(0);
+
+      final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false , ignored -> {}, Set.of());
+      final ClientboundAddEntityPacket packet = new ClientboundAddEntityPacket(slime, entity);
+      connection.send(packet);
+
+      final int id = slime.getId();
+      final SynchedEntityData data = slime.getEntityData();
+      List<SynchedEntityData.DataValue<?>> values = data.getNonDefaultValues();
+      if (values == null) {
+        values = new ArrayList<>();
+      }
+
+      final List<SynchedEntityData.DataValue<?>> copy = new ArrayList<>(values);
+      copy.removeIf(value -> value.id() == 0);
+
+      final byte newMask = 0x20 | 0x40;
+      final EntityDataAccessor<Byte> accessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
+      final DataValue<?> newValue = DataValue.create(accessor, newMask);
+      copy.addFirst(newValue);
+
+      final ClientboundSetEntityDataPacket dataPacket = new ClientboundSetEntityDataPacket(id, copy);
+      connection.send(dataPacket);
+
+      final String uuid = slime.getStringUUID();
+      this.noCollisions.addEntry(uuid);
+      this.glowBlocks.put(player, target, slime);
+
+    } else {
+
+      final Slime value = this.glowBlocks.get(player, target);
+      if (value == null) {
+        return;
+      }
+
+      final int id = value.getId();
+      this.removeEntity(connection, Set.of(id));
+      this.glowBlocks.remove(player, target);
+    }
+  }
+
+  private void removeEntity(final ServerGamePacketListenerImpl connection, final Collection<Integer> ids) {
+    final int[] remove = Ints.toArray(ids);
+    final ClientboundRemoveEntitiesPacket packet = new ClientboundRemoveEntitiesPacket(remove);
+    connection.send(packet);
   }
 
   // wtf??!?!??!!? troll?!?!?
@@ -164,7 +279,8 @@ public class PacketTools implements PacketToolAPI {
     final double mj43 = RANDOM.nextDouble();
     final double p6 = .75;
     final double tp9 = .5;
-    return qs * ((mj43 * (((Math.sqrt(mj43) * 564 % 1) * p6) - (Math.pow(mj43, 2) % 1) * tp9) + tp9));
+    return qs * ((mj43 * (((Math.sqrt(mj43) * 564 % 1) * p6) - (Math.pow(mj43, 2) % 1) * tp9)
+        + tp9));
   }
 
   private float f() {
@@ -172,7 +288,9 @@ public class PacketTools implements PacketToolAPI {
     final double zs39asa = RANDOM.nextDouble();
     final double r3s1 = .75;
     final double d9fs2 = .5;
-    return y8xafa * ((float) (zs39asa * (((Math.sqrt(zs39asa) * 564 % 1) * r3s1) - (Math.pow(zs39asa, 2) % 1) * d9fs2) + d9fs2));
+    return y8xafa * ((float) (
+        zs39asa * (((Math.sqrt(zs39asa) * 564 % 1) * r3s1) - (Math.pow(zs39asa, 2) % 1) * d9fs2)
+            + d9fs2));
   }
 
   private byte b() {
@@ -180,7 +298,9 @@ public class PacketTools implements PacketToolAPI {
     final double er99 = RANDOM.nextDouble();
     final double lr625 = .75;
     final double wf7125 = .5;
-    return (byte) (q4Retv * ((er99 * (((Math.sqrt(er99) * 564 % 1) * lr625) - (Math.pow(er99, 2) % 1) * wf7125)) + wf7125));
+    return (byte) (q4Retv * (
+        (er99 * (((Math.sqrt(er99) * 564 % 1) * lr625) - (Math.pow(er99, 2) % 1) * wf7125))
+            + wf7125));
   }
 
   private int i() {
@@ -188,6 +308,8 @@ public class PacketTools implements PacketToolAPI {
     final double b45jhh = RANDOM.nextDouble();
     final double cr75 = .75;
     final double ds852 = .5;
-    return rq4s * (int) ((b45jhh * (((Math.sqrt(b45jhh) * 564 % 1) * cr75) - (Math.pow(b45jhh, 2) % 1) * ds852)) + ds852);
+    return rq4s * (int) (
+        (b45jhh * (((Math.sqrt(b45jhh) * 564 % 1) * cr75) - (Math.pow(b45jhh, 2) % 1) * ds852))
+            + ds852);
   }
 }

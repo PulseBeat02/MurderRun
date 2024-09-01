@@ -24,6 +24,15 @@ public final class ItemFactory {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static ItemStack createItemLocationWand() {
+    return Item.builder(Material.BLAZE_ROD)
+        .name(Message.ITEM_ARENA_NAME.build())
+        .lore(Message.ITEM_ARENA_LORE.build())
+        .pdc(Keys.ITEM_WAND, PersistentDataType.BOOLEAN, true)
+        .model(1)
+        .build();
+  }
+
   public static ItemStack[] createKillerGear() {
     final ItemStack head = Item.create(Material.WITHER_SKELETON_SKULL);
     final ItemStack chest = Item.builder(Material.LEATHER_CHESTPLATE)

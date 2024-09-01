@@ -27,7 +27,8 @@ public final class MurderRun extends JavaPlugin {
   - Fix Netty Hosting
 
   Bugs to Squash
-  - Make player create stick that shows glow blocks of item drop locations
+  - Allow users to edit resources of resourcepack
+
 
    */
 

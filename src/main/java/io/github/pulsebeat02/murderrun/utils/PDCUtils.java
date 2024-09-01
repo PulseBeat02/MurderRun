@@ -50,6 +50,10 @@ public final class PDCUtils {
     return isX0(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
   }
 
+  public static boolean isWand(final ItemStack stack) {
+    return isX0(stack, Keys.ITEM_WAND, PersistentDataType.BOOLEAN);
+  }
+
   private static boolean isX0(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<?, ?> type) {
     if (stack == null) {

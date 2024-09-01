@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.reflect;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +36,11 @@ public final class FallbackPacketTools implements PacketToolAPI {
   @Override
   public void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing) {
     entity.setGlowing(glowing); // limited functionality
+  }
+
+  @Override
+  public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
+    throw new AssertionError("Can't set block glowing! Use a different pack provider solution");
   }
 
   @Override
