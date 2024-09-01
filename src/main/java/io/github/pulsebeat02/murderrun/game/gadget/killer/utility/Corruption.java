@@ -84,8 +84,10 @@ public final class Corruption extends KillerGadget {
     closest.teleport(death);
 
     final ItemStack stack = ItemFactory.createKillerSword();
+    final ItemStack[] gear = ItemFactory.createKillerGear();
     final PlayerInventory inventory = closest.getInventory();
     inventory.addItem(stack);
+    inventory.setArmorContents(gear);
 
     final DeathManager deathManager = closest.getDeathManager();
     final ArmorStand stand = deathManager.getCorpse();

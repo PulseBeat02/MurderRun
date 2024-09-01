@@ -27,11 +27,7 @@ public final class MurderRun extends JavaPlugin {
   - Fix Netty Hosting
 
   Bugs to Squash
-  - Player Death not working on fall damage, not getting teleported (verify)
-  - Trap Vest Glitchy (verify)
-
   - Make player create stick that shows glow blocks of item drop locations
-
 
    */
 

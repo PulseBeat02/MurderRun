@@ -24,6 +24,23 @@ public final class ItemFactory {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static ItemStack[] createKillerGear() {
+    final ItemStack head = Item.create(Material.WITHER_SKELETON_SKULL);
+    final ItemStack chest = Item.builder(Material.LEATHER_CHESTPLATE)
+        .dye(Color.RED)
+        .enchantment(Enchantment.PROTECTION, 3)
+        .build();
+    final ItemStack legs = Item.builder(Material.LEATHER_LEGGINGS)
+        .dye(Color.RED)
+        .enchantment(Enchantment.PROTECTION, 3)
+        .build();
+    final ItemStack boots = Item.builder(Material.LEATHER_BOOTS)
+        .dye(Color.RED)
+        .enchantment(Enchantment.PROTECTION, 3)
+        .build();
+    return new ItemStack[] {boots, legs, chest, head};
+  }
+
   public static ItemStack createPlayerTracker(final ItemStack stack) {
     return Item.builder(stack)
         .pdc(Keys.PLAYER_TRACKER, PersistentDataType.INTEGER, 0)

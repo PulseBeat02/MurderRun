@@ -40,8 +40,10 @@ public final class GameManager {
   private void giveSpecialItems(final Player player) {
     final ItemStack sword = ItemFactory.createKillerSword();
     final ItemStack arrow = ItemFactory.createKillerArrow();
+    final ItemStack[] gear = ItemFactory.createKillerGear();
     final PlayerInventory inventory = player.getInventory();
     inventory.addItem(sword, arrow);
+    inventory.setArmorContents(gear);
   }
 
   public void setPlayerToInnocent(final Player innocent) {
@@ -57,13 +59,14 @@ public final class GameManager {
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
 
+    this.teleportPlayerToLobby(player);
+
     this.clearInventory(player);
     if (!this.participants.contains(player)) {
       this.setResourcePack(player);
     }
 
     this.participants.add(player);
-    this.teleportPlayerToLobby(player);
     if (killer) {
       this.murderers.add(player);
       this.giveSpecialItems(player);
