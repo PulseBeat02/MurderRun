@@ -36,7 +36,7 @@ dependencies {
     compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT") {
         exclude(group = "*", module = "*")
     }
-    compileOnly("io.netty:netty-all:5.0.0.Final-SNAPSHOT")
+    compileOnly("io.netty:netty-all:4.1.97.Final")
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_1"))
@@ -56,7 +56,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
-    implementation("io.netty:netty-codec-http:5.0.0.Final-SNAPSHOT") {
+    implementation("io.netty:netty-codec-http:4.1.97.Final") {
         exclude(group = "io.netty", module = "netty-handler")
         exclude(group = "com.jcraft", module = "jzlib")
     }

@@ -20,8 +20,8 @@ public final class NettyChannelInitializer extends ChannelInitializer<Channel> {
   @Override
   protected void initChannel(final Channel channel) throws Exception {
     final ChannelPipeline pipeline = channel.pipeline();
-    pipeline.addLast("httpcodec", new HttpServerCodec());
-    pipeline.addLast("httpaggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
-    pipeline.addLast("resourcePack", new ResourcePackHandler(this.path));
+    pipeline.addFirst("resourcePack", new ResourcePackHandler(this.path));
+    pipeline.addFirst("httpAggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
+    pipeline.addFirst("httpCodec", new HttpServerCodec());
   }
 }
