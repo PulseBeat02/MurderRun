@@ -80,6 +80,10 @@ public final class Arena {
     }
 
     final int index = RandomUtils.generateInt(length);
-    return this.carPartLocations[index];
+    final Location location = this.carPartLocations[index];
+    final Location drop = location.clone();
+    drop.add(0, 1.5, 0);
+
+    return drop;
   }
 }
