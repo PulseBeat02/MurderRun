@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -23,7 +23,7 @@ public final class QuickBomb extends KillerGadget {
         Material.TNT,
         Message.QUICK_BOMB_NAME.build(),
         Message.QUICK_BOMB_LORE.build(),
-        32);
+        GadgetSettings.QUICK_BOMB_COST);
   }
 
   @Override
@@ -36,7 +36,7 @@ public final class QuickBomb extends KillerGadget {
     manager.applyToAllLivingInnocents(this::spawnPrimedTnt);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.QUICK_BOMB_SOUND);
+    audience.playSound(GadgetSettings.QUICK_BOMB_SOUND);
 
     return false;
   }

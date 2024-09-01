@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -32,7 +32,7 @@ public final class ResurrectionStone extends SurvivorGadget {
         Material.BEACON,
         Message.RESURRECTION_STONE_NAME.build(),
         Message.RESURRECTION_STONE_LORE.build(),
-        128);
+        GadgetSettings.RESURECTION_STONE_COST);
   }
 
   @Override
@@ -62,7 +62,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.RESSURECTION_STONE_SOUND);
+    audience.playSound(GadgetSettings.RESSURECTION_STONE_SOUND);
 
     return false;
   }

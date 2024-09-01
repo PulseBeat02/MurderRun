@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -25,7 +25,7 @@ public final class HeatSeeker extends KillerGadget {
         Material.BLAZE_ROD,
         Message.HEAT_SEEKER_NAME.build(),
         Message.HEAT_SEEKER_LORE.build(),
-        48);
+        GadgetSettings.HEAT_SEEKER_COST);
   }
 
   @Override
@@ -45,7 +45,7 @@ public final class HeatSeeker extends KillerGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.HEAT_SEEKER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GadgetConstants.HEAT_SEEKER_SOUND);
+    audience.playSound(GadgetSettings.HEAT_SEEKER_SOUND);
 
     return false;
   }
@@ -60,7 +60,7 @@ public final class HeatSeeker extends KillerGadget {
     final Collection<GamePlayer> visible = owner.getHeatSeekerGlowing();
     final double distance = location.distanceSquared(other);
     final MetadataManager metadata = owner.getMetadataManager();
-    final double radius = GadgetConstants.HEAT_SEEKER_RADIUS;
+    final double radius = GadgetSettings.HEAT_SEEKER_RADIUS;
     if (distance < radius * radius) {
       visible.add(innocent);
       metadata.setEntityGlowing(innocent, ChatColor.RED, true);

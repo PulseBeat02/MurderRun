@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -25,7 +25,7 @@ public final class RandomTeleport extends SurvivorGadget {
         Material.GOLDEN_CARROT,
         Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
         Message.TP_ME_AWAY_FROM_HERE_LORE.build(),
-        32);
+        GadgetSettings.RANDOM_TELEPORT_COST);
   }
 
   @Override
@@ -47,7 +47,7 @@ public final class RandomTeleport extends SurvivorGadget {
     player.teleport(teleport);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.RANDOM_TELEPORT_SOUND);
+    audience.playSound(GadgetSettings.RANDOM_TELEPORT_SOUND);
 
     return false;
   }

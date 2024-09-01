@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -15,7 +16,7 @@ public final class MedKit extends SurvivorGadget {
         Material.SPLASH_POTION,
         Message.MED_KIT_NAME.build(),
         Message.MED_KIT_LORE.build(),
-        16,
+        GadgetSettings.MED_KIT_COST,
         ItemFactory::createMedKit);
   }
 

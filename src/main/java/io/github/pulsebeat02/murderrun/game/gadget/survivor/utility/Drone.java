@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,7 +20,7 @@ public final class Drone extends SurvivorGadget {
         Material.PHANTOM_MEMBRANE,
         Message.DRONE_NAME.build(),
         Message.DRONE_LORE.build(),
-        32);
+        GadgetSettings.DRONE_COST);
   }
 
   @Override
@@ -37,10 +37,10 @@ public final class Drone extends SurvivorGadget {
     player.teleport(clone);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.resetPlayer(player, origin), GadgetConstants.DRONE_DURATION);
+    scheduler.scheduleTask(() -> this.resetPlayer(player, origin), GadgetSettings.DRONE_DURATION);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.DRONE_SOUND);
+    audience.playSound(GadgetSettings.DRONE_SOUND);
 
     return false;
   }

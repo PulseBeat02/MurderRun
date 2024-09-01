@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -29,7 +29,7 @@ public final class Translocator extends SurvivorGadget {
         Material.POPPED_CHORUS_FRUIT,
         Message.TRANSLOCATOR_NAME.build(),
         Message.TRANSLOCATOR_LORE.build(),
-        64,
+        GadgetSettings.TRANSLOCATOR_COST,
         ItemFactory::createTranslocator);
   }
 
@@ -58,7 +58,7 @@ public final class Translocator extends SurvivorGadget {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.playSound(GadgetConstants.TRANSLOCATOR_SOUND);
+    audience.playSound(GadgetSettings.TRANSLOCATOR_SOUND);
   }
 
   @Override

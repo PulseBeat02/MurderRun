@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -23,14 +23,14 @@ public final class HauntTrap extends SurvivorTrap {
         Message.HAUNT_NAME.build(),
         Message.HAUNT_LORE.build(),
         Message.HAUNT_ACTIVATE.build(),
-        32,
+        GadgetSettings.HAUNT_COST,
         Color.GRAY);
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
-    final int duration = GadgetConstants.HAUNT_DURATION;
+    final int duration = GadgetSettings.HAUNT_DURATION;
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.NAUSEA, duration, 10),
         new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
@@ -40,7 +40,7 @@ public final class HauntTrap extends SurvivorTrap {
     scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, duration);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetConstants.HAUNT_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.HAUNT_SOUND);
   }
 
   private void spook(final Game game, final GamePlayer gamePlayer) {

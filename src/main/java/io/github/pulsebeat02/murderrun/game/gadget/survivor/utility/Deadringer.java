@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -22,7 +22,7 @@ public final class Deadringer extends SurvivorGadget {
         Material.ZOMBIE_HEAD,
         Message.DEADRINGER_NAME.build(),
         Message.DEADRINGER_LORE.build(),
-        48);
+        GadgetSettings.DEADRINGER_COST);
   }
 
   @Override
@@ -31,7 +31,7 @@ public final class Deadringer extends SurvivorGadget {
 
     super.onGadgetDrop(game, player, item, true);
 
-    final int duration = GadgetConstants.DEADRINGER_DURATION;
+    final int duration = GadgetSettings.DEADRINGER_DURATION;
     player.setInvulnerable(true);
     player.addPotionEffects(
         new PotionEffect(PotionEffectType.SPEED, duration, 1, true, false),
@@ -46,7 +46,7 @@ public final class Deadringer extends SurvivorGadget {
     manager.sendMessageToAllParticipants(message);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.DEADRINGER_SOUND);
+    audience.playSound(GadgetSettings.DEADRINGER_SOUND);
 
     return false;
   }

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -15,7 +16,7 @@ public final class Shield extends SurvivorGadget {
         Material.SHIELD,
         Message.SHIELD_NAME.build(),
         Message.SHIELD_LORE.build(),
-        16,
+        GadgetSettings.SHIELD_COST,
         ItemFactory::createShield);
   }
 

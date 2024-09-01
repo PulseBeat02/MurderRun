@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.ImmutableList;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -31,7 +31,7 @@ public final class FireworkTrap extends SurvivorTrap {
         Message.FIREWORK_NAME.build(),
         Message.FIREWORK_LORE.build(),
         Message.FIREWORK_ACTIVATE.build(),
-        32,
+        GadgetSettings.FIREWORK_COST,
         java.awt.Color.RED);
   }
 
@@ -41,10 +41,10 @@ public final class FireworkTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> this.spawnFirework(location), 0, 5, GadgetConstants.FIREWORK_DURATION);
+        () -> this.spawnFirework(location), 0, 5, GadgetSettings.FIREWORK_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetConstants.FIREWORK_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.FIREWORK_SOUND);
   }
 
   private void spawnFirework(final Location location) {

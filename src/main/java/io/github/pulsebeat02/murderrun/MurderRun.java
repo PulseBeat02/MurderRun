@@ -7,8 +7,8 @@ import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
@@ -24,13 +24,10 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  Task List
-  - Fix Netty Hosting
-
   Features List
-  - Rename gadgets.properties to game.properties
+
+  - Fix Netty Resource Pack Hosting
   - Add a ticking timer configurable in the game.properties with a Crunch expression
-  - Add all prices of gadgets into game.properties
   - Configure starting currency in game.properties
 
    */
@@ -77,7 +74,7 @@ public final class MurderRun extends JavaPlugin {
   private void registerLookUpMaps() {
     GlobalGadgetRegistry.init();
     PacketToolsProvider.init();
-    GadgetConstants.init();
+    GadgetSettings.init();
   }
 
   private void shutdownAudience() {

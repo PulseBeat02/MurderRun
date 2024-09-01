@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -22,7 +22,7 @@ public final class FireTrail extends KillerGadget {
         Material.MAGMA_CREAM,
         Message.FIRE_TRAIL_NAME.build(),
         Message.FIRE_TRAIL_LORE.build(),
-        32);
+        GadgetSettings.FIRE_TRAIL_COST);
   }
 
   @Override
@@ -38,7 +38,7 @@ public final class FireTrail extends KillerGadget {
     scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.FIRE_TRAIL_SOUND);
+    audience.playSound(GadgetSettings.FIRE_TRAIL_SOUND);
 
     return false;
   }

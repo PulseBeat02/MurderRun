@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -43,7 +43,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
         Material.ZOMBIE_HEAD,
         Message.ICE_SPIRIT_NAME.build(),
         Message.ICE_SPIRIT_LORE.build(),
-        16);
+        GadgetSettings.ICE_SPIRIT_COST);
     this.game = game;
   }
 
@@ -92,7 +92,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
     final GamePlayer nearest = manager.getGamePlayer(player);
     final GameScheduler scheduler = this.game.getScheduler();
-    final int duration = GadgetConstants.ICE_SPIRIT_DURATION;
+    final int duration = GadgetSettings.ICE_SPIRIT_DURATION;
     nearest.disableJump(scheduler, duration);
     nearest.setFreezeTicks(duration);
     nearest.disableWalkWithFOVEffects(duration);
@@ -119,7 +119,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
     });
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.ICE_SPIRIT_SOUND);
+    audience.playSound(GadgetSettings.ICE_SPIRIT_SOUND);
 
     return false;
   }

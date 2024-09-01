@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -22,7 +22,7 @@ public final class InfraredVision extends KillerGadget {
         Material.REDSTONE_LAMP,
         Message.INFRARED_VISION_NAME.build(),
         Message.INFRARED_VISION_LORE.build(),
-        32);
+        GadgetSettings.INFRARED_VISION_COST);
   }
 
   @Override
@@ -36,7 +36,7 @@ public final class InfraredVision extends KillerGadget {
     manager.applyToAllLivingInnocents(
         innocent -> this.setSurvivorGlow(scheduler, innocent, player));
 
-    manager.playSoundForAllParticipants(GadgetConstants.INFRARED_VISION_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.INFRARED_VISION_SOUND);
 
     return false;
   }
@@ -47,7 +47,7 @@ public final class InfraredVision extends KillerGadget {
     final Component msg = Message.INFRARED_VISION_ACTIVATE.build();
     final MetadataManager metadata = killer.getMetadataManager();
     metadata.setEntityGlowing(
-        scheduler, survivor, ChatColor.RED, GadgetConstants.INFRARED_VISION_DURATION);
+        scheduler, survivor, ChatColor.RED, GadgetSettings.INFRARED_VISION_DURATION);
     audience.sendMessage(msg);
   }
 }

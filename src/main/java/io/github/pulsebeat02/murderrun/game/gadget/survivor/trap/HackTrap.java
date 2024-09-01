@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -23,7 +23,7 @@ public final class HackTrap extends SurvivorTrap {
         Message.HACK_NAME.build(),
         Message.HACK_LORE.build(),
         Message.HACK_ACTIVATE.build(),
-        48,
+        GadgetSettings.HACK_COST,
         Color.GREEN);
   }
 
@@ -37,10 +37,10 @@ public final class HackTrap extends SurvivorTrap {
     }
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> inventory.addItem(stack), GadgetConstants.HACK_DURATION);
+    scheduler.scheduleTask(() -> inventory.addItem(stack), GadgetSettings.HACK_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetConstants.HACK_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.HACK_SOUND);
   }
 
   private @Nullable ItemStack getSword(final PlayerInventory inventory) {

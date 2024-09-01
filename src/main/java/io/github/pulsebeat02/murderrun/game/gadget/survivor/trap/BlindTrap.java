@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -20,17 +20,17 @@ public final class BlindTrap extends SurvivorTrap {
         Message.BLIND_NAME.build(),
         Message.BLIND_LORE.build(),
         Message.BLIND_ACTIVATE.build(),
-        16,
+        GadgetSettings.BLIND_COST,
         Color.BLACK);
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
-    final int duration = GadgetConstants.BLIND_DURATION;
+    final int duration = GadgetSettings.BLIND_DURATION;
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 0));
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetConstants.BLIND_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.BLIND_SOUND);
   }
 }

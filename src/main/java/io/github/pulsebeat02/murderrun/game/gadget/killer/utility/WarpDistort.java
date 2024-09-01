@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,7 +20,7 @@ public final class WarpDistort extends KillerGadget {
         Material.CHORUS_FRUIT,
         Message.WARP_DISTORT_NAME.build(),
         Message.WARP_DISTORT_LORE.build(),
-        32);
+        GadgetSettings.WARP_DISTORT_COST);
   }
 
   @Override
@@ -39,7 +39,7 @@ public final class WarpDistort extends KillerGadget {
     random.teleport(second);
     random2.teleport(first);
 
-    final String sound = GadgetConstants.WARP_DISTORT_SOUND;
+    final String sound = GadgetSettings.WARP_DISTORT_SOUND;
     final PlayerAudience randomAudience = random.getAudience();
     final PlayerAudience random2Audience = random2.getAudience();
     randomAudience.playSound(sound);

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -19,7 +19,12 @@ import org.bukkit.potion.PotionEffectType;
 public final class Bush extends SurvivorGadget {
 
   public Bush() {
-    super("bush", Material.OAK_LEAVES, Message.BUSH_NAME.build(), Message.BUSH_LORE.build(), 8);
+    super(
+        "bush",
+        Material.OAK_LEAVES,
+        Message.BUSH_NAME.build(),
+        Message.BUSH_LORE.build(),
+        GadgetSettings.BUSH_COST);
   }
 
   @Override
@@ -28,7 +33,7 @@ public final class Bush extends SurvivorGadget {
 
     super.onGadgetDrop(game, player, item, true);
 
-    final int duration = GadgetConstants.BUSH_DURATION;
+    final int duration = GadgetSettings.BUSH_DURATION;
     player.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1));
 
     final PlayerInventory inventory = player.getInventory();
@@ -46,7 +51,7 @@ public final class Bush extends SurvivorGadget {
     scheduler.scheduleTask(() -> block.setType(Material.AIR), duration);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.BUSH_SOUND);
+    audience.playSound(GadgetSettings.BUSH_SOUND);
 
     return false;
   }

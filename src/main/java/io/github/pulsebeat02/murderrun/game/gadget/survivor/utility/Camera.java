@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.CameraGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -14,7 +15,11 @@ public final class Camera extends SurvivorGadget {
 
   public Camera() {
     super(
-        "camera", Material.OBSERVER, Message.CAMERA_NAME.build(), Message.CAMERA_LORE.build(), 48);
+        "camera",
+        Material.OBSERVER,
+        Message.CAMERA_NAME.build(),
+        Message.CAMERA_LORE.build(),
+        GadgetSettings.CAMERA_COST);
   }
 
   @Override

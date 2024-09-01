@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -28,14 +28,14 @@ public final class FartTrap extends SurvivorTrap {
         Message.FART_NAME.build(),
         Message.FART_LORE.build(),
         Message.FART_ACTIVATE.build(),
-        16,
+        GadgetSettings.FART_COST,
         Color.GREEN);
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
-    final int duration = GadgetConstants.FART_EFFECT_DURATION;
+    final int duration = GadgetSettings.FART_EFFECT_DURATION;
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.SLOWNESS, duration, 4),
         new PotionEffect(PotionEffectType.NAUSEA, duration, 1));
@@ -43,7 +43,7 @@ public final class FartTrap extends SurvivorTrap {
     final GameScheduler scheduler = game.getScheduler();
     final Location location = murderer.getLocation();
     scheduler.scheduleRepeatedTask(
-        () -> this.spawnParticles(location), 0, 5, GadgetConstants.FART_DURATION);
+        () -> this.spawnParticles(location), 0, 5, GadgetSettings.FART_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.FART);

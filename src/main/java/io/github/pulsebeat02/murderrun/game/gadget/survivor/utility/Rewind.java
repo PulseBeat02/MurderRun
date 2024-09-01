@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MovementManager;
@@ -15,7 +15,12 @@ import org.bukkit.entity.Item;
 public final class Rewind extends SurvivorGadget {
 
   public Rewind() {
-    super("rewind", Material.DIAMOND, Message.REWIND_NAME.build(), Message.REWIND_LORE.build(), 16);
+    super(
+        "rewind",
+        Material.DIAMOND,
+        Message.REWIND_NAME.build(),
+        Message.REWIND_LORE.build(),
+        GadgetSettings.REWIND_COST);
   }
 
   @Override
@@ -36,7 +41,7 @@ public final class Rewind extends SurvivorGadget {
       return false;
     }
 
-    if (current - last < GadgetConstants.REWIND_COOLDOWN) {
+    if (current - last < GadgetSettings.REWIND_COOLDOWN) {
       return super.onGadgetDrop(game, player, item, false);
     }
 
@@ -59,6 +64,6 @@ public final class Rewind extends SurvivorGadget {
     super.onGadgetDrop(game, survivor, item, successful);
 
     final PlayerAudience audience = survivor.getAudience();
-    audience.playSound(GadgetConstants.REWIND_SOUND);
+    audience.playSound(GadgetSettings.REWIND_SOUND);
   }
 }

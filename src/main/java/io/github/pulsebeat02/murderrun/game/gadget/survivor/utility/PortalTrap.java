@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -27,7 +28,7 @@ public final class PortalTrap extends SurvivorGadget {
         Material.PURPLE_WOOL,
         Message.PORTAL_NAME.build(),
         Message.PORTAL_LORE.build(),
-        16);
+        GadgetSettings.PORTAL_TRAP_COST);
   }
 
   @Override

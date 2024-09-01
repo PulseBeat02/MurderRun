@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.data;
+package io.github.pulsebeat02.murderrun.game.gadget;
 
 import static java.util.Objects.requireNonNull;
 
@@ -15,7 +15,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GadgetDataBundle {
 
-  private static final String GADGETS_PROPERTIES = "settings/gadgets.properties";
+  private static final String GADGETS_PROPERTIES = "settings/game.properties";
 
   private final Path resourcePath;
   private final ResourceBundle bundle;

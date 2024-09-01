@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -26,7 +26,7 @@ public final class EagleEye extends KillerGadget {
         Material.FEATHER,
         Message.EAGLE_EYE_NAME.build(),
         Message.EAGLE_EYE_LORE.build(),
-        16);
+        GadgetSettings.EAGLE_EYE_COST);
   }
 
   @Override
@@ -55,10 +55,10 @@ public final class EagleEye extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(
-        () -> this.resetState(player, previous, before), GadgetConstants.EAGLE_EYE_DURATION);
+        () -> this.resetState(player, previous, before), GadgetSettings.EAGLE_EYE_DURATION);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.EAGLE_EYE_SOUND);
+    audience.playSound(GadgetSettings.EAGLE_EYE_SOUND);
 
     return false;
   }

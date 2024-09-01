@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -23,7 +23,7 @@ public final class NeckSnapTrap extends SurvivorTrap {
         Message.NECK_SNAP_NAME.build(),
         Message.NECK_SNAP_LORE.build(),
         Message.NECK_SNAP_ACTIVATE.build(),
-        16,
+        GadgetSettings.NECK_SNAP_COST,
         Color.GREEN);
   }
 
@@ -32,8 +32,8 @@ public final class NeckSnapTrap extends SurvivorTrap {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> this.setLookDirection(murderer), 0, 5, GadgetConstants.NECK_SNAP_DURATION);
-    manager.playSoundForAllParticipants(GadgetConstants.NECK_SNAP_SOUND);
+        () -> this.setLookDirection(murderer), 0, 5, GadgetSettings.NECK_SNAP_DURATION);
+    manager.playSoundForAllParticipants(GadgetSettings.NECK_SNAP_SOUND);
   }
 
   private void setLookDirection(final GamePlayer player) {

@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -36,7 +36,7 @@ public final class Flashlight extends SurvivorGadget {
         Material.GOLDEN_SHOVEL,
         Message.FLASHLIGHT_NAME.build(),
         Message.FLASHLIGHT_LORE.build(),
-        48,
+        GadgetSettings.FLASHLIGHT_COST,
         ItemFactory::createFlashlight);
   }
 
@@ -87,8 +87,8 @@ public final class Flashlight extends SurvivorGadget {
     final World world = requireNonNull(handLocation.getWorld());
     final Vector direction = handLocation.getDirection();
     final double increment = Math.toRadians(5);
-    final double maxAngle = Math.toRadians(GadgetConstants.FLASHLIGHT_CONE_ANGLE);
-    for (double t = 0; t < GadgetConstants.FLASHLIGHT_CONE_LENGTH; t += 0.5) {
+    final double maxAngle = Math.toRadians(GadgetSettings.FLASHLIGHT_CONE_ANGLE);
+    for (double t = 0; t < GadgetSettings.FLASHLIGHT_CONE_LENGTH; t += 0.5) {
       for (double angle = -maxAngle; angle <= maxAngle; angle += increment) {
         final Location particleLocation =
             this.getParticleLocation(direction, handLocation, t, angle);
@@ -113,7 +113,7 @@ public final class Flashlight extends SurvivorGadget {
   private void applyPotionEffects(final GamePlayer killer, final Location particleLocation) {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(particleLocation);
-    final double radius = GadgetConstants.FLASHLIGHT_RADIUS;
+    final double radius = GadgetSettings.FLASHLIGHT_RADIUS;
     if (distance < radius * radius) {
       killer.addPotionEffects(
           new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));

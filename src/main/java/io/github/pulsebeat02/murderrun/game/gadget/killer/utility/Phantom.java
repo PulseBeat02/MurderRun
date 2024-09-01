@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,7 +20,7 @@ public final class Phantom extends KillerGadget {
         Material.PHANTOM_MEMBRANE,
         Message.PHANTOM_NAME.build(),
         Message.PHANTOM_LORE.build(),
-        48);
+        GadgetSettings.PHANTOM_COST);
   }
 
   @Override
@@ -34,10 +34,10 @@ public final class Phantom extends KillerGadget {
 
     final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setDefault(player, old), GadgetConstants.PHANTOM_DURATION);
+    scheduler.scheduleTask(() -> this.setDefault(player, old), GadgetSettings.PHANTOM_DURATION);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.PHANTOM_SOUND);
+    audience.playSound(GadgetSettings.PHANTOM_SOUND);
 
     return false;
   }

@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -41,7 +41,7 @@ public final class EnderShadows extends KillerGadget {
         Material.BLACK_STAINED_GLASS,
         Message.ENDER_SHADOWS_NAME.build(),
         Message.ENDER_SHADOWS_LORE.build(),
-        48);
+        GadgetSettings.ENDER_SHADOWS_COST);
   }
 
   @Override
@@ -62,7 +62,7 @@ public final class EnderShadows extends KillerGadget {
     final CitizensManager npcManager = game.getNPCManager();
     manager.applyToAllLivingInnocents(
         survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
-    manager.playSoundForAllParticipants(GadgetConstants.ENDER_SHADOWS_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.ENDER_SHADOWS_SOUND);
 
     return false;
   }

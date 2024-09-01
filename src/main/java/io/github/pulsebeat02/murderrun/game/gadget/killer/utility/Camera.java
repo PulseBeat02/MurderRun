@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.CameraGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -18,7 +19,7 @@ public final class Camera extends KillerGadget {
         Material.OBSERVER,
         Message.KILLER_CAMERA_NAME.build(),
         Message.KILLER_CAMERA_LORE.build(),
-        48);
+        GadgetSettings.KILLER_CAMERA_COST);
   }
 
   @Override

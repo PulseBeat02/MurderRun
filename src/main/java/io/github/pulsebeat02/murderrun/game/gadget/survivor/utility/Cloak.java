@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -14,7 +14,11 @@ public final class Cloak extends SurvivorGadget {
 
   public Cloak() {
     super(
-        "cloak", Material.WHITE_BANNER, Message.CLOAK_NAME.build(), Message.CLOAK_LORE.build(), 32);
+        "cloak",
+        Material.WHITE_BANNER,
+        Message.CLOAK_NAME.build(),
+        Message.CLOAK_LORE.build(),
+        GadgetSettings.CLOAK_COST);
   }
 
   @Override
@@ -24,11 +28,11 @@ public final class Cloak extends SurvivorGadget {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.hideNameTagForAliveInnocents(GadgetConstants.CLOAK_DURATION);
+    manager.hideNameTagForAliveInnocents(GadgetSettings.CLOAK_DURATION);
 
     final Component message = Message.CLOAK_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(message);
-    manager.playSoundForAllParticipants(GadgetConstants.CLOAK_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.CLOAK_SOUND);
 
     return false;
   }

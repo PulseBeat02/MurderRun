@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -40,7 +40,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
         Material.SNOWBALL,
         Message.FLASHBANG_NAME.build(),
         Message.FLASHBANG_LORE.build(),
-        8,
+        GadgetSettings.FLASHBANG_COST,
         ItemFactory::createFlashBang);
     this.game = game;
   }
@@ -83,9 +83,9 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     manager.applyToAllMurderers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);
-      final double radius = GadgetConstants.FLASHBANG_RADIUS;
+      final double radius = GadgetSettings.FLASHBANG_RADIUS;
       if (distance < radius * radius) {
-        final int duration = GadgetConstants.FLASHBANG_DURATION;
+        final int duration = GadgetSettings.FLASHBANG_DURATION;
         killer.addPotionEffects(
             new PotionEffect(PotionEffectType.BLINDNESS, duration, 0),
             new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));

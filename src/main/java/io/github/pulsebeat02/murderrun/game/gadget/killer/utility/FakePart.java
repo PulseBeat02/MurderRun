@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -28,7 +28,7 @@ public final class FakePart extends KillerGadget {
         Material.COMPARATOR,
         Message.FAKE_PART_NAME.build(),
         Message.FAKE_PART_LORE.build(),
-        48);
+        GadgetSettings.FAKE_PART_COST);
   }
 
   @Override
@@ -49,7 +49,7 @@ public final class FakePart extends KillerGadget {
     scheduler.scheduleConditionalTask(task, 0, 20L, fakeItem::isDead);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.FAKE_PART_SOUND);
+    audience.playSound(GadgetSettings.FAKE_PART_SOUND);
 
     return false;
   }
@@ -71,13 +71,13 @@ public final class FakePart extends KillerGadget {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
-    final double radius = GadgetConstants.FAKE_PART_RADIUS;
+    final double radius = GadgetSettings.FAKE_PART_RADIUS;
     if (distance < radius * radius) {
       this.handleDebuff(scheduler, survivor, killer, item);
       final PlayerAudience audience = survivor.getAudience();
       final Component msg = Message.FAKE_PART_ACTIVATE.build();
       audience.sendMessage(msg);
-      audience.playSound(GadgetConstants.FAKE_PART_EFFECT_SOUND);
+      audience.playSound(GadgetSettings.FAKE_PART_EFFECT_SOUND);
     }
   }
 
@@ -87,7 +87,7 @@ public final class FakePart extends KillerGadget {
       final GamePlayer killer,
       final Item item) {
 
-    final int duration = GadgetConstants.FAKE_PART_DURATION;
+    final int duration = GadgetSettings.FAKE_PART_DURATION;
     survivor.disableJump(scheduler, duration);
     survivor.disableWalkWithFOVEffects(duration);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));

@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.AbstractGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -64,7 +64,7 @@ public class CameraGadget {
     scheduler.scheduleRepeatedTask(task, 0, 20L);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.CAMERA_SOUND);
+    audience.playSound(GadgetSettings.CAMERA_SOUND);
 
     return false;
   }

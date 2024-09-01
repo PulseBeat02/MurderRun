@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -32,7 +32,7 @@ public final class TrapVest extends SurvivorGadget {
         Material.IRON_DOOR,
         Message.TRAP_VEST_NAME.build(),
         Message.TRAP_VEST_LORE.build(),
-        32);
+        GadgetSettings.TRAP_VEST_COST);
   }
 
   @Override
@@ -52,7 +52,7 @@ public final class TrapVest extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.TRAP_VEST_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GadgetConstants.TRAP_VEST_SOUND);
+    audience.playSound(GadgetSettings.TRAP_VEST_SOUND);
 
     return false;
   }

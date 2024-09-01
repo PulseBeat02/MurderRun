@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -29,7 +29,7 @@ public final class DeathSteed extends KillerGadget {
         Material.SADDLE,
         Message.DEATH_STEED_NAME.build(),
         Message.DEATH_STEED_LORE.build(),
-        32);
+        GadgetSettings.DEATH_STEED_COST);
   }
 
   @Override
@@ -47,7 +47,7 @@ public final class DeathSteed extends KillerGadget {
         () -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetConstants.DEATH_STEED_SOUND);
+    audience.playSound(GadgetSettings.DEATH_STEED_SOUND);
 
     return false;
   }

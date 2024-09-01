@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -27,7 +27,7 @@ public final class LevitationTrap extends SurvivorTrap {
         Message.LEVITATION_NAME.build(),
         Message.LEVITATION_LORE.build(),
         Message.LEVITATION_ACTIVATE.build(),
-        32,
+        GadgetSettings.LEVITATION_COST,
         new Color(177, 156, 217));
   }
 
@@ -38,7 +38,7 @@ public final class LevitationTrap extends SurvivorTrap {
     final Location clone = location.clone();
     clone.add(0, 10, 0);
 
-    final int duration = GadgetConstants.LEVITATION_DURATION;
+    final int duration = GadgetSettings.LEVITATION_DURATION;
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, duration, 1));
     murderer.teleport(clone);
 
@@ -47,7 +47,7 @@ public final class LevitationTrap extends SurvivorTrap {
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(murderer), 0, 5, duration);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetConstants.LEVITATION_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.LEVITATION_SOUND);
   }
 
   private void spawnParticles(final GamePlayer player) {

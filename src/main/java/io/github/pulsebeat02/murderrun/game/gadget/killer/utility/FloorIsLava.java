@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -26,7 +26,7 @@ public final class FloorIsLava extends KillerGadget {
         Material.MAGMA_BLOCK,
         Message.THE_FLOOR_IS_LAVA_NAME.build(),
         Message.THE_FLOOR_IS_LAVA_LORE.build(),
-        64);
+        GadgetSettings.FLOOR_IS_LAVA_COST);
   }
 
   @Override
@@ -45,7 +45,7 @@ public final class FloorIsLava extends KillerGadget {
         () -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L);
 
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
-    manager.playSoundForAllParticipants(GadgetConstants.FLOOR_IS_LAVA_SOUND);
+    manager.playSoundForAllParticipants(GadgetSettings.FLOOR_IS_LAVA_SOUND);
 
     return false;
   }

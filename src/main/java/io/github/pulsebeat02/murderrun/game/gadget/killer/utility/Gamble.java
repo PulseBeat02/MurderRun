@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.data.GadgetConstants;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -26,7 +26,7 @@ public final class Gamble extends KillerGadget {
         Material.END_PORTAL_FRAME,
         Message.GAMBLE_NAME.build(),
         Message.GAMBLE_LORE.build(),
-        48);
+        GadgetSettings.GAMBLE_COST);
   }
 
   @Override
@@ -44,7 +44,7 @@ public final class Gamble extends KillerGadget {
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.GAMBLE_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(GadgetConstants.GAMBLE_SOUND);
+    audience.playSound(GadgetSettings.GAMBLE_SOUND);
 
     return false;
   }
