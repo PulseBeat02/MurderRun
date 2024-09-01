@@ -58,7 +58,7 @@ dependencies {
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
     implementation("io.netty:netty-codec-http:5.0.0.Alpha2")
 
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.119.2")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.21:3.120.0")
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
