@@ -37,7 +37,9 @@ public final class Hook extends KillerGadget implements Listener {
 
   @Override
   public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {}
+      final Game game, final PlayerInteractEvent event, final boolean remove) {
+    // allow right click
+  }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerFish(final PlayerFishEvent event) {

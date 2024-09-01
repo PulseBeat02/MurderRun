@@ -23,7 +23,7 @@ public final class SoundFile {
   }
 
   public Sound stitchSound() {
-    final Writable writable = IOUtils.getWritableStream(this.path);
+    final Writable writable = IOUtils.getWritableStreamFromResource(this.path);
     return Sound.sound(this.key, writable);
   }
 

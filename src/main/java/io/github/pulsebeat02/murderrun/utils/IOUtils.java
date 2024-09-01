@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -27,9 +28,23 @@ public final class IOUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static Writable getWritableStream(final String path) {
-    try (final InputStream stream = IOUtils.getResourceAsStream(path)) {
-      return Writable.copyInputStream(stream);
+  public static Writable getWritableStreamFromResource(final String path) {
+
+    final Path dataFolder = getPluginDataFolderPath();
+    final Path filePath = dataFolder.resolve(path);
+    if (Files.notExists(filePath)) {
+      createFile(filePath);
+      try (final InputStream stream = IOUtils.getResourceAsStream(path);
+          final FastBufferedInputStream fast = new FastBufferedInputStream(stream)) {
+        Files.copy(fast, filePath, StandardCopyOption.REPLACE_EXISTING);
+      } catch (final IOException e) {
+        throw new AssertionError(e);
+      }
+    }
+
+    try (final InputStream stream = Files.newInputStream(filePath);
+        final FastBufferedInputStream fast = new FastBufferedInputStream(stream)) {
+      return Writable.copyInputStream(fast);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

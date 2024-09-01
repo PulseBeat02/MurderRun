@@ -27,7 +27,7 @@ public final class ItemTexture {
   }
 
   public Texture stitchTexture() {
-    final Writable writable = IOUtils.getWritableStream(this.path);
+    final Writable writable = IOUtils.getWritableStreamFromResource(this.path);
     return Texture.texture().key(this.keyWithExtension).data(writable).build();
   }
 

@@ -22,7 +22,7 @@ public final class JumpScareResource {
   }
 
   public Texture stitchTexture() {
-    final Writable writable = IOUtils.getWritableStream(this.path);
+    final Writable writable = IOUtils.getWritableStreamFromResource(this.path);
     return Texture.texture().key(this.key).data(writable).build();
   }
 

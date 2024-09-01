@@ -27,9 +27,6 @@ public final class MurderRun extends JavaPlugin {
   Task List
   - Fix Netty Hosting
 
-  Bugs to Squash
-  - Allow users to edit resources of resourcepack
-
    */
 
   private static final int BSTATS_SERVER_ID = 22728;
