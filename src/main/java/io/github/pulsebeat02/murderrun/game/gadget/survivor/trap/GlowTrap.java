@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -19,7 +19,7 @@ public final class GlowTrap extends SurvivorTrap {
         Message.GLOW_NAME.build(),
         Message.GLOW_LORE.build(),
         Message.GLOW_ACTIVATE.build(),
-        GadgetSettings.GLOW_COST,
+        GameProperties.GLOW_COST,
         Color.YELLOW);
   }
 
@@ -27,7 +27,7 @@ public final class GlowTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     manager.setEntityGlowingForAliveInnocents(
-        murderer, ChatColor.RED, GadgetSettings.GLOW_DURATION);
-    manager.playSoundForAllParticipants(GadgetSettings.GLOW_SOUND);
+        murderer, ChatColor.RED, GameProperties.GLOW_DURATION);
+    manager.playSoundForAllParticipants(GameProperties.GLOW_SOUND);
   }
 }

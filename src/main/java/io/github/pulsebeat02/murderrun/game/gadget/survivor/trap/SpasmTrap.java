@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -30,7 +30,7 @@ public final class SpasmTrap extends SurvivorTrap {
         Message.SPASM_NAME.build(),
         Message.SPASM_LORE.build(),
         Message.SPASM_ACTIVATE.build(),
-        GadgetSettings.SPASM_COST,
+        GameProperties.SPASM_COST,
         Color.RED);
     this.states = new HashMap<>();
   }
@@ -40,10 +40,10 @@ public final class SpasmTrap extends SurvivorTrap {
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> this.alternateHead(murderer), 0, 5, GadgetSettings.SPASM_DURATION);
+        () -> this.alternateHead(murderer), 0, 5, GameProperties.SPASM_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetSettings.SPASM_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.SPASM_SOUND);
   }
 
   private void alternateHead(final GamePlayer murderer) {

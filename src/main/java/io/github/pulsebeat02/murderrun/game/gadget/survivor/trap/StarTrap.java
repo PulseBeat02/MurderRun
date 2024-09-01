@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -20,7 +20,7 @@ public final class StarTrap extends SurvivorTrap {
         Message.STAR_NAME.build(),
         Message.STAR_LORE.build(),
         Message.STAR_ACTIVATE.build(),
-        GadgetSettings.STAR_COST,
+        GameProperties.STAR_COST,
         new Color(255, 215, 0));
   }
 
@@ -28,11 +28,11 @@ public final class StarTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     manager.applyToAllLivingInnocents(this::addPotionEffect);
-    manager.playSoundForAllParticipants(GadgetSettings.STAR_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.STAR_SOUND);
   }
 
   private void addPotionEffect(final GamePlayer player) {
-    final int duration = GadgetSettings.STAR_DURATION;
+    final int duration = GameProperties.STAR_DURATION;
     player.addPotionEffects(
         new PotionEffect(PotionEffectType.SPEED, duration, 2),
         new PotionEffect(PotionEffectType.RESISTANCE, duration, 2),

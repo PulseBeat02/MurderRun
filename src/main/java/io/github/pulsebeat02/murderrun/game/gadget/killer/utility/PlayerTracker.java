@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -32,7 +32,7 @@ public final class PlayerTracker extends KillerGadget {
         Material.COMPASS,
         Message.PLAYER_TRACKER_NAME.build(),
         Message.PLAYER_TRACKER_LORE.build(),
-        GadgetSettings.PLAYER_TRACKER_COST,
+        GameProperties.PLAYER_TRACKER_COST,
         ItemFactory::createPlayerTracker);
   }
 
@@ -46,13 +46,13 @@ public final class PlayerTracker extends KillerGadget {
     final Location location = player.getLocation();
     final int distance = (int) Math.round(this.getNearestSurvivorDistance(manager, location));
     final int count = this.increaseAndGetSurvivorCount(player);
-    final boolean destroy = count >= GadgetSettings.PLAYER_TRACKER_USES;
+    final boolean destroy = count >= GameProperties.PLAYER_TRACKER_USES;
     super.onGadgetRightClick(game, event, destroy);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     final Component message = Message.PLAYER_TRACKER_ACTIVATE.build(distance);
     audience.sendMessage(message);
-    audience.playSound(GadgetSettings.PLAYER_TRACKER_SOUND);
+    audience.playSound(GameProperties.PLAYER_TRACKER_SOUND);
   }
 
   private int increaseAndGetSurvivorCount(final Player player) {

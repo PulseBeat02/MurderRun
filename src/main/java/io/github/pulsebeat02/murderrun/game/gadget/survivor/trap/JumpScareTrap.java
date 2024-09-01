@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -26,7 +26,7 @@ public final class JumpScareTrap extends SurvivorTrap {
         Message.JUMP_SCARE_NAME.build(),
         Message.JUMP_SCARE_LORE.build(),
         Message.JUMP_SCARE_ACTIVATE.build(),
-        GadgetSettings.JUMP_SCARE_COST,
+        GameProperties.JUMP_SCARE_COST,
         Color.RED);
   }
 
@@ -34,7 +34,7 @@ public final class JumpScareTrap extends SurvivorTrap {
   public void onTrapActivate(
       final Game game, final GamePlayer murderer, final org.bukkit.entity.Item item) {
 
-    final int duration = GadgetSettings.JUMP_SCARE_EFFECT_DURATION;
+    final int duration = GameProperties.JUMP_SCARE_EFFECT_DURATION;
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
@@ -42,7 +42,7 @@ public final class JumpScareTrap extends SurvivorTrap {
     final ItemStack before = this.getHelmet(murderer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(
-        () -> this.setBackHelmet(murderer, before), GadgetSettings.JUMP_SCARE_DURATION);
+        () -> this.setBackHelmet(murderer, before), GameProperties.JUMP_SCARE_DURATION);
 
     final PlayerAudience audience = murderer.getAudience();
     audience.playSound(Sounds.JUMP_SCARE);

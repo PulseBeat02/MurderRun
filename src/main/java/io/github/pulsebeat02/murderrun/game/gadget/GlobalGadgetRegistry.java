@@ -7,13 +7,16 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Server;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
@@ -27,12 +30,24 @@ public final class GlobalGadgetRegistry {
   }
 
   private final Map<String, Pair<Gadget, MethodHandle>> gadgetRegistry;
+  private final Collection<String> disabled;
   private final AtomicBoolean frozen;
 
   private GlobalGadgetRegistry() {
     this.gadgetRegistry = new HashMap<>();
     this.frozen = new AtomicBoolean(true);
+    this.disabled = this.getDisabledGadgets();
     this.load();
+  }
+
+  private Collection<String> getDisabledGadgets(@UnderInitialization GlobalGadgetRegistry this) {
+    final String raw = GameProperties.DISABLED_GADGETS;
+    final String[] split = raw.split(",");
+    if (split[0].equals("none")) {
+      return List.of();
+    } else {
+      return Arrays.asList(split);
+    }
   }
 
   public void addGadget(final Gadget gadget) {
@@ -42,9 +57,13 @@ public final class GlobalGadgetRegistry {
   }
 
   public void removeGadget(final Gadget gadget) {
-    this.checkState();
     final String name = gadget.getName();
-    this.gadgetRegistry.remove(name);
+    this.removeGadget(name);
+  }
+
+  public void removeGadget(final String gadgetName) {
+    this.checkState();
+    this.gadgetRegistry.remove(gadgetName);
   }
 
   public @Nullable Gadget getGadget(final String name) {
@@ -114,6 +133,9 @@ public final class GlobalGadgetRegistry {
       final MethodHandle handle = this.getMethodHandleClass(clazz);
       final Gadget gadget = this.invokeGadgetConstructor(handle, null);
       final String name = gadget.getName();
+      if (this.disabled.contains(name)) {
+        return;
+      }
       final Pair<Gadget, MethodHandle> pair = Pair.of(gadget, handle);
       this.gadgetRegistry.put(name, pair);
     } catch (final Throwable e) {
@@ -143,7 +165,7 @@ public final class GlobalGadgetRegistry {
     }
   }
 
-  public static GlobalGadgetRegistry getInstance() {
+  public static GlobalGadgetRegistry getRegistry() {
     return GLOBAL_GADGET_REGISTRY;
   }
 }

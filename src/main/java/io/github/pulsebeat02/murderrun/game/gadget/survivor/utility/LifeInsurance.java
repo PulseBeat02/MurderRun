@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -33,7 +33,7 @@ public final class LifeInsurance extends SurvivorGadget {
         Material.RED_DYE,
         Message.LIFE_INSURANCE_NAME.build(),
         Message.LIFE_INSURANCE_LORE.build(),
-        GadgetSettings.LIFE_INSURANCE_COST);
+        GameProperties.LIFE_INSURANCE_COST);
   }
 
   @Override
@@ -64,7 +64,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.LIFE_INSURANCE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GadgetSettings.LIFE_INSURANCE_SOUND);
+    audience.playSound(GameProperties.LIFE_INSURANCE_SOUND);
 
     return false;
   }
@@ -79,7 +79,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);
-    final double radius = GadgetSettings.LIFE_INSURANCE_RADIUS;
+    final double radius = GameProperties.LIFE_INSURANCE_RADIUS;
     if (distance < radius * radius) {
 
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);

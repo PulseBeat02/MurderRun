@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -23,7 +23,7 @@ public final class Horcrux extends SurvivorGadget {
         Material.CHARCOAL,
         Message.HORCRUX_NAME.build(),
         Message.HORCRUX_LORE.build(),
-        GadgetSettings.HORCRUX_COST);
+        GameProperties.HORCRUX_COST);
   }
 
   @Override
@@ -38,7 +38,7 @@ public final class Horcrux extends SurvivorGadget {
     scheduler.scheduleParticleTaskUntilDeath(item, Color.BLACK);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.HORCRUX_SOUND);
+    audience.playSound(GameProperties.HORCRUX_SOUND);
 
     return false;
   }

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -19,7 +19,7 @@ public final class FriendWarp extends SurvivorGadget {
         Material.EMERALD,
         Message.FRIEND_WARP_NAME.build(),
         Message.FRIEND_WARP_LORE.build(),
-        GadgetSettings.FRIEND_WARP_COST);
+        GameProperties.FRIEND_WARP_COST);
   }
 
   @Override
@@ -33,7 +33,7 @@ public final class FriendWarp extends SurvivorGadget {
     final Location location = target.getLocation();
     player.teleport(location);
 
-    final String sound = GadgetSettings.FRIEND_WARP_SOUND;
+    final String sound = GameProperties.FRIEND_WARP_SOUND;
     final PlayerAudience audience = player.getAudience();
     audience.playSound(sound);
 

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -20,7 +20,7 @@ public final class DistortTrap extends SurvivorTrap {
         Message.DISTORT_NAME.build(),
         Message.DISTORT_LORE.build(),
         Message.DISTORT_ACTIVATE.build(),
-        GadgetSettings.DISTORT_COST,
+        GameProperties.DISTORT_COST,
         new Color(177, 156, 217));
   }
 
@@ -29,10 +29,10 @@ public final class DistortTrap extends SurvivorTrap {
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> this.spawnParticle(murderer), 0, 5, GadgetSettings.DISTORT_DURATION);
+        () -> this.spawnParticle(murderer), 0, 5, GameProperties.DISTORT_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetSettings.DISTORT_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.DISTORT_SOUND);
   }
 
   private void spawnParticle(final GamePlayer murderer) {

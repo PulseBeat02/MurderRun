@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -28,7 +28,7 @@ public final class Parasite extends SurvivorGadget {
         Material.VINE,
         Message.PARASITE_NAME.build(),
         Message.PARASITE_LORE.build(),
-        GadgetSettings.PARASITE_COST);
+        GameProperties.PARASITE_COST);
     this.removed = new HashSet<>();
   }
 
@@ -42,7 +42,7 @@ public final class Parasite extends SurvivorGadget {
     scheduler.scheduleParticleTaskUntilDeath(item, Color.GREEN);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.PARASITE_SOUND);
+    audience.playSound(GameProperties.PARASITE_SOUND);
 
     return false;
   }
@@ -56,8 +56,8 @@ public final class Parasite extends SurvivorGadget {
     final Location origin = item.getLocation();
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
-    final double destroyRadius = GadgetSettings.PARASITE_DESTROY_RADIUS;
-    final double radius = GadgetSettings.PARASITE_RADIUS;
+    final double destroyRadius = GameProperties.PARASITE_DESTROY_RADIUS;
+    final double radius = GameProperties.PARASITE_RADIUS;
     final int id = item.getEntityId();
     if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.PARASITE_DEACTIVATE.build();

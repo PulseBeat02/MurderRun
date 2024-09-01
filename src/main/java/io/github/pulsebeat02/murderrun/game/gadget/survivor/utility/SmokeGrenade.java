@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -39,7 +39,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
         Material.SNOWBALL,
         Message.SMOKE_BOMB_NAME.build(),
         Message.SMOKE_BOMB_LORE.build(),
-        GadgetSettings.SMOKE_GRENADE_COST,
+        GameProperties.SMOKE_GRENADE_COST,
         ItemFactory::createSmokeGrenade);
     this.game = game;
   }
@@ -70,7 +70,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
 
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
-    final int duration = GadgetSettings.SMOKE_GRENADE_DURATION;
+    final int duration = GameProperties.SMOKE_GRENADE_DURATION;
     final Runnable task = () ->
         world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
     scheduler.scheduleRepeatedTask(task, 0, 1, duration);
@@ -79,7 +79,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     manager.applyToAllMurderers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);
-      final double radius = GadgetSettings.SMOKE_GRENADE_RADIUS;
+      final double radius = GameProperties.SMOKE_GRENADE_RADIUS;
       if (distance < radius * radius) {
         player.addPotionEffects(
             new PotionEffect(PotionEffectType.BLINDNESS, duration, Integer.MAX_VALUE));

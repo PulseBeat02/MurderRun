@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -19,7 +19,7 @@ public final class BearTrap extends SurvivorTrap {
         Message.BEAR_NAME.build(),
         Message.BEAR_LORE.build(),
         Message.BEAR_ACTIVATE.build(),
-        GadgetSettings.BEAR_COST,
+        GameProperties.BEAR_COST,
         new Color(35, 23, 9));
   }
 
@@ -27,11 +27,11 @@ public final class BearTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
     final GameScheduler scheduler = game.getScheduler();
-    final int duration = GadgetSettings.BEAR_DURATION;
+    final int duration = GameProperties.BEAR_DURATION;
     murderer.disableJump(scheduler, duration);
     murderer.disableWalkWithFOVEffects(duration);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetSettings.BEAR_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.BEAR_SOUND);
   }
 }

@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
-public interface GadgetSettings {
+public interface GameProperties {
 
   static void init() {
     // init bundle
@@ -8,6 +8,9 @@ public interface GadgetSettings {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  int SURVIVOR_STARTING_CURRENCY = num("survivor.starting_currency");
+  int KILLER_STARTING_CURRENCY = num("killer.starting_currency");
+  String DISABLED_GADGETS = str("disabled_gadgets");
   int BEAR_DURATION = num("bear.duration");
   String BEAR_SOUND = str("bear.sound");
   int BLIND_DURATION = num("blind.duration");

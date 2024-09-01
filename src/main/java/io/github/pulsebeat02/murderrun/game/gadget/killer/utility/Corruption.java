@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -34,7 +34,7 @@ public final class Corruption extends KillerGadget {
         Material.ZOMBIE_HEAD,
         Message.CORRUPTION_NAME.build(),
         Message.CORRUPTION_LORE.build(),
-        GadgetSettings.CORRUPTION_COST);
+        GameProperties.CORRUPTION_COST);
   }
 
   @Override

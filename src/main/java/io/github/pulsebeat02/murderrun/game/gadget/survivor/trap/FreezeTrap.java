@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -19,7 +19,7 @@ public final class FreezeTrap extends SurvivorTrap {
         Message.FREEZE_NAME.build(),
         Message.FREEZE_LORE.build(),
         Message.FREEZE_ACTIVATE.build(),
-        GadgetSettings.FREEZE_COST,
+        GameProperties.FREEZE_COST,
         Color.BLUE);
   }
 
@@ -27,12 +27,12 @@ public final class FreezeTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
     final GameScheduler scheduler = game.getScheduler();
-    final int duration = GadgetSettings.FREEZE_EFFECT_DURATION;
+    final int duration = GameProperties.FREEZE_EFFECT_DURATION;
     murderer.disableJump(scheduler, duration);
     murderer.setFreezeTicks(duration);
-    murderer.disableWalkWithFOVEffects(GadgetSettings.FREEZE_DURATION);
+    murderer.disableWalkWithFOVEffects(GameProperties.FREEZE_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetSettings.FREEZE_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.FREEZE_SOUND);
   }
 }

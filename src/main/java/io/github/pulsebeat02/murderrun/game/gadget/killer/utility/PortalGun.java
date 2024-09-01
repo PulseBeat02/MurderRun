@@ -4,7 +4,7 @@ import static io.github.pulsebeat02.murderrun.immutable.Holder.empty;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -48,7 +48,7 @@ public final class PortalGun extends KillerGadget implements Listener {
         Material.BOW,
         Message.PORTAL_GUN_NAME.build(),
         Message.PORTAL_GUN_LORE.build(),
-        GadgetSettings.PORTAL_GUN_COST,
+        GameProperties.PORTAL_GUN_COST,
         ItemFactory::createPortalGun);
     this.portals = new HashMap<>();
     this.game = game;

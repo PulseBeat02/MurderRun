@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.armor;
 
 import static net.kyori.adventure.text.Component.empty;
 
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
@@ -17,7 +17,7 @@ public abstract sealed class SurvivorGear extends SurvivorGadget
         material,
         itemName,
         empty(),
-        GadgetSettings.SURVIVOR_GEAR_COST,
+        GameProperties.SURVIVOR_GEAR_COST,
         ItemFactory::createSurvivorGear);
   }
 }

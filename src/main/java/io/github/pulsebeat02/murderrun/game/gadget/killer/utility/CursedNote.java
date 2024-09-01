@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
@@ -37,7 +37,7 @@ public final class CursedNote extends KillerGadget {
         Material.PAPER,
         Message.CURSED_NOTE_NAME.build(),
         Message.CURSED_NOTE_LORE.build(),
-        GadgetSettings.CURSED_NOTE_COST);
+        GameProperties.CURSED_NOTE_COST);
   }
 
   @Override
@@ -62,7 +62,7 @@ public final class CursedNote extends KillerGadget {
     scheduler.scheduleAfterDeath(() -> this.resetAllParts(closeParts), cursed);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.CURSED_NOTE_SOUND);
+    audience.playSound(GameProperties.CURSED_NOTE_SOUND);
 
     final Component msg = Message.CURSED_NOTE_DROP.build();
     audience.sendMessage(msg);
@@ -104,7 +104,7 @@ public final class CursedNote extends KillerGadget {
       final Location partLocation = part.getLocation();
       final Location survivorLocation = survivor.getLocation();
       final double distance = partLocation.distanceSquared(survivorLocation);
-      final double radius = GadgetSettings.CURSED_NOTE_EFFECT_RADIUS;
+      final double radius = GameProperties.CURSED_NOTE_EFFECT_RADIUS;
       if (distance <= radius * radius) {
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 1));
@@ -124,7 +124,7 @@ public final class CursedNote extends KillerGadget {
     for (final CarPart part : parts) {
       final Location location = part.getLocation();
       final double distance = origin.distanceSquared(location);
-      final double radius = GadgetSettings.CURSED_NOTE_RADIUS;
+      final double radius = GameProperties.CURSED_NOTE_RADIUS;
       if (distance < radius * radius) {
         closeParts.add(part);
       }

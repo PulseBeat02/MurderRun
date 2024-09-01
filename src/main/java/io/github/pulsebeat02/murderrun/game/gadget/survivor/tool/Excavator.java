@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -14,7 +14,7 @@ public final class Excavator extends SurvivorGadget {
         Material.DIAMOND_PICKAXE,
         Message.EXCAVATOR_NAME.build(),
         Message.EXCAVATOR_LORE.build(),
-        GadgetSettings.EXCAVATOR_COST,
+        GameProperties.EXCAVATOR_COST,
         ItemFactory::createExcavator);
   }
 }

@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -31,7 +31,7 @@ public final class Ghosting extends SurvivorGadget {
         Material.WHITE_WOOL,
         Message.GHOSTING_NAME.build(),
         Message.GHOSTING_LORE.build(),
-        GadgetSettings.GHOSTING_COST);
+        GameProperties.GHOSTING_COST);
   }
 
   @Override
@@ -55,7 +55,7 @@ public final class Ghosting extends SurvivorGadget {
     final PlayerAudience audience = survivor.getAudience();
     final Component message = Message.GHOSTING_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GadgetSettings.GHOSTING_SOUND);
+    audience.playSound(GameProperties.GHOSTING_SOUND);
 
     return false;
   }
@@ -87,7 +87,7 @@ public final class Ghosting extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
     scheduler.scheduleRepeatedTask(
-        () -> inventory.addItem(wool), 0, GadgetSettings.GHOSTING_WOOL_DELAY);
+        () -> inventory.addItem(wool), 0, GameProperties.GHOSTING_WOOL_DELAY);
   }
 
   private void giveWhiteBone(final GamePlayer player) {

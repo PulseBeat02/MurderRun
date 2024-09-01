@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -23,7 +23,7 @@ public final class AllSeeingEye extends KillerGadget {
         Material.ENDER_EYE,
         Message.ALL_SEEING_EYE_NAME.build(),
         Message.ALL_SEEING_EYE_LORE.build(),
-        GadgetSettings.ALL_SEEING_EYE_COST);
+        GameProperties.ALL_SEEING_EYE_COST);
   }
 
   @Override
@@ -39,12 +39,12 @@ public final class AllSeeingEye extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final Player target = random.getInternalPlayer();
-    final int duration = GadgetSettings.ALL_SEEING_EYE_DURATION;
+    final int duration = GameProperties.ALL_SEEING_EYE_DURATION;
     scheduler.scheduleRepeatedTask(() -> player.setSpectatorTarget(target), 0, 10, duration);
     scheduler.scheduleTask(() -> this.resetPlayerState(player, before), duration);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.ALL_SEEING_EYE_SOUND);
+    audience.playSound(GameProperties.ALL_SEEING_EYE_SOUND);
 
     return false;
   }

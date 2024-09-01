@@ -6,7 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -47,7 +47,7 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
         Material.CHEST,
         Message.SUPPLY_DROP_NAME.build(),
         Message.SUPPLY_DROP_LORE.build(),
-        GadgetSettings.SUPPLY_DROP_COST);
+        GameProperties.SUPPLY_DROP_COST);
     this.game = game;
   }
 
@@ -144,7 +144,7 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
   private ItemStack[] generateSupplyDropItems() {
     final int index = RandomUtils.generateInt(3);
-    final String all = GadgetSettings.SUPPLY_DROP_MASKS;
+    final String all = GameProperties.SUPPLY_DROP_MASKS;
     final String[] masks = all.split(",");
     final String mask = masks[index];
     final ItemStack[] items = new ItemStack[mask.length()];

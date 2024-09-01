@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -25,7 +25,7 @@ public final class MindControl extends SurvivorGadget {
         Material.STRUCTURE_VOID,
         Message.MIND_CONTROL_NAME.build(),
         Message.MIND_CONTROL_LORE.build(),
-        GadgetSettings.MIND_CONTROL_COST);
+        GameProperties.MIND_CONTROL_COST);
   }
 
   @Override
@@ -47,7 +47,7 @@ public final class MindControl extends SurvivorGadget {
     survivor.setCanPickupCarPart(false);
 
     final Location location = nearest.getLocation();
-    final int duration = GadgetSettings.MIND_CONTROL_DURATION;
+    final int duration = GameProperties.MIND_CONTROL_DURATION;
     player.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1));
     player.setInvulnerable(true);
     player.teleport(location);
@@ -62,7 +62,7 @@ public final class MindControl extends SurvivorGadget {
     final Component targetMsg = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
     final PlayerAudience audience1 = player.getAudience();
     audience1.sendMessage(targetMsg);
-    audience1.playSound(GadgetSettings.MIND_CONTROL_SOUND);
+    audience1.playSound(GameProperties.MIND_CONTROL_SOUND);
 
     final String name = player.getDisplayName();
     final Component msg = Message.MIND_CONTROL_ACTIVATE_KILLER.build(name);

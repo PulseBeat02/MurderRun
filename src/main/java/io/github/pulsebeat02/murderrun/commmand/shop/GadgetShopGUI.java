@@ -67,7 +67,7 @@ public final class GadgetShopGUI {
   }
 
   private List<ItemStack> getShopItems(final boolean isSurvivorGadgets) {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getInstance();
+    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     final List<ItemStack> items = new ArrayList<>();
     for (final Gadget gadget : gadgets) {
@@ -140,7 +140,7 @@ public final class GadgetShopGUI {
     event.setCancelled(true);
 
     final ItemStack stack = event.getCurrentItem();
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getInstance();
+    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
     if (stack == null) {
       return;
     }

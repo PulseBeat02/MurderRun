@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -44,7 +44,7 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
         Material.WITHER_SKELETON_SKULL,
         Message.DORMAGOGG_NAME.build(),
         Message.DORMAGOGG_LORE.build(),
-        GadgetSettings.DORMAGOGG_COST);
+        GameProperties.DORMAGOGG_COST);
     this.game = game;
   }
 
@@ -120,7 +120,7 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
     this.spawnDormagogg(world, location, player);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.DORMAGOGG_SOUND);
+    audience.playSound(GameProperties.DORMAGOGG_SOUND);
 
     return false;
   }

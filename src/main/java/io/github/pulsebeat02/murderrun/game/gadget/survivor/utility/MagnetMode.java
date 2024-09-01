@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -19,7 +19,7 @@ public final class MagnetMode extends SurvivorGadget {
         Material.IRON_INGOT,
         Message.MAGNET_MODE_NAME.build(),
         Message.MAGNET_MODE_LORE.build(),
-        GadgetSettings.MAGNET_MODE_COST);
+        GameProperties.MAGNET_MODE_COST);
   }
 
   @Override
@@ -30,12 +30,12 @@ public final class MagnetMode extends SurvivorGadget {
 
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double current = gadgetManager.getActivationRange();
-    gadgetManager.setActivationRange(current * GadgetSettings.MAGNET_MODE_MULTIPLIER);
+    gadgetManager.setActivationRange(current * GameProperties.MAGNET_MODE_MULTIPLIER);
 
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.MAGNET_MODE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GadgetSettings.MAGNET_MODE_SOUND);
+    audience.playSound(GameProperties.MAGNET_MODE_SOUND);
 
     return false;
   }

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -27,7 +27,7 @@ public final class Distorter extends SurvivorGadget {
         Material.CHORUS_FLOWER,
         Message.DISTORTER_NAME.build(),
         Message.DISTORTER_LORE.build(),
-        GadgetSettings.DISTORTER_COST);
+        GameProperties.DISTORTER_COST);
     this.removed = new HashSet<>();
   }
 
@@ -41,7 +41,7 @@ public final class Distorter extends SurvivorGadget {
     scheduler.scheduleParticleTaskUntilDeath(item, Color.PURPLE);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.DISTORTER_SOUND);
+    audience.playSound(GameProperties.DISTORTER_SOUND);
 
     return false;
   }
@@ -55,8 +55,8 @@ public final class Distorter extends SurvivorGadget {
     final Location location = killer.getLocation();
     final Location origin = item.getLocation();
     final double distance = location.distanceSquared(origin);
-    final double destroyRadius = GadgetSettings.DISTORTER_DESTROY_RADIUS;
-    final double effectRadius = GadgetSettings.DISTORTER_EFFECT_RADIUS;
+    final double destroyRadius = GameProperties.DISTORTER_DESTROY_RADIUS;
+    final double effectRadius = GameProperties.DISTORTER_EFFECT_RADIUS;
     final int id = item.getEntityId();
     if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();

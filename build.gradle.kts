@@ -56,7 +56,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
-    implementation("io.netty:netty-codec-http:5.0.0.Alpha2") {
+    implementation("io.netty:netty-codec-http:5.0.0.Final-SNAPSHOT") {
         exclude(group = "io.netty", module = "netty-handler")
         exclude(group = "com.jcraft", module = "jzlib")
     }

@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -23,7 +23,7 @@ public final class SpawnTrap extends SurvivorTrap {
         Message.SPAWN_NAME.build(),
         Message.SPAWN_LORE.build(),
         Message.SPAWN_ACTIVATE.build(),
-        GadgetSettings.SPAWN_COST,
+        GameProperties.SPAWN_COST,
         Color.GRAY);
   }
 
@@ -36,6 +36,6 @@ public final class SpawnTrap extends SurvivorTrap {
     murderer.teleport(spawn);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetSettings.SPAWN_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.SPAWN_SOUND);
   }
 }

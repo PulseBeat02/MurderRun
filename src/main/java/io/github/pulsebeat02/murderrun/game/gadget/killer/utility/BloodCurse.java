@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -26,7 +26,7 @@ public final class BloodCurse extends KillerGadget {
         Material.REDSTONE,
         Message.BLOOD_CURSE_NAME.build(),
         Message.BLOOD_CURSE_LORE.build(),
-        GadgetSettings.BLOOD_CURSE_COST);
+        GameProperties.BLOOD_CURSE_COST);
   }
 
   @Override
@@ -40,7 +40,7 @@ public final class BloodCurse extends KillerGadget {
     final Consumer<GamePlayer> task =
         survivor -> scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 7L);
     manager.applyToAllLivingInnocents(task);
-    manager.playSoundForAllParticipants(GadgetSettings.BLOOD_CURSE_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.BLOOD_CURSE_SOUND);
 
     final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
     manager.sendMessageToAllSurvivors(msg);

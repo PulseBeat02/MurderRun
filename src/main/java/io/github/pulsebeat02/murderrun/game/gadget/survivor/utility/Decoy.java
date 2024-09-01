@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -28,7 +28,7 @@ public final class Decoy extends SurvivorGadget {
         Material.PLAYER_HEAD,
         Message.DECOY_NAME.build(),
         Message.DECOY_LORE.build(),
-        GadgetSettings.DECOY_COST);
+        GameProperties.DECOY_COST);
   }
 
   @Override
@@ -47,7 +47,7 @@ public final class Decoy extends SurvivorGadget {
     npc.spawn(location);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.DECOY_SOUND);
+    audience.playSound(GameProperties.DECOY_SOUND);
 
     return false;
   }

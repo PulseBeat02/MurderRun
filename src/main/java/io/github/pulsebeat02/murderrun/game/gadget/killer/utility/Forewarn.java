@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -25,7 +25,7 @@ public final class Forewarn extends KillerGadget {
         Material.GLOWSTONE_DUST,
         Message.FOREWARN_NAME.build(),
         Message.FOREWARN_LORE.build(),
-        GadgetSettings.FOREWARN_COST);
+        GameProperties.FOREWARN_COST);
   }
 
   @Override
@@ -45,7 +45,7 @@ public final class Forewarn extends KillerGadget {
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.FOREWARN_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(GadgetSettings.FOREWARN_SOUND);
+    audience.playSound(GameProperties.FOREWARN_SOUND);
 
     return false;
   }

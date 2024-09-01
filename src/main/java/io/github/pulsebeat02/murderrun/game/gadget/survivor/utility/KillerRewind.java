@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -21,7 +21,7 @@ public final class KillerRewind extends SurvivorGadget {
         Material.LAPIS_BLOCK,
         Message.MURDERER_REWIND_NAME.build(),
         Message.MURDERER_REWIND_LORE.build(),
-        GadgetSettings.KILLER_REWIND_COST);
+        GameProperties.KILLER_REWIND_COST);
   }
 
   @Override
@@ -51,7 +51,7 @@ public final class KillerRewind extends SurvivorGadget {
     }
 
     final long difference = current - last;
-    if (difference < GadgetSettings.KILLER_REWIND_COOLDOWN) {
+    if (difference < GameProperties.KILLER_REWIND_COOLDOWN) {
       super.onGadgetDrop(game, player, item, false);
       return true;
     }
@@ -75,6 +75,6 @@ public final class KillerRewind extends SurvivorGadget {
     super.onGadgetDrop(game, killer, item, successful);
 
     final PlayerAudience audience = killer.getAudience();
-    audience.playSound(GadgetSettings.KILLER_REWIND_SOUND);
+    audience.playSound(GameProperties.KILLER_REWIND_SOUND);
   }
 }

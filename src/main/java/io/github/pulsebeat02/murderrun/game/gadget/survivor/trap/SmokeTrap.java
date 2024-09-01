@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.trap;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -27,14 +27,14 @@ public final class SmokeTrap extends SurvivorTrap {
         Message.SMOKE_NAME.build(),
         Message.SMOKE_LORE.build(),
         Message.SMOKE_ACTIVATE.build(),
-        GadgetSettings.SMOKE_COST,
+        GameProperties.SMOKE_COST,
         Color.GRAY);
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
 
-    final int duration = GadgetSettings.SMOKE_DURATION;
+    final int duration = GameProperties.SMOKE_DURATION;
     murderer.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, duration, 2));
@@ -43,7 +43,7 @@ public final class SmokeTrap extends SurvivorTrap {
     scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 1, duration);
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GadgetSettings.SMOKE_SOUND);
+    manager.playSoundForAllParticipants(GameProperties.SMOKE_SOUND);
   }
 
   private void spawnSmoke(final GamePlayer murderer) {

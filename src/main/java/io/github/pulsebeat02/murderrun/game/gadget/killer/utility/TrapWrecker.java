@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -21,7 +21,7 @@ public final class TrapWrecker extends KillerGadget {
         Material.BARRIER,
         Message.TRAP_WRECKER_NAME.build(),
         Message.TRAP_WRECKER_LORE.build(),
-        GadgetSettings.TRAP_WRECKER_COST);
+        GameProperties.TRAP_WRECKER_COST);
   }
 
   @Override
@@ -43,12 +43,12 @@ public final class TrapWrecker extends KillerGadget {
       }
       killer.setLevel(time);
     };
-    scheduler.scheduleCountdownTask(consumer, GadgetSettings.TRAP_WRECKER_DURATION);
+    scheduler.scheduleCountdownTask(consumer, GameProperties.TRAP_WRECKER_DURATION);
 
     final PlayerAudience audience = killer.getAudience();
     final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(GadgetSettings.TRAP_WRECKER_SOUND);
+    audience.playSound(GameProperties.TRAP_WRECKER_SOUND);
 
     return false;
   }

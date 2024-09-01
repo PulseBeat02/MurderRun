@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -21,7 +21,7 @@ public final class IcePath extends KillerGadget {
         Material.ICE,
         Message.ICE_PATH_NAME.build(),
         Message.ICE_PATH_LORE.build(),
-        GadgetSettings.ICE_PATH_COST);
+        GameProperties.ICE_PATH_COST);
   }
 
   @Override
@@ -34,7 +34,7 @@ public final class IcePath extends KillerGadget {
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(player), 0, 4);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.ICE_PATH_SOUND);
+    audience.playSound(GameProperties.ICE_PATH_SOUND);
 
     return false;
   }

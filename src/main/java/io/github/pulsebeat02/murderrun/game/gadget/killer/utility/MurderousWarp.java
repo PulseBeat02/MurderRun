@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,7 +20,7 @@ public final class MurderousWarp extends KillerGadget {
         Material.REDSTONE_BLOCK,
         Message.MURDEROUS_WARP_NAME.build(),
         Message.MURDEROUS_WARP_LORE.build(),
-        GadgetSettings.MURDEROUS_WARP_COST);
+        GameProperties.MURDEROUS_WARP_COST);
   }
 
   @Override
@@ -37,7 +37,7 @@ public final class MurderousWarp extends KillerGadget {
     player.teleport(first);
 
     final PlayerAudience audienceRand = random.getAudience();
-    audienceRand.playSound(GadgetSettings.MURDEROUS_WARP_SOUND);
+    audienceRand.playSound(GameProperties.MURDEROUS_WARP_SOUND);
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     audienceRand.sendMessage(msg);

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
@@ -24,7 +24,7 @@ public final class PartWarp extends KillerGadget {
         Material.REPEATER,
         Message.PART_WARP_NAME.build(),
         Message.PART_WARP_LORE.build(),
-        GadgetSettings.PART_WARP_COST);
+        GameProperties.PART_WARP_COST);
   }
 
   @Override
@@ -45,7 +45,7 @@ public final class PartWarp extends KillerGadget {
     carPartItem.teleport(location);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.PART_WARP_SOUND);
+    audience.playSound(GameProperties.PART_WARP_SOUND);
 
     return false;
   }

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -31,7 +31,7 @@ public final class Hook extends KillerGadget implements Listener {
         Material.FISHING_ROD,
         Message.HOOK_NAME.build(),
         Message.HOOK_LORE.build(),
-        GadgetSettings.HOOK_COST,
+        GameProperties.HOOK_COST,
         ItemFactory::createHook);
     this.game = game;
   }

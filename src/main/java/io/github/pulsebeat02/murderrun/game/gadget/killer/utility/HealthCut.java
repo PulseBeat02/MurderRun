@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,7 +20,7 @@ public final class HealthCut extends KillerGadget {
         Material.GOLDEN_SWORD,
         Message.HEALTH_CUT_NAME.build(),
         Message.HEALTH_CUT_LORE.build(),
-        GadgetSettings.HEALTH_CUT_COST);
+        GameProperties.HEALTH_CUT_COST);
   }
 
   @Override
@@ -34,7 +34,7 @@ public final class HealthCut extends KillerGadget {
     manager.applyToAllLivingInnocents(survivor -> this.setState(survivor, scheduler));
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.HEALTH_CUT_SOUND);
+    audience.playSound(GameProperties.HEALTH_CUT_SOUND);
 
     return false;
   }

@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -40,7 +40,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
         Material.BONE,
         Message.DEATH_HOUND_NAME.build(),
         Message.DEATH_HOUND_LORE.build(),
-        GadgetSettings.DEATH_HOUND_COST);
+        GameProperties.DEATH_HOUND_COST);
     this.game = game;
   }
 
@@ -77,7 +77,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     this.spawnWolf(location, player, nearest);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.DEATH_HOUND_SOUND);
+    audience.playSound(GameProperties.DEATH_HOUND_SOUND);
 
     return false;
   }

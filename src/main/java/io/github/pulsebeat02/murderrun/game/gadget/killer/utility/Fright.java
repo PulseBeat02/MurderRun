@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -25,7 +25,7 @@ public final class Fright extends KillerGadget {
         Material.BLACK_CONCRETE,
         Message.FRIGHT_NAME.build(),
         Message.FRIGHT_LORE.build(),
-        GadgetSettings.FRIGHT_COST);
+        GameProperties.FRIGHT_COST);
   }
 
   @Override
@@ -47,7 +47,7 @@ public final class Fright extends KillerGadget {
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
 
     final ItemStack before = this.setPumpkinItemStack(survivor);
-    final int duration = GadgetSettings.FRIGHT_DURATION;
+    final int duration = GameProperties.FRIGHT_DURATION;
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));

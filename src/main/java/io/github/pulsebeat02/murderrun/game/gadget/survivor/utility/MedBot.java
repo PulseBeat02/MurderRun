@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -36,7 +36,7 @@ public final class MedBot extends SurvivorGadget {
         Material.DISPENSER,
         Message.MED_BOT_NAME.build(),
         Message.MED_BOT_LORE.build(),
-        GadgetSettings.MED_BOT_COST);
+        GameProperties.MED_BOT_COST);
   }
 
   @Override
@@ -66,7 +66,7 @@ public final class MedBot extends SurvivorGadget {
     this.handleMedBotUpdate(scheduler, manager, armorStand);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.MED_BOT_SOUND);
+    audience.playSound(GameProperties.MED_BOT_SOUND);
 
     return false;
   }
@@ -88,7 +88,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
-    final double radius = GadgetSettings.MED_BOT_DESTROY_RADIUS;
+    final double radius = GameProperties.MED_BOT_DESTROY_RADIUS;
     if (distance < radius * radius) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.sendMessageToAllSurvivors(message);
@@ -100,7 +100,7 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
-    final double radius = GadgetSettings.MED_BOT_RADIUS;
+    final double radius = GameProperties.MED_BOT_RADIUS;
     if (distance < radius * radius) {
       innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20, 3));
     }

@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -28,7 +28,7 @@ public final class PoisonSmog extends KillerGadget {
         Material.SLIME_BALL,
         Message.POISON_SMOG_NAME.build(),
         Message.POISON_SMOG_LORE.build(),
-        GadgetSettings.POISON_SMOG_COST);
+        GameProperties.POISON_SMOG_COST);
   }
 
   @Override
@@ -45,10 +45,10 @@ public final class PoisonSmog extends KillerGadget {
         () -> this.handleSmog(world, location, manager),
         0,
         2 * 20L,
-        GadgetSettings.POISON_SMOG_DURATION);
+        GameProperties.POISON_SMOG_DURATION);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.POISON_SMOG_SOUND);
+    audience.playSound(GameProperties.POISON_SMOG_SOUND);
 
     return false;
   }
@@ -65,7 +65,7 @@ public final class PoisonSmog extends KillerGadget {
   private void handleDebuffs(final GamePlayer survivor, final Location origin) {
     final Location location = survivor.getLocation();
     final double distance = location.distanceSquared(origin);
-    final double radius = GadgetSettings.POISON_SMOG_RADIUS;
+    final double radius = GameProperties.POISON_SMOG_RADIUS;
     if (distance < radius * radius) {
       survivor.addPotionEffects(new PotionEffect(PotionEffectType.POISON, 3 * 20, 0));
     }

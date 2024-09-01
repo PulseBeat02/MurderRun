@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -25,7 +25,7 @@ public final class SixthSense extends SurvivorGadget {
         Material.GOLDEN_CARROT,
         Message.SIXTH_SENSE_NAME.build(),
         Message.SIXTH_SENSE_LORE.build(),
-        GadgetSettings.SIXTH_SENSE_COST);
+        GameProperties.SIXTH_SENSE_COST);
   }
 
   @Override
@@ -45,7 +45,7 @@ public final class SixthSense extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.SIXTH_SENSE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GadgetSettings.SIXTH_SENSE_SOUND);
+    audience.playSound(GameProperties.SIXTH_SENSE_SOUND);
 
     return false;
   }
@@ -60,7 +60,7 @@ public final class SixthSense extends SurvivorGadget {
     final Collection<GamePlayer> visible = survivor.getGlowingKillers();
     final double distance = location.distanceSquared(other);
     final MetadataManager metadata = survivor.getMetadataManager();
-    final double radius = GadgetSettings.SIXTH_SENSE_RADIUS;
+    final double radius = GameProperties.SIXTH_SENSE_RADIUS;
     if (distance < radius * radius) {
       visible.add(killer);
       metadata.setEntityGlowing(killer, ChatColor.BLUE, true);

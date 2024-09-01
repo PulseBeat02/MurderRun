@@ -15,13 +15,13 @@ public final class TradingUtils {
   }
 
   public static Stream<String> getTradeSuggestions() {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getInstance();
+    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     return gadgets.stream().map(Gadget::getName);
   }
 
   public static List<MerchantRecipe> getAllRecipes() {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getInstance();
+    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final Gadget gadget : gadgets) {
@@ -32,7 +32,7 @@ public final class TradingUtils {
   }
 
   public static List<MerchantRecipe> parseRecipes(final String... args) {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getInstance();
+    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String arg : args) {
       final Gadget gadget = registry.getGadget(arg);

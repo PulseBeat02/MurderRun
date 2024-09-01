@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -24,7 +24,7 @@ public final class Bush extends SurvivorGadget {
         Material.OAK_LEAVES,
         Message.BUSH_NAME.build(),
         Message.BUSH_LORE.build(),
-        GadgetSettings.BUSH_COST);
+        GameProperties.BUSH_COST);
   }
 
   @Override
@@ -33,7 +33,7 @@ public final class Bush extends SurvivorGadget {
 
     super.onGadgetDrop(game, player, item, true);
 
-    final int duration = GadgetSettings.BUSH_DURATION;
+    final int duration = GameProperties.BUSH_DURATION;
     player.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1));
 
     final PlayerInventory inventory = player.getInventory();
@@ -51,7 +51,7 @@ public final class Bush extends SurvivorGadget {
     scheduler.scheduleTask(() -> block.setType(Material.AIR), duration);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GadgetSettings.BUSH_SOUND);
+    audience.playSound(GameProperties.BUSH_SOUND);
 
     return false;
   }

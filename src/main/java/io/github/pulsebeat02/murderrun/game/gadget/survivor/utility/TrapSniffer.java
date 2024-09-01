@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetSettings;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
@@ -28,7 +28,7 @@ public final class TrapSniffer extends SurvivorGadget {
         Material.TRIPWIRE_HOOK,
         Message.TRAP_SNIFFER_NAME.build(),
         Message.TRAP_SNIFFER_LORE.build(),
-        GadgetSettings.TRAP_SNIFFER_COST);
+        GameProperties.TRAP_SNIFFER_COST);
   }
 
   @Override
@@ -48,7 +48,7 @@ public final class TrapSniffer extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.TRAP_SNIFFER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GadgetSettings.TRAP_SNIFFER_SOUND);
+    audience.playSound(GameProperties.TRAP_SNIFFER_SOUND);
 
     return false;
   }
@@ -60,7 +60,7 @@ public final class TrapSniffer extends SurvivorGadget {
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();
     final Collection<Item> set = player.getGlowingCarParts();
-    final double radius = GadgetSettings.TRAP_SNIFFER_RADIUS;
+    final double radius = GameProperties.TRAP_SNIFFER_RADIUS;
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();

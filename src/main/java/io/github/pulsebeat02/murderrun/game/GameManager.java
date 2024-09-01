@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.game.PlayerResourcePackChecker;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
@@ -79,7 +80,7 @@ public final class GameManager {
       this.murderers.add(player);
       this.giveSpecialItems(player);
     }
-    this.addCurrency(player);
+    this.addCurrency(player, killer);
   }
 
   private void clearInventory(final Player player) {
@@ -93,10 +94,13 @@ public final class GameManager {
     player.teleport(spawn);
   }
 
-  private void addCurrency(final Player player) {
+  private void addCurrency(final Player player, final boolean killer) {
+    final int count = killer
+        ? GameProperties.KILLER_STARTING_CURRENCY
+        : GameProperties.SURVIVOR_STARTING_CURRENCY;
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = ItemFactory.createCurrency(64);
-    for (int i = 0; i < 4; i++) {
+    final ItemStack stack = ItemFactory.createCurrency(1);
+    for (int i = 0; i < count; i++) {
       inventory.addItem(stack);
     }
   }
