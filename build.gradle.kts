@@ -56,10 +56,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
-    implementation("io.netty:netty-codec-http:4.1.97.Final") {
-        exclude(group = "io.netty", module = "netty-handler")
-        exclude(group = "com.jcraft", module = "jzlib")
-    }
+    implementation("io.netty:netty-codec-http:4.1.97.Final")
 
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
@@ -126,21 +123,21 @@ tasks {
     shadowJar {
 
         // Disable Relocations Temporary for Hot Swapping
-//        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
-//        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
-//        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
-//        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
-//        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
-//        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
-//        relocate("fr.skytasul", "io.github.pulsebeat02.murderrun.lib.fr.skytasul")
-//        relocate(
-//            "com.github.stefvanschie",
-//            "io.github.pulsebeat02.murderrun.lib.com.github.stefvanschie"
-//        )
-//        relocate(
-//            "io.netty.handler.codec.http",
-//            "io.github.pulsebeat02.murderrun.lib.io.netty.handler.codec.http"
-//        )
+        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
+        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
+        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
+        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
+        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
+        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
+        relocate("fr.skytasul", "io.github.pulsebeat02.murderrun.lib.fr.skytasul")
+        relocate(
+            "com.github.stefvanschie",
+            "io.github.pulsebeat02.murderrun.lib.com.github.stefvanschie"
+        )
+        relocate(
+            "io.netty.handler.codec.http",
+            "io.github.pulsebeat02.murderrun.lib.io.netty.handler.codec.http"
+        )
         relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
 
         dependencies {

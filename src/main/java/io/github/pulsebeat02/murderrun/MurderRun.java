@@ -24,7 +24,6 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  - Sixth sense not working after corruption (verify)
   - Fix Netty Hosting
 
    */

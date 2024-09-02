@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SplittableRandom;
 import net.minecraft.core.RegistryAccess;
@@ -199,66 +198,78 @@ public class PacketTools implements PacketToolAPI {
     final ServerGamePacketListenerImpl connection = handle.connection;
 
     if (glowing) {
-
-      final Slime existing = this.glowBlocks.get(player, target);
-      if (existing != null) {
-        return;
-      }
-
-      final World world = target.getWorld();
-      final CraftWorld craftWorld = (CraftWorld) world;
-      final ServerLevel nmsWorld = craftWorld.getHandle();
-      final Slime slime = new Slime(EntityType.SLIME, nmsWorld);
-      slime.setInvisible(true);
-      slime.setGlowingTag(true);
-      slime.setSize(2, false);
-      slime.setInvulnerable(true);
-      slime.setNoAi(true);
-      slime.setRot(0, 0);
-      slime.setPos(target.getX() + 0.5, target.getY(), target.getZ() + 0.5);
-      slime.setYBodyRot(0);
-      slime.setYHeadRot(0);
-
-      final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false , ignored -> {}, Set.of());
-      final ClientboundAddEntityPacket packet = new ClientboundAddEntityPacket(slime, entity);
-      connection.send(packet);
-
-      final int id = slime.getId();
-      final SynchedEntityData data = slime.getEntityData();
-      List<SynchedEntityData.DataValue<?>> values = data.getNonDefaultValues();
-      if (values == null) {
-        values = new ArrayList<>();
-      }
-
-      final List<SynchedEntityData.DataValue<?>> copy = new ArrayList<>(values);
-      copy.removeIf(value -> value.id() == 0);
-
-      final byte newMask = 0x20 | 0x40;
-      final EntityDataAccessor<Byte> accessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
-      final DataValue<?> newValue = DataValue.create(accessor, newMask);
-      copy.addFirst(newValue);
-
-      final ClientboundSetEntityDataPacket dataPacket = new ClientboundSetEntityDataPacket(id, copy);
-      connection.send(dataPacket);
-
-      final String uuid = slime.getStringUUID();
-      this.noCollisions.addEntry(uuid);
-      this.glowBlocks.put(player, target, slime);
-
+      this.createGlowingSlime0(target, player, connection);
     } else {
-
-      final Slime value = this.glowBlocks.get(player, target);
-      if (value == null) {
-        return;
-      }
-
-      final int id = value.getId();
-      this.removeEntity(connection, Set.of(id));
-      this.glowBlocks.remove(player, target);
+      this.removeGlowingSlime0(target, player, connection);
     }
   }
 
-  private void removeEntity(final ServerGamePacketListenerImpl connection, final Collection<Integer> ids) {
+  private void removeGlowingSlime0(final Location target, final CraftPlayer player,
+      final ServerGamePacketListenerImpl connection) {
+
+    final Slime value = this.glowBlocks.get(player, target);
+    if (value == null) {
+      return;
+    }
+
+    final int id = value.getId();
+    this.removeEntity(connection, Set.of(id));
+    this.glowBlocks.remove(player, target);
+  }
+
+  private void createGlowingSlime0(final Location target, final CraftPlayer player,
+      final ServerGamePacketListenerImpl connection) {
+
+    final Slime existing = this.glowBlocks.get(player, target);
+    if (existing != null) {
+      return;
+    }
+
+    final World world = target.getWorld();
+    final CraftWorld craftWorld = (CraftWorld) world;
+    final ServerLevel nmsWorld = craftWorld.getHandle();
+    final Slime slime = new Slime(EntityType.SLIME, nmsWorld);
+    slime.setInvisible(true);
+    slime.setGlowingTag(true);
+    slime.setSize(2, false);
+    slime.setInvulnerable(true);
+    slime.setNoAi(true);
+    slime.setRot(0, 0);
+    slime.setPos(target.getX() + 0.5, target.getY(), target.getZ() + 0.5);
+    slime.setYBodyRot(0);
+    slime.setYHeadRot(0);
+
+    final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false, ignored -> {
+    }, Set.of());
+    final ClientboundAddEntityPacket packet = new ClientboundAddEntityPacket(slime, entity);
+    connection.send(packet);
+
+    final int id = slime.getId();
+    final SynchedEntityData data = slime.getEntityData();
+    List<DataValue<?>> values = data.getNonDefaultValues();
+    if (values == null) {
+      values = new ArrayList<>();
+    }
+
+    final List<DataValue<?>> copy = new ArrayList<>(values);
+    copy.removeIf(value -> value.id() == 0);
+
+    final byte newMask = 0x20 | 0x40;
+    final EntityDataAccessor<Byte> accessor = new EntityDataAccessor<>(0,
+        EntityDataSerializers.BYTE);
+    final DataValue<?> newValue = DataValue.create(accessor, newMask);
+    copy.addFirst(newValue);
+
+    final ClientboundSetEntityDataPacket dataPacket = new ClientboundSetEntityDataPacket(id, copy);
+    connection.send(dataPacket);
+
+    final String uuid = slime.getStringUUID();
+    this.noCollisions.addEntry(uuid);
+    this.glowBlocks.put(player, target, slime);
+  }
+
+  private void removeEntity(final ServerGamePacketListenerImpl connection,
+      final Collection<Integer> ids) {
     final int[] remove = Ints.toArray(ids);
     final ClientboundRemoveEntitiesPacket packet = new ClientboundRemoveEntitiesPacket(remove);
     connection.send(packet);
