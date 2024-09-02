@@ -4,17 +4,14 @@ import static net.kyori.adventure.text.Component.empty;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.gui.ChainedGui;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
-import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
@@ -23,9 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,29 +29,22 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public final class ChooseLobbyGui implements ChainedGui {
+public final class LobbyListGui extends ChestGui {
 
   private final MurderRun plugin;
-  private final ChestGui gui;
   private final HumanEntity watcher;
-  private final Audience audience;
-  private final Gui previous;
 
-  public ChooseLobbyGui(final MurderRun plugin, final HumanEntity watcher, final Gui previous) {
-    final Component component = Message.CHOOSE_LOBBY_GUI_TITLE.build();
-    final String raw = AdventureUtils.serializeComponentToLegacyString(component);
-    final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
-    final UUID uuid = watcher.getUniqueId();
+  public LobbyListGui(final MurderRun plugin, final HumanEntity watcher) {
+    super(
+        6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
     this.plugin = plugin;
-    this.gui = new ChestGui(6, raw);
     this.watcher = watcher;
-    this.audience = audiences.player(uuid);
-    this.previous = previous;
   }
 
   @Override
-  public void updateItems() {
+  public void update() {
+
+    super.update();
 
     final PaginatedPane pages = new PaginatedPane(0, 0, 9, 3);
     pages.populateWithItemStacks(this.getLobbies());
@@ -80,12 +67,13 @@ public final class ChooseLobbyGui implements ChainedGui {
       }
 
       final Location spawn = MapUtils.byteArrayToLocation(bytes);
-      final ModifyLobbyGui gui =
-          new ModifyLobbyGui(this.plugin, this.watcher, name, spawn, true, this);
-      gui.updateItems();
+      final ChestGui gui =
+          new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true, this);
+      gui.update();
+      gui.show(this.watcher);
       event.setCancelled(true);
     });
-    this.gui.addPane(pages);
+    this.addPane(pages);
 
     final OutlinePane background = new OutlinePane(0, 5, 9, 1);
     final GuiItem border =
@@ -94,15 +82,13 @@ public final class ChooseLobbyGui implements ChainedGui {
     background.addItem(border);
     background.setRepeat(true);
     background.setPriority(Pane.Priority.LOWEST);
-    this.gui.addPane(background);
+    this.addPane(background);
 
     final StaticPane navigation = new StaticPane(0, 5, 9, 1);
     navigation.addItem(this.createBackStack(pages), 0, 0);
     navigation.addItem(this.createForwardStack(pages), 8, 0);
     navigation.addItem(this.createCloseStack(), 4, 0);
-    this.gui.addPane(navigation);
-
-    this.gui.show(this.watcher);
+    this.addPane(navigation);
   }
 
   private List<ItemStack> getLobbies() {
@@ -130,8 +116,7 @@ public final class ChooseLobbyGui implements ChainedGui {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> {
-          final HumanEntity entity = event.getWhoClicked();
-          this.previous.show(entity);
+          this.watcher.closeInventory();
           event.setCancelled(true);
         });
   }
@@ -143,7 +128,7 @@ public final class ChooseLobbyGui implements ChainedGui {
           final int max = pages.getPages() - 1;
           if (current < max) {
             pages.setPage(current + 1);
-            this.gui.update();
+            this.update();
           }
           event.setCancelled(true);
         });
@@ -155,7 +140,7 @@ public final class ChooseLobbyGui implements ChainedGui {
           final int current = pages.getPage();
           if (current > 0) {
             pages.setPage(current - 1);
-            this.gui.update();
+            this.update();
           }
           event.setCancelled(true);
         });

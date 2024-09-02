@@ -3,12 +3,11 @@ package io.github.pulsebeat02.murderrun.commmand.gui.lobby;
 import static net.kyori.adventure.text.Component.empty;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.AnvilGui;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import com.github.stefvanschie.inventoryframework.gui.type.util.Gui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.gui.ChainedGui;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -18,6 +17,7 @@ import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -29,56 +29,101 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 
-public final class ModifyLobbyGui implements Listener, ChainedGui {
+@SuppressWarnings("all")
+public final class LobbyModificationGui extends ChestGui implements Listener {
 
   private static final Pattern CREATE_LOBBY_PATTERN =
       new Pattern("111111111", "123411151", "111161111");
 
   private final MurderRun plugin;
-  private final ChestGui gui;
   private final HumanEntity watcher;
   private final Audience audience;
   private final boolean editMode;
-  private final ChainedGui previous;
 
   private Location spawn;
   private String lobbyName;
   private boolean listenForSpawn;
+  private boolean listenForName;
 
-  public ModifyLobbyGui(
+  public LobbyModificationGui(
       final MurderRun plugin,
       final HumanEntity watcher,
       final boolean editMode,
-      final ChainedGui previous) {
+      final Gui previous) {
     this(plugin, watcher, "", watcher.getLocation(), editMode, previous);
   }
 
-  public ModifyLobbyGui(
+  public LobbyModificationGui(
       final MurderRun plugin,
       final HumanEntity watcher,
       final String lobbyName,
       final Location spawn,
       final boolean editMode,
-      final ChainedGui previous) {
-    final Component msg = Message.CREATE_LOBBY_GUI_TITLE.build();
-    final String raw = AdventureUtils.serializeComponentToLegacyString(msg);
+      final Gui previous) {
+    super(
+        3, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()));
     final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
     this.plugin = plugin;
-    this.gui = new ChestGui(3, raw);
     this.watcher = watcher;
     this.audience = audiences.player(uuid);
     this.spawn = spawn;
     this.lobbyName = lobbyName;
     this.listenForSpawn = false;
     this.editMode = editMode;
-    this.previous = previous;
     manager.registerEvents(this, plugin);
+  }
+
+  @Override
+  public void update() {
+    super.update();
+    final PatternPane pane = new PatternPane(0, 0, 9, 3, CREATE_LOBBY_PATTERN);
+    pane.bindItem('1', this.createBorderStack());
+    pane.bindItem('2', this.createEditNameStack());
+    pane.bindItem('3', this.createEditSpawnStack());
+    pane.bindItem('4', this.createDeleteStack());
+    pane.bindItem('5', this.createApplyStack());
+    pane.bindItem('6', this.createCloseStack());
+    this.addPane(pane);
+    this.setOnClose(event -> {
+      if (this.listenForSpawn || this.listenForName) {
+        return;
+      }
+      final HandlerList list = BlockBreakEvent.getHandlerList();
+      list.unregister(this);
+    });
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerChat(final AsyncPlayerChatEvent event) {
+
+    if (!this.listenForName) {
+      return;
+    }
+
+    final Player player = event.getPlayer();
+    if (player != this.watcher) {
+      return;
+    }
+
+    this.lobbyName = event.getMessage();
+    this.listenForName = false;
+
+    final BukkitScheduler scheduler = Bukkit.getScheduler();
+    scheduler.callSyncMethod(this.plugin, () -> {
+      this.update();
+      this.show(this.watcher);
+      return null;
+    });
+
+    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -96,41 +141,16 @@ public final class ModifyLobbyGui implements Listener, ChainedGui {
     final Block block = event.getBlock();
     this.spawn = block.getLocation();
     this.listenForSpawn = false;
-    this.updateItems();
-
-    final Component message =
-        AdventureUtils.createLocationComponent(Message.LOBBY_SPAWN, this.spawn);
-    this.audience.sendMessage(message);
+    this.update();
+    this.show(this.watcher);
 
     event.setCancelled(true);
   }
 
-  @Override
-  public void updateItems() {
-    final PatternPane pane = new PatternPane(0, 0, 9, 3, CREATE_LOBBY_PATTERN);
-    pane.bindItem('1', this.createBorderStack());
-    pane.bindItem('2', this.createEditNameStack());
-    pane.bindItem('3', this.createEditSpawnStack());
-    pane.bindItem('4', this.createDeleteStack());
-    pane.bindItem('5', this.createApplyStack());
-    pane.bindItem('6', this.createCloseStack());
-    this.gui.addPane(pane);
-    this.gui.setOnClose(event -> {
-      if (this.listenForSpawn) {
-        return;
-      }
-      final HandlerList list = BlockBreakEvent.getHandlerList();
-      list.unregister(this);
-    });
-    this.gui.show(this.watcher);
-  }
-
   private GuiItem createCloseStack() {
     return new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> {
-          final HumanEntity clicker = event.getWhoClicked();
-          clicker.closeInventory();
-        });
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.watcher.closeInventory());
   }
 
   private GuiItem createApplyStack() {
@@ -150,7 +170,6 @@ public final class ModifyLobbyGui implements Listener, ChainedGui {
           final LobbyManager manager = this.plugin.getLobbyManager();
           manager.addLobby(this.lobbyName, this.spawn);
           this.plugin.updatePluginData();
-          this.previous.updateItems();
 
           final Component msg1 = Message.LOBBY_BUILT.build();
           this.audience.sendMessage(msg1);
@@ -166,7 +185,6 @@ public final class ModifyLobbyGui implements Listener, ChainedGui {
           event -> {
             final LobbyManager manager = this.plugin.getLobbyManager();
             manager.removeLobby(this.lobbyName);
-            this.previous.updateItems();
 
             final Component msg = Message.LOBBY_REMOVE.build(this.lobbyName);
             this.audience.sendMessage(msg);
@@ -203,18 +221,10 @@ public final class ModifyLobbyGui implements Listener, ChainedGui {
             .build(),
         event -> {
           event.setCancelled(true);
-
-          final Component msg = Message.CREATE_LOBBY_GUI_EDIT_NAME_ANVIL_TITLE.build();
-          final String raw = AdventureUtils.serializeComponentToLegacyString(msg);
-          final AnvilGui anvil = new AnvilGui(raw);
-          anvil.setOnClose(close -> {
-            this.lobbyName = anvil.getRenameText();
-            this.gui.show(this.watcher);
-
-            final Component message = Message.LOBBY_NAME.build(this.lobbyName);
-            this.audience.sendMessage(message);
-          });
-          anvil.show(this.watcher);
+          this.listenForName = true;
+          this.watcher.closeInventory();
+          final Component msg = Message.CREATE_LOBBY_GUI_EDIT_NAME.build();
+          this.audience.sendMessage(msg);
         });
   }
 

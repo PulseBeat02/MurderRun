@@ -7,7 +7,7 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.gui.lobby.ManageLobbyGui;
+import io.github.pulsebeat02.murderrun.commmand.gui.lobby.LobbyNavigationGui;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -70,7 +70,7 @@ public final class CentralGui {
             .build(),
         event -> {
           final HumanEntity clicker = event.getWhoClicked();
-          final ManageLobbyGui gui = new ManageLobbyGui(this.plugin, clicker);
+          final LobbyNavigationGui gui = new LobbyNavigationGui(this.plugin, clicker);
           gui.updateItems();
           event.setCancelled(true);
         });

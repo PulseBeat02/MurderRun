@@ -400,8 +400,7 @@ public interface Message extends LocaleTools {
       direct("murderrun.gui.lobby.create.edit_spawn_display", null, null, null);
   NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_SPAWN_LORE =
       direct("murderrun.gui.lobby.create.edit_spawn_lore");
-  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_NAME_ANVIL_TITLE =
-      direct("murderrun.gui.lobby.create.edit_name_anvil_title");
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_NAME = direct("murderrun.gui.lobby.create.edit_name");
   NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_SPAWN =
       direct("murderrun.gui.lobby.create.edit_spawn");
   NullComponent<Sender> CREATE_LOBBY_GUI_DELETE = direct("murderrun.gui.lobby.create.edit_delete");
