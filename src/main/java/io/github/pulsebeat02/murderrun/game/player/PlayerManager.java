@@ -189,7 +189,7 @@ public final class PlayerManager {
   }
 
   public void applyToAllMurderers(final Consumer<GamePlayer> consumer) {
-    this.getMurderers().forEach(consumer);
+    this.cachedKillers.forEach(consumer);
   }
 
   public Collection<Killer> getMurderers() {
@@ -197,7 +197,7 @@ public final class PlayerManager {
   }
 
   public void applyToAllDead(final Consumer<GamePlayer> consumer) {
-    this.getDead().forEach(consumer);
+    this.cachedDeadPlayers.forEach(consumer);
   }
 
   public Collection<GamePlayer> getDead() {
