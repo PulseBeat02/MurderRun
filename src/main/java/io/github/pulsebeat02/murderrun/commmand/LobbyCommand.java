@@ -26,7 +26,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   private MurderRun plugin;
   private BukkitAudiences audiences;
   private Location spawn;
-  private String name; // anvil gui
+  private String name;
 
   @Override
   public void registerFeature(
