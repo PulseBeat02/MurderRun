@@ -12,30 +12,37 @@ import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class LobbyNavigationGui extends ChestGui {
 
   private static final Pattern CENTRAL_GUI_PATTERN =
-      new Pattern("111111111", "111314111", "111121111");
+      new Pattern("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
 
   public LobbyNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
     super(
-        3, AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_LOBBY_GUI_TITLE.build()));
+        4, AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_LOBBY_GUI_TITLE.build()));
     this.plugin = plugin;
     this.watcher = clicker;
   }
 
-  public void updateItems() {
-    final PatternPane pane = new PatternPane(0, 0, 9, 3, CENTRAL_GUI_PATTERN);
+  @Override
+  public void update() {
+    super.update();
+    this.addPane(this.createPane());
+    this.setOnGlobalClick(event -> event.setCancelled(true));
+  }
+
+  private PatternPane createPane() {
+    final PatternPane pane = new PatternPane(0, 0, 9, 4, CENTRAL_GUI_PATTERN);
     pane.bindItem('1', this.createBorderStack());
     pane.bindItem('2', this.createCloseStack());
     pane.bindItem('3', this.createLobbyStack());
     pane.bindItem('4', this.createModifyStack());
-    this.addPane(pane);
-    this.show(this.watcher);
+    return pane;
   }
 
   private GuiItem createModifyStack() {
@@ -43,11 +50,13 @@ public final class LobbyNavigationGui extends ChestGui {
         Item.builder(Material.YELLOW_BANNER)
             .name(Message.MANAGE_LOBBY_GUI_EDIT.build())
             .build(),
-        event -> {
-          final ChestGui gui = new LobbyListGui(this.plugin, this.watcher);
-          gui.update();
-          gui.show(this.watcher);
-        });
+        this::createListingsMenu);
+  }
+
+  private void createListingsMenu(final InventoryClickEvent event) {
+    final ChestGui gui = new LobbyListGui(this.plugin, this.watcher);
+    gui.update();
+    gui.show(this.watcher);
   }
 
   private GuiItem createLobbyStack() {
@@ -55,11 +64,13 @@ public final class LobbyNavigationGui extends ChestGui {
         Item.builder(Material.GREEN_BANNER)
             .name(Message.MANAGE_LOBBY_GUI_CREATE.build())
             .build(),
-        event -> {
-          final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, false, this);
-          gui.update();
-          gui.show(this.watcher);
-        });
+        this::createLobbyMenu);
+  }
+
+  private void createLobbyMenu(final InventoryClickEvent event) {
+    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, false, this);
+    gui.update();
+    gui.show(this.watcher);
   }
 
   private GuiItem createCloseStack() {
@@ -70,7 +81,6 @@ public final class LobbyNavigationGui extends ChestGui {
 
   private GuiItem createBorderStack() {
     return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-        event -> event.setCancelled(true));
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 }

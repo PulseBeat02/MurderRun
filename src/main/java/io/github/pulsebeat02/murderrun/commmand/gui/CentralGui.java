@@ -11,11 +11,10 @@ import io.github.pulsebeat02.murderrun.commmand.gui.lobby.LobbyNavigationGui;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 
-public final class CentralGui {
+public final class CentralGui extends ChestGui {
 
   /*
 
@@ -24,61 +23,72 @@ public final class CentralGui {
       - Create an arena
       - Edit an arena
         - Choose an arena to edit
-
-    - Manage Lobbies
-      - Create a lobby (done)
-      - Edit a lobby
-        - Choose a lobby to edit (done)
+     - Create a game
 
    */
 
   private static final Pattern CENTRAL_GUI_PATTERN =
-      new Pattern("111111111", "100345001", "111121111");
+      new Pattern("111111111", "111345111", "111111111", "111121111");
 
   private final MurderRun plugin;
-  private final ChestGui gui;
   private final HumanEntity watcher;
 
   public CentralGui(final MurderRun plugin, final HumanEntity watcher) {
-    final Component component = Message.CENTRAL_GUI_TITLE.build();
-    final String legacy = AdventureUtils.serializeComponentToLegacyString(component);
+    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()));
     this.plugin = plugin;
-    this.gui = new ChestGui(3, legacy);
     this.watcher = watcher;
   }
 
-  public void updateItems() {
+  @Override
+  public void update() {
+    super.update();
+    this.addPane(this.createPane());
+    this.setOnGlobalClick(event -> event.setCancelled(true));
+  }
 
-    final PatternPane pane = new PatternPane(0, 0, 9, 3, CENTRAL_GUI_PATTERN);
+  private PatternPane createPane() {
+    final PatternPane pane = new PatternPane(0, 0, 9, 4, CENTRAL_GUI_PATTERN);
+    pane.bindItem('1', this.createBackground());
+    pane.bindItem('2', this.createCloseButton());
+    pane.bindItem('3', this.createLobbyButton());
+    pane.bindItem('4', this.createArenaButton());
+    pane.bindItem('5', this.createGameButton());
+    return pane;
+  }
 
-    final GuiItem outer = new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-        event -> event.setCancelled(true));
-    pane.bindItem('1', outer);
+  private GuiItem createBackground() {
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+  }
 
-    final GuiItem close = new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> {
-          final HumanEntity clicker = event.getWhoClicked();
-          clicker.closeInventory();
-          event.setCancelled(true);
-        });
-    pane.bindItem('2', close);
+  private GuiItem createCloseButton() {
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.watcher.closeInventory());
+  }
 
-    final GuiItem lobby = new GuiItem(
+  private GuiItem createGameButton() {
+    return new GuiItem(
+        Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build());
+  }
+
+  private GuiItem createArenaButton() {
+    return new GuiItem(Item.builder(Material.YELLOW_BANNER)
+        .name(Message.CENTRAL_GUI_ARENA.build())
+        .build());
+  }
+
+  private GuiItem createLobbyButton() {
+    return new GuiItem(
         Item.builder(Material.WHITE_BANNER)
             .name(Message.CENTRAL_GUI_LOBBY.build())
             .build(),
-        event -> {
-          final HumanEntity clicker = event.getWhoClicked();
-          final LobbyNavigationGui gui = new LobbyNavigationGui(this.plugin, clicker);
-          gui.updateItems();
-          event.setCancelled(true);
-        });
-    pane.bindItem('3', lobby);
-    pane.bindItem('4', new GuiItem(Item.AIR_STACK));
-    pane.bindItem('5', new GuiItem(Item.AIR_STACK));
+        event -> this.handleLobbyLogic());
+  }
 
-    this.gui.addPane(pane);
-    this.gui.show(this.watcher);
+  private void handleLobbyLogic() {
+    final LobbyNavigationGui gui = new LobbyNavigationGui(this.plugin, this.watcher);
+    gui.update();
+    gui.show(this.watcher);
   }
 }

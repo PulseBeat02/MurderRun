@@ -24,6 +24,7 @@ public final class GuiCommand implements AnnotationCommandFeature {
   @Command(value = "murder gui", requiredSender = Player.class)
   public void openGui(final Player sender) {
     final CentralGui gui = new CentralGui(this.plugin, sender);
-    gui.updateItems();
+    gui.update();
+    gui.show(sender);
   }
 }

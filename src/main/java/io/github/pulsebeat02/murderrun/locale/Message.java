@@ -412,4 +412,6 @@ public interface Message extends LocaleTools {
   TriComponent<Sender, Integer, Integer, Integer> CHOOSE_LOBBY_GUI_LOBBY_LORE =
       direct("murderrun.gui.lobby.choose.arena_lore", null, null, null);
   NullComponent<Sender> CENTRAL_GUI_LOBBY = direct("murderrun.gui.central.lobby");
+  NullComponent<Sender> CENTRAL_GUI_ARENA = direct("murderrun.gui.central.arena");
+  NullComponent<Sender> CENTRAL_GUI_GAME = direct("murderrun.gui.central.game");
 }

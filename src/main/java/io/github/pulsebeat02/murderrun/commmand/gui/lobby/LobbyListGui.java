@@ -24,6 +24,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -34,6 +35,8 @@ public final class LobbyListGui extends ChestGui {
   private final MurderRun plugin;
   private final HumanEntity watcher;
 
+  private PaginatedPane pages;
+
   public LobbyListGui(final MurderRun plugin, final HumanEntity watcher) {
     super(
         6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
@@ -43,52 +46,68 @@ public final class LobbyListGui extends ChestGui {
 
   @Override
   public void update() {
-
     super.update();
+    this.addPane(this.updatePane());
+    this.addPane(this.createBackgroundPane());
+    this.addPane(this.createNavigationPane());
+    this.setOnGlobalClick(event -> event.setCancelled(true));
+  }
 
-    final PaginatedPane pages = new PaginatedPane(0, 0, 9, 3);
-    pages.populateWithItemStacks(this.getLobbies());
-    pages.setOnClick(event -> {
-      final ItemStack item = event.getCurrentItem();
-      if (item == null) {
-        return;
-      }
+  private PaginatedPane updatePane() {
 
-      final ItemMeta meta = item.getItemMeta();
-      if (meta == null) {
-        return;
-      }
+    if (this.pages != null) {
+      this.pages.clear();
+    }
 
-      final PersistentDataContainer container = meta.getPersistentDataContainer();
-      final String name = container.get(Keys.ARENA_TITLE, PersistentDataType.STRING);
-      final byte[] bytes = container.get(Keys.ARENA_SPAWN, PersistentDataType.BYTE_ARRAY);
-      if (name == null || bytes == null) {
-        return;
-      }
+    this.pages = new PaginatedPane(0, 0, 9, 3);
+    this.pages.populateWithItemStacks(this.getLobbies());
+    this.pages.setOnClick(this::handleLobbyItemClick);
 
-      final Location spawn = MapUtils.byteArrayToLocation(bytes);
-      final ChestGui gui =
-          new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true, this);
-      gui.update();
-      gui.show(this.watcher);
-      event.setCancelled(true);
-    });
-    this.addPane(pages);
+    return this.pages;
+  }
 
+  private void handleLobbyItemClick(final InventoryClickEvent event) {
+
+    final ItemStack item = event.getCurrentItem();
+    if (item == null) {
+      return;
+    }
+
+    final ItemMeta meta = item.getItemMeta();
+    if (meta == null) {
+      return;
+    }
+
+    final PersistentDataContainer container = meta.getPersistentDataContainer();
+    final String name = container.get(Keys.ARENA_TITLE, PersistentDataType.STRING);
+    final byte[] bytes = container.get(Keys.ARENA_SPAWN, PersistentDataType.BYTE_ARRAY);
+    if (name == null || bytes == null) {
+      return;
+    }
+
+    final Location spawn = MapUtils.byteArrayToLocation(bytes);
+    final ChestGui gui =
+        new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true, this);
+    gui.update();
+    gui.show(this.watcher);
+  }
+
+  private OutlinePane createBackgroundPane() {
     final OutlinePane background = new OutlinePane(0, 5, 9, 1);
     final GuiItem border =
         new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
-    border.setAction(event -> event.setCancelled(true));
     background.addItem(border);
     background.setRepeat(true);
     background.setPriority(Pane.Priority.LOWEST);
-    this.addPane(background);
+    return background;
+  }
 
+  private StaticPane createNavigationPane() {
     final StaticPane navigation = new StaticPane(0, 5, 9, 1);
-    navigation.addItem(this.createBackStack(pages), 0, 0);
-    navigation.addItem(this.createForwardStack(pages), 8, 0);
+    navigation.addItem(this.createBackStack(), 0, 0);
+    navigation.addItem(this.createForwardStack(), 8, 0);
     navigation.addItem(this.createCloseStack(), 4, 0);
-    this.addPane(navigation);
+    return navigation;
   }
 
   private List<ItemStack> getLobbies() {
@@ -99,50 +118,56 @@ public final class LobbyListGui extends ChestGui {
       final String name = entry.getKey();
       final Lobby lobby = entry.getValue();
       final Location spawn = lobby.getLobbySpawn();
-      final Component title = Message.CHOOSE_LOBBY_GUI_LOBBY_DISPLAY.build(name);
-      final Component lore =
-          AdventureUtils.createLocationComponent(Message.CHOOSE_LOBBY_GUI_LOBBY_LORE, spawn);
-      final ItemStack item = Item.builder(Material.WHITE_BANNER)
-          .name(title)
-          .lore(lore)
-          .pdc(Keys.ARENA_TITLE, PersistentDataType.STRING, name)
-          .pdc(Keys.ARENA_SPAWN, PersistentDataType.BYTE_ARRAY, MapUtils.locationToByteArray(spawn))
-          .build();
+      final ItemStack item = this.constructLobbyItem(name, spawn);
       items.add(item);
     }
     return items;
   }
 
+  private ItemStack constructLobbyItem(final String name, final Location spawn) {
+    final Component title = Message.CHOOSE_LOBBY_GUI_LOBBY_DISPLAY.build(name);
+    final Component lore =
+        AdventureUtils.createLocationComponent(Message.CHOOSE_LOBBY_GUI_LOBBY_LORE, spawn);
+    return Item.builder(Material.WHITE_BANNER)
+        .name(title)
+        .lore(lore)
+        .pdc(Keys.ARENA_TITLE, PersistentDataType.STRING, name)
+        .pdc(Keys.ARENA_SPAWN, PersistentDataType.BYTE_ARRAY, MapUtils.locationToByteArray(spawn))
+        .build();
+  }
+
   private GuiItem createCloseStack() {
     return new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> {
-          this.watcher.closeInventory();
-          event.setCancelled(true);
-        });
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.watcher.closeInventory());
   }
 
-  private GuiItem createForwardStack(final PaginatedPane pages) {
+  private GuiItem createForwardStack() {
     return new GuiItem(
-        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(), event -> {
-          final int current = pages.getPage();
-          final int max = pages.getPages() - 1;
-          if (current < max) {
-            pages.setPage(current + 1);
-            this.update();
-          }
-          event.setCancelled(true);
-        });
+        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+        this::handleForwardPage);
   }
 
-  private GuiItem createBackStack(final PaginatedPane pages) {
+  private void handleForwardPage(final InventoryClickEvent event) {
+    final int current = this.pages.getPage();
+    final int max = this.pages.getPages() - 1;
+    if (current < max) {
+      this.pages.setPage(current + 1);
+      this.update();
+    }
+  }
+
+  private GuiItem createBackStack() {
     return new GuiItem(
-        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(), event -> {
-          final int current = pages.getPage();
-          if (current > 0) {
-            pages.setPage(current - 1);
-            this.update();
-          }
-          event.setCancelled(true);
-        });
+        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+        this::handleBackPage);
+  }
+
+  private void handleBackPage(final InventoryClickEvent event) {
+    final int current = this.pages.getPage();
+    if (current > 0) {
+      this.pages.setPage(current - 1);
+      this.update();
+    }
   }
 }
