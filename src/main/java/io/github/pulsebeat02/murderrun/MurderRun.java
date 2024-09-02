@@ -22,6 +22,7 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   - Fix Netty Hosting
+  - Add play again? mode
 
    */
 
