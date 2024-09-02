@@ -32,7 +32,7 @@ public final class NPCShopEvent implements Listener {
     }
 
     final boolean value = store.get("murderrun-gui");
-    final GadgetShopGUI gui = new GadgetShopGUI(this.plugin, value);
+    final GadgetShopGui gui = new GadgetShopGui(this.plugin, value);
     final Player clicker = event.getClicker();
     gui.showGUI(clicker);
   }

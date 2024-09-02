@@ -41,7 +41,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public final class GadgetShopGUI {
+public final class GadgetShopGui {
 
   private static final GuiItem OUTLINE_STACK =
       new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
@@ -58,7 +58,7 @@ public final class GadgetShopGUI {
   private final MurderRun plugin;
   private final ChestGui gui;
 
-  public GadgetShopGUI(final MurderRun plugin, final boolean isSurvivorGadgets) {
+  public GadgetShopGui(final MurderRun plugin, final boolean isSurvivorGadgets) {
     final Component comp = Message.SHOP_GUI_TITLE.build();
     final String legacy = AdventureUtils.serializeComponentToLegacyString(comp);
     this.plugin = plugin;

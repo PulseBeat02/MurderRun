@@ -13,7 +13,8 @@ public enum Commands {
   GAME(new GameCommand()),
   GADGET(new GadgetCommand()),
   SHOP(new ShopCommand()),
-  DEBUG(new DebugCommand());
+  DEBUG(new DebugCommand()),
+  GUI(new GuiCommand());
 
   private static final List<AnnotationCommandFeature> FEATURES = getValues();
 

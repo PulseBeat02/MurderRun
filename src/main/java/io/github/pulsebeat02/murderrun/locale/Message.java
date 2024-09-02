@@ -387,4 +387,30 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> ARENA_COPY = direct("murderrun.command.arena.copy");
   NullComponent<Sender> ITEM_ARENA_NAME = direct("murderrun.item.arena.wand.name");
   NullComponent<Sender> ITEM_ARENA_LORE = direct("murderrun.item.arena.wand.lore");
+  NullComponent<Sender> CENTRAL_GUI_TITLE = direct("murderrun.gui.central.name");
+  NullComponent<Sender> MANAGE_LOBBY_GUI_TITLE = direct("murderrun.gui.lobby.manage");
+  NullComponent<Sender> MANAGE_LOBBY_GUI_CREATE = direct("murderrun.gui.lobby.manage.create");
+  NullComponent<Sender> MANAGE_LOBBY_GUI_EDIT = direct("murderrun.gui.lobby.manage.edit");
+  NullComponent<Sender> CREATE_LOBBY_GUI_TITLE = direct("murderrun.gui.lobby.create.title");
+  UniComponent<Sender, String> CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY =
+      direct("murderrun.gui.lobby.create.edit_name_display", null);
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_NAME_LORE =
+      direct("murderrun.gui.lobby.create.edit_name_lore");
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY =
+      direct("murderrun.gui.lobby.create.edit_spawn_display", null, null, null);
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_SPAWN_LORE =
+      direct("murderrun.gui.lobby.create.edit_spawn_lore");
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_NAME_ANVIL_TITLE =
+      direct("murderrun.gui.lobby.create.edit_name_anvil_title");
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_SPAWN =
+      direct("murderrun.gui.lobby.create.edit_spawn");
+  NullComponent<Sender> CREATE_LOBBY_GUI_DELETE = direct("murderrun.gui.lobby.create.edit_delete");
+  NullComponent<Sender> CREATE_LOBBY_GUI_APPLY =
+      direct("murderrun.gui.lobby.create.edit_create_display");
+  NullComponent<Sender> CHOOSE_LOBBY_GUI_TITLE = direct("murderrun.gui.lobby.choose.title");
+  UniComponent<Sender, String> CHOOSE_LOBBY_GUI_LOBBY_DISPLAY =
+      direct("murderrun.gui.lobby.choose.arena_title", null);
+  TriComponent<Sender, Integer, Integer, Integer> CHOOSE_LOBBY_GUI_LOBBY_LORE =
+      direct("murderrun.gui.lobby.choose.arena_lore", null, null, null);
+  NullComponent<Sender> CENTRAL_GUI_LOBBY = direct("murderrun.gui.central.lobby");
 }

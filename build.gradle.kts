@@ -104,7 +104,7 @@ tasks {
     runServer {
         downloadPlugins {
             url("https://cdn.modrinth.com/data/1u6JkXh5/versions/yAujLUIK/worldedit-bukkit-7.3.6.jar")
-            url("https://ci.citizensnpcs.co/job/citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3541.jar")
+            url("https://ci.citizensnpcs.co/job/citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3542.jar")
         }
         minecraftVersion("1.21.1")
     }
@@ -123,21 +123,21 @@ tasks {
     shadowJar {
 
         // Disable Relocations Temporary for Hot Swapping
-        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
-        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
-        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
-        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
-        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
-        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
-        relocate("fr.skytasul", "io.github.pulsebeat02.murderrun.lib.fr.skytasul")
-        relocate(
-            "com.github.stefvanschie",
-            "io.github.pulsebeat02.murderrun.lib.com.github.stefvanschie"
-        )
-        relocate(
-            "io.netty.handler.codec.http",
-            "io.github.pulsebeat02.murderrun.lib.io.netty.handler.codec.http"
-        )
+//        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
+//        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
+//        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
+//        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
+//        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
+//        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
+//        relocate("fr.skytasul", "io.github.pulsebeat02.murderrun.lib.fr.skytasul")
+//        relocate(
+//            "com.github.stefvanschie",
+//            "io.github.pulsebeat02.murderrun.lib.com.github.stefvanschie"
+//        )
+//        relocate(
+//            "io.netty.handler.codec.http",
+//            "io.github.pulsebeat02.murderrun.lib.io.netty.handler.codec.http"
+//        )
         relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
 
         dependencies {
