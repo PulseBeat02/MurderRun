@@ -12,11 +12,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
-import io.github.pulsebeat02.murderrun.resourcepack.provider.MCPackHosting;
-import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
-import io.github.pulsebeat02.murderrun.resourcepack.provider.ServerPackHosting;
-import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.NettyHosting;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -58,6 +55,7 @@ public final class MurderRun extends JavaPlugin {
     this.readPluginData();
     this.handlePackHosting();
     this.registerCommands();
+    this.registerGameUtilities();
     this.enableBStats();
   }
 
@@ -87,23 +85,17 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void handlePackHosting() {
-    final ProviderMethod method = this.configuration.getProviderMethod();
-    switch (method) {
-      case MC_PACK_HOSTING -> this.provider = new MCPackHosting();
-      case LOCALLY_HOSTED_DAEMON -> {
-        final String hostName = this.configuration.getHostName();
-        final int port = this.configuration.getPort();
-        this.provider = new ServerPackHosting(hostName, port);
-      }
-      case ON_SERVER -> this.provider = new NettyHosting();
-      default -> {} // Do nothing
-    }
+    final PackProviderMethod packProviderMethod = new PackProviderMethod(this);
+    this.provider = packProviderMethod.getProvider();
     this.provider.start();
   }
 
   private void registerCommands() {
     final AnnotationParserHandler commandHandler = new AnnotationParserHandler(this);
     commandHandler.registerCommands();
+  }
+
+  private void registerGameUtilities() {
     this.gameShutdownManager = new GameShutdownManager();
     this.playerResourcePackChecker = new PlayerResourcePackChecker();
   }
@@ -158,5 +150,9 @@ public final class MurderRun extends JavaPlugin {
 
   public PlayerResourcePackChecker getPlayerResourcePackChecker() {
     return this.playerResourcePackChecker;
+  }
+
+  public PluginDataConfigurationMapper getConfiguration() {
+    return this.configuration;
   }
 }

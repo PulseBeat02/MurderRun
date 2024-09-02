@@ -37,6 +37,7 @@ dependencies {
         exclude(group = "*", module = "*")
     }
     compileOnly("io.netty:netty-all:4.1.97.Final")
+    compileOnly("io.netty:netty-codec-http:4.1.97.Final")
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_1"))
@@ -56,7 +57,6 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
-    implementation("io.netty:netty-codec-http:4.1.97.Final")
 
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
