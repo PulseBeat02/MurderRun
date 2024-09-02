@@ -74,16 +74,17 @@ public final class PlayerManager {
     this.cachedKillers = players.stream()
         .filter(StreamUtils.isInstanceOf(Killer.class))
         .map(murderer -> (Killer) murderer)
-        .collect(Collectors.toSet());
+        .collect(StreamUtils.toSynchronizedSet());
     this.cachedDeadPlayers = players.stream()
         .filter(StreamUtils.inverse(GamePlayer::isAlive))
-        .collect(Collectors.toSet());
+        .collect(StreamUtils.toSynchronizedSet());
     this.cachedSurvivors = players.stream()
         .filter(player -> player instanceof Survivor)
         .map(murderer -> (Survivor) murderer)
-        .collect(Collectors.toSet());
-    this.cachedAlivePlayers =
-        this.cachedSurvivors.stream().filter(GamePlayer::isAlive).collect(Collectors.toSet());
+        .collect(StreamUtils.toSynchronizedSet());
+    this.cachedAlivePlayers = this.cachedSurvivors.stream()
+        .filter(GamePlayer::isAlive)
+        .collect(StreamUtils.toSynchronizedSet());
   }
 
   public @Nullable GamePlayer getNearestKiller(final Location origin) {
@@ -172,7 +173,7 @@ public final class PlayerManager {
   }
 
   public void applyToAllInnocents(final Consumer<GamePlayer> consumer) {
-    this.cachedAlivePlayers.forEach(consumer);
+    this.cachedSurvivors.forEach(consumer);
   }
 
   public void applyToAllLivingInnocents(final Consumer<GamePlayer> consumer) {
@@ -243,7 +244,7 @@ public final class PlayerManager {
   }
 
   public void sendMessageToAllSurvivors(final Component message) {
-    this.applyToAllInnocents(player -> {
+    this.applyToAllLivingInnocents(player -> {
       final PlayerAudience audience = player.getAudience();
       audience.sendMessage(message);
     });

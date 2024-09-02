@@ -22,6 +22,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
 
+  /*
+
+  - Sixth sense not working after corruption (verify)
+  - Fix Netty Hosting
+
+   */
+
   private static final int BSTATS_SERVER_ID = 22728;
 
   private PluginDataConfigurationMapper configuration;

@@ -100,7 +100,7 @@ public final class CursedNote extends KillerGadget {
 
   private void handleSurvivorCurse(final Game game, final CarPart part) {
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllInnocents(survivor -> {
+    manager.applyToAllLivingInnocents(survivor -> {
       final Location partLocation = part.getLocation();
       final Location survivorLocation = survivor.getLocation();
       final double distance = partLocation.distanceSquared(survivorLocation);

@@ -28,9 +28,7 @@ public final class CarPart {
 
   public Item spawn() {
     final World world = requireNonNull(this.location.getWorld());
-    final Item item = world.dropItem(this.location, this.stack);
-    final Location microOptimized = item.getLocation();
-    this.setLocation(microOptimized);
+    final Item item = world.dropItemNaturally(this.location, this.stack);
     this.customizeItemEntity(item);
     this.item = item;
     return item;

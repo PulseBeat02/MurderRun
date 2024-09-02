@@ -45,12 +45,12 @@ public final class PlayerDeathTool {
     final DeathManager manager = gamePlayer.getDeathManager();
     gamePlayer.apply(player -> {
       final ArmorStand stand = this.summonArmorStand(gamePlayer);
-      this.preparePlayer(player);
       this.customizeArmorStand(stand);
       this.setArmorStandRotations(stand);
       this.setArmorStandGear(player, stand);
       this.announcePlayerDeath(player);
       this.summonCarParts(player);
+      this.preparePlayer(player);
       manager.setCorpse(stand);
     });
   }
@@ -113,7 +113,7 @@ public final class PlayerDeathTool {
       final Map map = this.game.getMap();
       final PartsManager manager = map.getCarPartManager();
       final CarPart stack = requireNonNull(manager.getCarPartItemStack(slot));
-      final Location death = requireNonNull(player.getLastDeathLocation());
+      final Location death = requireNonNull(player.getLocation());
       stack.setPickedUp(false);
       stack.setLocation(death);
       stack.spawn();

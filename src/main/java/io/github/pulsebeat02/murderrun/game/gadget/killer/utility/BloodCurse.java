@@ -54,7 +54,7 @@ public final class BloodCurse extends KillerGadget {
     final Block block = location.getBlock();
     final Block below = block.getRelative(BlockFace.DOWN);
     final Material type = below.getType();
-    if (BLACKLISTED_MATERIALS.contains(type)) {
+    if (!type.isSolid() || BLACKLISTED_MATERIALS.contains(type)) {
       return;
     }
 

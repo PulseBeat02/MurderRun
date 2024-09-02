@@ -126,4 +126,8 @@ public interface Participant {
   void setFireTicks(final int ticks);
 
   void stopAllSounds();
+
+  void setLoggingOut(final boolean loggingOut);
+
+  boolean isLoggingOut();
 }

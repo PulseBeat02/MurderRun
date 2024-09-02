@@ -44,13 +44,13 @@ public final class DebugCommand implements AnnotationCommandFeature {
     sender.performCommand("murder game create TestArena TestLobby");
     sender.performCommand("murder game set murderer PulseBeat_02");
     sender.performCommand("murder game invite Player1");
-    // sender.performCommand("murder game invite Player2");
+    sender.performCommand("murder game invite Player2");
 
     final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
     other.performCommand("murder game join PulseBeat_02");
 
-    // final Player other1 = requireNonNull(Bukkit.getPlayer("Player2"));
-    // other1.performCommand("murder game join PulseBeat_02");
+    final Player other1 = requireNonNull(Bukkit.getPlayer("Player2"));
+    other1.performCommand("murder game join PulseBeat_02");
 
     sender.performCommand("murder game start");
   }

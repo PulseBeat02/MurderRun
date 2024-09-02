@@ -8,6 +8,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  int BEGINNING_STARTING_TIME = num("beginning.starting_time");
   int SURVIVOR_STARTING_CURRENCY = num("survivor.starting_currency");
   int KILLER_STARTING_CURRENCY = num("killer.starting_currency");
   String DISABLED_GADGETS = str("disabled_gadgets");

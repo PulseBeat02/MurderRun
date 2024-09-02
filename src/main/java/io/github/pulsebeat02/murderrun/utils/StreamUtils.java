@@ -2,7 +2,9 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -29,5 +31,9 @@ public final class StreamUtils {
 
   public static <T> Collector<T, ?, List<T>> toShuffledList() {
     return (Collector<T, ?, List<T>>) SHUFFLER;
+  }
+
+  public static <T> Collector<T, ?, Set<T>> toSynchronizedSet() {
+    return Collectors.toCollection(() -> Collections.synchronizedSet(new HashSet<>()));
   }
 }

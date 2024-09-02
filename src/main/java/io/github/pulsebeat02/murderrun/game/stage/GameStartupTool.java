@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -90,8 +91,9 @@ public final class GameStartupTool {
   }
 
   private void runFutureTask() {
+    final int seconds = GameProperties.BEGINNING_STARTING_TIME;
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleCountdownTask(this::handleCountdownSeconds, 60);
+    scheduler.scheduleCountdownTask(this::handleCountdownSeconds, seconds);
   }
 
   private void handleCountdownSeconds(final int time) {

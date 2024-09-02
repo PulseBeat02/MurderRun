@@ -21,6 +21,7 @@ public class GamePlayer extends AbstractPlayer {
   private boolean canDismount;
   private boolean canSpectatorTeleport;
   private boolean alive;
+  private boolean loggingOut;
 
   public GamePlayer(final Game game, final UUID uuid) {
     this.game = game;
@@ -98,5 +99,15 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public long getLastPortalUse() {
     return this.lastPortalUse;
+  }
+
+  @Override
+  public boolean isLoggingOut() {
+    return this.loggingOut;
+  }
+
+  @Override
+  public void setLoggingOut(final boolean loggingOut) {
+    this.loggingOut = loggingOut;
   }
 }

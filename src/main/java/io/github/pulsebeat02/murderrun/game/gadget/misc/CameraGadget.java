@@ -59,7 +59,7 @@ public class CameraGadget {
     if (player instanceof Survivor) {
       task = () -> manager.applyToAllMurderers(handleGlow);
     } else {
-      task = () -> manager.applyToAllInnocents(handleGlow);
+      task = () -> manager.applyToAllLivingInnocents(handleGlow);
     }
     scheduler.scheduleRepeatedTask(task, 0, 20L);
 

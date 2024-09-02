@@ -10,11 +10,13 @@ import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Collection;
+import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Player.Spigot;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 public final class GamePlayerDeathEvent extends GameEvent {
 
@@ -35,32 +37,39 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
     final Spigot spigot = player.spigot();
-    if (deathManager.checkDeathCancellation()) {
+    final List<ItemStack> drops = event.getDrops();
+    final boolean isLogging = gamePlayer.isLoggingOut();
+
+    if (deathManager.checkDeathCancellation() && !isLogging) {
       spigot.respawn();
+      drops.clear();
       return;
     }
 
     final PlayerDeathTool death = manager.getDeathManager();
     gamePlayer.setAlive(false);
     death.initiateDeathSequence(gamePlayer);
+    manager.resetCachedPlayers();
 
     event.setDroppedExp(0);
     event.setKeepInventory(true);
     event.setDeathMessage(null);
-    this.playDeathSoundEffect();
-
     deathManager.runDeathTasks();
-    manager.resetCachedPlayers();
+
+    if (!isLogging) {
+      spigot.respawn();
+    }
+    drops.clear();
 
     if (this.allInnocentDead()) {
-      spigot.respawn();
       game.finishGame(GameResult.MURDERERS);
     }
 
     if (this.allKillersDead()) {
-      spigot.respawn();
       game.finishGame(GameResult.INNOCENTS);
     }
+
+    this.playDeathSoundEffect();
   }
 
   private void playDeathSoundEffect() {
