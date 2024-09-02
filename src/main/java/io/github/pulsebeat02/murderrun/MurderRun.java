@@ -23,6 +23,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - Add play again? mode
+  - Add inventory GUI to help configure arenas, lobbies, and games
 
    */
 

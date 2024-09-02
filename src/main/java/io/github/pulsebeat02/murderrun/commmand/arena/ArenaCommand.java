@@ -37,12 +37,12 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   private BukkitAudiences audiences;
   private WandListener listener;
 
-  private String name;
+  private String name; // anvil gui
   private Location spawn;
   private Location truck;
   private Location first;
   private Location second;
-  private Collection<Location> itemLocations;
+  private Collection<Location> itemLocations; // get stick
 
   @Override
   public void registerFeature(
