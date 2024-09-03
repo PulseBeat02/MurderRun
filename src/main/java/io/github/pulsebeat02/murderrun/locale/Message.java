@@ -408,9 +408,9 @@ public interface Message extends LocaleTools {
       direct("murderrun.gui.lobby.create.edit_create_display");
   NullComponent<Sender> CHOOSE_LOBBY_GUI_TITLE = direct("murderrun.gui.lobby.choose.title");
   UniComponent<Sender, String> CHOOSE_LOBBY_GUI_LOBBY_DISPLAY =
-      direct("murderrun.gui.lobby.choose.arena_title", null);
+      direct("murderrun.gui.lobby.choose.lobby_title", null);
   TriComponent<Sender, Integer, Integer, Integer> CHOOSE_LOBBY_GUI_LOBBY_LORE =
-      direct("murderrun.gui.lobby.choose.arena_lore", null, null, null);
+      direct("murderrun.gui.lobby.choose.lobby_lore", null, null, null);
   NullComponent<Sender> CENTRAL_GUI_LOBBY = direct("murderrun.gui.central.lobby");
   NullComponent<Sender> CENTRAL_GUI_ARENA = direct("murderrun.gui.central.arena");
   NullComponent<Sender> CENTRAL_GUI_GAME = direct("murderrun.gui.central.game");
@@ -442,4 +442,20 @@ public interface Message extends LocaleTools {
       direct("murderrun.gui.arena.create.edit_second");
   NullComponent<Sender> CREATE_ARENA_GUI_EDIT_TRUCK =
       direct("murderrun.gui.arena.create.edit_truck");
+  NullComponent<Sender> CREATE_ARENA_GUI_WAND_DISPLAY =
+      direct("murderrun.gui.arena.create.edit_wand_display");
+  NullComponent<Sender> CREATE_ARENA_GUI_WAND_LORE =
+      direct("murderrun.gui.arena.create.edit_wand_lore");
+  NullComponent<Sender> CREATE_ARENA_GUI_WAND = direct("murderrun.gui.arena.create.edit_wand");
+  NullComponent<Sender> CREATE_ARENA_GUI_APPLY =
+      direct("murderrun.gui.arena.create.edit_create_display");
+  NullComponent<Sender> CREATE_ARENA_GUI_DELETE = direct("murderrun.gui.arena.create.edit_delete");
+  UniComponent<Sender, String> CHOOSE_ARENA_GUI_ARENA_DISPLAY =
+      direct("murderrun.gui.arena.choose.arena_title", null);
+  TriComponent<Sender, Integer, Integer, Integer> CHOOSE_ARENA_GUI_ARENA_LORE =
+      direct("murderrun.gui.arena.choose.arena_lore", null, null, null);
+  NullComponent<Sender> CHOOSE_ARENA_GUI_TITLE = direct("murderrun.gui.arena.choose.title");
+  NullComponent<Sender> MANAGE_ARENA_GUI_CREATE = direct("murderrun.gui.arena.manage.create");
+  NullComponent<Sender> MANAGE_ARENA_GUI_EDIT = direct("murderrun.gui.arena.manage.edit");
+  NullComponent<Sender> MANAGE_ARENA_GUI_TITLE = direct("murderrun.gui.arena.manage");
 }

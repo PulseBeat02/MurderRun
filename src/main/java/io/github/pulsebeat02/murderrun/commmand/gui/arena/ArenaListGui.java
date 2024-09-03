@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.gui.lobby;
+package io.github.pulsebeat02.murderrun.commmand.gui.arena;
 
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
@@ -10,13 +10,15 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
-import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,18 +32,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public final class LobbyListGui extends ChestGui {
+public final class ArenaListGui extends ChestGui {
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
+  private final PaginatedPane pages;
 
-  private PaginatedPane pages;
-
-  public LobbyListGui(final MurderRun plugin, final HumanEntity watcher) {
+  public ArenaListGui(final MurderRun plugin, final HumanEntity watcher) {
     super(
-        6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
+        6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_ARENA_GUI_TITLE.build()));
     this.plugin = plugin;
     this.watcher = watcher;
+    this.pages = new PaginatedPane(0, 0, 9, 3);
   }
 
   @Override
@@ -55,18 +57,14 @@ public final class LobbyListGui extends ChestGui {
 
   private PaginatedPane updatePane() {
 
-    if (this.pages != null) {
-      this.pages.clear();
-    }
-
-    this.pages = new PaginatedPane(0, 0, 9, 3);
-    this.pages.populateWithItemStacks(this.getLobbies());
-    this.pages.setOnClick(this::handleLobbyItemClick);
+    this.pages.clear();
+    this.pages.populateWithItemStacks(this.getArenas());
+    this.pages.setOnClick(this::handleArenaItemClick);
 
     return this.pages;
   }
 
-  private void handleLobbyItemClick(final InventoryClickEvent event) {
+  private void handleArenaItemClick(final InventoryClickEvent event) {
 
     final ItemStack item = event.getCurrentItem();
     if (item == null) {
@@ -79,15 +77,22 @@ public final class LobbyListGui extends ChestGui {
     }
 
     final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final String name = container.get(Keys.LOBBY_NAME, PersistentDataType.STRING);
+    final String name = container.get(Keys.ARENA_NAME, PersistentDataType.STRING);
     if (name == null) {
       return;
     }
 
-    final LobbyManager manager = this.plugin.getLobbyManager();
-    final Lobby lobby = requireNonNull(manager.getLobby(name));
-    final Location spawn = lobby.getLobbySpawn();
-    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true);
+    final ArenaManager manager = this.plugin.getArenaManager();
+    final Arena arena = requireNonNull(manager.getArena(name));
+    final Location spawn = arena.getSpawn();
+    final Location first = arena.getFirstCorner();
+    final Location second = arena.getSecondCorner();
+    final Location truck = arena.getTruck();
+    final Location[] items = arena.getCarPartLocations();
+    final Collection<Location> locations = Arrays.asList(items);
+    final Collection<Location> copy = new ArrayList<>(locations);
+    final ChestGui gui = new ArenaModificationGui(
+        this.plugin, this.watcher, name, spawn, truck, first, second, copy, true);
     gui.update();
     gui.show(this.watcher);
   }
@@ -110,28 +115,28 @@ public final class LobbyListGui extends ChestGui {
     return navigation;
   }
 
-  private List<ItemStack> getLobbies() {
-    final LobbyManager manager = this.plugin.getLobbyManager();
-    final Map<String, Lobby> lobbies = manager.getLobbies();
+  private List<ItemStack> getArenas() {
+    final ArenaManager manager = this.plugin.getArenaManager();
+    final Map<String, Arena> arenas = manager.getArenas();
     final List<ItemStack> items = new ArrayList<>();
-    for (final Entry<String, Lobby> entry : lobbies.entrySet()) {
+    for (final Entry<String, Arena> entry : arenas.entrySet()) {
       final String name = entry.getKey();
-      final Lobby lobby = entry.getValue();
-      final Location spawn = lobby.getLobbySpawn();
-      final ItemStack item = this.constructLobbyItem(name, spawn);
+      final Arena arena = entry.getValue();
+      final Location spawn = arena.getSpawn();
+      final ItemStack item = this.constructArenaItem(name, spawn);
       items.add(item);
     }
     return items;
   }
 
-  private ItemStack constructLobbyItem(final String name, final Location spawn) {
-    final Component title = Message.CHOOSE_LOBBY_GUI_LOBBY_DISPLAY.build(name);
+  private ItemStack constructArenaItem(final String name, final Location spawn) {
+    final Component title = Message.CHOOSE_ARENA_GUI_ARENA_DISPLAY.build(name);
     final Component lore =
-        AdventureUtils.createLocationComponent(Message.CHOOSE_LOBBY_GUI_LOBBY_LORE, spawn);
+        AdventureUtils.createLocationComponent(Message.CHOOSE_ARENA_GUI_ARENA_LORE, spawn);
     return Item.builder(Material.WHITE_BANNER)
         .name(title)
         .lore(lore)
-        .pdc(Keys.LOBBY_NAME, PersistentDataType.STRING, name)
+        .pdc(Keys.ARENA_NAME, PersistentDataType.STRING, name)
         .build();
   }
 

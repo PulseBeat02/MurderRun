@@ -7,22 +7,20 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.commmand.gui.arena.ArenaNavigationGui;
 import io.github.pulsebeat02.murderrun.commmand.gui.lobby.LobbyNavigationGui;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class CentralGui extends ChestGui {
 
   /*
 
   - Central GUI
-    - Manage Arenas
-      - Create an arena
-      - Edit an arena
-        - Choose an arena to edit
      - Create a game
 
    */
@@ -73,9 +71,17 @@ public final class CentralGui extends ChestGui {
   }
 
   private GuiItem createArenaButton() {
-    return new GuiItem(Item.builder(Material.YELLOW_BANNER)
-        .name(Message.CENTRAL_GUI_ARENA.build())
-        .build());
+    return new GuiItem(
+        Item.builder(Material.YELLOW_BANNER)
+            .name(Message.CENTRAL_GUI_ARENA.build())
+            .build(),
+        this::handleArenaClick);
+  }
+
+  private void handleArenaClick(final InventoryClickEvent event) {
+    final ChestGui gui = new ArenaNavigationGui(this.plugin, this.watcher);
+    gui.update();
+    gui.show(this.watcher);
   }
 
   private GuiItem createLobbyButton() {
@@ -83,11 +89,11 @@ public final class CentralGui extends ChestGui {
         Item.builder(Material.WHITE_BANNER)
             .name(Message.CENTRAL_GUI_LOBBY.build())
             .build(),
-        event -> this.handleLobbyLogic());
+        event -> this.handleLobbyClick());
   }
 
-  private void handleLobbyLogic() {
-    final LobbyNavigationGui gui = new LobbyNavigationGui(this.plugin, this.watcher);
+  private void handleLobbyClick() {
+    final ChestGui gui = new LobbyNavigationGui(this.plugin, this.watcher);
     gui.update();
     gui.show(this.watcher);
   }

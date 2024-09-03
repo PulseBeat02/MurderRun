@@ -7,18 +7,23 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.commmand.arena.WandListener;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -33,7 +38,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public final class ArenaModificationGui extends ChestGui implements Listener {
 
@@ -47,27 +55,42 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   private final boolean editMode;
   private final PatternPane pane;
   private final AtomicInteger currentMode;
+  private final Collection<Location> itemLocations;
+  private final WandListener listener;
 
   private volatile String arenaName;
   private volatile Location spawn;
   private volatile Location truck;
   private volatile Location first;
   private volatile Location second;
-  private volatile Collection<Location> itemLocations;
-
   private volatile boolean listenForBreaks;
   private volatile boolean listenForName;
+  private volatile boolean listenForItems;
 
   public ArenaModificationGui(
       final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
-    this(plugin, watcher, "None", watcher.getLocation(), editMode);
+    this(
+        plugin,
+        watcher,
+        "None",
+        watcher.getLocation(),
+        watcher.getLocation(),
+        watcher.getLocation(),
+        watcher.getLocation(),
+        Collections.synchronizedSet(new HashSet<>()),
+        editMode);
   }
 
+  @SuppressWarnings("all")
   public ArenaModificationGui(
       final MurderRun plugin,
       final HumanEntity watcher,
       final String arenaName,
       final Location spawn,
+      final Location truck,
+      final Location first,
+      final Location second,
+      final Collection<Location> itemLocations,
       final boolean editMode) {
     super(
         4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()));
@@ -82,10 +105,17 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     this.spawn = spawn;
     this.original = arenaName;
     this.arenaName = arenaName;
+    this.truck = truck;
+    this.first = first;
+    this.second = second;
+    this.itemLocations = itemLocations;
     this.listenForBreaks = false;
     this.editMode = editMode;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_ARENA_PATTERN);
     this.currentMode = new AtomicInteger(0);
+    this.listener = new WandListener(
+        this.plugin, this.itemLocations, this::removeItemLocation, this::addItemLocation);
+    this.listener.runScheduledTask();
     manager.registerEvents(this, plugin);
   }
 
@@ -97,13 +127,36 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     this.setOnGlobalClick(event -> event.setCancelled(true));
   }
 
+  public void addItemLocation(final Player sender, final Location location) {
+
+    final Block block = location.getBlock();
+    final Location blockLoc = block.getLocation();
+    this.itemLocations.add(blockLoc);
+
+    final Component msg = AdventureUtils.createLocationComponent(Message.ARENA_ITEM_ADD, blockLoc);
+    this.audience.sendMessage(msg);
+  }
+
+  public void removeItemLocation(final Player sender, final Location location) {
+    final Block block = location.getBlock();
+    final Location blockLoc = block.getLocation();
+    if (this.itemLocations.remove(blockLoc)) {
+      final Component msg =
+          AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
+      this.audience.sendMessage(msg);
+    } else {
+      final Component err = Message.ARENA_ITEM_REMOVE_ERROR.build();
+      this.audience.sendMessage(err);
+    }
+  }
+
   private PatternPane createPane() {
 
     this.pane.clear();
     this.pane.bindItem('1', this.createBorderStack());
     this.pane.bindItem('2', this.createEditNameStack());
-    this.pane.bindItem('3', this.createEditSpawnStack()); // edit location
-    this.pane.bindItem('4', null); // item drop locations
+    this.pane.bindItem('3', this.createEditSpawnStack());
+    this.pane.bindItem('4', this.createWandStack());
     this.pane.bindItem('5', this.createDeleteStack());
     this.pane.bindItem('6', this.createApplyStack());
     this.pane.bindItem('7', this.createCloseStack());
@@ -113,11 +166,15 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   private void unregisterEvents(final InventoryCloseEvent event) {
 
-    if (this.listenForBreaks || this.listenForName) {
+    if (this.listenForBreaks || this.listenForName || this.listenForItems) {
       return;
     }
+
     final HandlerList list = BlockBreakEvent.getHandlerList();
+    final HandlerList list1 = AsyncPlayerChatEvent.getHandlerList();
     list.unregister(this);
+    list1.unregister(this);
+    this.listener.unregister();
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -134,8 +191,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
     event.setCancelled(true);
 
+    final String msg = event.getMessage();
     if (this.listenForBreaks) {
-      final String msg = event.getMessage();
       final String upper = msg.toUpperCase();
       final Location location = player.getLocation();
       if (upper.equals("SKIP")) {
@@ -144,10 +201,28 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       }
     }
 
-    this.arenaName = event.getMessage();
+    if (this.listenForItems) {
+      final String upper = msg.toUpperCase();
+      if (upper.equals("DONE")) {
+        this.listenForName = false;
+        this.listenForItems = false;
+        this.showInventory(player);
+        return;
+      }
+    }
+
+    this.arenaName = msg;
     this.listenForName = false;
-    this.update();
-    this.show(this.watcher);
+    this.showInventory(player);
+  }
+
+  private void showInventory(final HumanEntity player) {
+    final BukkitScheduler scheduler = Bukkit.getScheduler();
+    scheduler.callSyncMethod(this.plugin, () -> {
+      this.update();
+      this.show(player);
+      return null;
+    });
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -169,6 +244,29 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     this.sendProperMessage(location, false);
   }
 
+  private GuiItem createWandStack() {
+    return new GuiItem(
+        Item.builder(Material.ANVIL)
+            .name(Message.CREATE_ARENA_GUI_WAND_DISPLAY.build())
+            .lore(Message.CREATE_ARENA_GUI_WAND_LORE.build())
+            .build(),
+        this::giveWandStack);
+  }
+
+  private void giveWandStack(final InventoryClickEvent event) {
+
+    final Player player = (Player) this.watcher;
+    final PlayerInventory inventory = player.getInventory();
+    final ItemStack stack = ItemFactory.createItemLocationWand();
+    inventory.addItem(stack);
+    this.listenForName = true;
+    this.listenForItems = true;
+    this.watcher.closeInventory();
+
+    final Component msg = Message.CREATE_ARENA_GUI_WAND.build();
+    this.audience.sendMessage(msg);
+  }
+
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
@@ -178,7 +276,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   private GuiItem createApplyStack() {
     return new GuiItem(
         Item.builder(Material.GREEN_WOOL)
-            .name(Message.CREATE_LOBBY_GUI_APPLY.build())
+            .name(Message.CREATE_ARENA_GUI_APPLY.build())
             .build(),
         this::createNewArena);
   }
@@ -211,7 +309,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     if (this.editMode) {
       return new GuiItem(
           Item.builder(Material.RED_WOOL)
-              .name(Message.CREATE_LOBBY_GUI_DELETE.build())
+              .name(Message.CREATE_ARENA_GUI_DELETE.build())
               .build(),
           this::deleteAndCreateArena);
     } else {
@@ -238,8 +336,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       case 3 -> {
         this.listenForBreaks = false;
         this.listenForName = false;
-        this.update();
-        this.show(this.watcher);
+        this.showInventory(this.watcher);
       }
     }
 

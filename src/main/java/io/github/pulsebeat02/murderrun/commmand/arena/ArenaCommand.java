@@ -9,10 +9,10 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +23,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
@@ -35,7 +33,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
   private BukkitAudiences audiences;
-  private WandListener listener;
 
   private String name;
   private Location spawn;
@@ -50,18 +47,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
-    this.itemLocations = new HashSet<>();
-    this.listener = new WandListener(plugin, this);
-    this.listener.runScheduledTask();
-  }
-
-  @Permission("murderrun.command.arena.wand")
-  @CommandDescription("murderrun.command.arena.wand.info")
-  @Command(value = "murder arena wand", requiredSender = Player.class)
-  public void retrieveItemWand(final Player player) {
-    final PlayerInventory inventory = player.getInventory();
-    final ItemStack wand = ItemFactory.createItemLocationWand();
-    inventory.addItem(wand);
+    this.itemLocations = Collections.synchronizedSet(new HashSet<>());
   }
 
   @Permission("murderrun.command.arena.copy")
