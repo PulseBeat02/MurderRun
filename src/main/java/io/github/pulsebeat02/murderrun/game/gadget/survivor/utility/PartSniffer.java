@@ -20,15 +20,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
-public final class TrapSniffer extends SurvivorGadget {
+public final class PartSniffer extends SurvivorGadget {
 
-  public TrapSniffer() {
+  public PartSniffer() {
     super(
-        "trap_sniffer",
+        "part_sniffer",
         Material.TRIPWIRE_HOOK,
-        Message.TRAP_SNIFFER_NAME.build(),
-        Message.TRAP_SNIFFER_LORE.build(),
-        GameProperties.TRAP_SNIFFER_COST);
+        Message.PART_SNIFFER_NAME.build(),
+        Message.PART_SNIFFER_LORE.build(),
+        GameProperties.PART_SNIFFER_COST);
   }
 
   @Override
@@ -46,9 +46,9 @@ public final class TrapSniffer extends SurvivorGadget {
     scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, survivor), 0, 2 * 20L);
 
     final PlayerAudience audience = player.getAudience();
-    final Component message = Message.TRAP_SNIFFER_ACTIVATE.build();
+    final Component message = Message.PART_SNIFFER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GameProperties.TRAP_SNIFFER_SOUND);
+    audience.playSound(GameProperties.PART_SNIFFER_SOUND);
 
     return false;
   }
@@ -60,7 +60,7 @@ public final class TrapSniffer extends SurvivorGadget {
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();
     final Collection<Item> set = player.getGlowingCarParts();
-    final double radius = GameProperties.TRAP_SNIFFER_RADIUS;
+    final double radius = GameProperties.PART_SNIFFER_RADIUS;
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();

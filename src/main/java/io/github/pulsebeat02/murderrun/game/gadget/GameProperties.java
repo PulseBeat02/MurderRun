@@ -121,8 +121,8 @@ public interface GameProperties {
   double TRACKER_RADIUS = dec("tracker.radius");
   String TRACKER_SOUND = str("tracker.sound");
   String TRANSLOCATOR_SOUND = str("translocator.sound");
-  double TRAP_SNIFFER_RADIUS = dec("trap_sniffer.radius");
-  String TRAP_SNIFFER_SOUND = str("trap_sniffer.sound");
+  double PART_SNIFFER_RADIUS = dec("part_sniffer.radius");
+  String PART_SNIFFER_SOUND = str("part_sniffer.sound");
   String TRAP_VEST_SOUND = str("trap_vest.sound");
   String ALL_SEEING_EYE_SOUND = str("all_seeing_eye.sound");
   int ALL_SEEING_EYE_DURATION = num("all_seeing_eye.duration");
@@ -269,7 +269,7 @@ public interface GameProperties {
   int SUPPLY_DROP_COST = num("supply_drop.cost");
   int TRACKER_COST = num("tracker.cost");
   int TRANSLOCATOR_COST = num("translocator.cost");
-  int TRAP_SNIFFER_COST = num("trap_sniffer.cost");
+  int PART_SNIFFER_COST = num("part_sniffer.cost");
   int TRAP_VEST_COST = num("trap_vest.cost");
 
   private static int num(final String key) {

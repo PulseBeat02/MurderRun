@@ -54,6 +54,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.MedBot;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.MedKit;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.MindControl;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Parasite;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.PartSniffer;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.PortalTrap;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.RandomTeleport;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.RandomTrap;
@@ -66,7 +67,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.SpeedPendant
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.SupplyDrop;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Tracker;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Translocator;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.TrapSniffer;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.TrapVest;
 
 public enum SurvivorGadgets {
@@ -114,7 +114,7 @@ public enum SurvivorGadgets {
   SUPPLY_DROP(SupplyDrop.class),
   TRACKER(Tracker.class),
   TRANSLOCATOR(Translocator.class),
-  TRAP_SNIFFER(TrapSniffer.class),
+  TRAP_SNIFFER(PartSniffer.class),
   TRAP_VEST(TrapVest.class),
   BEAR_TRAP(BearTrap.class),
   BLIND_TRAP(BlindTrap.class),
