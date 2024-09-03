@@ -1,8 +1,5 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
-import io.github.pulsebeat02.murderrun.commmand.arena.ArenaCommand;
-import io.github.pulsebeat02.murderrun.commmand.game.GameCommand;
-import io.github.pulsebeat02.murderrun.commmand.shop.ShopCommand;
 import java.util.Arrays;
 import java.util.List;
 

@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.game;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.game.PlayerResourcePackChecker;
+import io.github.pulsebeat02.murderrun.commmand.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;

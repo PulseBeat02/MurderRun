@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.shop;
+package io.github.pulsebeat02.murderrun.gui.shop;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;

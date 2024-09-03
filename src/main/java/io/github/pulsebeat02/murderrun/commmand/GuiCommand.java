@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.gui.CentralGui;
+import io.github.pulsebeat02.murderrun.gui.CentralGui;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotations.AnnotationParser;

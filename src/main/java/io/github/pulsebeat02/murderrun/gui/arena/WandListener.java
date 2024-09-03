@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.arena;
+package io.github.pulsebeat02.murderrun.gui.arena;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;

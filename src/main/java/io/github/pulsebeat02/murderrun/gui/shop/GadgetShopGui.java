@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.shop;
+package io.github.pulsebeat02.murderrun.gui.shop;
 
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.key.Key.key;

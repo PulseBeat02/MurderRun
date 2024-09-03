@@ -1,8 +1,7 @@
-package io.github.pulsebeat02.murderrun.commmand.shop;
+package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.AnnotationCommandFeature;
-import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
+import io.github.pulsebeat02.murderrun.gui.shop.NPCShopEvent;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import net.citizensnpcs.api.CitizensAPI;
@@ -10,7 +9,6 @@ import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -33,16 +31,11 @@ public final class ShopCommand implements AnnotationCommandFeature {
   private static final String GRIM_REAPER_TEXTURE_DATA =
       "ewogICJ0aW1lc3RhbXAiIDogMTYxNzIyMTc4NjAxMSwKICAicHJvZmlsZUlkIiA6ICJkZGVkNTZlMWVmOGI0MGZlOGFkMTYyOTIwZjdhZWNkYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJEaXNjb3JkQXBwIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzEwMTAyNWMxYzhmZjMwZmFkYjBiNGRjYjlhZWQ1YmRmMTU1MDQ3ZjMwNjJjYWMwOGRiNzM3ZDQ1ODVkMWYzNWYiCiAgICB9CiAgfQp9";
 
-  private MurderRun plugin;
-  private BukkitAudiences audiences;
   private NPCShopEvent event;
 
   @Override
   public void registerFeature(
       final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
-    final AudienceProvider handler = plugin.getAudience();
-    this.audiences = handler.retrieve();
-    this.plugin = plugin;
     this.event = new NPCShopEvent(plugin);
   }
 

@@ -1,9 +1,8 @@
-package io.github.pulsebeat02.murderrun.commmand.arena;
+package io.github.pulsebeat02.murderrun.commmand;
 
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.AnnotationCommandFeature;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;

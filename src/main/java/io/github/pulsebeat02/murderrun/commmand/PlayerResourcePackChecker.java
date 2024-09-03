@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.game;
+package io.github.pulsebeat02.murderrun.commmand;
 
 import java.util.Collections;
 import java.util.Set;

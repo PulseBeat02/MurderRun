@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.gui.arena;
+package io.github.pulsebeat02.murderrun.gui.arena;
 
 import static net.kyori.adventure.text.Component.empty;
 
@@ -7,7 +7,6 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.arena.WandListener;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;

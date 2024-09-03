@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.gui;
+package io.github.pulsebeat02.murderrun.gui;
 
 import static net.kyori.adventure.text.Component.empty;
 
@@ -7,8 +7,8 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.commmand.gui.arena.ArenaNavigationGui;
-import io.github.pulsebeat02.murderrun.commmand.gui.lobby.LobbyNavigationGui;
+import io.github.pulsebeat02.murderrun.gui.arena.ArenaNavigationGui;
+import io.github.pulsebeat02.murderrun.gui.lobby.LobbyNavigationGui;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -22,6 +22,9 @@ public final class CentralGui extends ChestGui {
 
   - Central GUI
      - Create a game
+       - Choose arena menu
+       - Choose lobby menu
+       - Invite players
 
    */
 

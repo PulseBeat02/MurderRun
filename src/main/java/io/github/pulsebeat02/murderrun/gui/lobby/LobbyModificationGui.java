@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.commmand.gui.lobby;
+package io.github.pulsebeat02.murderrun.gui.lobby;
 
 import static net.kyori.adventure.text.Component.empty;
 
