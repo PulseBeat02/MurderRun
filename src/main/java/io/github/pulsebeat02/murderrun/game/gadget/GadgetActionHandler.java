@@ -111,9 +111,9 @@ public final class GadgetActionHandler implements Listener {
     final Audience audience = audiences.player(uuid);
     final GameStatus status = game.getStatus();
     final boolean invalidKiller =
-        gamePlayer instanceof Killer && status == GameStatus.SURVIVORS_RELEASED;
-    final boolean invalidSurvivor =
-        gamePlayer instanceof Survivor && status == GameStatus.NOT_STARTED;
+        gamePlayer instanceof Killer && status != GameStatus.KILLERS_RELEASED;
+    final boolean invalidSurvivor = gamePlayer instanceof Survivor
+        && (status == GameStatus.NOT_STARTED || status == GameStatus.FINISHED);
     if (invalidKiller || invalidSurvivor) {
       audience.sendMessage(Message.MISUSE_GADGET_ERROR.build());
       return true;
