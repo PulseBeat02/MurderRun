@@ -100,21 +100,25 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private boolean checkKillerStatus(final Player player) {
+
     final Game game = this.manager.getGame();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
-    if (gamePlayer instanceof Killer) {
-      final GameStatus status = game.getStatus();
-      if (status == GameStatus.SURVIVORS_RELEASED) {
-        final UUID uuid = player.getUniqueId();
-        final Audience audience = audiences.player(uuid);
-        audience.sendMessage(Message.KILLER_GADGET_ERROR.build());
-        return true;
-      }
+    final UUID uuid = player.getUniqueId();
+    final Audience audience = audiences.player(uuid);
+    final GameStatus status = game.getStatus();
+    final boolean invalidKiller =
+        gamePlayer instanceof Killer && status == GameStatus.SURVIVORS_RELEASED;
+    final boolean invalidSurvivor =
+        gamePlayer instanceof Survivor && status == GameStatus.NOT_STARTED;
+    if (invalidKiller || invalidSurvivor) {
+      audience.sendMessage(Message.MISUSE_GADGET_ERROR.build());
+      return true;
     }
+
     return false;
   }
 

@@ -72,9 +72,9 @@ public final class Game {
       this.gadgetManager.shutdown();
       this.scheduler.cancelAllTasks();
       this.npcManager.shutdown();
-      this.map.shutdown();
       this.playerManager.resetAllPlayers();
       this.cleanupManager.start(code);
+      this.map.shutdown();
       this.executor.shutdown();
       this.callback.onGameFinish(this, code);
     }
