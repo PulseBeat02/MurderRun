@@ -9,6 +9,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Set;
@@ -74,7 +75,9 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
       return true;
     }
 
-    this.spawnWolf(location, player, nearest);
+    final GameScheduler scheduler = game.getScheduler();
+    final Wolf wolf = this.spawnWolf(location, player, nearest);
+    scheduler.scheduleTask(wolf::remove, GameProperties.DEATH_HOUND_DESPAWN);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.DEATH_HOUND_SOUND);
@@ -82,10 +85,10 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     return false;
   }
 
-  private void spawnWolf(
+  private Wolf spawnWolf(
       final Location location, final GamePlayer owner, final GamePlayer nearest) {
     final World world = requireNonNull(location.getWorld());
-    world.spawn(location, Wolf.class, entity -> {
+    return world.spawn(location, Wolf.class, entity -> {
       this.customizeProperties(entity, owner, nearest);
       this.addPotionEffects(entity);
       this.addMetadata(entity, owner);

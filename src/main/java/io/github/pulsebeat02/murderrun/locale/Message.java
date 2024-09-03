@@ -414,4 +414,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> CENTRAL_GUI_LOBBY = direct("murderrun.gui.central.lobby");
   NullComponent<Sender> CENTRAL_GUI_ARENA = direct("murderrun.gui.central.arena");
   NullComponent<Sender> CENTRAL_GUI_GAME = direct("murderrun.gui.central.game");
+  NullComponent<Sender> SHOP_NPC_ERROR = direct("murderrun.npc.error");
+  NullComponent<Sender> KILLER_GADGET_ERROR = direct("murderrun.gadget.killer.error");
 }

@@ -7,6 +7,7 @@ import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
@@ -138,6 +139,11 @@ public final class GameStartupTool {
     this.spawnCarParts();
     this.playMusic();
     this.startTimer();
+    this.setGameStatus();
+  }
+
+  private void setGameStatus() {
+    this.game.setStatus(GameStatus.KILLERS_RELEASED);
   }
 
   private void playMusic() {

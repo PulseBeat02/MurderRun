@@ -44,7 +44,7 @@ public final class Game {
       final Collection<Player> murderers,
       final Collection<Player> participants,
       final GameEndCallback callback) {
-    this.status = GameStatus.IN_PROGRESS;
+    this.status = GameStatus.SURVIVORS_RELEASED;
     this.configuration = settings;
     this.executor = new GameExecutor();
     this.scheduler = new GameScheduler(this);
@@ -130,5 +130,9 @@ public final class Game {
 
   public CitizensManager getNPCManager() {
     return this.npcManager;
+  }
+
+  public void setStatus(final GameStatus status) {
+    this.status = status;
   }
 }

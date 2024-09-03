@@ -17,7 +17,7 @@ public final class GameShutdownManager {
   public void shutdown() {
     for (final Game game : this.currentGames) {
       final GameStatus status = game.getStatus();
-      if (status == GameStatus.IN_PROGRESS) {
+      if (status == GameStatus.KILLERS_RELEASED) {
         game.finishGame(GameResult.INTERRUPTED);
       }
     }

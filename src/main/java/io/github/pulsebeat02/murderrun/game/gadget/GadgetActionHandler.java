@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -12,10 +13,15 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
+import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -53,6 +59,12 @@ public final class GadgetActionHandler implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onRightClick(final PlayerInteractEvent event) {
 
+    final Player player = event.getPlayer();
+    if (this.checkKillerStatus(player)) {
+      event.setCancelled(true);
+      return;
+    }
+
     final Game game = this.manager.getGame();
     final ItemStack stack = event.getItem();
     final Action action = event.getAction();
@@ -66,6 +78,12 @@ public final class GadgetActionHandler implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onDropItem(final PlayerDropItemEvent event) {
 
+    final Player player = event.getPlayer();
+    if (this.checkKillerStatus(player)) {
+      event.setCancelled(true);
+      return;
+    }
+
     final Game game = this.manager.getGame();
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
@@ -73,13 +91,31 @@ public final class GadgetActionHandler implements Listener {
     item.setPickupDelay(Integer.MAX_VALUE);
 
     final PlayerManager manager = game.getPlayerManager();
-    final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
 
     this.handleEventLogic(stack, gadget -> {
       final boolean cancel = gadget.onGadgetDrop(game, gamePlayer, item, false);
       event.setCancelled(cancel);
     });
+  }
+
+  private boolean checkKillerStatus(final Player player) {
+    final Game game = this.manager.getGame();
+    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final MurderRun plugin = this.manager.getPlugin();
+    final AudienceProvider provider = plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    if (gamePlayer instanceof Killer) {
+      final GameStatus status = game.getStatus();
+      if (status == GameStatus.SURVIVORS_RELEASED) {
+        final UUID uuid = player.getUniqueId();
+        final Audience audience = audiences.player(uuid);
+        audience.sendMessage(Message.KILLER_GADGET_ERROR.build());
+        return true;
+      }
+    }
+    return false;
   }
 
   private void runGadgetDetectionTask() {

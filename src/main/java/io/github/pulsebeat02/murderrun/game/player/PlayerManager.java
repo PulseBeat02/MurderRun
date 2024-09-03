@@ -258,7 +258,7 @@ public final class PlayerManager {
   }
 
   public void showTitleForAllInnocents(final Component title, final Component subtitle) {
-    this.applyToAllLivingInnocents(innocent -> {
+    this.applyToAllInnocents(innocent -> {
       final PlayerAudience audience = innocent.getAudience();
       audience.showTitle(title, subtitle);
     });
