@@ -76,6 +76,14 @@ public final class AdventureUtils {
     return true;
   }
 
+  public static List<String> serializeLoreToLegacyLore(final List<Component> lore) {
+    final List<String> rawLore = new ArrayList<>();
+    for (final Component component : lore) {
+      rawLore.add(serializeComponentToLegacyString(component));
+    }
+    return rawLore;
+  }
+
   public static List<String> serializeLoreToLegacyLore(final Component lore) {
     final List<Component> wrapped = AdventureUtils.wrapLoreLines(lore, 40);
     final List<String> rawLore = new ArrayList<>();

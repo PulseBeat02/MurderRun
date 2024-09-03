@@ -86,8 +86,7 @@ public final class LobbyListGui extends ChestGui {
     }
 
     final Location spawn = MapUtils.byteArrayToLocation(bytes);
-    final ChestGui gui =
-        new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true, this);
+    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true);
     gui.update();
     gui.show(this.watcher);
   }

@@ -68,7 +68,7 @@ public final class LobbyNavigationGui extends ChestGui {
   }
 
   private void createLobbyMenu(final InventoryClickEvent event) {
-    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, false, this);
+    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, false);
     gui.update();
     gui.show(this.watcher);
   }

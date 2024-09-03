@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.utils.item;
 
+import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -36,6 +37,8 @@ public interface Item {
     Builder name(final Component name);
 
     Builder lore(final Component lore);
+
+    Builder lore(final List<Component> lore);
 
     Builder durability(final int durability);
 

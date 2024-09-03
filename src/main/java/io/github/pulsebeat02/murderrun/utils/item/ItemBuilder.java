@@ -73,6 +73,15 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
+  public Builder lore(final List<Component> lore) {
+    final List<String> legacy = AdventureUtils.serializeLoreToLegacyLore(lore);
+    final ItemMeta meta = this.meta();
+    meta.setLore(legacy);
+    this.stack.setItemMeta(meta);
+    return this;
+  }
+
+  @Override
   public Builder durability(final int durability) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final Damageable damageable) {

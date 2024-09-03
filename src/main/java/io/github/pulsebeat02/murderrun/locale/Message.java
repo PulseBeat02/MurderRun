@@ -416,4 +416,30 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> CENTRAL_GUI_GAME = direct("murderrun.gui.central.game");
   NullComponent<Sender> SHOP_NPC_ERROR = direct("murderrun.npc.error");
   NullComponent<Sender> MISUSE_GADGET_ERROR = direct("murderrun.gadget.error");
+  NullComponent<Sender> CREATE_ARENA_GUI_TITLE = direct("murderrun.gui.arena.create.title");
+  UniComponent<Sender, String> CREATE_ARENA_GUI_EDIT_NAME_DISPLAY =
+      direct("murderrun.gui.arena.create.edit_name_display", null);
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_NAME_LORE =
+      direct("murderrun.gui.arena.create.edit_name_lore");
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_NAME = direct("murderrun.gui.arena.create.edit_name");
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_LOCATIONS_DISPLAY =
+      direct("murderrun.gui.arena.create.edit_locations_display");
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE1 =
+      direct("murderrun.gui.arena.create.edit_locations_lore1");
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2 =
+      direct("murderrun.gui.arena.create.edit_locations_lore2", null, null, null);
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE3 =
+      direct("murderrun.gui.arena.create.edit_locations_lore3", null, null, null);
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE4 =
+      direct("murderrun.gui.arena.create.edit_locations_lore4", null, null, null);
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5 =
+      direct("murderrun.gui.arena.create.edit_locations_lore5", null, null, null);
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_SPAWN =
+      direct("murderrun.gui.arena.create.edit_spawn");
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_FIRST =
+      direct("murderrun.gui.arena.create.edit_first");
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_SECOND =
+      direct("murderrun.gui.arena.create.edit_second");
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_TRUCK =
+      direct("murderrun.gui.arena.create.edit_truck");
 }
