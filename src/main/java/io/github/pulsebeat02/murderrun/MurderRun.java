@@ -22,7 +22,7 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   - Fix Netty Hosting
-  - Add inventory GUI to help configure arenas, lobbies, and games
+  - Create inventory GUI to help users with creating arenas and games
 
    */
 
