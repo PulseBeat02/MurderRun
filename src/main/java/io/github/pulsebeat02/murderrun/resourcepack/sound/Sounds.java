@@ -20,6 +20,7 @@ public final class Sounds {
   public static final SoundResource FLASHBANG = of("flashbang");
   public static final SoundResource FLASHLIGHT = of("flashlight");
   public static final SoundResource BACKGROUND = of("background");
+  public static final SoundResource REWIND = of("rewind");
 
   private static SoundResource of(final String name) {
     final SoundFile sound = new SoundFile(name);

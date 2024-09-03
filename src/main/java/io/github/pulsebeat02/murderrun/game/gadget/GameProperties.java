@@ -112,7 +112,6 @@ public interface GameProperties {
   int RETALIATION_MAX_AMPLIFIER = num("retaliation.max_amplifier");
   String RETALIATION_SOUND = str("retaliation.sound");
   int REWIND_COOLDOWN = num("rewind.cooldown");
-  String REWIND_SOUND = str("rewind.sound");
   double SIXTH_SENSE_RADIUS = dec("sixth_sense.radius");
   String SIXTH_SENSE_SOUND = str("sixth_sense.sound");
   double SMOKE_GRENADE_RADIUS = dec("smoke_grenade.radius");

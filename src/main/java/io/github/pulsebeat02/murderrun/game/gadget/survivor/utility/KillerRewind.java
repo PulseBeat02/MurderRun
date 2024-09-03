@@ -9,6 +9,8 @@ import io.github.pulsebeat02.murderrun.game.player.MovementManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -74,7 +76,9 @@ public final class KillerRewind extends SurvivorGadget {
     final boolean successful = movementManager.handleRewind(killer);
     super.onGadgetDrop(game, killer, item, successful);
 
+    final Component msg = Message.REWIND_ACTIVATE.build();
     final PlayerAudience audience = killer.getAudience();
-    audience.playSound(GameProperties.KILLER_REWIND_SOUND);
+    audience.sendMessage(msg);
+    audience.playSound(Sounds.REWIND);
   }
 }
