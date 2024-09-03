@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.gui.lobby;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -7,12 +8,20 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
+import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public final class LobbyNavigationGui extends ChestGui {
 
@@ -54,7 +63,33 @@ public final class LobbyNavigationGui extends ChestGui {
   }
 
   private void createListingsMenu(final InventoryClickEvent event) {
-    final ChestGui gui = new LobbyListGui(this.plugin, this.watcher);
+    final ChestGui gui = new LobbyListGui(this.plugin, this.watcher, this::handleLobbyClickEvent);
+    gui.update();
+    gui.show(this.watcher);
+  }
+
+  public void handleLobbyClickEvent(final InventoryClickEvent event) {
+
+    final ItemStack item = event.getCurrentItem();
+    if (item == null) {
+      return;
+    }
+
+    final ItemMeta meta = item.getItemMeta();
+    if (meta == null) {
+      return;
+    }
+
+    final PersistentDataContainer container = meta.getPersistentDataContainer();
+    final String name = container.get(Keys.LOBBY_NAME, PersistentDataType.STRING);
+    if (name == null) {
+      return;
+    }
+
+    final LobbyManager manager = this.plugin.getLobbyManager();
+    final Lobby lobby = requireNonNull(manager.getLobby(name));
+    final Location spawn = lobby.getLobbySpawn();
+    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true);
     gui.update();
     gui.show(this.watcher);
   }

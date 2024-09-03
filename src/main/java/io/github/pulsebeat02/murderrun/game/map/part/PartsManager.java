@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -39,7 +40,7 @@ public final class PartsManager {
     final Game game = this.map.getGame();
     final GameSettings configuration = game.getSettings();
     final Arena arena = requireNonNull(configuration.getArena());
-    final int parts = configuration.getCarPartCount();
+    final int parts = GameProperties.CAR_PARTS_COUNT;
     for (int i = 0; i < parts; i++) {
       final Location location = arena.getRandomItemLocation();
       final CarPart part = new CarPart(location);

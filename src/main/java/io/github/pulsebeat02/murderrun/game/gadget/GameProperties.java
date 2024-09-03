@@ -8,6 +8,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  int CAR_PARTS_COUNT = num("car_parts.count");
   String KILLER_CANNOT_BREAK = str("killer.cannot_break");
   int DEATH_HOUND_DESPAWN = num("death_hound.despawn");
   int BEGINNING_STARTING_TIME = num("beginning.starting_time");

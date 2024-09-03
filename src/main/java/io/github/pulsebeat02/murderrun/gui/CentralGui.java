@@ -8,6 +8,7 @@ import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.gui.arena.ArenaNavigationGui;
+import io.github.pulsebeat02.murderrun.gui.game.GameCreationGui;
 import io.github.pulsebeat02.murderrun.gui.lobby.LobbyNavigationGui;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
@@ -22,9 +23,8 @@ public final class CentralGui extends ChestGui {
 
   - Central GUI
      - Create a game
-       - Choose arena menu
-       - Choose lobby menu
        - Invite players
+       - Manage Current Players
 
    */
 
@@ -70,7 +70,8 @@ public final class CentralGui extends ChestGui {
 
   private GuiItem createGameButton() {
     return new GuiItem(
-        Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build());
+        Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(),
+        this::handleGameClick);
   }
 
   private GuiItem createArenaButton() {
@@ -79,6 +80,12 @@ public final class CentralGui extends ChestGui {
             .name(Message.CENTRAL_GUI_ARENA.build())
             .build(),
         this::handleArenaClick);
+  }
+
+  private void handleGameClick(final InventoryClickEvent event) {
+    final ChestGui gui = new GameCreationGui(this.plugin, this.watcher);
+    gui.update();
+    gui.show(this.watcher);
   }
 
   private void handleArenaClick(final InventoryClickEvent event) {

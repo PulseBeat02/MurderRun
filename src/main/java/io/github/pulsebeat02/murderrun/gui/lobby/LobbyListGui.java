@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.gui.lobby;
 
-import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -20,28 +19,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class LobbyListGui extends ChestGui {
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
+  private final Consumer<InventoryClickEvent> consumer;
 
   private PaginatedPane pages;
 
-  public LobbyListGui(final MurderRun plugin, final HumanEntity watcher) {
+  public LobbyListGui(
+      final MurderRun plugin,
+      final HumanEntity watcher,
+      final Consumer<InventoryClickEvent> consumer) {
     super(
         6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
     this.plugin = plugin;
     this.watcher = watcher;
+    this.consumer = consumer;
   }
 
   @Override
@@ -61,35 +64,9 @@ public final class LobbyListGui extends ChestGui {
 
     this.pages = new PaginatedPane(0, 0, 9, 3);
     this.pages.populateWithItemStacks(this.getLobbies());
-    this.pages.setOnClick(this::handleLobbyItemClick);
+    this.pages.setOnClick(this.consumer);
 
     return this.pages;
-  }
-
-  private void handleLobbyItemClick(final InventoryClickEvent event) {
-
-    final ItemStack item = event.getCurrentItem();
-    if (item == null) {
-      return;
-    }
-
-    final ItemMeta meta = item.getItemMeta();
-    if (meta == null) {
-      return;
-    }
-
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final String name = container.get(Keys.LOBBY_NAME, PersistentDataType.STRING);
-    if (name == null) {
-      return;
-    }
-
-    final LobbyManager manager = this.plugin.getLobbyManager();
-    final Lobby lobby = requireNonNull(manager.getLobby(name));
-    final Location spawn = lobby.getLobbySpawn();
-    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true);
-    gui.update();
-    gui.show(this.watcher);
   }
 
   private OutlinePane createBackgroundPane() {

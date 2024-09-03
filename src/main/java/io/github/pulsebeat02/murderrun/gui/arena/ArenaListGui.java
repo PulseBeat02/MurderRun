@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.gui.arena;
 
-import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -17,19 +16,16 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class ArenaListGui extends ChestGui {
@@ -37,12 +33,17 @@ public final class ArenaListGui extends ChestGui {
   private final MurderRun plugin;
   private final HumanEntity watcher;
   private final PaginatedPane pages;
+  private final Consumer<InventoryClickEvent> consumer;
 
-  public ArenaListGui(final MurderRun plugin, final HumanEntity watcher) {
+  public ArenaListGui(
+      final MurderRun plugin,
+      final HumanEntity watcher,
+      final Consumer<InventoryClickEvent> consumer) {
     super(
         6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_ARENA_GUI_TITLE.build()));
     this.plugin = plugin;
     this.watcher = watcher;
+    this.consumer = consumer;
     this.pages = new PaginatedPane(0, 0, 9, 3);
   }
 
@@ -59,42 +60,9 @@ public final class ArenaListGui extends ChestGui {
 
     this.pages.clear();
     this.pages.populateWithItemStacks(this.getArenas());
-    this.pages.setOnClick(this::handleArenaItemClick);
+    this.pages.setOnClick(this.consumer);
 
     return this.pages;
-  }
-
-  private void handleArenaItemClick(final InventoryClickEvent event) {
-
-    final ItemStack item = event.getCurrentItem();
-    if (item == null) {
-      return;
-    }
-
-    final ItemMeta meta = item.getItemMeta();
-    if (meta == null) {
-      return;
-    }
-
-    final PersistentDataContainer container = meta.getPersistentDataContainer();
-    final String name = container.get(Keys.ARENA_NAME, PersistentDataType.STRING);
-    if (name == null) {
-      return;
-    }
-
-    final ArenaManager manager = this.plugin.getArenaManager();
-    final Arena arena = requireNonNull(manager.getArena(name));
-    final Location spawn = arena.getSpawn();
-    final Location first = arena.getFirstCorner();
-    final Location second = arena.getSecondCorner();
-    final Location truck = arena.getTruck();
-    final Location[] items = arena.getCarPartLocations();
-    final Collection<Location> locations = Arrays.asList(items);
-    final Collection<Location> copy = new ArrayList<>(locations);
-    final ChestGui gui = new ArenaModificationGui(
-        this.plugin, this.watcher, name, spawn, truck, first, second, copy, true);
-    gui.update();
-    gui.show(this.watcher);
   }
 
   private OutlinePane createBackgroundPane() {

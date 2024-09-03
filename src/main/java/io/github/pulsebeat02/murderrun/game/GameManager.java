@@ -112,15 +112,8 @@ public final class GameManager {
   }
 
   public Game startGame(final GameEndCallback callback) {
-    this.setMurdererCount(this.murderers);
     this.game.startGame(this.settings, this.murderers, this.participants, callback);
     return this.game;
-  }
-
-  private void setMurdererCount(final Collection<Player> murderers) {
-    final GameSettings settings = this.getSettings();
-    final int count = murderers.size();
-    settings.setMurdererCount(count);
   }
 
   public MurderRun getPlugin() {

@@ -459,4 +459,13 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MANAGE_ARENA_GUI_EDIT = direct("murderrun.gui.arena.manage.edit");
   NullComponent<Sender> MANAGE_ARENA_GUI_TITLE = direct("murderrun.gui.arena.manage");
   NullComponent<Sender> REWIND_ACTIVATE = direct("murderrun.game.gadget.rewind.activate");
+  UniComponent<Sender, String> CREATE_GAME_GUI_LOBBY_DISPLAY =
+      direct("murderrun.gui.game.lobby_display", null);
+  NullComponent<Sender> CREATE_GAME_GUI_LOBBY_LORE = direct("murderrun.gui.game.lobby_lore");
+  UniComponent<Sender, String> CREATE_GAME_GUI_ARENA_DISPLAY =
+      direct("murderrun.gui.game.arena_display", null);
+  NullComponent<Sender> CREATE_GAME_GUI_ARENA_LORE = direct("murderrun.gui.game.arena_lore");
+  NullComponent<Sender> CREATE_GAME_GUI_APPLY = direct("murderrun.gui.game.apply");
+  NullComponent<Sender> CREATE_GAME_GUI_TITLE = direct("murderrun.gui.gane.create");
+  NullComponent<Sender> CREATE_GAME_GUI_ERROR = direct("murderrun.gui.gane.create_error");
 }

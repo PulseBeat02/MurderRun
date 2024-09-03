@@ -16,7 +16,7 @@ public final class LobbyManager {
   }
 
   public void addLobby(final String name, final Location spawn) {
-    final Lobby lobby = new Lobby(spawn);
+    final Lobby lobby = new Lobby(name, spawn);
     this.lobbies.put(name, lobby);
   }
 

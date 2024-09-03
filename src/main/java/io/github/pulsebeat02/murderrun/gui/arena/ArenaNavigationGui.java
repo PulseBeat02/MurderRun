@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.gui.arena;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -7,12 +8,23 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public final class ArenaNavigationGui extends ChestGui {
 
@@ -54,7 +66,35 @@ public final class ArenaNavigationGui extends ChestGui {
   }
 
   private void createListingsMenu(final InventoryClickEvent event) {
-    final ChestGui gui = new ArenaListGui(this.plugin, this.watcher);
+    final ChestGui gui = new ArenaListGui(this.plugin, this.watcher, this::handleArenaClickEvent);
+    gui.update();
+    gui.show(this.watcher);
+  }
+
+  private void handleArenaClickEvent(final InventoryClickEvent event) {
+    final ItemStack item = requireNonNull(event.getCurrentItem());
+    final ItemMeta meta = requireNonNull(item.getItemMeta());
+    final PersistentDataContainer container = meta.getPersistentDataContainer();
+    final String name = requireNonNull(container.get(Keys.ARENA_NAME, PersistentDataType.STRING));
+    final ArenaManager manager = this.plugin.getArenaManager();
+    final Arena arena = requireNonNull(manager.getArena(name));
+    final Location spawn = arena.getSpawn();
+    final Location first = arena.getFirstCorner();
+    final Location second = arena.getSecondCorner();
+    final Location truck = arena.getTruck();
+    final Location[] items = arena.getCarPartLocations();
+    final Collection<Location> locations = Arrays.asList(items);
+    final Collection<Location> copy = new ArrayList<>(locations);
+    final ChestGui gui = new ArenaModificationGui(
+        this.plugin,
+        ArenaNavigationGui.this.watcher,
+        name,
+        spawn,
+        truck,
+        first,
+        second,
+        copy,
+        true);
     gui.update();
     gui.show(this.watcher);
   }

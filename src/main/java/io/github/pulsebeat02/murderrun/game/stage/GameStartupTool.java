@@ -74,7 +74,7 @@ public final class GameStartupTool {
 
   private void setBossBar() {
     final GameSettings settings = this.game.getSettings();
-    final int parts = settings.getCarPartCount();
+    final int parts = GameProperties.CAR_PARTS_COUNT;
     final Component name = Message.BOSS_BAR.build(0, parts);
     final float progress = 0f;
     final BossBar.Color color = BossBar.Color.GREEN;

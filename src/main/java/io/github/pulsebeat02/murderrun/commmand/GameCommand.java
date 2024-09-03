@@ -489,25 +489,6 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
-  @Permission("murderrun.command.game.set.car-part-count")
-  @CommandDescription("murderrun.command.game.set.car_part_count.info")
-  @Command(value = "murder game set car-part-count <count>", requiredSender = Player.class)
-  public void setCarPartCount(final Player sender, final int count) {
-
-    final Audience audience = this.audiences.player(sender);
-    final Triplet<GameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
-      return;
-    }
-
-    final GameManager manager = data.first();
-    final GameSettings settings = manager.getSettings();
-    settings.setCarPartCount(count);
-
-    final Component message = Message.GAME_SET_CAR_PART_COUNT.build(count);
-    audience.sendMessage(message);
-  }
-
   @Suggestions("arena-suggestions")
   public List<String> arenaSuggestions(
       final CommandContext<CommandSender> context, final String input) {

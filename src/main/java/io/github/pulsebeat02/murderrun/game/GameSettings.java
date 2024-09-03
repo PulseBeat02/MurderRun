@@ -8,29 +8,6 @@ public final class GameSettings {
 
   private @Nullable Arena arena;
   private @Nullable Lobby lobby;
-  private int murdererCount;
-  private int carPartCount;
-
-  public GameSettings() {
-    this.murdererCount = 1;
-    this.carPartCount = 3;
-  }
-
-  public int getMurdererCount() {
-    return this.murdererCount;
-  }
-
-  public void setMurdererCount(final int murdererCount) {
-    this.murdererCount = murdererCount;
-  }
-
-  public int getCarPartCount() {
-    return this.carPartCount;
-  }
-
-  public void setCarPartCount(final int carPartCount) {
-    this.carPartCount = carPartCount;
-  }
 
   public @Nullable Lobby getLobby() {
     return this.lobby;
