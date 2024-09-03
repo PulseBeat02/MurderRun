@@ -41,8 +41,9 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final boolean isLogging = gamePlayer.isLoggingOut();
 
     if (deathManager.checkDeathCancellation() && !isLogging) {
-      spigot.respawn();
+      event.setKeepInventory(true);
       drops.clear();
+      spigot.respawn();
       return;
     }
 
