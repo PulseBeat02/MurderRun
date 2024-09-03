@@ -41,29 +41,21 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public final class GadgetShopGui {
-
-  private static final GuiItem OUTLINE_STACK =
-      new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
-
-  private static final GuiItem BACK_STACK = new GuiItem(
-      Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build());
-
-  private static final GuiItem FORWARD_STACK = new GuiItem(
-      Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build());
-
-  private static final GuiItem CLOSE_STACK = new GuiItem(
-      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build());
+public final class GadgetShopGui extends ChestGui {
 
   private final MurderRun plugin;
-  private final ChestGui gui;
+  private final PaginatedPane pages;
 
   public GadgetShopGui(final MurderRun plugin, final boolean isSurvivorGadgets) {
-    final Component comp = Message.SHOP_GUI_TITLE.build();
-    final String legacy = AdventureUtils.serializeComponentToLegacyString(comp);
+    super(6, AdventureUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()));
     this.plugin = plugin;
-    this.gui = new ChestGui(6, legacy);
+    this.pages = new PaginatedPane(0, 0, 9, 5);
     this.addItems(isSurvivorGadgets);
+    this.setOnGlobalClick(event -> {
+      final HumanEntity entity = event.getWhoClicked();
+      event.setCancelled(true);
+      this.playSound(entity);
+    });
   }
 
   private List<ItemStack> getShopItems(final boolean isSurvivorGadgets) {
@@ -113,31 +105,41 @@ public final class GadgetShopGui {
   }
 
   private void addItems(final boolean isSurvivorGadgets) {
+    this.addPane(this.createPaginatedPane(isSurvivorGadgets));
+    this.addPane(this.createBackgroundPane());
+    this.addPane(this.createNavigationPane());
+  }
 
+  private PaginatedPane createPaginatedPane(final boolean isSurvivorGadgets) {
     final List<ItemStack> items = this.getShopItems(isSurvivorGadgets);
-    final PaginatedPane pages = new PaginatedPane(0, 0, 9, 5);
-    pages.populateWithItemStacks(items);
-    pages.setOnClick(this::handleClick);
-    this.gui.addPane(pages);
+    this.pages.populateWithItemStacks(items);
+    this.pages.setOnClick(this::handleClick);
+    return this.pages;
+  }
 
+  private OutlinePane createBackgroundPane() {
     final OutlinePane background = new OutlinePane(0, 5, 9, 1);
-    final GuiItem borderCopy = OUTLINE_STACK.copy();
-    borderCopy.setAction(event -> event.setCancelled(true));
+    final GuiItem borderCopy = this.createBorderStack();
     background.addItem(borderCopy);
     background.setRepeat(true);
     background.setPriority(Pane.Priority.LOWEST);
-    this.gui.addPane(background);
+    return background;
+  }
 
+  private StaticPane createNavigationPane() {
     final StaticPane navigation = new StaticPane(0, 5, 9, 1);
-    this.addBackOption(pages, navigation);
-    this.addForwardOption(pages, navigation);
-    this.addCloseOption(navigation);
-    this.gui.addPane(navigation);
+    navigation.addItem(this.createBackStack(), 0, 0);
+    navigation.addItem(this.createForwardStack(), 8, 0);
+    navigation.addItem(this.createCloseStack(), 4, 0);
+    return navigation;
+  }
+
+  private GuiItem createBorderStack() {
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private void handleClick(final InventoryClickEvent event) {
-
-    event.setCancelled(true);
 
     final ItemStack stack = event.getCurrentItem();
     final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
@@ -169,50 +171,46 @@ public final class GadgetShopGui {
     final ItemStack actual = gadget.getGadget();
     inventory.removeItem(currency);
     inventory.addItem(actual);
-
-    this.playSound(entity);
   }
 
-  private void addCloseOption(final StaticPane navigation) {
-    final GuiItem closeCopy = CLOSE_STACK.copy();
-    closeCopy.setAction(event -> {
-      final HumanEntity entity = event.getWhoClicked();
-      entity.closeInventory();
-      event.setCancelled(true);
-      this.playSound(entity);
-    });
-    navigation.addItem(closeCopy, 4, 0);
+  private GuiItem createCloseStack() {
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        this::handleClose);
   }
 
-  private void addForwardOption(final PaginatedPane pages, final StaticPane navigation) {
-    final GuiItem forwardCopy = FORWARD_STACK.copy();
-    forwardCopy.setAction(event -> {
-      final HumanEntity entity = event.getWhoClicked();
-      final int current = pages.getPage();
-      final int max = pages.getPages() - 1;
-      if (current < max) {
-        pages.setPage(current + 1);
-        this.gui.update();
-      }
-      event.setCancelled(true);
-      this.playSound(entity);
-    });
-    navigation.addItem(forwardCopy, 8, 0);
+  private void handleClose(final InventoryClickEvent event) {
+    final HumanEntity entity = event.getWhoClicked();
+    entity.closeInventory();
   }
 
-  private void addBackOption(final PaginatedPane pages, final StaticPane navigation) {
-    final GuiItem backCopy = BACK_STACK.copy();
-    backCopy.setAction(event -> {
-      final HumanEntity entity = event.getWhoClicked();
-      final int current = pages.getPage();
-      if (current > 0) {
-        pages.setPage(current - 1);
-        this.gui.update();
-      }
-      event.setCancelled(true);
-      this.playSound(entity);
-    });
-    navigation.addItem(backCopy, 0, 0);
+  private GuiItem createForwardStack() {
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+        this::handleForwardOption);
+  }
+
+  private void handleForwardOption(final InventoryClickEvent event) {
+    final int current = this.pages.getPage();
+    final int max = this.pages.getPages() - 1;
+    if (current < max) {
+      this.pages.setPage(current + 1);
+      this.update();
+    }
+  }
+
+  private GuiItem createBackStack() {
+    return new GuiItem(
+        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+        this::handleBackwardOption);
+  }
+
+  private void handleBackwardOption(final InventoryClickEvent event) {
+    final int current = this.pages.getPage();
+    if (current > 0) {
+      this.pages.setPage(current - 1);
+      this.update();
+    }
   }
 
   private void playSound(final HumanEntity entity) {
@@ -227,6 +225,6 @@ public final class GadgetShopGui {
   }
 
   public void showGUI(final HumanEntity entity) {
-    this.gui.show(entity);
+    this.show(entity);
   }
 }

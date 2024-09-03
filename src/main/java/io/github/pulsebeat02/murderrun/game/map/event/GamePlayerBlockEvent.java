@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -11,6 +12,8 @@ import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import java.util.Collection;
+import java.util.HashSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,6 +28,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class GamePlayerBlockEvent extends GameEvent {
+
+  private static final Collection<Material> BLACKLISTED_BLOCKS;
+
+  static {
+    BLACKLISTED_BLOCKS = new HashSet<>();
+    final String raw = GameProperties.KILLER_CANNOT_BREAK;
+    final String[] individual = raw.split(",");
+    for (final String material : individual) {
+      final String upper = material.toUpperCase();
+      final Material target = Material.getMaterial(upper);
+      if (target != null) {
+        BLACKLISTED_BLOCKS.add(Material.valueOf(material));
+      }
+    }
+  }
 
   public GamePlayerBlockEvent(final Game game) {
     super(game);
@@ -108,7 +126,7 @@ public final class GamePlayerBlockEvent extends GameEvent {
 
     final Block block = event.getBlock();
     final Material material = block.getType();
-    if (material == Material.BEDROCK) {
+    if (BLACKLISTED_BLOCKS.contains(material)) {
       return;
     }
 
