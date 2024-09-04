@@ -22,9 +22,7 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   - Fix Netty Hosting
-  - Create ready button
-  - Give 60 seconds for players to buy items
-  - Have timer, once everyone bought their stuff lower time to 15 seconds
+  - make gui update
 
    */
 

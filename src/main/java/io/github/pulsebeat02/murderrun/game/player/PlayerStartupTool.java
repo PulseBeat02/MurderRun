@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.player;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import org.bukkit.GameMode;
@@ -24,15 +25,17 @@ public final class PlayerStartupTool {
   }
 
   private void handleAll(final GamePlayer gamePlayer) {
-    gamePlayer.apply(player -> {
-      player.setGameMode(GameMode.SURVIVAL);
-      player.setWalkSpeed(0.2f);
-      player.setGravity(true);
-      player.setHealth(20f);
-      player.setFoodLevel(20);
-      player.setSaturation(20);
-      player.setRespawnLocation(this.getSpawnLocation(), true);
-    });
+    final Location spawn = this.getSpawnLocation();
+    final PlayerAudience audience = gamePlayer.getAudience();
+    final String sound = GameProperties.GAME_STARTING_SOUND;
+    gamePlayer.setGameMode(GameMode.SURVIVAL);
+    gamePlayer.setWalkSpeed(0.2f);
+    gamePlayer.setGravity(true);
+    gamePlayer.setHealth(20f);
+    gamePlayer.setFoodLevel(20);
+    gamePlayer.setSaturation(20);
+    gamePlayer.setRespawnLocation(spawn, true);
+    audience.playSound(sound);
   }
 
   private Location getSpawnLocation() {

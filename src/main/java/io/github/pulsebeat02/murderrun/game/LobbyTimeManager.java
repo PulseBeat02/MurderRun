@@ -50,7 +50,16 @@ public final class LobbyTimeManager {
     this.started.cancel();
   }
 
+  public void resetTime() {
+    this.timer.setTime(60);
+  }
+
   private void handleTimer(final int seconds) {
+
+    if (seconds == 0) {
+      this.manager.startGame();
+    }
+
     if (ANNOUNCE_TIMES.contains(seconds)) {
       this.playTimerSound(seconds);
     }
@@ -83,10 +92,9 @@ public final class LobbyTimeManager {
   private void checkCurrency() {
 
     final Collection<Player> players = this.manager.getParticipants();
-    final ItemStack sample = ItemFactory.createCurrency(1);
     for (final Player player : players) {
       final PlayerInventory inventory = player.getInventory();
-      if (inventory.contains(sample)) {
+      if (this.checkAllSlots(inventory)) {
         return;
       }
     }
@@ -99,5 +107,16 @@ public final class LobbyTimeManager {
     }
 
     this.timer.setTime(15);
+  }
+
+  private boolean checkAllSlots(final PlayerInventory inventory) {
+    final ItemStack sample = ItemFactory.createCurrency(1);
+    final ItemStack[] contents = inventory.getContents();
+    for (final ItemStack stack : contents) {
+      if (stack != null && stack.isSimilar(sample)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

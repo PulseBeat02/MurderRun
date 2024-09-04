@@ -1,9 +1,12 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameEndCallback;
 import io.github.pulsebeat02.murderrun.game.GameManager;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
@@ -21,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -70,6 +74,13 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
 
     final GameManager manager = data.first();
+    manager.startGame();
+  }
+
+  private void startGame0(final Player sender, final Audience audience) {
+
+    final Triplet<GameManager, Boolean, Boolean> data = requireNonNull(this.games.get(sender));
+    final GameManager manager = data.first();
     final boolean owner = data.second();
     final Collection<Player> players = manager.getParticipants();
     if (this.checkIfNotEnoughPlayers(audience, players)) {
@@ -80,12 +91,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.games.put(sender, triplet);
 
     final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
-    final Game runningGame = manager.startGame((game, code) -> {
-      final PlayerManager playerManager = game.getPlayerManager();
-      playerManager.applyToAllParticipants(
-          gamePlayer -> gamePlayer.apply(player -> this.games.remove(player)));
-      shutdownManager.removeGame(game);
-    });
+    final Game runningGame = manager.getGame();
     shutdownManager.addGame(runningGame);
 
     final Component message = Message.GAME_START.build();
@@ -133,7 +139,16 @@ public final class GameCommand implements AnnotationCommandFeature {
     final LobbyManager lobbyManager = this.plugin.getLobbyManager();
     final Arena arena = arenaManager.getArena(arenaName);
     final Lobby lobby = lobbyManager.getLobby(lobbyName);
-    final GameManager manager = new GameManager(this.plugin);
+    final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
+
+    final GameEndCallback gameEndCallback = (game, code) -> {
+      final PlayerManager playerManager = game.getPlayerManager();
+      playerManager.applyToAllParticipants(
+          gamePlayer -> gamePlayer.apply(player -> this.games.remove(player)));
+      shutdownManager.removeGame(game);
+    };
+    final Consumer<GameManager> start = manager1 -> this.startGame0(sender, audience);
+    final GameManager manager = new GameManager(this.plugin, gameEndCallback, start);
     manager.initialize();
 
     final GameSettings settings = manager.getSettings();
@@ -222,12 +237,16 @@ public final class GameCommand implements AnnotationCommandFeature {
     game.finishGame(GameResult.INTERRUPTED);
 
     final Collection<Player> participants = manager.getParticipants();
+    for (final Player player : participants) {
+      final PlayerInventory inventory = player.getInventory();
+      inventory.clear();
+      player.setLevel(0);
+    }
+
     final Component ownerMessage = Message.GAME_CANCEL.build();
     final Component kickedMessage = Message.GAME_PLAYER_KICK.build();
     for (final Player player : participants) {
       this.games.remove(player);
-      final PlayerInventory inventory = player.getInventory();
-      inventory.clear();
       final Audience kicked = this.audiences.player(player);
       kicked.sendMessage(kickedMessage);
     }

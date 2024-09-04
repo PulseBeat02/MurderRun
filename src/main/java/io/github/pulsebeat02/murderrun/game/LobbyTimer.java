@@ -18,7 +18,7 @@ public final class LobbyTimer extends BukkitRunnable {
   public void run() {
     final int time = this.time.get();
     this.timeConsumer.accept(time);
-    if (time == 0) {
+    if (time <= 0) {
       this.cancel();
     }
     this.time.decrementAndGet();

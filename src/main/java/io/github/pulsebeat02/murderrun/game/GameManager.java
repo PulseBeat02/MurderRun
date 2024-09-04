@@ -11,6 +11,7 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -24,11 +25,19 @@ public final class GameManager {
   private final Collection<Player> murderers;
   private final Collection<Player> participants;
   private final GameSettings settings;
+  private final GameEndCallback callback;
+  private final Consumer<GameManager> onGameStart;
 
+  private LobbyTimeManager lobbyTimeManager;
   private PreGameEvents events;
 
-  public GameManager(final MurderRun plugin) {
+  public GameManager(
+      final MurderRun plugin,
+      final GameEndCallback callback,
+      final Consumer<GameManager> onGameStart) {
     this.plugin = plugin;
+    this.callback = callback;
+    this.onGameStart = onGameStart;
     this.game = new Game(plugin);
     this.murderers = new HashSet<>();
     this.participants = new HashSet<>();
@@ -36,8 +45,10 @@ public final class GameManager {
   }
 
   public void initialize() {
+    this.lobbyTimeManager = new LobbyTimeManager(this);
     this.events = new PreGameEvents(this);
     this.events.registerEvents();
+    this.lobbyTimeManager.startTimer();
   }
 
   public void setPlayerToMurderer(final Player murderer) {
@@ -75,6 +86,7 @@ public final class GameManager {
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
     this.participants.add(player);
+    this.lobbyTimeManager.resetTime();
     this.teleportPlayerToLobby(player);
     this.clearInventory(player);
     this.loadResourcePack(player);
@@ -117,14 +129,16 @@ public final class GameManager {
     requestFuture.thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request));
   }
 
-  public Game startGame(final GameEndCallback callback) {
-    this.game.startGame(this.settings, this.murderers, this.participants, callback);
+  public Game startGame() {
+    this.onGameStart.accept(this);
+    this.game.startGame(this.settings, this.murderers, this.participants, this.callback);
     this.shutdown();
     return this.game;
   }
 
   public void shutdown() {
     this.events.unregisterEvents();
+    this.lobbyTimeManager.shutdown();
   }
 
   public MurderRun getPlugin() {
