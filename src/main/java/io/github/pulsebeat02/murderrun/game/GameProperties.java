@@ -1,4 +1,6 @@
-package io.github.pulsebeat02.murderrun.game.gadget;
+package io.github.pulsebeat02.murderrun.game;
+
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetDataBundle;
 
 public interface GameProperties {
 
@@ -8,10 +10,12 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  String LOBBY_TIMER_SOUND = str("lobby.timer_sound");
+  int LOBBY_STARTING_TIME = num("lobby.starting_time");
   int CAR_PARTS_COUNT = num("car_parts.count");
   String KILLER_CANNOT_BREAK = str("killer.cannot_break");
   int DEATH_HOUND_DESPAWN = num("death_hound.despawn");
-  int BEGINNING_STARTING_TIME = num("beginning.starting_time");
+  int BEGINNING_STARTING_TIME = num("survivor.starting_time");
   int SURVIVOR_STARTING_CURRENCY = num("survivor.starting_currency");
   int KILLER_STARTING_CURRENCY = num("killer.starting_currency");
   String DISABLED_GADGETS = str("disabled_gadgets");

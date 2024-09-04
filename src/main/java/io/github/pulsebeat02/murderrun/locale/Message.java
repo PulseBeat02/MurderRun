@@ -476,4 +476,6 @@ public interface Message extends LocaleTools {
       direct("murderrun.gui.player.killer", null);
   NullComponent<Sender> INVITE_PLAYER_GUI_LORE = direct("murderrun.gui.player.lore");
   NullComponent<Sender> INVITE_PLAYER_GUI_LORE_NORMAL = direct("murderrun.gui.player.lore_normal");
+  UniComponent<Sender, Integer> LOBBY_TIMER = direct("murderrun.game.lobby.timer", null);
+  NullComponent<Sender> LOBBY_TIMER_SKIP = direct("murderrun.game.lobby.timer.skip");
 }

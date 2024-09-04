@@ -63,8 +63,8 @@ public final class PlayerDeathTool {
     npc.setAlwaysUseNameHologram(false);
 
     final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);
+    mirror.isMirroring(player);
     mirror.setEnabled(true);
-    mirror.setMirrorName(true);
 
     final SleepTrait sleep = npc.getOrAddTrait(SleepTrait.class);
     sleep.setSleeping(location);
@@ -72,6 +72,9 @@ public final class PlayerDeathTool {
     final MetadataStore metadata = npc.data();
     metadata.set(Metadata.NAMEPLATE_VISIBLE, false);
     npc.spawn(location);
+
+    final Entity entity = npc.getEntity();
+    entity.setGravity(true);
 
     return npc;
   }

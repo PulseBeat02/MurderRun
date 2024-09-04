@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
-import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
