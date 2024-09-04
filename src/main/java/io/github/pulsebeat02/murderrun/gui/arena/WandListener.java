@@ -11,6 +11,7 @@ import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -68,7 +69,7 @@ public final class WandListener implements Listener {
     handlerList.unregister(this);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerInteract(final PlayerInteractEvent event) {
 
     final Action action = event.getAction();

@@ -19,15 +19,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class CentralGui extends ChestGui {
 
-  /*
-
-  - Central GUI
-     - Create a game
-       - Invite players
-       - Manage Current Players
-
-   */
-
   private static final Pattern CENTRAL_GUI_PATTERN =
       new Pattern("111111111", "111345111", "111111111", "111121111");
 

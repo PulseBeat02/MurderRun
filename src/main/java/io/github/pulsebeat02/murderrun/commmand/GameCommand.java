@@ -136,6 +136,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Arena arena = arenaManager.getArena(arenaName);
     final Lobby lobby = lobbyManager.getLobby(lobbyName);
     final GameManager manager = new GameManager(this.plugin);
+    manager.initialize();
+
     final GameSettings settings = manager.getSettings();
     settings.setArena(arena);
     settings.setLobby(lobby);
@@ -216,6 +218,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
 
     final GameManager manager = data.first();
+    manager.shutdown();
+
     final Game game = manager.getGame();
     game.finishGame(GameResult.INTERRUPTED);
 

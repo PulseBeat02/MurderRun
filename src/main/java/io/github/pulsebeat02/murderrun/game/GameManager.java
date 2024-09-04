@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.event.PreGameEvents;
 import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
@@ -25,12 +26,19 @@ public final class GameManager {
   private final Collection<Player> participants;
   private final GameSettings settings;
 
+  private PreGameEvents events;
+
   public GameManager(final MurderRun plugin) {
     this.plugin = plugin;
     this.game = new Game(plugin);
     this.murderers = new HashSet<>();
     this.participants = new HashSet<>();
     this.settings = new GameSettings();
+  }
+
+  public void initialize() {
+    this.events = new PreGameEvents(this);
+    this.events.registerEvents();
   }
 
   public void setPlayerToMurderer(final Player murderer) {
@@ -112,7 +120,12 @@ public final class GameManager {
 
   public Game startGame(final GameEndCallback callback) {
     this.game.startGame(this.settings, this.murderers, this.participants, callback);
+    shutdown();
     return this.game;
+  }
+
+  public void shutdown() {
+    this.events.unregisterEvents();
   }
 
   public MurderRun getPlugin() {
