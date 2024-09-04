@@ -4,7 +4,7 @@ plugins {
     java
     id("io.github.goooler.shadow") version "8.1.8"
     id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("org.checkerframework") version "0.6.43"
+    id("org.checkerframework") version "0.6.44"
     id("com.diffplug.spotless") version "7.0.0.BETA2"
 }
 
