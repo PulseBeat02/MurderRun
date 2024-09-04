@@ -12,7 +12,9 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.MirrorTrait;
 import net.citizensnpcs.trait.SleepTrait;
@@ -52,18 +54,25 @@ public final class PlayerDeathTool {
   }
 
   private NPC spawnDeadNPC(final Player player) {
+
     final CitizensManager manager = this.game.getNPCManager();
     final NPCRegistry registry = manager.getRegistry();
     final Location location = player.getLocation();
     final String name = player.getDisplayName();
     final NPC npc = registry.createNPC(EntityType.PLAYER, name);
-    final MirrorTrait trait = npc.getOrAddTrait(MirrorTrait.class);
-    final SleepTrait sleep = npc.getOrAddTrait(SleepTrait.class);
-    trait.setEnabled(true);
-    trait.setMirrorName(false);
-    sleep.setSleeping(location);
-    npc.spawn(location);
     npc.setAlwaysUseNameHologram(false);
+
+    final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);
+    mirror.setEnabled(true);
+    mirror.setMirrorName(true);
+
+    final SleepTrait sleep = npc.getOrAddTrait(SleepTrait.class);
+    sleep.setSleeping(location);
+
+    final MetadataStore metadata = npc.data();
+    metadata.set(Metadata.NAMEPLATE_VISIBLE, false);
+    npc.spawn(location);
+
     return npc;
   }
 

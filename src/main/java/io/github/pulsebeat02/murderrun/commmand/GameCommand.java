@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
@@ -330,7 +328,10 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
 
     final Collection<Player> invitations = this.invites.get(sender);
-    final Triplet<GameManager, Boolean, Boolean> ownerData = requireNonNull(this.games.get(owner));
+    final Triplet<GameManager, Boolean, Boolean> ownerData = this.games.get(owner);
+    if (ownerData == null) {
+      return;
+    }
 
     final GameManager manager = ownerData.first();
     manager.addParticipantToLobby(sender, false);

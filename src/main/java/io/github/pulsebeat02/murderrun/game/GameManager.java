@@ -120,7 +120,7 @@ public final class GameManager {
 
   public Game startGame(final GameEndCallback callback) {
     this.game.startGame(this.settings, this.murderers, this.participants, callback);
-    shutdown();
+    this.shutdown();
     return this.game;
   }
 

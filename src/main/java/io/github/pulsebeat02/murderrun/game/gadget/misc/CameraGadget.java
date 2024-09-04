@@ -14,7 +14,9 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
 import java.util.function.Consumer;
+import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.ChatColor;
@@ -98,15 +100,15 @@ public class CameraGadget {
   private NPC customizeNPC(final CitizensManager manager) {
 
     final NPCRegistry registry = manager.getRegistry();
-    final NPC npc = registry.createNPC(EntityType.PLAYER, "");
+    final NPC npc = registry.createNPC(EntityType.PLAYER, "Camera");
     npc.setAlwaysUseNameHologram(false);
-    this.addSkinTrait(npc);
 
-    return npc;
-  }
-
-  private void addSkinTrait(final NPC npc) {
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Camera", TEXTURE_SIGNATURE, TEXTURE_DATA);
+
+    final MetadataStore metadata = npc.data();
+    metadata.set(Metadata.NAMEPLATE_VISIBLE, false);
+
+    return npc;
   }
 }
