@@ -24,7 +24,7 @@ public final class Keys {
   public static NamespacedKey DEATH_HOUND_OWNER = createNamespacedPluginKey("death-hound-owner");
   public static NamespacedKey DORMAGOGG_OWNER = createNamespacedPluginKey("dormagogg-owner");
   public static NamespacedKey ITEM_WAND = createNamespacedPluginKey("item-wand");
-  public static NamespacedKey ITEM_GUI = createNamespacedPluginKey("gui");
+  public static NamespacedKey PLAYER_UUID = createNamespacedPluginKey("player-uuid");
   public static NamespacedKey ARENA_NAME = createNamespacedPluginKey("arena-name");
   public static NamespacedKey LOBBY_NAME = createNamespacedPluginKey("lobby-name");
 

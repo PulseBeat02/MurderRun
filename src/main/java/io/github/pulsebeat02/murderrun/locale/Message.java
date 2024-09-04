@@ -466,6 +466,14 @@ public interface Message extends LocaleTools {
       direct("murderrun.gui.game.arena_display", null);
   NullComponent<Sender> CREATE_GAME_GUI_ARENA_LORE = direct("murderrun.gui.game.arena_lore");
   NullComponent<Sender> CREATE_GAME_GUI_APPLY = direct("murderrun.gui.game.apply");
-  NullComponent<Sender> CREATE_GAME_GUI_TITLE = direct("murderrun.gui.gane.create");
-  NullComponent<Sender> CREATE_GAME_GUI_ERROR = direct("murderrun.gui.gane.create_error");
+  NullComponent<Sender> CREATE_GAME_GUI_TITLE = direct("murderrun.gui.game.create");
+  NullComponent<Sender> CREATE_GAME_GUI_ERROR = direct("murderrun.gui.game.create_error");
+  UniComponent<Sender, String> INVITE_PLAYER_GUI_DISPLAY =
+      direct("murderrun.gui.player.display", null);
+  UniComponent<Sender, String> INVITE_PLAYER_GUI_SURVIVOR =
+      direct("murderrun.gui.player.survivor", null);
+  UniComponent<Sender, String> INVITE_PLAYER_GUI_KILLER =
+      direct("murderrun.gui.player.killer", null);
+  NullComponent<Sender> INVITE_PLAYER_GUI_LORE = direct("murderrun.gui.player.lore");
+  NullComponent<Sender> INVITE_PLAYER_GUI_LORE_NORMAL = direct("murderrun.gui.player.lore_normal");
 }

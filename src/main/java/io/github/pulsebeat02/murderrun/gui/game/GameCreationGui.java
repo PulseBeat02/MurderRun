@@ -98,12 +98,12 @@ public final class GameCreationGui extends ChestGui {
     final Player player = (Player) this.watcher;
     final String lobbyName = this.lobby.getName();
     final String arenaName = this.arena.getName();
-    player.performCommand("murder game create %s %s".formatted(lobbyName, arenaName));
+    player.performCommand("murder game create %s %s".formatted(arenaName, lobbyName));
     this.watcher.closeInventory();
   }
 
   private GuiItem createArenaStack() {
-    final String name = this.arena.getName();
+    final String name = this.arena == null ? "" : this.arena.getName();
     return new GuiItem(
         Item.builder(Material.ANVIL)
             .name(Message.CREATE_GAME_GUI_ARENA_DISPLAY.build(name))
@@ -113,7 +113,7 @@ public final class GameCreationGui extends ChestGui {
   }
 
   private GuiItem createLobbyStack() {
-    final String name = this.lobby.getName();
+    final String name = this.lobby == null ? "" : this.lobby.getName();
     return new GuiItem(
         Item.builder(Material.ANVIL)
             .name(Message.CREATE_GAME_GUI_LOBBY_DISPLAY.build(name))

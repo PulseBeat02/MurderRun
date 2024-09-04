@@ -2,10 +2,10 @@ package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
-import io.github.pulsebeat02.murderrun.commmand.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;

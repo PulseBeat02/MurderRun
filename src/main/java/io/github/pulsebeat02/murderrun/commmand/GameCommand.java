@@ -14,10 +14,12 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.gui.game.PlayerListGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -51,7 +53,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
-    this.games = new WeakHashMap<>();
+    this.games = Collections.synchronizedMap(new WeakHashMap<>());
     this.invites = HashMultimap.create();
     this.plugin = plugin;
   }
@@ -487,6 +489,15 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final Component message = Message.GAME_SET_INNOCENT.build(name);
     audience.sendMessage(message);
+  }
+
+  @Permission("murderrun.command.game.gui")
+  @CommandDescription("murderrun.command.game.gui.info")
+  @Command(value = "murder game gui", requiredSender = Player.class)
+  public void openGameGui(final Player sender) {
+    final PlayerListGui gui = new PlayerListGui(sender, this.games);
+    gui.update();
+    gui.show(sender);
   }
 
   @Suggestions("arena-suggestions")
