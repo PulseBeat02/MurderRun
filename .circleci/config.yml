@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run:
           name: compile plugin
-          command: ./gradlew build
+          command: gradle build
       - store_artifacts:
           path: build/libs/
 
