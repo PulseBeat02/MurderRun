@@ -11,8 +11,8 @@ import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Collection;
 import java.util.List;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Player.Spigot;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -36,14 +36,14 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
-    final Spigot spigot = player.spigot();
     final List<ItemStack> drops = event.getDrops();
     final boolean isLogging = gamePlayer.isLoggingOut();
+    final Location current = player.getLocation();
+    player.setLastDeathLocation(current);
 
     if (deathManager.checkDeathCancellation() && !isLogging) {
       event.setKeepInventory(true);
       drops.clear();
-      spigot.respawn();
       return;
     }
 
@@ -56,10 +56,6 @@ public final class GamePlayerDeathEvent extends GameEvent {
     event.setKeepInventory(true);
     event.setDeathMessage(null);
     deathManager.runDeathTasks();
-
-    if (!isLogging) {
-      spigot.respawn();
-    }
     drops.clear();
 
     if (this.allInnocentDead()) {

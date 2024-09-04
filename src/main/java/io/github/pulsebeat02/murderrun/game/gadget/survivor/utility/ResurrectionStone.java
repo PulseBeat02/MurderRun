@@ -13,6 +13,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -21,7 +22,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 
 public final class ResurrectionStone extends SurvivorGadget {
@@ -49,8 +49,8 @@ public final class ResurrectionStone extends SurvivorGadget {
     }
 
     final DeathManager deathManager = closest.getDeathManager();
-    final ArmorStand corpse = requireNonNull(deathManager.getCorpse());
-    final Location closestLocation = corpse.getLocation();
+    final NPC corpse = requireNonNull(deathManager.getCorpse());
+    final Location closestLocation = corpse.getStoredLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
       return super.onGadgetDrop(game, player, item, false);
@@ -91,8 +91,8 @@ public final class ResurrectionStone extends SurvivorGadget {
     closest.teleport(death);
 
     final DeathManager manager = closest.getDeathManager();
-    final ArmorStand corpse = requireNonNull(manager.getCorpse());
-    corpse.remove();
+    final NPC corpse = requireNonNull(manager.getCorpse());
+    corpse.destroy();
 
     final Component message = Message.RESURRECTION_STONE_ACTIVATE.build();
     playerManager.sendMessageToAllParticipants(message);

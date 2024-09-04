@@ -14,6 +14,7 @@ import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
+import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -21,7 +22,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -91,9 +91,9 @@ public final class Corruption extends KillerGadget {
     inventory.setArmorContents(gear);
 
     final DeathManager deathManager = closest.getDeathManager();
-    final ArmorStand stand = deathManager.getCorpse();
+    final NPC stand = deathManager.getCorpse();
     if (stand != null) {
-      stand.remove();
+      stand.destroy();
     }
 
     final Component message = Message.CORRUPTION_ACTIVATE.build();

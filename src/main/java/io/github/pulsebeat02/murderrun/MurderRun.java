@@ -23,6 +23,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - Create corpse lying down
+  - Create ready button
 
    */
 

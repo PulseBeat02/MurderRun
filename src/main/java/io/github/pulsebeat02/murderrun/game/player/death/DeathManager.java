@@ -3,12 +3,12 @@ package io.github.pulsebeat02.murderrun.game.player.death;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import org.bukkit.entity.ArmorStand;
+import net.citizensnpcs.api.npc.NPC;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class DeathManager {
 
-  private @Nullable ArmorStand corpse;
+  private @Nullable NPC corpse;
   private final Collection<PlayerDeathTask> tasks;
 
   public DeathManager() {
@@ -51,11 +51,11 @@ public final class DeathManager {
     return this.tasks;
   }
 
-  public @Nullable ArmorStand getCorpse() {
+  public @Nullable NPC getCorpse() {
     return this.corpse;
   }
 
-  public void setCorpse(final @Nullable ArmorStand corpse) {
+  public void setCorpse(final @Nullable NPC corpse) {
     this.corpse = corpse;
   }
 }

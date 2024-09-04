@@ -70,11 +70,13 @@ public final class KillerRewind extends SurvivorGadget {
       final Item item,
       final long current) {
 
-    killer.setKillerRewindCooldown(current);
-    killer.setFallDistance(0.0f);
-
     final boolean successful = movementManager.handleRewind(killer);
     super.onGadgetDrop(game, killer, item, successful);
+    if (!successful) {
+      return;
+    }
+    killer.setKillerRewindCooldown(current);
+    killer.setFallDistance(0.0f);
 
     final Component msg = Message.REWIND_ACTIVATE.build();
     final PlayerAudience audience = killer.getAudience();

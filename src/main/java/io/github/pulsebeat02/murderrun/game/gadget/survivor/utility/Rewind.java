@@ -59,11 +59,13 @@ public final class Rewind extends SurvivorGadget {
       final Item item,
       final long current) {
 
-    survivor.setRewindCooldown(current);
-    survivor.setFallDistance(0.0f);
-
     final boolean successful = movementManager.handleRewind(survivor);
     super.onGadgetDrop(game, survivor, item, successful);
+    if (!successful) {
+      return;
+    }
+    survivor.setRewindCooldown(current);
+    survivor.setFallDistance(0.0f);
 
     final Component msg = Message.REWIND_ACTIVATE.build();
     final PlayerAudience audience = survivor.getAudience();

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.player;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.structure.CircularBuffer;
 import java.util.AbstractMap.SimpleEntry;
@@ -30,6 +31,12 @@ public final class MovementManager {
   }
 
   private void trackMovement(final PlayerManager manager) {
+
+    final GameStatus status = this.game.getStatus();
+    if (status != GameStatus.KILLERS_RELEASED) {
+      return;
+    }
+
     manager.applyToAllParticipants(player -> {
       final Location location = player.getLocation();
       final long timestamp = System.currentTimeMillis();

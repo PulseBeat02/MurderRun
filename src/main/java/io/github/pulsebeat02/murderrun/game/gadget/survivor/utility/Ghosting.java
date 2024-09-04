@@ -80,6 +80,7 @@ public final class Ghosting extends SurvivorGadget {
     gamePlayer.setGameMode(GameMode.SURVIVAL);
     gamePlayer.setCanPickupCarPart(false);
     gamePlayer.setCanPlaceBlocks(true);
+    gamePlayer.setInvulnerable(true);
   }
 
   private void createWoolSetting(final Game game, final GamePlayer player) {

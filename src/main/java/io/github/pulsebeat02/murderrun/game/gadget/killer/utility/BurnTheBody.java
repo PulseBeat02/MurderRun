@@ -10,11 +10,11 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
 
 public final class BurnTheBody extends KillerGadget {
@@ -71,9 +71,9 @@ public final class BurnTheBody extends KillerGadget {
   private void handleBurnTasks(final GamePlayer victim) {
 
     final DeathManager manager = victim.getDeathManager();
-    final ArmorStand stand = manager.getCorpse();
+    final NPC stand = manager.getCorpse();
     if (stand != null) {
-      stand.remove();
+      stand.despawn();
     }
 
     victim.setLastDeathLocation(null);

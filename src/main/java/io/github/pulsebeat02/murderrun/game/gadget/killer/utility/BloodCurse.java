@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Set;
-import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,9 +36,7 @@ public final class BloodCurse extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    final Consumer<GamePlayer> task =
-        survivor -> scheduler.scheduleRepeatedTask(() -> this.setBloodBlock(survivor), 0, 7L);
-    manager.applyToAllLivingInnocents(task);
+    scheduler.scheduleRepeatedTask(() -> manager.applyToAllInnocents(this::setBloodBlock), 0, 7L);
     manager.playSoundForAllParticipants(GameProperties.BLOOD_CURSE_SOUND);
 
     final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
@@ -54,7 +51,7 @@ public final class BloodCurse extends KillerGadget {
     final Block block = location.getBlock();
     final Block below = block.getRelative(BlockFace.DOWN);
     final Material type = below.getType();
-    if (!type.isSolid() || BLACKLISTED_MATERIALS.contains(type)) {
+    if (!type.isSolid() || !type.isOccluding() || BLACKLISTED_MATERIALS.contains(type)) {
       return;
     }
 
