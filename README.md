@@ -1,5 +1,6 @@
 # Murder Run
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/4bRcTwC4GazhXHisYNoq6N/DEXVUEzbq9mmu7ERauj15L/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/4bRcTwC4GazhXHisYNoq6N/DEXVUEzbq9mmu7ERauj15L/tree/main)
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
@@ -27,7 +28,8 @@ using MC Pack Hosting by default. Check the `config.yml` file for more specific 
 1) Download the plugin dependencies required and place them into your server plugin folder.
    - [Citizens2](https://ci.citizensnpcs.co/job/Citizens2/)
    - [WordEdit](https://modrinth.com/plugin/worldedit) or [FastAsyncWorldEdit](https://modrinth.com/plugin/fastasyncworldedit)
-2) Build the plugin using `/gradlew build`. Using the JAR, place it into the plugins folder as well.
+2) Build the plugin using `/gradlew build` or find the respective build by clicking the CircleCI badge
+on the top of this README file. Using the JAR, place it into the plugins folder as well.
 3) Run the plugin once to generate all assets and configuration files. Configure the plugin to your liking.
 4) Run the `/murder gui` command to open a GUI that is able to create arenas and lobbies for you.
 5) In your lobby, you can run `/murder npc spawn survivor` and `/murder npc spawn killer` to spawn both the
