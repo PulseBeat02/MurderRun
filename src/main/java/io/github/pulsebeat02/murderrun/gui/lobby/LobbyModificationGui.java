@@ -168,10 +168,10 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
         Item.builder(Material.GREEN_WOOL)
             .name(Message.CREATE_LOBBY_GUI_APPLY.build())
             .build(),
-        this::createNewArena);
+        this::createNewLobby);
   }
 
-  private void createNewArena(final InventoryClickEvent event) {
+  private void createNewLobby(final InventoryClickEvent event) {
 
     if (this.lobbyName.isEmpty() || this.lobbyName.equals("None")) {
       final Component msg = Message.LOBBY_NAME_ERROR.build();
@@ -198,13 +198,13 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
           Item.builder(Material.RED_WOOL)
               .name(Message.CREATE_LOBBY_GUI_DELETE.build())
               .build(),
-          this::deleteAndCreateArena);
+          this::deleteAndCreateLobby);
     } else {
       return this.createBorderStack();
     }
   }
 
-  private void deleteAndCreateArena(final InventoryClickEvent event) {
+  private void deleteAndCreateLobby(final InventoryClickEvent event) {
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.removeLobby(this.lobbyName);
     this.watcher.closeInventory();

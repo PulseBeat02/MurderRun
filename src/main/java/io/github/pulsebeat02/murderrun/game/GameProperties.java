@@ -10,6 +10,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  String SHOP_GUI_SOUND = str("shop.gui.sound");
   String GAME_STARTING_SOUND = str("game.start_sound");
   String LOBBY_TIMER_SOUND = str("lobby.timer_sound");
   int LOBBY_STARTING_TIME = num("lobby.starting_time");

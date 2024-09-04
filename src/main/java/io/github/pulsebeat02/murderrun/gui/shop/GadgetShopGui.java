@@ -12,6 +12,7 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
@@ -214,7 +215,8 @@ public final class GadgetShopGui extends ChestGui {
   }
 
   private void playSound(final HumanEntity entity) {
-    final Key key = key("block.note_block.xylophone");
+    final String raw = GameProperties.SHOP_GUI_SOUND;
+    final Key key = key(raw);
     final Source source = Source.MASTER;
     final Sound sound = sound(key, source, 1.0f, 1.0f);
     final UUID uuid = entity.getUniqueId();
