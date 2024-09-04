@@ -23,6 +23,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - Create inventory GUI to help users with creating arenas and games
+  - Create corpse lying down
 
    */
 
