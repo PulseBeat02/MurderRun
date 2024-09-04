@@ -23,6 +23,20 @@ and so much more. You can also change the sounds and textures of the resource-pa
 respective files in the `/sounds` and `/textures` folders. Resource-packs are built at runtime and served
 using MC Pack Hosting by default. Check the `config.yml` file for more specific details.
 
+## Installation
+1) Download the plugin dependencies required and place them into your server plugin folder.
+   - [Citizens2](https://ci.citizensnpcs.co/job/Citizens2/)
+   - [WordEdit](https://modrinth.com/plugin/worldedit) or [FastAsyncWorldEdit](https://modrinth.com/plugin/fastasyncworldedit)
+2) Build the plugin using `/gradlew build`. Using the JAR, place it into the plugins folder as well.
+3) Run the plugin once to generate all assets and configuration files. Configure the plugin to your liking.
+4) Run the `/murder gui` command to open a GUI that is able to create arenas and lobbies for you.
+5) In your lobby, you can run `/murder npc spawn survivor` and `/murder npc spawn killer` to spawn both the
+survivor and the killer gadget shop, which can be used to buy gadgets.
+6) Run the `/murder gui` command and create a new game. Choose your arena and lobby and start the game.
+7) Click on the message in chat to invite other players. Close the menu and re-open the menu to update
+the player list. You can also change the roles of other players from survivor to killer and vice versa
+by clicking on their player head (assuming that they have joined the game already).
+
 ## Building
 1) Install [Jetbrains Runtime](https://github.com/JetBrains/JetBrainsRuntime) (Java 21)
    - Used for hot swapping purposes and faster development. Set the project JDK to be this for Gradle to work.
