@@ -24,6 +24,12 @@ public final class MurderRun extends JavaPlugin {
   - Fix Netty Hosting
   - make gui update
   - hook into papi
+    - fastest win (killer)
+    - fastest win (survivor)
+    - total kills
+    - total wins
+    - total games
+    - etc
   - customize killer gear
 
    */
