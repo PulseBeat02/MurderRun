@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 public final class Bush extends SurvivorGadget {
 
@@ -39,7 +40,8 @@ public final class Bush extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     final Location location = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> player.teleport(location), 0, 5, duration);
+    scheduler.scheduleRepeatedTask(
+        () -> this.createFacingLocation(player, location), 0, 5, duration);
 
     final ItemStack[] before = inventory.getArmorContents();
     final ItemStack[] empty = new ItemStack[4];
@@ -54,5 +56,13 @@ public final class Bush extends SurvivorGadget {
     audience.playSound(GameProperties.BUSH_SOUND);
 
     return false;
+  }
+
+  private void createFacingLocation(final GamePlayer target, final Location origin) {
+    final Location newLocation = target.getLocation();
+    final Vector direction = newLocation.getDirection();
+    final Location clone = origin.clone();
+    clone.setDirection(direction);
+    target.teleport(clone);
   }
 }

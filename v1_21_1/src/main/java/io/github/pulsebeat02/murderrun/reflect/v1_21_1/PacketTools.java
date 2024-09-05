@@ -3,6 +3,9 @@ package io.github.pulsebeat02.murderrun.reflect.v1_21_1;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.primitives.Ints;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
@@ -28,6 +31,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
+import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -54,6 +58,8 @@ import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -204,6 +210,13 @@ public class PacketTools implements PacketToolAPI {
     }
   }
 
+  public void disguisePlayer(final Player player, final Player other) {
+    final PlayerProfile profile = player.getPlayerProfile();
+    final PlayerProfile otherProfile = other.getPlayerProfile();
+    final PlayerTextures textures = otherProfile.getTextures();
+    profile.setTextures(textures);
+  }
+
   private void removeGlowingSlime0(final Location target, final CraftPlayer player,
       final ServerGamePacketListenerImpl connection) {
 
@@ -275,52 +288,14 @@ public class PacketTools implements PacketToolAPI {
     connection.send(packet);
   }
 
-  // wtf??!?!??!!? troll?!?!?
   public void crashPlayerClient(final Player player) {
-    final ClientboundPlayerPositionPacket packet = new ClientboundPlayerPositionPacket(this.d(),
-        this.d(), this.d(), this.f(), this.f(), RelativeMovement.unpack(this.b()), this.i());
+    final ClientboundPlayerPositionPacket packet = new ClientboundPlayerPositionPacket(
+        Double.MIN_VALUE,
+        Double.MIN_VALUE, Double.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE,
+        RelativeMovement.unpack(Byte.MIN_VALUE), Integer.MIN_VALUE);
     final CraftPlayer craftPlayer = (CraftPlayer) player;
     final ServerPlayer handle = craftPlayer.getHandle();
     final ServerGamePacketListenerImpl connection = handle.connection;
     connection.send(packet);
-  }
-
-  private double d() {
-    final double qs = Double.MAX_VALUE;
-    final double mj43 = RANDOM.nextDouble();
-    final double p6 = .75;
-    final double tp9 = .5;
-    return qs * ((mj43 * (((Math.sqrt(mj43) * 564 % 1) * p6) - (Math.pow(mj43, 2) % 1) * tp9)
-        + tp9));
-  }
-
-  private float f() {
-    final float y8xafa = Float.MAX_VALUE;
-    final double zs39asa = RANDOM.nextDouble();
-    final double r3s1 = .75;
-    final double d9fs2 = .5;
-    return y8xafa * ((float) (
-        zs39asa * (((Math.sqrt(zs39asa) * 564 % 1) * r3s1) - (Math.pow(zs39asa, 2) % 1) * d9fs2)
-            + d9fs2));
-  }
-
-  private byte b() {
-    final byte q4Retv = Byte.MAX_VALUE;
-    final double er99 = RANDOM.nextDouble();
-    final double lr625 = .75;
-    final double wf7125 = .5;
-    return (byte) (q4Retv * (
-        (er99 * (((Math.sqrt(er99) * 564 % 1) * lr625) - (Math.pow(er99, 2) % 1) * wf7125))
-            + wf7125));
-  }
-
-  private int i() {
-    final int rq4s = Integer.MAX_VALUE;
-    final double b45jhh = RANDOM.nextDouble();
-    final double cr75 = .75;
-    final double ds852 = .5;
-    return rq4s * (int) (
-        (b45jhh * (((Math.sqrt(b45jhh) * 564 % 1) * cr75) - (Math.pow(b45jhh, 2) % 1) * ds852))
-            + ds852);
   }
 }

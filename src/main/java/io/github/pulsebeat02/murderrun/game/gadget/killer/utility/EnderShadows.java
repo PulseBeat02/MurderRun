@@ -17,7 +17,9 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
+import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.Component;
@@ -119,10 +121,16 @@ public final class EnderShadows extends KillerGadget {
   }
 
   private NPC spawnNPC(final CitizensManager manager, final Location location) {
+
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, "");
+
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     trait.setSkinPersistent("Shadow", TEXTURE_SIGNATURE, TEXTURE_VALUE);
+
+    final MetadataStore metadata = npc.data();
+    metadata.set(Metadata.NAMEPLATE_VISIBLE, false);
+
     npc.spawn(location);
     return npc;
   }

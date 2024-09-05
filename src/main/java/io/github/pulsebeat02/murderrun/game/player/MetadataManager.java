@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Entity;
@@ -143,6 +144,13 @@ public final class MetadataManager {
         PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
       } else {
         this.glowEntities.remove(color, entity);
+        if (entity instanceof final Player player1) {
+          // fixes a protocol bug
+          final GameMode gameMode = player1.getGameMode();
+          if (gameMode == GameMode.SPECTATOR) {
+            return;
+          }
+        }
         team.removeEntry(name);
         team.removeEntry(watcher);
         PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
@@ -166,8 +174,15 @@ public final class MetadataManager {
       });
     } else {
       this.gamePlayer.apply(player -> {
+        final GameMode gameMode = player.getGameMode();
+        if (gameMode == GameMode.SPECTATOR) {
+          return;
+        }
+
         final String name = player.getName();
-        this.hideNameTagTeam.removeEntry(name);
+        if (this.hideNameTagTeam.hasEntry(name)) {
+          this.hideNameTagTeam.removeEntry(name);
+        }
       });
     }
   }

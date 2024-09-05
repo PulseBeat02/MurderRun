@@ -24,6 +24,8 @@ public final class MurderRun extends JavaPlugin {
   - Fix Netty Hosting
   - make gui update
 
+  - make gadget that disguises as killer
+
    */
 
   private static final int BSTATS_SERVER_ID = 22728;
