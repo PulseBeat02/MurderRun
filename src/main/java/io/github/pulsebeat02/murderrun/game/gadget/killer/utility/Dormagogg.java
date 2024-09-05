@@ -98,12 +98,14 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
     final GamePlayer nearest = manager.getGamePlayer(player);
     final GamePlayer killer = manager.getGamePlayer(ownerUuid);
     final GameScheduler scheduler = this.game.getScheduler();
-    nearest.disableJump(scheduler, 7 * 20L);
-    nearest.disableWalkWithFOVEffects(10 * 20);
-    nearest.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 7 * 20, 1));
+    final int duration = GameProperties.DORMAGOGG_DURATION;
+    final int effect = GameProperties.DORMAGOGG_EFFECT_DURATION;
+    nearest.disableJump(scheduler, duration);
+    nearest.disableWalkWithFOVEffects(effect);
+    nearest.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 1));
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, nearest, ChatColor.RED, 7 * 20L);
+    metadata.setEntityGlowing(scheduler, nearest, ChatColor.RED, duration);
   }
 
   @Override

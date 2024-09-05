@@ -130,4 +130,6 @@ public interface Participant {
   void setLoggingOut(final boolean loggingOut);
 
   boolean isLoggingOut();
+
+  String getName();
 }

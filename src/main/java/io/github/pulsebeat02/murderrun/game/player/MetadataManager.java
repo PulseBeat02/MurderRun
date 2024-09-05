@@ -144,6 +144,7 @@ public final class MetadataManager {
         PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
       } else {
         this.glowEntities.remove(color, entity);
+        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
         if (entity instanceof final Player player1) {
           // fixes a protocol bug
           final GameMode gameMode = player1.getGameMode();
@@ -153,7 +154,6 @@ public final class MetadataManager {
         }
         team.removeEntry(name);
         team.removeEntry(watcher);
-        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
       }
     });
   }

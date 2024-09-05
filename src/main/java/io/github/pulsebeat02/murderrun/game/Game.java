@@ -27,6 +27,7 @@ public final class Game {
   private GadgetManager gadgetManager;
   private GameExecutor executor;
   private CitizensManager npcManager;
+  private DisguiseManager disguiseManager;
   private GameEndCallback callback;
 
   public Game(final MurderRun plugin) {
@@ -56,10 +57,18 @@ public final class Game {
     this.gadgetManager = new GadgetManager(this);
     this.npcManager = new CitizensManager(this);
     this.callback = callback;
+    this.createDisguiseHandler();
     this.map.start();
     this.gadgetManager.start();
     this.playerManager.start(murderers, participants);
     this.preparationManager.start();
+  }
+
+  private void createDisguiseHandler() {
+    if (Capabilities.LIB_DISGUISES.isDisabled()) {
+      return;
+    }
+    this.disguiseManager = new DisguiseManager();
   }
 
   public GameSettings getSettings() {
@@ -69,6 +78,7 @@ public final class Game {
   public void finishGame(final GameResult code) {
     if (this.status != GameStatus.NOT_STARTED) {
       this.status = GameStatus.FINISHED;
+      this.disableDisguiseHandler();
       this.gadgetManager.shutdown();
       this.scheduler.cancelAllTasks();
       this.npcManager.shutdown();
@@ -78,6 +88,13 @@ public final class Game {
       this.executor.shutdown();
       this.callback.onGameFinish(this, code);
     }
+  }
+
+  private void disableDisguiseHandler() {
+    if (Capabilities.LIB_DISGUISES.isDisabled()) {
+      return;
+    }
+    this.disguiseManager.shutdown();
   }
 
   public PlayerManager getPlayerManager() {
@@ -134,5 +151,9 @@ public final class Game {
 
   public void setStatus(final GameStatus status) {
     this.status = status;
+  }
+
+  public DisguiseManager getDisguiseManager() {
+    return this.disguiseManager;
   }
 }

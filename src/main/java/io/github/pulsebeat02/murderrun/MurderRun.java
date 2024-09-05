@@ -23,8 +23,8 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - make gui update
-
-  - make gadget that disguises as killer
+  - hook into papi
+  - customize killer gear
 
    */
 

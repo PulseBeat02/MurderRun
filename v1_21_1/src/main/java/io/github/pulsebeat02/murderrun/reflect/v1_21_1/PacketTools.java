@@ -19,8 +19,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SplittableRandom;
+import java.util.UUID;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
@@ -29,24 +33,34 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoRemovePacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundRespawnPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
+import net.minecraft.network.protocol.game.CommonPlayerSpawnInfo;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.DataValue;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.server.network.ServerConnectionListener;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.dimension.DimensionType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.UnsafeValues;
@@ -58,8 +72,6 @@ import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.profile.PlayerProfile;
-import org.bukkit.profile.PlayerTextures;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -210,11 +222,93 @@ public class PacketTools implements PacketToolAPI {
     }
   }
 
-  public void disguisePlayer(final Player player, final Player other) {
-    final PlayerProfile profile = player.getPlayerProfile();
-    final PlayerProfile otherProfile = other.getPlayerProfile();
-    final PlayerTextures textures = otherProfile.getTextures();
-    profile.setTextures(textures);
+  public void mimicPlayer(final Player owner, final Player mimic) {
+    final ServerPlayer mimicPlayer = (ServerPlayer) mimic;
+    final GameProfile mimicProfile = mimicPlayer.getGameProfile();
+    final PropertyMap properties = mimicProfile.getProperties();
+    final Collection<Property> textures = properties.get("textures");
+    final Property property = textures.iterator().next();
+    final String texture = property.value();
+    final String signature = property.signature();
+    final String[] data = new String[]{texture, signature};
+    final String name = mimic.getName();
+    this.changeSkin(owner, data, name);
+  }
+
+  private void changeSkin(final Player player, final String[] skin, final String name) {
+
+    final Location location = player.getLocation();
+    final ServerPlayer serverPlayer = (ServerPlayer) player;
+    final ServerLevel nmsLevel = serverPlayer.serverLevel();
+    final String texture = skin[0];
+    final String signature = skin[1];
+
+    final UUID uuid = serverPlayer.getUUID();
+    final GameProfile newGameProfile = new GameProfile(uuid, name);
+    final MinecraftServer server = serverPlayer.server;
+    final ServerPlayer nmsPlayerToAdd = new ServerPlayer(server, nmsLevel, newGameProfile,
+        ClientInformation.createDefault());
+
+    final GameProfile profile = nmsPlayerToAdd.getGameProfile();
+    final PropertyMap properties = profile.getProperties();
+    final Property property = new Property("textures", texture, signature);
+    properties.removeAll("textures");
+    properties.put("textures", property);
+
+    final List<UUID> uuids = List.of(uuid);
+    final ClientboundPlayerInfoRemovePacket playerInfoRemove = new ClientboundPlayerInfoRemovePacket(
+        uuids);
+
+    final int id = nmsPlayerToAdd.getId();
+    final SynchedEntityData data = serverPlayer.getEntityData();
+    final List<SynchedEntityData.DataValue<?>> values = data.getNonDefaultValues();
+    final ClientboundSetEntityDataPacket setEntityData = new ClientboundSetEntityDataPacket(id,
+        values);
+    final ClientboundPlayerInfoUpdatePacket playerInfoAdd = new ClientboundPlayerInfoUpdatePacket(
+        ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, nmsPlayerToAdd);
+
+    final Holder<DimensionType> dimensionHolder = nmsLevel.dimensionTypeRegistration();
+    final ResourceKey<Level> key = nmsLevel.dimension();
+    final long raw = nmsLevel.getSeed();
+    final long seed = BiomeManager.obfuscateSeed(raw);
+    final ServerPlayerGameMode gameMode = serverPlayer.gameMode;
+    final GameType gameType = gameMode.getGameModeForPlayer();
+    final GameType previous = gameMode.getPreviousGameModeForPlayer();
+    final boolean debug = nmsLevel.isDebug();
+    final boolean flat = nmsLevel.isFlat();
+    final Optional<GlobalPos> deathLocation = serverPlayer.getLastDeathLocation();
+    final int portalCooldown = serverPlayer.getPortalCooldown();
+    final CommonPlayerSpawnInfo spawnInfo = new CommonPlayerSpawnInfo(dimensionHolder, key, seed,
+        gameType, previous, debug, flat, deathLocation, portalCooldown);
+    final ClientboundRespawnPacket respawnPacket = new ClientboundRespawnPacket(spawnInfo,
+        ClientboundRespawnPacket.KEEP_ALL_DATA);
+
+    final Collection<? extends Player> online = Bukkit.getOnlinePlayers();
+    for (final Player otherPlayer : online) {
+
+      final CraftPlayer craftPlayer = (CraftPlayer) otherPlayer;
+      final ServerPlayer serverViewer = craftPlayer.getHandle();
+      final ServerGamePacketListenerImpl connection = serverViewer.connection;
+      connection.send(playerInfoRemove);
+      connection.send(playerInfoAdd);
+
+      if (player != otherPlayer) {
+        final ServerEntity serverEntity = new ServerEntity(nmsLevel, nmsPlayerToAdd, 0, false, ignored -> {}, Set.of());
+        connection.send(new ClientboundRemoveEntitiesPacket(id));
+        connection.send(new ClientboundAddEntityPacket(nmsPlayerToAdd, serverEntity));
+      }
+      connection.send(setEntityData);
+    }
+
+    serverPlayer.connection.send(respawnPacket);
+    player.teleport(location);
+
+    player.updateInventory();
+
+    if (player.isOp()) {
+      player.setOp(false);
+      player.setOp(true);
+    }
   }
 
   private void removeGlowingSlime0(final Location target, final CraftPlayer player,

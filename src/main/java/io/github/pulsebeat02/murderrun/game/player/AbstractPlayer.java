@@ -245,4 +245,10 @@ public abstract class AbstractPlayer implements Participant {
   public void setWalkSpeed(final float speed) {
     this.apply(player -> player.setWalkSpeed(speed));
   }
+
+  @Override
+  public String getName() {
+    final Player player = this.getInternalPlayer();
+    return player.getName();
+  }
 }

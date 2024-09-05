@@ -117,6 +117,7 @@ public final class GlobalGadgetRegistry {
   }
 
   private void load() {
+
     final SurvivorGadgets[] survivorGadgets = SurvivorGadgets.values();
     final KillerGadgets[] killerGadgets = KillerGadgets.values();
     for (final SurvivorGadgets gadget : survivorGadgets) {
@@ -127,6 +128,9 @@ public final class GlobalGadgetRegistry {
       final Class<?> clazz = gadget.getClazz();
       this.handleGadgetClass(clazz);
     }
+
+    final DependencyGadgetHandler handler = new DependencyGadgetHandler();
+    handler.disableGadgets(this);
   }
 
   private void handleGadgetClass(final Class<?> clazz) {

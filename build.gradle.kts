@@ -2,6 +2,7 @@ import xyz.jpenilla.runtask.task.AbstractRun
 
 plugins {
     java
+    `java-library`
     id("io.github.goooler.shadow") version "8.1.8"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.44"
@@ -24,6 +25,8 @@ repositories {
     maven("https://oss.sonatype.org/content/repositories/central")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://maven.citizensnpcs.co/repo")
+    maven("https://repo.md-5.net/content/groups/public/")
+    maven("https://repo.dmulloy2.net/repository/public/")
 }
 
 dependencies {
@@ -38,6 +41,9 @@ dependencies {
     }
     compileOnly("io.netty:netty-all:4.1.97.Final")
     compileOnly("io.netty:netty-codec-http:4.1.97.Final")
+
+    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0") // only for libsdiguises
+    compileOnlyApi("LibsDisguises:LibsDisguises:10.0.44")
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_1"))
@@ -105,6 +111,7 @@ tasks {
         downloadPlugins {
             url("https://cdn.modrinth.com/data/1u6JkXh5/versions/yAujLUIK/worldedit-bukkit-7.3.6.jar")
             url("https://ci.citizensnpcs.co/job/citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3542.jar")
+            url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
         }
         minecraftVersion("1.21.1")
     }
@@ -123,21 +130,21 @@ tasks {
     shadowJar {
 
         // Disable Relocations Temporary for Hot Swapping
-        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
-        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
-        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
-        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
-        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
-        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
-        relocate("fr.skytasul", "io.github.pulsebeat02.murderrun.lib.fr.skytasul")
-        relocate(
-            "com.github.stefvanschie",
-            "io.github.pulsebeat02.murderrun.lib.com.github.stefvanschie"
-        )
-        relocate(
-            "io.netty.handler.codec.http",
-            "io.github.pulsebeat02.murderrun.lib.io.netty.handler.codec.http"
-        )
+//        relocate("net.kyori", "io.github.pulsebeat02.murderrun.lib.net.kyori")
+//        relocate("team.unnamed", "io.github.pulsebeat02.murderrun.lib.team.unnamed")
+//        relocate("org.incendo", "io.github.pulsebeat02.murderrun.lib.org.incendo")
+//        relocate("me.lucko", "io.github.pulsebeat02.murderrun.lib.me.lucko")
+//        relocate("io.leangen", "io.github.pulsebeat02.murderrun.lib.io.leangen")
+//        relocate("org.jsoup", "io.github.pulsebeat02.murderrun.lib.org.jsoup")
+//        relocate("fr.skytasul", "io.github.pulsebeat02.murderrun.lib.fr.skytasul")
+//        relocate(
+//            "com.github.stefvanschie",
+//            "io.github.pulsebeat02.murderrun.lib.com.github.stefvanschie"
+//        )
+//        relocate(
+//            "io.netty.handler.codec.http",
+//            "io.github.pulsebeat02.murderrun.lib.io.netty.handler.codec.http"
+//        )
         relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
 
         dependencies {

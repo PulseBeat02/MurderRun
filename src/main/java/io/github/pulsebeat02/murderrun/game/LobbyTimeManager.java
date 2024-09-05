@@ -106,6 +106,15 @@ public final class LobbyTimeManager {
       return;
     }
 
+    final MurderRun plugin = this.manager.getPlugin();
+    final AudienceProvider provider = plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    final Component msg = Message.LOBBY_TIMER_SKIP.build();
+    for (final Player player : players) {
+      final Audience audience = audiences.player(player);
+      audience.sendMessage(msg);
+    }
+
     this.timer.setTime(15);
   }
 

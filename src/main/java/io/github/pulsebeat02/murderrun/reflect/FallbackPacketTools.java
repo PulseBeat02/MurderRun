@@ -40,12 +40,13 @@ public final class FallbackPacketTools implements PacketToolAPI {
 
   @Override
   public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
-    throw new AssertionError("Can't set block glowing! Use a different pack provider solution");
+    throw new UnsupportedOperationException(
+        "Can't set block glowing! Use a different pack provider solution");
   }
 
   @Override
   public void injectNettyHandler(final String key, final Object handler) {
-    throw new AssertionError(
+    throw new UnsupportedOperationException(
         "Can't inject into Netty handler! Use a different pack provider solution");
   }
 }

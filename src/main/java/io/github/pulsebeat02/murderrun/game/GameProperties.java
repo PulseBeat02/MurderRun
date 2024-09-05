@@ -10,6 +10,8 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  int DORMAGOGG_EFFECT_DURATION = num("dormagogg.effect.duration");
+  int DORMAGOGG_DURATION = num("dormagogg.duration");
   String SHOP_GUI_SOUND = str("shop.gui.sound");
   String GAME_STARTING_SOUND = str("game.start_sound");
   String LOBBY_TIMER_SOUND = str("lobby.timer_sound");
