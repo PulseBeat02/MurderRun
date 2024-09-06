@@ -27,6 +27,7 @@ repositories {
     maven("https://maven.citizensnpcs.co/repo")
     maven("https://repo.md-5.net/content/groups/public/")
     maven("https://repo.dmulloy2.net/repository/public/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
 }
 
 dependencies {
@@ -41,7 +42,7 @@ dependencies {
     }
     compileOnly("io.netty:netty-all:4.1.97.Final")
     compileOnly("io.netty:netty-codec-http:4.1.97.Final")
-
+    compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0") // only for libsdiguises
     compileOnlyApi("LibsDisguises:LibsDisguises:10.0.44")
 
@@ -112,6 +113,8 @@ tasks {
             url("https://cdn.modrinth.com/data/1u6JkXh5/versions/yAujLUIK/worldedit-bukkit-7.3.6.jar")
             url("https://ci.citizensnpcs.co/job/citizens2/lastSuccessfulBuild/artifact/dist/target/Citizens-2.0.35-b3542.jar")
             url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
+            url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-200.jar")
+            // aka im lazy as fck lmao
         }
         minecraftVersion("1.21.1")
     }

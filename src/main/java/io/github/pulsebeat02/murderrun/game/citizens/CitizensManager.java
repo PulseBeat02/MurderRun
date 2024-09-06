@@ -1,5 +1,6 @@
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun.game.citizens;
 
+import io.github.pulsebeat02.murderrun.game.Game;
 import java.util.UUID;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;

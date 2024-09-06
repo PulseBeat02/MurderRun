@@ -9,5 +9,5 @@
   "main": "io.github.pulsebeat02.murderrun.MurderRun",
   "prefix": "Murder Run",
   "depend": [ "WorldEdit", "Citizens" ],
-  "soft-depend": [ "LibsDisguises" ]
+  "softdepend": [ "LibsDisguises", "PlaceholderAPI" ]
 }

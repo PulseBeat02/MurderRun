@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.map.event;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -8,10 +9,14 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
+import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
+import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Collection;
 import java.util.List;
 import org.bukkit.Location;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -57,6 +62,21 @@ public final class GamePlayerDeathEvent extends GameEvent {
     event.setDeathMessage(null);
     deathManager.runDeathTasks();
     drops.clear();
+    this.playDeathSoundEffect();
+
+    final MurderRun plugin = game.getPlugin();
+    final StatisticsManager statistics = plugin.getStatisticsManager();
+    final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(gamePlayer);
+    stats.incrementTotalDeaths();
+
+    final DamageSource source = event.getDamageSource();
+    final Entity cause = source.getCausingEntity();
+    if (cause instanceof final Player killer) {
+      final GamePlayer other = manager.getGamePlayer(killer);
+      final PlayerStatistics otherStats = statistics.getOrCreatePlayerStatistic(other);
+      otherStats.incrementTotalKills();
+    }
+    plugin.updatePluginData();
 
     if (this.allInnocentDead()) {
       game.finishGame(GameResult.MURDERERS);
@@ -65,8 +85,6 @@ public final class GamePlayerDeathEvent extends GameEvent {
     if (this.allKillersDead()) {
       game.finishGame(GameResult.INNOCENTS);
     }
-
-    this.playDeathSoundEffect();
   }
 
   private void playDeathSoundEffect() {

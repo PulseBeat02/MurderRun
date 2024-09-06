@@ -2,9 +2,9 @@ package io.github.pulsebeat02.murderrun.game.gadget.misc;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.gadget.AbstractGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;

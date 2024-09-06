@@ -2,10 +2,13 @@ package io.github.pulsebeat02.murderrun.game.stage;
 
 import static net.kyori.adventure.text.Component.empty;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
+import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import net.kyori.adventure.text.Component;
@@ -32,11 +35,13 @@ public final class GameCleanupTool {
   }
 
   private void handleKillerVictory() {
+    this.handleKillerWinStatistics();
     this.announceMurdererVictory();
     this.announceMurdererTime();
   }
 
   private void handleInnocentVictory() {
+    this.handleSurvivorWinStatistics();
     this.announceInnocentVictory();
     this.invalidateTimer();
   }
@@ -79,6 +84,47 @@ public final class GameCleanupTool {
     final Component message = Message.FINAL_TIME.build(timeElapsed);
     final PlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(message);
+  }
+
+  private void saveData() {
+    final MurderRun plugin = this.game.getPlugin();
+    plugin.updatePluginData();
+  }
+
+  private void handleSurvivorWinStatistics() {
+    final GameTimer timer = this.game.getTimeManager();
+    final long timeElapsed = timer.getElapsedTime();
+    final MurderRun plugin = this.game.getPlugin();
+    final StatisticsManager statistics = plugin.getStatisticsManager();
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.applyToAllInnocents(survivor -> {
+      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(survivor);
+      stats.insertFastestWinSurvivor(timeElapsed);
+      stats.incrementTotalWins();
+    });
+    manager.applyToAllMurderers(killer -> {
+      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(killer);
+      stats.incrementTotalLosses();
+    });
+    this.saveData();
+  }
+
+  private void handleKillerWinStatistics() {
+    final GameTimer timer = this.game.getTimeManager();
+    final long timeElapsed = timer.getElapsedTime();
+    final MurderRun plugin = this.game.getPlugin();
+    final StatisticsManager statistics = plugin.getStatisticsManager();
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.applyToAllMurderers(killer -> {
+      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(killer);
+      stats.insertFastestWinKiller(timeElapsed);
+      stats.incrementTotalWins();
+    });
+    manager.applyToAllInnocents(survivor -> {
+      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(survivor);
+      stats.incrementTotalLosses();
+    });
+    this.saveData();
   }
 
   public Game getGame() {

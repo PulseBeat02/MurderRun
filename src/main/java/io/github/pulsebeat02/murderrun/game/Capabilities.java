@@ -10,6 +10,12 @@ public enum Capabilities {
     final Server server = Bukkit.getServer();
     final PluginManager manager = server.getPluginManager();
     return manager.isPluginEnabled("LibsDisguises");
+  }),
+
+  PLACEHOLDER_API(() -> {
+    final Server server = Bukkit.getServer();
+    final PluginManager manager = server.getPluginManager();
+    return manager.isPluginEnabled("PlaceholderAPI");
   });
 
   private final boolean enabled;

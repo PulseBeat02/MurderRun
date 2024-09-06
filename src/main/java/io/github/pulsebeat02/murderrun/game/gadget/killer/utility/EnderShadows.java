@@ -3,11 +3,11 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
-import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;

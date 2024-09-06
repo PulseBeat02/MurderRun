@@ -1,7 +1,9 @@
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -27,8 +29,8 @@ public final class Game {
   private GadgetManager gadgetManager;
   private GameExecutor executor;
   private CitizensManager npcManager;
-  private DisguiseManager disguiseManager;
   private GameEndCallback callback;
+  private DisguiseManager disguiseManager;
 
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
@@ -57,18 +59,17 @@ public final class Game {
     this.gadgetManager = new GadgetManager(this);
     this.npcManager = new CitizensManager(this);
     this.callback = callback;
-    this.createDisguiseHandler();
     this.map.start();
     this.gadgetManager.start();
     this.playerManager.start(murderers, participants);
     this.preparationManager.start();
+    this.registerExtensions();
   }
 
-  private void createDisguiseHandler() {
-    if (Capabilities.LIB_DISGUISES.isDisabled()) {
-      return;
+  private void registerExtensions() {
+    if (Capabilities.LIB_DISGUISES.isEnabled()) {
+      this.disguiseManager = new DisguiseManager();
     }
-    this.disguiseManager = new DisguiseManager();
   }
 
   public GameSettings getSettings() {
@@ -78,7 +79,6 @@ public final class Game {
   public void finishGame(final GameResult code) {
     if (this.status != GameStatus.NOT_STARTED) {
       this.status = GameStatus.FINISHED;
-      this.disableDisguiseHandler();
       this.gadgetManager.shutdown();
       this.scheduler.cancelAllTasks();
       this.npcManager.shutdown();
@@ -87,6 +87,7 @@ public final class Game {
       this.map.shutdown();
       this.executor.shutdown();
       this.callback.onGameFinish(this, code);
+      this.disableDisguiseHandler();
     }
   }
 

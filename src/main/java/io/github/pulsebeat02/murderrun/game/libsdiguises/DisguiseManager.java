@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun.game.libsdiguises;
 
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import java.util.ArrayList;

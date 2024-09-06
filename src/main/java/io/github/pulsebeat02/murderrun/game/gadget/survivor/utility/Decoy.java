@@ -1,8 +1,8 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
-import io.github.pulsebeat02.murderrun.game.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;

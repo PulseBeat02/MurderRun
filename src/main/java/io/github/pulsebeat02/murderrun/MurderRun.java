@@ -5,11 +5,15 @@ import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.game.papi.MurderRunExpansion;
+import io.github.pulsebeat02.murderrun.game.statistics.StatisticManagerJSONMapper;
+import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
@@ -22,14 +26,6 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   - Fix Netty Hosting
-  - make gui update
-  - hook into papi
-    - fastest win (killer)
-    - fastest win (survivor)
-    - total kills
-    - total wins
-    - total games
-    - etc
   - customize killer gear
 
    */
@@ -38,18 +34,25 @@ public final class MurderRun extends JavaPlugin {
 
   private PluginDataConfigurationMapper configuration;
   private AudienceProvider audience;
+
   private ArenaDataJSONMapper arenaDataConfigurationMapper;
   private LobbyDataJSONMapper lobbyDataConfigurationMapper;
+  private StatisticManagerJSONMapper statisticsConfigurationMapper;
+
   private ArenaManager arenaManager;
   private LobbyManager lobbyManager;
+  private StatisticsManager statisticsManager;
+
   private Metrics metrics;
   private GameShutdownManager gameShutdownManager;
   private PlayerResourcePackChecker playerResourcePackChecker;
   private ResourcePackProvider provider;
+  private MurderRunExpansion expansion;
 
   @Override
   public void onDisable() {
     this.shutdownGames();
+    this.unregisterExpansion();
     this.updatePluginData();
     this.shutdownPluginData();
     this.stopHostingDaemon();
@@ -65,7 +68,21 @@ public final class MurderRun extends JavaPlugin {
     this.handlePackHosting();
     this.registerCommands();
     this.registerGameUtilities();
+    this.registerExpansion();
     this.enableBStats();
+  }
+
+  private void unregisterExpansion() {
+    if (Capabilities.PLACEHOLDER_API.isEnabled()) {
+      this.expansion.unregister();
+    }
+  }
+
+  private void registerExpansion() {
+    if (Capabilities.PLACEHOLDER_API.isEnabled()) {
+      this.expansion = new MurderRunExpansion(this);
+      this.expansion.register();
+    }
   }
 
   private void shutdownGames() {
@@ -86,11 +103,13 @@ public final class MurderRun extends JavaPlugin {
 
   private void readPluginData() {
     this.configuration = new PluginDataConfigurationMapper(this);
-    this.arenaDataConfigurationMapper = new ArenaDataJSONMapper(this);
-    this.lobbyDataConfigurationMapper = new LobbyDataJSONMapper(this);
+    this.arenaDataConfigurationMapper = new ArenaDataJSONMapper();
+    this.lobbyDataConfigurationMapper = new LobbyDataJSONMapper();
+    this.statisticsConfigurationMapper = new StatisticManagerJSONMapper();
     this.configuration.deserialize();
     this.arenaManager = this.arenaDataConfigurationMapper.deserialize();
     this.lobbyManager = this.lobbyDataConfigurationMapper.deserialize();
+    this.statisticsManager = this.statisticsConfigurationMapper.deserialize();
   }
 
   private void handlePackHosting() {
@@ -120,6 +139,7 @@ public final class MurderRun extends JavaPlugin {
   public void updatePluginData() {
     this.arenaDataConfigurationMapper.serialize(this.arenaManager);
     this.lobbyDataConfigurationMapper.serialize(this.lobbyManager);
+    this.statisticsConfigurationMapper.serialize(this.statisticsManager);
     this.configuration.serialize();
   }
 
@@ -163,5 +183,13 @@ public final class MurderRun extends JavaPlugin {
 
   public PluginDataConfigurationMapper getConfiguration() {
     return this.configuration;
+  }
+
+  public StatisticsManager getStatisticsManager() {
+    return this.statisticsManager;
+  }
+
+  public MurderRunExpansion getExpansion() {
+    return this.expansion;
   }
 }
