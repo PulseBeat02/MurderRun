@@ -43,7 +43,7 @@ dependencies {
     compileOnly("io.netty:netty-all:4.1.97.Final")
     compileOnly("io.netty:netty-codec-http:4.1.97.Final")
     compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0") // only for libsdiguises
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0") // only for libsdiguises
     compileOnlyApi("LibsDisguises:LibsDisguises:10.0.44")
 
     implementation(project(":nms-api"))
