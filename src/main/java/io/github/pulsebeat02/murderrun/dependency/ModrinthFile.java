@@ -1,6 +1,10 @@
 package io.github.pulsebeat02.murderrun.dependency;
 
+import java.util.Set;
+
 public final class ModrinthFile {
+
+  private static final Set<String> VALID_LOADERS = Set.of("bukkit", "spigot", "paper");
 
   private final String url;
   private final String filename;
@@ -24,7 +28,8 @@ public final class ModrinthFile {
   }
 
   public boolean isBukkitPlugin() {
-    return this.filename.toLowerCase().matches(".*(bukkit|spigot|paper).*");
+    final String lower = this.filename.toLowerCase();
+    return VALID_LOADERS.stream().anyMatch(lower::contains);
   }
 
   public String getUrl() {

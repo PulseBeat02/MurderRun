@@ -28,20 +28,19 @@ public final class DependencyManager {
         continue;
       }
       final Path downloaded = dependency.download();
-      this.enablePlugin(downloaded);
+      this.loadPluginAtRuntime(downloaded);
     }
   }
 
-  private void enablePlugin(final Path path) {
+  public void loadPluginAtRuntime(final Path file) {
+    final Server server = Bukkit.getServer();
+    final PluginManager manager = server.getPluginManager();
+    final File legacy = file.toFile();
     try {
-      final Server server = Bukkit.getServer();
-      final PluginManager manager = server.getPluginManager();
-      final File legacy = path.toFile();
-      final Plugin plugin = requireNonNull(manager.loadPlugin(legacy));
-      plugin.onLoad();
-      manager.enablePlugin(plugin);
-      plugin.onEnable();
-    } catch (final InvalidPluginException | InvalidDescriptionException e) {
+      final Plugin target = requireNonNull(manager.loadPlugin(legacy));
+      target.onLoad();
+      manager.enablePlugin(target);
+    } catch (final InvalidDescriptionException | InvalidPluginException e) {
       throw new AssertionError(e);
     }
   }

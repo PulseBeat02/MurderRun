@@ -29,7 +29,6 @@ public final class MurderRun extends JavaPlugin {
   - Fix Netty Hosting
   - customize killer gear
   - create databases
-  - fix dependency manager
 
    */
 

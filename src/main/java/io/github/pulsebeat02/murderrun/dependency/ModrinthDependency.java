@@ -28,6 +28,9 @@ public final class ModrinthDependency extends PluginDependency {
           .sendAsync(request, HttpResponse.BodyHandlers.ofString())
           .thenApplyAsync(HttpResponse::body)
           .thenApplyAsync(this::findValidFile)
+          .exceptionally(e -> {
+            throw new AssertionError(e);
+          })
           .join();
     }
   }
