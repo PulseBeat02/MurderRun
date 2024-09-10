@@ -1,8 +1,9 @@
-package io.github.pulsebeat02.murderrun.data;
+package io.github.pulsebeat02.murderrun.data.json;
 
 import static java.util.Objects.requireNonNull;
 
 import com.google.gson.Gson;
+import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;

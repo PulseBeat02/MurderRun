@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 
 public final class PackProviderMethod {
 

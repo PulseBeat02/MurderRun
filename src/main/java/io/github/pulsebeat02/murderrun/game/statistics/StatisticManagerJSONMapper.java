@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.statistics;
 
-import io.github.pulsebeat02.murderrun.data.AbstractJSONDataManager;
+import io.github.pulsebeat02.murderrun.data.json.AbstractJSONDataManager;
 
 public final class StatisticManagerJSONMapper extends AbstractJSONDataManager<StatisticsManager> {
 

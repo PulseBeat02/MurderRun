@@ -2,9 +2,9 @@ package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
-import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
-import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
-import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.data.json.ArenaDataJSONMapper;
+import io.github.pulsebeat02.murderrun.data.json.LobbyDataJSONMapper;
+import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.dependency.DependencyManager;
 import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
@@ -28,7 +28,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - customize killer gear
-  - create databases
+  - create databases (support MySQL, SQLite, and MongoDB)
 
    */
 

@@ -64,6 +64,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     implementation("org.jsoup:jsoup:1.18.1")
     implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
+    implementation("com.zaxxer:HikariCP:5.1.0")
 
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")

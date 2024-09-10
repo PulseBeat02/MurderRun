@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.data;
+package io.github.pulsebeat02.murderrun.data.json;
 
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 
