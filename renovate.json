@@ -6,8 +6,7 @@
   "packageRules": [
     {
       "matchDatasources": ["maven"],
-      "matchPackageNames": ["-SNAPSHOT"],
-      "enabled": false
+      "versioning": "semver"
     }
   ]
 }
