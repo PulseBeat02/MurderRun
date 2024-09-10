@@ -116,6 +116,8 @@ public final class MurderRun extends JavaPlugin {
 
     final RelationalDataImplAssignation relationalDataImplAssignation =
         new RelationalDataImplAssignation(this);
+    relationalDataImplAssignation.assignImplementations();
+
     this.arenaDataConfigurationMapper = relationalDataImplAssignation.getArenas();
     this.lobbyDataConfigurationMapper = relationalDataImplAssignation.getLobbies();
     this.statisticsConfigurationMapper = relationalDataImplAssignation.getStatistics();

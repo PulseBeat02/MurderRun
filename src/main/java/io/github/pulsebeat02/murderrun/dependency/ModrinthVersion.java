@@ -1,7 +1,6 @@
 package io.github.pulsebeat02.murderrun.dependency;
 
 import com.google.gson.Gson;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -53,21 +52,6 @@ public class ModrinthVersion {
 
   public boolean isListedProject() {
     return this.status.equals("listed");
-  }
-
-  public boolean isValidGameVersion() {
-
-    final String valid = PacketToolsProvider.getVersion();
-    if (this.game_versions == null) {
-      return false;
-    }
-
-    for (final String gameVersion : this.game_versions) {
-      if (gameVersion.equalsIgnoreCase(valid)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   public String getName() {

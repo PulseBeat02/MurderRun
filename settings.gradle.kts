@@ -1,3 +1,3 @@
 rootProject.name = "MurderRun"
 include("nms-api")
-include("v1_21_1")
+include("v1_21_R1")

@@ -73,7 +73,7 @@ dependencies {
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
 
     implementation(project(":nms-api"))
-    implementation(project(":v1_21_1"))
+    implementation(project(":v1_21_R1"))
     implementation("org.bstats:bstats-bukkit:3.0.3")
 
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
@@ -128,7 +128,7 @@ tasks.withType<JavaCompile>().configureEach {
 tasks {
 
     assemble {
-        dependsOn(":v1_21_1:reobfJar")
+        dependsOn(":v1_21_R1:reobfJar")
         dependsOn("shadowJar")
     }
 
