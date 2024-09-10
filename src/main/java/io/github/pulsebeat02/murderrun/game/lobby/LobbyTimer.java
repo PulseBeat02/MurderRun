@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun.game.lobby;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;

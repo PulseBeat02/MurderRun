@@ -34,18 +34,21 @@ public final class ItemFactory {
   }
 
   public static ItemStack[] createKillerGear() {
-    final ItemStack head = Item.create(Material.WITHER_SKELETON_SKULL);
+    final ItemStack head = Item.builder(Material.WITHER_SKELETON_SKULL).model(1).build();
     final ItemStack chest = Item.builder(Material.LEATHER_CHESTPLATE)
         .dye(Color.RED)
         .enchantment(Enchantment.PROTECTION, 3)
+        .model(1)
         .build();
     final ItemStack legs = Item.builder(Material.LEATHER_LEGGINGS)
         .dye(Color.RED)
         .enchantment(Enchantment.PROTECTION, 3)
+        .model(1)
         .build();
     final ItemStack boots = Item.builder(Material.LEATHER_BOOTS)
         .dye(Color.RED)
         .enchantment(Enchantment.PROTECTION, 3)
+        .model(1)
         .build();
     return new ItemStack[] {boots, legs, chest, head};
   }

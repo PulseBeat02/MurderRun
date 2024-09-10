@@ -8,6 +8,5 @@
   "api-version": "1.21",
   "main": "io.github.pulsebeat02.murderrun.MurderRun",
   "prefix": "Murder Run",
-  "depend": [ "WorldEdit", "Citizens" ],
-  "softdepend": [ "LibsDisguises", "PlaceholderAPI" ]
+  "softdepend": [ "WorldEdit", "Citizens", "LibsDisguises", "PlaceholderAPI" ]
 }

@@ -5,6 +5,7 @@ import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.dependency.DependencyManager;
 import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
@@ -27,6 +28,8 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - customize killer gear
+  - create databases
+  - fix dependency manager
 
    */
 
@@ -34,6 +37,7 @@ public final class MurderRun extends JavaPlugin {
 
   private PluginDataConfigurationMapper configuration;
   private AudienceProvider audience;
+  private DependencyManager manager;
 
   private ArenaDataJSONMapper arenaDataConfigurationMapper;
   private LobbyDataJSONMapper lobbyDataConfigurationMapper;
@@ -63,6 +67,7 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onEnable() {
     this.registerAudienceHandler();
+    this.installDependencies();
     this.registerLookUpMaps();
     this.readPluginData();
     this.handlePackHosting();
@@ -70,6 +75,11 @@ public final class MurderRun extends JavaPlugin {
     this.registerGameUtilities();
     this.registerExpansion();
     this.enableBStats();
+  }
+
+  private void installDependencies() {
+    this.manager = new DependencyManager();
+    this.manager.installDependencies();
   }
 
   private void unregisterExpansion() {
