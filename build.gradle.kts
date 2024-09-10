@@ -43,7 +43,7 @@ var runtimeDeps = listOf(
     "team.unnamed:creative-server:1.7.3",
     "org.incendo:cloud-annotations:2.0.0",
     "org.incendo:cloud-paper:2.0.0-beta.10",
-    "org.incendo:cloud-minecraft-extras:2.0.0-beta.10",
+    "org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT",
     "me.lucko:commodore:2.2",
     "org.jsoup:jsoup:1.18.1",
     "com.github.stefvanschie.inventoryframework:IF:0.10.17",
