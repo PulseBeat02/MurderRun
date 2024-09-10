@@ -8,7 +8,6 @@ import jakarta.persistence.Converter;
 import java.lang.reflect.Type;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("all") // not dealing with this checker bs
 @Converter(autoApply = true) // add annotation all subclasses
 public abstract class AbstractJSONConverter<T> implements AttributeConverter<T, String> {
 

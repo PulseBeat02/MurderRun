@@ -18,7 +18,6 @@ import org.bukkit.Server;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
 
@@ -160,11 +159,12 @@ public final class GlobalGadgetRegistry {
     }
   }
 
+  @SuppressWarnings("all")
   private Gadget invokeGadgetConstructor(final MethodHandle handle, final @Nullable Game game) {
     try {
       final MethodType type = handle.type();
       final int count = type.parameterCount();
-      return count == 0 ? (Gadget) handle.invoke() : (Gadget) handle.invoke((@NonNull Object) game);
+      return count == 0 ? (Gadget) handle.invoke() : (Gadget) handle.invoke(game);
     } catch (final Throwable e) {
       throw new RuntimeException(e);
     }
