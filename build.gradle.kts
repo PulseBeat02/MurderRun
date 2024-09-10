@@ -42,7 +42,7 @@ var runtimeDeps = listOf(
     "team.unnamed:creative-serializer-minecraft:1.7.3",
     "team.unnamed:creative-server:1.7.3",
     "org.incendo:cloud-annotations:2.0.0",
-    "org.incendo:cloud-paper:2.0.0-beta.10",
+    "org.incendo:cloud-paper:2.0.0-SNAPSHOT",
     "org.incendo:cloud-minecraft-extras:2.0.0-beta.10",
     "me.lucko:commodore:2.2",
     "org.jsoup:jsoup:1.18.1",
