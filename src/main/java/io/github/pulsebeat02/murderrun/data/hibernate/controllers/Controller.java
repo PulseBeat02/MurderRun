@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.hibernate.controllers;
+package io.github.pulsebeat02.murderrun.data.hibernate.controllers;
 
 import com.google.common.reflect.TypeToken;
 import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;

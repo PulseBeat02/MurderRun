@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.json.adapters;
+package io.github.pulsebeat02.murderrun.gson.adapters;
 
 import static java.util.Objects.requireNonNull;
 

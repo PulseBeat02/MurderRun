@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.lobby;
 
-import io.github.pulsebeat02.murderrun.hibernate.converters.LocationConverter;
+import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

@@ -1,7 +1,7 @@
-package io.github.pulsebeat02.murderrun.json.adapters;
+package io.github.pulsebeat02.murderrun.gson.adapters;
 
 import com.google.gson.*;
-import io.github.pulsebeat02.murderrun.json.GsonProvider;
+import io.github.pulsebeat02.murderrun.gson.GsonProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.lang.reflect.Type;

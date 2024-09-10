@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
-import io.github.pulsebeat02.murderrun.hibernate.converters.LocationConverter;
+import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -55,14 +55,6 @@ public final class Arena {
     this.carPartLocations = carPartLocations;
     this.spawn = spawn;
     this.truck = truck;
-    this.checkArray();
-  }
-
-  private void checkArray() {
-    final int length = this.corners.length;
-    if (length < 2) {
-      throw new AssertionError("Not enough corners! Two required for map");
-    }
   }
 
   public String getName() {

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import com.google.gson.Gson;
-import io.github.pulsebeat02.murderrun.json.GsonProvider;
+import io.github.pulsebeat02.murderrun.gson.GsonProvider;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;

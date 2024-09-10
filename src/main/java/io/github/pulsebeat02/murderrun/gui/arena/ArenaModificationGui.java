@@ -80,7 +80,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
         editMode);
   }
 
-  @SuppressWarnings("all")
+  @SuppressWarnings("all") // not dealing with this checker bs
   public ArenaModificationGui(
       final MurderRun plugin,
       final HumanEntity watcher,

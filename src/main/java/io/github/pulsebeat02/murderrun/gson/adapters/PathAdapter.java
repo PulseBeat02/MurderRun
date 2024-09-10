@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.json.adapters;
+package io.github.pulsebeat02.murderrun.gson.adapters;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;

@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.data.yaml;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.data.RelationalDataMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import java.util.concurrent.CompletableFuture;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public final class PluginDataConfigurationMapper {
 
   private static final String PROVIDER_CHOICE = "pack-provider";
+  private static final String RELATIONAL_CHOICE = "relational-data-provider";
   private static final String SERVER_PORT_FIELD = "server.port";
   private static final String SERVER_HOST_FIELD = "server.host-name";
 
@@ -26,6 +28,7 @@ public final class PluginDataConfigurationMapper {
   private String hostName;
   private int port;
   private ProviderMethod providerMethod;
+  private RelationalDataMethod relationalDataMethod;
 
   public PluginDataConfigurationMapper(final MurderRun plugin) {
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -51,6 +54,7 @@ public final class PluginDataConfigurationMapper {
     this.hostName = this.getHostName(config);
     this.port = this.getPortServerPort(config);
     this.providerMethod = this.getProviderMethod(config);
+    this.relationalDataMethod = this.getRelationalDataMethod(config);
     this.readLock.unlock();
   }
 
@@ -67,6 +71,11 @@ public final class PluginDataConfigurationMapper {
     return value == null ? ProviderMethod.MC_PACK_HOSTING : ProviderMethod.valueOf(value);
   }
 
+  private RelationalDataMethod getRelationalDataMethod(final FileConfiguration config) {
+    final String value = config.getString(RELATIONAL_CHOICE);
+    return value == null ? RelationalDataMethod.JSON : RelationalDataMethod.valueOf(value);
+  }
+
   public synchronized String getHostName() {
     return this.hostName;
   }
@@ -78,6 +87,8 @@ public final class PluginDataConfigurationMapper {
           final FileConfiguration config = this.plugin.getConfig();
           config.set(SERVER_HOST_FIELD, this.hostName);
           config.set(SERVER_PORT_FIELD, this.port);
+          config.set(PROVIDER_CHOICE, this.providerMethod.name());
+          config.set(RELATIONAL_CHOICE, this.relationalDataMethod.name());
           this.plugin.saveConfig();
           this.writeLock.unlock();
         },
@@ -90,5 +101,9 @@ public final class PluginDataConfigurationMapper {
 
   public synchronized ProviderMethod getProviderMethod() {
     return this.providerMethod;
+  }
+
+  public synchronized RelationalDataMethod getRelationalDataMethod() {
+    return this.relationalDataMethod;
   }
 }

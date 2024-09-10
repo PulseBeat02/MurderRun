@@ -1,12 +1,12 @@
-package io.github.pulsebeat02.murderrun.hibernate;
+package io.github.pulsebeat02.murderrun.data.hibernate;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.data.hibernate.controllers.ArenaController;
+import io.github.pulsebeat02.murderrun.data.hibernate.controllers.LobbyController;
+import io.github.pulsebeat02.murderrun.data.hibernate.controllers.StatisticsController;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
-import io.github.pulsebeat02.murderrun.hibernate.controllers.ArenaController;
-import io.github.pulsebeat02.murderrun.hibernate.controllers.LobbyController;
-import io.github.pulsebeat02.murderrun.hibernate.controllers.StatisticsController;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.File;
 import java.nio.file.Path;
@@ -47,5 +47,25 @@ public final class HibernateManager {
   private Path getHibernateConfigPath() {
     final Path data = IOUtils.getPluginDataFolderPath();
     return data.resolve(HIBERNATE_CONFIG_FILE_NAME);
+  }
+
+  public MurderRun getPlugin() {
+    return this.plugin;
+  }
+
+  public ArenaController getArenaController() {
+    return this.arenaController;
+  }
+
+  public LobbyController getLobbyController() {
+    return this.lobbyController;
+  }
+
+  public StatisticsController getStatisticsController() {
+    return this.statisticsController;
+  }
+
+  public SessionFactory getFactory() {
+    return this.factory;
   }
 }

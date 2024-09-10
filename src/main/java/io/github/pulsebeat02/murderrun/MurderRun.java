@@ -2,8 +2,8 @@ package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
-import io.github.pulsebeat02.murderrun.data.json.ArenaDataJSONMapper;
-import io.github.pulsebeat02.murderrun.data.json.LobbyDataJSONMapper;
+import io.github.pulsebeat02.murderrun.data.RelationalDataImplAssignation;
+import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.dependency.DependencyManager;
 import io.github.pulsebeat02.murderrun.game.Capabilities;
@@ -13,7 +13,6 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.papi.MurderRunExpansion;
-import io.github.pulsebeat02.murderrun.game.statistics.StatisticManagerJSONMapper;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
@@ -28,10 +27,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - customize killer gear
-  - create databases (support MySQL, SQLite, PostgreSQL)
-  - Use ORM (Object Relational Mapping) for databases (for ex Hibernate)
-    - annotate all data classes
-    - add custom mappings
+  - database support (test)
 
    */
 
@@ -41,9 +37,9 @@ public final class MurderRun extends JavaPlugin {
   private AudienceProvider audience;
   private DependencyManager manager;
 
-  private ArenaDataJSONMapper arenaDataConfigurationMapper;
-  private LobbyDataJSONMapper lobbyDataConfigurationMapper;
-  private StatisticManagerJSONMapper statisticsConfigurationMapper;
+  private ConfigurationManager<ArenaManager> arenaDataConfigurationMapper;
+  private ConfigurationManager<LobbyManager> lobbyDataConfigurationMapper;
+  private ConfigurationManager<StatisticsManager> statisticsConfigurationMapper;
 
   private ArenaManager arenaManager;
   private LobbyManager lobbyManager;
@@ -114,11 +110,16 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void readPluginData() {
+
     this.configuration = new PluginDataConfigurationMapper(this);
-    this.arenaDataConfigurationMapper = new ArenaDataJSONMapper();
-    this.lobbyDataConfigurationMapper = new LobbyDataJSONMapper();
-    this.statisticsConfigurationMapper = new StatisticManagerJSONMapper();
     this.configuration.deserialize();
+
+    final RelationalDataImplAssignation relationalDataImplAssignation =
+        new RelationalDataImplAssignation(this);
+    this.arenaDataConfigurationMapper = relationalDataImplAssignation.getArenas();
+    this.lobbyDataConfigurationMapper = relationalDataImplAssignation.getLobbies();
+    this.statisticsConfigurationMapper = relationalDataImplAssignation.getStatistics();
+
     this.arenaManager = this.arenaDataConfigurationMapper.deserialize();
     this.lobbyManager = this.lobbyDataConfigurationMapper.deserialize();
     this.statisticsManager = this.statisticsConfigurationMapper.deserialize();
