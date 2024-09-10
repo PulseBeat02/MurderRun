@@ -86,8 +86,8 @@ dependencies {
             module = "*"
         )
     }
-    compileOnly("io.netty:netty-all:4.1.97.Final")
-    compileOnly("io.netty:netty-codec-http:4.1.97.Final")
+    compileOnly("io.netty:netty-all:4.1.113.Final")
+    compileOnly("io.netty:netty-codec-http:4.1.113.Final")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0") // only for libsdiguises
     compileOnly("LibsDisguises:LibsDisguises:10.0.44")
