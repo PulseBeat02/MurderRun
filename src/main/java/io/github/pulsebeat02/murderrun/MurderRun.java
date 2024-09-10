@@ -26,8 +26,13 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   - Fix Netty Hosting
-  - customize killer gear
+
+  Debugging
   - database support (test)
+
+  Additions/Enhancements in Future
+    - customize killer gear
+    - Add Survivor / Killer Characters with abilities
 
    */
 
