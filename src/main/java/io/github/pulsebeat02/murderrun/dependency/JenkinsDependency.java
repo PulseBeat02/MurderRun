@@ -8,6 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,19 +16,19 @@ import org.jsoup.select.Elements;
 
 public final class JenkinsDependency extends PluginDependency {
 
+  private static final String CSS_QUERY = "a[href$=.jar]";
+
   private final String url;
 
   public JenkinsDependency(final String name, final Path parent, final String url) {
     super(name, parent);
-    this.url = url;
+    this.url = "%s/lastSuccessfulBuild/artifact/dist/target/".formatted(url);
   }
 
   @Override
   public Path download() {
-    final String builtUrl = "%s/lastSuccessfulBuild/artifact/dist/target/".formatted(this.url);
     try {
-      final Document doc = Jsoup.connect(builtUrl).get();
-      final Elements links = doc.select("a[href$=.jar]");
+      final Elements links = this.retrieveDocumentElements();
       if (!links.isEmpty()) {
         final Element link = requireNonNull(links.first());
         final String jarUrl = link.absUrl("href");
@@ -37,6 +38,12 @@ public final class JenkinsDependency extends PluginDependency {
       throw new AssertionError(e);
     }
     throw new AssertionError("No jar file found!");
+  }
+
+  private Elements retrieveDocumentElements() throws IOException {
+    final Connection connection = Jsoup.connect(url);
+    final Document doc = connection.get();
+    return doc.select(CSS_QUERY);
   }
 
   private Path downloadJar(final String jarUrl) {

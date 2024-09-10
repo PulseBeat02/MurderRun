@@ -14,8 +14,12 @@ import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import io.github.pulsebeat02.murderrun.hibernate.converters.BlockVectorConverter;
+import io.github.pulsebeat02.murderrun.hibernate.converters.PathConverter;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -25,7 +29,12 @@ import org.bukkit.World;
 
 public final class ArenaSchematic {
 
+  @Convert(converter = PathConverter.class)
+  @Column(name = "schematic_path")
   private final Path schematicPath;
+
+  @Convert(converter = BlockVectorConverter.class)
+  @Column(name = "origin")
   private final BlockVector3 origin;
 
   public ArenaSchematic(final Path schematicPath, final BlockVector3 origin) {

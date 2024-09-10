@@ -5,6 +5,6 @@ import io.github.pulsebeat02.murderrun.data.json.AbstractJSONDataManager;
 public final class StatisticManagerJSONMapper extends AbstractJSONDataManager<StatisticsManager> {
 
   public StatisticManagerJSONMapper() {
-    super(StatisticsManager.class, "player-statistics.json");
+    super("player-statistics.json");
   }
 }

@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.data.json;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 import io.github.pulsebeat02.murderrun.json.GsonProvider;
@@ -10,6 +11,7 @@ import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -22,17 +24,17 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
 
   private static final byte[] EMPTY_JSON_BYTES = "{}".getBytes();
 
+  private final transient TypeToken<T> token = new TypeToken<>(this.getClass()) {};
+
   private final ExecutorService service;
-  private final Class<T> clazz;
   private final Path json;
   private final Lock readLock;
   private final Lock writeLock;
 
-  public AbstractJSONDataManager(final Class<T> clazz, final String name) {
+  public AbstractJSONDataManager(final String name) {
     final Path parent = IOUtils.getPluginDataFolderPath();
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     this.service = Executors.newVirtualThreadPerTaskExecutor();
-    this.clazz = clazz;
     this.json = parent.resolve(name);
     this.readLock = lock.readLock();
     this.writeLock = lock.writeLock();
@@ -80,7 +82,8 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
     this.createFolders();
     try (final Reader reader = Files.newBufferedReader(this.json)) {
       final Gson gson = GsonProvider.getGson();
-      return gson.fromJson(reader, this.clazz);
+      final Type type = this.token.getType();
+      return gson.fromJson(reader, type);
     } catch (final IOException e) {
       throw new AssertionError(e);
     } finally {

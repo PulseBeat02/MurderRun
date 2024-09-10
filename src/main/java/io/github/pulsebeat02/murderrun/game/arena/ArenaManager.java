@@ -1,5 +1,13 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -7,8 +15,17 @@ import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@Entity
+@Table(name = "arena_manager")
 public final class ArenaManager {
 
+  @Id
+  private transient String id = "arena_manager";
+
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @MapKeyColumn(name = "name")
+  @JoinColumn(name = "arena_manager_id")
+  @Column(name = "arenas")
   private final Map<String, Arena> arenas;
 
   public ArenaManager() {

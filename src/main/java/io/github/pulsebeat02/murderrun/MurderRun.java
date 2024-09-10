@@ -28,7 +28,10 @@ public final class MurderRun extends JavaPlugin {
 
   - Fix Netty Hosting
   - customize killer gear
-  - create databases (support MySQL, SQLite, and MongoDB)
+  - create databases (support MySQL, SQLite, PostgreSQL)
+  - Use ORM (Object Relational Mapping) for databases (for ex Hibernate)
+    - annotate all data classes
+    - add custom mappings
 
    */
 

@@ -10,6 +10,11 @@
 # This option requires port-forwarding to work properly
 pack-provider: MC_PACK_HOSTING
 
+# The data provider to use to store all plugin data
+# Valid options are JSON and SQL. If you are using SQL, make sure to modify hibernate.cfg.xml file
+# to match your SQL database.
+data-provider: JSON
+
 # If using LOCALLY_HOSTED_DAEMON, the below options will be used
 server:
 

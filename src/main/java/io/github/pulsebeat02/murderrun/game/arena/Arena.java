@@ -1,16 +1,45 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
+import io.github.pulsebeat02.murderrun.hibernate.converters.LocationConverter;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;
 
+@Entity
+@Table(name = "arena")
 public final class Arena {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(name = "schematic")
   private final ArenaSchematic schematic;
+
+  @Column(name = "name")
   private final String name;
+
+  @Convert(converter = LocationConverter.class)
+  @Column(name = "corners")
   private final Location[] corners;
+
+  @Convert(converter = LocationConverter.class)
+  @Column(name = "car_part_locations")
   private final Location[] carPartLocations;
+
+  @Convert(converter = LocationConverter.class)
+  @Column(name = "spawn")
   private final Location spawn;
+
+  @Convert(converter = LocationConverter.class)
+  @Column(name = "truck")
   private final Location truck;
 
   public Arena(
