@@ -1,0 +1,3 @@
+OGG Format Specifications
+- 16500 Hz
+- 64k kbps
