@@ -19,6 +19,11 @@ public final class GameTimer {
     this.elapsedTime = Integer.MAX_VALUE;
   }
 
+  public int getSecondsLeft() {
+    final int seconds = GameProperties.GAME_TIME_LIMIT;
+    return seconds - (int) (this.endTime - this.startTime) / 1000;
+  }
+
   public long getStartTime() {
     return this.startTime;
   }

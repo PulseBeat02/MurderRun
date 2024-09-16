@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.PacketEventsAPI;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.RelationalDataImplAssignation;
@@ -18,6 +20,9 @@ import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import net.megavex.scoreboardlibrary.api.ScoreboardLibrary;
+import net.megavex.scoreboardlibrary.api.exception.NoPacketAdapterAvailableException;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,7 +38,16 @@ public final class MurderRun extends JavaPlugin {
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities
       - Customize Killer Gear and other abilities
+    - Rewrite game system and party system
+      - Require each game to have a name and id
+      - Add a boolean to determine if the game can be quick-joinable
+      - Add commands to join games with specific names
+        - Add a quick join command to scan through all joinable games
     - Rewrite party system and game system to use IDs
+    - Create Scoreboard
+      - Add a time limit, show player counts, show different
+        scoreboards in lobby and in game, etc. (See cops
+        and crims for example)
 
    */
 
@@ -52,10 +66,16 @@ public final class MurderRun extends JavaPlugin {
   private StatisticsManager statisticsManager;
 
   private Metrics metrics;
+  private ScoreboardLibrary scoreboardLibrary;
   private GameShutdownManager gameShutdownManager;
   private PlayerResourcePackChecker playerResourcePackChecker;
   private ResourcePackProvider provider;
   private MurderRunExpansion expansion;
+
+  @Override
+  public void onLoad() {
+    this.loadPacketEvents();
+  }
 
   @Override
   public void onDisable() {
@@ -64,6 +84,7 @@ public final class MurderRun extends JavaPlugin {
     this.updatePluginData();
     this.shutdownPluginData();
     this.stopHostingDaemon();
+    this.disableScoreboardLibrary();
     this.shutdownMetrics();
     this.shutdownAudience();
   }
@@ -72,6 +93,9 @@ public final class MurderRun extends JavaPlugin {
   public void onEnable() {
     this.registerAudienceHandler();
     this.installDependencies();
+    this.enablePacketEventsApi();
+    this.loadScoreboardLibrary();
+    this.disablePacketEventsApi();
     this.registerLookUpMaps();
     this.readPluginData();
     this.handlePackHosting();
@@ -81,9 +105,39 @@ public final class MurderRun extends JavaPlugin {
     this.enableBStats();
   }
 
+  private void disablePacketEventsApi() {
+    final PacketEventsAPI<?> api = PacketEvents.getAPI();
+    api.terminate();
+  }
+
+  private void enablePacketEventsApi() {
+    final PacketEventsAPI<?> api = PacketEvents.getAPI();
+    api.init();
+  }
+
+  private void loadPacketEvents() {
+    final PacketEventsAPI<?> api = PacketEvents.getAPI();
+    PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+    api.load();
+  }
+
   private void installDependencies() {
     this.manager = new DependencyManager();
     this.manager.installDependencies();
+  }
+
+  private void disableScoreboardLibrary() {
+    if (this.scoreboardLibrary != null) {
+      this.scoreboardLibrary.close();
+    }
+  }
+
+  private void loadScoreboardLibrary() {
+    try {
+      this.scoreboardLibrary = ScoreboardLibrary.loadScoreboardLibrary(this);
+    } catch (final NoPacketAdapterAvailableException e) {
+      throw new AssertionError(e);
+    }
   }
 
   private void unregisterExpansion() {
@@ -212,5 +266,9 @@ public final class MurderRun extends JavaPlugin {
 
   public MurderRunExpansion getExpansion() {
     return this.expansion;
+  }
+
+  public ScoreboardLibrary getScoreboardLibrary() {
+    return this.scoreboardLibrary;
   }
 }

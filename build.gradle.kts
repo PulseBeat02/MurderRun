@@ -3,7 +3,7 @@ import xyz.jpenilla.runtask.task.AbstractRun
 plugins {
     java
     `java-library`
-    id("io.github.goooler.shadow") version "8.1.8"
+    id("com.gradleup.shadow") version "8.3.1"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.44"
     id("com.diffplug.spotless") version "7.0.0.BETA2"
@@ -29,6 +29,7 @@ repositories {
     maven("https://repo.md-5.net/content/groups/public/")
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
+    maven("https://repo.codemc.io/repository/maven-releases/")
 }
 
 var runtimeDeps = listOf(
@@ -51,7 +52,10 @@ var runtimeDeps = listOf(
     "com.mysql:mysql-connector-j:9.0.0",
     "org.xerial:sqlite-jdbc:3.46.1.0",
     "org.postgresql:postgresql:42.7.4",
-    "org.mariadb.jdbc:mariadb-java-client:3.4.1"
+    "org.mariadb.jdbc:mariadb-java-client:3.4.1",
+    "net.megavex:scoreboard-library-api:2.1.12",
+    "net.megavex:scoreboard-library-implementation:2.1.12",
+    "com.github.retrooper:packetevents-spigot:2.4.0"
 );
 
 bukkit {
@@ -63,9 +67,17 @@ bukkit {
     apiVersion = "1.21"
     prefix = "Murder Run"
     main = "io.github.pulsebeat02.murderrun.MurderRun"
-    softDepend = listOf("WorldEdit", "Citizens", "LibsDisguises", "PlaceholderAPI")
+    softDepend = listOf(
+        "WorldEdit",
+        "Citizens",
+        "LibsDisguises",
+        "PlaceholderAPI",   "ProtocolLib",
+                "ProtocolSupport",
+                "ViaVersion",
+                "ViaBackwards",
+                "ViaRewind",
+                "Geyser-Spigot")
     libraries = runtimeDeps
-
 }
 
 dependencies {
