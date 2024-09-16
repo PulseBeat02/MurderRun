@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
@@ -20,8 +20,8 @@ public enum Capabilities {
 
   private final boolean enabled;
 
-  Capabilities(final Supplier<Boolean> check) {
-    this.enabled = check.get();
+  Capabilities(final BooleanSupplier check) {
+    this.enabled = check.getAsBoolean();
   }
 
   public boolean isEnabled() {

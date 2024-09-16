@@ -31,8 +31,9 @@ public final class MurderRun extends JavaPlugin {
   - database support (test)
 
   Additions/Enhancements in Future
-    - customize killer gear
     - Add Survivor / Killer Characters with abilities
+      - Customize Killer Gear and other abilities
+    - Rewrite party system and game system to use IDs
 
    */
 

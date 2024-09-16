@@ -7,8 +7,9 @@ import org.bukkit.Bukkit;
 
 public final class ServerEnvironment {
 
-  private static final Pattern VERSION_PATTERN = Pattern.compile(
-      "(?i)\\(MC: (\\d)\\.(\\d+)\\.?(\\d+?)?(?: (Pre-Release|Release Candidate) )?(\\d)?\\)");
+  private static final String PATTERN =
+      "(?i)\\(MC: (\\d)\\.(\\d+)\\.?(\\d+?)?(?: (Pre-Release|Release Candidate) )?(\\d)?\\)";
+  private static final Pattern VERSION_PATTERN = Pattern.compile(PATTERN);
   private static final String PACKAGE_PATTERN = "v1_%s_R%s";
 
   private static final String NMS_REVISION;

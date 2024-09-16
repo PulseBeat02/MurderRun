@@ -5,8 +5,8 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -37,7 +37,7 @@ public final class GameScheduler {
       final Runnable runnable,
       final long delay,
       final long period,
-      final Supplier<Boolean> condition) {
+      final BooleanSupplier condition) {
     final ConditionalTask task = new ConditionalTask(this.game, runnable, condition);
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);

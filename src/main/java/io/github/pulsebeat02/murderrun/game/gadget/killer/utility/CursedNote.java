@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -85,7 +85,7 @@ public final class CursedNote extends KillerGadget {
     item.setPickupDelay(Integer.MAX_VALUE);
     part.setCursed(cursed);
 
-    final Supplier<Boolean> condition = () -> !part.isCursed();
+    final BooleanSupplier condition = () -> !part.isCursed();
     scheduler.scheduleConditionalTask(
         () -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
   }
