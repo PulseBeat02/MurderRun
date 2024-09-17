@@ -6,6 +6,7 @@ import com.google.common.collect.Iterables;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.event.PreGameEvents;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
+import io.github.pulsebeat02.murderrun.game.lobby.LobbyScoreboard;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyTimeManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
@@ -13,6 +14,7 @@ import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -22,38 +24,51 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class GameManager {
+public final class PreGameManager {
 
   private final MurderRun plugin;
   private final Game game;
+
   private final Collection<Player> murderers;
   private final Collection<Player> participants;
   private final GameSettings settings;
-  private final GameEndCallback callback;
-  private final Consumer<GameManager> onGameStart;
 
-  private LobbyTimeManager lobbyTimeManager;
+  private final GameEndCallback callback;
+  private final Consumer<PreGameManager> onGameStart;
+  private final int min;
+  private final int max;
+  private final boolean quickJoinable;
+
+  private @Nullable LobbyTimeManager lobbyTimeManager;
+  private LobbyScoreboard scoreboard;
   private PreGameEvents events;
 
-  public GameManager(
+  public PreGameManager(
       final MurderRun plugin,
+      final int min,
+      final int max,
+      final boolean quickJoinable,
       final GameEndCallback callback,
-      final Consumer<GameManager> onGameStart) {
+      final Consumer<PreGameManager> onGameStart) {
     this.plugin = plugin;
     this.callback = callback;
     this.onGameStart = onGameStart;
+    this.min = min;
+    this.max = max;
+    this.quickJoinable = quickJoinable;
     this.game = new Game(plugin);
-    this.murderers = new HashSet<>();
-    this.participants = new HashSet<>();
+    this.murderers = Collections.synchronizedSet(new HashSet<>());
+    this.participants = Collections.synchronizedSet(new HashSet<>());
     this.settings = new GameSettings();
   }
 
   public void initialize() {
-    this.lobbyTimeManager = new LobbyTimeManager(this);
     this.events = new PreGameEvents(this);
+    this.scoreboard = new LobbyScoreboard(this);
     this.events.registerEvents();
-    this.lobbyTimeManager.startTimer();
+    this.scoreboard.initializeSidebar();
   }
 
   public void setPlayerToMurderer(final Player murderer) {
@@ -78,7 +93,9 @@ public final class GameManager {
   public void removeParticipantFromLobby(final Player player) {
     this.murderers.remove(player);
     this.participants.remove(player);
+    this.scoreboard.addPlayers();
     this.clearInventory(player);
+    this.checkIfEnoughPlayers();
   }
 
   public void loadResourcePack(final Player player) {
@@ -91,11 +108,34 @@ public final class GameManager {
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
     this.participants.add(player);
-    this.lobbyTimeManager.resetTime();
+    this.scoreboard.addPlayers();
     this.teleportPlayerToLobby(player);
     this.clearInventory(player);
     this.loadResourcePack(player);
     this.giveItems(player, killer);
+    this.checkIfEnoughPlayers();
+    if (this.lobbyTimeManager != null) {
+      this.lobbyTimeManager.resetTime();
+    }
+  }
+
+  private void checkIfEnoughPlayers() {
+
+    final int count = this.participants.size();
+    if (count < this.min) {
+      if (this.lobbyTimeManager != null) {
+        this.lobbyTimeManager.cancelTimer();
+        this.lobbyTimeManager = null;
+      }
+      return;
+    }
+
+    if (this.lobbyTimeManager != null) {
+      return;
+    }
+
+    this.lobbyTimeManager = new LobbyTimeManager(this);
+    this.lobbyTimeManager.startTimer();
   }
 
   private void giveItems(final Player player, final boolean killer) {
@@ -156,7 +196,9 @@ public final class GameManager {
 
   public void shutdown() {
     this.events.unregisterEvents();
-    this.lobbyTimeManager.shutdown();
+    if (this.lobbyTimeManager != null) {
+      this.lobbyTimeManager.shutdown();
+    }
   }
 
   public MurderRun getPlugin() {
@@ -177,5 +219,34 @@ public final class GameManager {
 
   public Collection<Player> getParticipants() {
     return this.participants;
+  }
+
+  public int getMinimumPlayerCount() {
+    return this.min;
+  }
+
+  public int getMaximumPlayerCount() {
+    return this.max;
+  }
+
+  public int getCurrentPlayerCount() {
+    return this.participants.size();
+  }
+
+  public boolean isQuickJoinable() {
+    return this.quickJoinable;
+  }
+
+  public boolean isGameFull() {
+    final int current = this.getCurrentPlayerCount();
+    return current == this.max;
+  }
+
+  public @Nullable LobbyTimeManager getLobbyTimeManager() {
+    return this.lobbyTimeManager;
+  }
+
+  public LobbyScoreboard getScoreboard() {
+    return this.scoreboard;
   }
 }

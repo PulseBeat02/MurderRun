@@ -9,7 +9,7 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-import io.github.pulsebeat02.murderrun.game.GameManager;
+import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
@@ -33,12 +33,13 @@ import org.incendo.cloud.type.tuple.Triplet;
 public final class PlayerListGui extends ChestGui {
 
   private final HumanEntity watcher;
-  private final Map<Player, Triplet<GameManager, Boolean, Boolean>> games;
+  private final Map<Player, Triplet<PreGameManager, Boolean, Boolean>> games;
 
   private PaginatedPane pages;
 
   public PlayerListGui(
-      final HumanEntity watcher, final Map<Player, Triplet<GameManager, Boolean, Boolean>> games) {
+      final HumanEntity watcher,
+      final Map<Player, Triplet<PreGameManager, Boolean, Boolean>> games) {
     super(
         6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
     this.watcher = watcher;
@@ -83,7 +84,7 @@ public final class PlayerListGui extends ChestGui {
       return;
     }
 
-    final Triplet<GameManager, Boolean, Boolean> triplet = this.games.get(player);
+    final Triplet<PreGameManager, Boolean, Boolean> triplet = this.games.get(player);
     final String name = player.getName();
     final Player owner = (Player) this.watcher;
     if (triplet == null) {
@@ -91,7 +92,7 @@ public final class PlayerListGui extends ChestGui {
       return;
     }
 
-    final GameManager manager = triplet.first();
+    final PreGameManager manager = triplet.first();
     final Collection<Player> killers = manager.getMurderers();
     final String phrase = killers.contains(player) ? "innocent" : "murderer";
     owner.performCommand("murder game set %s %s".formatted(phrase, name));
@@ -119,7 +120,7 @@ public final class PlayerListGui extends ChestGui {
     final Collection<? extends Player> online = Bukkit.getOnlinePlayers();
     final List<ItemStack> items = new ArrayList<>();
     for (final Player player : online) {
-      final Triplet<GameManager, Boolean, Boolean> triplet = this.games.get(player);
+      final Triplet<PreGameManager, Boolean, Boolean> triplet = this.games.get(player);
       final ItemStack stack =
           triplet == null ? this.createNormalStack(player) : this.getInGameStack(player, triplet);
       items.add(stack);
@@ -128,9 +129,9 @@ public final class PlayerListGui extends ChestGui {
   }
 
   private ItemStack getInGameStack(
-      final Player player, final Triplet<GameManager, Boolean, Boolean> triplet) {
+      final Player player, final Triplet<PreGameManager, Boolean, Boolean> triplet) {
     final ItemStack stack;
-    final GameManager manager = triplet.first();
+    final PreGameManager manager = triplet.first();
     final Collection<Player> killers = manager.getMurderers();
     if (killers.contains(player)) {
       stack = this.createKillerStack(player);

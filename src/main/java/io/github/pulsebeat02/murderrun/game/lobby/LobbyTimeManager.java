@@ -4,8 +4,8 @@ import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.sound.Sound.sound;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.GameManager;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -27,12 +27,12 @@ public final class LobbyTimeManager {
 
   private static final Set<Integer> ANNOUNCE_TIMES = Set.of(15, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
 
-  private final GameManager manager;
+  private final PreGameManager manager;
 
   private LobbyTimer timer;
   private BukkitTask started;
 
-  public LobbyTimeManager(final GameManager manager) {
+  public LobbyTimeManager(final PreGameManager manager) {
     this.manager = manager;
   }
 
@@ -52,6 +52,19 @@ public final class LobbyTimeManager {
     this.started.cancel();
   }
 
+  public void cancelTimer() {
+    this.timer.cancel();
+    final Component msg = Message.LOBBY_TIMER_CANCEL.build();
+    final MurderRun plugin = this.manager.getPlugin();
+    final AudienceProvider provider = plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    final Collection<Player> players = this.manager.getParticipants();
+    for (final Player player : players) {
+      final Audience audience = audiences.player(player);
+      audience.sendMessage(msg);
+    }
+  }
+
   public void resetTime() {
     this.timer.setTime(60);
   }
@@ -65,6 +78,10 @@ public final class LobbyTimeManager {
     if (ANNOUNCE_TIMES.contains(seconds)) {
       this.playTimerSound(seconds);
     }
+
+    final LobbyScoreboard scoreboard = this.manager.getScoreboard();
+    scoreboard.addTimer();
+
     this.setLevel(seconds);
   }
 
@@ -129,5 +146,9 @@ public final class LobbyTimeManager {
       }
     }
     return false;
+  }
+
+  public LobbyTimer getTimer() {
+    return this.timer;
   }
 }

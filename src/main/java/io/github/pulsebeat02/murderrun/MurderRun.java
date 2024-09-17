@@ -33,23 +33,21 @@ public final class MurderRun extends JavaPlugin {
   - Fix Netty Hosting
 
   Debugging
-  - database support (test)
-  - dead chat (test)
-  - random killer (test)
+  - Trial Database Support (test)
+  - Verify Dead Chat and Normal Chat Working (test)
+  - Verify Random Killer Chosen if Timer Ends  (test)
+  - Verify Minimum / Maximum Player Count for Timer (test)
+  - Verify Scoreboard of Lobby is Working (test)
 
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities
       - Customize Killer Gear and other abilities
     - Rewrite game system and party system
-      - Require each game to have a name and id
+      - Require each game to have an id
       - Add a boolean to determine if the game can be quick-joinable
       - Add commands to join games with specific names
         - Add a quick join command to scan through all joinable games
-    - Rewrite party system and game system to use IDs
-    - Create Scoreboard
-      - Add a time limit, show player counts, show different
-        scoreboards in lobby and in game, etc. (See cops
-        and crims for example)
+        - If game is full, don't allow join
 
    */
 

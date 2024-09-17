@@ -498,4 +498,13 @@ public interface Message extends LocaleTools {
   UniComponent<Sender, Integer> SCOREBOARD_MIN_PLAYERS =
       direct("murderrun.game.scoreboard.min", null);
   NullComponent<Sender> KILLER_ASSIGN = direct("murderrun.game.killer_assign");
+  NullComponent<Sender> LOBBY_TIMER_CANCEL = direct("murderrun.lobby.timer.cancel");
+  NullComponent<Sender> LOBBY_SCOREBOARD_TITLE = direct("murdderun.lobby.scoreboard.title");
+  UniComponent<Sender, String> LOBBY_SCOREBOARD_ARENA =
+      direct("murderrun.lobby.scoreboard.arena", null);
+  BiComponent<Sender, Integer, Integer> LOBBY_SCOREBOARD_PLAYERS =
+      direct("murderrun.lobby.scoreboard.players", null, null);
+  UniComponent<Sender, Integer> LOBBY_SCOREBOARD_TIME =
+      direct("murderrun.lobby.scoreboard.time", null);
+  NullComponent<Sender> LOBBY_SCOREBOARD_DOMAIN = direct("murderrun.lobby.scoreboard.domain");
 }

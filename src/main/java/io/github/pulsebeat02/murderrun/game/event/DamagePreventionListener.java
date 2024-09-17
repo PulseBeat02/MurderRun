@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.event;
 
-import io.github.pulsebeat02.murderrun.game.GameManager;
+import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import java.util.Collection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -11,9 +11,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public final class DamagePreventionListener implements Listener {
 
-  private final GameManager manager;
+  private final PreGameManager manager;
 
-  public DamagePreventionListener(final GameManager manager) {
+  public DamagePreventionListener(final PreGameManager manager) {
     this.manager = manager;
   }
 
@@ -21,7 +21,7 @@ public final class DamagePreventionListener implements Listener {
   public void onDamage(final EntityDamageEvent event) {
 
     final Entity entity = event.getEntity();
-    if (!(entity instanceof Player player)) {
+    if (!(entity instanceof final Player player)) {
       return;
     }
 

@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.event;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.GameManager;
+import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import java.util.Collection;
 import java.util.Set;
 import org.bukkit.Bukkit;
@@ -12,10 +12,10 @@ import org.bukkit.plugin.PluginManager;
 
 public final class PreGameEvents {
 
-  private final GameManager manager;
+  private final PreGameManager manager;
   private final Collection<Listener> events;
 
-  public PreGameEvents(final GameManager manager) {
+  public PreGameEvents(final PreGameManager manager) {
     this.manager = manager;
     this.events = Set.of(new DupePreventListener(manager), new DamagePreventionListener(manager));
   }

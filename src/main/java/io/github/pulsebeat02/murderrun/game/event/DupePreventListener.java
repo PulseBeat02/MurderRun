@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.event;
 
-import io.github.pulsebeat02.murderrun.game.GameManager;
+import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import org.bukkit.entity.Item;
@@ -13,9 +13,9 @@ import org.bukkit.inventory.ItemStack;
 
 public final class DupePreventListener implements Listener {
 
-  private final GameManager manager;
+  private final PreGameManager manager;
 
-  public DupePreventListener(final GameManager manager) {
+  public DupePreventListener(final PreGameManager manager) {
     this.manager = manager;
   }
 

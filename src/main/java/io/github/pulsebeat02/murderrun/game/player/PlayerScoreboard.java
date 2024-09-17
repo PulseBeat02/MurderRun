@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import net.megavex.scoreboardlibrary.api.ScoreboardLibrary;
 import net.megavex.scoreboardlibrary.api.sidebar.Sidebar;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class PlayerScoreboard {
 
@@ -22,7 +23,8 @@ public final class PlayerScoreboard {
     this.sidebar = this.createSidebar(gamePlayer);
   }
 
-  private Sidebar createSidebar(final GamePlayer gamePlayer) {
+  private Sidebar createSidebar(
+      @UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
     final Game game = gamePlayer.getGame();
     final MurderRun plugin = game.getPlugin();
     final ScoreboardLibrary library = plugin.getScoreboardLibrary();
