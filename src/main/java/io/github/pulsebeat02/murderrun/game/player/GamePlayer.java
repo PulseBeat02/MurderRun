@@ -34,6 +34,7 @@ public class GamePlayer extends AbstractPlayer {
     this.audience = new PlayerAudience(this.game, this.uuid);
     this.metadata = new MetadataManager(this);
     this.deathManager = new DeathManager();
+    this.metadata.start();
   }
 
   @Override

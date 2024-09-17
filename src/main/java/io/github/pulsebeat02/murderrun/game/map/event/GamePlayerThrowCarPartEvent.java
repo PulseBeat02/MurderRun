@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -11,11 +10,12 @@ import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerScoreboard;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
-import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -63,16 +63,25 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
     manager.removeCarPart(carPart);
 
-    final java.util.Map<String, CarPart> carPartItemStackMap = manager.getParts();
-    final int leftOver = carPartItemStackMap.size();
-    this.announceCarPartRetrieval(leftOver);
-    this.setBossBar(leftOver);
+    final int leftOver = manager.getRemainingParts();
+    this.setScoreboard();
     this.checkGameEnd(leftOver);
+    this.announceCarPartRetrieval(leftOver);
 
     final Player thrower = event.getPlayer();
     if (!this.checkIfPlayerStillHasCarPart(thrower)) {
       this.setPlayerCarPartStatus(thrower);
     }
+  }
+
+  private void setScoreboard() {
+    final Game game = this.getGame();
+    final PlayerManager manager = game.getPlayerManager();
+    manager.applyToAllParticipants(player -> {
+      final MetadataManager metadata = player.getMetadataManager();
+      final PlayerScoreboard scoreboard = metadata.getSidebar();
+      scoreboard.addPartsCount();
+    });
   }
 
   private void announceCarPartRetrieval(final int leftOver) {
@@ -81,18 +90,6 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
     final PlayerManager manager = game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);
     manager.playSoundForAllParticipants("block.anvil.use");
-  }
-
-  private void setBossBar(final int leftOver) {
-    final Game game = this.getGame();
-    final int parts = GameProperties.CAR_PARTS_COUNT;
-    final int collected = parts - leftOver;
-    final Component name = Message.BOSS_BAR.build(collected, parts);
-    final float progress = (float) collected / parts;
-    final BossBar.Color color = BossBar.Color.GREEN;
-    final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
-    final PlayerManager manager = game.getPlayerManager();
-    manager.showBossBarForAllParticipants(name, progress, color, overlay);
   }
 
   private void checkGameEnd(final int leftOver) {

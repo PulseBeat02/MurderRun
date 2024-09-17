@@ -10,9 +10,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
@@ -24,11 +22,11 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 public final class PlayerAudience {
 
   private final Audience audience;
-  private final Collection<BossBar> bars;
+  private final Map<String, BossBar> bars;
 
   public PlayerAudience(final Game game, final UUID uuid) {
     this.audience = this.getAudience(game, uuid);
-    this.bars = new HashSet<>();
+    this.bars = new HashMap<>();
   }
 
   private Audience getAudience(
@@ -60,13 +58,21 @@ public final class PlayerAudience {
   }
 
   public void showBossBar(
+      final String id,
       final Component name,
       final float progress,
       final BossBar.Color color,
       final BossBar.Overlay overlay) {
     final BossBar bar = bossBar(name, progress, color, overlay);
-    this.bars.add(bar);
+    this.bars.put(id, bar);
     this.audience.showBossBar(bar);
+  }
+
+  public void updateBossBar(final String id, final float progress) {
+    final BossBar bar = this.bars.get(id);
+    if (bar != null) {
+      bar.progress(progress);
+    }
   }
 
   public void stopSound(final SoundResource key) {
@@ -83,7 +89,8 @@ public final class PlayerAudience {
   }
 
   public void removeAllBossBars() {
-    for (final BossBar bar : this.bars) {
+    final Collection<BossBar> bars = this.bars.values();
+    for (final BossBar bar : bars) {
       this.audience.hideBossBar(bar);
     }
   }

@@ -2,18 +2,22 @@ package io.github.pulsebeat02.murderrun.game;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.collect.Iterables;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.event.PreGameEvents;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyTimeManager;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import net.kyori.adventure.resource.ResourcePackRequest;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -130,7 +134,20 @@ public final class GameManager {
     requestFuture.thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request));
   }
 
+  private void assignKiller() {
+    if (this.murderers.isEmpty()) {
+      final int size = this.participants.size();
+      final int index = RandomUtils.generateInt(size);
+      final Player random = Iterables.get(this.participants, index);
+      final Component msg = Message.KILLER_ASSIGN.build();
+      final String raw = AdventureUtils.serializeComponentToLegacyString(msg);
+      this.setPlayerToMurderer(random);
+      random.sendMessage(raw);
+    }
+  }
+
   public Game startGame() {
+    this.assignKiller();
     this.onGameStart.accept(this);
     this.game.startGame(this.settings, this.murderers, this.participants, this.callback);
     this.shutdown();

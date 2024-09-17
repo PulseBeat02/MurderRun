@@ -32,12 +32,19 @@ public final class MetadataManager {
   private final WorldBorder shadyWorldBorder;
   private final Team hideNameTagTeam;
 
+  private PlayerScoreboard sidebar;
+
   public MetadataManager(final GamePlayer gamePlayer) {
     this.gamePlayer = gamePlayer;
     this.glowTeams = this.createGlowTeams(gamePlayer);
     this.shadyWorldBorder = this.createWorldBorder(gamePlayer);
     this.hideNameTagTeam = this.createHideNameTagTeam();
     this.glowEntities = HashMultimap.create();
+  }
+
+  public void start() {
+    this.sidebar = new PlayerScoreboard(this.gamePlayer);
+    this.sidebar.initializeSidebar();
   }
 
   private WorldBorder createWorldBorder(
@@ -190,5 +197,9 @@ public final class MetadataManager {
   public void hideNameTag(final GameScheduler scheduler, final long ticks) {
     this.setNameTagStatus(true);
     scheduler.scheduleTask(() -> this.setNameTagStatus(false), ticks);
+  }
+
+  public PlayerScoreboard getSidebar() {
+    return this.sidebar;
   }
 }

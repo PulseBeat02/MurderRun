@@ -38,8 +38,9 @@ public final class PlayerManager {
   private final Map<UUID, GamePlayer> lookupMap;
   private Collection<GamePlayer> cachedDeadPlayers;
   private Collection<Killer> cachedKillers;
-  private Collection<Survivor> cachedAlivePlayers;
+  private Collection<Survivor> cachedAliveSurvivors;
   private Collection<Survivor> cachedSurvivors;
+  private Collection<GamePlayer> cachedAlivePlayers;
 
   public PlayerManager(final Game game) {
     this.game = game;
@@ -82,7 +83,9 @@ public final class PlayerManager {
         .filter(player -> player instanceof Survivor)
         .map(murderer -> (Survivor) murderer)
         .collect(StreamUtils.toSynchronizedSet());
-    this.cachedAlivePlayers = this.cachedSurvivors.stream()
+    this.cachedAlivePlayers =
+        players.stream().filter(GamePlayer::isAlive).collect(StreamUtils.toSynchronizedSet());
+    this.cachedAliveSurvivors = this.cachedSurvivors.stream()
         .filter(GamePlayer::isAlive)
         .collect(StreamUtils.toSynchronizedSet());
   }
@@ -177,6 +180,10 @@ public final class PlayerManager {
   }
 
   public void applyToAllLivingInnocents(final Consumer<GamePlayer> consumer) {
+    this.cachedAliveSurvivors.forEach(consumer);
+  }
+
+  public void applyToAllLivingParticipants(final Consumer<GamePlayer> consumer) {
     this.cachedAlivePlayers.forEach(consumer);
   }
 
@@ -185,7 +192,7 @@ public final class PlayerManager {
   }
 
   public Collection<Survivor> getAliveInnocentPlayers() {
-    return this.cachedAlivePlayers;
+    return this.cachedAliveSurvivors;
   }
 
   public void applyToAllMurderers(final Consumer<GamePlayer> consumer) {
@@ -234,6 +241,13 @@ public final class PlayerManager {
     final GamePlayer result = this.lookupMap.remove(uuid);
     this.resetCachedPlayers();
     return result;
+  }
+
+  public void sendMessageToAllDeadParticipants(final Component message) {
+    this.applyToAllDead(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
   }
 
   public void sendMessageToAllParticipants(final Component message) {
@@ -347,6 +361,7 @@ public final class PlayerManager {
   }
 
   public void showBossBarForAllParticipants(
+      final String id,
       final Component name,
       final float progress,
       final BossBar.Color color,
@@ -354,7 +369,14 @@ public final class PlayerManager {
     this.applyToAllParticipants(player -> {
       final PlayerAudience audience = player.getAudience();
       audience.removeAllBossBars();
-      audience.showBossBar(name, progress, color, overlay);
+      audience.showBossBar(id, name, progress, color, overlay);
+    });
+  }
+
+  public void updateBossBarForAllParticipants(final String id, final float progress) {
+    this.applyToAllParticipants(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.updateBossBar(id, progress);
     });
   }
 

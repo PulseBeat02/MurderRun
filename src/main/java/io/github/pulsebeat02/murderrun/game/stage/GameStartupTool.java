@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
+import io.github.pulsebeat02.murderrun.game.GameTimerUpdater;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
@@ -20,7 +21,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.function.Consumer;
-import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
@@ -41,7 +41,6 @@ public final class GameStartupTool {
   public void start() {
     this.teleportInnocentPlayers();
     this.announceHidePhase();
-    this.setBossBar();
     this.clearNetherStars();
     this.setNight();
     this.runFutureTask();
@@ -70,17 +69,6 @@ public final class GameStartupTool {
     final Component title = Message.PREPARATION_PHASE.build();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);
-  }
-
-  private void setBossBar() {
-    final GameSettings settings = this.game.getSettings();
-    final int parts = GameProperties.CAR_PARTS_COUNT;
-    final Component name = Message.BOSS_BAR.build(0, parts);
-    final float progress = 0f;
-    final BossBar.Color color = BossBar.Color.GREEN;
-    final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
-    final PlayerManager manager = this.game.getPlayerManager();
-    manager.showBossBarForAllParticipants(name, progress, color, overlay);
   }
 
   private void clearNetherStars() {
@@ -185,7 +173,9 @@ public final class GameStartupTool {
 
   private void startTimer() {
     final GameTimer manager = this.game.getTimeManager();
+    final GameTimerUpdater updater = new GameTimerUpdater(this.game);
     manager.startTimer();
+    updater.start();
   }
 
   public Game getGame() {

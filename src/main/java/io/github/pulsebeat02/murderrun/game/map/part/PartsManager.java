@@ -89,4 +89,8 @@ public final class PartsManager {
         PDCUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
     return uuid == null ? null : this.parts.get(uuid);
   }
+
+  public int getRemainingParts() {
+    return this.parts.size();
+  }
 }

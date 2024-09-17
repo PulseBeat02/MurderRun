@@ -34,6 +34,8 @@ public final class MurderRun extends JavaPlugin {
 
   Debugging
   - database support (test)
+  - dead chat (test)
+  - random killer (test)
 
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities

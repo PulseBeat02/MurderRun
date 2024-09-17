@@ -76,6 +76,10 @@ public final class AdventureUtils {
     return true;
   }
 
+  public static Component deserializeLegacyStringToComponent(final String legacy) {
+    return SERIALIZER.deserialize(legacy);
+  }
+
   public static List<String> serializeLoreToLegacyLore(final List<Component> lore) {
     final List<String> rawLore = new ArrayList<>();
     for (final Component component : lore) {

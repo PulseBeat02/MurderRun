@@ -5,9 +5,12 @@ public final class GameTimer {
   private long startTime;
   private long endTime;
   private long elapsedTime;
+  private long totalTime;
 
   public void startTimer() {
+    final int seconds = GameProperties.GAME_TIME_LIMIT;
     this.startTime = System.currentTimeMillis();
+    this.totalTime = seconds * 1000L;
   }
 
   public void stopTimer() {
@@ -19,9 +22,12 @@ public final class GameTimer {
     this.elapsedTime = Integer.MAX_VALUE;
   }
 
-  public int getSecondsLeft() {
-    final int seconds = GameProperties.GAME_TIME_LIMIT;
-    return seconds - (int) (this.endTime - this.startTime) / 1000;
+  public long getTotalTime() {
+    return this.totalTime;
+  }
+
+  public long getTimeLeft() {
+    return totalTime - (this.endTime - this.startTime);
   }
 
   public long getStartTime() {

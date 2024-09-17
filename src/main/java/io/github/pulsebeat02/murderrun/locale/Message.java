@@ -23,7 +23,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MURDERER_VICTORY_MURDERER =
       direct("murderrun.game.murderer_victory_murderer");
   UniComponent<Sender, Long> FINAL_TIME = direct("murderrun.game.time", null);
-  BiComponent<Sender, Integer, Integer> BOSS_BAR = direct("murderrun.game.boss_bar", null, null);
+  NullComponent<Sender> BOSS_BAR = direct("murderrun.game.boss_bar");
   UniComponent<Sender, String> PLAYER_DEATH = direct("murderrun.game.death", null);
   NullComponent<Sender> RESOURCEPACK_PROMPT = direct("murderrun.resourcepack");
   TriComponent<Sender, Integer, Integer, Integer> ARENA_FIRST_CORNER =
@@ -481,4 +481,21 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MIMIC_NAME = direct("murderrun.game.gadget.mimic.name");
   NullComponent<Sender> MIMIC_LORE = direct("murderrun.game.gadget.mimic.lore");
   NullComponent<Sender> MIMIC_ACTIVATE = direct("murderrun.game.gadget.mimic.activate");
+  UniComponent<Sender, String> DEAD_CHAT_PREFIX = direct("murderrun.chat.dead", null);
+  NullComponent<Sender> SCOREBOARD_TITLE = direct("murderrun.game.scoreboard.title");
+  NullComponent<Sender> SCOREBOARD_ROLE = direct("murderrun.game.scoreboard.role");
+  NullComponent<Sender> SCOREBOARD_ROLE_SURVIVOR =
+      direct("murderrun.game.scoreboard.role.survivor");
+  NullComponent<Sender> SCOREBOARD_ROLE_KILLER = direct("murderrun.game.scoreboard.role.killer");
+  NullComponent<Sender> SCOREBOARD_OBJECTIVE = direct("murderrun.game.scoreboard.objective");
+  NullComponent<Sender> SCOREBOARD_OBJECTIVE_SURVIVOR =
+      direct("murderrun.game.scoreboard.objective.survivor");
+  NullComponent<Sender> SCOREBOARD_OBJECTIVE_KILLER =
+      direct("murderrun.game.scoreboard.objective.killer");
+  NullComponent<Sender> SCOREBOARD_PARTS = direct("murderrun.game.scoreboard.parts");
+  UniComponent<Sender, Integer> SCOREBOARD_PARTS_COUNT =
+      direct("murderrun.game.scoreboard.parts.count", null);
+  UniComponent<Sender, Integer> SCOREBOARD_MIN_PLAYERS =
+      direct("murderrun.game.scoreboard.min", null);
+  NullComponent<Sender> KILLER_ASSIGN = direct("murderrun.game.killer_assign");
 }
