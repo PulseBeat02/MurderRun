@@ -55,7 +55,7 @@ var runtimeDeps = listOf(
     "org.mariadb.jdbc:mariadb-java-client:3.4.1",
     "net.megavex:scoreboard-library-api:2.1.12",
     "net.megavex:scoreboard-library-implementation:2.1.12",
-    "com.github.retrooper:packetevents-spigot:2.4.0"
+    "com.github.retrooper:packetevents-spigot:2.5.0"
 );
 
 bukkit {
