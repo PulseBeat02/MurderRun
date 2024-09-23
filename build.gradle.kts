@@ -86,7 +86,7 @@ dependencies {
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
-    implementation("org.bstats:bstats-bukkit:3.0.3")
+    implementation("org.bstats:bstats-bukkit:3.1.0")
 
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
