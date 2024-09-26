@@ -5,7 +5,6 @@ import static net.kyori.adventure.sound.Sound.sound;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -58,7 +57,8 @@ public final class LobbyTimeManager {
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
-    final Collection<Player> players = this.manager.getParticipants();
+    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
       final Audience audience = audiences.player(player);
       audience.sendMessage(msg);
@@ -71,22 +71,24 @@ public final class LobbyTimeManager {
 
   private void handleTimer(final int seconds) {
 
-    if (seconds == 0) {
-      this.manager.startGame();
-    }
-
     if (ANNOUNCE_TIMES.contains(seconds)) {
       this.playTimerSound(seconds);
     }
 
-    final LobbyScoreboard scoreboard = this.manager.getScoreboard();
+    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final LobbyScoreboard scoreboard = playerManager.getScoreboard();
     scoreboard.addTimer();
 
     this.setLevel(seconds);
+
+    if (seconds == 0) {
+      this.manager.startGame();
+    }
   }
 
   private void setLevel(final int seconds) {
-    final Collection<Player> players = this.manager.getParticipants();
+    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
       player.setLevel(seconds);
     }
@@ -96,7 +98,8 @@ public final class LobbyTimeManager {
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
-    final Collection<Player> players = this.manager.getParticipants();
+    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final Collection<Player> players = playerManager.getParticipants();
     final Component message = Message.LOBBY_TIMER.build(seconds);
     final String raw = GameProperties.LOBBY_TIMER_SOUND;
     final Key key = key(raw);
@@ -110,7 +113,8 @@ public final class LobbyTimeManager {
 
   private void checkCurrency() {
 
-    final Collection<Player> players = this.manager.getParticipants();
+    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
       final PlayerInventory inventory = player.getInventory();
       if (this.checkAllSlots(inventory)) {

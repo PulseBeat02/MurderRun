@@ -27,6 +27,7 @@ public final class Keys {
   public static NamespacedKey PLAYER_UUID = createNamespacedPluginKey("player-uuid");
   public static NamespacedKey ARENA_NAME = createNamespacedPluginKey("arena-name");
   public static NamespacedKey LOBBY_NAME = createNamespacedPluginKey("lobby-name");
+  public static NamespacedKey KILLER_ROLE = createNamespacedPluginKey("killer-role");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

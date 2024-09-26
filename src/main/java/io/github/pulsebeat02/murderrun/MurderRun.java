@@ -38,16 +38,16 @@ public final class MurderRun extends JavaPlugin {
   - Verify Random Killer Chosen if Timer Ends  (test)
   - Verify Minimum / Maximum Player Count for Timer (test)
   - Verify Scoreboard of Lobby is Working (test)
+  - Change PDC of player if they are killer (test)
 
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities
       - Customize Killer Gear and other abilities
     - Rewrite game system and party system
-      - Require each game to have an id
-      - Add a boolean to determine if the game can be quick-joinable
-      - Add commands to join games with specific names
+        - Add command to join games with specific names
         - Add a quick join command to scan through all joinable games
         - If game is full, don't allow join
+
 
    */
 

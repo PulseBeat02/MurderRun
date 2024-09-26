@@ -12,6 +12,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerResetTool;
 import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.NPC;
@@ -25,6 +26,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public final class Corruption extends KillerGadget {
 
@@ -89,6 +92,9 @@ public final class Corruption extends KillerGadget {
     final PlayerInventory inventory = closest.getInventory();
     inventory.addItem(stack);
     inventory.setArmorContents(gear);
+
+    final PersistentDataContainer container = closest.getPersistentDataContainer();
+    container.set(Keys.KILLER_ROLE, PersistentDataType.BOOLEAN, true);
 
     final DeathManager deathManager = closest.getDeathManager();
     final NPC stand = deathManager.getCorpse();

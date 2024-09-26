@@ -6,14 +6,14 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameEndCallback;
+import io.github.pulsebeat02.murderrun.game.GameEventsListener;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
-import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.gui.game.PlayerListGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
@@ -123,12 +123,13 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.game.create")
   @CommandDescription("murderrun.command.game.create.info")
   @Command(
-      value = "murder game create <arenaName> <lobbyName> <min> <max> <quickJoinable>",
+      value = "murder game create <arenaName> <lobbyName> <id> <min> <max> <quickJoinable>",
       requiredSender = Player.class)
   public void createGame(
       final Player sender,
       @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
       @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName,
+      final String id,
       final int min,
       final int max,
       final boolean quickJoinable) {
@@ -146,7 +147,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Lobby lobby = lobbyManager.getLobby(lobbyName);
     final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
 
-    final GameEndCallback gameEndCallback = (game, code) -> {
+    final GameEventsListener gameEndCallback = (game, code) -> {
       final PlayerManager playerManager = game.getPlayerManager();
       playerManager.applyToAllParticipants(
           gamePlayer -> gamePlayer.apply(player -> this.games.remove(player)));
@@ -154,7 +155,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     };
     final Consumer<PreGameManager> start = manager1 -> this.startGame0(sender, audience);
     final PreGameManager manager =
-        new PreGameManager(this.plugin, min, max, quickJoinable, gameEndCallback, start);
+        new PreGameManager(this.plugin, id, min, max, quickJoinable, gameEndCallback, start);
     manager.initialize();
 
     final GameSettings settings = manager.getSettings();

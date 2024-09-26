@@ -1,9 +1,9 @@
 package io.github.pulsebeat02.murderrun.gui.shop;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
@@ -15,8 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.PluginManager;
 
 public final class NPCShopEvent implements Listener {
@@ -44,17 +43,8 @@ public final class NPCShopEvent implements Listener {
 
     final boolean value = store.get("murderrun-gui");
     final Player clicker = event.getClicker();
-    final PlayerInventory inventory = clicker.getInventory();
-
-    final ItemStack[] slots = inventory.getContents();
-    boolean isKiller = false;
-    for (final ItemStack slot : slots) {
-      if (PDCUtils.isSword(slot)) {
-        isKiller = true;
-        break;
-      }
-    }
-
+    final PersistentDataContainer container = clicker.getPersistentDataContainer();
+    final boolean isKiller = container.has(Keys.KILLER_ROLE);
     if (isKiller && value || !isKiller && !value) {
       final Component msg = Message.SHOP_NPC_ERROR.build();
       final Audience audience = this.audiences.player(clicker);

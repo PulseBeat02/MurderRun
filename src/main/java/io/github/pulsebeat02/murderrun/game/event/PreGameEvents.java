@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.event;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import java.util.Collection;
 import java.util.Set;
 import org.bukkit.Bukkit;

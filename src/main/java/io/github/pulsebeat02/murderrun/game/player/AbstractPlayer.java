@@ -14,6 +14,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -250,5 +251,11 @@ public abstract class AbstractPlayer implements Participant {
   public String getName() {
     final Player player = this.getInternalPlayer();
     return player.getName();
+  }
+
+  @Override
+  public PersistentDataContainer getPersistentDataContainer() {
+    final Player player = this.getInternalPlayer();
+    return player.getPersistentDataContainer();
   }
 }

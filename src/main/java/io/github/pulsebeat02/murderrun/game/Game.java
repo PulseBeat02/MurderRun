@@ -29,7 +29,7 @@ public final class Game {
   private GadgetManager gadgetManager;
   private GameExecutor executor;
   private CitizensManager npcManager;
-  private GameEndCallback callback;
+  private GameEventsListener callback;
   private DisguiseManager disguiseManager;
 
   public Game(final MurderRun plugin) {
@@ -46,9 +46,10 @@ public final class Game {
       final GameSettings settings,
       final Collection<Player> murderers,
       final Collection<Player> participants,
-      final GameEndCallback callback) {
+      final GameEventsListener callback) {
     this.status = GameStatus.SURVIVORS_RELEASED;
     this.configuration = settings;
+    this.callback = callback;
     this.executor = new GameExecutor();
     this.scheduler = new GameScheduler(this);
     this.map = new Map(this);
@@ -58,12 +59,12 @@ public final class Game {
     this.murderGameTimer = new GameTimer();
     this.gadgetManager = new GadgetManager(this);
     this.npcManager = new CitizensManager(this);
-    this.callback = callback;
     this.map.start();
     this.gadgetManager.start();
     this.playerManager.start(murderers, participants);
     this.preparationManager.start();
     this.registerExtensions();
+    this.callback.onGameStart(this);
   }
 
   private void registerExtensions() {

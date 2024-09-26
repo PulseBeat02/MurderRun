@@ -1,6 +1,8 @@
 package io.github.pulsebeat02.murderrun.game;
 
-@FunctionalInterface
-public interface GameEndCallback {
+public interface GameEventsListener {
+
   void onGameFinish(final Game game, final GameResult result);
+
+  void onGameStart(final Game game);
 }

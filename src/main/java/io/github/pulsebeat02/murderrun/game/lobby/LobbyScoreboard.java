@@ -6,7 +6,6 @@ import static net.kyori.adventure.text.Component.empty;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
-import io.github.pulsebeat02.murderrun.game.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
@@ -31,7 +30,8 @@ public final class LobbyScoreboard {
     final MurderRun plugin = manager.getPlugin();
     final ScoreboardLibrary library = plugin.getScoreboardLibrary();
     final Sidebar sidebar = library.createSidebar();
-    final Collection<Player> participants = manager.getParticipants();
+    final PreGamePlayerManager playerManager = manager.getManager();
+    final Collection<Player> participants = playerManager.getParticipants();
     for (final Player player : participants) {
       sidebar.addPlayer(player);
     }
@@ -55,27 +55,26 @@ public final class LobbyScoreboard {
   }
 
   public void addTimer() {
-
-    final LobbyTimeManager timer = this.manager.getLobbyTimeManager();
-    final int time;
-    if (timer == null) {
-      time = GameProperties.LOBBY_STARTING_TIME;
-    } else {
-      final LobbyTimer lobbyTimer = timer.getTimer();
-      if (lobbyTimer == null) {
-        time = GameProperties.LOBBY_STARTING_TIME;
-      } else {
-        time = lobbyTimer.getTime();
-      }
-    }
-
+    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final LobbyTimeManager timer = playerManager.getLobbyTimeManager();
+    final int time = getCurrentTime(timer);
     final Component msg = Message.LOBBY_SCOREBOARD_TIME.build(time);
     this.sidebar.line(4, msg);
   }
 
+  private static int getCurrentTime(final LobbyTimeManager timer) {
+    if (timer == null) {
+      return GameProperties.LOBBY_STARTING_TIME;
+    } else {
+      final LobbyTimer lobbyTimer = timer.getTimer();
+      return lobbyTimer == null ? GameProperties.LOBBY_STARTING_TIME : lobbyTimer.getTime();
+    }
+  }
+
   public void addPlayers() {
-    final int maxPlayers = this.manager.getMaximumPlayerCount();
-    final int currentPlayers = this.manager.getCurrentPlayerCount();
+    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final int maxPlayers = playerManager.getMaximumPlayerCount();
+    final int currentPlayers = playerManager.getCurrentPlayerCount();
     final Component msg = Message.LOBBY_SCOREBOARD_PLAYERS.build(currentPlayers, maxPlayers);
     this.sidebar.line(2, msg);
   }
