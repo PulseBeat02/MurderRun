@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
+import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import java.util.Collection;
 import java.util.Map;

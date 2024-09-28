@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.commmand;
 
+import io.github.pulsebeat02.murderrun.commmand.game.GameCommand;
 import java.util.Arrays;
 import java.util.List;
 

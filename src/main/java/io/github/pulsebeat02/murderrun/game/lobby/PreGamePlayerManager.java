@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -32,7 +33,7 @@ public final class PreGamePlayerManager {
   private final PreGameManager manager;
   private final Collection<Player> murderers;
   private final Collection<Player> participants;
-  private final Collection<Player> leaders;
+  private final CommandSender leader;
   private final int min;
   private final int max;
   private final boolean quickJoinable;
@@ -41,14 +42,22 @@ public final class PreGamePlayerManager {
   private LobbyScoreboard scoreboard;
 
   public PreGamePlayerManager(
-      final PreGameManager manager, final int min, final int max, final boolean quickJoinable) {
+      final PreGameManager manager,
+      final CommandSender leader,
+      final int min,
+      final int max,
+      final boolean quickJoinable) {
     this.manager = manager;
     this.murderers = Collections.synchronizedSet(new HashSet<>());
     this.participants = Collections.synchronizedSet(new HashSet<>());
-    this.leaders = Collections.synchronizedSet(new HashSet<>());
+    this.leader = leader;
     this.min = min;
     this.max = max;
     this.quickJoinable = quickJoinable;
+  }
+
+  public boolean isLeader(final CommandSender sender) {
+    return this.leader == sender || sender.isOp();
   }
 
   public void initialize() {
@@ -59,6 +68,11 @@ public final class PreGamePlayerManager {
   public void shutdown() {
     if (this.lobbyTimeManager != null) {
       this.lobbyTimeManager.shutdown();
+    }
+    for (final Player player : this.participants) {
+      final PlayerInventory inventory = player.getInventory();
+      inventory.clear();
+      player.setLevel(0);
     }
   }
 
@@ -174,6 +188,13 @@ public final class PreGamePlayerManager {
     requestFuture.thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request));
   }
 
+  public boolean hasPlayer(final CommandSender player) {
+    if (player instanceof final Player p) {
+      return this.hasPlayer(p);
+    }
+    return this.isLeader(player);
+  }
+
   public void assignKiller() {
     if (this.murderers.isEmpty()) {
       final int size = this.participants.size();
@@ -184,6 +205,11 @@ public final class PreGamePlayerManager {
       this.setPlayerToMurderer(random);
       random.sendMessage(raw);
     }
+  }
+
+  public boolean isEnoughPlayers() {
+    final int current = this.getCurrentPlayerCount();
+    return current >= 2;
   }
 
   public boolean canJoinGame() {

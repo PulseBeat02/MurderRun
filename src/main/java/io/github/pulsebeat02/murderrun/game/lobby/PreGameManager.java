@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.*;
 import io.github.pulsebeat02.murderrun.game.event.PreGameEvents;
 import java.util.Collection;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public final class PreGameManager {
@@ -19,6 +20,7 @@ public final class PreGameManager {
 
   public PreGameManager(
       final MurderRun plugin,
+      final CommandSender leader,
       final String id,
       final int min,
       final int max,
@@ -28,7 +30,7 @@ public final class PreGameManager {
     this.callback = callback;
     this.id = id;
     this.game = new Game(plugin);
-    this.manager = new PreGamePlayerManager(this, min, max, quickJoinable);
+    this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.settings = new GameSettings();
   }
 
