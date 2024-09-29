@@ -19,29 +19,44 @@ import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 
-public final class GameCreationGui extends ChestGui {
+public final class GameCreationGui extends ChestGui implements Listener {
 
   private static final Pattern CREATE_GAME_PATTERN =
-      new Pattern("111111111", "123111141", "111111111", "111151111");
+      new Pattern("111111111", "123411151", "111111111", "111161111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
   private final PatternPane pane;
+  private final Audience audience;
 
   private volatile Lobby lobby;
   private volatile Arena arena;
+
+  private String id;
+  private volatile boolean listenForName;
 
   public GameCreationGui(final MurderRun plugin, final HumanEntity watcher) {
     super(
@@ -49,12 +64,30 @@ public final class GameCreationGui extends ChestGui {
     this.plugin = plugin;
     this.watcher = watcher;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_GAME_PATTERN);
+    final Server server = plugin.getServer();
+    final PluginManager manager = server.getPluginManager();
+    final AudienceProvider provider = plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    final UUID uuid = watcher.getUniqueId();
+    this.audience = audiences.player(uuid);
+    manager.registerEvents(this, plugin);
+  }
+
+  private void unregisterEvents(final InventoryCloseEvent event) {
+
+    if (this.listenForName) {
+      return;
+    }
+
+    final HandlerList list = AsyncPlayerChatEvent.getHandlerList();
+    list.unregister(this);
   }
 
   @Override
   public void update() {
     super.update();
     this.addPane(this.createPane());
+    this.setOnClose(this::unregisterEvents);
     this.setOnGlobalClick(event -> event.setCancelled(true));
   }
 
@@ -64,13 +97,57 @@ public final class GameCreationGui extends ChestGui {
     this.pane.bindItem('1', this.createBorderStack());
     this.pane.bindItem('2', this.createLobbyStack());
     this.pane.bindItem('3', this.createArenaStack());
+    this.pane.bindItem('4', this.createEditIdStack());
+    // create  min, max stack
 
-    // create id, min, max stack
-
-    this.pane.bindItem('4', this.createApplyStack());
-    this.pane.bindItem('5', this.createCloseStack());
+    this.pane.bindItem('5', this.createApplyStack());
+    this.pane.bindItem('6', this.createCloseStack());
 
     return this.pane;
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerChat(final AsyncPlayerChatEvent event) {
+
+    if (!this.listenForName) {
+      return;
+    }
+
+    final Player player = event.getPlayer();
+    if (player != this.watcher) {
+      return;
+    }
+
+    event.setCancelled(true);
+
+    this.id = event.getMessage();
+    this.listenForName = false;
+    this.showInventory(player);
+  }
+
+  private void showInventory(final HumanEntity player) {
+    final BukkitScheduler scheduler = Bukkit.getScheduler();
+    scheduler.callSyncMethod(this.plugin, () -> {
+      this.update();
+      this.show(player);
+      return null;
+    });
+  }
+
+  private GuiItem createEditIdStack() {
+    return new GuiItem(
+        Item.builder(Material.ANVIL)
+            .name(Message.GAME_CREATE_EDIT_ID_DISPLAY.build(this.id))
+            .lore(Message.GAME_CREATE_EDIT_ID_LORE.build())
+            .build(),
+        this::listenForMessage);
+  }
+
+  private void listenForMessage(final InventoryClickEvent event) {
+    this.listenForName = true;
+    this.watcher.closeInventory();
+    final Component msg = Message.GAME_CREATE_EDIT_ID.build();
+    this.audience.sendMessage(msg);
   }
 
   private GuiItem createCloseStack() {
