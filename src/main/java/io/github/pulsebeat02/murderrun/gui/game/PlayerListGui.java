@@ -9,7 +9,9 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
@@ -17,7 +19,6 @@ import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -28,22 +29,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.incendo.cloud.type.tuple.Triplet;
 
 public final class PlayerListGui extends ChestGui {
 
   private final HumanEntity watcher;
-  private final Map<Player, Triplet<PreGameManager, Boolean, Boolean>> games;
+  private final GameManager manager;
 
   private PaginatedPane pages;
 
-  public PlayerListGui(
-      final HumanEntity watcher,
-      final Map<Player, Triplet<PreGameManager, Boolean, Boolean>> games) {
+  public PlayerListGui(final HumanEntity watcher, final GameManager manager) {
     super(
         6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
     this.watcher = watcher;
-    this.games = games;
+    this.manager = manager;
   }
 
   @Override
@@ -84,16 +82,16 @@ public final class PlayerListGui extends ChestGui {
       return;
     }
 
-    final Triplet<PreGameManager, Boolean, Boolean> triplet = this.games.get(player);
+    final PreGameManager manager = this.manager.getGame(player);
     final String name = player.getName();
     final Player owner = (Player) this.watcher;
-    if (triplet == null) {
+    if (manager == null) {
       owner.performCommand("murder game invite %s".formatted(name));
       return;
     }
 
-    final PreGameManager manager = triplet.first();
-    final Collection<Player> killers = manager.getMurderers();
+    final PreGamePlayerManager playerManager = manager.getPlayerManager();
+    final Collection<Player> killers = playerManager.getMurderers();
     final String phrase = killers.contains(player) ? "innocent" : "murderer";
     owner.performCommand("murder game set %s %s".formatted(phrase, name));
   }
@@ -120,18 +118,18 @@ public final class PlayerListGui extends ChestGui {
     final Collection<? extends Player> online = Bukkit.getOnlinePlayers();
     final List<ItemStack> items = new ArrayList<>();
     for (final Player player : online) {
-      final Triplet<PreGameManager, Boolean, Boolean> triplet = this.games.get(player);
-      final ItemStack stack =
-          triplet == null ? this.createNormalStack(player) : this.getInGameStack(player, triplet);
+      final PreGameManager preGameManager = this.manager.getGame(player);
+      final ItemStack stack = preGameManager == null
+          ? this.createNormalStack(player)
+          : this.getInGameStack(player, preGameManager);
       items.add(stack);
     }
     return items;
   }
 
-  private ItemStack getInGameStack(
-      final Player player, final Triplet<PreGameManager, Boolean, Boolean> triplet) {
+  private ItemStack getInGameStack(final Player player, final PreGameManager triplet) {
     final ItemStack stack;
-    final PreGameManager manager = triplet.first();
+    final PreGamePlayerManager manager = triplet.getPlayerManager();
     final Collection<Player> killers = manager.getMurderers();
     if (killers.contains(player)) {
       stack = this.createKillerStack(player);

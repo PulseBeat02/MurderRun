@@ -69,7 +69,7 @@ public final class PreGameManager {
     return this.id;
   }
 
-  public PreGamePlayerManager getManager() {
+  public PreGamePlayerManager getPlayerManager() {
     return this.manager;
   }
 

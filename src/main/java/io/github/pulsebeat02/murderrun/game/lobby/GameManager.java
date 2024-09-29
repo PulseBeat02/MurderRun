@@ -23,10 +23,20 @@ public final class GameManager {
     this.plugin = plugin;
   }
 
+  public boolean leaveGame(final Player player) {
+    final PreGameManager game = this.getGameAsParticipant(player);
+    if (game != null) {
+      final PreGamePlayerManager manager = game.getPlayerManager();
+      manager.removeParticipantFromLobby(player);
+      return true;
+    }
+    return false;
+  }
+
   public @Nullable PreGameManager getGameAsParticipant(final CommandSender participant) {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
-      final PreGamePlayerManager playerManager = manager.getManager();
+      final PreGamePlayerManager playerManager = manager.getPlayerManager();
       if (playerManager.hasPlayer(participant)) {
         return manager;
       }
@@ -37,7 +47,7 @@ public final class GameManager {
   public @Nullable PreGameManager getGame(final CommandSender leader) {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
-      final PreGamePlayerManager playerManager = manager.getManager();
+      final PreGamePlayerManager playerManager = manager.getPlayerManager();
       if (playerManager.isLeader(leader)) {
         return manager;
       }
@@ -48,7 +58,7 @@ public final class GameManager {
   public boolean joinGame(final Player player, final String id) {
     final PreGameManager manager = this.games.get(id);
     if (manager != null) {
-      final PreGamePlayerManager playerManager = manager.getManager();
+      final PreGamePlayerManager playerManager = manager.getPlayerManager();
       if (playerManager.canJoinGame()) {
         playerManager.addParticipantToLobby(player, false);
         return true;
@@ -121,7 +131,7 @@ public final class GameManager {
   public void removeGame(final String id) {
     final PreGameManager manager = this.games.get(id);
     if (manager != null) {
-      final PreGamePlayerManager playerManager = manager.getManager();
+      final PreGamePlayerManager playerManager = manager.getPlayerManager();
       final Game game = manager.getGame();
       game.finishGame(GameResult.INTERRUPTED);
       playerManager.shutdown();
@@ -132,7 +142,7 @@ public final class GameManager {
   public boolean quickJoinGame(final Player player) {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
-      final PreGamePlayerManager preGamePlayerManager = manager.getManager();
+      final PreGamePlayerManager preGamePlayerManager = manager.getPlayerManager();
       if (preGamePlayerManager.canJoinGame()) {
         preGamePlayerManager.addParticipantToLobby(player, false);
         return true;

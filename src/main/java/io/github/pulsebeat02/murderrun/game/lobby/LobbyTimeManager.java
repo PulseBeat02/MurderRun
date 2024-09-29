@@ -57,7 +57,7 @@ public final class LobbyTimeManager {
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
-    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
       final Audience audience = audiences.player(player);
@@ -75,7 +75,7 @@ public final class LobbyTimeManager {
       this.playTimerSound(seconds);
     }
 
-    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final LobbyScoreboard scoreboard = playerManager.getScoreboard();
     scoreboard.addTimer();
 
@@ -87,7 +87,7 @@ public final class LobbyTimeManager {
   }
 
   private void setLevel(final int seconds) {
-    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
       player.setLevel(seconds);
@@ -98,7 +98,7 @@ public final class LobbyTimeManager {
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
-    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     final Component message = Message.LOBBY_TIMER.build(seconds);
     final String raw = GameProperties.LOBBY_TIMER_SOUND;
@@ -113,7 +113,7 @@ public final class LobbyTimeManager {
 
   private void checkCurrency() {
 
-    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
       final PlayerInventory inventory = player.getInventory();

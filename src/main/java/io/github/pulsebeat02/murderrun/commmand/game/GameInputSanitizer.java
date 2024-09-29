@@ -5,14 +5,12 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
-import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
-import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
-import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
-import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.lobby.*;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -36,7 +34,7 @@ public final class GameInputSanitizer {
 
   public boolean checkIfNotOwner(
       final CommandSender sender, final Audience audience, final PreGameManager data) {
-    final PreGamePlayerManager manager = data.getManager();
+    final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isLeader(sender)) {
       final Component message = Message.GAME_NOT_OWNER_ERROR.build();
       audience.sendMessage(message);
@@ -57,7 +55,7 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfNotEnoughPlayers(final Audience audience, final PreGameManager data) {
-    final PreGamePlayerManager manager = data.getManager();
+    final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isEnoughPlayers()) {
       final Component message = Message.GAME_LOW_PLAYER_COUNT_ERROR.build();
       audience.sendMessage(message);
@@ -96,6 +94,45 @@ public final class GameInputSanitizer {
       audience.sendMessage(message);
       return true;
     }
+    return false;
+  }
+
+  public boolean checkIfNotSamePlayer(
+      final Audience audience, final Player sender, final Player invite) {
+    if (sender == invite) {
+      final Component message = Message.GAME_INVITE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean checkIfOwnerOfCurrentGame(
+      final CommandSender sender, final Audience audience, final PreGameManager temp) {
+    final PreGamePlayerManager manager = temp.getPlayerManager();
+    if (manager.isLeader(sender)) {
+      final Component message = Message.GAME_LEAVE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean checkIfInvitedAlreadyInGame(
+      final Audience audience, final Player invite, final PreGameManager data) {
+
+    final GameManager manager = this.command.getGameManager();
+    final PreGameManager otherPlayerData = manager.getGame(invite);
+    if (otherPlayerData == null) {
+      return false;
+    }
+
+    if (data == otherPlayerData) {
+      final Component message = Message.GAME_INVITE_ALREADY_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+
     return false;
   }
 }

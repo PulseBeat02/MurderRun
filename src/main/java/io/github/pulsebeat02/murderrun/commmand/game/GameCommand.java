@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.commmand.game;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
@@ -20,7 +22,6 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
@@ -29,7 +30,6 @@ import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
-import org.incendo.cloud.type.tuple.Triplet;
 
 public final class GameCommand implements AnnotationCommandFeature {
 
@@ -59,7 +59,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.sender(sender);
     final PreGameManager data = this.manager.getGame(sender);
     if (this.sanitizer.checkIfInNoGame(audience, data)
-        || this.sanitizer.checkIfNotOwner(sender, audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
         || this.sanitizer.checkIfGameAlreadyStarted(audience, data)
         || this.sanitizer.checkIfNotEnoughPlayers(audience, data)) {
       return;
@@ -121,14 +121,14 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final PreGameManager data = this.manager.getGame(sender);
     if (this.sanitizer.checkIfInNoGame(audience, data)
-        || this.sanitizer.checkIfNotOwner(sender, audience, data)) {
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
     final String id = data.getId();
     this.manager.removeGame(id);
 
-    final PreGamePlayerManager playerManager = data.getManager();
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
     final Component ownerMessage = Message.GAME_CANCEL.build();
     final Component kickedMessage = Message.GAME_PLAYER_KICK.build();
@@ -145,11 +145,11 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void invitePlayer(final Player sender, final Player invite) {
 
     final Audience audience = this.audiences.player(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data)
-        || this.checkIfNotOwner(audience, data)
-        || this.checkIfNotSamePlayer(audience, sender, invite)
-        || this.checkIfInvitedAlreadyInGame(audience, invite, data)) {
+    final PreGameManager data = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
+        || this.sanitizer.checkIfNotSamePlayer(audience, sender, invite)
+        || this.sanitizer.checkIfInvitedAlreadyInGame(audience, invite, data)) {
       return;
     }
 
@@ -166,79 +166,32 @@ public final class GameCommand implements AnnotationCommandFeature {
     invited.sendMessage(player);
   }
 
-  private boolean checkIfInvitedAlreadyInGame(
-      final Audience audience,
-      final Player invite,
-      final Triplet<PreGameManager, Boolean, Boolean> triplet) {
-
-    final PreGameManager first = triplet.first();
-    final Triplet<PreGameManager, Boolean, Boolean> otherPlayerData = this.games.get(invite);
-    if (otherPlayerData == null) {
-      return false;
-    }
-
-    final PreGameManager other = otherPlayerData.first();
-    if (other == first) {
-      final Component message = Message.GAME_INVITE_ALREADY_ERROR.build();
-      audience.sendMessage(message);
-      return true;
-    }
-
-    return false;
-  }
-
-  private boolean checkIfNotSamePlayer(
-      final Audience audience, final Player sender, final Player invite) {
-    if (sender == invite) {
-      final Component message = Message.GAME_INVITE_ERROR.build();
-      audience.sendMessage(message);
-      return true;
-    }
-    return false;
-  }
-
   @Permission("murderrun.command.game.join")
   @CommandDescription("murderrun.command.game.join.info")
   @Command(value = "murder game join <owner>", requiredSender = Player.class)
   public void joinGame(final Player sender, final Player owner) {
 
     final Audience audience = this.audiences.player(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfAlreadyInGame(audience, data)
+    final PreGameManager data = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfAlreadyInGame(audience, data)
         || this.checkIfNotInvited(audience, sender, owner)) {
       return;
     }
+    requireNonNull(data);
 
     final Collection<Player> invitations = this.invites.get(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> ownerData = this.games.get(owner);
-    if (ownerData == null) {
-      return;
-    }
-
-    final PreGameManager manager = ownerData.first();
-    manager.addParticipantToLobby(sender, false);
+    final String id = data.getId();
+    this.manager.joinGame(sender, id);
     invitations.remove(sender);
 
-    final Triplet<PreGameManager, Boolean, Boolean> gamePair = Triplet.of(manager, false, false);
-    this.games.put(sender, gamePair);
-
-    final Collection<Player> participants = manager.getParticipants();
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
+    final Collection<Player> participants = playerManager.getParticipants();
     final String name = sender.getDisplayName();
     final Component message = Message.GAME_JOIN.build(name);
     for (final Player player : participants) {
       final Audience member = this.audiences.player(player);
       member.sendMessage(message);
     }
-  }
-
-  private boolean checkIfAlreadyInGame(
-      final Audience audience, final @Nullable Triplet<PreGameManager, Boolean, Boolean> data) {
-    if (data != null) {
-      final Component message = Message.GAME_JOIN_ERROR.build();
-      audience.sendMessage(message);
-      return true;
-    }
-    return false;
   }
 
   private boolean checkIfNotInvited(
@@ -258,20 +211,20 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void listPlayers(final Player sender) {
 
     final Audience audience = this.audiences.player(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data)) {
+    final PreGameManager data = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfInNoGame(audience, data)) {
       return;
     }
 
-    final PreGameManager manager = data.first();
-    final List<String> names = this.constructPlayerList(manager);
+    final List<String> names = this.constructPlayerList(requireNonNull(data));
     final Component message = Message.GAME_LIST.build(names);
     audience.sendMessage(message);
   }
 
   private List<String> constructPlayerList(final PreGameManager manager) {
-    final Collection<Player> participants = manager.getParticipants();
-    final Collection<Player> murderers = manager.getMurderers();
+    final PreGamePlayerManager playerManager = manager.getPlayerManager();
+    final Collection<Player> participants = playerManager.getParticipants();
+    final Collection<Player> murderers = playerManager.getMurderers();
     final List<String> names = new ArrayList<>();
     for (final Player player : participants) {
       String name = player.getDisplayName();
@@ -287,16 +240,13 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void kickPlayer(final Player sender, final Player kick) {
 
     final Audience audience = this.audiences.player(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data)
-        || this.checkIfNotOwner(audience, data)
-        || this.checkIfOwnerOfCurrentGame(audience, data)) {
+    final PreGameManager data = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
+        || this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, data)) {
       return;
     }
-
-    final PreGameManager manager = data.first();
-    manager.removeParticipantFromLobby(kick);
-    this.games.remove(kick);
+    this.manager.leaveGame(kick);
 
     final Collection<Player> invited = this.invites.get(sender);
     invited.remove(kick);
@@ -315,29 +265,17 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void leaveGame(final Player sender) {
 
     final Audience audience = this.audiences.player(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data) || this.checkIfOwnerOfCurrentGame(audience, data)) {
+    final PreGameManager data = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, requireNonNull(data))) {
       return;
     }
+    this.manager.leaveGame(sender);
 
-    final PreGameManager manager = data.first();
-    manager.removeParticipantFromLobby(sender);
-    this.games.remove(sender);
     sender.setHealth(0.0);
 
     final Component message = Message.GAME_LEFT.build();
     audience.sendMessage(message);
-  }
-
-  private boolean checkIfOwnerOfCurrentGame(
-      final Audience audience, final Triplet<PreGameManager, Boolean, Boolean> data) {
-    final boolean owner = data.second();
-    if (owner) {
-      final Component message = Message.GAME_LEAVE_ERROR.build();
-      audience.sendMessage(message);
-      return true;
-    }
-    return false;
   }
 
   @Permission("murderrun.command.game.set.killer")
@@ -346,14 +284,15 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void setMurderer(final Player sender, final Player murderer) {
 
     final Audience audience = this.audiences.player(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
+    final PreGameManager data = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
     final String name = murderer.getDisplayName();
-    final PreGameManager manager = data.first();
-    manager.setPlayerToMurderer(murderer);
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
+    playerManager.setPlayerToMurderer(murderer);
 
     final Component message = Message.GAME_SET_MURDERER.build(name);
     audience.sendMessage(message);
@@ -365,14 +304,15 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void setInnocent(final Player sender, final Player innocent) {
 
     final Audience audience = this.audiences.player(sender);
-    final Triplet<PreGameManager, Boolean, Boolean> data = this.games.get(sender);
-    if (this.checkIfInNoGame(audience, data) || this.checkIfNotOwner(audience, data)) {
+    final PreGameManager data = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
     final String name = innocent.getDisplayName();
-    final PreGameManager manager = data.first();
-    manager.setPlayerToInnocent(innocent);
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
+    playerManager.setPlayerToInnocent(innocent);
 
     final Component message = Message.GAME_SET_INNOCENT.build(name);
     audience.sendMessage(message);
@@ -382,7 +322,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.game.gui.info")
   @Command(value = "murder game gui", requiredSender = Player.class)
   public void openGameGui(final Player sender) {
-    final PlayerListGui gui = new PlayerListGui(sender, this.games);
+    final PlayerListGui gui = new PlayerListGui(sender, this.manager);
     gui.update();
     gui.show(sender);
   }
@@ -399,5 +339,9 @@ public final class GameCommand implements AnnotationCommandFeature {
       final CommandContext<CommandSender> context, final String input) {
     final LobbyManager manager = this.plugin.getLobbyManager();
     return new ArrayList<>(manager.getLobbyNames());
+  }
+
+  public GameManager getGameManager() {
+    return this.manager;
   }
 }

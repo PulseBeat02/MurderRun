@@ -30,7 +30,7 @@ public final class LobbyScoreboard {
     final MurderRun plugin = manager.getPlugin();
     final ScoreboardLibrary library = plugin.getScoreboardLibrary();
     final Sidebar sidebar = library.createSidebar();
-    final PreGamePlayerManager playerManager = manager.getManager();
+    final PreGamePlayerManager playerManager = manager.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
     for (final Player player : participants) {
       sidebar.addPlayer(player);
@@ -55,7 +55,7 @@ public final class LobbyScoreboard {
   }
 
   public void addTimer() {
-    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final LobbyTimeManager timer = playerManager.getLobbyTimeManager();
     final int time = getCurrentTime(timer);
     final Component msg = Message.LOBBY_SCOREBOARD_TIME.build(time);
@@ -72,7 +72,7 @@ public final class LobbyScoreboard {
   }
 
   public void addPlayers() {
-    final PreGamePlayerManager playerManager = this.manager.getManager();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final int maxPlayers = playerManager.getMaximumPlayerCount();
     final int currentPlayers = playerManager.getCurrentPlayerCount();
     final Component msg = Message.LOBBY_SCOREBOARD_PLAYERS.build(currentPlayers, maxPlayers);
