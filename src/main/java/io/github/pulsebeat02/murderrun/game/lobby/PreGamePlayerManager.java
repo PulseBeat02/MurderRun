@@ -252,4 +252,8 @@ public final class PreGamePlayerManager {
   public @Nullable LobbyTimeManager getLobbyTimeManager() {
     return this.lobbyTimeManager;
   }
+
+  public CommandSender getLeader() {
+    return this.leader;
+  }
 }

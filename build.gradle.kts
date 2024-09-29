@@ -3,7 +3,7 @@ import xyz.jpenilla.runtask.task.AbstractRun
 plugins {
     java
     `java-library`
-    id("com.gradleup.shadow") version "8.3.1"
+    id("com.gradleup.shadow") version "8.3.2"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.44"
     id("com.diffplug.spotless") version "7.0.0.BETA2"
@@ -55,7 +55,7 @@ var runtimeDeps = listOf(
     "org.mariadb.jdbc:mariadb-java-client:3.4.1",
     "net.megavex:scoreboard-library-api:2.1.12",
     "net.megavex:scoreboard-library-implementation:2.1.12",
-    "com.github.retrooper:packetevents-spigot:2.4.0"
+    "com.github.retrooper:packetevents-spigot:2.5.0"
 );
 
 bukkit {
@@ -86,7 +86,7 @@ dependencies {
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
-    implementation("org.bstats:bstats-bukkit:3.0.3")
+    implementation("org.bstats:bstats-bukkit:3.1.0")
 
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")

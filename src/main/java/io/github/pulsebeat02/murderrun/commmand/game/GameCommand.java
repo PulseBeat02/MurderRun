@@ -2,8 +2,6 @@ package io.github.pulsebeat02.murderrun.commmand.game;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationCommandFeature;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
@@ -37,8 +35,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   private BukkitAudiences audiences;
   private GameInputSanitizer sanitizer;
   private GameManager manager;
-
-  private Multimap<Player, Player> invites;
+  private InviteManager invites;
 
   @Override
   public void registerFeature(
@@ -47,7 +44,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.audiences = handler.retrieve();
     this.sanitizer = new GameInputSanitizer(this);
     this.manager = new GameManager(plugin);
-    this.invites = HashMultimap.create();
+    this.invites = new InviteManager();
     this.plugin = plugin;
   }
 
@@ -97,22 +94,6 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
-  public MurderRun getPlugin() {
-    return this.plugin;
-  }
-
-  public void setPlugin(final MurderRun plugin) {
-    this.plugin = plugin;
-  }
-
-  public BukkitAudiences getAudiences() {
-    return this.audiences;
-  }
-
-  public void setAudiences(final BukkitAudiences audiences) {
-    this.audiences = audiences;
-  }
-
   @Permission("murderrun.command.game.cancel")
   @CommandDescription("murderrun.command.game.cancel.info")
   @Command(value = "murder game cancel", requiredSender = Player.class)
@@ -152,13 +133,10 @@ public final class GameCommand implements AnnotationCommandFeature {
         || this.sanitizer.checkIfInvitedAlreadyInGame(audience, invite, data)) {
       return;
     }
+    this.invites.invitePlayer(sender, invite);
 
     final String senderDisplayName = sender.getDisplayName();
     final String inviteDisplayName = invite.getDisplayName();
-
-    final Collection<Player> outgoing = this.invites.get(invite);
-    outgoing.add(sender);
-
     final Component owner = Message.GAME_OWNER_INVITE.build(inviteDisplayName);
     final Component player = Message.GAME_PLAYER_INVITE.build(senderDisplayName);
     final Audience invited = this.audiences.player(invite);
@@ -172,18 +150,22 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void joinGame(final Player sender, final Player owner) {
 
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
-    if (this.sanitizer.checkIfAlreadyInGame(audience, data)
-        || this.checkIfNotInvited(audience, sender, owner)) {
+    final PreGameManager temp = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfAlreadyInGame(audience, temp)
+        || this.sanitizer.checkIfNotInvited(audience, sender, owner)) {
       return;
     }
-    requireNonNull(data);
 
-    final Collection<Player> invitations = this.invites.get(sender);
-    final String id = data.getId();
-    this.manager.joinGame(sender, id);
-    invitations.remove(sender);
+    final PreGameManager data = requireNonNull(this.manager.getGame(sender));
+    if (this.sanitizer.checkIfGameFull(sender, audience, this.manager, data)) {
+      return;
+    }
 
+    this.invites.removeInvite(owner, sender);
+    this.sendJoinMessage(sender, data);
+  }
+
+  private void sendJoinMessage(final Player sender, final PreGameManager data) {
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
     final String name = sender.getDisplayName();
@@ -192,17 +174,6 @@ public final class GameCommand implements AnnotationCommandFeature {
       final Audience member = this.audiences.player(player);
       member.sendMessage(message);
     }
-  }
-
-  private boolean checkIfNotInvited(
-      final Audience audience, final Player sender, final Player owner) {
-    final Collection<Player> invitations = this.invites.get(sender);
-    if (!invitations.contains(owner)) {
-      final Component message = Message.GAME_INVALID_INVITE_ERROR.build();
-      audience.sendMessage(message);
-      return true;
-    }
-    return false;
   }
 
   @Permission("murderrun.command.game.list")
@@ -247,9 +218,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
     this.manager.leaveGame(kick);
-
-    final Collection<Player> invited = this.invites.get(sender);
-    invited.remove(kick);
+    this.invites.removeInvite(sender, kick);
 
     final String name = kick.getDisplayName();
     final Audience player = this.audiences.player(kick);
@@ -318,6 +287,25 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
+  @Permission("murderrun.command.game.quickjoin")
+  @CommandDescription("murderrun.command.game.quickjoin.info")
+  @Command(value = "murder game quickjoin", requiredSender = Player.class)
+  public void quickJoinGame(final Player sender) {
+
+    final Audience audience = this.audiences.player(sender);
+    final PreGameManager temp = this.manager.getGame(sender);
+    if (this.sanitizer.checkIfAlreadyInGame(audience, temp)
+        || this.sanitizer.checkIfNoQuickJoinableGame(sender, audience, this.manager)) {
+      return;
+    }
+
+    final PreGameManager data = requireNonNull(this.manager.getGame(sender));
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
+    final CommandSender leader = playerManager.getLeader();
+    this.invites.removeInvite(leader, sender);
+    this.sendJoinMessage(sender, (data));
+  }
+
   @Permission("murderrun.command.game.gui")
   @CommandDescription("murderrun.command.game.gui.info")
   @Command(value = "murder game gui", requiredSender = Player.class)
@@ -343,5 +331,25 @@ public final class GameCommand implements AnnotationCommandFeature {
 
   public GameManager getGameManager() {
     return this.manager;
+  }
+
+  public MurderRun getPlugin() {
+    return this.plugin;
+  }
+
+  public BukkitAudiences getAudiences() {
+    return this.audiences;
+  }
+
+  public GameInputSanitizer getSanitizer() {
+    return this.sanitizer;
+  }
+
+  public GameManager getManager() {
+    return this.manager;
+  }
+
+  public InviteManager getInviteManager() {
+    return this.invites;
   }
 }

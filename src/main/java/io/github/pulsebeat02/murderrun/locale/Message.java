@@ -507,4 +507,6 @@ public interface Message extends LocaleTools {
   UniComponent<Sender, Integer> LOBBY_SCOREBOARD_TIME =
       direct("murderrun.lobby.scoreboard.time", null);
   NullComponent<Sender> LOBBY_SCOREBOARD_DOMAIN = direct("murderrun.lobby.scoreboard.domain");
+  NullComponent<Sender> GAME_FULL = direct("murderrun.command.game.full");
+  NullComponent<Sender> GAME_NONE = direct("murderrun.command.game.none");
 }

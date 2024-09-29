@@ -22,6 +22,32 @@ public final class GameInputSanitizer {
     this.command = command;
   }
 
+  public boolean checkIfNoQuickJoinableGame(
+      final Player sender, final Audience audience, final GameManager manager) {
+    final boolean success = manager.quickJoinGame(sender);
+    if (!success) {
+      final Component message = Message.GAME_NONE.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean checkIfGameFull(
+      final Player sender,
+      final Audience audience,
+      final GameManager manager,
+      final PreGameManager game) {
+    final String id = game.getId();
+    final boolean success = manager.joinGame(sender, id);
+    if (!success) {
+      final Component message = Message.GAME_FULL.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
+
   @EnsuresNonNullIf(expression = "#2", result = false)
   public boolean checkIfInNoGame(final Audience audience, final @Nullable PreGameManager data) {
     if (data == null) {
@@ -133,6 +159,17 @@ public final class GameInputSanitizer {
       return true;
     }
 
+    return false;
+  }
+
+  public boolean checkIfNotInvited(
+      final Audience audience, final Player sender, final Player owner) {
+    final InviteManager manager = this.command.getInviteManager();
+    if (!manager.hasInvite(owner, sender)) {
+      final Component message = Message.GAME_INVALID_INVITE_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
     return false;
   }
 }

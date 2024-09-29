@@ -40,16 +40,13 @@ public final class MurderRun extends JavaPlugin {
   - Verify Scoreboards are Working (test)
   - Change PDC of player if they are killer (test)
   - If game is full, don't allow join (test)
+  - Rewrite game system and party system (test)
+    - Add a quick join command to scan through all joinable games (test)
 
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities
       - Customize Killer Gear and other abilities
-    - Rewrite game system and party system
-        - Add command to join games with specific names
-        - Add a quick join command to scan through all joinable games
-    - Fix command to create GUI
-
-
+    - Fix command to create GUI (fix gui)
 
    */
 

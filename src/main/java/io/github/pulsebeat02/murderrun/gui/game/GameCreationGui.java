@@ -64,6 +64,9 @@ public final class GameCreationGui extends ChestGui {
     this.pane.bindItem('1', this.createBorderStack());
     this.pane.bindItem('2', this.createLobbyStack());
     this.pane.bindItem('3', this.createArenaStack());
+
+    // create id, min, max stack
+
     this.pane.bindItem('4', this.createApplyStack());
     this.pane.bindItem('5', this.createCloseStack());
 
