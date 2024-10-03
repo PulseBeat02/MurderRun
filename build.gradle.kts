@@ -3,9 +3,9 @@ import xyz.jpenilla.runtask.task.AbstractRun
 plugins {
     java
     `java-library`
-    id("com.gradleup.shadow") version "8.3.2"
+    id("com.gradleup.shadow") version "8.3.3"
     id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("org.checkerframework") version "0.6.44"
+    id("org.checkerframework") version "0.6.45"
     id("com.diffplug.spotless") version "7.0.0.BETA2"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }

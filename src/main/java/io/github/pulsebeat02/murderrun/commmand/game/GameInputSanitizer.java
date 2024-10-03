@@ -90,7 +90,8 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfAlreadyInGame(final Audience audience, final PreGameManager temp) {
+  public boolean checkIfAlreadyInGame(
+      final Audience audience, final @Nullable PreGameManager temp) {
     if (temp != null) {
       final Component message = Message.GAME_CREATE_ERROR.build();
       audience.sendMessage(message);

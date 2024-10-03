@@ -75,7 +75,7 @@ public final class GameManager {
       final int min,
       final int max,
       final boolean quickJoinable) {
-    final GameEventsListener listener = new GameEventsListenerImpl(this);
+    final GameEventsListener listener = new GameEventsPlayerListener(this);
     final PreGameManager manager =
         this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener);
     this.addGameToRegistry(id, manager);

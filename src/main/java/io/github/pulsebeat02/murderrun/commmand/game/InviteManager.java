@@ -20,12 +20,22 @@ public final class InviteManager {
   }
 
   public void removeInvite(final CommandSender sender, final Player receiver) {
+
     final PlayerInviteManager manager = this.invites.get(receiver);
+    if (manager == null) {
+      return;
+    }
+
     manager.removeInvite(sender);
   }
 
   public boolean hasInvite(final CommandSender sender, final Player receiver) {
+
     final PlayerInviteManager manager = this.invites.get(receiver);
+    if (manager == null) {
+      return false;
+    }
+
     return manager.hasInvite(sender);
   }
 }

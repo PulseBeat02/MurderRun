@@ -12,12 +12,13 @@ public final class PreGameManager {
   private final MurderRun plugin;
   private final Game game;
   private final GameSettings settings;
-  private final PreGamePlayerManager manager;
   private final String id;
   private final GameEventsListener callback;
+  private final PreGamePlayerManager manager;
 
   private PreGameEvents events;
 
+  @SuppressWarnings("all")
   public PreGameManager(
       final MurderRun plugin,
       final CommandSender leader,

@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.event;
 
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import org.bukkit.entity.Item;
@@ -23,7 +24,8 @@ public final class DupePreventListener implements Listener {
   public void onItemDrop(final PlayerDropItemEvent event) {
 
     final Player player = event.getPlayer();
-    final Collection<Player> participants = this.manager.getParticipants();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
+    final Collection<Player> participants = playerManager.getParticipants();
     if (!participants.contains(player)) {
       return;
     }

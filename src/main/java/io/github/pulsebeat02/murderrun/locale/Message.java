@@ -510,7 +510,19 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GAME_FULL = direct("murderrun.command.game.full");
   NullComponent<Sender> GAME_NONE = direct("murderrun.command.game.none");
   NullComponent<Sender> GAME_CREATE_EDIT_ID = direct("murderrun.gui.game.create.edit_id");
+  NullComponent<Sender> GAME_CREATE_EDIT_MIN = direct("murderrun.gui.game.create.edit_min");
+  NullComponent<Sender> GAME_CREATE_EDIT_MAX = direct("murderrun.gui.game.create.edit_max");
+  NullComponent<Sender> GAME_CREATE_EDIT_COUNT_ERROR =
+      direct("murderrun.gui.game.create.edit_count_error");
   UniComponent<Sender, String> GAME_CREATE_EDIT_ID_DISPLAY =
       direct("murderrun.gui.game.create.edit_id_display", null);
+  UniComponent<Sender, Integer> GAME_CREATE_EDIT_MIN_DISPLAY =
+      direct("murderrun.gui.game.create.edit_min_display", null);
+  UniComponent<Sender, Integer> GAME_CREATE_EDIT_MAX_DISPLAY =
+      direct("murderrun.gui.game.create.edit_max_display", null);
   NullComponent<Sender> GAME_CREATE_EDIT_ID_LORE = direct("murderrun.gui.game.create.edit_id_lore");
+  NullComponent<Sender> GAME_CREATE_EDIT_MIN_LORE =
+      direct("murderrun.gui.game.create.edit_min_lore");
+  NullComponent<Sender> GAME_CREATE_EDIT_MAX_LORE =
+      direct("murderrun.gui.game.create.edit_max_lore");
 }

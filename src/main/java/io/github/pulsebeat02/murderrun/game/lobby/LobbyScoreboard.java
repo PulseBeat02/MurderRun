@@ -14,6 +14,7 @@ import net.megavex.scoreboardlibrary.api.ScoreboardLibrary;
 import net.megavex.scoreboardlibrary.api.sidebar.Sidebar;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class LobbyScoreboard {
 
@@ -62,7 +63,7 @@ public final class LobbyScoreboard {
     this.sidebar.line(4, msg);
   }
 
-  private static int getCurrentTime(final LobbyTimeManager timer) {
+  private static int getCurrentTime(final @Nullable LobbyTimeManager timer) {
     if (timer == null) {
       return GameProperties.LOBBY_STARTING_TIME;
     } else {

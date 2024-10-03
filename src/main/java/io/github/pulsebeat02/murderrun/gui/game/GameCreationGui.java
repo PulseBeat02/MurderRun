@@ -7,6 +7,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
+import com.google.common.primitives.Ints;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
@@ -45,7 +46,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 public final class GameCreationGui extends ChestGui implements Listener {
 
   private static final Pattern CREATE_GAME_PATTERN =
-      new Pattern("111111111", "123411151", "111111111", "111161111");
+      new Pattern("111111111", "123456171", "111111111", "111181111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
@@ -56,8 +57,13 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private volatile Arena arena;
 
   private String id;
-  private volatile boolean listenForName;
+  private int min;
+  private int max;
+  private volatile boolean listenForId;
+  private volatile boolean listenForMin;
+  private volatile boolean listenForMax;
 
+  @SuppressWarnings("all")
   public GameCreationGui(final MurderRun plugin, final HumanEntity watcher) {
     super(
         4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_GAME_GUI_TITLE.build()));
@@ -75,7 +81,7 @@ public final class GameCreationGui extends ChestGui implements Listener {
 
   private void unregisterEvents(final InventoryCloseEvent event) {
 
-    if (this.listenForName) {
+    if (this.listenForId || this.listenForMin || this.listenForMax) {
       return;
     }
 
@@ -98,10 +104,10 @@ public final class GameCreationGui extends ChestGui implements Listener {
     this.pane.bindItem('2', this.createLobbyStack());
     this.pane.bindItem('3', this.createArenaStack());
     this.pane.bindItem('4', this.createEditIdStack());
-    // create  min, max stack
-
-    this.pane.bindItem('5', this.createApplyStack());
-    this.pane.bindItem('6', this.createCloseStack());
+    this.pane.bindItem('5', this.createEditMinStack());
+    this.pane.bindItem('6', this.createEditMaxStack());
+    this.pane.bindItem('7', this.createApplyStack());
+    this.pane.bindItem('8', this.createCloseStack());
 
     return this.pane;
   }
@@ -109,20 +115,51 @@ public final class GameCreationGui extends ChestGui implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerChat(final AsyncPlayerChatEvent event) {
 
-    if (!this.listenForName) {
+    if (!this.listenForId && !this.listenForMin && !this.listenForMax) {
       return;
     }
+    event.setCancelled(true);
 
     final Player player = event.getPlayer();
     if (player != this.watcher) {
       return;
     }
 
-    event.setCancelled(true);
+    final String msg = event.getMessage();
+    if (this.listenForId) {
+      this.id = msg;
+      this.listenForId = false;
+    }
 
-    this.id = event.getMessage();
-    this.listenForName = false;
+    if (this.listenForMin) {
+      this.listenForMin = this.parsePlayerCount(msg, true);
+    }
+
+    if (this.listenForMax) {
+      this.listenForMax = this.parsePlayerCount(msg, false);
+    }
+
     this.showInventory(player);
+  }
+
+  private boolean parsePlayerCount(final String msg, final boolean isMin) {
+
+    final Integer wrapped = Ints.tryParse(msg);
+    if (wrapped == null || wrapped < 2) {
+      final Component message = Message.GAME_CREATE_EDIT_COUNT_ERROR.build();
+      this.audience.sendMessage(message);
+      return true;
+    }
+
+    if (isMin) {
+      this.min = wrapped;
+      this.listenForMin = false;
+    } else {
+      this.max = wrapped;
+      this.listenForMax = false;
+    }
+
+    return false;
   }
 
   private void showInventory(final HumanEntity player) {
@@ -134,17 +171,49 @@ public final class GameCreationGui extends ChestGui implements Listener {
     });
   }
 
+  private GuiItem createEditMinStack() {
+    return new GuiItem(
+        Item.builder(Material.ANVIL)
+            .name(Message.GAME_CREATE_EDIT_MIN_DISPLAY.build(this.min))
+            .lore(Message.GAME_CREATE_EDIT_MIN_LORE.build())
+            .build(),
+        this::listenForMin);
+  }
+
+  private GuiItem createEditMaxStack() {
+    return new GuiItem(
+        Item.builder(Material.ANVIL)
+            .name(Message.GAME_CREATE_EDIT_MAX_DISPLAY.build(this.max))
+            .lore(Message.GAME_CREATE_EDIT_MAX_LORE.build())
+            .build(),
+        this::listenForMax);
+  }
+
   private GuiItem createEditIdStack() {
     return new GuiItem(
         Item.builder(Material.ANVIL)
             .name(Message.GAME_CREATE_EDIT_ID_DISPLAY.build(this.id))
             .lore(Message.GAME_CREATE_EDIT_ID_LORE.build())
             .build(),
-        this::listenForMessage);
+        this::listenForIdMessage);
   }
 
-  private void listenForMessage(final InventoryClickEvent event) {
-    this.listenForName = true;
+  private void listenForMax(final InventoryClickEvent event) {
+    this.listenForMax = true;
+    this.watcher.closeInventory();
+    final Component msg = Message.GAME_CREATE_EDIT_MAX.build();
+    this.audience.sendMessage(msg);
+  }
+
+  private void listenForMin(final InventoryClickEvent event) {
+    this.listenForMin = true;
+    this.watcher.closeInventory();
+    final Component msg = Message.GAME_CREATE_EDIT_MIN.build();
+    this.audience.sendMessage(msg);
+  }
+
+  private void listenForIdMessage(final InventoryClickEvent event) {
+    this.listenForId = true;
     this.watcher.closeInventory();
     final Component msg = Message.GAME_CREATE_EDIT_ID.build();
     this.audience.sendMessage(msg);

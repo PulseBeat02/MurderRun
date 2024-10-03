@@ -6,12 +6,13 @@ import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import java.util.Collection;
 import java.util.Map;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 
-public final class GameEventsListenerImpl implements GameEventsListener {
+public final class GameEventsPlayerListener implements GameEventsListener {
 
   private final GameManager manager;
 
-  public GameEventsListenerImpl(final GameManager manager) {
+  public GameEventsPlayerListener(final GameManager manager) {
     this.manager = manager;
   }
 
@@ -25,7 +26,7 @@ public final class GameEventsListenerImpl implements GameEventsListener {
   @Override
   public void onGameStart(final Game game) {
     final Map<String, PreGameManager> games = this.manager.getGames();
-    final Collection<Map.Entry<String, PreGameManager>> entries = games.entrySet();
+    final Collection<Map.Entry<@KeyFor("games") String, PreGameManager>> entries = games.entrySet();
     for (final Map.Entry<String, PreGameManager> entry : entries) {
       final PreGameManager pre = entry.getValue();
       final Game game1 = pre.getGame();
