@@ -73,6 +73,7 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onLoad() {
+    this.installDependencies();
     this.loadPacketEvents();
   }
 
@@ -84,6 +85,7 @@ public final class MurderRun extends JavaPlugin {
     this.shutdownPluginData();
     this.stopHostingDaemon();
     this.disableScoreboardLibrary();
+    this.disablePacketEventsApi();
     this.shutdownMetrics();
     this.shutdownAudience();
   }
@@ -91,10 +93,8 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onEnable() {
     this.registerAudienceHandler();
-    this.installDependencies();
     this.enablePacketEventsApi();
     this.loadScoreboardLibrary();
-    this.disablePacketEventsApi();
     this.registerLookUpMaps();
     this.readPluginData();
     this.handlePackHosting();
@@ -115,8 +115,8 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void loadPacketEvents() {
-    final PacketEventsAPI<?> api = PacketEvents.getAPI();
     PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+    final PacketEventsAPI<?> api = PacketEvents.getAPI();
     api.load();
   }
 
@@ -140,7 +140,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void unregisterExpansion() {
-    if (Capabilities.PLACEHOLDER_API.isEnabled()) {
+    if (Capabilities.PLACEHOLDER_API.isEnabled() && this.expansion != null) {
       this.expansion.unregister();
     }
   }
