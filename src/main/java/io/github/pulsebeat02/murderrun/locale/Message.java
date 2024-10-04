@@ -525,4 +525,8 @@ public interface Message extends LocaleTools {
       direct("murderrun.gui.game.create.edit_min_lore");
   NullComponent<Sender> GAME_CREATE_EDIT_MAX_LORE =
       direct("murderrun.gui.game.create.edit_max_lore");
+  UniComponent<Sender, Boolean> GAME_CREATE_EDIT_QUICK_JOIN_DISPLAY =
+      direct("murderrun.gui.game.create.edit_id_display.quick_join", null);
+  NullComponent<Sender> GAME_CREATE_EDIT_QUICK_JOIN_LORE =
+      direct("murderrun.gui.game.create.edit_id_lore.quick_join");
 }

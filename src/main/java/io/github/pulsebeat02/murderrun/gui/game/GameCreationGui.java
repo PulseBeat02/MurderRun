@@ -46,7 +46,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 public final class GameCreationGui extends ChestGui implements Listener {
 
   private static final Pattern CREATE_GAME_PATTERN =
-      new Pattern("111111111", "123456171", "111111111", "111181111");
+      new Pattern("111111111", "123456781", "111111111", "111191111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
@@ -59,6 +59,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private String id;
   private int min;
   private int max;
+  private boolean quickJoin;
+
   private volatile boolean listenForId;
   private volatile boolean listenForMin;
   private volatile boolean listenForMax;
@@ -106,8 +108,9 @@ public final class GameCreationGui extends ChestGui implements Listener {
     this.pane.bindItem('4', this.createEditIdStack());
     this.pane.bindItem('5', this.createEditMinStack());
     this.pane.bindItem('6', this.createEditMaxStack());
-    this.pane.bindItem('7', this.createApplyStack());
-    this.pane.bindItem('8', this.createCloseStack());
+    this.pane.bindItem('7', this.createQuickJoinStack());
+    this.pane.bindItem('8', this.createApplyStack());
+    this.pane.bindItem('9', this.createCloseStack());
 
     return this.pane;
   }
@@ -169,6 +172,21 @@ public final class GameCreationGui extends ChestGui implements Listener {
       this.show(player);
       return null;
     });
+  }
+
+  private GuiItem createQuickJoinStack() {
+    return new GuiItem(
+        Item.builder(Material.RED_WOOL)
+            .name(Message.GAME_CREATE_EDIT_QUICK_JOIN_DISPLAY.build(this.quickJoin))
+            .lore(Message.GAME_CREATE_EDIT_QUICK_JOIN_LORE.build())
+            .build(),
+        this::handleQuickJoinClick);
+  }
+
+  private void handleQuickJoinClick(final InventoryClickEvent event) {
+    this.quickJoin = !this.quickJoin;
+    final ItemStack stack = requireNonNull(event.getCurrentItem());
+    stack.setType(this.quickJoin ? Material.LIME_WOOL : Material.RED_WOOL);
   }
 
   private GuiItem createEditMinStack() {
@@ -247,7 +265,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
     final Player player = (Player) this.watcher;
     final String lobbyName = this.lobby.getName();
     final String arenaName = this.arena.getName();
-    player.performCommand("murder game create %s %s".formatted(arenaName, lobbyName));
+    player.performCommand("murder game create %s %s %s %s %s %s"
+        .formatted(arenaName, lobbyName, this.id, this.min, this.max, this.quickJoin));
     this.watcher.closeInventory();
   }
 

@@ -28,6 +28,10 @@ public final class IOUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static String getFileName(final String url) {
+    return url.substring(url.lastIndexOf('/') + 1);
+  }
+
   public static Writable getWritableStreamFromResource(final String path) {
 
     final Path dataFolder = getPluginDataFolderPath();

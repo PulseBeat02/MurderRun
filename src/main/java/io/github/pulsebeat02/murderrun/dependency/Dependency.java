@@ -6,6 +6,8 @@ public interface Dependency {
 
   String getName();
 
+  String getVersion();
+
   Path getParentDirectory();
 
   Path download();

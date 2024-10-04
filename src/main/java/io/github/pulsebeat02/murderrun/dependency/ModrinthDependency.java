@@ -10,8 +10,8 @@ import java.util.concurrent.CompletableFuture;
 
 public final class ModrinthDependency extends PluginDependency {
 
-  public ModrinthDependency(final String name, final Path parent) {
-    super(name, parent);
+  public ModrinthDependency(final String name, final String version, final Path parent) {
+    super(name, version, parent);
   }
 
   @Override
@@ -38,7 +38,12 @@ public final class ModrinthDependency extends PluginDependency {
   private Path findValidFile(final String json) {
     if (json != null) {
       final ModrinthVersion[] versions = ModrinthVersion.serializeVersions(json);
+      final String target = this.getVersion();
       for (final ModrinthVersion version : versions) {
+        final String number = version.getVersionNumber();
+        if (!number.equals(target)) {
+          continue;
+        }
         final Optional<ModrinthFile> file = version.findFirstValidFile();
         if (file.isPresent()) {
           final ModrinthFile modrinthFile = file.get();

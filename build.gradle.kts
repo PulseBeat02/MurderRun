@@ -54,8 +54,7 @@ var runtimeDeps = listOf(
     "org.postgresql:postgresql:42.7.4",
     "org.mariadb.jdbc:mariadb-java-client:3.4.1",
     "net.megavex:scoreboard-library-api:2.1.12",
-    "net.megavex:scoreboard-library-implementation:2.1.12",
-    "com.github.retrooper:packetevents-spigot:2.5.0"
+    "net.megavex:scoreboard-library-implementation:2.1.12"
 );
 
 bukkit {
@@ -87,6 +86,7 @@ dependencies {
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
     implementation("org.bstats:bstats-bukkit:3.1.0")
+    implementation("com.github.retrooper:packetevents-spigot:2.5.0")
 
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")

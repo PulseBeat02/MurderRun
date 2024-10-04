@@ -19,8 +19,9 @@ public final class DependencyManager {
     final Path data = IOUtils.getPluginDataFolderPath();
     final Path parent = requireNonNull(data.getParent());
     final PluginDependency[] dependencies = {
-      new JenkinsDependency("Citizens", parent, "https://ci.citizensnpcs.co/job/Citizens2/"),
-      new ModrinthDependency("FastAsyncWorldEdit", parent)
+      new JenkinsDependency(
+          "Citizens", "Citizens-2.0.35-b3580", parent, "https://ci.citizensnpcs.co/job/Citizens2/"),
+      new ModrinthDependency("FastAsyncWorldEdit", "2.11.2", parent)
     };
 
     for (final PluginDependency dependency : dependencies) {
