@@ -61,6 +61,7 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private int max;
   private boolean quickJoin;
 
+  private volatile boolean noCancel;
   private volatile boolean listenForId;
   private volatile boolean listenForMin;
   private volatile boolean listenForMax;
@@ -78,12 +79,13 @@ public final class GameCreationGui extends ChestGui implements Listener {
     final BukkitAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
     this.audience = audiences.player(uuid);
+    noCancel = true;
     manager.registerEvents(this, plugin);
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
 
-    if (this.listenForId || this.listenForMin || this.listenForMax) {
+    if (this.noCancel) {
       return;
     }
 
@@ -175,9 +177,10 @@ public final class GameCreationGui extends ChestGui implements Listener {
   }
 
   private GuiItem createQuickJoinStack() {
+    final Material type = this.getQuickJoinMaterial();
     return new GuiItem(
-        Item.builder(Material.RED_WOOL)
-            .name(Message.GAME_CREATE_EDIT_QUICK_JOIN_DISPLAY.build(this.quickJoin))
+        Item.builder(type)
+            .name(Message.GAME_CREATE_EDIT_QUICK_JOIN_DISPLAY.build())
             .lore(Message.GAME_CREATE_EDIT_QUICK_JOIN_LORE.build())
             .build(),
         this::handleQuickJoinClick);
@@ -186,7 +189,12 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private void handleQuickJoinClick(final InventoryClickEvent event) {
     this.quickJoin = !this.quickJoin;
     final ItemStack stack = requireNonNull(event.getCurrentItem());
-    stack.setType(this.quickJoin ? Material.LIME_WOOL : Material.RED_WOOL);
+    final Material type = this.getQuickJoinMaterial();
+    stack.setType(type);
+  }
+
+  private Material getQuickJoinMaterial() {
+    return this.quickJoin ? Material.LIME_WOOL : Material.RED_WOOL;
   }
 
   private GuiItem createEditMinStack() {
@@ -256,7 +264,12 @@ public final class GameCreationGui extends ChestGui implements Listener {
     final AudienceProvider provider = this.plugin.getAudience();
     final BukkitAudiences bukkitAudiences = provider.retrieve();
     final Audience audience = bukkitAudiences.player(this.watcher.getUniqueId());
-    if (this.lobby == null || this.arena == null) {
+    if (this.lobby == null
+        || this.arena == null
+        || this.id == null
+        || this.min < 2
+        || this.max < 2
+        || this.min > this.max) {
       final Component msg = Message.CREATE_GAME_GUI_ERROR.build();
       audience.sendMessage(msg);
       return;
@@ -267,6 +280,7 @@ public final class GameCreationGui extends ChestGui implements Listener {
     final String arenaName = this.arena.getName();
     player.performCommand("murder game create %s %s %s %s %s %s"
         .formatted(arenaName, lobbyName, this.id, this.min, this.max, this.quickJoin));
+    this.noCancel = false;
     this.watcher.closeInventory();
   }
 
@@ -297,7 +311,12 @@ public final class GameCreationGui extends ChestGui implements Listener {
   }
 
   private void handleLobbyClickEvent(final InventoryClickEvent event) {
-    final ItemStack item = requireNonNull(event.getCurrentItem());
+
+    final ItemStack item = event.getCurrentItem();
+    if (item == null) {
+      return;
+    }
+
     final ItemMeta meta = requireNonNull(item.getItemMeta());
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final String name = requireNonNull(container.get(Keys.LOBBY_NAME, PersistentDataType.STRING));

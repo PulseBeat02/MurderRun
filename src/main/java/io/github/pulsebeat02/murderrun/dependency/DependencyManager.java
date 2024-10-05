@@ -51,6 +51,6 @@ public final class DependencyManager {
     final Server server = Bukkit.getServer();
     final PluginManager manager = server.getPluginManager();
     final String target = dependency.getName();
-    return !manager.isPluginEnabled(target);
+    return manager.getPlugin(target) == null;
   }
 }

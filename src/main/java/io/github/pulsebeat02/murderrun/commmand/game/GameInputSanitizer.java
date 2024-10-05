@@ -173,4 +173,13 @@ public final class GameInputSanitizer {
     }
     return false;
   }
+
+  public boolean checkIfInvalidPlayerCounts(final Audience audience, final int min, final int max) {
+    if (min > max || min < 2) {
+      final Component message = Message.GAME_PLAYER_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+    return false;
+  }
 }

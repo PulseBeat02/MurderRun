@@ -16,7 +16,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class MiniMessageTranslator implements Translator {
 
-  private static PlainTextComponentSerializer PLAIN_TEST_SERIALIZER =
+  private static final PlainTextComponentSerializer PLAIN_TEST_SERIALIZER =
       PlainTextComponentSerializer.plainText();
 
   private final MiniMessage miniMessage;
@@ -57,7 +57,7 @@ public abstract class MiniMessageTranslator implements Translator {
       final ComponentLike arg = args.getFirst();
       final Component comp = arg.asComponent();
       final String name = PLAIN_TEST_SERIALIZER.serialize(comp);
-      return value.replace("$PLAYER_NAME$", name);
+      return value.replace("$GAME_ID$", name);
     }
     return value;
   }

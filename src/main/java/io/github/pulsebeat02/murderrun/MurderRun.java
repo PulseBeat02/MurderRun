@@ -42,7 +42,6 @@ public final class MurderRun extends JavaPlugin {
   - If game is full, don't allow join (test)
   - Rewrite game system and party system (test)
     - Add a quick join command to scan through all joinable games (test)
-  - Create Game Creation GUI (test)
 
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities

@@ -85,7 +85,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final PreGameManager temp = this.manager.getGameAsParticipant(sender);
     if (this.sanitizer.checkIfAlreadyInGame(audience, temp)
         || this.sanitizer.checkIfArenaValid(audience, arenaName)
-        || this.sanitizer.checkIfLobbyValid(audience, lobbyName)) {
+        || this.sanitizer.checkIfLobbyValid(audience, lobbyName)
+        || this.sanitizer.checkIfInvalidPlayerCounts(audience, min, max)) {
       return;
     }
     this.manager.createGame(sender, id, arenaName, lobbyName, min, max, quickJoinable);
