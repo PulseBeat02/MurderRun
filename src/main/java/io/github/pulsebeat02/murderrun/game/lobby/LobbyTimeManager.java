@@ -24,7 +24,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class LobbyTimeManager {
 
-  private static final Set<Integer> ANNOUNCE_TIMES = Set.of(15, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+  private static final Set<Integer> ANNOUNCE_TIMES = Set.of(15, 10, 5, 4, 3, 2, 1);
 
   private final PreGameManager manager;
 
@@ -77,7 +77,7 @@ public final class LobbyTimeManager {
 
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final LobbyScoreboard scoreboard = playerManager.getScoreboard();
-    scoreboard.addTimer();
+    scoreboard.updateScoreboard();
 
     this.setLevel(seconds);
 

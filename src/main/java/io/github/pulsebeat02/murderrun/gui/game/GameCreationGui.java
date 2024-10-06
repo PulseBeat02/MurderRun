@@ -69,7 +69,9 @@ public final class GameCreationGui extends ChestGui implements Listener {
   @SuppressWarnings("all")
   public GameCreationGui(final MurderRun plugin, final HumanEntity watcher) {
     super(
-        4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_GAME_GUI_TITLE.build()));
+        4,
+        AdventureUtils.serializeComponentToLegacyString(Message.CREATE_GAME_GUI_TITLE.build()),
+        plugin);
     this.plugin = plugin;
     this.watcher = watcher;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_GAME_PATTERN);

@@ -92,7 +92,9 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       final Collection<Location> itemLocations,
       final boolean editMode) {
     super(
-        4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()));
+        4,
+        AdventureUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()),
+        plugin);
     final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     final AudienceProvider provider = plugin.getAudience();

@@ -2,103 +2,93 @@ package io.github.pulsebeat02.murderrun.game.player;
 
 import static net.kyori.adventure.text.Component.empty;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
+import fr.mrmicky.fastboard.adventure.FastBoard;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
-import net.megavex.scoreboardlibrary.api.ScoreboardLibrary;
-import net.megavex.scoreboardlibrary.api.sidebar.Sidebar;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class PlayerScoreboard {
 
   private final GamePlayer gamePlayer;
-  private final Sidebar sidebar;
+  private final FastBoard board;
 
   public PlayerScoreboard(final GamePlayer gamePlayer) {
     this.gamePlayer = gamePlayer;
-    this.sidebar = this.createSidebar(gamePlayer);
+    this.board = this.createSidebar(gamePlayer);
   }
 
-  private Sidebar createSidebar(
+  private FastBoard createSidebar(
       @UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
-    final Game game = gamePlayer.getGame();
-    final MurderRun plugin = game.getPlugin();
-    final ScoreboardLibrary library = plugin.getScoreboardLibrary();
-    final Sidebar sidebar = library.createSidebar();
     final Player player = gamePlayer.getInternalPlayer();
-    sidebar.addPlayer(player);
-    return sidebar;
+    return new FastBoard(player);
   }
 
-  public void initializeSidebar() {
-    this.addTitle();
-    this.emptyLine(0);
-    this.addRoleTitle();
-    this.addRole();
-    this.emptyLine(3);
-    this.addObjectiveTitle();
-    this.addObjective();
-    this.emptyLine(6);
-    this.addPartsTitle();
-    this.addPartsCount();
+  public void shutdown() {
+    this.board.delete();
   }
 
-  public void addPartsCount() {
+  public void updateSidebar() {
+
+    if (this.board.isDeleted()) {
+      return;
+    }
+
+    this.board.updateTitle(this.generateTitleComponent());
+    this.board.updateLines(
+        empty(),
+        this.generateRoleComponent(),
+        this.generateRoleMetaComponent(),
+        empty(),
+        this.generateObjectiveComponent(),
+        this.generateObjectiveMetaComponent(),
+        empty(),
+        this.generatePartsComponent(),
+        this.generatePartsMetaComponent());
+  }
+
+  public Component generatePartsMetaComponent() {
     final Game game = this.gamePlayer.getGame();
     final Map map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
-    final int remaining = manager.getRemainingParts();
-    final Component msg = Message.SCOREBOARD_PARTS_COUNT.build(remaining);
-    this.sidebar.line(8, msg);
-  }
-
-  private void addPartsTitle() {
-    final Component msg = Message.SCOREBOARD_PARTS.build();
-    this.sidebar.line(9, msg);
-  }
-
-  private void addObjective() {
-    final boolean killer = this.gamePlayer instanceof Killer;
-    final Component msg;
-    if (killer) {
-      msg = Message.SCOREBOARD_OBJECTIVE_KILLER.build();
-    } else {
-      msg = Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
+    int remaining = manager.getRemainingParts();
+    if (remaining == 0) {
+      remaining = GameProperties.CAR_PARTS_COUNT;
     }
-    this.sidebar.line(6, msg);
+    return Message.SCOREBOARD_PARTS_COUNT.build(remaining);
   }
 
-  private void addObjectiveTitle() {
-    final Component msg = Message.SCOREBOARD_OBJECTIVE.build();
-    this.sidebar.line(5, msg);
+  private Component generatePartsComponent() {
+    return Message.SCOREBOARD_PARTS.build();
   }
 
-  private void addRole() {
+  private Component generateObjectiveMetaComponent() {
     final boolean killer = this.gamePlayer instanceof Killer;
-    final Component msg;
-    if (killer) {
-      msg = Message.SCOREBOARD_ROLE_KILLER.build();
-    } else {
-      msg = Message.SCOREBOARD_ROLE_SURVIVOR.build();
-    }
-    this.sidebar.line(2, msg);
+    return killer
+        ? Message.SCOREBOARD_OBJECTIVE_KILLER.build()
+        : Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
   }
 
-  private void addRoleTitle() {
-    final Component msg = Message.SCOREBOARD_ROLE.build();
-    this.sidebar.line(3, msg);
+  private Component generateObjectiveComponent() {
+    return Message.SCOREBOARD_OBJECTIVE.build();
   }
 
-  private void addTitle() {
-    final Component msg = Message.SCOREBOARD_TITLE.build();
-    this.sidebar.title(msg);
+  private Component generateRoleMetaComponent() {
+    final boolean killer = this.gamePlayer instanceof Killer;
+    return killer
+        ? Message.SCOREBOARD_ROLE_KILLER.build()
+        : Message.SCOREBOARD_ROLE_SURVIVOR.build();
   }
 
-  private void emptyLine(final int index) {
-    this.sidebar.line(index, empty());
+  private Component generateRoleComponent() {
+    return Message.SCOREBOARD_ROLE.build();
+  }
+
+  private Component generateTitleComponent() {
+    return Message.SCOREBOARD_TITLE.build();
   }
 }

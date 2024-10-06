@@ -33,7 +33,9 @@ public final class LobbyNavigationGui extends ChestGui {
 
   public LobbyNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
     super(
-        4, AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_LOBBY_GUI_TITLE.build()));
+        4,
+        AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_LOBBY_GUI_TITLE.build()),
+        plugin);
     this.plugin = plugin;
     this.watcher = clicker;
   }

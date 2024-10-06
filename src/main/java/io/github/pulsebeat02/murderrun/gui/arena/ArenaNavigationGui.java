@@ -36,7 +36,9 @@ public final class ArenaNavigationGui extends ChestGui {
 
   public ArenaNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
     super(
-        4, AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_ARENA_GUI_TITLE.build()));
+        4,
+        AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_ARENA_GUI_TITLE.build()),
+        plugin);
     this.plugin = plugin;
     this.watcher = clicker;
   }

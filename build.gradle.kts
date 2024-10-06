@@ -38,7 +38,6 @@ var runtimeDeps = listOf(
     "net.kyori:adventure-text-minimessage:4.17.0",
     "net.kyori:adventure-text-serializer-plain:4.17.0",
     "net.kyori:adventure-text-serializer-legacy:4.17.0",
-    "net.kyori:adventure-text-serializer-gson:4.17.0",
     "team.unnamed:creative-api:1.7.3",
     "team.unnamed:creative-serializer-minecraft:1.7.3",
     "team.unnamed:creative-server:1.7.3",
@@ -47,13 +46,9 @@ var runtimeDeps = listOf(
     "org.incendo:cloud-minecraft-extras:2.0.0-beta.10",
     "me.lucko:commodore:2.2",
     "org.jsoup:jsoup:1.18.1",
-    "com.github.stefvanschie.inventoryframework:IF:0.10.17",
     "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
     "com.mysql:mysql-connector-j:9.0.0",
-    "net.megavex:scoreboard-library-api:2.1.12",
-    "net.megavex:scoreboard-library-implementation:2.1.12",
-    "net.megavex:scoreboard-library-packetevents:2.1.12",
-    "org.bstats:bstats-bukkit:3.1.0"
+    "fr.mrmicky:fastboard:2.1.3"
 );
 
 bukkit {
@@ -69,12 +64,9 @@ bukkit {
         "WorldEdit",
         "Citizens",
         "LibsDisguises",
-        "PlaceholderAPI",   "ProtocolLib",
-                "ProtocolSupport",
-                "ViaVersion",
-                "ViaBackwards",
-                "ViaRewind",
-                "Geyser-Spigot", "PacketEvents")
+        "PlaceholderAPI")
+    libraries = runtimeDeps
+
 }
 
 dependencies {
@@ -83,18 +75,19 @@ dependencies {
 
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
-    runtimeDeps.forEach(::implementation)
+    implementation("org.bstats:bstats-bukkit:3.1.0")
+    implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
 
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
     compileOnly("io.netty:netty-all:4.1.97.Final")
     compileOnly("io.netty:netty-codec-http:4.1.97.Final")
+    runtimeDeps.forEach(::compileOnly)
 
     // Plugin Extensions
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly("LibsDisguises:LibsDisguises:10.0.44")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.5.0")
     compileOnly("com.sk89q.worldedit:worldedit-core:7.3.6")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.6")
     compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT") {
@@ -162,12 +155,9 @@ tasks {
     }
 
     shadowJar {
-        relocate("org.bstats", "io.github.pulsebeat02.murderrun.lib.org.bstats")
-        dependencies {
-            exclude(dependency("com.google.code.gson:gson:.*"))
-            exclude(dependency("com.mojang:brigadier:.*"))
-            exclude(dependency("org.jetbrains:annotations:.*"))
-        }
+        var libPath = "io.github.pulsebeat02.murderrun.libs"
+        relocate("org.bstats", "$libPath.org.bstats")
+        relocate("com.github.stefvanschie", "$libPath.com.github.stefvanschie")
     }
 }
 

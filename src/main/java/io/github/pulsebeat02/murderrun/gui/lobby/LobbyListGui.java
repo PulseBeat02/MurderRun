@@ -41,7 +41,9 @@ public final class LobbyListGui extends ChestGui {
       final HumanEntity watcher,
       final Consumer<InventoryClickEvent> consumer) {
     super(
-        6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
+        6,
+        AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()),
+        plugin);
     this.plugin = plugin;
     this.watcher = watcher;
     this.consumer = consumer;

@@ -41,7 +41,7 @@ public final class GameStartupTool {
   public void start() {
     this.teleportInnocentPlayers();
     this.announceHidePhase();
-    this.clearNetherStars();
+    this.clearSurvivorNetherStars();
     this.setNight();
     this.runFutureTask();
   }
@@ -71,9 +71,17 @@ public final class GameStartupTool {
     manager.sendMessageToAllParticipants(title);
   }
 
-  private void clearNetherStars() {
+  private void clearSurvivorNetherStars() {
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllParticipants(player -> {
+    manager.applyToAllInnocents(player -> {
+      final PlayerInventory inventory = player.getInventory();
+      inventory.remove(Material.NETHER_STAR);
+    });
+  }
+
+  private void clearKillerNetherStars() {
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.applyToAllMurderers(player -> {
       final PlayerInventory inventory = player.getInventory();
       inventory.remove(Material.NETHER_STAR);
     });
@@ -121,6 +129,7 @@ public final class GameStartupTool {
   }
 
   private void futureTask() {
+    this.clearKillerNetherStars();
     this.teleportMurderers();
     this.announceReleasePhase();
     this.playReleaseSoundEffect();

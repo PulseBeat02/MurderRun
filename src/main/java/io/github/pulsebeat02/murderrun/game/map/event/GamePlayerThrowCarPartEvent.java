@@ -80,7 +80,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
     manager.applyToAllParticipants(player -> {
       final MetadataManager metadata = player.getMetadataManager();
       final PlayerScoreboard scoreboard = metadata.getSidebar();
-      scoreboard.addPartsCount();
+      scoreboard.updateSidebar();
     });
   }
 

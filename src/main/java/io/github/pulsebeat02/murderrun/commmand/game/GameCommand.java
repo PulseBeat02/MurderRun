@@ -314,7 +314,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.game.gui.info")
   @Command(value = "murder game gui", requiredSender = Player.class)
   public void openGameGui(final Player sender) {
-    final PlayerListGui gui = new PlayerListGui(sender, this.manager);
+    final PlayerListGui gui = new PlayerListGui(this.plugin, sender, this.manager);
     gui.update();
     gui.show(sender);
   }

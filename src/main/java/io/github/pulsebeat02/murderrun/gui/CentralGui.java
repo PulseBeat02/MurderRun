@@ -26,7 +26,10 @@ public final class CentralGui extends ChestGui {
   private final HumanEntity watcher;
 
   public CentralGui(final MurderRun plugin, final HumanEntity watcher) {
-    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()));
+    super(
+        4,
+        AdventureUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()),
+        plugin);
     this.plugin = plugin;
     this.watcher = watcher;
   }

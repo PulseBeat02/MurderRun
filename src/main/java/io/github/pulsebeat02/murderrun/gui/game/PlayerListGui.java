@@ -9,6 +9,7 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
@@ -37,9 +38,12 @@ public final class PlayerListGui extends ChestGui {
 
   private PaginatedPane pages;
 
-  public PlayerListGui(final HumanEntity watcher, final GameManager manager) {
+  public PlayerListGui(
+      final MurderRun plugin, final HumanEntity watcher, final GameManager manager) {
     super(
-        6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()));
+        6,
+        AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()),
+        plugin);
     this.watcher = watcher;
     this.manager = manager;
   }

@@ -63,7 +63,9 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
       final Location spawn,
       final boolean editMode) {
     super(
-        4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()));
+        4,
+        AdventureUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()),
+        plugin);
     final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     final AudienceProvider provider = plugin.getAudience();

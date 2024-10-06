@@ -40,6 +40,7 @@ public final class PreGamePlayerManager {
 
   private @Nullable LobbyTimeManager lobbyTimeManager;
   private LobbyScoreboard scoreboard;
+  private LobbyBossbar bossbar;
 
   public PreGamePlayerManager(
       final PreGameManager manager,
@@ -61,19 +62,26 @@ public final class PreGamePlayerManager {
   }
 
   public void initialize() {
+    this.bossbar = new LobbyBossbar(this);
     this.scoreboard = new LobbyScoreboard(this.manager);
-    this.scoreboard.initializeSidebar();
+    this.scoreboard.updateScoreboard();
+  }
+
+  public void forceShutdown() {
+    this.shutdown();
+    for (final Player player : this.participants) {
+      this.clearInventory(player);
+      this.removePersistentData(player);
+      player.setLevel(0);
+    }
   }
 
   public void shutdown() {
     if (this.lobbyTimeManager != null) {
       this.lobbyTimeManager.shutdown();
     }
-    for (final Player player : this.participants) {
-      this.clearInventory(player);
-      this.removePersistentData(player);
-      player.setLevel(0);
-    }
+    this.scoreboard.shutdown();
+    this.bossbar.shutdown();
   }
 
   public void setPlayerToMurderer(final Player murderer) {
@@ -100,7 +108,7 @@ public final class PreGamePlayerManager {
   public void removeParticipantFromLobby(final Player player) {
     this.murderers.remove(player);
     this.participants.remove(player);
-    this.scoreboard.addPlayers();
+    this.scoreboard.generatePlayerComponent();
     this.clearInventory(player);
     this.removePersistentData(player);
     this.checkIfEnoughPlayers();
@@ -122,7 +130,9 @@ public final class PreGamePlayerManager {
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
     this.participants.add(player);
-    this.scoreboard.addPlayers();
+    this.bossbar.addPlayer(player);
+    this.scoreboard.addPlayer(player);
+    this.scoreboard.updateScoreboard();
     this.teleportPlayerToLobby(player);
     this.clearInventory(player);
     this.loadResourcePack(player);
@@ -257,5 +267,9 @@ public final class PreGamePlayerManager {
 
   public CommandSender getLeader() {
     return this.leader;
+  }
+
+  public PreGameManager getManager() {
+    return this.manager;
   }
 }

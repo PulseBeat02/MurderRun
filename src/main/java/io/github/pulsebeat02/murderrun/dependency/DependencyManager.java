@@ -25,8 +25,7 @@ public final class DependencyManager {
           "3583",
           parent,
           "https://ci.citizensnpcs.co/job/Citizens2/"),
-      new ModrinthDependency("FastAsyncWorldEdit", "2.11.2", parent),
-      new ModrinthDependency("PacketEvents", "2.5.0", parent)
+      new ModrinthDependency("FastAsyncWorldEdit", "2.11.2", parent)
     };
 
     for (final PluginDependency dependency : dependencies) {

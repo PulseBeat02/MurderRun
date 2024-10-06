@@ -44,7 +44,7 @@ public final class MetadataManager {
 
   public void start() {
     this.sidebar = new PlayerScoreboard(this.gamePlayer);
-    this.sidebar.initializeSidebar();
+    this.sidebar.updateSidebar();
   }
 
   private WorldBorder createWorldBorder(
@@ -123,6 +123,7 @@ public final class MetadataManager {
     this.glowEntities.clear();
     this.glowTeams.clear();
     this.hideNameTagTeam.unregister();
+    this.sidebar.shutdown();
   }
 
   public void setEntityGlowing(

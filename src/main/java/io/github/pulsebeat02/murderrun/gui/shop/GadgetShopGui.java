@@ -48,7 +48,8 @@ public final class GadgetShopGui extends ChestGui {
   private final PaginatedPane pages;
 
   public GadgetShopGui(final MurderRun plugin, final boolean isSurvivorGadgets) {
-    super(6, AdventureUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()));
+    super(
+        6, AdventureUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.pages = new PaginatedPane(0, 0, 9, 5);
     this.addItems(isSurvivorGadgets);

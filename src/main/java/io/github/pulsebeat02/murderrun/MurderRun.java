@@ -1,7 +1,5 @@
 package io.github.pulsebeat02.murderrun;
 
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.PacketEventsAPI;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.RelationalDataImplAssignation;
@@ -20,9 +18,6 @@ import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
-import net.megavex.scoreboardlibrary.api.ScoreboardLibrary;
-import net.megavex.scoreboardlibrary.api.exception.NoPacketAdapterAvailableException;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,13 +25,14 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  - Fix Netty Hosting
+  Tasks
+  - Rewrite all of new party system code
+  - Fix Resourcepack Textures
 
   Debugging
   - Trial Database Support (test)
   - Verify Dead Chat and Normal Chat Working (test)
   - Verify Minimum / Maximum Player Count for Timer (test)
-  - Verify Scoreboards are Working (test)
 
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities
@@ -48,7 +44,6 @@ public final class MurderRun extends JavaPlugin {
 
   private PluginDataConfigurationMapper configuration;
   private AudienceProvider audience;
-  private DependencyManager manager;
 
   private ConfigurationManager<ArenaManager> arenaDataConfigurationMapper;
   private ConfigurationManager<LobbyManager> lobbyDataConfigurationMapper;
@@ -59,7 +54,6 @@ public final class MurderRun extends JavaPlugin {
   private StatisticsManager statisticsManager;
 
   private Metrics metrics;
-  private ScoreboardLibrary scoreboardLibrary;
   private GameShutdownManager gameShutdownManager;
   private PlayerResourcePackChecker playerResourcePackChecker;
   private ResourcePackProvider provider;
@@ -68,7 +62,6 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onLoad() {
     this.installDependencies();
-    this.loadPacketEvents();
   }
 
   @Override
@@ -78,8 +71,6 @@ public final class MurderRun extends JavaPlugin {
     this.updatePluginData();
     this.shutdownPluginData();
     this.stopHostingDaemon();
-    this.disableScoreboardLibrary();
-    this.disablePacketEventsApi();
     this.shutdownMetrics();
     this.shutdownAudience();
   }
@@ -87,8 +78,6 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onEnable() {
     this.registerAudienceHandler();
-    this.enablePacketEventsApi();
-    this.loadScoreboardLibrary();
     this.registerLookUpMaps();
     this.readPluginData();
     this.handlePackHosting();
@@ -98,39 +87,9 @@ public final class MurderRun extends JavaPlugin {
     this.enableBStats();
   }
 
-  private void disablePacketEventsApi() {
-    final PacketEventsAPI<?> api = PacketEvents.getAPI();
-    api.terminate();
-  }
-
-  private void enablePacketEventsApi() {
-    final PacketEventsAPI<?> api = PacketEvents.getAPI();
-    api.init();
-  }
-
-  private void loadPacketEvents() {
-    PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
-    final PacketEventsAPI<?> api = PacketEvents.getAPI();
-    api.load();
-  }
-
   private void installDependencies() {
-    this.manager = new DependencyManager();
-    this.manager.installDependencies();
-  }
-
-  private void disableScoreboardLibrary() {
-    if (this.scoreboardLibrary != null) {
-      this.scoreboardLibrary.close();
-    }
-  }
-
-  private void loadScoreboardLibrary() {
-    try {
-      this.scoreboardLibrary = ScoreboardLibrary.loadScoreboardLibrary(this);
-    } catch (final NoPacketAdapterAvailableException e) {
-      throw new AssertionError(e);
-    }
+    final DependencyManager manager = new DependencyManager();
+    manager.installDependencies();
   }
 
   private void unregisterExpansion() {
@@ -259,9 +218,5 @@ public final class MurderRun extends JavaPlugin {
 
   public MurderRunExpansion getExpansion() {
     return this.expansion;
-  }
-
-  public ScoreboardLibrary getScoreboardLibrary() {
-    return this.scoreboardLibrary;
   }
 }
