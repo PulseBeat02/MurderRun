@@ -136,10 +136,11 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
     this.invites.invitePlayer(sender, invite);
 
-    final String senderDisplayName = sender.getDisplayName();
+    final PreGameManager target = requireNonNull(this.manager.getGame(sender));
+    final String id = target.getId();
     final String inviteDisplayName = invite.getDisplayName();
     final Component owner = Message.GAME_OWNER_INVITE.build(inviteDisplayName);
-    final Component player = Message.GAME_PLAYER_INVITE.build(senderDisplayName);
+    final Component player = Message.GAME_PLAYER_INVITE.build(id);
     final Audience invited = this.audiences.player(invite);
     audience.sendMessage(owner);
     invited.sendMessage(player);
@@ -157,7 +158,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    final PreGameManager data = requireNonNull(this.manager.getGame(sender));
+    final PreGameManager data = requireNonNull(this.manager.getGame(id));
     if (this.sanitizer.checkIfGameFull(sender, audience, this.manager, data)) {
       return;
     }

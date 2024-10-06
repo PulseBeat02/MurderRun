@@ -23,7 +23,7 @@ public final class GameManager {
     this.plugin = plugin;
   }
 
-  public PreGameManager getGame(final String id) {
+  public @Nullable PreGameManager getGame(final String id) {
     return this.games.get(id);
   }
 

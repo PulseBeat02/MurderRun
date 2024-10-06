@@ -18,13 +18,11 @@ public final class GameEventsPlayerListener implements GameEventsListener {
 
   @Override
   public void onGameFinish(final Game game, final GameResult result) {
+
     final MurderRun plugin = this.manager.getPlugin();
     final GameShutdownManager manager = plugin.getGameShutdownManager();
     manager.removeGame(game);
-  }
 
-  @Override
-  public void onGameStart(final Game game) {
     final Map<String, PreGameManager> games = this.manager.getGames();
     final Collection<Map.Entry<@KeyFor("games") String, PreGameManager>> entries = games.entrySet();
     for (final Map.Entry<String, PreGameManager> entry : entries) {
@@ -37,4 +35,7 @@ public final class GameEventsPlayerListener implements GameEventsListener {
       }
     }
   }
+
+  @Override
+  public void onGameStart(final Game game) {}
 }

@@ -35,10 +35,8 @@ public final class MurderRun extends JavaPlugin {
   Debugging
   - Trial Database Support (test)
   - Verify Dead Chat and Normal Chat Working (test)
-  - Verify Random Killer Chosen if Timer Ends  (test)
   - Verify Minimum / Maximum Player Count for Timer (test)
   - Verify Scoreboards are Working (test)
-  - If game is full, don't allow join (test)
 
   Additions/Enhancements in Future
     - Add Survivor / Killer Characters with abilities

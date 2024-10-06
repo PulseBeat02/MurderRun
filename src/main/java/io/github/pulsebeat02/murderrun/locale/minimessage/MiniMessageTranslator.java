@@ -53,7 +53,7 @@ public abstract class MiniMessageTranslator implements Translator {
 
   private String checkIfSpecialString(final String value, final TranslatableComponent component) {
     final List<? extends ComponentLike> args = component.arguments();
-    if (value.contains("$PLAYER_NAME$")) {
+    if (value.contains("$GAME_ID$")) {
       final ComponentLike arg = args.getFirst();
       final Component comp = arg.asComponent();
       final String name = PLAIN_TEST_SERIALIZER.serialize(comp);

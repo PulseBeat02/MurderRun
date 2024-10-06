@@ -70,8 +70,8 @@ public final class PreGamePlayerManager {
       this.lobbyTimeManager.shutdown();
     }
     for (final Player player : this.participants) {
-      final PlayerInventory inventory = player.getInventory();
-      inventory.clear();
+      this.clearInventory(player);
+      this.removePersistentData(player);
       player.setLevel(0);
     }
   }
@@ -102,7 +102,13 @@ public final class PreGamePlayerManager {
     this.participants.remove(player);
     this.scoreboard.addPlayers();
     this.clearInventory(player);
+    this.removePersistentData(player);
     this.checkIfEnoughPlayers();
+  }
+
+  private void removePersistentData(final Player player) {
+    final PersistentDataContainer container = player.getPersistentDataContainer();
+    container.remove(Keys.KILLER_ROLE);
   }
 
   public void loadResourcePack(final Player player) {

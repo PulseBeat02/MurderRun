@@ -20,7 +20,11 @@ public final class DependencyManager {
     final Path parent = requireNonNull(data.getParent());
     final PluginDependency[] dependencies = {
       new JenkinsDependency(
-          "Citizens", "Citizens-2.0.35-b3580", parent, "https://ci.citizensnpcs.co/job/Citizens2/"),
+          "Citizens",
+          "Citizens-2.0.35-b3583",
+          "3583",
+          parent,
+          "https://ci.citizensnpcs.co/job/Citizens2/"),
       new ModrinthDependency("FastAsyncWorldEdit", "2.11.2", parent),
       new ModrinthDependency("PacketEvents", "2.5.0", parent)
     };

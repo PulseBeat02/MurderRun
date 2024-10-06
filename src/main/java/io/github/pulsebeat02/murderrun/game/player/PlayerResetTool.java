@@ -5,8 +5,10 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.persistence.PersistentDataContainer;
 
 public final class PlayerResetTool {
 
@@ -27,6 +29,8 @@ public final class PlayerResetTool {
     final Location location = lobby.getLobbySpawn();
     final MetadataManager metadata = gamePlayer.getMetadataManager();
     final PlayerAudience audience = gamePlayer.getAudience();
+    final PersistentDataContainer container = gamePlayer.getPersistentDataContainer();
+    container.remove(Keys.KILLER_ROLE);
     metadata.setWorldBorderEffect(false);
     metadata.setNameTagStatus(false);
     metadata.shutdown();
