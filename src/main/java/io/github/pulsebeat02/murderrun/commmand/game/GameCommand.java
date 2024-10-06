@@ -76,7 +76,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       final CommandSender sender,
       @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
       @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName,
-      final String id,
+      @Quoted final String id,
       final int min,
       final int max,
       final boolean quickJoinable) {
@@ -147,13 +147,13 @@ public final class GameCommand implements AnnotationCommandFeature {
 
   @Permission("murderrun.command.game.join")
   @CommandDescription("murderrun.command.game.join.info")
-  @Command(value = "murder game join <owner>", requiredSender = Player.class)
-  public void joinGame(final Player sender, final Player owner) {
+  @Command(value = "murder game join <id>", requiredSender = Player.class)
+  public void joinGame(final Player sender, @Quoted final String id) {
 
     final Audience audience = this.audiences.player(sender);
     final PreGameManager temp = this.manager.getGame(sender);
     if (this.sanitizer.checkIfAlreadyInGame(audience, temp)
-        || this.sanitizer.checkIfNotInvited(audience, sender, owner)) {
+        || this.sanitizer.checkIfNotInvited(audience, sender, id)) {
       return;
     }
 
@@ -162,7 +162,9 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    this.invites.removeInvite(owner, sender);
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
+    final CommandSender leader = playerManager.getLeader();
+    this.invites.removeInvite(leader, sender);
     this.sendJoinMessage(sender, data);
   }
 

@@ -163,14 +163,25 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfNotInvited(
-      final Audience audience, final Player sender, final Player owner) {
-    final InviteManager manager = this.command.getInviteManager();
-    if (!manager.hasInvite(owner, sender)) {
+  public boolean checkIfNotInvited(final Audience audience, final Player sender, final String id) {
+
+    final GameManager manager = this.command.getGameManager();
+    final PreGameManager data = manager.getGame(id);
+    if (data == null) {
+      final Component message = Message.GAME_INVALID_ERROR.build();
+      audience.sendMessage(message);
+      return true;
+    }
+
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
+    final CommandSender owner = playerManager.getLeader();
+    final InviteManager invites = this.command.getInviteManager();
+    if (!invites.hasInvite(owner, sender)) {
       final Component message = Message.GAME_INVALID_INVITE_ERROR.build();
       audience.sendMessage(message);
       return true;
     }
+
     return false;
   }
 

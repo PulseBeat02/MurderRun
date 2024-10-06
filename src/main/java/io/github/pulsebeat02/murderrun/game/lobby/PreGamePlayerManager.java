@@ -57,7 +57,7 @@ public final class PreGamePlayerManager {
   }
 
   public boolean isLeader(final CommandSender sender) {
-    return this.leader == sender || sender.isOp();
+    return this.leader == sender;
   }
 
   public void initialize() {
@@ -190,7 +190,7 @@ public final class PreGamePlayerManager {
 
   public boolean hasPlayer(final CommandSender player) {
     if (player instanceof final Player p) {
-      return this.hasPlayer(p);
+      return this.participants.contains(p);
     }
     return this.isLeader(player);
   }
@@ -210,10 +210,6 @@ public final class PreGamePlayerManager {
   public boolean isEnoughPlayers() {
     final int current = this.getCurrentPlayerCount();
     return current >= 2;
-  }
-
-  public boolean canJoinGame() {
-    return this.isQuickJoinable() && this.isGameFull();
   }
 
   public Collection<Player> getMurderers() {

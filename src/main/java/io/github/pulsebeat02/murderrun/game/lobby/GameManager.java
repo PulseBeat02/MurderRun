@@ -23,6 +23,10 @@ public final class GameManager {
     this.plugin = plugin;
   }
 
+  public PreGameManager getGame(final String id) {
+    return this.games.get(id);
+  }
+
   public boolean leaveGame(final Player player) {
     final PreGameManager game = this.getGameAsParticipant(player);
     if (game != null) {
@@ -44,11 +48,11 @@ public final class GameManager {
     return null;
   }
 
-  public @Nullable PreGameManager getGame(final CommandSender leader) {
+  public @Nullable PreGameManager getGame(final CommandSender target) {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
-      if (playerManager.isLeader(leader)) {
+      if (playerManager.hasPlayer(target)) {
         return manager;
       }
     }
@@ -59,7 +63,7 @@ public final class GameManager {
     final PreGameManager manager = this.games.get(id);
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
-      if (playerManager.canJoinGame()) {
+      if (!playerManager.isGameFull()) {
         playerManager.addParticipantToLobby(player, false);
         return true;
       }
@@ -143,7 +147,9 @@ public final class GameManager {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
       final PreGamePlayerManager preGamePlayerManager = manager.getPlayerManager();
-      if (preGamePlayerManager.canJoinGame()) {
+      final boolean join =
+          preGamePlayerManager.isQuickJoinable() && !preGamePlayerManager.isGameFull();
+      if (join) {
         preGamePlayerManager.addParticipantToLobby(player, false);
         return true;
       }
