@@ -14,7 +14,6 @@ import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
 public final class RandomTeleport extends SurvivorGadget {
@@ -41,9 +40,7 @@ public final class RandomTeleport extends SurvivorGadget {
     final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
     final World world = requireNonNull(first.getWorld());
     final Location temp = new Location(world, coords[0], 0, coords[1]);
-    final Block block = world.getHighestBlockAt(temp);
-    final Location top = block.getLocation();
-    final Location teleport = top.add(0, 1, 0);
+    final Location teleport = MapUtils.getHighestSpawnLocation(temp);
     player.teleport(teleport);
 
     final PlayerAudience audience = player.getAudience();

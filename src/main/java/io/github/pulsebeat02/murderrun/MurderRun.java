@@ -26,9 +26,10 @@ public final class MurderRun extends JavaPlugin {
   /*
 
   Debugging
+
   - Rewrite all messy code
+  - Rewrite Locale keys, messages, Message class, etc
   - Trial Database Support (test)
-  - Fix bug with player retrieving car part after game ends
 
    */
 

@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import java.util.*;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -19,6 +20,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Fright extends KillerGadget {
 
+  private final Set<GamePlayer> currentlyJumpScared;
+
   public Fright() {
     super(
         "fright",
@@ -26,6 +29,7 @@ public final class Fright extends KillerGadget {
         Message.FRIGHT_NAME.build(),
         Message.FRIGHT_LORE.build(),
         GameProperties.FRIGHT_COST);
+    this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
   }
 
   @Override
@@ -51,15 +55,22 @@ public final class Fright extends KillerGadget {
     survivor.addPotionEffects(
         new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
-    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L);
 
     final PlayerAudience audience = survivor.getAudience();
     audience.playSound(Sounds.JUMP_SCARE);
+
+    if (this.currentlyJumpScared.contains(survivor)) {
+      return;
+    }
+
+    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L);
+    this.currentlyJumpScared.add(survivor);
   }
 
   private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {
     final PlayerInventory inventory = player.getInventory();
     inventory.setHelmet(before);
+    this.currentlyJumpScared.remove(player);
   }
 
   private @Nullable ItemStack setPumpkinItemStack(final GamePlayer player) {

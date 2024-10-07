@@ -11,6 +11,8 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
@@ -298,12 +300,26 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       manager.removeArena(this.original);
     }
 
+    if (watcher instanceof Player player) {
+      final PlayerInventory inv = player.getInventory();
+      final ItemStack[] contents = inv.getContents();
+      for (final ItemStack item : contents) {
+        if (PDCUtils.isWand(item)) {
+          inv.remove(item);
+        }
+      }
+    }
+
+    this.watcher.closeInventory();
+
+    final Component loadMsg = Message.ARENA_CREATE_LOAD.build();
+    audience.sendMessage(loadMsg);
+
     final Location[] corners = {this.first, this.second};
     final Location[] drops = this.itemLocations.toArray(new Location[0]);
     manager.addArena(this.arenaName, corners, drops, this.spawn, this.truck);
 
     this.plugin.updatePluginData();
-    this.watcher.closeInventory();
 
     final Component msg1 = Message.ARENA_BUILT.build();
     this.audience.sendMessage(msg1);
@@ -330,14 +346,14 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
         case 0 -> this.first = location;
         case 1 -> this.second = location;
         case 2 -> this.truck = location;
-        case 3 -> this.spawn = location;
+        case 3 -> this.spawn = MapUtils.getHighestSpawnLocation(location);
       }
     }
 
     switch (current) {
       case 0 -> this.audience.sendMessage(Message.CREATE_ARENA_GUI_EDIT_SECOND.build());
-      case 1 -> this.audience.sendMessage(Message.CREATE_ARENA_GUI_EDIT_SPAWN.build());
-      case 2 -> this.audience.sendMessage(Message.CREATE_ARENA_GUI_EDIT_TRUCK.build());
+      case 1 -> this.audience.sendMessage(Message.CREATE_ARENA_GUI_EDIT_TRUCK.build());
+      case 2 -> this.audience.sendMessage(Message.CREATE_ARENA_GUI_EDIT_SPAWN.build());
       case 3 -> {
         this.listenForBreaks = false;
         this.listenForName = false;

@@ -531,4 +531,5 @@ public interface Message extends LocaleTools {
       direct("murderrun.gui.game.create.edit_id_lore.quick_join");
   NullComponent<Sender> GAME_PLAYER_ERROR = direct("murderrun.command.game.player.error");
   UniComponent<Sender, String> LOBBY_BOSSBAR_TITLE = direct("murderrun.lobby.bossbar.title", null);
+  NullComponent<Sender> ARENA_CREATE_LOAD = direct("murderrun.command.arena.create.load");
 }

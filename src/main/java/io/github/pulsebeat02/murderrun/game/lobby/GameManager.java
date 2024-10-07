@@ -83,7 +83,6 @@ public final class GameManager {
     final PreGameManager manager =
         this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener);
     this.addGameToRegistry(id, manager);
-    this.addGameToRegistry(id, manager);
     this.autoJoinIfLeaderPlayer(leader, id);
     return manager;
   }

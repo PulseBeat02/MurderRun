@@ -21,7 +21,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -84,9 +83,7 @@ public final class LifeInsurance extends SurvivorGadget {
 
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
       final Location temp = new Location(world, coords[0], 0, coords[1]);
-      final Block block = world.getHighestBlockAt(temp);
-      final Location top = block.getLocation();
-      final Location teleport = top.add(0, 1, 0);
+      final Location teleport = MapUtils.getHighestSpawnLocation(temp);
       player.teleport(teleport);
 
       final Collection<BukkitTask> tasks = player.getLifeInsuranceTasks();

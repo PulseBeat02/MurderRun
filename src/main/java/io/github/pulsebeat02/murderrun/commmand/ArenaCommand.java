@@ -175,6 +175,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.arena.create.info")
   @Command(value = "murder arena create", requiredSender = Player.class)
   public void createArena(final Player sender) {
+
     final Audience audience = this.audiences.player(sender);
     if (this.handleNullCorner(audience)
         || this.handleNullSpawn(audience)
@@ -182,12 +183,18 @@ public final class ArenaCommand implements AnnotationCommandFeature {
         || this.handleNullName(audience)) {
       return;
     }
+
+    final Component loadMsg = Message.ARENA_CREATE_LOAD.build();
+    audience.sendMessage(loadMsg);
+
     final Location[] corners = new Location[] {this.first, this.second};
     final ArenaManager manager = this.plugin.getArenaManager();
     final Location[] locations = this.itemLocations.toArray(new Location[0]);
     manager.addArena(this.name, corners, locations, this.spawn, this.truck);
+
     final Component message = Message.ARENA_BUILT.build();
     audience.sendMessage(message);
+
     this.plugin.updatePluginData();
   }
 

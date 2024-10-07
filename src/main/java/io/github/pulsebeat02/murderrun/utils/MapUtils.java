@@ -15,6 +15,14 @@ public final class MapUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static Location getHighestSpawnLocation(final Location location) {
+    final World world = requireNonNull(location.getWorld());
+    final int x = location.getBlockX();
+    final int z = location.getBlockZ();
+    final int y = world.getHighestBlockYAt(x, z) + 1;
+    return new Location(world, x, y, z);
+  }
+
   public static EulerAngle toEulerAngle(final int x, final int y, final int z) {
     final double radianX = Math.toRadians(x);
     final double radianY = Math.toRadians(y);

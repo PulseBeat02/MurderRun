@@ -15,7 +15,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GadgetDataBundle {
 
-  private static final String GADGETS_PROPERTIES = "settings/game.properties";
+  private static final String GADGETS_PROPERTIES = "game.properties";
 
   private final Path resourcePath;
   private final ResourceBundle bundle;

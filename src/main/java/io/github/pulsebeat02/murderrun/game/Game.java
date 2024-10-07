@@ -11,12 +11,16 @@ import io.github.pulsebeat02.murderrun.game.stage.GameCleanupTool;
 import io.github.pulsebeat02.murderrun.game.stage.GameStartupTool;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public final class Game {
 
   private final MurderRun plugin;
   private final UUID gameID;
+  private final AtomicBoolean cancelled;
 
   private Map map;
   private GameSettings configuration;
@@ -36,6 +40,7 @@ public final class Game {
     this.plugin = plugin;
     this.status = GameStatus.NOT_STARTED;
     this.gameID = UUID.randomUUID();
+    this.cancelled = new AtomicBoolean(false);
   }
 
   public GameSettings getConfiguration() {
@@ -78,6 +83,15 @@ public final class Game {
   }
 
   public void finishGame(final GameResult code) {
+    if (this.cancelled.get()) {
+      return;
+    }
+    this.cancelled.set(true);
+    final BukkitScheduler shutdownHook = Bukkit.getScheduler();
+    shutdownHook.runTaskLater(this.plugin, () -> this.gracefulShutdown(code), 5);
+  }
+
+  private void gracefulShutdown(final GameResult code) {
     if (this.status != GameStatus.NOT_STARTED) {
       this.status = GameStatus.FINISHED;
       this.gadgetManager.shutdown();
