@@ -114,7 +114,7 @@ public final class GadgetShopGui extends ChestGui {
 
   private PaginatedPane createPaginatedPane(final boolean isSurvivorGadgets) {
     final List<ItemStack> items = this.getShopItems(isSurvivorGadgets);
-    this.pages.populateWithItemStacks(items);
+    this.pages.populateWithItemStacks(items, this.plugin);
     this.pages.setOnClick(this::handleClick);
     return this.pages;
   }
@@ -138,7 +138,7 @@ public final class GadgetShopGui extends ChestGui {
 
   private GuiItem createBorderStack() {
     return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
   }
 
   private void handleClick(final InventoryClickEvent event) {
@@ -178,7 +178,8 @@ public final class GadgetShopGui extends ChestGui {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        this::handleClose);
+        this::handleClose,
+        this.plugin);
   }
 
   private void handleClose(final InventoryClickEvent event) {
@@ -189,7 +190,8 @@ public final class GadgetShopGui extends ChestGui {
   private GuiItem createForwardStack() {
     return new GuiItem(
         Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
-        this::handleForwardOption);
+        this::handleForwardOption,
+        this.plugin);
   }
 
   private void handleForwardOption(final InventoryClickEvent event) {
@@ -204,7 +206,8 @@ public final class GadgetShopGui extends ChestGui {
   private GuiItem createBackStack() {
     return new GuiItem(
         Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
-        this::handleBackwardOption);
+        this::handleBackwardOption,
+        this.plugin);
   }
 
   private void handleBackwardOption(final InventoryClickEvent event) {

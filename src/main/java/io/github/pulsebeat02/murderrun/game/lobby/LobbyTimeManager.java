@@ -82,6 +82,7 @@ public final class LobbyTimeManager {
     this.setLevel(seconds);
 
     if (seconds == 0) {
+      this.started.cancel();
       this.manager.startGame();
     }
   }
@@ -121,8 +122,6 @@ public final class LobbyTimeManager {
         return;
       }
     }
-
-    this.started.cancel();
 
     final int currentTime = this.timer.getTime();
     if (currentTime <= 15) {

@@ -65,7 +65,7 @@ public final class LobbyListGui extends ChestGui {
     }
 
     this.pages = new PaginatedPane(0, 0, 9, 3);
-    this.pages.populateWithItemStacks(this.getLobbies());
+    this.pages.populateWithItemStacks(this.getLobbies(), this.plugin);
     this.pages.setOnClick(this.consumer);
 
     return this.pages;
@@ -73,8 +73,8 @@ public final class LobbyListGui extends ChestGui {
 
   private OutlinePane createBackgroundPane() {
     final OutlinePane background = new OutlinePane(0, 5, 9, 1);
-    final GuiItem border =
-        new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    final GuiItem border = new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
     background.addItem(border);
     background.setRepeat(true);
     background.setPriority(Pane.Priority.LOWEST);
@@ -117,13 +117,15 @@ public final class LobbyListGui extends ChestGui {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory());
+        event -> this.watcher.closeInventory(),
+        this.plugin);
   }
 
   private GuiItem createForwardStack() {
     return new GuiItem(
         Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
-        this::handleForwardPage);
+        this::handleForwardPage,
+        this.plugin);
   }
 
   private void handleForwardPage(final InventoryClickEvent event) {
@@ -138,7 +140,8 @@ public final class LobbyListGui extends ChestGui {
   private GuiItem createBackStack() {
     return new GuiItem(
         Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
-        this::handleBackPage);
+        this::handleBackPage,
+        this.plugin);
   }
 
   private void handleBackPage(final InventoryClickEvent event) {

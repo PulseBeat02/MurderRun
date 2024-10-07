@@ -65,8 +65,10 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
     final int leftOver = manager.getRemainingParts();
     this.setScoreboard();
-    this.checkGameEnd(leftOver);
     this.announceCarPartRetrieval(leftOver);
+    if (this.checkGameEnd(leftOver)) {
+      return;
+    }
 
     final Player thrower = event.getPlayer();
     if (!this.checkIfPlayerStillHasCarPart(thrower)) {
@@ -92,11 +94,13 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
     manager.playSoundForAllParticipants("block.anvil.use");
   }
 
-  private void checkGameEnd(final int leftOver) {
+  private boolean checkGameEnd(final int leftOver) {
     if (leftOver == 0) {
       final Game game = this.getGame();
       game.finishGame(GameResult.INNOCENTS);
+      return true;
     }
+    return false;
   }
 
   private boolean checkIfPlayerStillHasCarPart(final Player thrower) {

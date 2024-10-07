@@ -53,19 +53,21 @@ public final class CentralGui extends ChestGui {
 
   private GuiItem createBackground() {
     return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
   }
 
   private GuiItem createCloseButton() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory());
+        event -> this.watcher.closeInventory(),
+        this.plugin);
   }
 
   private GuiItem createGameButton() {
     return new GuiItem(
         Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(),
-        this::handleGameClick);
+        this::handleGameClick,
+        this.plugin);
   }
 
   private GuiItem createArenaButton() {
@@ -73,7 +75,8 @@ public final class CentralGui extends ChestGui {
         Item.builder(Material.YELLOW_BANNER)
             .name(Message.CENTRAL_GUI_ARENA.build())
             .build(),
-        this::handleArenaClick);
+        this::handleArenaClick,
+        this.plugin);
   }
 
   private void handleGameClick(final InventoryClickEvent event) {
@@ -93,7 +96,8 @@ public final class CentralGui extends ChestGui {
         Item.builder(Material.WHITE_BANNER)
             .name(Message.CENTRAL_GUI_LOBBY.build())
             .build(),
-        event -> this.handleLobbyClick());
+        event -> this.handleLobbyClick(),
+        this.plugin);
   }
 
   private void handleLobbyClick() {

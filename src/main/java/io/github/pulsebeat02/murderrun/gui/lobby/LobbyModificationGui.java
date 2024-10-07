@@ -162,7 +162,8 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory());
+        event -> this.watcher.closeInventory(),
+        this.plugin);
   }
 
   private GuiItem createApplyStack() {
@@ -170,7 +171,8 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
         Item.builder(Material.GREEN_WOOL)
             .name(Message.CREATE_LOBBY_GUI_APPLY.build())
             .build(),
-        this::createNewLobby);
+        this::createNewLobby,
+        this.plugin);
   }
 
   private void createNewLobby(final InventoryClickEvent event) {
@@ -200,7 +202,8 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
           Item.builder(Material.RED_WOOL)
               .name(Message.CREATE_LOBBY_GUI_DELETE.build())
               .build(),
-          this::deleteAndCreateLobby);
+          this::deleteAndCreateLobby,
+          this.plugin);
     } else {
       return this.createBorderStack();
     }
@@ -222,7 +225,8 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
             .name(message)
             .lore(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_LORE.build())
             .build(),
-        this::listenForBlockBreak);
+        this::listenForBlockBreak,
+        this.plugin);
   }
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
@@ -238,7 +242,8 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
             .name(Message.CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY.build(this.lobbyName))
             .lore(Message.CREATE_LOBBY_GUI_EDIT_NAME_LORE.build())
             .build(),
-        this::listenForMessage);
+        this::listenForMessage,
+        this.plugin);
   }
 
   private void listenForMessage(final InventoryClickEvent event) {
@@ -251,6 +256,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private GuiItem createBorderStack() {
     return new GuiItem(
         Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-        event -> event.setCancelled(true));
+        event -> event.setCancelled(true),
+        this.plugin);
   }
 }

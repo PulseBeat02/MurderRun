@@ -61,7 +61,8 @@ public final class LobbyNavigationGui extends ChestGui {
         Item.builder(Material.YELLOW_BANNER)
             .name(Message.MANAGE_LOBBY_GUI_EDIT.build())
             .build(),
-        this::createListingsMenu);
+        this::createListingsMenu,
+        this.plugin);
   }
 
   private void createListingsMenu(final InventoryClickEvent event) {
@@ -101,7 +102,8 @@ public final class LobbyNavigationGui extends ChestGui {
         Item.builder(Material.GREEN_BANNER)
             .name(Message.MANAGE_LOBBY_GUI_CREATE.build())
             .build(),
-        this::createLobbyMenu);
+        this::createLobbyMenu,
+        this.plugin);
   }
 
   private void createLobbyMenu(final InventoryClickEvent event) {
@@ -113,11 +115,12 @@ public final class LobbyNavigationGui extends ChestGui {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory());
+        event -> this.watcher.closeInventory(),
+        this.plugin);
   }
 
   private GuiItem createBorderStack() {
     return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
   }
 }

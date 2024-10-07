@@ -48,7 +48,8 @@ var runtimeDeps = listOf(
     "org.jsoup:jsoup:1.18.1",
     "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
     "com.mysql:mysql-connector-j:9.0.0",
-    "fr.mrmicky:fastboard:2.1.3"
+    "fr.mrmicky:fastboard:2.1.3",
+    "com.github.stefvanschie.inventoryframework:IF:0.10.17"
 );
 
 bukkit {
@@ -76,7 +77,6 @@ dependencies {
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
     implementation("org.bstats:bstats-bukkit:3.1.0")
-    implementation("com.github.stefvanschie.inventoryframework:IF:0.10.17")
 
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
@@ -101,6 +101,7 @@ dependencies {
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
     testImplementation("org.jsoup:jsoup:1.18.1")
+    testImplementation("fastutil:fastutil:5.0.9")
 }
 
 val targetJavaVersion = 21
@@ -157,7 +158,6 @@ tasks {
     shadowJar {
         var libPath = "io.github.pulsebeat02.murderrun.libs"
         relocate("org.bstats", "$libPath.org.bstats")
-        relocate("com.github.stefvanschie", "$libPath.com.github.stefvanschie")
     }
 }
 

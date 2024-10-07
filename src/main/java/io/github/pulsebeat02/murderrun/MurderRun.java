@@ -25,18 +25,10 @@ public final class MurderRun extends JavaPlugin {
 
   /*
 
-  Tasks
-  - Rewrite all of new party system code
-  - Fix Resourcepack Textures
-
   Debugging
+  - Rewrite all messy code
   - Trial Database Support (test)
-  - Verify Dead Chat and Normal Chat Working (test)
-  - Verify Minimum / Maximum Player Count for Timer (test)
-
-  Additions/Enhancements in Future
-    - Add Survivor / Killer Characters with abilities
-      - Customize Killer Gear and other abilities
+  - Fix bug with player retrieving car part after game ends
 
    */
 

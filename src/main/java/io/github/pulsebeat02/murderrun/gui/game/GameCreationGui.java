@@ -185,7 +185,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
             .name(Message.GAME_CREATE_EDIT_QUICK_JOIN_DISPLAY.build())
             .lore(Message.GAME_CREATE_EDIT_QUICK_JOIN_LORE.build())
             .build(),
-        this::handleQuickJoinClick);
+        this::handleQuickJoinClick,
+        this.plugin);
   }
 
   private void handleQuickJoinClick(final InventoryClickEvent event) {
@@ -205,7 +206,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
             .name(Message.GAME_CREATE_EDIT_MIN_DISPLAY.build(this.min))
             .lore(Message.GAME_CREATE_EDIT_MIN_LORE.build())
             .build(),
-        this::listenForMin);
+        this::listenForMin,
+        this.plugin);
   }
 
   private GuiItem createEditMaxStack() {
@@ -214,7 +216,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
             .name(Message.GAME_CREATE_EDIT_MAX_DISPLAY.build(this.max))
             .lore(Message.GAME_CREATE_EDIT_MAX_LORE.build())
             .build(),
-        this::listenForMax);
+        this::listenForMax,
+        this.plugin);
   }
 
   private GuiItem createEditIdStack() {
@@ -223,7 +226,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
             .name(Message.GAME_CREATE_EDIT_ID_DISPLAY.build(this.id))
             .lore(Message.GAME_CREATE_EDIT_ID_LORE.build())
             .build(),
-        this::listenForIdMessage);
+        this::listenForIdMessage,
+        this.plugin);
   }
 
   private void listenForMax(final InventoryClickEvent event) {
@@ -250,7 +254,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory());
+        event -> this.watcher.closeInventory(),
+        this.plugin);
   }
 
   private GuiItem createApplyStack() {
@@ -258,7 +263,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
         Item.builder(Material.GREEN_WOOL)
             .name(Message.CREATE_GAME_GUI_APPLY.build())
             .build(),
-        this::createNewGame);
+        this::createNewGame,
+        this.plugin);
   }
 
   private void createNewGame(final InventoryClickEvent event) {
@@ -293,7 +299,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
             .name(Message.CREATE_GAME_GUI_ARENA_DISPLAY.build(name))
             .lore(Message.CREATE_GAME_GUI_ARENA_LORE.build())
             .build(),
-        this::chooseArena);
+        this::chooseArena,
+        this.plugin);
   }
 
   private GuiItem createLobbyStack() {
@@ -303,7 +310,8 @@ public final class GameCreationGui extends ChestGui implements Listener {
             .name(Message.CREATE_GAME_GUI_LOBBY_DISPLAY.build(name))
             .lore(Message.CREATE_GAME_GUI_LOBBY_LORE.build())
             .build(),
-        this::chooseLobby);
+        this::chooseLobby,
+        this.plugin);
   }
 
   private void chooseLobby(final InventoryClickEvent event) {
@@ -353,6 +361,7 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private GuiItem createBorderStack() {
     return new GuiItem(
         Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-        event -> event.setCancelled(true));
+        event -> event.setCancelled(true),
+        this.plugin);
   }
 }

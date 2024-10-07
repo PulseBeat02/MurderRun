@@ -64,7 +64,8 @@ public final class ArenaNavigationGui extends ChestGui {
         Item.builder(Material.YELLOW_BANNER)
             .name(Message.MANAGE_ARENA_GUI_EDIT.build())
             .build(),
-        this::createListingsMenu);
+        this::createListingsMenu,
+        this.plugin);
   }
 
   private void createListingsMenu(final InventoryClickEvent event) {
@@ -106,7 +107,8 @@ public final class ArenaNavigationGui extends ChestGui {
         Item.builder(Material.GREEN_BANNER)
             .name(Message.MANAGE_ARENA_GUI_CREATE.build())
             .build(),
-        this::createArenaMenu);
+        this::createArenaMenu,
+        this.plugin);
   }
 
   private void createArenaMenu(final InventoryClickEvent event) {
@@ -118,11 +120,12 @@ public final class ArenaNavigationGui extends ChestGui {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory());
+        event -> this.watcher.closeInventory(),
+        this.plugin);
   }
 
   private GuiItem createBorderStack() {
     return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
   }
 }

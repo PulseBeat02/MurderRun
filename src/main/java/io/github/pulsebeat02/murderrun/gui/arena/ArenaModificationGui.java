@@ -251,7 +251,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
             .name(Message.CREATE_ARENA_GUI_WAND_DISPLAY.build())
             .lore(Message.CREATE_ARENA_GUI_WAND_LORE.build())
             .build(),
-        this::giveWandStack);
+        this::giveWandStack,
+        this.plugin);
   }
 
   private void giveWandStack(final InventoryClickEvent event) {
@@ -271,7 +272,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   private GuiItem createCloseStack() {
     return new GuiItem(
         Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory());
+        event -> this.watcher.closeInventory(),
+        this.plugin);
   }
 
   private GuiItem createApplyStack() {
@@ -279,7 +281,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
         Item.builder(Material.GREEN_WOOL)
             .name(Message.CREATE_ARENA_GUI_APPLY.build())
             .build(),
-        this::createNewArena);
+        this::createNewArena,
+        this.plugin);
   }
 
   private void createNewArena(final InventoryClickEvent event) {
@@ -312,7 +315,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
           Item.builder(Material.RED_WOOL)
               .name(Message.CREATE_ARENA_GUI_DELETE.build())
               .build(),
-          this::deleteAndCreateArena);
+          this::deleteAndCreateArena,
+          this.plugin);
     } else {
       return this.createBorderStack();
     }
@@ -366,7 +370,9 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
         Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5, this.second);
     final List<Component> lore = List.of(tooltip, space, spawnMsg, truckMsg, firstMsg, secondMsg);
     return new GuiItem(
-        Item.builder(Material.ANVIL).name(title).lore(lore).build(), this::listenForBlockBreak);
+        Item.builder(Material.ANVIL).name(title).lore(lore).build(),
+        this::listenForBlockBreak,
+        this.plugin);
   }
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
@@ -384,7 +390,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
             .name(Message.CREATE_ARENA_GUI_EDIT_NAME_DISPLAY.build(this.arenaName))
             .lore(Message.CREATE_ARENA_GUI_EDIT_NAME_LORE.build())
             .build(),
-        this::listenForMessage);
+        this::listenForMessage,
+        this.plugin);
   }
 
   private void listenForMessage(final InventoryClickEvent event) {
@@ -397,6 +404,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   private GuiItem createBorderStack() {
     return new GuiItem(
         Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-        event -> event.setCancelled(true));
+        event -> event.setCancelled(true),
+        this.plugin);
   }
 }

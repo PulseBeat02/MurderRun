@@ -17,7 +17,7 @@ public final class GamePlayerChatEvent extends GameEvent {
     super(game);
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerChat(final AsyncPlayerChatEvent event) {
 
     final Player player = event.getPlayer();
@@ -30,13 +30,16 @@ public final class GamePlayerChatEvent extends GameEvent {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final String raw = event.getMessage();
+    final String format = event.getFormat();
+    final String display = player.getDisplayName();
+    final String formatted = String.format(format, display, raw);
     if (gamePlayer.isAlive()) {
-      final Component msg = AdventureUtils.deserializeLegacyStringToComponent(raw);
+      final Component msg = AdventureUtils.deserializeLegacyStringToComponent(formatted);
       manager.sendMessageToAllParticipants(msg);
       return;
     }
 
-    final Component msg = Message.DEAD_CHAT_PREFIX.build(raw);
+    final Component msg = Message.DEAD_CHAT_PREFIX.build(formatted);
     manager.sendMessageToAllDeadParticipants(msg);
   }
 }

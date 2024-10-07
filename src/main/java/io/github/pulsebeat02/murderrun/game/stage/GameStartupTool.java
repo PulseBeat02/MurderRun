@@ -42,11 +42,11 @@ public final class GameStartupTool {
     this.teleportInnocentPlayers();
     this.announceHidePhase();
     this.clearSurvivorNetherStars();
-    this.setNight();
+    this.setEnvironment();
     this.runFutureTask();
   }
 
-  private void setNight() {
+  private void setEnvironment() {
     final GameSettings settings = this.game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location spawnLocation = arena.getSpawn();
