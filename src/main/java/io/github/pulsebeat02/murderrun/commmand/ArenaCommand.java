@@ -75,7 +75,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   }
 
   @Permission("murderrun.command.arena.set.item.add")
-  @CommandDescription("murderrun.command.arena.set.item.add.info")
+  @CommandDescription("murderrun.command.arena.set.item.spawn.location.add.info")
   @Command(value = "murder arena set item add", requiredSender = Player.class)
   public void addItemLocation(final Player sender) {
     final Location location = sender.getLocation();
@@ -93,7 +93,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   }
 
   @Permission("murderrun.command.arena.set.item.remove")
-  @CommandDescription("murderrun.command.arena.set.item.remove.info")
+  @CommandDescription("murderrun.command.arena.set.item.spawn.location.remove.info")
   @Command(value = "murder arena set item remove", requiredSender = Player.class)
   public void removeItemLocation(final Player sender) {
     final Location location = sender.getLocation();
@@ -114,7 +114,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   }
 
   @Permission("murderrun.command.arena.set.item.list")
-  @CommandDescription("murderrun.command.arena.set.item.list.info")
+  @CommandDescription("murderrun.command.arena.set.item.spawn.location.list.info")
   @Command(value = "murder arena set item list", requiredSender = Player.class)
   public void listItemLocations(final Player sender) {
     final List<String> msgs = new ArrayList<>();
@@ -263,8 +263,8 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.sendMessage(sender, message);
   }
 
-  @Permission("murderrun.command.arena.set.first-corner")
-  @CommandDescription("murderrun.command.arena.set.first_corner.info")
+  @Permission("murderrun.command.arena.set.corner.first")
+  @CommandDescription("murderrun.command.arena.set.corner.first.info")
   @Command(value = "murder arena set first-corner", requiredSender = Player.class)
   public void setFirstCorner(final Player sender) {
     final Location location = sender.getLocation();
@@ -274,8 +274,8 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.sendMessage(sender, message);
   }
 
-  @Permission("murderrun.command.arena.set.second-corner")
-  @CommandDescription("murderrun.command.arena.set.second_corner.info")
+  @Permission("murderrun.command.arena.set.corner.second")
+  @CommandDescription("murderrun.command.arena.set.corner.second.info")
   @Command(value = "murder arena set second-corner", requiredSender = Player.class)
   public void setSecondCorner(final Player sender) {
     final Location location = sender.getLocation();

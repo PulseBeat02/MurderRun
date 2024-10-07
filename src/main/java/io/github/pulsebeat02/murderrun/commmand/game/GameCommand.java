@@ -146,7 +146,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     invited.sendMessage(player);
   }
 
-  @Permission("murderrun.command.game.join")
+  @Permission("murderrun.command.game.player.join")
   @CommandDescription("murderrun.command.game.join.info")
   @Command(value = "murder game join <id>", requiredSender = Player.class)
   public void joinGame(final Player sender, @Quoted final String id) {
@@ -292,7 +292,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   }
 
   @Permission("murderrun.command.game.quickjoin")
-  @CommandDescription("murderrun.command.game.quickjoin.info")
+  @CommandDescription("murderrun.command.game.join.quick.info")
   @Command(value = "murder game quickjoin", requiredSender = Player.class)
   public void quickJoinGame(final Player sender) {
 

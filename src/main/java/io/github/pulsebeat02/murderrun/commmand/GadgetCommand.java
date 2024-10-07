@@ -41,7 +41,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   }
 
   @Permission("murderrun.command.gadget.retrieve-all")
-  @CommandDescription("murderrun.command.gadget.retrieve-all.info")
+  @CommandDescription("murderrun.command.gadget.retrieve.all.info")
   @Command(value = "murder gadget retrieve-all", requiredSender = Player.class)
   public void giveAllGadgets(final Player sender) {
     final PlayerInventory inventory = sender.getInventory();
