@@ -51,16 +51,14 @@ public final class MCPackHosting extends ResourcePackProvider {
 
   private String updateAndRetrievePackJSON(final ReentrantReadWriteLock lock, final PackInfo info) {
     final Lock write = lock.writeLock();
-    try {
-      final Path path = this.getCachedFilePath();
+    final Path path = this.getCachedFilePath();
+    try (final Writer writer = Files.newBufferedWriter(path)) {
       final int loads = info.loads + 1;
       final PackInfo updated = new PackInfo(info.url, loads);
       final Gson gson = GsonProvider.getGson();
       write.lock();
-      try (final Writer writer = Files.newBufferedWriter(path)) {
-        gson.toJson(updated, writer);
-        return updated.url;
-      }
+      gson.toJson(updated, writer);
+      return updated.url;
     } catch (final IOException e) {
       throw new AssertionError(e);
     } finally {
@@ -76,19 +74,12 @@ public final class MCPackHosting extends ResourcePackProvider {
     }
 
     final Lock read = lock.readLock();
-    final Gson gson = GsonProvider.getGson();
     read.lock();
 
     try (final Reader reader = Files.newBufferedReader(path)) {
-
+      final Gson gson = GsonProvider.getGson();
       final PackInfo info = gson.fromJson(reader, PackInfo.class);
-      if (info == null) {
-        return null;
-      }
-
-      final int serverLoads = info.loads;
-      return serverLoads > 10 ? null : info;
-
+      return info == null ? null : (info.loads > 10 ? null : info);
     } catch (final IOException e) {
       throw new AssertionError(e);
     } finally {

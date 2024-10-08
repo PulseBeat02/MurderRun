@@ -71,31 +71,31 @@ public final class PackWrapper {
 
   private void addSounds() {
     final Set<SoundResource> sounds = Sounds.getAllSounds();
-    sounds.forEach(sound -> {
+    for (final SoundResource sound : sounds) {
       final SoundFile file = sound.getSound();
       final Sound stitched = file.stitchSound();
       final SoundEvent event = sound.stitchSound();
       this.pack.sound(stitched);
       this.pack.soundEvent(event);
-    });
+    }
   }
 
   private void addItems() {
     final Set<ItemResource> items = Items.getAllVanillaItemModels();
-    items.forEach(item -> {
+    for (final ItemResource item : items) {
       final Model vanilla = item.createVanillaModel();
       this.pack.model(vanilla);
-    });
+    }
   }
 
   private void addModels() {
     final Set<ItemModel> models = Models.getAllModels();
-    models.forEach(model -> {
+    for (final ItemModel model : models) {
       final ItemTexture item = model.getTexture();
       final Model stitched = model.stitchModel();
       final Texture texture = item.stitchTexture();
       this.pack.model(stitched);
       this.pack.texture(texture);
-    });
+    }
   }
 }

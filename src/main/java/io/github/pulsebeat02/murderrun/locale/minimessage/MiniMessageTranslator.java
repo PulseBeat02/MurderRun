@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -18,6 +19,7 @@ public abstract class MiniMessageTranslator implements Translator {
 
   private static final PlainTextComponentSerializer PLAIN_TEST_SERIALIZER =
       PlainTextComponentSerializer.plainText();
+  private static final Set<String> SPECIAL_PLACEHOLDERS = Set.of("$GAME_ID$");
 
   private final MiniMessage miniMessage;
 
@@ -51,9 +53,13 @@ public abstract class MiniMessageTranslator implements Translator {
     return children.isEmpty() ? resultingComponent : resultingComponent.children(children);
   }
 
+  // replacing the tag inside the command argument
   private String checkIfSpecialString(final String value, final TranslatableComponent component) {
     final List<? extends ComponentLike> args = component.arguments();
-    if (value.contains("$GAME_ID$")) {
+    for (final String placeholder : SPECIAL_PLACEHOLDERS) {
+      if (!value.contains(placeholder)) {
+        continue;
+      }
       final ComponentLike arg = args.getFirst();
       final Component comp = arg.asComponent();
       final String name = PLAIN_TEST_SERIALIZER.serialize(comp);

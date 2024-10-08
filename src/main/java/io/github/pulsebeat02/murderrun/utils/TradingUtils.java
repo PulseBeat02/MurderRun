@@ -36,10 +36,11 @@ public final class TradingUtils {
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String arg : args) {
       final Gadget gadget = registry.getGadget(arg);
-      if (gadget != null) {
-        final MerchantRecipe recipe = gadget.createRecipe();
-        recipes.add(recipe);
+      if (gadget == null) {
+        continue;
       }
+      final MerchantRecipe recipe = gadget.createRecipe();
+      recipes.add(recipe);
     }
     return recipes;
   }

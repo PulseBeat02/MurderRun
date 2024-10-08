@@ -54,8 +54,8 @@ public final class MapUtils {
     final World world = requireNonNull(location.getWorld());
     final String name = world.getName();
     final byte[] worldBytes = name.getBytes(StandardCharsets.UTF_8);
-    final ByteBuffer buffer =
-        ByteBuffer.allocate(Double.BYTES * 5 + Integer.BYTES + worldBytes.length);
+    final int length = Double.BYTES * 5 + Integer.BYTES + worldBytes.length;
+    final ByteBuffer buffer = ByteBuffer.allocate(length);
     buffer.putInt(worldBytes.length);
     buffer.put(worldBytes);
     buffer.putDouble(location.getX());

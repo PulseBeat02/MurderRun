@@ -9,19 +9,11 @@ import java.nio.file.Path;
 
 public final class JenkinsDependency extends PluginDependency {
 
-  private static final String CSS_QUERY = "a[href$=.jar]";
-
-  private final String buildNumber;
   private final String url;
 
   public JenkinsDependency(
-      final String name,
-      final String version,
-      final String buildNumber,
-      final Path parent,
-      final String url) {
-    super(name, version, parent);
-    this.buildNumber = buildNumber;
+      final String name, final String version, final String buildNumber, final String url) {
+    super(name, version);
     this.url = "%s/%s/artifact/dist/target".formatted(url, buildNumber);
   }
 

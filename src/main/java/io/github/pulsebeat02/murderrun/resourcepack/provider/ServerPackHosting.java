@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.jetbrains.annotations.NotNull;
 import team.unnamed.creative.BuiltResourcePack;
 import team.unnamed.creative.base.Writable;
 import team.unnamed.creative.server.ResourcePackServer;
@@ -37,6 +38,10 @@ public final class ServerPackHosting extends ResourcePackProvider {
       return HOST_URL.formatted(this.hostName, this.port);
     }
 
+    return this.startInternalServer(zip);
+  }
+
+  private @NotNull String startInternalServer(final Path zip) {
     try (final InputStream stream = Files.newInputStream(zip);
         final InputStream fast = new FastBufferedInputStream(stream)) {
       final String hash = IOUtils.generateFileHash(zip);

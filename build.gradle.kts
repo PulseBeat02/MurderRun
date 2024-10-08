@@ -163,7 +163,7 @@ tasks {
 
 spotless {
     java {
-        palantirJavaFormat("2.47.0").style("GOOGLE")
+        palantirJavaFormat("2.50.0").style("GOOGLE")
     }
 }
 

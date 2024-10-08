@@ -15,46 +15,46 @@ public final class PDCUtils {
   }
 
   public static boolean isCarPart(final ItemStack stack) {
-    return isX0(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
+    return attributeExists(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
   }
 
   public static boolean isSword(final ItemStack stack) {
-    return isX0(stack, Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN);
+    return attributeExists(stack, Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN);
   }
 
   public static boolean canBreakMapBlocks(final ItemStack stack) {
-    return isX0(stack, Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN);
+    return attributeExists(stack, Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN);
   }
 
   public static boolean isGadget(final ItemStack stack) {
-    return isX0(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    return attributeExists(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
   }
 
   public static boolean isFlashBang(final ItemStack stack) {
-    return isX0(stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN);
+    return attributeExists(stack, Keys.FLASH_BANG, PersistentDataType.BOOLEAN);
   }
 
   public static boolean isSmokeGrenade(final ItemStack stack) {
-    return isX0(stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN);
+    return attributeExists(stack, Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN);
   }
 
   public static boolean isHook(final ItemStack stack) {
-    return isX0(stack, Keys.HOOK, PersistentDataType.BOOLEAN);
+    return attributeExists(stack, Keys.HOOK, PersistentDataType.BOOLEAN);
   }
 
   public static boolean isPortalGun(final ItemStack stack) {
-    return isX0(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN);
+    return attributeExists(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN);
   }
 
   public static boolean isTrap(final ItemStack stack) {
-    return isX0(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    return attributeExists(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
   }
 
   public static boolean isWand(final ItemStack stack) {
-    return isX0(stack, Keys.ITEM_WAND, PersistentDataType.BOOLEAN);
+    return attributeExists(stack, Keys.ITEM_WAND, PersistentDataType.BOOLEAN);
   }
 
-  private static boolean isX0(
+  private static boolean attributeExists(
       final ItemStack stack, final NamespacedKey key, final PersistentDataType<?, ?> type) {
     if (stack == null) {
       return false;

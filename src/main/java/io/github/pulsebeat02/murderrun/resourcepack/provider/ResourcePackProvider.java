@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.resourcepack.ServerResourcepack;
+import io.github.pulsebeat02.murderrun.resourcepack.PackWrapper;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.net.URI;
@@ -13,26 +13,24 @@ import net.kyori.adventure.text.Component;
 
 public abstract class ResourcePackProvider implements PackProvider {
 
-  private static final ServerResourcepack SERVER_PACK;
+  private static final Path SERVER_PACK;
 
   static {
     try {
-      final Path path = IOUtils.createTemporaryPath("murder-run-pack", ".zip");
-      SERVER_PACK = new ServerResourcepack(path);
-      SERVER_PACK.build();
+      SERVER_PACK = IOUtils.createTemporaryPath("murder-run-pack", ".zip");
+      final PackWrapper wrapper = new PackWrapper(SERVER_PACK);
+      wrapper.wrapPack();
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
   }
 
   private final ProviderMethod method;
-  private final Path zip;
 
   private String url;
 
   public ResourcePackProvider(final ProviderMethod method) {
     this.method = method;
-    this.zip = SERVER_PACK.getPath();
   }
 
   public abstract String getRawUrl(final Path zip);
@@ -62,13 +60,9 @@ public abstract class ResourcePackProvider implements PackProvider {
     return this.method;
   }
 
-  public Path getZip() {
-    return this.zip;
-  }
-
   public String getFinalUrl() {
     if (this.url == null) {
-      this.url = this.getRawUrl(this.zip);
+      this.url = this.getRawUrl(SERVER_PACK);
     }
     return this.url;
   }

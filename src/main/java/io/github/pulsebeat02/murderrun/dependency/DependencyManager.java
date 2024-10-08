@@ -2,9 +2,10 @@ package io.github.pulsebeat02.murderrun.dependency;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -14,21 +15,13 @@ import org.bukkit.plugin.PluginManager;
 
 public final class DependencyManager {
 
-  public void installDependencies() {
-
-    final Path data = IOUtils.getPluginDataFolderPath();
-    final Path parent = requireNonNull(data.getParent());
-    final PluginDependency[] dependencies = {
+  private static final Collection<PluginDependency> PLUGIN_JAR_DEPENDENCIES = Set.of(
       new JenkinsDependency(
-          "Citizens",
-          "Citizens-2.0.35-b3583",
-          "3583",
-          parent,
-          "https://ci.citizensnpcs.co/job/Citizens2/"),
-      new ModrinthDependency("FastAsyncWorldEdit", "2.11.2", parent)
-    };
+          "Citizens", "Citizens-2.0.35-b3583", "3583", "https://ci.citizensnpcs.co/job/Citizens2/"),
+      new ModrinthDependency("FastAsyncWorldEdit", "2.11.2"));
 
-    for (final PluginDependency dependency : dependencies) {
+  public void installDependencies() {
+    for (final PluginDependency dependency : PLUGIN_JAR_DEPENDENCIES) {
       if (!this.needsInstallation(dependency)) {
         continue;
       }

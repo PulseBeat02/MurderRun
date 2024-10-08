@@ -8,12 +8,7 @@ import com.google.common.io.BaseEncoding;
 import io.github.pulsebeat02.murderrun.locale.LocaleTools;
 import io.github.pulsebeat02.murderrun.locale.Sender;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.UUID;
+import java.util.*;
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
@@ -52,28 +47,43 @@ public final class AdventureUtils {
   @Deprecated // when Adventure platform implements new resourcepack logic use that
   public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
 
+    removeResourcePacks(player, request);
+
     final List<ResourcePackInfo> packs = request.packs();
-    if (request.replace()) {
-      player.removeResourcePacks();
-    }
-
     final boolean required = request.required();
-    Component prompt = request.prompt();
-    if (prompt == null) {
-      prompt = empty();
-    }
-
+    final Component prompt = getResourcePackPrompt(request);
     final String legacy = serializeComponentToLegacyString(prompt);
+    final BaseEncoding encoding = BaseEncoding.base16();
     for (final ResourcePackInfo info : packs) {
       final URI uri = info.uri();
       final String url = uri.toASCIIString();
       final String hexHash = info.hash();
-      final byte[] hash = BaseEncoding.base16().decode(hexHash.toUpperCase());
+      final String upperHexHash = hexHash.toUpperCase();
+      final byte[] hash = encoding.decode(upperHexHash);
       final UUID id = info.id();
       player.addResourcePack(id, url, hash, legacy, required);
     }
 
+    /*
+    Alright, I know this isn't really a utility function because it has side effects, but let's say there is a
+    one in the billionth chance that a photon causes a bit-switch to happen, causing this to return false
+    instead. I mean that means it could return false, and it is a utility function, right? Right?!
+     */
     return true;
+  }
+
+  private static Component getResourcePackPrompt(final ResourcePackRequest request) {
+    Component prompt = request.prompt();
+    if (prompt == null) {
+      prompt = empty();
+    }
+    return prompt;
+  }
+
+  private static void removeResourcePacks(final Player player, final ResourcePackRequest request) {
+    if (request.replace()) {
+      player.removeResourcePacks();
+    }
   }
 
   public static Component deserializeLegacyStringToComponent(final String legacy) {
@@ -90,11 +100,7 @@ public final class AdventureUtils {
 
   public static List<String> serializeLoreToLegacyLore(final Component lore) {
     final List<Component> wrapped = AdventureUtils.wrapLoreLines(lore, 40);
-    final List<String> rawLore = new ArrayList<>();
-    for (final Component component : wrapped) {
-      rawLore.add(serializeComponentToLegacyString(component));
-    }
-    return rawLore;
+    return serializeLoreToLegacyLore(wrapped);
   }
 
   public static List<Component> wrapLoreLines(final Component component, final int length) {
@@ -107,7 +113,7 @@ public final class AdventureUtils {
     final List<TextComponent> parts = flattenTextComponents(text);
 
     Component currentLine = empty();
-    int lineLength = 0;
+    int[] lineLength = new int[] {0};
 
     for (final TextComponent part : parts) {
 
@@ -122,21 +128,21 @@ public final class AdventureUtils {
         }
 
         final int wordLength = word.length();
-        final int totalLength = lineLength + wordLength;
+        final int totalLength = lineLength[0] + wordLength;
         if (totalLength > length || word.contains("\n")) {
           wrapped.add(currentLine);
           currentLine = empty().style(style);
-          lineLength = 0;
+          lineLength[0] = 0;
         }
 
         if (!word.equals("\n")) {
           currentLine = currentLine.append(text(word).style(style));
-          lineLength += wordLength;
+          lineLength[0] += wordLength;
         }
       }
     }
 
-    if (lineLength > 0) {
+    if (lineLength[0] > 0) {
       wrapped.add(currentLine);
     }
 
@@ -154,38 +160,45 @@ public final class AdventureUtils {
     toCheck.add(first);
 
     while (!toCheck.empty()) {
-
       final TextComponent parent = toCheck.pop();
       final String content = parent.content();
       if (!content.isEmpty()) {
         flattened.add(parent);
       }
+      addChildComponents(parent, toCheck);
+    }
 
-      final List<Component> children = parent.children();
-      final List<Component> reversed = children.reversed();
-      for (final Component child : reversed) {
-        if (child instanceof final TextComponent text) {
-          final Style parentStyle = parent.style();
-          final Style textStyle = text.style();
-          final Style merge = parentStyle.merge(textStyle);
-          final TextComponent childComponent = text.style(merge);
-          toCheck.add(childComponent);
-        } else {
-          toCheck.add(UNSUPPORTED);
-        }
+    return flattened;
+  }
+
+  private static void addChildComponents(
+      final TextComponent parent, final Stack<TextComponent> toCheck) {
+    final List<Component> children = parent.children();
+    final List<Component> reversed = children.reversed();
+    for (final Component child : reversed) {
+      if (child instanceof final TextComponent text) {
+        final Style parentStyle = parent.style();
+        final Style textStyle = text.style();
+        final Style merge = parentStyle.merge(textStyle);
+        final TextComponent childComponent = text.style(merge);
+        toCheck.add(childComponent);
+      } else {
+        toCheck.add(UNSUPPORTED);
       }
     }
-    return flattened;
   }
 
   private static Style enforceStyleStates(final Style style) {
     final Style.Builder builder = style.toBuilder();
     final Map<TextDecoration, State> map = style.decorations();
-    map.forEach((decoration, state) -> {
+    final Collection<Map.Entry<TextDecoration, State>> entries = map.entrySet();
+    for (final Map.Entry<TextDecoration, State> entry : entries) {
+      final TextDecoration decoration = entry.getKey();
+      final State state = entry.getValue();
       if (state == TextDecoration.State.NOT_SET) {
         builder.decoration(decoration, false);
       }
-    });
+    }
     return builder.build();
   }
 }

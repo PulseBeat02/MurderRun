@@ -81,18 +81,18 @@ public final class PluginDataConfigurationMapper {
   }
 
   public synchronized void serialize() {
-    CompletableFuture.runAsync(
-        () -> {
-          this.writeLock.lock();
-          final FileConfiguration config = this.plugin.getConfig();
-          config.set(SERVER_HOST_FIELD, this.hostName);
-          config.set(SERVER_PORT_FIELD, this.port);
-          config.set(PROVIDER_CHOICE, this.providerMethod.name());
-          config.set(RELATIONAL_CHOICE, this.relationalDataMethod.name());
-          this.plugin.saveConfig();
-          this.writeLock.unlock();
-        },
-        this.service);
+    CompletableFuture.runAsync(this::internalSerialize, this.service);
+  }
+
+  private synchronized void internalSerialize() {
+    this.writeLock.lock();
+    final FileConfiguration config = this.plugin.getConfig();
+    config.set(SERVER_HOST_FIELD, this.hostName);
+    config.set(SERVER_PORT_FIELD, this.port);
+    config.set(PROVIDER_CHOICE, this.providerMethod.name());
+    config.set(RELATIONAL_CHOICE, this.relationalDataMethod.name());
+    this.plugin.saveConfig();
+    this.writeLock.unlock();
   }
 
   public synchronized int getPort() {
