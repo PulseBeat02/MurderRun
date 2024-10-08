@@ -162,13 +162,7 @@ tasks {
     }
 
     spotlessApply {
-        dependsOn("npmSetup")
-    }
-
-    if (!windows) {
-        named("spotlessJava") {
-            dependsOn("npmSetup")
-        }
+        dependsOn("nodeSetup", "npmSetup")
     }
 
     sourceSets {
