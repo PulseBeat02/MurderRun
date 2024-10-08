@@ -107,7 +107,6 @@ tasks.withType<AbstractRun>().configureEach {
     jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }
 
-var nodePath: File? = null;
 tasks {
 
     bukkit {
@@ -163,10 +162,6 @@ tasks {
 
     spotlessApply {
         dependsOn("npmSetup")
-        doFirst {
-            nodePath = getNpmExecutable()
-            installNodeModules()
-        }
     }
 
     sourceSets {
@@ -185,7 +180,7 @@ tasks {
                     "tabWidth" to 2,
                     "plugins" to listOf("prettier-plugin-java"),
                     "printWidth" to 140))
-                .npmExecutable(nodePath)
+                .npmExecutable(provider { setupNpmEnvironment() })
         }
     }
 
@@ -204,19 +199,10 @@ tasks {
     }
 }
 
-fun installNodeModules() : Void? {
-    val npm = project.exec { commandLine =
-        nodePath?.let { listOf(it.absolutePath, "install", "prettier-plugin-java") }
-    }
-    npm.assertNormalExitValue()
-    return null
-}
-
-fun getNpmExecutable(): File {
+fun setupNpmEnvironment(): File {
     val windows = System.getProperty("os.name").lowercase().contains("windows")
     val npmExec = if (windows) "npm.cmd" else "bin/npm"
-    val task = tasks.named("npmSetup").get()
-    val folder = task.outputs.files.singleFile
-    val executable = folder.resolve(npmExec)
-    return executable.absoluteFile
+    val folder = node.resolvedNodeDir.get()
+    val executable = folder.file(npmExec).asFile
+    return executable
 }
