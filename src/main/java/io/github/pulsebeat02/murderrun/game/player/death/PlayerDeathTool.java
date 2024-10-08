@@ -54,7 +54,6 @@ public final class PlayerDeathTool {
   }
 
   private NPC spawnDeadNPC(final Player player) {
-
     final CitizensManager manager = this.game.getNPCManager();
     final NPCRegistry registry = manager.getRegistry();
     final Location location = player.getLocation();
@@ -112,12 +111,10 @@ public final class PlayerDeathTool {
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 20L);
+    scheduler.scheduleRepeatedTask(() -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 20L);
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {
-
     final DeathManager manager = gamePlayer.getDeathManager();
     final NPC stand = manager.getCorpse();
     if (stand == null) {

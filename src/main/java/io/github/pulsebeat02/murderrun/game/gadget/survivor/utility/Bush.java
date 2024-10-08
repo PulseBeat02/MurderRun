@@ -20,18 +20,11 @@ import org.bukkit.util.Vector;
 public final class Bush extends SurvivorGadget {
 
   public Bush() {
-    super(
-        "bush",
-        Material.OAK_LEAVES,
-        Message.BUSH_NAME.build(),
-        Message.BUSH_LORE.build(),
-        GameProperties.BUSH_COST);
+    super("bush", Material.OAK_LEAVES, Message.BUSH_NAME.build(), Message.BUSH_LORE.build(), GameProperties.BUSH_COST);
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final int duration = GameProperties.BUSH_DURATION;
@@ -40,8 +33,7 @@ public final class Bush extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     final Location location = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.createFacingLocation(player, location), 0, 5, duration);
+    scheduler.scheduleRepeatedTask(() -> this.createFacingLocation(player, location), 0, 5, duration);
 
     final ItemStack[] before = inventory.getArmorContents();
     final ItemStack[] empty = new ItemStack[4];

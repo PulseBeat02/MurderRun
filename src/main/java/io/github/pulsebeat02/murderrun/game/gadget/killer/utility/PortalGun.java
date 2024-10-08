@@ -44,25 +44,24 @@ public final class PortalGun extends KillerGadget implements Listener {
 
   public PortalGun(final Game game) {
     super(
-        "portal_gun",
-        Material.BOW,
-        Message.PORTAL_GUN_NAME.build(),
-        Message.PORTAL_GUN_LORE.build(),
-        GameProperties.PORTAL_GUN_COST,
-        ItemFactory::createPortalGun);
+      "portal_gun",
+      Material.BOW,
+      Message.PORTAL_GUN_NAME.build(),
+      Message.PORTAL_GUN_LORE.build(),
+      GameProperties.PORTAL_GUN_COST,
+      ItemFactory::createPortalGun
+    );
     this.portals = new HashMap<>();
     this.game = game;
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     // allow right click
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onProjectileHit(final ProjectileHitEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Arrow arrow)) {
       return;
@@ -83,10 +82,8 @@ public final class PortalGun extends KillerGadget implements Listener {
       return;
     }
 
-    final Boolean status =
-        PDCUtils.getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN);
-    final String uuid =
-        PDCUtils.getPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING);
+    final Boolean status = PDCUtils.getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN);
+    final String uuid = PDCUtils.getPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING);
     if (status == null || uuid == null) {
       return;
     }
@@ -117,8 +114,7 @@ public final class PortalGun extends KillerGadget implements Listener {
       final Pair<Holder<Location>, Holder<Location>> value = Pair.of(sending, holder);
       this.portals.put(uuid, value);
     }
-    PDCUtils.setPersistentDataAttribute(
-        stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, !status);
+    PDCUtils.setPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, !status);
 
     final PlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
@@ -128,19 +124,20 @@ public final class PortalGun extends KillerGadget implements Listener {
   }
 
   private void spawnPortal(
-      final PlayerManager manager,
-      final GameScheduler scheduler,
-      final Pair<Holder<Location>, Holder<Location>> parent,
-      final Location center) {
+    final PlayerManager manager,
+    final GameScheduler scheduler,
+    final Pair<Holder<Location>, Holder<Location>> parent,
+    final Location center
+  ) {
     this.spawnPortalEffects(scheduler, center);
     this.handlePortalTeleportationLogic(manager, scheduler, parent);
   }
 
   private void handlePortalTeleportationLogic(
-      final PlayerManager manager,
-      final GameScheduler scheduler,
-      final Pair<Holder<Location>, Holder<Location>> parent) {
-
+    final PlayerManager manager,
+    final GameScheduler scheduler,
+    final Pair<Holder<Location>, Holder<Location>> parent
+  ) {
     final Holder<Location> sending = parent.first();
     final Holder<Location> receiving = parent.second();
     if (sending.isEmpty() || receiving.isEmpty()) {
@@ -149,21 +146,22 @@ public final class PortalGun extends KillerGadget implements Listener {
 
     final Location sendingLocation = sending.get();
     final Location receivingLocation = receiving.get();
-    scheduler.scheduleRepeatedTask(
-        () -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 20L);
   }
 
   private void handleParticipants(
-      final PlayerManager manager,
-      final Location sendingLocation,
-      final Location receivingLocation) {
-    manager.applyToAllParticipants(
-        player -> this.handleTeleports(player, sendingLocation, receivingLocation));
+    final PlayerManager manager,
+    final Location sendingLocation,
+    final Location receivingLocation
+  ) {
+    manager.applyToAllParticipants(player -> this.handleTeleports(player, sendingLocation, receivingLocation));
   }
 
   private void handleTeleports(
-      final GamePlayer player, final Location sendingLocation, final Location receivingLocation) {
-
+    final GamePlayer player,
+    final Location sendingLocation,
+    final Location receivingLocation
+  ) {
     final long last = player.getLastPortalUse();
     final long current = System.currentTimeMillis();
     if (current - last < 2000L) {
@@ -196,31 +194,33 @@ public final class PortalGun extends KillerGadget implements Listener {
     final double radiusY = 1.5d;
     final int particleCount = 40;
     final int insideParticleCount = 20;
-    final Runnable task = () -> this.handlePortalEffects(
-        center, particleCount, radiusX, radiusY, world, insideParticleCount);
+    final Runnable task = () ->
+      this.handlePortalEffects(center, particleCount, radiusX, radiusY, world, insideParticleCount);
     scheduler.scheduleRepeatedTask(task, 0L, 2L);
   }
 
   private void handlePortalEffects(
-      final Location center,
-      final int particleCount,
-      final double radiusX,
-      final double radiusY,
-      final World world,
-      final int insideParticleCount) {
+    final Location center,
+    final int particleCount,
+    final double radiusX,
+    final double radiusY,
+    final World world,
+    final int insideParticleCount
+  ) {
     this.spawnPortalFrame(center, particleCount, radiusX, radiusY, world);
     this.fillPortal(center, insideParticleCount, radiusX, radiusY, world);
   }
 
   private void fillPortal(
-      final Location center,
-      final int insideParticleCount,
-      final double radiusX,
-      final double radiusY,
-      final World world) {
+    final Location center,
+    final int insideParticleCount,
+    final double radiusX,
+    final double radiusY,
+    final World world
+  ) {
     for (int i = 0; i < insideParticleCount; i++) {
       for (int j = 0; j < insideParticleCount; j++) {
-        final double angle = 2 * Math.PI * i / insideParticleCount;
+        final double angle = (2 * Math.PI * i) / insideParticleCount;
         final double radius = (double) j / insideParticleCount;
         final double x = center.getX() + radiusX * radius * Math.cos(angle);
         final double y = center.getY() + radiusY * radius * Math.sin(angle);
@@ -231,13 +231,14 @@ public final class PortalGun extends KillerGadget implements Listener {
   }
 
   private void spawnPortalFrame(
-      final Location center,
-      final int particleCount,
-      final double radiusX,
-      final double radiusY,
-      final World world) {
+    final Location center,
+    final int particleCount,
+    final double radiusX,
+    final double radiusY,
+    final World world
+  ) {
     for (int i = 0; i < particleCount; i++) {
-      final double angle = 2 * Math.PI * i / particleCount;
+      final double angle = (2 * Math.PI * i) / particleCount;
       final double x = center.getX() + radiusX * Math.cos(angle);
       final double y = center.getY() + radiusY * Math.sin(angle);
       final Location particleLocation = new Location(world, x, y, center.getZ());

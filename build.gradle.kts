@@ -8,6 +8,7 @@ plugins {
     id("org.checkerframework") version "0.6.45"
     id("com.diffplug.spotless") version "7.0.0.BETA2"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
+    id("com.github.node-gradle.node") version "7.1.0"
 }
 
 apply(plugin = "org.checkerframework")
@@ -52,23 +53,7 @@ var runtimeDeps = listOf(
     "com.github.stefvanschie.inventoryframework:IF:0.10.17"
 );
 
-bukkit {
 
-    name = "MurderRun"
-    version = "1.21.1-v1.0.0"
-    description = "Pulse's MurderRun Plugin"
-    authors = listOf("PulseBeat_02")
-    apiVersion = "1.21"
-    prefix = "Murder Run"
-    main = "io.github.pulsebeat02.murderrun.MurderRun"
-    softDepend = listOf(
-        "WorldEdit",
-        "Citizens",
-        "LibsDisguises",
-        "PlaceholderAPI")
-    libraries = runtimeDeps
-
-}
 
 dependencies {
 
@@ -117,20 +102,37 @@ java {
 tasks.withType<AbstractRun>().configureEach {
     javaLauncher.set(javaToolchains.launcherFor {
         vendor = JvmVendorSpec.JETBRAINS
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     })
     jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.compilerArgs.add("-parameters")
-    options.encoding = "UTF-8"
-    options.release.set(targetJavaVersion)
-    options.isFork = true
-    options.forkOptions.memoryMaximumSize = "4g"
-}
-
+var nodePath: File? = null;
 tasks {
+
+    bukkit {
+        name = "MurderRun"
+        version = "1.21.1-v1.0.0"
+        description = "Pulse's MurderRun Plugin"
+        authors = listOf("PulseBeat_02")
+        apiVersion = "1.21"
+        prefix = "Murder Run"
+        main = "io.github.pulsebeat02.murderrun.MurderRun"
+        softDepend = listOf(
+            "WorldEdit",
+            "Citizens",
+            "LibsDisguises",
+            "PlaceholderAPI")
+        libraries = runtimeDeps
+    }
+
+    withType<JavaCompile>().configureEach {
+        options.compilerArgs.add("-parameters")
+        options.encoding = "UTF-8"
+        options.release.set(targetJavaVersion)
+        options.isFork = true
+        options.forkOptions.memoryMaximumSize = "4g"
+    }
 
     assemble {
         dependsOn(":v1_21_R1:reobfJar")
@@ -145,39 +147,71 @@ tasks {
         downloadPlugins {
             url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
             url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-200.jar")
-            // aka im lazy as fck lmao
         }
         minecraftVersion("1.21.1")
     }
 
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        filteringCharset = "UTF-8"
-    }
-
     shadowJar {
-        var libPath = "io.github.pulsebeat02.murderrun.libs"
+        val libPath = "io.github.pulsebeat02.murderrun.libs"
         relocate("org.bstats", "$libPath.org.bstats")
     }
-}
 
-spotless {
-    java {
-        palantirJavaFormat("2.50.0").style("GOOGLE")
+    spotlessApply {
+        dependsOn("npmSetup")
+        doFirst {
+            nodePath = getNpmExecutable()
+            installNodeModules()
+        }
+    }
+
+    sourceSets {
+        main {
+            java.srcDir("src/main/java")
+            resources.srcDir("src/main/resources")
+        }
+    }
+
+    spotless {
+        java {
+            importOrder()
+            removeUnusedImports()
+            prettier(mapOf("prettier" to "3.3.3", "prettier-plugin-java" to "2.6.4"))
+                .config(mapOf("parser" to "java",
+                    "tabWidth" to 2,
+                    "plugins" to listOf("prettier-plugin-java"),
+                    "printWidth" to 120))
+                .npmExecutable(nodePath)
+        }
+    }
+
+    checkerFramework {
+        checkers = listOf("org.checkerframework.checker.nullness.NullnessChecker")
+        extraJavacArgs = listOf(
+            "-AsuppressWarnings=uninitialized",
+            "-Astubs=${project.file("checker-framework")}"
+        )
+    }
+
+    node {
+        download = true
+        version = "22.9.0"
+        workDir = file("build/nodejs")
     }
 }
 
-sourceSets {
-    main {
-        java.srcDir("src/main/java")
-        resources.srcDir("src/main/resources")
+fun installNodeModules() : Void? {
+    val npm = project.exec { commandLine =
+        nodePath?.let { listOf(it.absolutePath, "install", "prettier-plugin-java") }
     }
+    npm.assertNormalExitValue()
+    return null
 }
 
-checkerFramework {
-    checkers = listOf("org.checkerframework.checker.nullness.NullnessChecker")
-    extraJavacArgs = listOf(
-        "-AsuppressWarnings=uninitialized",
-        "-Astubs=${project.file("checker-framework")}"
-    )
+fun getNpmExecutable(): File {
+    val windows = System.getProperty("os.name").lowercase().contains("windows")
+    val npmExec = if (windows) "npm.cmd" else "bin/npm"
+    val task = tasks.named("npmSetup").get()
+    val folder = task.outputs.files.singleFile
+    val executable = folder.resolve(npmExec)
+    return executable.absoluteFile
 }

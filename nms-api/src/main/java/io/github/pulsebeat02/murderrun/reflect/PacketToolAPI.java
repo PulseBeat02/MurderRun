@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public interface PacketToolAPI {
-
   byte[] toByteArray(final ItemStack item);
 
   ItemStack fromByteArray(final byte[] bytes);

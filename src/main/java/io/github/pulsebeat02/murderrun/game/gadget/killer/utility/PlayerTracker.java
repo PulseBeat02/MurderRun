@@ -28,18 +28,17 @@ public final class PlayerTracker extends KillerGadget {
 
   public PlayerTracker() {
     super(
-        "player_tracker",
-        Material.COMPASS,
-        Message.PLAYER_TRACKER_NAME.build(),
-        Message.PLAYER_TRACKER_LORE.build(),
-        GameProperties.PLAYER_TRACKER_COST,
-        ItemFactory::createPlayerTracker);
+      "player_tracker",
+      Material.COMPASS,
+      Message.PLAYER_TRACKER_NAME.build(),
+      Message.PLAYER_TRACKER_LORE.build(),
+      GameProperties.PLAYER_TRACKER_COST,
+      ItemFactory::createPlayerTracker
+    );
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
-
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
@@ -56,7 +55,6 @@ public final class PlayerTracker extends KillerGadget {
   }
 
   private int increaseAndGetSurvivorCount(final Player player) {
-
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = inventory.getItemInMainHand();
     final NamespacedKey key = Keys.PLAYER_TRACKER;

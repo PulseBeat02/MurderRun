@@ -27,24 +27,23 @@ public final class Hook extends KillerGadget implements Listener {
 
   public Hook(final Game game) {
     super(
-        "hook",
-        Material.FISHING_ROD,
-        Message.HOOK_NAME.build(),
-        Message.HOOK_LORE.build(),
-        GameProperties.HOOK_COST,
-        ItemFactory::createHook);
+      "hook",
+      Material.FISHING_ROD,
+      Message.HOOK_NAME.build(),
+      Message.HOOK_LORE.build(),
+      GameProperties.HOOK_COST,
+      ItemFactory::createHook
+    );
     this.game = game;
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     // allow right click
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerFish(final PlayerFishEvent event) {
-
     final State state = event.getState();
     if (state != State.CAUGHT_ENTITY) {
       return;

@@ -46,8 +46,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public final class ArenaModificationGui extends ChestGui implements Listener {
 
-  private static final Pattern CREATE_ARENA_PATTERN =
-      new Pattern("111111111", "123451161", "111111111", "111171111");
+  private static final Pattern CREATE_ARENA_PATTERN = new Pattern("111111111", "123451161", "111111111", "111171111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
@@ -68,35 +67,33 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   private volatile boolean listenForName;
   private volatile boolean listenForItems;
 
-  public ArenaModificationGui(
-      final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
+  public ArenaModificationGui(final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
     this(
-        plugin,
-        watcher,
-        "None",
-        watcher.getLocation(),
-        watcher.getLocation(),
-        watcher.getLocation(),
-        watcher.getLocation(),
-        Collections.synchronizedSet(new HashSet<>()),
-        editMode);
+      plugin,
+      watcher,
+      "None",
+      watcher.getLocation(),
+      watcher.getLocation(),
+      watcher.getLocation(),
+      watcher.getLocation(),
+      Collections.synchronizedSet(new HashSet<>()),
+      editMode
+    );
   }
 
   @SuppressWarnings("all")
   public ArenaModificationGui(
-      final MurderRun plugin,
-      final HumanEntity watcher,
-      final String arenaName,
-      final Location spawn,
-      final Location truck,
-      final Location first,
-      final Location second,
-      final Collection<Location> itemLocations,
-      final boolean editMode) {
-    super(
-        4,
-        AdventureUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()),
-        plugin);
+    final MurderRun plugin,
+    final HumanEntity watcher,
+    final String arenaName,
+    final Location spawn,
+    final Location truck,
+    final Location first,
+    final Location second,
+    final Collection<Location> itemLocations,
+    final boolean editMode
+  ) {
+    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()), plugin);
     final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     final AudienceProvider provider = plugin.getAudience();
@@ -116,8 +113,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     this.editMode = editMode;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_ARENA_PATTERN);
     this.currentMode = new AtomicInteger(0);
-    this.listener = new WandListener(
-        this.plugin, this.itemLocations, this::removeItemLocation, this::addItemLocation);
+    this.listener = new WandListener(this.plugin, this.itemLocations, this::removeItemLocation, this::addItemLocation);
     this.listener.runScheduledTask();
     manager.registerEvents(this, plugin);
   }
@@ -131,7 +127,6 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   }
 
   public void addItemLocation(final Player sender, final Location location) {
-
     final Block block = location.getBlock();
     final Location blockLoc = block.getLocation();
     this.itemLocations.add(blockLoc);
@@ -144,8 +139,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Block block = location.getBlock();
     final Location blockLoc = block.getLocation();
     if (this.itemLocations.remove(blockLoc)) {
-      final Component msg =
-          AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
+      final Component msg = AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
       this.audience.sendMessage(msg);
     } else {
       final Component err = Message.ARENA_ITEM_REMOVE_ERROR.build();
@@ -154,7 +148,6 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   }
 
   private PatternPane createPane() {
-
     this.pane.clear();
     this.pane.bindItem('1', this.createBorderStack());
     this.pane.bindItem('2', this.createEditNameStack());
@@ -168,7 +161,6 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
-
     if (this.listenForBreaks || this.listenForName || this.listenForItems) {
       return;
     }
@@ -182,7 +174,6 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerChat(final AsyncPlayerChatEvent event) {
-
     if (!this.listenForName) {
       return;
     }
@@ -230,7 +221,6 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerInteract(final BlockBreakEvent event) {
-
     if (!this.listenForBreaks) {
       return;
     }
@@ -249,16 +239,16 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   private GuiItem createWandStack() {
     return new GuiItem(
-        Item.builder(Material.ANVIL)
-            .name(Message.CREATE_ARENA_GUI_WAND_DISPLAY.build())
-            .lore(Message.CREATE_ARENA_GUI_WAND_LORE.build())
-            .build(),
-        this::giveWandStack,
-        this.plugin);
+      Item.builder(Material.ANVIL)
+        .name(Message.CREATE_ARENA_GUI_WAND_DISPLAY.build())
+        .lore(Message.CREATE_ARENA_GUI_WAND_LORE.build())
+        .build(),
+      this::giveWandStack,
+      this.plugin
+    );
   }
 
   private void giveWandStack(final InventoryClickEvent event) {
-
     final Player player = (Player) this.watcher;
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = ItemFactory.createItemLocationWand();
@@ -273,22 +263,21 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   private GuiItem createCloseStack() {
     return new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory(),
-        this.plugin);
+      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+      event -> this.watcher.closeInventory(),
+      this.plugin
+    );
   }
 
   private GuiItem createApplyStack() {
     return new GuiItem(
-        Item.builder(Material.GREEN_WOOL)
-            .name(Message.CREATE_ARENA_GUI_APPLY.build())
-            .build(),
-        this::createNewArena,
-        this.plugin);
+      Item.builder(Material.GREEN_WOOL).name(Message.CREATE_ARENA_GUI_APPLY.build()).build(),
+      this::createNewArena,
+      this.plugin
+    );
   }
 
   private void createNewArena(final InventoryClickEvent event) {
-
     if (this.arenaName.isEmpty() || this.arenaName.equals("None")) {
       final Component msg = Message.ARENA_NAME_ERROR.build();
       this.audience.sendMessage(msg);
@@ -315,7 +304,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Component loadMsg = Message.ARENA_CREATE_LOAD.build();
     audience.sendMessage(loadMsg);
 
-    final Location[] corners = {this.first, this.second};
+    final Location[] corners = { this.first, this.second };
     final Location[] drops = this.itemLocations.toArray(new Location[0]);
     manager.addArena(this.arenaName, corners, drops, this.spawn, this.truck);
 
@@ -328,18 +317,16 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   private GuiItem createDeleteStack() {
     if (this.editMode) {
       return new GuiItem(
-          Item.builder(Material.RED_WOOL)
-              .name(Message.CREATE_ARENA_GUI_DELETE.build())
-              .build(),
-          this::deleteAndCreateArena,
-          this.plugin);
+        Item.builder(Material.RED_WOOL).name(Message.CREATE_ARENA_GUI_DELETE.build()).build(),
+        this::deleteAndCreateArena,
+        this.plugin
+      );
     } else {
       return this.createBorderStack();
     }
   }
 
   private void sendProperMessage(final Location location, final boolean skip) {
-
     final int current = this.currentMode.get();
     if (!skip) {
       switch (current) {
@@ -377,18 +364,27 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Component tooltip = Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE1.build();
     final Component space = empty();
     final Component spawnMsg = AdventureUtils.createLocationComponent(
-        Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2, this.spawn);
+      Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2,
+      this.spawn
+    );
     final Component truckMsg = AdventureUtils.createLocationComponent(
-        Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE3, this.truck);
+      Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE3,
+      this.truck
+    );
     final Component firstMsg = AdventureUtils.createLocationComponent(
-        Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE4, this.first);
+      Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE4,
+      this.first
+    );
     final Component secondMsg = AdventureUtils.createLocationComponent(
-        Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5, this.second);
+      Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5,
+      this.second
+    );
     final List<Component> lore = List.of(tooltip, space, spawnMsg, truckMsg, firstMsg, secondMsg);
     return new GuiItem(
-        Item.builder(Material.ANVIL).name(title).lore(lore).build(),
-        this::listenForBlockBreak,
-        this.plugin);
+      Item.builder(Material.ANVIL).name(title).lore(lore).build(),
+      this::listenForBlockBreak,
+      this.plugin
+    );
   }
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
@@ -402,12 +398,13 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   private GuiItem createEditNameStack() {
     return new GuiItem(
-        Item.builder(Material.ANVIL)
-            .name(Message.CREATE_ARENA_GUI_EDIT_NAME_DISPLAY.build(this.arenaName))
-            .lore(Message.CREATE_ARENA_GUI_EDIT_NAME_LORE.build())
-            .build(),
-        this::listenForMessage,
-        this.plugin);
+      Item.builder(Material.ANVIL)
+        .name(Message.CREATE_ARENA_GUI_EDIT_NAME_DISPLAY.build(this.arenaName))
+        .lore(Message.CREATE_ARENA_GUI_EDIT_NAME_LORE.build())
+        .build(),
+      this::listenForMessage,
+      this.plugin
+    );
   }
 
   private void listenForMessage(final InventoryClickEvent event) {
@@ -419,8 +416,9 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   private GuiItem createBorderStack() {
     return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-        event -> event.setCancelled(true),
-        this.plugin);
+      Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
+      event -> event.setCancelled(true),
+      this.plugin
+    );
   }
 }

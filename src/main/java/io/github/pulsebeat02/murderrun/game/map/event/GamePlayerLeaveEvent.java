@@ -17,7 +17,6 @@ public final class GamePlayerLeaveEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onPlayerDisconnect(final PlayerQuitEvent event) {
-
     final Player player = event.getPlayer();
     if (!this.isGamePlayer(player)) {
       return;

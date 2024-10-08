@@ -19,17 +19,16 @@ public final class QuickBomb extends KillerGadget {
 
   public QuickBomb() {
     super(
-        "quick_bomb",
-        Material.TNT,
-        Message.QUICK_BOMB_NAME.build(),
-        Message.QUICK_BOMB_LORE.build(),
-        GameProperties.QUICK_BOMB_COST);
+      "quick_bomb",
+      Material.TNT,
+      Message.QUICK_BOMB_NAME.build(),
+      Message.QUICK_BOMB_LORE.build(),
+      GameProperties.QUICK_BOMB_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();

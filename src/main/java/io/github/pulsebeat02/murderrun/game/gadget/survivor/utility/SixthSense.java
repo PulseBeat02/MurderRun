@@ -21,17 +21,16 @@ public final class SixthSense extends SurvivorGadget {
 
   public SixthSense() {
     super(
-        "sixth_sense",
-        Material.GOLDEN_CARROT,
-        Message.SIXTH_SENSE_NAME.build(),
-        Message.SIXTH_SENSE_LORE.build(),
-        GameProperties.SIXTH_SENSE_COST);
+      "sixth_sense",
+      Material.GOLDEN_CARROT,
+      Message.SIXTH_SENSE_NAME.build(),
+      Message.SIXTH_SENSE_LORE.build(),
+      GameProperties.SIXTH_SENSE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();

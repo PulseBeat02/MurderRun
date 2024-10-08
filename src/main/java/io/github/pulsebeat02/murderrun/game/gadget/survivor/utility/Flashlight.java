@@ -32,24 +32,22 @@ public final class Flashlight extends SurvivorGadget {
 
   public Flashlight() {
     super(
-        "flashlight",
-        Material.GOLDEN_SHOVEL,
-        Message.FLASHLIGHT_NAME.build(),
-        Message.FLASHLIGHT_LORE.build(),
-        GameProperties.FLASHLIGHT_COST,
-        ItemFactory::createFlashlight);
+      "flashlight",
+      Material.GOLDEN_SHOVEL,
+      Message.FLASHLIGHT_NAME.build(),
+      Message.FLASHLIGHT_LORE.build(),
+      GameProperties.FLASHLIGHT_COST,
+      ItemFactory::createFlashlight
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     return super.onGadgetDrop(game, player, item, false);
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
-
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     super.onGadgetRightClick(game, event, false);
 
     final ItemStack stack = event.getItem();
@@ -57,8 +55,7 @@ public final class Flashlight extends SurvivorGadget {
       return;
     }
 
-    final Long last =
-        PDCUtils.getPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG);
+    final Long last = PDCUtils.getPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG);
     if (last == null) {
       return;
     }
@@ -69,8 +66,7 @@ public final class Flashlight extends SurvivorGadget {
       return;
     }
 
-    PDCUtils.setPersistentDataAttribute(
-        stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG, current);
+    PDCUtils.setPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG, current);
 
     final Player player = event.getPlayer();
     this.sprayParticlesInCone(game, player);
@@ -90,18 +86,19 @@ public final class Flashlight extends SurvivorGadget {
     final double maxAngle = Math.toRadians(GameProperties.FLASHLIGHT_CONE_ANGLE);
     for (double t = 0; t < GameProperties.FLASHLIGHT_CONE_LENGTH; t += 0.5) {
       for (double angle = -maxAngle; angle <= maxAngle; angle += increment) {
-        final Location particleLocation =
-            this.getParticleLocation(direction, handLocation, t, angle);
-        world.spawnParticle(
-            Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
+        final Location particleLocation = this.getParticleLocation(direction, handLocation, t, angle);
+        world.spawnParticle(Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
         manager.applyToAllMurderers(killer -> this.applyPotionEffects(killer, particleLocation));
       }
     }
   }
 
   private Location getParticleLocation(
-      final Vector direction, final Location handLocation, final double t, final double angle) {
-
+    final Vector direction,
+    final Location handLocation,
+    final double t,
+    final double angle
+  ) {
     final Vector copy = direction.clone();
     final Vector offset = copy.multiply(t);
     offset.rotateAroundY(angle);
@@ -115,8 +112,7 @@ public final class Flashlight extends SurvivorGadget {
     final double distance = killerLocation.distanceSquared(particleLocation);
     final double radius = GameProperties.FLASHLIGHT_RADIUS;
     if (distance < radius * radius) {
-      killer.addPotionEffects(
-          new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));
+      killer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));
     }
   }
 }

@@ -10,21 +10,23 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class KillerGadget extends AbstractGadget implements KillerApparatus {
 
   public KillerGadget(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
-      final int cost) {
+    final String name,
+    final Material material,
+    final Component itemName,
+    final Component itemLore,
+    final int cost
+  ) {
     super(name, material, itemName, itemLore, cost);
   }
 
   public KillerGadget(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
-      final int cost,
-      final @Nullable Consumer<ItemStack> consumer) {
+    final String name,
+    final Material material,
+    final Component itemName,
+    final Component itemLore,
+    final int cost,
+    final @Nullable Consumer<ItemStack> consumer
+  ) {
     super(name, material, itemName, itemLore, cost, consumer);
   }
 }

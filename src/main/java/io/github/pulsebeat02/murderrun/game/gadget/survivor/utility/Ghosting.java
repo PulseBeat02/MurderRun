@@ -27,20 +27,21 @@ public final class Ghosting extends SurvivorGadget {
 
   public Ghosting() {
     super(
-        "ghosting",
-        Material.WHITE_WOOL,
-        Message.GHOSTING_NAME.build(),
-        Message.GHOSTING_LORE.build(),
-        GameProperties.GHOSTING_COST);
+      "ghosting",
+      Material.WHITE_WOOL,
+      Message.GHOSTING_NAME.build(),
+      Message.GHOSTING_LORE.build(),
+      GameProperties.GHOSTING_COST
+    );
   }
 
   @Override
   public boolean onGadgetDrop(
-      final Game game,
-      final GamePlayer player,
-      final org.bukkit.entity.Item item,
-      final boolean remove) {
-
+    final Game game,
+    final GamePlayer player,
+    final org.bukkit.entity.Item item,
+    final boolean remove
+  ) {
     super.onGadgetDrop(game, player, item, true);
 
     if (!(player instanceof final Survivor survivor)) {
@@ -48,8 +49,7 @@ public final class Ghosting extends SurvivorGadget {
     }
 
     final DeathManager deathManager = player.getDeathManager();
-    final PlayerDeathTask task =
-        new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
+    final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
     deathManager.addDeathTask(task);
 
     final PlayerAudience audience = survivor.getAudience();
@@ -87,8 +87,7 @@ public final class Ghosting extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
-    scheduler.scheduleRepeatedTask(
-        () -> inventory.addItem(wool), 0, GameProperties.GHOSTING_WOOL_DELAY);
+    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, GameProperties.GHOSTING_WOOL_DELAY);
   }
 
   private void giveWhiteBone(final GamePlayer player) {

@@ -41,8 +41,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   private Collection<Location> itemLocations;
 
   @Override
-  public void registerFeature(
-      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
@@ -53,7 +52,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.arena.copy.info")
   @Command(value = "murder arena copy <name>", requiredSender = Player.class)
   public void copyArenaSettings(final Player sender, @Quoted final String name) {
-
     final Audience audience = this.audiences.player(sender);
     if (this.checkInvalidArena(audience, name)) {
       return;
@@ -83,7 +81,6 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   }
 
   public void addItemLocation(final Player sender, final Location location) {
-
     final Block block = location.getBlock();
     final Location blockLoc = block.getLocation();
     this.itemLocations.add(blockLoc);
@@ -104,8 +101,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Block block = location.getBlock();
     final Location blockLoc = block.getLocation();
     if (this.itemLocations.remove(blockLoc)) {
-      final Component msg =
-          AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
+      final Component msg = AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
       this.sendMessage(sender, msg);
     } else {
       final Component err = Message.ARENA_ITEM_REMOVE_ERROR.build();
@@ -175,19 +171,20 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.arena.create.info")
   @Command(value = "murder arena create", requiredSender = Player.class)
   public void createArena(final Player sender) {
-
     final Audience audience = this.audiences.player(sender);
-    if (this.handleNullCorner(audience)
-        || this.handleNullSpawn(audience)
-        || this.handleNullTruck(audience)
-        || this.handleNullName(audience)) {
+    if (
+      this.handleNullCorner(audience) ||
+      this.handleNullSpawn(audience) ||
+      this.handleNullTruck(audience) ||
+      this.handleNullName(audience)
+    ) {
       return;
     }
 
     final Component loadMsg = Message.ARENA_CREATE_LOAD.build();
     audience.sendMessage(loadMsg);
 
-    final Location[] corners = new Location[] {this.first, this.second};
+    final Location[] corners = new Location[] { this.first, this.second };
     final ArenaManager manager = this.plugin.getArenaManager();
     final Location[] locations = this.itemLocations.toArray(new Location[0]);
     manager.addArena(this.name, corners, locations, this.spawn, this.truck);
@@ -269,8 +266,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   public void setFirstCorner(final Player sender) {
     final Location location = sender.getLocation();
     this.first = location;
-    final Component message =
-        AdventureUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
+    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
     this.sendMessage(sender, message);
   }
 
@@ -280,8 +276,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   public void setSecondCorner(final Player sender) {
     final Location location = sender.getLocation();
     this.second = location;
-    final Component message =
-        AdventureUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
+    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
     this.sendMessage(sender, message);
   }
 

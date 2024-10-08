@@ -37,17 +37,17 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
 
   public DeathHound(final Game game) {
     super(
-        "death_hound",
-        Material.BONE,
-        Message.DEATH_HOUND_NAME.build(),
-        Message.DEATH_HOUND_LORE.build(),
-        GameProperties.DEATH_HOUND_COST);
+      "death_hound",
+      Material.BONE,
+      Message.DEATH_HOUND_NAME.build(),
+      Message.DEATH_HOUND_LORE.build(),
+      GameProperties.DEATH_HOUND_COST
+    );
     this.game = game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onTargetChange(final EntityTargetEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Wolf wolf)) {
       return;
@@ -63,9 +63,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -85,8 +83,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     return false;
   }
 
-  private Wolf spawnWolf(
-      final Location location, final GamePlayer owner, final GamePlayer nearest) {
+  private Wolf spawnWolf(final Location location, final GamePlayer owner, final GamePlayer nearest) {
     final World world = requireNonNull(location.getWorld());
     return world.spawn(location, Wolf.class, entity -> {
       this.customizeProperties(entity, owner, nearest);
@@ -103,13 +100,15 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   }
 
   private void addPotionEffects(final Wolf entity) {
-    entity.addPotionEffects(Set.of(
+    entity.addPotionEffects(
+      Set.of(
         new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2),
-        new PotionEffect(PotionEffectType.WEAKNESS, PotionEffect.INFINITE_DURATION, 1)));
+        new PotionEffect(PotionEffectType.WEAKNESS, PotionEffect.INFINITE_DURATION, 1)
+      )
+    );
   }
 
-  private void customizeProperties(
-      final Wolf entity, final GamePlayer owner, final GamePlayer target) {
+  private void customizeProperties(final Wolf entity, final GamePlayer owner, final GamePlayer target) {
     final Player internal = owner.getInternalPlayer();
     final Player internalTarget = target.getInternalPlayer();
     entity.setOwner(internal);

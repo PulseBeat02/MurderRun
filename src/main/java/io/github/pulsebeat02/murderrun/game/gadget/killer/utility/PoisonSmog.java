@@ -24,17 +24,16 @@ public final class PoisonSmog extends KillerGadget {
 
   public PoisonSmog() {
     super(
-        "poison_smog",
-        Material.SLIME_BALL,
-        Message.POISON_SMOG_NAME.build(),
-        Message.POISON_SMOG_LORE.build(),
-        GameProperties.POISON_SMOG_COST);
+      "poison_smog",
+      Material.SLIME_BALL,
+      Message.POISON_SMOG_NAME.build(),
+      Message.POISON_SMOG_LORE.build(),
+      GameProperties.POISON_SMOG_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -42,10 +41,11 @@ public final class PoisonSmog extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
     scheduler.scheduleRepeatedTask(
-        () -> this.handleSmog(world, location, manager),
-        0,
-        2 * 20L,
-        GameProperties.POISON_SMOG_DURATION);
+      () -> this.handleSmog(world, location, manager),
+      0,
+      2 * 20L,
+      GameProperties.POISON_SMOG_DURATION
+    );
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.POISON_SMOG_SOUND);

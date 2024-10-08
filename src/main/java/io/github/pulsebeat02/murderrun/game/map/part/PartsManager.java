@@ -85,8 +85,7 @@ public final class PartsManager {
   }
 
   public @Nullable CarPart getCarPartItemStack(final ItemStack stack) {
-    final String uuid =
-        PDCUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
+    final String uuid = PDCUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
     return uuid == null ? null : this.parts.get(uuid);
   }
 

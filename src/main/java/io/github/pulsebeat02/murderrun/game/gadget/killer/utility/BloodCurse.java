@@ -21,17 +21,16 @@ public final class BloodCurse extends KillerGadget {
 
   public BloodCurse() {
     super(
-        "blood_curse",
-        Material.REDSTONE,
-        Message.BLOOD_CURSE_NAME.build(),
-        Message.BLOOD_CURSE_LORE.build(),
-        GameProperties.BLOOD_CURSE_COST);
+      "blood_curse",
+      Material.REDSTONE,
+      Message.BLOOD_CURSE_NAME.build(),
+      Message.BLOOD_CURSE_LORE.build(),
+      GameProperties.BLOOD_CURSE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final GameScheduler scheduler = game.getScheduler();
@@ -46,7 +45,6 @@ public final class BloodCurse extends KillerGadget {
   }
 
   private void setBloodBlock(final GamePlayer survivor) {
-
     final Location location = survivor.getLocation();
     final Block block = location.getBlock();
     final Block below = block.getRelative(BlockFace.DOWN);

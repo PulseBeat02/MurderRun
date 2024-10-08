@@ -10,10 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public interface TargetableEntity {
-
-  default void handle(
-      final EntityTargetEvent event, final String target, final Mob entity, final boolean killer) {
-
+  default void handle(final EntityTargetEvent event, final String target, final Mob entity, final boolean killer) {
     final Game game = this.getGame();
     final UUID uuid = UUID.fromString(target);
     final PlayerManager manager = game.getPlayerManager();

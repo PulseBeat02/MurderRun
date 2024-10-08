@@ -22,17 +22,16 @@ public final class FloorIsLava extends KillerGadget {
 
   public FloorIsLava() {
     super(
-        "floor_is_lava",
-        Material.MAGMA_BLOCK,
-        Message.THE_FLOOR_IS_LAVA_NAME.build(),
-        Message.THE_FLOOR_IS_LAVA_LORE.build(),
-        GameProperties.FLOOR_IS_LAVA_COST);
+      "floor_is_lava",
+      Material.MAGMA_BLOCK,
+      Message.THE_FLOOR_IS_LAVA_NAME.build(),
+      Message.THE_FLOOR_IS_LAVA_LORE.build(),
+      GameProperties.FLOOR_IS_LAVA_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -41,8 +40,7 @@ public final class FloorIsLava extends KillerGadget {
       return true;
     }
 
-    scheduler.scheduleRepeatedTask(
-        () -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L);
 
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
     manager.playSoundForAllParticipants(GameProperties.FLOOR_IS_LAVA_SOUND);
@@ -50,19 +48,16 @@ public final class FloorIsLava extends KillerGadget {
     return false;
   }
 
-  private void handleSurvivors(
-      final PlayerManager manager, final GameScheduler scheduler, final Killer killer) {
+  private void handleSurvivors(final PlayerManager manager, final GameScheduler scheduler, final Killer killer) {
     manager.applyToAllLivingInnocents(survivor -> this.handleMovement(scheduler, survivor, killer));
   }
 
-  private void handleMovement(
-      final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
+  private void handleMovement(final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
     final Location previous = player.getLocation();
     scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 3 * 20L);
   }
 
-  private void handleLocationChecking(
-      final Location previous, final GamePlayer player, final Killer killer) {
+  private void handleLocationChecking(final Location previous, final GamePlayer player, final Killer killer) {
     final Location newLocation = player.getLocation();
     final Collection<GamePlayer> glowing = killer.getFloorIsLavaGlowing();
     final MetadataManager metadata = killer.getMetadataManager();
@@ -76,9 +71,11 @@ public final class FloorIsLava extends KillerGadget {
   }
 
   private boolean checkLocationSame(final Location first, final Location second) {
-    return first.getBlockX() == second.getBlockX()
-        && first.getBlockY() == second.getBlockY()
-        && first.getBlockZ() == second.getBlockZ();
+    return (
+      first.getBlockX() == second.getBlockX() &&
+      first.getBlockY() == second.getBlockY() &&
+      first.getBlockZ() == second.getBlockZ()
+    );
   }
 
   private void sendFloorIsLavaMessage(final Participant participant) {

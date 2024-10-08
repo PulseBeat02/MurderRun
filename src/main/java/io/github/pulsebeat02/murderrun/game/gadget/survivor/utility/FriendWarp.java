@@ -17,17 +17,16 @@ public final class FriendWarp extends SurvivorGadget {
 
   public FriendWarp() {
     super(
-        "friend_warp",
-        Material.EMERALD,
-        Message.FRIEND_WARP_NAME.build(),
-        Message.FRIEND_WARP_LORE.build(),
-        GameProperties.FRIEND_WARP_COST);
+      "friend_warp",
+      Material.EMERALD,
+      Message.FRIEND_WARP_NAME.build(),
+      Message.FRIEND_WARP_LORE.build(),
+      GameProperties.FRIEND_WARP_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -51,8 +50,7 @@ public final class FriendWarp extends SurvivorGadget {
     return false;
   }
 
-  private GamePlayer getRandomSurvivorNotSame(
-      final PlayerManager manager, final GamePlayer gamePlayer) {
+  private GamePlayer getRandomSurvivorNotSame(final PlayerManager manager, final GamePlayer gamePlayer) {
     GamePlayer random = manager.getRandomAliveInnocentPlayer();
     while (random == gamePlayer) {
       random = manager.getRandomAliveInnocentPlayer();

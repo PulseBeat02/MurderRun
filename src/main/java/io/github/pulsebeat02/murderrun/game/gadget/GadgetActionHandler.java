@@ -58,7 +58,6 @@ public final class GadgetActionHandler implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onRightClick(final PlayerInteractEvent event) {
-
     final Player player = event.getPlayer();
     if (this.checkKillerStatus(player)) {
       event.setCancelled(true);
@@ -77,7 +76,6 @@ public final class GadgetActionHandler implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onDropItem(final PlayerDropItemEvent event) {
-
     final Player player = event.getPlayer();
     if (this.checkKillerStatus(player)) {
       event.setCancelled(true);
@@ -94,13 +92,12 @@ public final class GadgetActionHandler implements Listener {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
 
     this.handleEventLogic(stack, gadget -> {
-      final boolean cancel = gadget.onGadgetDrop(game, gamePlayer, item, false);
-      event.setCancelled(cancel);
-    });
+        final boolean cancel = gadget.onGadgetDrop(game, gamePlayer, item, false);
+        event.setCancelled(cancel);
+      });
   }
 
   private boolean checkKillerStatus(final Player player) {
-
     final Game game = this.manager.getGame();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
@@ -110,10 +107,9 @@ public final class GadgetActionHandler implements Listener {
     final UUID uuid = player.getUniqueId();
     final Audience audience = audiences.player(uuid);
     final GameStatus status = game.getStatus();
-    final boolean invalidKiller =
-        gamePlayer instanceof Killer && status != GameStatus.KILLERS_RELEASED;
-    final boolean invalidSurvivor = gamePlayer instanceof Survivor
-        && (status == GameStatus.NOT_STARTED || status == GameStatus.FINISHED);
+    final boolean invalidKiller = gamePlayer instanceof Killer && status != GameStatus.KILLERS_RELEASED;
+    final boolean invalidSurvivor =
+      gamePlayer instanceof Survivor && (status == GameStatus.NOT_STARTED || status == GameStatus.FINISHED);
     if (invalidKiller || invalidSurvivor) {
       audience.sendMessage(Message.MISUSE_GADGET_ERROR.build());
       return true;
@@ -140,7 +136,6 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private void handlePlayerGadgetLogic(final GamePlayer player) {
-
     final GadgetSearchResult result = this.getGetClosestTrap(player);
     if (result == null) {
       return;
@@ -158,7 +153,6 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private @Nullable GadgetSearchResult getGetClosestTrap(final GamePlayer player) {
-
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
     final double range = this.manager.getActivationRange();
@@ -170,7 +164,6 @@ public final class GadgetActionHandler implements Listener {
     Gadget closest = null;
     Item closestItem = null;
     for (final Entity entity : entities) {
-
       if (!(entity instanceof final Item item)) {
         continue;
       }
@@ -181,8 +174,8 @@ public final class GadgetActionHandler implements Listener {
         continue;
       }
 
-      final boolean activate = isSurvivor && (gadget instanceof KillerApparatus)
-          || !isSurvivor && (gadget instanceof SurvivorApparatus);
+      final boolean activate =
+        (isSurvivor && (gadget instanceof KillerApparatus)) || (!isSurvivor && (gadget instanceof SurvivorApparatus));
       if (activate) {
         final Location location = item.getLocation();
         final double distance = origin.distanceSquared(location);
@@ -206,7 +199,6 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private void handleEventLogic(final @Nullable ItemStack stack, final Consumer<Gadget> gadget) {
-
     if (stack == null) {
       return;
     }
@@ -215,8 +207,7 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    final String data =
-        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     if (data == null) {
       return;
     }

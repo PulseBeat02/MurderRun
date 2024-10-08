@@ -34,10 +34,11 @@ public final class GameScheduler {
   }
 
   public BukkitTask scheduleConditionalTask(
-      final Runnable runnable,
-      final long delay,
-      final long period,
-      final BooleanSupplier condition) {
+    final Runnable runnable,
+    final long delay,
+    final long period,
+    final BooleanSupplier condition
+  ) {
     final ConditionalTask task = new ConditionalTask(this.game, runnable, condition);
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);
@@ -51,8 +52,7 @@ public final class GameScheduler {
     return bukkit;
   }
 
-  public BukkitTask scheduleRepeatedTask(
-      final Runnable runnable, final long delay, final long period) {
+  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period) {
     final GameScheduledTask task = new GameScheduledTask(this.game, runnable);
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);
@@ -60,9 +60,12 @@ public final class GameScheduler {
   }
 
   public BukkitTask scheduleRepeatedTask(
-      final Runnable runnable, final long delay, final long period, final long duration) {
-    final TemporaryRepeatedTask custom =
-        new TemporaryRepeatedTask(this.game, runnable, period, duration);
+    final Runnable runnable,
+    final long delay,
+    final long period,
+    final long duration
+  ) {
+    final TemporaryRepeatedTask custom = new TemporaryRepeatedTask(this.game, runnable, period, duration);
     final BukkitTask bukkit = custom.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);
     return bukkit;
@@ -83,8 +86,7 @@ public final class GameScheduler {
     return task;
   }
 
-  private void waitForFall0(
-      final Runnable runnable, final Entity item, final AtomicBoolean onFloor) {
+  private void waitForFall0(final Runnable runnable, final Entity item, final AtomicBoolean onFloor) {
     if (item.isOnGround()) {
       onFloor.set(true);
       runnable.run();
@@ -119,16 +121,14 @@ public final class GameScheduler {
     return task;
   }
 
-  private void waitAfterDeath(
-      final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
+  private void waitAfterDeath(final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
     if (entity.isDead()) {
       dead.set(true);
       runnable.run();
     }
   }
 
-  private void waitForDeathRepeat(
-      final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
+  private void waitForDeathRepeat(final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
     if (entity.isDead()) {
       dead.set(true);
     }

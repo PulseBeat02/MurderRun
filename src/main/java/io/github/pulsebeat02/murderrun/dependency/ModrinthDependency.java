@@ -19,24 +19,23 @@ public final class ModrinthDependency extends PluginDependency {
     try (final HttpClient client = HttpClient.newHttpClient()) {
       final String name = this.getName();
       final HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create("https://api.modrinth.com/v2/project/%s/version".formatted(name)))
-          .header("User-Agent", "PulseBeat02/murderrun")
-          .header("Accept", "application/json")
-          .GET()
-          .build();
+        .uri(URI.create("https://api.modrinth.com/v2/project/%s/version".formatted(name)))
+        .header("User-Agent", "PulseBeat02/murderrun")
+        .header("Accept", "application/json")
+        .GET()
+        .build();
       return client
-          .sendAsync(request, HttpResponse.BodyHandlers.ofString())
-          .thenApplyAsync(HttpResponse::body)
-          .thenApplyAsync(this::findValidFile)
-          .exceptionally(e -> {
-            throw new AssertionError(e);
-          })
-          .join();
+        .sendAsync(request, HttpResponse.BodyHandlers.ofString())
+        .thenApplyAsync(HttpResponse::body)
+        .thenApplyAsync(this::findValidFile)
+        .exceptionally(e -> {
+          throw new AssertionError(e);
+        })
+        .join();
     }
   }
 
   private Path findValidFile(final String json) {
-
     if (json == null) {
       throw new AssertionError("Failed to download dependency because JSON is empty!");
     }
@@ -44,7 +43,6 @@ public final class ModrinthDependency extends PluginDependency {
     final ModrinthVersion[] versions = ModrinthVersion.serializeVersions(json);
     final String target = this.getVersion();
     for (final ModrinthVersion version : versions) {
-
       final String number = version.getVersionNumber();
       if (!number.equals(target)) {
         continue;
@@ -69,14 +67,12 @@ public final class ModrinthDependency extends PluginDependency {
     final Path finalPath = parent.resolve(fileName);
     try (final HttpClient client = HttpClient.newHttpClient()) {
       final HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create(fileUrl))
-          .header("User-Agent", "PulseBeat02/murderrun")
-          .header("Accept", "application/json")
-          .GET()
-          .build();
-      return client
-          .sendAsync(request, HttpResponse.BodyHandlers.ofFile(finalPath))
-          .thenApplyAsync(HttpResponse::body);
+        .uri(URI.create(fileUrl))
+        .header("User-Agent", "PulseBeat02/murderrun")
+        .header("Accept", "application/json")
+        .GET()
+        .build();
+      return client.sendAsync(request, HttpResponse.BodyHandlers.ofFile(finalPath)).thenApplyAsync(HttpResponse::body);
     }
   }
 }

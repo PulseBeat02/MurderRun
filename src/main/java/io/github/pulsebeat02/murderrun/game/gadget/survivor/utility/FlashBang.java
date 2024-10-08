@@ -36,30 +36,28 @@ public final class FlashBang extends SurvivorGadget implements Listener {
 
   public FlashBang(final Game game) {
     super(
-        "flash_bang",
-        Material.SNOWBALL,
-        Message.FLASHBANG_NAME.build(),
-        Message.FLASHBANG_LORE.build(),
-        GameProperties.FLASHBANG_COST,
-        ItemFactory::createFlashBang);
+      "flash_bang",
+      Material.SNOWBALL,
+      Message.FLASHBANG_NAME.build(),
+      Message.FLASHBANG_LORE.build(),
+      GameProperties.FLASHBANG_COST,
+      ItemFactory::createFlashBang
+    );
     this.game = game;
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     return super.onGadgetDrop(game, player, item, false);
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     // ignore impl
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onProjectileHitEvent(final ProjectileHitEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Snowball snowball)) {
       return;
@@ -76,8 +74,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     }
 
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(
-        Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
+    world.spawnParticle(Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final PlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllMurderers(killer -> {
@@ -87,8 +84,9 @@ public final class FlashBang extends SurvivorGadget implements Listener {
       if (distance < radius * radius) {
         final int duration = GameProperties.FLASHBANG_DURATION;
         killer.addPotionEffects(
-            new PotionEffect(PotionEffectType.BLINDNESS, duration, 0),
-            new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));
+          new PotionEffect(PotionEffectType.BLINDNESS, duration, 0),
+          new PotionEffect(PotionEffectType.SLOWNESS, duration, 4)
+        );
       }
     });
 

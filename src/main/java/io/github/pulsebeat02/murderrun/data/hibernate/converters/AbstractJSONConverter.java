@@ -15,7 +15,6 @@ public abstract class AbstractJSONConverter<T> implements AttributeConverter<T, 
 
   @Override
   public @Nullable String convertToDatabaseColumn(final T data) {
-
     if (data == null) {
       return null;
     }
@@ -27,7 +26,6 @@ public abstract class AbstractJSONConverter<T> implements AttributeConverter<T, 
 
   @Override
   public @Nullable T convertToEntityAttribute(final String dbData) {
-
     if (dbData == null || dbData.isEmpty()) {
       return null;
     }

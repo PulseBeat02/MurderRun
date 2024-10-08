@@ -8,13 +8,11 @@ import java.lang.reflect.Type;
 import org.bukkit.inventory.ItemStack;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-public final class ItemStackAdapter
-    implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
+public final class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
 
   @Override
-  public ItemStack deserialize(
-      final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
-      throws JsonParseException {
+  public ItemStack deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
+    throws JsonParseException {
     final PacketToolAPI api = PacketToolsProvider.PACKET_API;
     final String data = json.getAsString();
     final byte[] bytes = Base64Coder.decode(data);
@@ -22,8 +20,7 @@ public final class ItemStackAdapter
   }
 
   @Override
-  public JsonElement serialize(
-      final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
+  public JsonElement serialize(final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
     final Gson gson = GsonProvider.getGson();
     final PacketToolAPI api = PacketToolsProvider.PACKET_API;
     final byte[] bytes = api.toByteArray(src);

@@ -33,17 +33,16 @@ public final class Corruption extends KillerGadget {
 
   public Corruption() {
     super(
-        "corruption",
-        Material.ZOMBIE_HEAD,
-        Message.CORRUPTION_NAME.build(),
-        Message.CORRUPTION_LORE.build(),
-        GameProperties.CORRUPTION_COST);
+      "corruption",
+      Material.ZOMBIE_HEAD,
+      Message.CORRUPTION_NAME.build(),
+      Message.CORRUPTION_LORE.build(),
+      GameProperties.CORRUPTION_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -74,7 +73,6 @@ public final class Corruption extends KillerGadget {
   }
 
   private void corruptPlayer(final Game game, final GamePlayer closest) {
-
     final PlayerManager manager = game.getPlayerManager();
     manager.promoteToKiller(closest);
 

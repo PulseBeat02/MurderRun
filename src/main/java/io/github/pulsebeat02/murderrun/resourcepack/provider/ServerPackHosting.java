@@ -33,7 +33,6 @@ public final class ServerPackHosting extends ResourcePackProvider {
 
   @Override
   public String getRawUrl(final Path zip) {
-
     if (this.server != null) {
       return HOST_URL.formatted(this.hostName, this.port);
     }
@@ -42,17 +41,15 @@ public final class ServerPackHosting extends ResourcePackProvider {
   }
 
   private @NotNull String startInternalServer(final Path zip) {
-    try (final InputStream stream = Files.newInputStream(zip);
-        final InputStream fast = new FastBufferedInputStream(stream)) {
+    try (
+      final InputStream stream = Files.newInputStream(zip);
+      final InputStream fast = new FastBufferedInputStream(stream)
+    ) {
       final String hash = IOUtils.generateFileHash(zip);
       final Writable writable = Writable.copyInputStream(fast);
       final BuiltResourcePack pack = BuiltResourcePack.of(writable, hash);
       final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
-      this.server = ResourcePackServer.server()
-          .address(this.hostName, this.port)
-          .pack(pack)
-          .executor(service)
-          .build();
+      this.server = ResourcePackServer.server().address(this.hostName, this.port).pack(pack).executor(service).build();
       this.server.start();
       return HOST_URL.formatted(this.hostName, this.port);
     } catch (final IOException | NoSuchAlgorithmException e) {

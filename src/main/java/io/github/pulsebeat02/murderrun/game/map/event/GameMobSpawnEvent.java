@@ -22,7 +22,6 @@ public final class GameMobSpawnEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onEntitySpawn(final CreatureSpawnEvent event) {
-
     final Game game = this.getGame();
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());

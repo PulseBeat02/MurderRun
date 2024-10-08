@@ -24,8 +24,9 @@ public final class PacketToolsProvider {
     } catch (final Throwable e) {
       api = new FallbackPacketTools();
       throw new UnsupportedOperationException(
-          "The current server version isn't supported by this plugin! Resorting to fallback adapter",
-          e);
+        "The current server version isn't supported by this plugin! Resorting to fallback adapter",
+        e
+      );
     }
     PACKET_API = api;
   }

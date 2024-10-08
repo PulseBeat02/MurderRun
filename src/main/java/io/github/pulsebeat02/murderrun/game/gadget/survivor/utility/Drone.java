@@ -16,17 +16,16 @@ public final class Drone extends SurvivorGadget {
 
   public Drone() {
     super(
-        "drone",
-        Material.PHANTOM_MEMBRANE,
-        Message.DRONE_NAME.build(),
-        Message.DRONE_LORE.build(),
-        GameProperties.DRONE_COST);
+      "drone",
+      Material.PHANTOM_MEMBRANE,
+      Message.DRONE_NAME.build(),
+      Message.DRONE_LORE.build(),
+      GameProperties.DRONE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location origin = player.getLocation();

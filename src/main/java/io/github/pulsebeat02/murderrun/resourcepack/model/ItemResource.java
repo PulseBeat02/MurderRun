@@ -31,12 +31,7 @@ public final class ItemResource {
     final List<ItemOverride> overrides = this.createItemOverrides();
     final ModelTexture texture = ModelTexture.ofKey(this.key);
     final ModelTextures textures = ModelTextures.builder().addLayer(texture).build();
-    return Model.model()
-        .key(this.key)
-        .parent(this.parent)
-        .overrides(overrides)
-        .textures(textures)
-        .build();
+    return Model.model().key(this.key).parent(this.parent).overrides(overrides).textures(textures).build();
   }
 
   private List<ItemOverride> createItemOverrides() {

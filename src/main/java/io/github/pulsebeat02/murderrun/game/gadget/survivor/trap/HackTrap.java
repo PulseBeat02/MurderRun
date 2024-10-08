@@ -18,18 +18,18 @@ public final class HackTrap extends SurvivorTrap {
 
   public HackTrap() {
     super(
-        "hack",
-        Material.EMERALD_BLOCK,
-        Message.HACK_NAME.build(),
-        Message.HACK_LORE.build(),
-        Message.HACK_ACTIVATE.build(),
-        GameProperties.HACK_COST,
-        Color.GREEN);
+      "hack",
+      Material.EMERALD_BLOCK,
+      Message.HACK_NAME.build(),
+      Message.HACK_LORE.build(),
+      Message.HACK_ACTIVATE.build(),
+      GameProperties.HACK_COST,
+      Color.GREEN
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final PlayerInventory inventory = murderer.getInventory();
     final ItemStack stack = this.getSword(inventory);
     if (stack == null) {

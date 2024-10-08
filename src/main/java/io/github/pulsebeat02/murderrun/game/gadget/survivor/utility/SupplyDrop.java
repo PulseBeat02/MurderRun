@@ -43,18 +43,17 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
   public SupplyDrop(final Game game) {
     super(
-        "supply_drop",
-        Material.CHEST,
-        Message.SUPPLY_DROP_NAME.build(),
-        Message.SUPPLY_DROP_LORE.build(),
-        GameProperties.SUPPLY_DROP_COST);
+      "supply_drop",
+      Material.CHEST,
+      Message.SUPPLY_DROP_NAME.build(),
+      Message.SUPPLY_DROP_LORE.build(),
+      GameProperties.SUPPLY_DROP_COST
+    );
     this.game = game;
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -66,8 +65,7 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     container.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleConditionalTask(
-        () -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
+    scheduler.scheduleConditionalTask(() -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(Sounds.SUPPLY_DROP);
@@ -83,7 +81,6 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onEntityDropItemEvent(final EntityDropItemEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final FallingBlock fallingBlock)) {
       return;
@@ -116,7 +113,6 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onFallingLootCrate(final EntityChangeBlockEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final FallingBlock fallingBlock)) {
       return;

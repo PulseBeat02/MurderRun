@@ -15,16 +15,16 @@ public final class Camera extends SurvivorGadget {
 
   public Camera() {
     super(
-        "camera",
-        Material.OBSERVER,
-        Message.CAMERA_NAME.build(),
-        Message.CAMERA_LORE.build(),
-        GameProperties.CAMERA_COST);
+      "camera",
+      Material.OBSERVER,
+      Message.CAMERA_NAME.build(),
+      Message.CAMERA_LORE.build(),
+      GameProperties.CAMERA_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     if (this.gadget == null) {
       this.gadget = new CameraGadget(this);
     }

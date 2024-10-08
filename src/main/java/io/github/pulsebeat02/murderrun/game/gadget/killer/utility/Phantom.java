@@ -16,17 +16,16 @@ public final class Phantom extends KillerGadget {
 
   public Phantom() {
     super(
-        "phantom",
-        Material.PHANTOM_MEMBRANE,
-        Message.PHANTOM_NAME.build(),
-        Message.PHANTOM_LORE.build(),
-        GameProperties.PHANTOM_COST);
+      "phantom",
+      Material.PHANTOM_MEMBRANE,
+      Message.PHANTOM_NAME.build(),
+      Message.PHANTOM_LORE.build(),
+      GameProperties.PHANTOM_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     player.setAllowSpectatorTeleport(false);

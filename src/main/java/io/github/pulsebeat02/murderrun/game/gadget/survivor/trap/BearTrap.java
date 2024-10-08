@@ -14,18 +14,18 @@ public final class BearTrap extends SurvivorTrap {
 
   public BearTrap() {
     super(
-        "bear",
-        Material.IRON_TRAPDOOR,
-        Message.BEAR_NAME.build(),
-        Message.BEAR_LORE.build(),
-        Message.BEAR_ACTIVATE.build(),
-        GameProperties.BEAR_COST,
-        new Color(35, 23, 9));
+      "bear",
+      Material.IRON_TRAPDOOR,
+      Message.BEAR_NAME.build(),
+      Message.BEAR_LORE.build(),
+      Message.BEAR_ACTIVATE.build(),
+      GameProperties.BEAR_COST,
+      new Color(35, 23, 9)
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final GameScheduler scheduler = game.getScheduler();
     final int duration = GameProperties.BEAR_DURATION;
     murderer.disableJump(scheduler, duration);

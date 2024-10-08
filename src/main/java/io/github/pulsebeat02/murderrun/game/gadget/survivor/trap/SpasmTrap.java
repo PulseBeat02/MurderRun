@@ -25,22 +25,21 @@ public final class SpasmTrap extends SurvivorTrap {
 
   public SpasmTrap() {
     super(
-        "spasm",
-        Material.SEA_LANTERN,
-        Message.SPASM_NAME.build(),
-        Message.SPASM_LORE.build(),
-        Message.SPASM_ACTIVATE.build(),
-        GameProperties.SPASM_COST,
-        Color.RED);
+      "spasm",
+      Material.SEA_LANTERN,
+      Message.SPASM_NAME.build(),
+      Message.SPASM_LORE.build(),
+      Message.SPASM_ACTIVATE.build(),
+      GameProperties.SPASM_COST,
+      Color.RED
+    );
     this.states = new HashMap<>();
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.alternateHead(murderer), 0, 5, GameProperties.SPASM_DURATION);
+    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 5, GameProperties.SPASM_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.SPASM_SOUND);

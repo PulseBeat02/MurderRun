@@ -112,12 +112,10 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void readPluginData() {
-
     this.configuration = new PluginDataConfigurationMapper(this);
     this.configuration.deserialize();
 
-    final RelationalDataImplAssignation relationalDataImplAssignation =
-        new RelationalDataImplAssignation(this);
+    final RelationalDataImplAssignation relationalDataImplAssignation = new RelationalDataImplAssignation(this);
     relationalDataImplAssignation.assignImplementations();
 
     this.arenaDataConfigurationMapper = relationalDataImplAssignation.getArenas();

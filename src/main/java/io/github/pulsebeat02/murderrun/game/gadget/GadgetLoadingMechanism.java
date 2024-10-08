@@ -35,19 +35,19 @@ public final class GadgetLoadingMechanism {
   }
 
   private Set<Gadget> getKillerGadgets(
-      @UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
+    @UnderInitialization GadgetLoadingMechanism this,
+    final Map<String, Gadget> gameGadgets
+  ) {
     final Collection<Gadget> gadgets = gameGadgets.values();
-    return gadgets.stream()
-        .filter(StreamUtils.isInstanceOf(KillerApparatus.class))
-        .collect(Collectors.toSet());
+    return gadgets.stream().filter(StreamUtils.isInstanceOf(KillerApparatus.class)).collect(Collectors.toSet());
   }
 
   private Set<Gadget> getSurvivorGadgets(
-      @UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
+    @UnderInitialization GadgetLoadingMechanism this,
+    final Map<String, Gadget> gameGadgets
+  ) {
     final Collection<Gadget> gadgets = gameGadgets.values();
-    return gadgets.stream()
-        .filter(StreamUtils.isInstanceOf(SurvivorApparatus.class))
-        .collect(Collectors.toSet());
+    return gadgets.stream().filter(StreamUtils.isInstanceOf(SurvivorApparatus.class)).collect(Collectors.toSet());
   }
 
   public void shutdown() {
@@ -61,14 +61,12 @@ public final class GadgetLoadingMechanism {
   }
 
   public @Nullable Gadget getGadgetFromStack(final ItemStack stack) {
-    final String data =
-        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     return data != null ? this.gameGadgets.get(data) : null;
   }
 
   public Gadget getRandomInnocentGadget() {
-    final List<Gadget> gadgets =
-        this.survivorGadgets.stream().collect(StreamUtils.toShuffledList());
+    final List<Gadget> gadgets = this.survivorGadgets.stream().collect(StreamUtils.toShuffledList());
     return gadgets.getFirst();
   }
 

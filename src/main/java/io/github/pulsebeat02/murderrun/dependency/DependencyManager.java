@@ -16,9 +16,9 @@ import org.bukkit.plugin.PluginManager;
 public final class DependencyManager {
 
   private static final Collection<PluginDependency> PLUGIN_JAR_DEPENDENCIES = Set.of(
-      new JenkinsDependency(
-          "Citizens", "Citizens-2.0.35-b3583", "3583", "https://ci.citizensnpcs.co/job/Citizens2/"),
-      new ModrinthDependency("FastAsyncWorldEdit", "2.11.2"));
+    new JenkinsDependency("Citizens", "Citizens-2.0.35-b3583", "3583", "https://ci.citizensnpcs.co/job/Citizens2/"),
+    new ModrinthDependency("FastAsyncWorldEdit", "2.11.2")
+  );
 
   public void installDependencies() {
     for (final PluginDependency dependency : PLUGIN_JAR_DEPENDENCIES) {

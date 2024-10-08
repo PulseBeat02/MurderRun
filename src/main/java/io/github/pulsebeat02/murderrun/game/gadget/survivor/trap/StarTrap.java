@@ -15,13 +15,14 @@ public final class StarTrap extends SurvivorTrap {
 
   public StarTrap() {
     super(
-        "star",
-        Material.FIREWORK_STAR,
-        Message.STAR_NAME.build(),
-        Message.STAR_LORE.build(),
-        Message.STAR_ACTIVATE.build(),
-        GameProperties.STAR_COST,
-        new Color(255, 215, 0));
+      "star",
+      Material.FIREWORK_STAR,
+      Message.STAR_NAME.build(),
+      Message.STAR_LORE.build(),
+      Message.STAR_ACTIVATE.build(),
+      GameProperties.STAR_COST,
+      new Color(255, 215, 0)
+    );
   }
 
   @Override
@@ -34,8 +35,9 @@ public final class StarTrap extends SurvivorTrap {
   private void addPotionEffect(final GamePlayer player) {
     final int duration = GameProperties.STAR_DURATION;
     player.addPotionEffects(
-        new PotionEffect(PotionEffectType.SPEED, duration, 2),
-        new PotionEffect(PotionEffectType.RESISTANCE, duration, 2),
-        new PotionEffect(PotionEffectType.REGENERATION, duration, 2));
+      new PotionEffect(PotionEffectType.SPEED, duration, 2),
+      new PotionEffect(PotionEffectType.RESISTANCE, duration, 2),
+      new PotionEffect(PotionEffectType.REGENERATION, duration, 2)
+    );
   }
 }

@@ -17,17 +17,16 @@ public final class RandomTrap extends SurvivorGadget {
 
   public RandomTrap() {
     super(
-        "random",
-        Material.END_PORTAL_FRAME,
-        Message.RANDOM_NAME.build(),
-        Message.RANDOM_LORE.build(),
-        GameProperties.RANDOM_TRAP_COST);
+      "random",
+      Material.END_PORTAL_FRAME,
+      Message.RANDOM_NAME.build(),
+      Message.RANDOM_LORE.build(),
+      GameProperties.RANDOM_TRAP_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final GadgetManager manager = game.getGadgetManager();

@@ -19,7 +19,6 @@ public final class GamePlayerChatEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerChat(final AsyncPlayerChatEvent event) {
-
     final Player player = event.getPlayer();
     if (!this.isGamePlayer(player)) {
       return;

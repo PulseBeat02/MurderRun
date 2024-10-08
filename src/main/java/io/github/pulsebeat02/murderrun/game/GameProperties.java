@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.game;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetDataBundle;
 
 public interface GameProperties {
-
   static void init() {
     // init bundle
   }

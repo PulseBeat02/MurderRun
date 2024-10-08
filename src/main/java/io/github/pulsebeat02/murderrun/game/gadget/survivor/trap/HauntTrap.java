@@ -18,23 +18,24 @@ public final class HauntTrap extends SurvivorTrap {
 
   public HauntTrap() {
     super(
-        "haunt",
-        Material.WITHER_SKELETON_SKULL,
-        Message.HAUNT_NAME.build(),
-        Message.HAUNT_LORE.build(),
-        Message.HAUNT_ACTIVATE.build(),
-        GameProperties.HAUNT_COST,
-        Color.GRAY);
+      "haunt",
+      Material.WITHER_SKELETON_SKULL,
+      Message.HAUNT_NAME.build(),
+      Message.HAUNT_LORE.build(),
+      Message.HAUNT_ACTIVATE.build(),
+      GameProperties.HAUNT_COST,
+      Color.GRAY
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final int duration = GameProperties.HAUNT_DURATION;
     murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.NAUSEA, duration, 10),
-        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));
+      new PotionEffect(PotionEffectType.NAUSEA, duration, 10),
+      new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+      new PotionEffect(PotionEffectType.SLOWNESS, duration, 4)
+    );
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, duration);
@@ -44,7 +45,6 @@ public final class HauntTrap extends SurvivorTrap {
   }
 
   private void spook(final Game game, final GamePlayer gamePlayer) {
-
     gamePlayer.addPotionEffects(new PotionEffect(PotionEffectType.DARKNESS, 20, 0));
     gamePlayer.spawnPlayerSpecificParticle(Particle.ELDER_GUARDIAN);
 
@@ -56,7 +56,6 @@ public final class HauntTrap extends SurvivorTrap {
   }
 
   private void unspook(final GamePlayer gamePlayer) {
-
     gamePlayer.removePotionEffect(PotionEffectType.DARKNESS);
 
     final MetadataManager metadata = gamePlayer.getMetadataManager();

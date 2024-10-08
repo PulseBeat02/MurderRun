@@ -18,18 +18,18 @@ public final class SpawnTrap extends SurvivorTrap {
 
   public SpawnTrap() {
     super(
-        "spawn",
-        Material.AMETHYST_SHARD,
-        Message.SPAWN_NAME.build(),
-        Message.SPAWN_LORE.build(),
-        Message.SPAWN_ACTIVATE.build(),
-        GameProperties.SPAWN_COST,
-        Color.GRAY);
+      "spawn",
+      Material.AMETHYST_SHARD,
+      Message.SPAWN_NAME.build(),
+      Message.SPAWN_LORE.build(),
+      Message.SPAWN_ACTIVATE.build(),
+      GameProperties.SPAWN_COST,
+      Color.GRAY
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location spawn = arena.getSpawn();

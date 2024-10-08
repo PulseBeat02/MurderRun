@@ -24,21 +24,22 @@ public final class Fright extends KillerGadget {
 
   public Fright() {
     super(
-        "fright",
-        Material.BLACK_CONCRETE,
-        Message.FRIGHT_NAME.build(),
-        Message.FRIGHT_LORE.build(),
-        GameProperties.FRIGHT_COST);
+      "fright",
+      Material.BLACK_CONCRETE,
+      Message.FRIGHT_NAME.build(),
+      Message.FRIGHT_LORE.build(),
+      GameProperties.FRIGHT_COST
+    );
     this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
   }
 
   @Override
   public boolean onGadgetDrop(
-      final Game game,
-      final GamePlayer player,
-      final org.bukkit.entity.Item item,
-      final boolean remove) {
-
+    final Game game,
+    final GamePlayer player,
+    final org.bukkit.entity.Item item,
+    final boolean remove
+  ) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -49,12 +50,12 @@ public final class Fright extends KillerGadget {
   }
 
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
-
     final ItemStack before = this.setPumpkinItemStack(survivor);
     final int duration = GameProperties.FRIGHT_DURATION;
     survivor.addPotionEffects(
-        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
+      new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+      new PotionEffect(PotionEffectType.SLOWNESS, duration, 1)
+    );
 
     final PlayerAudience audience = survivor.getAudience();
     audience.playSound(Sounds.JUMP_SCARE);

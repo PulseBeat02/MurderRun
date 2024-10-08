@@ -20,7 +20,6 @@ public final class InviteManager {
   }
 
   public void removeInvite(final CommandSender sender, final Player receiver) {
-
     final PlayerInviteManager manager = this.invites.get(receiver);
     if (manager == null) {
       return;
@@ -30,7 +29,6 @@ public final class InviteManager {
   }
 
   public boolean hasInvite(final CommandSender sender, final Player receiver) {
-
     final PlayerInviteManager manager = this.invites.get(receiver);
     if (manager == null) {
       return false;

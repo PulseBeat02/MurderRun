@@ -21,17 +21,16 @@ public final class MindControl extends SurvivorGadget {
 
   public MindControl() {
     super(
-        "mind_control",
-        Material.STRUCTURE_VOID,
-        Message.MIND_CONTROL_NAME.build(),
-        Message.MIND_CONTROL_LORE.build(),
-        GameProperties.MIND_CONTROL_COST);
+      "mind_control",
+      Material.STRUCTURE_VOID,
+      Message.MIND_CONTROL_NAME.build(),
+      Message.MIND_CONTROL_LORE.build(),
+      GameProperties.MIND_CONTROL_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -54,8 +53,7 @@ public final class MindControl extends SurvivorGadget {
     player.teleport(location);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.applyMindControlEffects(player, nearest), 0L, 1L, duration);
+    scheduler.scheduleRepeatedTask(() -> this.applyMindControlEffects(player, nearest), 0L, 1L, duration);
     scheduler.scheduleTask(() -> this.resetPlayer(survivor, origin), duration);
 
     final String targetName = nearest.getDisplayName();

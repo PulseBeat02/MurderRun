@@ -24,8 +24,9 @@ public final class AnnotationParserHandler {
   }
 
   private AnnotationParser<CommandSender> getAnnotationParser(
-      @UnderInitialization AnnotationParserHandler this,
-      final CommandManager<CommandSender> manager) {
+    @UnderInitialization AnnotationParserHandler this,
+    final CommandManager<CommandSender> manager
+  ) {
     final Class<CommandSender> sender = CommandSender.class;
     final AnnotationParser<CommandSender> parser = new AnnotationParser<>(manager, sender);
     parser.descriptionMapper(RichDescription::translatable);
@@ -33,18 +34,22 @@ public final class AnnotationParserHandler {
   }
 
   private CommandManager<CommandSender> getCommandManager(
-      @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
-    final ExecutionCoordinator<CommandSender> coordinator =
-        ExecutionCoordinator.simpleCoordinator();
-    final LegacyPaperCommandManager<CommandSender> manager =
-        LegacyPaperCommandManager.createNative(plugin, coordinator);
+    @UnderInitialization AnnotationParserHandler this,
+    final MurderRun plugin
+  ) {
+    final ExecutionCoordinator<CommandSender> coordinator = ExecutionCoordinator.simpleCoordinator();
+    final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(
+      plugin,
+      coordinator
+    );
     this.registerBrigadierCapability(manager);
     return manager;
   }
 
   private void registerBrigadierCapability(
-      @UnderInitialization AnnotationParserHandler this,
-      final LegacyPaperCommandManager<CommandSender> manager) {
+    @UnderInitialization AnnotationParserHandler this,
+    final LegacyPaperCommandManager<CommandSender> manager
+  ) {
     if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
       manager.registerBrigadier();
     }

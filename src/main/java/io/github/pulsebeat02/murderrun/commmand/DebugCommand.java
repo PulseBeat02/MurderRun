@@ -31,8 +31,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
   private BukkitAudiences audiences;
 
   @Override
-  public void registerFeature(
-      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
   }
@@ -40,7 +39,6 @@ public final class DebugCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.debug.start")
   @Command(value = "murder debug start", requiredSender = Player.class)
   public void startDebugGame(final Player sender) {
-
     sender.performCommand("murder game create Arena Lobby test 2 5 true");
     sender.performCommand("murder game set murderer PulseBeat_02");
 
@@ -56,9 +54,9 @@ public final class DebugCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.debug.gadget")
   @Command(value = "murder debug gadget <gadgetName>", requiredSender = Player.class)
   public void debugGadget(
-      final Player sender,
-      @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
-
+    final Player sender,
+    @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName
+  ) {
     final Audience audience = this.audiences.player(sender);
     final List<MerchantRecipe> allGadgets = TradingUtils.parseRecipes(gadgetName);
     if (this.checkIfInvalidGadget(audience, allGadgets)) {
@@ -82,8 +80,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
   }
 
   @Suggestions("gadget-suggestions")
-  public Stream<String> suggestTrades(
-      final CommandContext<CommandSender> context, final String input) {
+  public Stream<String> suggestTrades(final CommandContext<CommandSender> context, final String input) {
     return TradingUtils.getTradeSuggestions();
   }
 }

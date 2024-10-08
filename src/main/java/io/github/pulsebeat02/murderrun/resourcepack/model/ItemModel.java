@@ -24,8 +24,7 @@ public final class ItemModel {
   public Model stitchModel() {
     final Key modelKey = this.texture.getKeyWithoutExtension();
     final ModelTexture modelTexture = ModelTexture.ofKey(modelKey);
-    final ModelTextures textures =
-        ModelTextures.builder().addLayer(modelTexture).build();
+    final ModelTextures textures = ModelTextures.builder().addLayer(modelTexture).build();
     return Model.model().parent(this.parent).textures(textures).key(modelKey).build();
   }
 

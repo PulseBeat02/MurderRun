@@ -6,7 +6,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import java.util.Collection;
 
 public interface Character {
-
   void scheduleTask();
 
   void preparePlayer(final GamePlayer player);

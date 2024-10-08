@@ -9,8 +9,7 @@ public final class CountdownTask extends GameScheduledTask {
   private final AtomicInteger seconds;
   private final Consumer<Integer> tasks;
 
-  public CountdownTask(
-      final Game game, final Runnable runnable, final int seconds, final Consumer<Integer> tasks) {
+  public CountdownTask(final Game game, final Runnable runnable, final int seconds, final Consumer<Integer> tasks) {
     super(game, runnable);
     this.seconds = new AtomicInteger(seconds + 1);
     this.tasks = tasks;

@@ -20,7 +20,6 @@ public final class DamagePreventionListener implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onDamage(final EntityDamageEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Player player)) {
       return;

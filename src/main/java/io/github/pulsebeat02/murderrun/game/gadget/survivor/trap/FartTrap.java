@@ -23,27 +23,27 @@ public final class FartTrap extends SurvivorTrap {
 
   public FartTrap() {
     super(
-        "fart",
-        Material.GREEN_WOOL,
-        Message.FART_NAME.build(),
-        Message.FART_LORE.build(),
-        Message.FART_ACTIVATE.build(),
-        GameProperties.FART_COST,
-        Color.GREEN);
+      "fart",
+      Material.GREEN_WOOL,
+      Message.FART_NAME.build(),
+      Message.FART_LORE.build(),
+      Message.FART_ACTIVATE.build(),
+      GameProperties.FART_COST,
+      Color.GREEN
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final int duration = GameProperties.FART_EFFECT_DURATION;
     murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.SLOWNESS, duration, 4),
-        new PotionEffect(PotionEffectType.NAUSEA, duration, 1));
+      new PotionEffect(PotionEffectType.SLOWNESS, duration, 4),
+      new PotionEffect(PotionEffectType.NAUSEA, duration, 1)
+    );
 
     final GameScheduler scheduler = game.getScheduler();
     final Location location = murderer.getLocation();
-    scheduler.scheduleRepeatedTask(
-        () -> this.spawnParticles(location), 0, 5, GameProperties.FART_DURATION);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, GameProperties.FART_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.FART);
@@ -51,7 +51,6 @@ public final class FartTrap extends SurvivorTrap {
 
   private void spawnParticles(final Location location) {
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(
-        Particle.DUST, location, 10, 2, 2, 2, new DustOptions(org.bukkit.Color.GREEN, 4));
+    world.spawnParticle(Particle.DUST, location, 10, 2, 2, 2, new DustOptions(org.bukkit.Color.GREEN, 4));
   }
 }

@@ -29,8 +29,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   private String name;
 
   @Override
-  public void registerFeature(
-      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;

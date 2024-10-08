@@ -19,17 +19,16 @@ public final class KillerRewind extends SurvivorGadget {
 
   public KillerRewind() {
     super(
-        "killer_rewind",
-        Material.LAPIS_BLOCK,
-        Message.MURDERER_REWIND_NAME.build(),
-        Message.MURDERER_REWIND_LORE.build(),
-        GameProperties.KILLER_REWIND_COST);
+      "killer_rewind",
+      Material.LAPIS_BLOCK,
+      Message.MURDERER_REWIND_NAME.build(),
+      Message.MURDERER_REWIND_LORE.build(),
+      GameProperties.KILLER_REWIND_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -64,12 +63,12 @@ public final class KillerRewind extends SurvivorGadget {
   }
 
   private void handleRewind(
-      final Game game,
-      final MovementManager movementManager,
-      final Killer killer,
-      final Item item,
-      final long current) {
-
+    final Game game,
+    final MovementManager movementManager,
+    final Killer killer,
+    final Item item,
+    final long current
+  ) {
     final boolean successful = movementManager.handleRewind(killer);
     super.onGadgetDrop(game, killer, item, successful);
     if (!successful) {

@@ -22,7 +22,6 @@ public final class DupePreventListener implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onItemDrop(final PlayerDropItemEvent event) {
-
     final Player player = event.getPlayer();
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();

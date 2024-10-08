@@ -33,7 +33,7 @@ public final class MapUtils {
   public static double[] generateFriendlyRandomXZ(final Location first, final Location second) {
     final double x = first.getX() + (second.getX() - first.getX()) * generateFriendlyDouble();
     final double z = first.getZ() + (second.getZ() - first.getZ()) * generateFriendlyDouble();
-    return new double[] {x, z};
+    return new double[] { x, z };
   }
 
   private static double generateFriendlyDouble() {
@@ -50,7 +50,6 @@ public final class MapUtils {
   }
 
   public static byte[] locationToByteArray(final Location location) {
-
     final World world = requireNonNull(location.getWorld());
     final String name = world.getName();
     final byte[] worldBytes = name.getBytes(StandardCharsets.UTF_8);
@@ -68,7 +67,6 @@ public final class MapUtils {
   }
 
   public static Location byteArrayToLocation(final byte[] array) {
-
     final ByteBuffer buffer = ByteBuffer.wrap(array);
     final int worldNameLength = buffer.getInt();
     final byte[] worldBytes = new byte[worldNameLength];

@@ -35,24 +35,23 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
 
   public SmokeGrenade(final Game game) {
     super(
-        "smoke_grenade",
-        Material.SNOWBALL,
-        Message.SMOKE_BOMB_NAME.build(),
-        Message.SMOKE_BOMB_LORE.build(),
-        GameProperties.SMOKE_GRENADE_COST,
-        ItemFactory::createSmokeGrenade);
+      "smoke_grenade",
+      Material.SNOWBALL,
+      Message.SMOKE_BOMB_NAME.build(),
+      Message.SMOKE_BOMB_LORE.build(),
+      GameProperties.SMOKE_GRENADE_COST,
+      ItemFactory::createSmokeGrenade
+    );
     this.game = game;
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     // ignore impl
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onProjectileHitEvent(final ProjectileHitEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Snowball snowball)) {
       return;
@@ -72,7 +71,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final GameScheduler scheduler = this.game.getScheduler();
     final int duration = GameProperties.SMOKE_GRENADE_DURATION;
     final Runnable task = () ->
-        world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
+      world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
     scheduler.scheduleRepeatedTask(task, 0, 1, duration);
 
     final PlayerManager manager = this.game.getPlayerManager();
@@ -81,8 +80,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
       final double distance = playerLocation.distanceSquared(location);
       final double radius = GameProperties.SMOKE_GRENADE_RADIUS;
       if (distance < radius * radius) {
-        player.addPotionEffects(
-            new PotionEffect(PotionEffectType.BLINDNESS, duration, Integer.MAX_VALUE));
+        player.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, Integer.MAX_VALUE));
       }
     });
 

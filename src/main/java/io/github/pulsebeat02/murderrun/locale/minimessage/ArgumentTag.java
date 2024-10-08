@@ -22,9 +22,8 @@ public final class ArgumentTag implements TagResolver {
   }
 
   @Override
-  public Tag resolve(
-      final @NonNull String name, final ArgumentQueue arguments, final @NonNull Context ctx)
-      throws ParsingException {
+  public Tag resolve(final @NonNull String name, final ArgumentQueue arguments, final @NonNull Context ctx)
+    throws ParsingException {
     final Argument pop = arguments.pop();
     final OptionalInt optional = pop.asInt();
     final int index = optional.orElseThrow();

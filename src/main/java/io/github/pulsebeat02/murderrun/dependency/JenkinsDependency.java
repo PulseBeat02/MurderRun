@@ -11,8 +11,7 @@ public final class JenkinsDependency extends PluginDependency {
 
   private final String url;
 
-  public JenkinsDependency(
-      final String name, final String version, final String buildNumber, final String url) {
+  public JenkinsDependency(final String name, final String version, final String buildNumber, final String url) {
     super(name, version);
     this.url = "%s/%s/artifact/dist/target".formatted(url, buildNumber);
   }
@@ -30,11 +29,11 @@ public final class JenkinsDependency extends PluginDependency {
     final Path filePath = parent.resolve(name);
     try (final HttpClient client = HttpClient.newHttpClient()) {
       final HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create(jarUrl))
-          .header("User-Agent", "PulseBeat02/murderrun")
-          .header("Accept", "application/json")
-          .GET()
-          .build();
+        .uri(URI.create(jarUrl))
+        .header("User-Agent", "PulseBeat02/murderrun")
+        .header("Accept", "application/json")
+        .GET()
+        .build();
       client.sendAsync(request, HttpResponse.BodyHandlers.ofFile(filePath)).join();
       return filePath;
     }

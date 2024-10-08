@@ -25,17 +25,16 @@ public final class DeathSteed extends KillerGadget {
 
   public DeathSteed() {
     super(
-        "death_steed",
-        Material.SADDLE,
-        Message.DEATH_STEED_NAME.build(),
-        Message.DEATH_STEED_LORE.build(),
-        GameProperties.DEATH_STEED_COST);
+      "death_steed",
+      Material.SADDLE,
+      Message.DEATH_STEED_NAME.build(),
+      Message.DEATH_STEED_LORE.build(),
+      GameProperties.DEATH_STEED_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -43,8 +42,7 @@ public final class DeathSteed extends KillerGadget {
     final Horse horse = this.spawnHorse(world, location, player);
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleConditionalTask(
-        () -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
+    scheduler.scheduleConditionalTask(() -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.DEATH_STEED_SOUND);

@@ -12,17 +12,17 @@ public final class Shield extends SurvivorGadget {
 
   public Shield() {
     super(
-        "shield",
-        Material.SHIELD,
-        Message.SHIELD_NAME.build(),
-        Message.SHIELD_LORE.build(),
-        GameProperties.SHIELD_COST,
-        ItemFactory::createShield);
+      "shield",
+      Material.SHIELD,
+      Message.SHIELD_NAME.build(),
+      Message.SHIELD_LORE.build(),
+      GameProperties.SHIELD_COST,
+      ItemFactory::createShield
+    );
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     // allow right click
   }
 }

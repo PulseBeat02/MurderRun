@@ -36,7 +36,6 @@ public abstract class AbstractController<T> implements Controller<T> {
 
   @Override
   public void serialize(final T data) {
-
     if (data == null) {
       return;
     }

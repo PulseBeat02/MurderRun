@@ -19,17 +19,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class CentralGui extends ChestGui {
 
-  private static final Pattern CENTRAL_GUI_PATTERN =
-      new Pattern("111111111", "111345111", "111111111", "111121111");
+  private static final Pattern CENTRAL_GUI_PATTERN = new Pattern("111111111", "111345111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
 
   public CentralGui(final MurderRun plugin, final HumanEntity watcher) {
-    super(
-        4,
-        AdventureUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()),
-        plugin);
+    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = watcher;
   }
@@ -52,31 +48,31 @@ public final class CentralGui extends ChestGui {
   }
 
   private GuiItem createBackground() {
-    return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
   }
 
   private GuiItem createCloseButton() {
     return new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory(),
-        this.plugin);
+      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+      event -> this.watcher.closeInventory(),
+      this.plugin
+    );
   }
 
   private GuiItem createGameButton() {
     return new GuiItem(
-        Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(),
-        this::handleGameClick,
-        this.plugin);
+      Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(),
+      this::handleGameClick,
+      this.plugin
+    );
   }
 
   private GuiItem createArenaButton() {
     return new GuiItem(
-        Item.builder(Material.YELLOW_BANNER)
-            .name(Message.CENTRAL_GUI_ARENA.build())
-            .build(),
-        this::handleArenaClick,
-        this.plugin);
+      Item.builder(Material.YELLOW_BANNER).name(Message.CENTRAL_GUI_ARENA.build()).build(),
+      this::handleArenaClick,
+      this.plugin
+    );
   }
 
   private void handleGameClick(final InventoryClickEvent event) {
@@ -93,14 +89,13 @@ public final class CentralGui extends ChestGui {
 
   private GuiItem createLobbyButton() {
     return new GuiItem(
-        Item.builder(Material.WHITE_BANNER)
-            .name(Message.CENTRAL_GUI_LOBBY.build())
-            .build(),
-        event -> this.handleLobbyClick(),
-        this.plugin);
+      Item.builder(Material.WHITE_BANNER).name(Message.CENTRAL_GUI_LOBBY.build()).build(),
+      this::handleLobbyClick,
+      this.plugin
+    );
   }
 
-  private void handleLobbyClick() {
+  private void handleLobbyClick(final InventoryClickEvent event) {
     final ChestGui gui = new LobbyNavigationGui(this.plugin, this.watcher);
     gui.update();
     gui.show(this.watcher);

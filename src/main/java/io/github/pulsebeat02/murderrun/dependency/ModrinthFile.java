@@ -11,8 +11,7 @@ public final class ModrinthFile {
   private final boolean primary;
   private final long size;
 
-  public ModrinthFile(
-      final String url, final String filename, final boolean primary, final long size) {
+  public ModrinthFile(final String url, final String filename, final boolean primary, final long size) {
     this.url = url;
     this.filename = filename;
     this.primary = primary;

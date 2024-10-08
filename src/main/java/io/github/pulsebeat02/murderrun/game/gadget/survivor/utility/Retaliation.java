@@ -19,17 +19,16 @@ public final class Retaliation extends SurvivorGadget {
 
   public Retaliation() {
     super(
-        "retaliation",
-        Material.GOLD_BLOCK,
-        Message.RETALIATION_NAME.build(),
-        Message.RETALIATION_LORE.build(),
-        GameProperties.RETALIATION_COST);
+      "retaliation",
+      Material.GOLD_BLOCK,
+      Message.RETALIATION_NAME.build(),
+      Message.RETALIATION_LORE.build(),
+      GameProperties.RETALIATION_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -45,7 +44,6 @@ public final class Retaliation extends SurvivorGadget {
   }
 
   private void checkForDeadPlayers(final PlayerManager manager, final GamePlayer player) {
-
     final Collection<GamePlayer> deathCount = manager.getDead();
     final int dead = deathCount.size();
     if (dead == 0) {
@@ -54,9 +52,9 @@ public final class Retaliation extends SurvivorGadget {
 
     final int effectLevel = Math.min(dead - 1, GameProperties.RETALIATION_MAX_AMPLIFIER);
     player.addPotionEffects(
-        new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
-        new PotionEffect(
-            PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),
-        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel));
+      new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
+      new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),
+      new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel)
+    );
   }
 }

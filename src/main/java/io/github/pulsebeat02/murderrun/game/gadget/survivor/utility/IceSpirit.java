@@ -39,17 +39,17 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
   public IceSpirit(final Game game) {
     super(
-        "ice_spirit",
-        Material.ZOMBIE_HEAD,
-        Message.ICE_SPIRIT_NAME.build(),
-        Message.ICE_SPIRIT_LORE.build(),
-        GameProperties.ICE_SPIRIT_COST);
+      "ice_spirit",
+      Material.ZOMBIE_HEAD,
+      Message.ICE_SPIRIT_NAME.build(),
+      Message.ICE_SPIRIT_LORE.build(),
+      GameProperties.ICE_SPIRIT_COST
+    );
     this.game = game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onTargetChange(final EntityTargetEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Zombie zombie)) {
       return;
@@ -66,7 +66,6 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onEntityDamage(final EntityDamageByEntityEvent event) {
-
     final Entity entity = event.getDamager();
     if (!(entity instanceof final Zombie zombie)) {
       return;
@@ -103,11 +102,11 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
   @Override
   public boolean onGadgetDrop(
-      final Game game,
-      final GamePlayer player,
-      final org.bukkit.entity.Item item,
-      final boolean remove) {
-
+    final Game game,
+    final GamePlayer player,
+    final org.bukkit.entity.Item item,
+    final boolean remove
+  ) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -126,8 +125,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
   private void customizeAttributes(final Zombie zombie) {
     zombie.setInvulnerable(true);
-    zombie.addPotionEffect(
-        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
+    zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
     if (zombie instanceof final Ageable ageable) {
       ageable.setBaby();
     }

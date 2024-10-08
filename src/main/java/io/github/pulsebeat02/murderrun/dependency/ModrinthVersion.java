@@ -16,14 +16,15 @@ public class ModrinthVersion {
   private final ModrinthFile[] files;
 
   public ModrinthVersion(
-      final String name,
-      final String version_number,
-      final String version_type,
-      final String status,
-      final String requested_status,
-      final String id,
-      final String[] game_versions,
-      final ModrinthFile[] files) {
+    final String name,
+    final String version_number,
+    final String version_type,
+    final String status,
+    final String requested_status,
+    final String id,
+    final String[] game_versions,
+    final ModrinthFile[] files
+  ) {
     this.name = name;
     this.version_number = version_number;
     this.version_type = version_type;
@@ -37,9 +38,7 @@ public class ModrinthVersion {
   public static ModrinthVersion[] serializeVersions(final String json) {
     final Gson gson = new Gson(); // since using the default one will use worldedit class serializer
     final ModrinthVersion[] versions = gson.fromJson(json, ModrinthVersion[].class);
-    return Arrays.stream(versions)
-        .filter(ModrinthVersion::isValidVersion)
-        .toArray(ModrinthVersion[]::new);
+    return Arrays.stream(versions).filter(ModrinthVersion::isValidVersion).toArray(ModrinthVersion[]::new);
   }
 
   public Optional<ModrinthFile> findFirstValidFile() {
@@ -83,7 +82,6 @@ public class ModrinthVersion {
   }
 
   public String[] getGame_versions() {
-
     return this.game_versions;
   }
 }

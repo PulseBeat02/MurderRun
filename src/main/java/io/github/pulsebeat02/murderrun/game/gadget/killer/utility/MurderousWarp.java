@@ -16,17 +16,16 @@ public final class MurderousWarp extends KillerGadget {
 
   public MurderousWarp() {
     super(
-        "murderous_warp",
-        Material.REDSTONE_BLOCK,
-        Message.MURDEROUS_WARP_NAME.build(),
-        Message.MURDEROUS_WARP_LORE.build(),
-        GameProperties.MURDEROUS_WARP_COST);
+      "murderous_warp",
+      Material.REDSTONE_BLOCK,
+      Message.MURDEROUS_WARP_NAME.build(),
+      Message.MURDEROUS_WARP_LORE.build(),
+      GameProperties.MURDEROUS_WARP_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();

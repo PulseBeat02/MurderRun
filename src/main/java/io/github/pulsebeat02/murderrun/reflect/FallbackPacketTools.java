@@ -15,8 +15,10 @@ public final class FallbackPacketTools implements PacketToolAPI {
 
   @Override
   public byte[] toByteArray(final ItemStack item) {
-    try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+    try (
+      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      final BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)
+    ) {
       dataOutput.writeObject(item);
       return outputStream.toByteArray();
     } catch (final IOException e) {
@@ -26,8 +28,10 @@ public final class FallbackPacketTools implements PacketToolAPI {
 
   @Override
   public ItemStack fromByteArray(final byte[] bytes) {
-    try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        final BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
+    try (
+      final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+      final BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)
+    ) {
       return (ItemStack) dataInput.readObject();
     } catch (final IOException | ClassNotFoundException e) {
       throw new AssertionError(e);
@@ -41,13 +45,11 @@ public final class FallbackPacketTools implements PacketToolAPI {
 
   @Override
   public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
-    throw new UnsupportedOperationException(
-        "Can't set block glowing! Use a different pack provider solution");
+    throw new UnsupportedOperationException("Can't set block glowing! Use a different pack provider solution");
   }
 
   @Override
   public void injectNettyHandler(final String key, final Object handler) {
-    throw new UnsupportedOperationException(
-        "Can't inject into Netty handler! Use a different pack provider solution");
+    throw new UnsupportedOperationException("Can't inject into Netty handler! Use a different pack provider solution");
   }
 }

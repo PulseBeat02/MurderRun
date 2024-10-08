@@ -50,7 +50,6 @@ public final class GamePlayerBlockEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onBlockDropEvent(final BlockDropItemEvent event) {
-
     final Player player = event.getPlayer();
     if (this.isGamePlayer(player)) {
       return;
@@ -61,7 +60,6 @@ public final class GamePlayerBlockEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onBlockDestroy(final BlockBreakEvent event) {
-
     final Player player = event.getPlayer();
     if (!this.isGamePlayer(player)) {
       return;
@@ -83,9 +81,7 @@ public final class GamePlayerBlockEvent extends GameEvent {
       final SoundResource sound = Sounds.CHAINSAW;
       manager.stopSoundsForAllParticipants(sound);
       manager.playSoundForAllParticipantsAtLocation(murdererLocation, sound);
-
     } else {
-
       final PlayerInventory inventory = player.getInventory();
       final ItemStack hand = inventory.getItemInMainHand();
       if (PDCUtils.canBreakMapBlocks(hand)) {
@@ -109,7 +105,6 @@ public final class GamePlayerBlockEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onBlockDamage(final BlockDamageEvent event) {
-
     final Player player = event.getPlayer();
     if (!this.isGamePlayer(player)) {
       return;
@@ -136,7 +131,6 @@ public final class GamePlayerBlockEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onBlackPlace(final BlockPlaceEvent event) {
-
     final Player player = event.getPlayer();
     if (!this.isGamePlayer(player)) {
       return;

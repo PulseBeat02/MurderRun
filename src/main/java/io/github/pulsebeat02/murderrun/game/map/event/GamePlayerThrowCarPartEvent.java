@@ -34,7 +34,6 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerThrowItem(final PlayerDropItemEvent event) {
-
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
     if (!PDCUtils.isCarPart(stack)) {
@@ -115,7 +114,6 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
   }
 
   private void setPlayerCarPartStatus(final Player thrower) {
-
     if (!this.isGamePlayer(thrower)) {
       return;
     }

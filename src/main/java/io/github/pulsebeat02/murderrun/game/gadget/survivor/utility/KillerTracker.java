@@ -29,24 +29,22 @@ public final class KillerTracker extends SurvivorGadget {
 
   public KillerTracker() {
     super(
-        "killer_tracker",
-        Material.COMPASS,
-        Message.KILLER_TRACKER_NAME.build(),
-        Message.KILLER_TRACKER_LORE.build(),
-        GameProperties.KILLER_TRACKER_COST,
-        ItemFactory::createKillerTracker);
+      "killer_tracker",
+      Material.COMPASS,
+      Message.KILLER_TRACKER_NAME.build(),
+      Message.KILLER_TRACKER_LORE.build(),
+      GameProperties.KILLER_TRACKER_COST,
+      ItemFactory::createKillerTracker
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     return super.onGadgetDrop(game, player, item, false);
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
-
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     final PlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
@@ -63,7 +61,6 @@ public final class KillerTracker extends SurvivorGadget {
   }
 
   private int increaseAndGetKillerCount(final Player player) {
-
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = inventory.getItemInMainHand();
     final NamespacedKey key = Keys.KILLER_TRACKER;

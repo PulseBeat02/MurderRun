@@ -25,18 +25,17 @@ public final class Translocator extends SurvivorGadget {
 
   public Translocator() {
     super(
-        "translocator",
-        Material.POPPED_CHORUS_FRUIT,
-        Message.TRANSLOCATOR_NAME.build(),
-        Message.TRANSLOCATOR_LORE.build(),
-        GameProperties.TRANSLOCATOR_COST,
-        ItemFactory::createTranslocator);
+      "translocator",
+      Material.POPPED_CHORUS_FRUIT,
+      Message.TRANSLOCATOR_NAME.build(),
+      Message.TRANSLOCATOR_LORE.build(),
+      GameProperties.TRANSLOCATOR_COST,
+      ItemFactory::createTranslocator
+    );
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
-
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     super.onGadgetRightClick(game, event, true);
 
     final Player player = event.getPlayer();
@@ -50,8 +49,9 @@ public final class Translocator extends SurvivorGadget {
       return;
     }
 
-    final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(
-        stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
+    final byte[] data = requireNonNull(
+      PDCUtils.getPersistentDataAttribute(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY)
+    );
     final Location location = MapUtils.byteArrayToLocation(data);
     player.teleport(location);
 
@@ -63,18 +63,18 @@ public final class Translocator extends SurvivorGadget {
 
   @Override
   public boolean onGadgetDrop(
-      final Game game,
-      final GamePlayer player,
-      final org.bukkit.entity.Item item,
-      final boolean remove) {
-
+    final Game game,
+    final GamePlayer player,
+    final org.bukkit.entity.Item item,
+    final boolean remove
+  ) {
     final Location location = player.getLocation();
     final ItemStack stack = item.getItemStack();
     final byte[] bytes = MapUtils.locationToByteArray(location);
     Item.builder(stack)
-        .lore(Message.TRANSLOCATOR_LORE1.build())
-        .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
-        .type(Material.LEVER);
+      .lore(Message.TRANSLOCATOR_LORE1.build())
+      .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
+      .type(Material.LEVER);
 
     return super.onGadgetDrop(game, player, item, false);
   }

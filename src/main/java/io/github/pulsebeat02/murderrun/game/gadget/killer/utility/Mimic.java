@@ -16,14 +16,11 @@ import org.bukkit.inventory.PlayerInventory;
 public final class Mimic extends KillerGadget {
 
   public Mimic() {
-    super(
-        "mimic", Material.GHAST_TEAR, Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build(), 128);
+    super("mimic", Material.GHAST_TEAR, Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build(), 128);
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer survivor = manager.getRandomAliveInnocentPlayer();
     final DisguiseManager disguiseManager = game.getDisguiseManager();

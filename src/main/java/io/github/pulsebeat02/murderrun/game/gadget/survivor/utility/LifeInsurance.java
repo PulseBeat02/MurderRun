@@ -28,17 +28,16 @@ public final class LifeInsurance extends SurvivorGadget {
 
   public LifeInsurance() {
     super(
-        "life_insurance",
-        Material.RED_DYE,
-        Message.LIFE_INSURANCE_NAME.build(),
-        Message.LIFE_INSURANCE_LORE.build(),
-        GameProperties.LIFE_INSURANCE_COST);
+      "life_insurance",
+      Material.RED_DYE,
+      Message.LIFE_INSURANCE_NAME.build(),
+      Message.LIFE_INSURANCE_LORE.build(),
+      GameProperties.LIFE_INSURANCE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -53,8 +52,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final World world = requireNonNull(first.getWorld());
 
     final GameScheduler scheduler = game.getScheduler();
-    final Consumer<GamePlayer> consumer =
-        killer -> this.checkKillerDistance(killer, survivor, world, first, second);
+    final Consumer<GamePlayer> consumer = killer -> this.checkKillerDistance(killer, survivor, world, first, second);
     final Runnable internalTask = () -> manager.applyToAllMurderers(consumer);
     final BukkitTask task = scheduler.scheduleRepeatedTask(internalTask, 0, 20L);
     final Collection<BukkitTask> tasks = survivor.getLifeInsuranceTasks();
@@ -69,18 +67,17 @@ public final class LifeInsurance extends SurvivorGadget {
   }
 
   private void checkKillerDistance(
-      final GamePlayer killer,
-      final Survivor player,
-      final World world,
-      final Location first,
-      final Location second) {
-
+    final GamePlayer killer,
+    final Survivor player,
+    final World world,
+    final Location first,
+    final Location second
+  ) {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);
     final double radius = GameProperties.LIFE_INSURANCE_RADIUS;
     if (distance < radius * radius) {
-
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
       final Location temp = new Location(world, coords[0], 0, coords[1]);
       final Location teleport = MapUtils.getHighestSpawnLocation(temp);

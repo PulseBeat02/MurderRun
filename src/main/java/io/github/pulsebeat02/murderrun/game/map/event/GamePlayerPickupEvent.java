@@ -25,7 +25,6 @@ public final class GamePlayerPickupEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerPickupItem(final EntityPickupItemEvent event) {
-
     final LivingEntity entity = event.getEntity();
     if (!(entity instanceof final Player player)) {
       return;

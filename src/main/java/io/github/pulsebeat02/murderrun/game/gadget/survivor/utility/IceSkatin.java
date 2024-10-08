@@ -21,17 +21,16 @@ public final class IceSkatin extends SurvivorGadget {
 
   public IceSkatin() {
     super(
-        "ice_skatin",
-        Material.OAK_BOAT,
-        Message.ICE_SKATIN_NAME.build(),
-        Message.ICE_SKATIN_LORE.build(),
-        GameProperties.ICE_SKATIN_COST);
+      "ice_skatin",
+      Material.OAK_BOAT,
+      Message.ICE_SKATIN_NAME.build(),
+      Message.ICE_SKATIN_LORE.build(),
+      GameProperties.ICE_SKATIN_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();

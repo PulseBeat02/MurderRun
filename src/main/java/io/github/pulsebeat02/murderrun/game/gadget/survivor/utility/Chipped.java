@@ -17,17 +17,16 @@ public final class Chipped extends SurvivorGadget {
 
   public Chipped() {
     super(
-        "chipped",
-        Material.GOLD_NUGGET,
-        Message.CHIPPED_NAME.build(),
-        Message.CHIPPED_LORE.build(),
-        GameProperties.CHIPPED_COST);
+      "chipped",
+      Material.GOLD_NUGGET,
+      Message.CHIPPED_NAME.build(),
+      Message.CHIPPED_LORE.build(),
+      GameProperties.CHIPPED_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -42,8 +41,12 @@ public final class Chipped extends SurvivorGadget {
   }
 
   private void setOtherSurvivorsGlowing(
-      final PlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
-    manager.applyToAllLivingInnocents(innocent -> metadata.setEntityGlowing(
-        scheduler, innocent, ChatColor.GREEN, GameProperties.CHIPPED_DURATION));
+    final PlayerManager manager,
+    final MetadataManager metadata,
+    final GameScheduler scheduler
+  ) {
+    manager.applyToAllLivingInnocents(innocent ->
+      metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, GameProperties.CHIPPED_DURATION)
+    );
   }
 }

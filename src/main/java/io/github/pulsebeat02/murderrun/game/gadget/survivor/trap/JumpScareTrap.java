@@ -26,24 +26,24 @@ public final class JumpScareTrap extends SurvivorTrap {
 
   public JumpScareTrap() {
     super(
-        "jump_scare",
-        Material.BLACK_CONCRETE,
-        Message.JUMP_SCARE_NAME.build(),
-        Message.JUMP_SCARE_LORE.build(),
-        Message.JUMP_SCARE_ACTIVATE.build(),
-        GameProperties.JUMP_SCARE_COST,
-        Color.RED);
+      "jump_scare",
+      Material.BLACK_CONCRETE,
+      Message.JUMP_SCARE_NAME.build(),
+      Message.JUMP_SCARE_LORE.build(),
+      Message.JUMP_SCARE_ACTIVATE.build(),
+      GameProperties.JUMP_SCARE_COST,
+      Color.RED
+    );
     this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
   }
 
   @Override
-  public void onTrapActivate(
-      final Game game, final GamePlayer murderer, final org.bukkit.entity.Item item) {
-
+  public void onTrapActivate(final Game game, final GamePlayer murderer, final org.bukkit.entity.Item item) {
     final int duration = GameProperties.JUMP_SCARE_EFFECT_DURATION;
     murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
+      new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+      new PotionEffect(PotionEffectType.SLOWNESS, duration, 1)
+    );
 
     final PlayerAudience audience = murderer.getAudience();
     audience.playSound(Sounds.JUMP_SCARE);
@@ -57,8 +57,7 @@ public final class JumpScareTrap extends SurvivorTrap {
 
     final ItemStack before = this.getHelmet(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(
-        () -> this.setBackHelmet(murderer, before), GameProperties.JUMP_SCARE_DURATION);
+    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), GameProperties.JUMP_SCARE_DURATION);
     this.currentlyJumpScared.add(murderer);
   }
 

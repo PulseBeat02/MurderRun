@@ -9,7 +9,6 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface Gadget {
-
   void onGadgetNearby(final Game game, final GamePlayer activator, final Item item);
 
   void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove);

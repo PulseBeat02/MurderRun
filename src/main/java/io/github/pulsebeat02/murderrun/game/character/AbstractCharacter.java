@@ -12,8 +12,7 @@ public abstract class AbstractCharacter implements Character {
   private final GamePlayer player;
   private final Collection<AbstractAbility> abilities;
 
-  public AbstractCharacter(
-      final Game game, final GamePlayer player, final Collection<AbstractAbility> abilities) {
+  public AbstractCharacter(final Game game, final GamePlayer player, final Collection<AbstractAbility> abilities) {
     this.game = game;
     this.player = player;
     this.abilities = abilities;
@@ -23,14 +22,15 @@ public abstract class AbstractCharacter implements Character {
   public void scheduleTask() {
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(
-        () -> {
-          for (final AbstractAbility ability : this.abilities) {
-            final Runnable task = ability.getTask();
-            task.run();
-          }
-        },
-        0L,
-        5L);
+      () -> {
+        for (final AbstractAbility ability : this.abilities) {
+          final Runnable task = ability.getTask();
+          task.run();
+        }
+      },
+      0L,
+      5L
+    );
     this.preparePlayer(this.player);
   }
 

@@ -19,17 +19,16 @@ public final class AllSeeingEye extends KillerGadget {
 
   public AllSeeingEye() {
     super(
-        "all_seeing_eye",
-        Material.ENDER_EYE,
-        Message.ALL_SEEING_EYE_NAME.build(),
-        Message.ALL_SEEING_EYE_LORE.build(),
-        GameProperties.ALL_SEEING_EYE_COST);
+      "all_seeing_eye",
+      Material.ENDER_EYE,
+      Message.ALL_SEEING_EYE_NAME.build(),
+      Message.ALL_SEEING_EYE_LORE.build(),
+      GameProperties.ALL_SEEING_EYE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();

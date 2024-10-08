@@ -31,7 +31,6 @@ public final class MovementManager {
   }
 
   private void trackMovement(final PlayerManager manager) {
-
     final GameStatus status = this.game.getStatus();
     if (status != GameStatus.KILLERS_RELEASED) {
       return;
@@ -51,8 +50,7 @@ public final class MovementManager {
     return this.playerLocations.get(player);
   }
 
-  private boolean checkReady(
-      final CircularBuffer<Entry<Location, Long>> buffer, final long current) {
+  private boolean checkReady(final CircularBuffer<Entry<Location, Long>> buffer, final long current) {
     final Entry<Location, Long> oldest = buffer.getOldest();
     final long value = oldest.getValue();
     final long difference = current - value;
@@ -60,7 +58,6 @@ public final class MovementManager {
   }
 
   public boolean handleRewind(final GamePlayer player) {
-
     final CircularBuffer<Entry<Location, Long>> buffer = this.getBuffer(player);
     if (buffer == null) {
       return false;

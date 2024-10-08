@@ -22,17 +22,16 @@ public final class EagleEye extends KillerGadget {
 
   public EagleEye() {
     super(
-        "eagle_eye",
-        Material.FEATHER,
-        Message.EAGLE_EYE_NAME.build(),
-        Message.EAGLE_EYE_LORE.build(),
-        GameProperties.EAGLE_EYE_COST);
+      "eagle_eye",
+      Material.FEATHER,
+      Message.EAGLE_EYE_NAME.build(),
+      Message.EAGLE_EYE_LORE.build(),
+      GameProperties.EAGLE_EYE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final GameSettings settings = game.getSettings();
@@ -54,8 +53,7 @@ public final class EagleEye extends KillerGadget {
     player.setFlySpeed(0.0f);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(
-        () -> this.resetState(player, previous, before), GameProperties.EAGLE_EYE_DURATION);
+    scheduler.scheduleTask(() -> this.resetState(player, previous, before), GameProperties.EAGLE_EYE_DURATION);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.EAGLE_EYE_SOUND);
@@ -63,8 +61,7 @@ public final class EagleEye extends KillerGadget {
     return false;
   }
 
-  private void resetState(
-      final GamePlayer gamePlayer, final Location previous, final float flySpeed) {
+  private void resetState(final GamePlayer gamePlayer, final Location previous, final float flySpeed) {
     gamePlayer.teleport(previous);
     gamePlayer.setGravity(true);
     gamePlayer.setAllowFlight(true);

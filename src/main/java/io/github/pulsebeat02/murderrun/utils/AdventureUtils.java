@@ -20,6 +20,7 @@ import net.kyori.adventure.text.format.TextDecoration.State;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public final class AdventureUtils {
 
@@ -32,8 +33,9 @@ public final class AdventureUtils {
   }
 
   public static Component createLocationComponent(
-      final LocaleTools.TriComponent<Sender, Integer, Integer, Integer> function,
-      final Location location) {
+    final LocaleTools.TriComponent<Sender, Integer, Integer, Integer> function,
+    final Location location
+  ) {
     final int x = location.getBlockX();
     final int y = location.getBlockY();
     final int z = location.getBlockZ();
@@ -46,7 +48,6 @@ public final class AdventureUtils {
 
   @Deprecated // when Adventure platform implements new resourcepack logic use that
   public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
-
     removeResourcePacks(player, request);
 
     final List<ResourcePackInfo> packs = request.packs();
@@ -104,7 +105,6 @@ public final class AdventureUtils {
   }
 
   public static List<Component> wrapLoreLines(final Component component, final int length) {
-
     if (!(component instanceof final TextComponent text)) {
       return Collections.singletonList(component);
     }
@@ -113,16 +113,14 @@ public final class AdventureUtils {
     final List<TextComponent> parts = flattenTextComponents(text);
 
     Component currentLine = empty();
-    int[] lineLength = new int[] {0};
+    final int[] lineLength = new int[] { 0 };
 
     for (final TextComponent part : parts) {
-
       final Style style = part.style();
       final String content = part.content();
       final String[] words = content.split(COMPONENT_REGEX);
 
       for (final String word : words) {
-
         if (word.isEmpty()) {
           continue;
         }
@@ -150,7 +148,6 @@ public final class AdventureUtils {
   }
 
   private static List<TextComponent> flattenTextComponents(final TextComponent component) {
-
     final List<TextComponent> flattened = new ArrayList<>();
     final Style style = component.style();
     final Style enforcedState = enforceStyleStates(style);
@@ -171,8 +168,7 @@ public final class AdventureUtils {
     return flattened;
   }
 
-  private static void addChildComponents(
-      final TextComponent parent, final Stack<TextComponent> toCheck) {
+  private static void addChildComponents(final TextComponent parent, final Stack<TextComponent> toCheck) {
     final List<Component> children = parent.children();
     final List<Component> reversed = children.reversed();
     for (final Component child : reversed) {
@@ -191,7 +187,7 @@ public final class AdventureUtils {
   private static Style enforceStyleStates(final Style style) {
     final Style.Builder builder = style.toBuilder();
     final Map<TextDecoration, State> map = style.decorations();
-    final Collection<Map.Entry<TextDecoration, State>> entries = map.entrySet();
+    final Set<Map.Entry<@KeyFor("map") TextDecoration, State>> entries = map.entrySet();
     for (final Map.Entry<TextDecoration, State> entry : entries) {
       final TextDecoration decoration = entry.getKey();
       final State state = entry.getValue();

@@ -37,8 +37,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public final class LobbyModificationGui extends ChestGui implements Listener {
 
-  private static final Pattern CREATE_LOBBY_PATTERN =
-      new Pattern("111111111", "123411151", "111111111", "111161111");
+  private static final Pattern CREATE_LOBBY_PATTERN = new Pattern("111111111", "123411151", "111111111", "111161111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
@@ -52,21 +51,18 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private volatile boolean listenForSpawn;
   private volatile boolean listenForName;
 
-  public LobbyModificationGui(
-      final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
+  public LobbyModificationGui(final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
     this(plugin, watcher, "None", watcher.getLocation(), editMode);
   }
 
   public LobbyModificationGui(
-      final MurderRun plugin,
-      final HumanEntity watcher,
-      final String lobbyName,
-      final Location spawn,
-      final boolean editMode) {
-    super(
-        4,
-        AdventureUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()),
-        plugin);
+    final MurderRun plugin,
+    final HumanEntity watcher,
+    final String lobbyName,
+    final Location spawn,
+    final boolean editMode
+  ) {
+    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()), plugin);
     final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     final AudienceProvider provider = plugin.getAudience();
@@ -93,7 +89,6 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   }
 
   private PatternPane createPane() {
-
     this.pane.clear();
     this.pane.bindItem('1', this.createBorderStack());
     this.pane.bindItem('2', this.createEditNameStack());
@@ -106,7 +101,6 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
-
     if (this.listenForSpawn || this.listenForName) {
       return;
     }
@@ -116,7 +110,6 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerChat(final AsyncPlayerChatEvent event) {
-
     if (!this.listenForName) {
       return;
     }
@@ -141,7 +134,6 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerInteract(final BlockBreakEvent event) {
-
     if (!this.listenForSpawn) {
       return;
     }
@@ -163,22 +155,21 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
   private GuiItem createCloseStack() {
     return new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory(),
-        this.plugin);
+      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+      event -> this.watcher.closeInventory(),
+      this.plugin
+    );
   }
 
   private GuiItem createApplyStack() {
     return new GuiItem(
-        Item.builder(Material.GREEN_WOOL)
-            .name(Message.CREATE_LOBBY_GUI_APPLY.build())
-            .build(),
-        this::createNewLobby,
-        this.plugin);
+      Item.builder(Material.GREEN_WOOL).name(Message.CREATE_LOBBY_GUI_APPLY.build()).build(),
+      this::createNewLobby,
+      this.plugin
+    );
   }
 
   private void createNewLobby(final InventoryClickEvent event) {
-
     if (this.lobbyName.isEmpty() || this.lobbyName.equals("None")) {
       final Component msg = Message.LOBBY_NAME_ERROR.build();
       this.audience.sendMessage(msg);
@@ -201,11 +192,10 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private GuiItem createDeleteStack() {
     if (this.editMode) {
       return new GuiItem(
-          Item.builder(Material.RED_WOOL)
-              .name(Message.CREATE_LOBBY_GUI_DELETE.build())
-              .build(),
-          this::deleteAndCreateLobby,
-          this.plugin);
+        Item.builder(Material.RED_WOOL).name(Message.CREATE_LOBBY_GUI_DELETE.build()).build(),
+        this::deleteAndCreateLobby,
+        this.plugin
+      );
     } else {
       return this.createBorderStack();
     }
@@ -221,14 +211,14 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
   private GuiItem createEditSpawnStack() {
     final Component message = AdventureUtils.createLocationComponent(
-        Message.CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY, this.spawn);
+      Message.CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY,
+      this.spawn
+    );
     return new GuiItem(
-        Item.builder(Material.ANVIL)
-            .name(message)
-            .lore(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_LORE.build())
-            .build(),
-        this::listenForBlockBreak,
-        this.plugin);
+      Item.builder(Material.ANVIL).name(message).lore(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_LORE.build()).build(),
+      this::listenForBlockBreak,
+      this.plugin
+    );
   }
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
@@ -240,12 +230,13 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
   private GuiItem createEditNameStack() {
     return new GuiItem(
-        Item.builder(Material.ANVIL)
-            .name(Message.CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY.build(this.lobbyName))
-            .lore(Message.CREATE_LOBBY_GUI_EDIT_NAME_LORE.build())
-            .build(),
-        this::listenForMessage,
-        this.plugin);
+      Item.builder(Material.ANVIL)
+        .name(Message.CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY.build(this.lobbyName))
+        .lore(Message.CREATE_LOBBY_GUI_EDIT_NAME_LORE.build())
+        .build(),
+      this::listenForMessage,
+      this.plugin
+    );
   }
 
   private void listenForMessage(final InventoryClickEvent event) {
@@ -257,8 +248,9 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
   private GuiItem createBorderStack() {
     return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-        event -> event.setCancelled(true),
-        this.plugin);
+      Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
+      event -> event.setCancelled(true),
+      this.plugin
+    );
   }
 }

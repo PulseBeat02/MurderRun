@@ -15,17 +15,16 @@ public final class MagnetMode extends SurvivorGadget {
 
   public MagnetMode() {
     super(
-        "magnet_mode",
-        Material.IRON_INGOT,
-        Message.MAGNET_MODE_NAME.build(),
-        Message.MAGNET_MODE_LORE.build(),
-        GameProperties.MAGNET_MODE_COST);
+      "magnet_mode",
+      Material.IRON_INGOT,
+      Message.MAGNET_MODE_NAME.build(),
+      Message.MAGNET_MODE_LORE.build(),
+      GameProperties.MAGNET_MODE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final GadgetManager gadgetManager = game.getGadgetManager();

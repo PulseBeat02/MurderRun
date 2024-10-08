@@ -22,18 +22,18 @@ public final class PonyTrap extends SurvivorTrap {
 
   public PonyTrap() {
     super(
-        "pony",
-        Material.SADDLE,
-        Message.PONY_NAME.build(),
-        Message.PONY_LORE.build(),
-        Message.PONY_ACTIVATE.build(),
-        GameProperties.PONY_COST,
-        new Color(177, 156, 217));
+      "pony",
+      Material.SADDLE,
+      Message.PONY_NAME.build(),
+      Message.PONY_LORE.build(),
+      Message.PONY_ACTIVATE.build(),
+      GameProperties.PONY_COST,
+      new Color(177, 156, 217)
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final Location location = murderer.getLocation();
     this.spawnHorse(location);
 
@@ -57,8 +57,7 @@ public final class PonyTrap extends SurvivorTrap {
   }
 
   private void setSpeed(final Horse horse) {
-    final AttributeInstance attribute =
-        requireNonNull(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
+    final AttributeInstance attribute = requireNonNull(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
     attribute.setBaseValue(GameProperties.PONY_HORSE_SPEED);
   }
 

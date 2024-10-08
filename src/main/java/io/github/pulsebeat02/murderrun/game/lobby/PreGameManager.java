@@ -20,13 +20,14 @@ public final class PreGameManager {
 
   @SuppressWarnings("all")
   public PreGameManager(
-      final MurderRun plugin,
-      final CommandSender leader,
-      final String id,
-      final int min,
-      final int max,
-      final boolean quickJoinable,
-      final GameEventsListener callback) {
+    final MurderRun plugin,
+    final CommandSender leader,
+    final String id,
+    final int min,
+    final int max,
+    final boolean quickJoinable,
+    final GameEventsListener callback
+  ) {
     this.plugin = plugin;
     this.callback = callback;
     this.id = id;

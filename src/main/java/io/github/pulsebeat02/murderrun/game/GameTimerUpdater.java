@@ -45,7 +45,6 @@ public final class GameTimerUpdater {
   }
 
   private void updateBossBars() {
-
     final GameTimer timer = this.game.getTimeManager();
     final long timeLeft = timer.getTimeLeft();
     checkForKillerWin(timeLeft);

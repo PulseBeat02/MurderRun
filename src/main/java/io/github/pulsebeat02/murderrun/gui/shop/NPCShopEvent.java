@@ -34,7 +34,6 @@ public final class NPCShopEvent implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onNPCRightClick(final NPCRightClickEvent event) {
-
     final NPC npc = event.getNPC();
     final MetadataStore store = npc.data();
     if (!store.has("murderrun-gui")) {
@@ -45,7 +44,7 @@ public final class NPCShopEvent implements Listener {
     final Player clicker = event.getClicker();
     final PersistentDataContainer container = clicker.getPersistentDataContainer();
     final boolean isKiller = container.has(Keys.KILLER_ROLE);
-    if (isKiller && value || !isKiller && !value) {
+    if ((isKiller && value) || (!isKiller && !value)) {
       final Component msg = Message.SHOP_NPC_ERROR.build();
       final Audience audience = this.audiences.player(clicker);
       audience.sendMessage(msg);

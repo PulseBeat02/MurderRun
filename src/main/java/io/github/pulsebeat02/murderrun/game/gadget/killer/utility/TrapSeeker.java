@@ -30,17 +30,16 @@ public final class TrapSeeker extends KillerGadget {
 
   public TrapSeeker() {
     super(
-        "trap_seeker",
-        Material.CLOCK,
-        Message.TRAP_SEEKER_NAME.build(),
-        Message.TRAP_SEEKER_LORE.build(),
-        GameProperties.TRAP_SEEKER_COST);
+      "trap_seeker",
+      Material.CLOCK,
+      Message.TRAP_SEEKER_NAME.build(),
+      Message.TRAP_SEEKER_LORE.build(),
+      GameProperties.TRAP_SEEKER_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     if (!(player instanceof final Killer killer)) {
@@ -59,7 +58,6 @@ public final class TrapSeeker extends KillerGadget {
   }
 
   private void handleTrapSeeking(final Game game, final Killer killer) {
-
     final GadgetManager manager = game.getGadgetManager();
     final Location origin = killer.getLocation();
     final World world = requireNonNull(origin.getWorld());
@@ -69,7 +67,6 @@ public final class TrapSeeker extends KillerGadget {
     final Set<Item> gadgets = new HashSet<>();
 
     for (final Entity entity : entities) {
-
       if (!(entity instanceof final Item item)) {
         continue;
       }

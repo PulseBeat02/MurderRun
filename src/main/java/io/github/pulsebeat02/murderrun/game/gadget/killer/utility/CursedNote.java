@@ -33,17 +33,16 @@ public final class CursedNote extends KillerGadget {
 
   public CursedNote() {
     super(
-        "cursed_note",
-        Material.PAPER,
-        Message.CURSED_NOTE_NAME.build(),
-        Message.CURSED_NOTE_LORE.build(),
-        GameProperties.CURSED_NOTE_COST);
+      "cursed_note",
+      Material.PAPER,
+      Message.CURSED_NOTE_NAME.build(),
+      Message.CURSED_NOTE_LORE.build(),
+      GameProperties.CURSED_NOTE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final io.github.pulsebeat02.murderrun.game.map.Map map = game.getMap();
@@ -78,16 +77,13 @@ public final class CursedNote extends KillerGadget {
     }
   }
 
-  private void scheduleItemTask(
-      final Game game, final CarPart part, final Item cursed, final GameScheduler scheduler) {
-
+  private void scheduleItemTask(final Game game, final CarPart part, final Item cursed, final GameScheduler scheduler) {
     final Item item = part.getItem();
     item.setPickupDelay(Integer.MAX_VALUE);
     part.setCursed(cursed);
 
     final BooleanSupplier condition = () -> !part.isCursed();
-    scheduler.scheduleConditionalTask(
-        () -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
+    scheduler.scheduleConditionalTask(() -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
   }
 
   private Item spawnCursedNote(final GameSettings settings) {
@@ -116,7 +112,9 @@ public final class CursedNote extends KillerGadget {
   }
 
   private Collection<CarPart> getCarPartsInRange(
-      final io.github.pulsebeat02.murderrun.game.map.Map map, final Location origin) {
+    final io.github.pulsebeat02.murderrun.game.map.Map map,
+    final Location origin
+  ) {
     final PartsManager manager = map.getCarPartManager();
     final Map<String, CarPart> mapping = manager.getParts();
     final Collection<CarPart> parts = mapping.values();

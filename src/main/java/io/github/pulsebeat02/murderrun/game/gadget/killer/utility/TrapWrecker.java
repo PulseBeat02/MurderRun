@@ -17,17 +17,16 @@ public final class TrapWrecker extends KillerGadget {
 
   public TrapWrecker() {
     super(
-        "trap_wrecker",
-        Material.BARRIER,
-        Message.TRAP_WRECKER_NAME.build(),
-        Message.TRAP_WRECKER_LORE.build(),
-        GameProperties.TRAP_WRECKER_COST);
+      "trap_wrecker",
+      Material.BARRIER,
+      Message.TRAP_WRECKER_NAME.build(),
+      Message.TRAP_WRECKER_LORE.build(),
+      GameProperties.TRAP_WRECKER_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     if (!(player instanceof final Killer killer)) {
@@ -37,7 +36,7 @@ public final class TrapWrecker extends KillerGadget {
     killer.setIgnoreTraps(true);
 
     final GameScheduler scheduler = game.getScheduler();
-    final Consumer<Integer> consumer = (time) -> {
+    final Consumer<Integer> consumer = time -> {
       if (time == 0) {
         killer.setIgnoreTraps(false);
       }

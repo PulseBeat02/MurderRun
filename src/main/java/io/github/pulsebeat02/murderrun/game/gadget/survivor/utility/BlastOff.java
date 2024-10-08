@@ -22,17 +22,16 @@ public final class BlastOff extends SurvivorGadget {
 
   public BlastOff() {
     super(
-        "blast_off",
-        Material.FIREWORK_ROCKET,
-        Message.BLAST_OFF_NAME.build(),
-        Message.BLAST_OFF_LORE.build(),
-        GameProperties.BLAST_OFF_COST);
+      "blast_off",
+      Material.FIREWORK_ROCKET,
+      Message.BLAST_OFF_NAME.build(),
+      Message.BLAST_OFF_LORE.build(),
+      GameProperties.BLAST_OFF_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();

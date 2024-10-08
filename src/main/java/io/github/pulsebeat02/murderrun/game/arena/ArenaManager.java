@@ -33,11 +33,12 @@ public final class ArenaManager {
   }
 
   public void addArena(
-      final String name,
-      final Location[] corners,
-      final Location[] itemLocations,
-      final Location spawn,
-      final Location truck) {
+    final String name,
+    final Location[] corners,
+    final Location[] itemLocations,
+    final Location spawn,
+    final Location truck
+  ) {
     final ArenaSchematic schematic = ArenaSchematic.copyAndCreateSchematic(name, corners);
     final Arena arena = new Arena(schematic, name, corners, itemLocations, spawn, truck);
     this.arenas.put(name, arena);

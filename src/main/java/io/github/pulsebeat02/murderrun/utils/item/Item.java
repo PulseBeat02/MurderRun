@@ -15,7 +15,6 @@ import org.bukkit.potion.PotionType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface Item {
-
   ItemStack AIR_STACK = create(Material.AIR);
 
   static ItemStack create(final Material material) {
@@ -31,7 +30,6 @@ public interface Item {
   }
 
   interface Builder {
-
     Builder amount(final int amount);
 
     Builder name(final Component name);

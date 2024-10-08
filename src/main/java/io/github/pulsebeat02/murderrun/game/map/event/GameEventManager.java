@@ -17,17 +17,18 @@ public final class GameEventManager {
   public GameEventManager(final Map map) {
     this.game = map.getGame();
     this.events = Set.of(
-        new GamePlayerDeathEvent(this.game),
-        new GamePlayerPickupEvent(this.game),
-        new GamePlayerThrowCarPartEvent(this.game),
-        new GamePlayerLeaveEvent(this.game),
-        new GamePlayerHungerEvent(this.game),
-        new GamePlayerRegenEvent(this.game),
-        new GamePlayerBlockEvent(this.game),
-        new GameMobSpawnEvent(this.game),
-        new GamePlayerDismountEvent(this.game),
-        new GamePlayerTeleportEvent(this.game),
-        new GamePlayerChatEvent(this.game));
+      new GamePlayerDeathEvent(this.game),
+      new GamePlayerPickupEvent(this.game),
+      new GamePlayerThrowCarPartEvent(this.game),
+      new GamePlayerLeaveEvent(this.game),
+      new GamePlayerHungerEvent(this.game),
+      new GamePlayerRegenEvent(this.game),
+      new GamePlayerBlockEvent(this.game),
+      new GameMobSpawnEvent(this.game),
+      new GamePlayerDismountEvent(this.game),
+      new GamePlayerTeleportEvent(this.game),
+      new GamePlayerChatEvent(this.game)
+    );
   }
 
   public Game getGame() {

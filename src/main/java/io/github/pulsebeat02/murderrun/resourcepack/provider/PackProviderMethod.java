@@ -23,8 +23,7 @@ public final class PackProviderMethod {
         final int port = config.getPort();
         return new ServerPackHosting(hostName, port);
       }
-      case ON_SERVER -> // return new NettyHosting();
-      throw new UnsupportedOperationException("NettyHosting is not implemented yet");
+      case ON_SERVER -> throw new UnsupportedOperationException("NettyHosting is not implemented yet"); // return new NettyHosting();
       default -> throw new IllegalStateException("Unexpected value: %s".formatted(method));
     }
   }

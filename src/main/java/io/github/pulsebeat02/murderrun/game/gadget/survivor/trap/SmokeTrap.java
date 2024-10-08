@@ -22,22 +22,23 @@ public final class SmokeTrap extends SurvivorTrap {
 
   public SmokeTrap() {
     super(
-        "smoke",
-        Material.GUNPOWDER,
-        Message.SMOKE_NAME.build(),
-        Message.SMOKE_LORE.build(),
-        Message.SMOKE_ACTIVATE.build(),
-        GameProperties.SMOKE_COST,
-        Color.GRAY);
+      "smoke",
+      Material.GUNPOWDER,
+      Message.SMOKE_NAME.build(),
+      Message.SMOKE_LORE.build(),
+      Message.SMOKE_ACTIVATE.build(),
+      GameProperties.SMOKE_COST,
+      Color.GRAY
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final int duration = GameProperties.SMOKE_DURATION;
     murderer.addPotionEffects(
-        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
-        new PotionEffect(PotionEffectType.SLOWNESS, duration, 2));
+      new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+      new PotionEffect(PotionEffectType.SLOWNESS, duration, 2)
+    );
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 1, duration);
@@ -49,7 +50,6 @@ public final class SmokeTrap extends SurvivorTrap {
   private void spawnSmoke(final GamePlayer murderer) {
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(
-        Particle.DUST, location, 10, 4, 2, 2, new DustOptions(org.bukkit.Color.GRAY, 4));
+    world.spawnParticle(Particle.DUST, location, 10, 4, 2, 2, new DustOptions(org.bukkit.Color.GRAY, 4));
   }
 }

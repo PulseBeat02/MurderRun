@@ -22,18 +22,18 @@ public final class JebTrap extends SurvivorTrap {
 
   public JebTrap() {
     super(
-        "jeb",
-        Material.CYAN_WOOL,
-        Message.JEB_NAME.build(),
-        Message.JEB_LORE.build(),
-        Message.JEB_ACTIVATE.build(),
-        GameProperties.JEB_COST,
-        Color.WHITE);
+      "jeb",
+      Material.CYAN_WOOL,
+      Message.JEB_NAME.build(),
+      Message.JEB_LORE.build(),
+      Message.JEB_ACTIVATE.build(),
+      GameProperties.JEB_COST,
+      Color.WHITE
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
     for (int i = 0; i < GameProperties.JEB_SHEEP_COUNT; i++) {
@@ -41,8 +41,7 @@ public final class JebTrap extends SurvivorTrap {
     }
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> spawnRainbowParticles(location), 0, 5, GameProperties.JEB_DURATION);
+    scheduler.scheduleRepeatedTask(() -> spawnRainbowParticles(location), 0, 5, GameProperties.JEB_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.JEB_SOUND);

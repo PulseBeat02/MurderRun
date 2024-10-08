@@ -34,10 +34,10 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void disableWalkNoFOVEffects(final GameScheduler scheduler, final long ticks) {
     this.apply(player -> {
-      final float before = player.getWalkSpeed();
-      player.setWalkSpeed(0.0f);
-      scheduler.scheduleTask(() -> player.setWalkSpeed(before), ticks);
-    });
+        final float before = player.getWalkSpeed();
+        player.setWalkSpeed(0.0f);
+        scheduler.scheduleTask(() -> player.setWalkSpeed(before), ticks);
+      });
   }
 
   @Override
@@ -59,10 +59,10 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void addPotionEffects(final PotionEffect... effects) {
     this.apply(player -> {
-      for (final PotionEffect effect : effects) {
-        player.addPotionEffect(effect);
-      }
-    });
+        for (final PotionEffect effect : effects) {
+          player.addPotionEffect(effect);
+        }
+      });
   }
 
   @Override
@@ -92,12 +92,12 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void removeAllPotionEffects() {
     this.apply(player -> {
-      final Collection<PotionEffect> effects = player.getActivePotionEffects();
-      effects.forEach(effect -> {
-        final PotionEffectType type = effect.getType();
-        player.removePotionEffect(type);
+        final Collection<PotionEffect> effects = player.getActivePotionEffects();
+        effects.forEach(effect -> {
+          final PotionEffectType type = effect.getType();
+          player.removePotionEffect(type);
+        });
       });
-    });
   }
 
   @Override

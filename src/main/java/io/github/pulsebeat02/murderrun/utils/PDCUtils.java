@@ -55,7 +55,10 @@ public final class PDCUtils {
   }
 
   private static boolean attributeExists(
-      final ItemStack stack, final NamespacedKey key, final PersistentDataType<?, ?> type) {
+    final ItemStack stack,
+    final NamespacedKey key,
+    final PersistentDataType<?, ?> type
+  ) {
     if (stack == null) {
       return false;
     }
@@ -63,11 +66,11 @@ public final class PDCUtils {
   }
 
   public static <P, C> boolean setPersistentDataAttribute(
-      final ItemStack stack,
-      final NamespacedKey key,
-      final PersistentDataType<P, C> type,
-      final C value) {
-
+    final ItemStack stack,
+    final NamespacedKey key,
+    final PersistentDataType<P, C> type,
+    final C value
+  ) {
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null || value == null) {
       return false;
@@ -81,8 +84,10 @@ public final class PDCUtils {
   }
 
   public static <P, C> @Nullable C getPersistentDataAttribute(
-      final ItemStack stack, final NamespacedKey key, final PersistentDataType<P, C> type) {
-
+    final ItemStack stack,
+    final NamespacedKey key,
+    final PersistentDataType<P, C> type
+  ) {
     final ItemMeta meta = stack.getItemMeta();
     if (meta == null) {
       return null;

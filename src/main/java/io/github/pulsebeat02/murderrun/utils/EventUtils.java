@@ -15,8 +15,6 @@ public final class EventUtils {
   public static @Nullable Location getProjectileLocation(final ProjectileHitEvent event) {
     final Block block = event.getHitBlock();
     final Entity hitEntity = event.getHitEntity();
-    return block != null
-        ? block.getLocation()
-        : (hitEntity != null ? hitEntity.getLocation() : null);
+    return block != null ? block.getLocation() : (hitEntity != null ? hitEntity.getLocation() : null);
   }
 }

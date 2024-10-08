@@ -12,8 +12,7 @@ public abstract class AbstractAbility implements Ability {
     this.task = () -> this.handleAbility(game, player);
   }
 
-  private void handleAbility(
-      @UnderInitialization AbstractAbility this, final Game game, final GamePlayer player) {
+  private void handleAbility(@UnderInitialization AbstractAbility this, final Game game, final GamePlayer player) {
     if (this.checkActivation()) {
       this.applyAbility(game, player);
     }

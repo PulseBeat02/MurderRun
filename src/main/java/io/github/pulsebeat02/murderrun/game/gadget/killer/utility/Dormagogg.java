@@ -40,17 +40,17 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
 
   public Dormagogg(final Game game) {
     super(
-        "dormagogg",
-        Material.WITHER_SKELETON_SKULL,
-        Message.DORMAGOGG_NAME.build(),
-        Message.DORMAGOGG_LORE.build(),
-        GameProperties.DORMAGOGG_COST);
+      "dormagogg",
+      Material.WITHER_SKELETON_SKULL,
+      Message.DORMAGOGG_NAME.build(),
+      Message.DORMAGOGG_LORE.build(),
+      GameProperties.DORMAGOGG_COST
+    );
     this.game = game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onTargetChange(final EntityTargetEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Zombie zombie)) {
       return;
@@ -67,7 +67,6 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onEntityDamage(final EntityDamageByEntityEvent event) {
-
     final Entity entity = event.getDamager();
     if (!(entity instanceof final Zombie zombie)) {
       return;
@@ -110,11 +109,11 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
 
   @Override
   public boolean onGadgetDrop(
-      final Game game,
-      final GamePlayer player,
-      final org.bukkit.entity.Item item,
-      final boolean remove) {
-
+    final Game game,
+    final GamePlayer player,
+    final org.bukkit.entity.Item item,
+    final boolean remove
+  ) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -139,8 +138,7 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   }
 
   private void customizeAttributes(final Zombie zombie) {
-    zombie.addPotionEffect(
-        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
+    zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
     if (zombie instanceof final Ageable ageable) {
       ageable.setBaby();
     }

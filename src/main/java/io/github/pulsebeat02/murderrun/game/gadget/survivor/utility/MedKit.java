@@ -12,17 +12,17 @@ public final class MedKit extends SurvivorGadget {
 
   public MedKit() {
     super(
-        "med_kit",
-        Material.SPLASH_POTION,
-        Message.MED_KIT_NAME.build(),
-        Message.MED_KIT_LORE.build(),
-        GameProperties.MED_KIT_COST,
-        ItemFactory::createMedKit);
+      "med_kit",
+      Material.SPLASH_POTION,
+      Message.MED_KIT_NAME.build(),
+      Message.MED_KIT_LORE.build(),
+      GameProperties.MED_KIT_COST,
+      ItemFactory::createMedKit
+    );
   }
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     // allow right click
   }
 }

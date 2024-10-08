@@ -18,17 +18,16 @@ public final class WarpDistort extends KillerGadget {
 
   public WarpDistort() {
     super(
-        "warp_distort",
-        Material.CHORUS_FRUIT,
-        Message.WARP_DISTORT_NAME.build(),
-        Message.WARP_DISTORT_LORE.build(),
-        GameProperties.WARP_DISTORT_COST);
+      "warp_distort",
+      Material.CHORUS_FRUIT,
+      Message.WARP_DISTORT_NAME.build(),
+      Message.WARP_DISTORT_LORE.build(),
+      GameProperties.WARP_DISTORT_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -66,6 +65,6 @@ public final class WarpDistort extends KillerGadget {
     while (random == random2) {
       random2 = manager.getRandomAliveInnocentPlayer();
     }
-    return new GamePlayer[] {random, random2};
+    return new GamePlayer[] { random, random2 };
   }
 }

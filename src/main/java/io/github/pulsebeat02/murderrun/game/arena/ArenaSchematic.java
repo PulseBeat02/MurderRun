@@ -53,34 +53,32 @@ public final class ArenaSchematic {
     }
   }
 
-  private static Clipboard performForwardExtentCopy(final Location[] corners)
-      throws WorldEditException {
+  private static Clipboard performForwardExtentCopy(final Location[] corners) throws WorldEditException {
     final CuboidRegion region = createRegion(corners);
     final BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     final com.sk89q.worldedit.world.World world = region.getWorld();
     final WorldEdit instance = WorldEdit.getInstance();
     try (final EditSession session = instance.newEditSession(world)) {
       final BlockVector3 min = region.getMinimumPoint();
-      final ForwardExtentCopy forwardExtentCopy =
-          new ForwardExtentCopy(session, region, clipboard, min);
+      final ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(session, region, clipboard, min);
       forwardExtentCopy.setCopyingEntities(true);
       Operations.complete(forwardExtentCopy);
       return clipboard;
     }
   }
 
-  private static Path performSchematicWrite(final Clipboard clipboard, final String name)
-      throws IOException {
-
+  private static Path performSchematicWrite(final Clipboard clipboard, final String name) throws IOException {
     final Path data = IOUtils.getPluginDataFolderPath();
     final Path parent = data.resolve("schematics");
     IOUtils.createFolder(parent);
 
     final Path file = parent.resolve(name);
     final BuiltInClipboardFormat format = BuiltInClipboardFormat.SPONGE_V3_SCHEMATIC;
-    try (final OutputStream stream = Files.newOutputStream(file);
-        final OutputStream fast = new FastBufferedOutputStream(stream);
-        final ClipboardWriter writer = format.getWriter(fast)) {
+    try (
+      final OutputStream stream = Files.newOutputStream(file);
+      final OutputStream fast = new FastBufferedOutputStream(stream);
+      final ClipboardWriter writer = format.getWriter(fast)
+    ) {
       writer.write(clipboard);
     }
 

@@ -24,21 +24,23 @@ public abstract class AbstractGadget implements Gadget {
   private final ItemStack gadget;
 
   public AbstractGadget(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
-      final int cost) {
+    final String name,
+    final Material material,
+    final Component itemName,
+    final Component itemLore,
+    final int cost
+  ) {
     this(name, material, itemName, itemLore, cost, null);
   }
 
   public AbstractGadget(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
-      final int cost,
-      final @Nullable Consumer<ItemStack> consumer) {
+    final String name,
+    final Material material,
+    final Component itemName,
+    final Component itemLore,
+    final int cost,
+    final @Nullable Consumer<ItemStack> consumer
+  ) {
     this.name = name;
     this.cost = cost;
     this.gadget = ItemFactory.createGadget(name, material, itemName, itemLore, consumer);
@@ -48,8 +50,7 @@ public abstract class AbstractGadget implements Gadget {
   public void onGadgetNearby(final Game game, final GamePlayer activator, final Item item) {}
 
   @Override
-  public void onGadgetRightClick(
-      final Game game, final PlayerInteractEvent event, final boolean remove) {
+  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
     final Player player = event.getPlayer();
     if (remove) {
       final PlayerInventory inventory = player.getInventory();
@@ -66,8 +67,7 @@ public abstract class AbstractGadget implements Gadget {
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     if (remove) {
       item.remove();
       return false;

@@ -32,17 +32,16 @@ public final class EMPBlast extends KillerGadget {
 
   public EMPBlast() {
     super(
-        "emp_blast",
-        Material.TARGET,
-        Message.EMP_BLAST_NAME.build(),
-        Message.EMP_BLAST_LORE.build(),
-        GameProperties.EMP_BLAST_COST);
+      "emp_blast",
+      Material.TARGET,
+      Message.EMP_BLAST_NAME.build(),
+      Message.EMP_BLAST_LORE.build(),
+      GameProperties.EMP_BLAST_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -75,11 +74,8 @@ public final class EMPBlast extends KillerGadget {
     audience.sendMessage(msg);
   }
 
-  private void removeAllSurvivorGadgets(
-      final Collection<Entity> entities, final GadgetLoadingMechanism mechanism) {
-
+  private void removeAllSurvivorGadgets(final Collection<Entity> entities, final GadgetLoadingMechanism mechanism) {
     for (final Entity entity : entities) {
-
       if (!(entity instanceof final Item item)) {
         continue;
       }

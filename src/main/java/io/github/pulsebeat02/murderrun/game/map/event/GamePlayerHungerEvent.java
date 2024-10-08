@@ -15,7 +15,6 @@ public final class GamePlayerHungerEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onHungerDeplete(final FoodLevelChangeEvent event) {
-
     final HumanEntity entity = event.getEntity();
     if (!(entity instanceof final Player player)) {
       return;

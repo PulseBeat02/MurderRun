@@ -24,17 +24,16 @@ public final class FakePart extends KillerGadget {
 
   public FakePart() {
     super(
-        "fake_part",
-        Material.COMPARATOR,
-        Message.FAKE_PART_NAME.build(),
-        Message.FAKE_PART_LORE.build(),
-        GameProperties.FAKE_PART_COST);
+      "fake_part",
+      Material.COMPARATOR,
+      Message.FAKE_PART_NAME.build(),
+      Message.FAKE_PART_LORE.build(),
+      GameProperties.FAKE_PART_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -42,8 +41,7 @@ public final class FakePart extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleConditionalTask(
-        () -> this.spawnParticleOnPart(fakeItem), 0, 2, fakeItem::isDead);
+    scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(fakeItem), 0, 2, fakeItem::isDead);
 
     final Runnable task = () -> this.handlePlayers(scheduler, manager, player, fakeItem);
     scheduler.scheduleConditionalTask(task, 0, 20L, fakeItem::isDead);
@@ -55,19 +53,20 @@ public final class FakePart extends KillerGadget {
   }
 
   private void handlePlayers(
-      final GameScheduler scheduler,
-      final PlayerManager manager,
-      final GamePlayer killer,
-      final Item item) {
-    manager.applyToAllLivingInnocents(
-        survivor -> this.checkNear(scheduler, survivor, killer, item));
+    final GameScheduler scheduler,
+    final PlayerManager manager,
+    final GamePlayer killer,
+    final Item item
+  ) {
+    manager.applyToAllLivingInnocents(survivor -> this.checkNear(scheduler, survivor, killer, item));
   }
 
   private void checkNear(
-      final GameScheduler scheduler,
-      final GamePlayer survivor,
-      final GamePlayer killer,
-      final Item item) {
+    final GameScheduler scheduler,
+    final GamePlayer survivor,
+    final GamePlayer killer,
+    final Item item
+  ) {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
@@ -82,11 +81,11 @@ public final class FakePart extends KillerGadget {
   }
 
   private void handleDebuff(
-      final GameScheduler scheduler,
-      final GamePlayer survivor,
-      final GamePlayer killer,
-      final Item item) {
-
+    final GameScheduler scheduler,
+    final GamePlayer survivor,
+    final GamePlayer killer,
+    final Item item
+  ) {
     final int duration = GameProperties.FAKE_PART_DURATION;
     survivor.disableJump(scheduler, duration);
     survivor.disableWalkWithFOVEffects(duration);

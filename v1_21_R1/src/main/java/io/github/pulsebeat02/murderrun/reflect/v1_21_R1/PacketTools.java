@@ -75,7 +75,6 @@ public class PacketTools implements PacketToolAPI {
   }
 
   private Team registerTeam(@UnderInitialization PacketTools this) {
-
     final ScoreboardManager manager = Bukkit.getScoreboardManager();
     final Scoreboard scoreboard = manager.getMainScoreboard();
     final Team team = scoreboard.getTeam("NoCollisions");
@@ -123,7 +122,9 @@ public class PacketTools implements PacketToolAPI {
       fixer.update(reference, dynamic, dataVersion, ver);
       final CompoundTag newCompound = (CompoundTag) dynamic.getValue();
       final net.minecraft.world.item.ItemStack stack = net.minecraft.world.item.ItemStack.parseOptional(
-          dimension, newCompound);
+        dimension,
+        newCompound
+      );
       return CraftItemStack.asCraftMirror(stack);
     } catch (final IOException e) {
       throw new AssertionError(e);
@@ -132,12 +133,10 @@ public class PacketTools implements PacketToolAPI {
 
   @Override
   public void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing) {
-
     final CraftEntity glow = (CraftEntity) entity;
     final net.minecraft.world.entity.Entity nmsEntity = glow.getHandle();
     final SynchedEntityData data = nmsEntity.getEntityData();
-    final EntityDataAccessor<Byte> glowingAccessor = new EntityDataAccessor<>(0,
-        EntityDataSerializers.BYTE);
+    final EntityDataAccessor<Byte> glowingAccessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
     final CraftPlayer player = (CraftPlayer) watcher;
     final ServerPlayer handle = player.getHandle();
     final ServerGamePacketListenerImpl connection = handle.connection;
@@ -187,7 +186,6 @@ public class PacketTools implements PacketToolAPI {
 
   @Override
   public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
-
     if (!this.noCollisions.hasEntity(watcher)) {
       final String name = watcher.getName();
       this.noCollisions.addEntry(name);
@@ -204,9 +202,11 @@ public class PacketTools implements PacketToolAPI {
     }
   }
 
-  private void removeGlowingSlime0(final Location target, final CraftPlayer player,
-      final ServerGamePacketListenerImpl connection) {
-
+  private void removeGlowingSlime0(
+    final Location target,
+    final CraftPlayer player,
+    final ServerGamePacketListenerImpl connection
+  ) {
     final Slime value = this.glowBlocks.get(player, target);
     if (value == null) {
       return;
@@ -217,9 +217,11 @@ public class PacketTools implements PacketToolAPI {
     this.glowBlocks.remove(player, target);
   }
 
-  private void createGlowingSlime0(final Location target, final CraftPlayer player,
-      final ServerGamePacketListenerImpl connection) {
-
+  private void createGlowingSlime0(
+    final Location target,
+    final CraftPlayer player,
+    final ServerGamePacketListenerImpl connection
+  ) {
     final Slime existing = this.glowBlocks.get(player, target);
     if (existing != null) {
       return;
@@ -239,8 +241,7 @@ public class PacketTools implements PacketToolAPI {
     slime.setYBodyRot(0);
     slime.setYHeadRot(0);
 
-    final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false, ignored -> {
-    }, Set.of());
+    final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false, ignored -> {}, Set.of());
     final ClientboundAddEntityPacket packet = new ClientboundAddEntityPacket(slime, entity);
     connection.send(packet);
 
@@ -255,8 +256,7 @@ public class PacketTools implements PacketToolAPI {
     copy.removeIf(value -> value.id() == 0);
 
     final byte newMask = 0x20 | 0x40;
-    final EntityDataAccessor<Byte> accessor = new EntityDataAccessor<>(0,
-        EntityDataSerializers.BYTE);
+    final EntityDataAccessor<Byte> accessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
     final DataValue<?> newValue = DataValue.create(accessor, newMask);
     copy.addFirst(newValue);
 
@@ -268,8 +268,7 @@ public class PacketTools implements PacketToolAPI {
     this.glowBlocks.put(player, target, slime);
   }
 
-  private void removeEntity(final ServerGamePacketListenerImpl connection,
-      final Collection<Integer> ids) {
+  private void removeEntity(final ServerGamePacketListenerImpl connection, final Collection<Integer> ids) {
     final int[] remove = Ints.toArray(ids);
     final ClientboundRemoveEntitiesPacket packet = new ClientboundRemoveEntitiesPacket(remove);
     connection.send(packet);
@@ -277,9 +276,14 @@ public class PacketTools implements PacketToolAPI {
 
   public void crashPlayerClient(final Player player) {
     final ClientboundPlayerPositionPacket packet = new ClientboundPlayerPositionPacket(
-        Double.MIN_VALUE,
-        Double.MIN_VALUE, Double.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE,
-        RelativeMovement.unpack(Byte.MIN_VALUE), Integer.MIN_VALUE);
+      Double.MIN_VALUE,
+      Double.MIN_VALUE,
+      Double.MIN_VALUE,
+      Float.MIN_VALUE,
+      Float.MIN_VALUE,
+      RelativeMovement.unpack(Byte.MIN_VALUE),
+      Integer.MIN_VALUE
+    );
     final CraftPlayer craftPlayer = (CraftPlayer) player;
     final ServerPlayer handle = craftPlayer.getHandle();
     final ServerGamePacketListenerImpl connection = handle.connection;

@@ -18,36 +18,32 @@ public final class InfraredVision extends KillerGadget {
 
   public InfraredVision() {
     super(
-        "infrared_vision",
-        Material.REDSTONE_LAMP,
-        Message.INFRARED_VISION_NAME.build(),
-        Message.INFRARED_VISION_LORE.build(),
-        GameProperties.INFRARED_VISION_COST);
+      "infrared_vision",
+      Material.REDSTONE_LAMP,
+      Message.INFRARED_VISION_NAME.build(),
+      Message.INFRARED_VISION_LORE.build(),
+      GameProperties.INFRARED_VISION_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.applyToAllLivingInnocents(
-        innocent -> this.setSurvivorGlow(scheduler, innocent, player));
+    manager.applyToAllLivingInnocents(innocent -> this.setSurvivorGlow(scheduler, innocent, player));
 
     manager.playSoundForAllParticipants(GameProperties.INFRARED_VISION_SOUND);
 
     return false;
   }
 
-  private void setSurvivorGlow(
-      final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
+  private void setSurvivorGlow(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
     final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.INFRARED_VISION_ACTIVATE.build();
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(
-        scheduler, survivor, ChatColor.RED, GameProperties.INFRARED_VISION_DURATION);
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, GameProperties.INFRARED_VISION_DURATION);
     audience.sendMessage(msg);
   }
 }

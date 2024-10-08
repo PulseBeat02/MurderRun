@@ -32,20 +32,21 @@ public final class MedBot extends SurvivorGadget {
 
   public MedBot() {
     super(
-        "med_bot",
-        Material.DISPENSER,
-        Message.MED_BOT_NAME.build(),
-        Message.MED_BOT_LORE.build(),
-        GameProperties.MED_BOT_COST);
+      "med_bot",
+      Material.DISPENSER,
+      Message.MED_BOT_NAME.build(),
+      Message.MED_BOT_LORE.build(),
+      GameProperties.MED_BOT_COST
+    );
   }
 
   @Override
   public boolean onGadgetDrop(
-      final Game game,
-      final GamePlayer player,
-      final org.bukkit.entity.Item item,
-      final boolean remove) {
-
+    final Game game,
+    final GamePlayer player,
+    final org.bukkit.entity.Item item,
+    final boolean remove
+  ) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -71,11 +72,9 @@ public final class MedBot extends SurvivorGadget {
     return false;
   }
 
-  private void handleMedBotUpdate(
-      final GameScheduler scheduler, final PlayerManager manager, final ArmorStand stand) {
+  private void handleMedBotUpdate(final GameScheduler scheduler, final PlayerManager manager, final ArmorStand stand) {
     final Consumer<GamePlayer> consumer = survivor -> this.handleInnocentEffects(survivor, stand);
-    final Consumer<GamePlayer> killerConsumer =
-        killer -> this.handleKillerDestroy(manager, killer, stand);
+    final Consumer<GamePlayer> killerConsumer = killer -> this.handleKillerDestroy(manager, killer, stand);
     final Runnable task = () -> {
       manager.applyToAllLivingInnocents(consumer);
       manager.applyToAllMurderers(killerConsumer);
@@ -83,8 +82,7 @@ public final class MedBot extends SurvivorGadget {
     scheduler.scheduleConditionalTask(task, 0, 5L, stand::isDead);
   }
 
-  private void handleKillerDestroy(
-      final PlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
+  private void handleKillerDestroy(final PlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);
@@ -113,8 +111,8 @@ public final class MedBot extends SurvivorGadget {
   private void handleVerticalMotion(final GameScheduler scheduler, final ArmorStand stand) {
     final AtomicDouble lastYOffset = new AtomicDouble();
     final AtomicLong currentTick = new AtomicLong();
-    final Runnable task = () -> lastYOffset.set(
-        this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
+    final Runnable task = () ->
+      lastYOffset.set(this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
     scheduler.scheduleConditionalTask(task, 0, 1, stand::isDead);
   }
 
@@ -128,8 +126,7 @@ public final class MedBot extends SurvivorGadget {
     world.spawnParticle(Particle.DUST, location, 5, 8, 8, 8, new DustOptions(Color.PURPLE, 4));
   }
 
-  private double moveVerticallyOneIteration(
-      final ArmorStand stand, final long current, final double lastYOffset) {
+  private double moveVerticallyOneIteration(final ArmorStand stand, final long current, final double lastYOffset) {
     final double yOffset = Math.sin(Math.toRadians(current * 5.0d));
     stand.teleport(stand.getLocation().add(0, (yOffset - lastYOffset), 0));
     return yOffset;

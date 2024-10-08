@@ -18,7 +18,6 @@ public final class GamePlayerTeleportEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerTeleportEvent(final PlayerTeleportEvent event) {
-
     final Player player = event.getPlayer();
     if (!this.isGamePlayer(player)) {
       return;

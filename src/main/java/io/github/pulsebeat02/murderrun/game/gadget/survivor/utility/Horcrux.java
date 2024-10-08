@@ -19,17 +19,16 @@ public final class Horcrux extends SurvivorGadget {
 
   public Horcrux() {
     super(
-        "horcrux",
-        Material.CHARCOAL,
-        Message.HORCRUX_NAME.build(),
-        Message.HORCRUX_LORE.build(),
-        GameProperties.HORCRUX_COST);
+      "horcrux",
+      Material.CHARCOAL,
+      Message.HORCRUX_NAME.build(),
+      Message.HORCRUX_LORE.build(),
+      GameProperties.HORCRUX_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final DeathManager deathManager = player.getDeathManager();
     final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleHorcrux(player, item), true);
     deathManager.addDeathTask(task);
@@ -44,7 +43,6 @@ public final class Horcrux extends SurvivorGadget {
   }
 
   private void handleHorcrux(final GamePlayer player, final Item item) {
-
     final Location location = item.getLocation();
     player.setRespawnLocation(location, true);
     player.teleport(location);

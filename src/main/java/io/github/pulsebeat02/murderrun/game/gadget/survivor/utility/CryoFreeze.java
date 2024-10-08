@@ -27,17 +27,16 @@ public final class CryoFreeze extends SurvivorGadget {
 
   public CryoFreeze() {
     super(
-        "cryo_freeze",
-        Material.ICE,
-        Message.CRYO_FREEZE_NAME.build(),
-        Message.CRYO_FREEZE_LORE.build(),
-        GameProperties.CRYO_FREEZE_COST);
+      "cryo_freeze",
+      Material.ICE,
+      Message.CRYO_FREEZE_NAME.build(),
+      Message.CRYO_FREEZE_LORE.build(),
+      GameProperties.CRYO_FREEZE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();
@@ -57,10 +56,11 @@ public final class CryoFreeze extends SurvivorGadget {
   }
 
   private void createSphere(
-      final com.sk89q.worldedit.world.World weWorld,
-      final BlockVector3 vector3,
-      final BlockState state,
-      final BlockWhitelistManager whitelistManager) {
+    final com.sk89q.worldedit.world.World weWorld,
+    final BlockVector3 vector3,
+    final BlockState state,
+    final BlockWhitelistManager whitelistManager
+  ) {
     final WorldEdit worldEdit = WorldEdit.getInstance();
     try (final EditSession session = worldEdit.newEditSession(weWorld)) {
       try {

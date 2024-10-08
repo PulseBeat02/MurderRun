@@ -116,7 +116,6 @@ public final class GlobalGadgetRegistry {
   }
 
   private void load() {
-
     final SurvivorGadgets[] survivorGadgets = SurvivorGadgets.values();
     final KillerGadgets[] killerGadgets = KillerGadgets.values();
     for (final SurvivorGadgets gadget : survivorGadgets) {

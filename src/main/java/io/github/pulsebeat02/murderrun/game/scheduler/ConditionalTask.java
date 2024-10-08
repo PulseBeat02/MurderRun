@@ -7,8 +7,7 @@ public final class ConditionalTask extends GameScheduledTask {
 
   private final BooleanSupplier condition;
 
-  public ConditionalTask(
-      final Game game, final Runnable runnable, final BooleanSupplier condition) {
+  public ConditionalTask(final Game game, final Runnable runnable, final BooleanSupplier condition) {
     super(game, runnable);
     this.condition = condition;
   }

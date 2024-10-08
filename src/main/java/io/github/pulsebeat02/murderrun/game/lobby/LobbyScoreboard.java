@@ -27,8 +27,7 @@ public final class LobbyScoreboard {
     this.boards.addPlayer(player);
   }
 
-  public LobbySidebarManager createSidebar(
-      @UnderInitialization LobbyScoreboard this, final PreGameManager manager) {
+  public LobbySidebarManager createSidebar(@UnderInitialization LobbyScoreboard this, final PreGameManager manager) {
     final LobbySidebarManager boards = new LobbySidebarManager();
     final PreGamePlayerManager playerManager = manager.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
@@ -51,7 +50,8 @@ public final class LobbyScoreboard {
         empty(),
         this.generateTimerComponent(),
         empty(),
-        this.generateFooterComponent());
+        this.generateFooterComponent()
+      );
   }
 
   private Component generateTitleComponent() {

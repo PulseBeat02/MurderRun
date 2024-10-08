@@ -14,20 +14,20 @@ public final class GlowTrap extends SurvivorTrap {
 
   public GlowTrap() {
     super(
-        "glow",
-        Material.GLOWSTONE,
-        Message.GLOW_NAME.build(),
-        Message.GLOW_LORE.build(),
-        Message.GLOW_ACTIVATE.build(),
-        GameProperties.GLOW_COST,
-        Color.YELLOW);
+      "glow",
+      Material.GLOWSTONE,
+      Message.GLOW_NAME.build(),
+      Message.GLOW_LORE.build(),
+      Message.GLOW_ACTIVATE.build(),
+      GameProperties.GLOW_COST,
+      Color.YELLOW
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
-    manager.setEntityGlowingForAliveInnocents(
-        murderer, ChatColor.RED, GameProperties.GLOW_DURATION);
+    manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, GameProperties.GLOW_DURATION);
     manager.playSoundForAllParticipants(GameProperties.GLOW_SOUND);
   }
 }

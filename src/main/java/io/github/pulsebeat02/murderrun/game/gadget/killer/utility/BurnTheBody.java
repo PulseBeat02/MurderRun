@@ -21,17 +21,16 @@ public final class BurnTheBody extends KillerGadget {
 
   public BurnTheBody() {
     super(
-        "burn_the_body",
-        Material.RED_STAINED_GLASS,
-        Message.BURN_THE_BODY_NAME.build(),
-        Message.BURN_THE_BODY_LORE.build(),
-        GameProperties.BURN_THE_BODY_COST);
+      "burn_the_body",
+      Material.RED_STAINED_GLASS,
+      Message.BURN_THE_BODY_NAME.build(),
+      Message.BURN_THE_BODY_LORE.build(),
+      GameProperties.BURN_THE_BODY_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
@@ -56,8 +55,7 @@ public final class BurnTheBody extends KillerGadget {
     return false;
   }
 
-  private void destroyBody(
-      final GameScheduler scheduler, final GamePlayer victim, final Location deathLocation) {
+  private void destroyBody(final GameScheduler scheduler, final GamePlayer victim, final Location deathLocation) {
     final World world = requireNonNull(deathLocation.getWorld());
     scheduler.scheduleRepeatedTask(() -> this.summonEffects(deathLocation, world), 0, 20L, 5 * 20L);
     scheduler.scheduleTask(() -> this.handleBurnTasks(victim), 100);
@@ -69,7 +67,6 @@ public final class BurnTheBody extends KillerGadget {
   }
 
   private void handleBurnTasks(final GamePlayer victim) {
-
     final DeathManager manager = victim.getDeathManager();
     final NPC stand = manager.getCorpse();
     if (stand != null) {

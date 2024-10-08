@@ -24,18 +24,17 @@ public final class Parasite extends SurvivorGadget {
 
   public Parasite() {
     super(
-        "parasite",
-        Material.VINE,
-        Message.PARASITE_NAME.build(),
-        Message.PARASITE_LORE.build(),
-        GameProperties.PARASITE_COST);
+      "parasite",
+      Material.VINE,
+      Message.PARASITE_NAME.build(),
+      Message.PARASITE_LORE.build(),
+      GameProperties.PARASITE_COST
+    );
     this.removed = new HashSet<>();
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
@@ -51,8 +50,7 @@ public final class Parasite extends SurvivorGadget {
     manager.applyToAllMurderers(killer -> this.checkActivationDistance(killer, manager, item));
   }
 
-  private void checkActivationDistance(
-      final GamePlayer player, final PlayerManager manager, final Item item) {
+  private void checkActivationDistance(final GamePlayer player, final PlayerManager manager, final Item item) {
     final Location origin = item.getLocation();
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
@@ -66,9 +64,10 @@ public final class Parasite extends SurvivorGadget {
       this.removed.add(id);
     } else if (distance < radius * radius) {
       player.addPotionEffects(
-          new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 0),
-          new PotionEffect(PotionEffectType.POISON, 10 * 20, 0),
-          new PotionEffect(PotionEffectType.WEAKNESS, 10 * 20, 0));
+        new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 0),
+        new PotionEffect(PotionEffectType.POISON, 10 * 20, 0),
+        new PotionEffect(PotionEffectType.WEAKNESS, 10 * 20, 0)
+      );
     }
   }
 }

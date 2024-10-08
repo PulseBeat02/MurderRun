@@ -27,7 +27,6 @@ public final class ResourcePackHandler extends ChannelInboundHandlerAdapter {
 
   @Override
   public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
-
     if (!(msg instanceof final HttpRequest request)) {
       ctx.fireChannelRead(msg);
       return;
@@ -43,8 +42,7 @@ public final class ResourcePackHandler extends ChannelInboundHandlerAdapter {
       final long length = file.length();
       final FileChannel channel = file.getChannel();
       final DefaultFileRegion region = new DefaultFileRegion(channel, 0, length);
-      final HttpResponse response =
-          new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+      final HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
       final HttpHeaders headers = response.headers();
       headers.set(HttpHeaderNames.CONTENT_LENGTH, String.valueOf(length));
       ctx.write(response);

@@ -135,8 +135,7 @@ public final class ItemBuilder implements Builder {
   public Builder hideAttributes() {
     this.dummyAttribute();
     final ItemMeta meta = this.meta();
-    meta.addItemFlags(
-        ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ENCHANTS);
+    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ENCHANTS);
     this.stack.setItemMeta(meta);
     return this;
   }
@@ -154,8 +153,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public <P, C> Builder pdc(
-      final NamespacedKey key, final PersistentDataType<P, C> type, final C value) {
+  public <P, C> Builder pdc(final NamespacedKey key, final PersistentDataType<P, C> type, final C value) {
     PDCUtils.setPersistentDataAttribute(this.stack, key, type, value);
     return this;
   }

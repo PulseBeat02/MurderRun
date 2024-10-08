@@ -43,11 +43,12 @@ public final class PreGamePlayerManager {
   private LobbyBossbar bossbar;
 
   public PreGamePlayerManager(
-      final PreGameManager manager,
-      final CommandSender leader,
-      final int min,
-      final int max,
-      final boolean quickJoinable) {
+    final PreGameManager manager,
+    final CommandSender leader,
+    final int min,
+    final int max,
+    final boolean quickJoinable
+  ) {
     this.manager = manager;
     this.murderers = Collections.synchronizedSet(new HashSet<>());
     this.participants = Collections.synchronizedSet(new HashSet<>());
@@ -144,7 +145,6 @@ public final class PreGamePlayerManager {
   }
 
   private void checkIfEnoughPlayers() {
-
     final int count = this.participants.size();
     if (count < this.min) {
       this.cancelTimer();
@@ -187,9 +187,7 @@ public final class PreGamePlayerManager {
   }
 
   private void addCurrency(final Player player, final boolean killer) {
-    final int count = killer
-        ? GameProperties.KILLER_STARTING_CURRENCY
-        : GameProperties.SURVIVOR_STARTING_CURRENCY;
+    final int count = killer ? GameProperties.KILLER_STARTING_CURRENCY : GameProperties.SURVIVOR_STARTING_CURRENCY;
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = ItemFactory.createCurrency(1);
     for (int i = 0; i < count; i++) {

@@ -34,8 +34,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   private BukkitAudiences audiences;
 
   @Override
-  public void registerFeature(
-      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
   }
@@ -46,13 +45,11 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   public void giveAllGadgets(final Player sender) {
     final PlayerInventory inventory = sender.getInventory();
     final List<MerchantRecipe> allGadgets = TradingUtils.getAllRecipes();
-    final List<ItemStack> stacks =
-        allGadgets.stream().map(MerchantRecipe::getResult).toList();
+    final List<ItemStack> stacks = allGadgets.stream().map(MerchantRecipe::getResult).toList();
     final Location location = sender.getLocation();
     final World world = requireNonNull(location.getWorld());
 
     for (final ItemStack stack : stacks) {
-
       final Map<Integer, ItemStack> remaining = inventory.addItem(stack);
       if (remaining.isEmpty()) {
         continue;
@@ -69,9 +66,9 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.gadget.retrieve.info")
   @Command(value = "murder gadget retrieve <gadgetName>", requiredSender = Player.class)
   public void retrieveGadget(
-      final Player sender,
-      @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
-
+    final Player sender,
+    @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName
+  ) {
     final PlayerInventory inventory = sender.getInventory();
     final Audience audience = this.audiences.player(sender);
     final List<MerchantRecipe> allGadgets = TradingUtils.parseRecipes(gadgetName);
@@ -100,8 +97,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   }
 
   @Suggestions("gadget-suggestions")
-  public Stream<String> suggestTrades(
-      final CommandContext<CommandSender> context, final String input) {
+  public Stream<String> suggestTrades(final CommandContext<CommandSender> context, final String input) {
     return TradingUtils.getTradeSuggestions();
   }
 }

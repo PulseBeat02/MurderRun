@@ -48,10 +48,11 @@ public final class Game {
   }
 
   public void startGame(
-      final GameSettings settings,
-      final Collection<Player> murderers,
-      final Collection<Player> participants,
-      final GameEventsListener callback) {
+    final GameSettings settings,
+    final Collection<Player> murderers,
+    final Collection<Player> participants,
+    final GameEventsListener callback
+  ) {
     this.status = GameStatus.SURVIVORS_RELEASED;
     this.configuration = settings;
     this.callback = callback;

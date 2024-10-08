@@ -35,13 +35,14 @@ public final class CrashTrap extends SurvivorTrap {
 
   public CrashTrap() {
     super(
-        "crash",
-        Material.STRUCTURE_VOID,
-        text("Crash Trap", RED),
-        text("Crashes the client (wtf, use at your own risk)", RED),
-        empty(),
-        128,
-        Color.RED);
+      "crash",
+      Material.STRUCTURE_VOID,
+      text("Crash Trap", RED),
+      text("Crashes the client (wtf, use at your own risk)", RED),
+      empty(),
+      128,
+      Color.RED
+    );
   }
 
   @Override

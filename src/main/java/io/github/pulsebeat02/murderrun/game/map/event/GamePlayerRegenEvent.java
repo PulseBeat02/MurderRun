@@ -11,9 +11,10 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 public final class GamePlayerRegenEvent extends GameEvent {
 
   private static final Set<EntityRegainHealthEvent.RegainReason> REASONS = Set.of(
-      EntityRegainHealthEvent.RegainReason.SATIATED,
-      EntityRegainHealthEvent.RegainReason.REGEN,
-      EntityRegainHealthEvent.RegainReason.EATING);
+    EntityRegainHealthEvent.RegainReason.SATIATED,
+    EntityRegainHealthEvent.RegainReason.REGEN,
+    EntityRegainHealthEvent.RegainReason.EATING
+  );
 
   public GamePlayerRegenEvent(final Game game) {
     super(game);
@@ -21,7 +22,6 @@ public final class GamePlayerRegenEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   private void onPlayerRegenEvent(final EntityRegainHealthEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Player player)) {
       return;

@@ -47,8 +47,7 @@ public final class MetadataManager {
     this.sidebar.updateSidebar();
   }
 
-  private WorldBorder createWorldBorder(
-      @UnderInitialization MetadataManager this, final Participant participant) {
+  private WorldBorder createWorldBorder(@UnderInitialization MetadataManager this, final Participant participant) {
     final WorldBorder[] border = new WorldBorder[1];
     participant.apply(player -> {
       final World world = player.getWorld();
@@ -76,7 +75,9 @@ public final class MetadataManager {
   }
 
   private Map<ChatColor, Team> createGlowTeams(
-      @UnderInitialization MetadataManager this, final GamePlayer participant) {
+    @UnderInitialization MetadataManager this,
+    final GamePlayer participant
+  ) {
     final Map<ChatColor, Team> teams = new HashMap<>();
     participant.apply(player -> {
       final Scoreboard scoreboard = player.getScoreboard();
@@ -90,9 +91,10 @@ public final class MetadataManager {
   }
 
   private Team createGlowTeam(
-      @UnderInitialization MetadataManager this,
-      final ChatColor color,
-      final Scoreboard scoreboard) {
+    @UnderInitialization MetadataManager this,
+    final ChatColor color,
+    final Scoreboard scoreboard
+  ) {
     final UUID uuid = UUID.randomUUID();
     final String name = uuid.toString();
     final Team team = scoreboard.registerNewTeam(name);
@@ -111,15 +113,15 @@ public final class MetadataManager {
   public void shutdown() {
     final Collection<ChatColor> keys = this.glowTeams.keySet();
     this.gamePlayer.apply(player -> {
-      for (final ChatColor key : keys) {
-        final Collection<Entity> stillGlowing = this.glowEntities.get(key);
-        for (final Entity entity : stillGlowing) {
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+        for (final ChatColor key : keys) {
+          final Collection<Entity> stillGlowing = this.glowEntities.get(key);
+          for (final Entity entity : stillGlowing) {
+            PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+          }
+          final Team team = requireNonNull(this.glowTeams.get(key));
+          team.unregister();
         }
-        final Team team = requireNonNull(this.glowTeams.get(key));
-        team.unregister();
-      }
-    });
+      });
     this.glowEntities.clear();
     this.glowTeams.clear();
     this.hideNameTagTeam.unregister();
@@ -127,43 +129,43 @@ public final class MetadataManager {
   }
 
   public void setEntityGlowing(
-      final GameScheduler scheduler,
-      final GamePlayer participant,
-      final ChatColor color,
-      final long time) {
+    final GameScheduler scheduler,
+    final GamePlayer participant,
+    final ChatColor color,
+    final long time
+  ) {
     this.setEntityGlowing(participant, color, true);
     scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time);
   }
 
-  public void setEntityGlowing(
-      final GamePlayer participant, final ChatColor color, final boolean glowing) {
+  public void setEntityGlowing(final GamePlayer participant, final ChatColor color, final boolean glowing) {
     participant.apply(player -> this.setEntityGlowing(player, color, glowing));
   }
 
   public void setEntityGlowing(final Entity entity, final ChatColor color, final boolean glowing) {
     this.gamePlayer.apply(player -> {
-      final Team team = requireNonNull(this.glowTeams.get(color));
-      final String name = this.getMemberID(entity);
-      final String watcher = player.getName();
-      if (glowing) {
-        this.glowEntities.put(color, entity);
-        team.addEntry(name);
-        team.addEntry(watcher);
-        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
-      } else {
-        this.glowEntities.remove(color, entity);
-        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-        if (entity instanceof final Player player1) {
-          // fixes a protocol bug
-          final GameMode gameMode = player1.getGameMode();
-          if (gameMode == GameMode.SPECTATOR) {
-            return;
+        final Team team = requireNonNull(this.glowTeams.get(color));
+        final String name = this.getMemberID(entity);
+        final String watcher = player.getName();
+        if (glowing) {
+          this.glowEntities.put(color, entity);
+          team.addEntry(name);
+          team.addEntry(watcher);
+          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
+        } else {
+          this.glowEntities.remove(color, entity);
+          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+          if (entity instanceof final Player player1) {
+            // fixes a protocol bug
+            final GameMode gameMode = player1.getGameMode();
+            if (gameMode == GameMode.SPECTATOR) {
+              return;
+            }
           }
+          team.removeEntry(name);
+          team.removeEntry(watcher);
         }
-        team.removeEntry(name);
-        team.removeEntry(watcher);
-      }
-    });
+      });
   }
 
   private String getMemberID(final Entity entity) {
@@ -177,21 +179,21 @@ public final class MetadataManager {
   public void setNameTagStatus(final boolean hide) {
     if (hide) {
       this.gamePlayer.apply(player -> {
-        final String name = player.getName();
-        this.hideNameTagTeam.addEntry(name);
-      });
+          final String name = player.getName();
+          this.hideNameTagTeam.addEntry(name);
+        });
     } else {
       this.gamePlayer.apply(player -> {
-        final GameMode gameMode = player.getGameMode();
-        if (gameMode == GameMode.SPECTATOR) {
-          return;
-        }
+          final GameMode gameMode = player.getGameMode();
+          if (gameMode == GameMode.SPECTATOR) {
+            return;
+          }
 
-        final String name = player.getName();
-        if (this.hideNameTagTeam.hasEntry(name)) {
-          this.hideNameTagTeam.removeEntry(name);
-        }
-      });
+          final String name = player.getName();
+          if (this.hideNameTagTeam.hasEntry(name)) {
+            this.hideNameTagTeam.removeEntry(name);
+          }
+        });
     }
   }
 

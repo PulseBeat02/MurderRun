@@ -18,7 +18,6 @@ public final class GameEventsPlayerListener implements GameEventsListener {
 
   @Override
   public void onGameFinish(final Game game, final GameResult result) {
-
     final MurderRun plugin = this.manager.getPlugin();
     final GameShutdownManager manager = plugin.getGameShutdownManager();
     manager.removeGame(game);

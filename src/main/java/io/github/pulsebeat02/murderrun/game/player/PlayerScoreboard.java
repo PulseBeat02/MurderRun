@@ -22,8 +22,7 @@ public final class PlayerScoreboard {
     this.board = this.createSidebar(gamePlayer);
   }
 
-  private FastBoard createSidebar(
-      @UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
+  private FastBoard createSidebar(@UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
     final Player player = gamePlayer.getInternalPlayer();
     return new FastBoard(player);
   }
@@ -33,7 +32,6 @@ public final class PlayerScoreboard {
   }
 
   public void updateSidebar() {
-
     if (this.board.isDeleted()) {
       return;
     }
@@ -48,7 +46,8 @@ public final class PlayerScoreboard {
         this.generateObjectiveMetaComponent(),
         empty(),
         this.generatePartsComponent(),
-        this.generatePartsMetaComponent());
+        this.generatePartsMetaComponent()
+      );
   }
 
   public Component generatePartsMetaComponent() {
@@ -68,9 +67,7 @@ public final class PlayerScoreboard {
 
   private Component generateObjectiveMetaComponent() {
     final boolean killer = this.gamePlayer instanceof Killer;
-    return killer
-        ? Message.SCOREBOARD_OBJECTIVE_KILLER.build()
-        : Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
+    return killer ? Message.SCOREBOARD_OBJECTIVE_KILLER.build() : Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
   }
 
   private Component generateObjectiveComponent() {
@@ -79,9 +76,7 @@ public final class PlayerScoreboard {
 
   private Component generateRoleMetaComponent() {
     final boolean killer = this.gamePlayer instanceof Killer;
-    return killer
-        ? Message.SCOREBOARD_ROLE_KILLER.build()
-        : Message.SCOREBOARD_ROLE_SURVIVOR.build();
+    return killer ? Message.SCOREBOARD_ROLE_KILLER.build() : Message.SCOREBOARD_ROLE_SURVIVOR.build();
   }
 
   private Component generateRoleComponent() {

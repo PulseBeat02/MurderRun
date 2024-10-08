@@ -22,24 +22,22 @@ public final class Gamble extends KillerGadget {
 
   public Gamble() {
     super(
-        "gamble",
-        Material.END_PORTAL_FRAME,
-        Message.GAMBLE_NAME.build(),
-        Message.GAMBLE_LORE.build(),
-        GameProperties.GAMBLE_COST);
+      "gamble",
+      Material.END_PORTAL_FRAME,
+      Message.GAMBLE_NAME.build(),
+      Message.GAMBLE_LORE.build(),
+      GameProperties.GAMBLE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager playerManager = game.getPlayerManager();
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
-    playerManager.applyToAllLivingInnocents(
-        survivor -> this.applyGamble(mechanism, survivor, player));
+    playerManager.applyToAllLivingInnocents(survivor -> this.applyGamble(mechanism, survivor, player));
 
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.GAMBLE_ACTIVATE.build();
@@ -49,12 +47,10 @@ public final class Gamble extends KillerGadget {
     return false;
   }
 
-  private void applyGamble(
-      final GadgetLoadingMechanism mechanism, final GamePlayer survivor, final GamePlayer killer) {
+  private void applyGamble(final GadgetLoadingMechanism mechanism, final GamePlayer survivor, final GamePlayer killer) {
     final DeathManager manager = survivor.getDeathManager();
     final Gadget random = mechanism.getRandomKillerGadget();
-    final PlayerDeathTask task =
-        new PlayerDeathTask(() -> this.giveKillerItem(killer, random), false);
+    final PlayerDeathTask task = new PlayerDeathTask(() -> this.giveKillerItem(killer, random), false);
     manager.addDeathTask(task);
   }
 

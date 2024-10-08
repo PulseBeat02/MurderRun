@@ -29,10 +29,11 @@ public final class WandListener implements Listener {
   private final BiConsumer<Player, Location> add;
 
   public WandListener(
-      final MurderRun plugin,
-      final Collection<Location> locations,
-      final BiConsumer<Player, Location> remove,
-      final BiConsumer<Player, Location> add) {
+    final MurderRun plugin,
+    final Collection<Location> locations,
+    final BiConsumer<Player, Location> remove,
+    final BiConsumer<Player, Location> add
+  ) {
     this.plugin = plugin;
     this.locations = locations;
     this.remove = remove;
@@ -71,7 +72,6 @@ public final class WandListener implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerInteract(final PlayerInteractEvent event) {
-
     final Action action = event.getAction();
     if (action != Action.RIGHT_CLICK_BLOCK) {
       return;

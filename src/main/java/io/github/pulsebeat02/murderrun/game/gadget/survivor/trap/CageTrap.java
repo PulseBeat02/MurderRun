@@ -19,31 +19,37 @@ import org.incendo.cloud.type.tuple.Triplet;
 
 public final class CageTrap extends SurvivorTrap {
 
-  private static final Set<BlockFace> faces =
-      Set.of(BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH);
+  private static final Set<BlockFace> faces = Set.of(
+    BlockFace.DOWN,
+    BlockFace.EAST,
+    BlockFace.WEST,
+    BlockFace.NORTH,
+    BlockFace.SOUTH
+  );
   private static final List<Triplet<Integer, Integer, Integer>> CAGE_TRAP_VECTORS;
 
   static {
-    CAGE_TRAP_VECTORS = faces.stream()
-        .map(face -> Triplet.of(face.getModX(), face.getModY(), face.getModZ()))
-        .collect(Collectors.toList());
+    CAGE_TRAP_VECTORS = faces
+      .stream()
+      .map(face -> Triplet.of(face.getModX(), face.getModY(), face.getModZ()))
+      .collect(Collectors.toList());
     CAGE_TRAP_VECTORS.add(Triplet.of(0, 2, 0));
   }
 
   public CageTrap() {
     super(
-        "cage",
-        Material.IRON_BARS,
-        Message.CAGE_NAME.build(),
-        Message.CAGE_LORE.build(),
-        Message.CAGE_ACTIVATE.build(),
-        GameProperties.CAGE_COST,
-        Color.GRAY);
+      "cage",
+      Material.IRON_BARS,
+      Message.CAGE_NAME.build(),
+      Message.CAGE_LORE.build(),
+      Message.CAGE_ACTIVATE.build(),
+      GameProperties.CAGE_COST,
+      Color.GRAY
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final Location location = murderer.getLocation();
     final Block block = location.getBlock();
     final Block[] blocks = this.getBlocksInOrder(block);

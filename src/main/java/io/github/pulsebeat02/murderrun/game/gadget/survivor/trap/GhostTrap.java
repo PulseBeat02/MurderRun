@@ -15,22 +15,26 @@ public final class GhostTrap extends SurvivorTrap {
 
   public GhostTrap() {
     super(
-        "ghost",
-        Material.WHITE_WOOL,
-        Message.GHOST_NAME.build(),
-        Message.GHOST_LORE.build(),
-        Message.GHOST_ACTIVATE.build(),
-        GameProperties.GHOST_COST,
-        Color.WHITE);
+      "ghost",
+      Material.WHITE_WOOL,
+      Message.GHOST_NAME.build(),
+      Message.GHOST_LORE.build(),
+      Message.GHOST_ACTIVATE.build(),
+      GameProperties.GHOST_COST,
+      Color.WHITE
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final int duration = GameProperties.GHOST_DURATION;
-    manager.applyToAllLivingInnocents(player -> player.addPotionEffects(
+    manager.applyToAllLivingInnocents(player ->
+      player.addPotionEffects(
         new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1),
-        new PotionEffect(PotionEffectType.SPEED, duration, 1)));
+        new PotionEffect(PotionEffectType.SPEED, duration, 1)
+      )
+    );
     manager.playSoundForAllParticipants(GameProperties.GHOST_SOUND);
   }
 }

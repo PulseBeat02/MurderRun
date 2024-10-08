@@ -28,17 +28,16 @@ public final class ResurrectionStone extends SurvivorGadget {
 
   public ResurrectionStone() {
     super(
-        "resurrection_stone",
-        Material.BEACON,
-        Message.RESURRECTION_STONE_NAME.build(),
-        Message.RESURRECTION_STONE_LORE.build(),
-        GameProperties.RESURECTION_STONE_COST);
+      "resurrection_stone",
+      Material.BEACON,
+      Message.RESURRECTION_STONE_NAME.build(),
+      Message.RESURRECTION_STONE_LORE.build(),
+      GameProperties.RESURECTION_STONE_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
@@ -69,13 +68,11 @@ public final class ResurrectionStone extends SurvivorGadget {
 
   private void spawnParticles(final Location location) {
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(
-        Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
+    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
     location.add(0, 0.5, 0);
   }
 
   private void resurrectPlayer(final Game game, final GamePlayer closest) {
-
     final PlayerManager playerManager = game.getPlayerManager();
     final PlayerStartupTool temp = new PlayerStartupTool(playerManager);
     temp.handleInnocent(closest);

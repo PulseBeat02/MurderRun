@@ -18,21 +18,19 @@ public final class FireTrail extends KillerGadget {
 
   public FireTrail() {
     super(
-        "fire_trail",
-        Material.MAGMA_CREAM,
-        Message.FIRE_TRAIL_NAME.build(),
-        Message.FIRE_TRAIL_LORE.build(),
-        GameProperties.FIRE_TRAIL_COST);
+      "fire_trail",
+      Material.MAGMA_CREAM,
+      Message.FIRE_TRAIL_NAME.build(),
+      Message.FIRE_TRAIL_LORE.build(),
+      GameProperties.FIRE_TRAIL_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
-    player.addPotionEffects(
-        new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
+    player.addPotionEffects(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4);

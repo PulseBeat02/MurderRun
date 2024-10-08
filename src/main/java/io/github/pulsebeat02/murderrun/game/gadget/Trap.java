@@ -14,13 +14,14 @@ public abstract class Trap extends AbstractGadget {
   private final Color color;
 
   public Trap(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
-      final Component announcement,
-      final int cost,
-      final Color color) {
+    final String name,
+    final Material material,
+    final Component itemName,
+    final Component itemLore,
+    final Component announcement,
+    final int cost,
+    final Color color
+  ) {
     super(name, material, itemName, itemLore, cost);
     this.announcement = announcement;
     this.color = color;
@@ -35,9 +36,7 @@ public abstract class Trap extends AbstractGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final GameScheduler scheduler = game.getScheduler();
     item.setUnlimitedLifetime(true);
     item.setPickupDelay(Integer.MAX_VALUE);

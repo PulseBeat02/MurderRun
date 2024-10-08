@@ -36,7 +36,6 @@ public final class LobbyTimeManager {
   }
 
   public void startTimer() {
-
     final MurderRun plugin = this.manager.getPlugin();
     final int time = GameProperties.LOBBY_STARTING_TIME;
     this.timer = new LobbyTimer(time, this::handleTimer);
@@ -70,7 +69,6 @@ public final class LobbyTimeManager {
   }
 
   private void handleTimer(final int seconds) {
-
     if (ANNOUNCE_TIMES.contains(seconds)) {
       this.playTimerSound(seconds);
     }
@@ -113,7 +111,6 @@ public final class LobbyTimeManager {
   }
 
   private void checkCurrency() {
-
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {

@@ -31,7 +31,6 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerDeath(final PlayerDeathEvent event) {
-
     final Player player = event.getEntity();
     if (!this.isGamePlayer(player)) {
       return;

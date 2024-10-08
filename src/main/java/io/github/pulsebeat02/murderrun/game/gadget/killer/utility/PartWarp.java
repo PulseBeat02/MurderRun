@@ -20,17 +20,16 @@ public final class PartWarp extends KillerGadget {
 
   public PartWarp() {
     super(
-        "part_warp",
-        Material.REPEATER,
-        Message.PART_WARP_NAME.build(),
-        Message.PART_WARP_LORE.build(),
-        GameProperties.PART_WARP_COST);
+      "part_warp",
+      Material.REPEATER,
+      Message.PART_WARP_NAME.build(),
+      Message.PART_WARP_LORE.build(),
+      GameProperties.PART_WARP_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final io.github.pulsebeat02.murderrun.game.map.Map map = game.getMap();

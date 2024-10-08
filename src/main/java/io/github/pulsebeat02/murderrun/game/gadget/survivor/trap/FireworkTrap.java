@@ -26,22 +26,21 @@ public final class FireworkTrap extends SurvivorTrap {
 
   public FireworkTrap() {
     super(
-        "firework",
-        Material.FIREWORK_ROCKET,
-        Message.FIREWORK_NAME.build(),
-        Message.FIREWORK_LORE.build(),
-        Message.FIREWORK_ACTIVATE.build(),
-        GameProperties.FIREWORK_COST,
-        java.awt.Color.RED);
+      "firework",
+      Material.FIREWORK_ROCKET,
+      Message.FIREWORK_NAME.build(),
+      Message.FIREWORK_LORE.build(),
+      Message.FIREWORK_ACTIVATE.build(),
+      GameProperties.FIREWORK_COST,
+      java.awt.Color.RED
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final Location location = murderer.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.spawnFirework(location), 0, 5, GameProperties.FIREWORK_DURATION);
+    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location), 0, 5, GameProperties.FIREWORK_DURATION);
 
     final PlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.FIREWORK_SOUND);
@@ -77,13 +76,7 @@ public final class FireworkTrap extends SurvivorTrap {
     final List<Color> primary = this.generateRandomColors();
     final List<Color> fade = this.generateRandomColors();
     final Type type = this.getRandomType();
-    return FireworkEffect.builder()
-        .with(type)
-        .flicker(true)
-        .trail(true)
-        .withColor(primary)
-        .withFade(fade)
-        .build();
+    return FireworkEffect.builder().with(type).flicker(true).trail(true).withColor(primary).withFade(fade).build();
   }
 
   private Type getRandomType() {

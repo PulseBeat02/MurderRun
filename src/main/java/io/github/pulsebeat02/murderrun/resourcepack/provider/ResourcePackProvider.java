@@ -40,14 +40,15 @@ public abstract class ResourcePackProvider implements PackProvider {
     final String url = this.getFinalUrl();
     final URI uri = URI.create(url);
     final Component message = Message.RESOURCEPACK_PROMPT.build();
-    final CompletableFuture<ResourcePackInfo> info =
-        ResourcePackInfo.resourcePackInfo().uri(uri).computeHashAndBuild();
-    return info.thenApplyAsync(pack -> ResourcePackRequest.resourcePackRequest()
+    final CompletableFuture<ResourcePackInfo> info = ResourcePackInfo.resourcePackInfo().uri(uri).computeHashAndBuild();
+    return info.thenApplyAsync(pack ->
+      ResourcePackRequest.resourcePackRequest()
         .packs(pack)
         .required(true)
         .prompt(message)
         .replace(true)
-        .asResourcePackRequest());
+        .asResourcePackRequest()
+    );
   }
 
   @Override

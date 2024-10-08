@@ -48,16 +48,15 @@ public final class GadgetShopGui extends ChestGui {
   private final PaginatedPane pages;
 
   public GadgetShopGui(final MurderRun plugin, final boolean isSurvivorGadgets) {
-    super(
-        6, AdventureUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), plugin);
+    super(6, AdventureUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.pages = new PaginatedPane(0, 0, 9, 5);
     this.addItems(isSurvivorGadgets);
     this.setOnGlobalClick(event -> {
-      final HumanEntity entity = event.getWhoClicked();
-      event.setCancelled(true);
-      this.playSound(entity);
-    });
+        final HumanEntity entity = event.getWhoClicked();
+        event.setCancelled(true);
+        this.playSound(entity);
+      });
   }
 
   private List<ItemStack> getShopItems(final boolean isSurvivorGadgets) {
@@ -81,7 +80,6 @@ public final class GadgetShopGui extends ChestGui {
   }
 
   private ItemStack getModifiedLoreWithCost(final Gadget gadget) {
-
     final ItemStack stack = gadget.getGadget();
     final ItemStack clone = stack.clone();
     final ItemMeta meta = requireNonNull(clone.getItemMeta());
@@ -137,20 +135,17 @@ public final class GadgetShopGui extends ChestGui {
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
   }
 
   private void handleClick(final InventoryClickEvent event) {
-
     final ItemStack stack = event.getCurrentItem();
     final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
     if (stack == null) {
       return;
     }
 
-    final String data =
-        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     final Gadget gadget = data != null ? registry.getGadget(data) : null;
     if (gadget == null) {
       return;
@@ -177,9 +172,10 @@ public final class GadgetShopGui extends ChestGui {
 
   private GuiItem createCloseStack() {
     return new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        this::handleClose,
-        this.plugin);
+      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+      this::handleClose,
+      this.plugin
+    );
   }
 
   private void handleClose(final InventoryClickEvent event) {
@@ -189,9 +185,10 @@ public final class GadgetShopGui extends ChestGui {
 
   private GuiItem createForwardStack() {
     return new GuiItem(
-        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
-        this::handleForwardOption,
-        this.plugin);
+      Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+      this::handleForwardOption,
+      this.plugin
+    );
   }
 
   private void handleForwardOption(final InventoryClickEvent event) {
@@ -205,9 +202,10 @@ public final class GadgetShopGui extends ChestGui {
 
   private GuiItem createBackStack() {
     return new GuiItem(
-        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
-        this::handleBackwardOption,
-        this.plugin);
+      Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+      this::handleBackwardOption,
+      this.plugin
+    );
   }
 
   private void handleBackwardOption(final InventoryClickEvent event) {

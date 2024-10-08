@@ -59,8 +59,7 @@ public final class PlayerManager {
     this.deathManager.spawnParticles();
   }
 
-  private void assignPlayerRoles(
-      final Collection<Player> murderers, final Collection<Player> participants) {
+  private void assignPlayerRoles(final Collection<Player> murderers, final Collection<Player> participants) {
     this.createMurderers(murderers);
     this.createInnocents(murderers, participants);
   }
@@ -72,22 +71,24 @@ public final class PlayerManager {
 
   public void resetCachedPlayers() {
     final Collection<GamePlayer> players = this.lookupMap.values();
-    this.cachedKillers = players.stream()
-        .filter(StreamUtils.isInstanceOf(Killer.class))
-        .map(murderer -> (Killer) murderer)
-        .collect(StreamUtils.toSynchronizedSet());
-    this.cachedDeadPlayers = players.stream()
-        .filter(StreamUtils.inverse(GamePlayer::isAlive))
-        .collect(StreamUtils.toSynchronizedSet());
-    this.cachedSurvivors = players.stream()
-        .filter(player -> player instanceof Survivor)
-        .map(murderer -> (Survivor) murderer)
-        .collect(StreamUtils.toSynchronizedSet());
-    this.cachedAlivePlayers =
-        players.stream().filter(GamePlayer::isAlive).collect(StreamUtils.toSynchronizedSet());
+    this.cachedKillers = players
+      .stream()
+      .filter(StreamUtils.isInstanceOf(Killer.class))
+      .map(murderer -> (Killer) murderer)
+      .collect(StreamUtils.toSynchronizedSet());
+    this.cachedDeadPlayers = players
+      .stream()
+      .filter(StreamUtils.inverse(GamePlayer::isAlive))
+      .collect(StreamUtils.toSynchronizedSet());
+    this.cachedSurvivors = players
+      .stream()
+      .filter(player -> player instanceof Survivor)
+      .map(murderer -> (Survivor) murderer)
+      .collect(StreamUtils.toSynchronizedSet());
+    this.cachedAlivePlayers = players.stream().filter(GamePlayer::isAlive).collect(StreamUtils.toSynchronizedSet());
     this.cachedAliveSurvivors = this.cachedSurvivors.stream()
-        .filter(GamePlayer::isAlive)
-        .collect(StreamUtils.toSynchronizedSet());
+      .filter(GamePlayer::isAlive)
+      .collect(StreamUtils.toSynchronizedSet());
   }
 
   public @Nullable GamePlayer getNearestKiller(final Location origin) {
@@ -144,8 +145,7 @@ public final class PlayerManager {
     }
   }
 
-  private void createInnocents(
-      final Collection<Player> murderers, final Collection<Player> participants) {
+  private void createInnocents(final Collection<Player> murderers, final Collection<Player> participants) {
     final Set<UUID> uuids = this.createMurdererUuids(murderers);
     for (final Player player : participants) {
       final UUID uuid = player.getUniqueId();
@@ -245,59 +245,59 @@ public final class PlayerManager {
 
   public void sendMessageToAllDeadParticipants(final Component message) {
     this.applyToAllDead(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.sendMessage(message);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.sendMessage(message);
+      });
   }
 
   public void sendMessageToAllParticipants(final Component message) {
     this.applyToAllParticipants(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.sendMessage(message);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.sendMessage(message);
+      });
   }
 
   public void sendMessageToAllSurvivors(final Component message) {
     this.applyToAllLivingInnocents(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.sendMessage(message);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.sendMessage(message);
+      });
   }
 
   public void sendMessageToAllKillers(final Component message) {
     this.applyToAllMurderers(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.sendMessage(message);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.sendMessage(message);
+      });
   }
 
   public void showTitleForAllInnocents(final Component title, final Component subtitle) {
     this.applyToAllInnocents(innocent -> {
-      final PlayerAudience audience = innocent.getAudience();
-      audience.showTitle(title, subtitle);
-    });
+        final PlayerAudience audience = innocent.getAudience();
+        audience.showTitle(title, subtitle);
+      });
   }
 
   public void showTitleForAllMurderers(final Component title, final Component subtitle) {
     this.applyToAllMurderers(murderer -> {
-      final PlayerAudience audience = murderer.getAudience();
-      audience.showTitle(title, subtitle);
-    });
+        final PlayerAudience audience = murderer.getAudience();
+        audience.showTitle(title, subtitle);
+      });
   }
 
   public void showTitleForAllParticipants(final Component title, final Component subtitle) {
     this.applyToAllParticipants(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.showTitle(title, subtitle);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.showTitle(title, subtitle);
+      });
   }
 
   public void playSoundForAllParticipants(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     this.applyToAllParticipants(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.playSound(key);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.playSound(key);
+      });
   }
 
   private SoundResource getRandomKey(final SoundResource... keys) {
@@ -309,9 +309,9 @@ public final class PlayerManager {
   public void playSoundForAllParticipants(final String... keys) {
     final Key key = this.getRandomKey(keys);
     this.applyToAllParticipants(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.playSound(key);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.playSound(key);
+      });
   }
 
   private Key getRandomKey(final String... keys) {
@@ -324,24 +324,24 @@ public final class PlayerManager {
   public void playSoundForAllMurderers(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     this.applyToAllMurderers(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.playSound(key);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.playSound(key);
+      });
   }
 
   public void playSoundForAllInnocents(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     this.applyToAllInnocents(innocent -> {
-      final PlayerAudience audience = innocent.getAudience();
-      audience.playSound(key);
-    });
+        final PlayerAudience audience = innocent.getAudience();
+        audience.playSound(key);
+      });
   }
 
   public void stopSoundsForAllParticipants(final SoundResource key) {
     this.applyToAllParticipants(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.stopSound(key);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.stopSound(key);
+      });
   }
 
   public void playSoundForAllParticipantsAtLocation(final Location origin, final String... keys) {
@@ -351,8 +351,7 @@ public final class PlayerManager {
     world.playSound(origin, raw, SoundCategory.MASTER, 1f, 1f);
   }
 
-  public void playSoundForAllParticipantsAtLocation(
-      final Location origin, final SoundResource... keys) {
+  public void playSoundForAllParticipantsAtLocation(final Location origin, final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     final Key id = key.getKey();
     final String raw = id.asString();
@@ -361,34 +360,35 @@ public final class PlayerManager {
   }
 
   public void showBossBarForAllParticipants(
-      final String id,
-      final Component name,
-      final float progress,
-      final BossBar.Color color,
-      final BossBar.Overlay overlay) {
+    final String id,
+    final Component name,
+    final float progress,
+    final BossBar.Color color,
+    final BossBar.Overlay overlay
+  ) {
     this.applyToAllParticipants(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.removeAllBossBars();
-      audience.showBossBar(id, name, progress, color, overlay);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.removeAllBossBars();
+        audience.showBossBar(id, name, progress, color, overlay);
+      });
   }
 
   public void updateBossBarForAllParticipants(final String id, final float progress) {
     this.applyToAllParticipants(player -> {
-      final PlayerAudience audience = player.getAudience();
-      audience.updateBossBar(id, progress);
-    });
+        final PlayerAudience audience = player.getAudience();
+        audience.updateBossBar(id, progress);
+      });
   }
 
   public Survivor getRandomAliveInnocentPlayer() {
-    final List<Survivor> list = this.cachedSurvivors.stream()
-        .filter(Survivor::isAlive)
-        .collect(StreamUtils.toShuffledList());
+    final List<Survivor> list =
+      this.cachedSurvivors.stream().filter(Survivor::isAlive).collect(StreamUtils.toShuffledList());
     return list.getFirst();
   }
 
   public @Nullable Survivor getRandomDeadPlayer() {
-    final List<Survivor> list = this.cachedDeadPlayers.stream()
+    final List<Survivor> list =
+      this.cachedDeadPlayers.stream()
         .filter(StreamUtils.isInstanceOf(Survivor.class))
         .map(player -> (Survivor) player)
         .collect(StreamUtils.toShuffledList());
@@ -407,33 +407,31 @@ public final class PlayerManager {
     return this.movementManager;
   }
 
-  public void setEntityGlowingForAliveInnocents(
-      final GamePlayer entity, final ChatColor color, final long duration) {
+  public void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color, final long duration) {
     final GameScheduler scheduler = this.game.getScheduler();
     this.setEntityGlowingForAliveInnocents(entity, color);
-    scheduler.scheduleTask(
-        () -> this.removeEntityGlowingForAliveInnocents(entity, color), duration);
+    scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity, color), duration);
   }
 
   public void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
     this.applyToAllLivingInnocents(innocent -> {
-      final MetadataManager metadata = innocent.getMetadataManager();
-      entity.apply(target -> metadata.setEntityGlowing(target, color, true));
-    });
+        final MetadataManager metadata = innocent.getMetadataManager();
+        entity.apply(target -> metadata.setEntityGlowing(target, color, true));
+      });
   }
 
   public void removeEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
     this.applyToAllLivingInnocents(innocent -> {
-      final MetadataManager metadata = innocent.getMetadataManager();
-      entity.apply(target -> metadata.setEntityGlowing(target, color, false));
-    });
+        final MetadataManager metadata = innocent.getMetadataManager();
+        entity.apply(target -> metadata.setEntityGlowing(target, color, false));
+      });
   }
 
   public void hideNameTagForAliveInnocents(final long ticks) {
     final GameScheduler scheduler = this.game.getScheduler();
     this.applyToAllLivingInnocents(innocent -> {
-      final MetadataManager metadata = innocent.getMetadataManager();
-      metadata.hideNameTag(scheduler, ticks);
-    });
+        final MetadataManager metadata = innocent.getMetadataManager();
+        metadata.hideNameTag(scheduler, ticks);
+      });
   }
 }

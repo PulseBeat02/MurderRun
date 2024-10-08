@@ -15,13 +15,14 @@ import org.bukkit.entity.Item;
 public abstract class KillerTrap extends Trap implements KillerApparatus {
 
   public KillerTrap(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
-      final Component announcement,
-      final int cost,
-      final Color color) {
+    final String name,
+    final Material material,
+    final Component itemName,
+    final Component itemLore,
+    final Component announcement,
+    final int cost,
+    final Color color
+  ) {
     super(name, material, itemName, itemLore, announcement, cost, color);
   }
 

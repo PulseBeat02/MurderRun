@@ -34,11 +34,11 @@ public final class HibernateManager {
     final File legacy = configuration.toFile();
     this.plugin.saveResource(HIBERNATE_CONFIG_FILE_NAME, false);
     this.factory = new Configuration()
-        .configure(legacy)
-        .addAnnotatedClass(ArenaManager.class)
-        .addAnnotatedClass(LobbyManager.class)
-        .addAnnotatedClass(StatisticsManager.class)
-        .buildSessionFactory();
+      .configure(legacy)
+      .addAnnotatedClass(ArenaManager.class)
+      .addAnnotatedClass(LobbyManager.class)
+      .addAnnotatedClass(StatisticsManager.class)
+      .buildSessionFactory();
     this.arenaController = new ArenaController(this.factory);
     this.lobbyController = new LobbyController(this.factory);
     this.statisticsController = new StatisticsController(this.factory);

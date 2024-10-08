@@ -15,18 +15,18 @@ public final class BlindTrap extends SurvivorTrap {
 
   public BlindTrap() {
     super(
-        "blind",
-        Material.BLACK_STAINED_GLASS,
-        Message.BLIND_NAME.build(),
-        Message.BLIND_LORE.build(),
-        Message.BLIND_ACTIVATE.build(),
-        GameProperties.BLIND_COST,
-        Color.BLACK);
+      "blind",
+      Material.BLACK_STAINED_GLASS,
+      Message.BLIND_NAME.build(),
+      Message.BLIND_LORE.build(),
+      Message.BLIND_ACTIVATE.build(),
+      GameProperties.BLIND_COST,
+      Color.BLACK
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final int duration = GameProperties.BLIND_DURATION;
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 0));
 

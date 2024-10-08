@@ -15,16 +15,16 @@ public final class Camera extends KillerGadget {
 
   public Camera() {
     super(
-        "killer_camera",
-        Material.OBSERVER,
-        Message.KILLER_CAMERA_NAME.build(),
-        Message.KILLER_CAMERA_LORE.build(),
-        GameProperties.KILLER_CAMERA_COST);
+      "killer_camera",
+      Material.OBSERVER,
+      Message.KILLER_CAMERA_NAME.build(),
+      Message.KILLER_CAMERA_LORE.build(),
+      GameProperties.KILLER_CAMERA_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     if (this.gadget == null) {
       this.gadget = new CameraGadget(this);
     }

@@ -18,17 +18,16 @@ public final class Rewind extends SurvivorGadget {
 
   public Rewind() {
     super(
-        "rewind",
-        Material.DIAMOND,
-        Message.REWIND_NAME.build(),
-        Message.REWIND_LORE.build(),
-        GameProperties.REWIND_COST);
+      "rewind",
+      Material.DIAMOND,
+      Message.REWIND_NAME.build(),
+      Message.REWIND_LORE.build(),
+      GameProperties.REWIND_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final PlayerManager manager = game.getPlayerManager();
     final MovementManager movementManager = manager.getMovementManager();
     if (!(player instanceof final Survivor survivor)) {
@@ -53,12 +52,12 @@ public final class Rewind extends SurvivorGadget {
   }
 
   private void handleRewind(
-      final Game game,
-      final MovementManager movementManager,
-      final Survivor survivor,
-      final Item item,
-      final long current) {
-
+    final Game game,
+    final MovementManager movementManager,
+    final Survivor survivor,
+    final Item item,
+    final long current
+  ) {
     final boolean successful = movementManager.handleRewind(survivor);
     super.onGadgetDrop(game, survivor, item, successful);
     if (!successful) {

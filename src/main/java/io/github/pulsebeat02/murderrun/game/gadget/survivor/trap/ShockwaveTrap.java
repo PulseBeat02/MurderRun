@@ -19,18 +19,18 @@ public final class ShockwaveTrap extends SurvivorTrap {
 
   public ShockwaveTrap() {
     super(
-        "shockwave",
-        Material.TNT,
-        Message.SHOCKWAVE_NAME.build(),
-        Message.SHOCKWAVE_LORE.build(),
-        Message.SHOCKWAVE_ACTIVATE.build(),
-        GameProperties.SHOCKWAVE_COST,
-        new Color(255, 215, 0));
+      "shockwave",
+      Material.TNT,
+      Message.SHOCKWAVE_NAME.build(),
+      Message.SHOCKWAVE_LORE.build(),
+      Message.SHOCKWAVE_ACTIVATE.build(),
+      GameProperties.SHOCKWAVE_COST,
+      new Color(255, 215, 0)
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer survivor, final Item item) {
-
     final Location origin = item.getLocation();
     final World world = requireNonNull(origin.getWorld());
     world.createExplosion(origin, 0, false, false);

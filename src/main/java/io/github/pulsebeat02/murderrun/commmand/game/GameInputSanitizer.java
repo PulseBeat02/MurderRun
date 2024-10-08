@@ -22,8 +22,7 @@ public final class GameInputSanitizer {
     this.command = command;
   }
 
-  public boolean checkIfNoQuickJoinableGame(
-      final Player sender, final Audience audience, final GameManager manager) {
+  public boolean checkIfNoQuickJoinableGame(final Player sender, final Audience audience, final GameManager manager) {
     final boolean success = manager.quickJoinGame(sender);
     if (!success) {
       final Component message = Message.GAME_NONE.build();
@@ -34,10 +33,11 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfGameFull(
-      final Player sender,
-      final Audience audience,
-      final GameManager manager,
-      final PreGameManager game) {
+    final Player sender,
+    final Audience audience,
+    final GameManager manager,
+    final PreGameManager game
+  ) {
     final String id = game.getId();
     final boolean success = manager.joinGame(sender, id);
     if (!success) {
@@ -58,8 +58,7 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfNotOwner(
-      final CommandSender sender, final Audience audience, final PreGameManager data) {
+  public boolean checkIfNotOwner(final CommandSender sender, final Audience audience, final PreGameManager data) {
     final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isLeader(sender)) {
       final Component message = Message.GAME_NOT_OWNER_ERROR.build();
@@ -90,8 +89,7 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfAlreadyInGame(
-      final Audience audience, final @Nullable PreGameManager temp) {
+  public boolean checkIfAlreadyInGame(final Audience audience, final @Nullable PreGameManager temp) {
     if (temp != null) {
       final Component message = Message.GAME_CREATE_ERROR.build();
       audience.sendMessage(message);
@@ -124,8 +122,7 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfNotSamePlayer(
-      final Audience audience, final Player sender, final Player invite) {
+  public boolean checkIfNotSamePlayer(final Audience audience, final Player sender, final Player invite) {
     if (sender == invite) {
       final Component message = Message.GAME_INVITE_ERROR.build();
       audience.sendMessage(message);
@@ -135,7 +132,10 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfOwnerOfCurrentGame(
-      final CommandSender sender, final Audience audience, final PreGameManager temp) {
+    final CommandSender sender,
+    final Audience audience,
+    final PreGameManager temp
+  ) {
     final PreGamePlayerManager manager = temp.getPlayerManager();
     if (manager.isLeader(sender)) {
       final Component message = Message.GAME_LEAVE_ERROR.build();
@@ -145,9 +145,7 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfInvitedAlreadyInGame(
-      final Audience audience, final Player invite, final PreGameManager data) {
-
+  public boolean checkIfInvitedAlreadyInGame(final Audience audience, final Player invite, final PreGameManager data) {
     final GameManager manager = this.command.getGameManager();
     final PreGameManager otherPlayerData = manager.getGame(invite);
     if (otherPlayerData == null) {
@@ -164,7 +162,6 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfNotInvited(final Audience audience, final Player sender, final String id) {
-
     final GameManager manager = this.command.getGameManager();
     final PreGameManager data = manager.getGame(id);
     if (data == null) {

@@ -16,18 +16,18 @@ public final class BurrowTrap extends SurvivorTrap {
 
   public BurrowTrap() {
     super(
-        "burrow",
-        Material.DIRT,
-        Message.BURROW_NAME.build(),
-        Message.BURROW_LORE.build(),
-        Message.BURROW_ACTIVATE.build(),
-        GameProperties.BURROW_COST,
-        new Color(49, 42, 41));
+      "burrow",
+      Material.DIRT,
+      Message.BURROW_NAME.build(),
+      Message.BURROW_LORE.build(),
+      Message.BURROW_ACTIVATE.build(),
+      GameProperties.BURROW_COST,
+      new Color(49, 42, 41)
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final Location location = murderer.getLocation();
     final Location clone = location.clone();
     clone.subtract(0, 50, 0);

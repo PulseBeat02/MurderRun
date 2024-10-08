@@ -43,12 +43,13 @@ public final class Arena {
   private final Location truck;
 
   public Arena(
-      final ArenaSchematic schematic,
-      final String name,
-      final Location[] corners,
-      final Location[] carPartLocations,
-      final Location spawn,
-      final Location truck) {
+    final ArenaSchematic schematic,
+    final String name,
+    final Location[] corners,
+    final Location[] carPartLocations,
+    final Location spawn,
+    final Location truck
+  ) {
     this.schematic = schematic;
     this.name = name;
     this.corners = corners;
@@ -94,7 +95,6 @@ public final class Arena {
   }
 
   public Location getRandomItemLocation() {
-
     final int length = this.carPartLocations.length;
     if (length == 0) {
       return this.spawn;

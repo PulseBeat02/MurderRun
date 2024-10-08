@@ -15,13 +15,14 @@ import org.bukkit.entity.Item;
 public abstract class SurvivorTrap extends Trap implements SurvivorApparatus {
 
   public SurvivorTrap(
-      final String name,
-      final Material material,
-      final Component itemName,
-      final Component itemLore,
-      final Component announcement,
-      final int cost,
-      final Color color) {
+    final String name,
+    final Material material,
+    final Component itemName,
+    final Component itemLore,
+    final Component announcement,
+    final int cost,
+    final Color color
+  ) {
     super(name, material, itemName, itemLore, announcement, cost, color);
   }
 

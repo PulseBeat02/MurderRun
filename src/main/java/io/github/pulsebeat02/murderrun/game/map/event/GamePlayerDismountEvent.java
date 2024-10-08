@@ -17,7 +17,6 @@ public final class GamePlayerDismountEvent extends GameEvent {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onEntityDismount(final EntityDismountEvent event) {
-
     final Entity entity = event.getEntity();
     if (!(entity instanceof final Player player)) {
       return;

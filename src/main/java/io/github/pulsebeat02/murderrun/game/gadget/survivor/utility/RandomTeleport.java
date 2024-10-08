@@ -20,17 +20,16 @@ public final class RandomTeleport extends SurvivorGadget {
 
   public RandomTeleport() {
     super(
-        "random_teleport",
-        Material.GOLDEN_CARROT,
-        Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
-        Message.TP_ME_AWAY_FROM_HERE_LORE.build(),
-        GameProperties.RANDOM_TELEPORT_COST);
+      "random_teleport",
+      Material.GOLDEN_CARROT,
+      Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
+      Message.TP_ME_AWAY_FROM_HERE_LORE.build(),
+      GameProperties.RANDOM_TELEPORT_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final GameSettings settings = game.getSettings();

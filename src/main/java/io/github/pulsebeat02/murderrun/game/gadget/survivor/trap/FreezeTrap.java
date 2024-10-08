@@ -14,18 +14,18 @@ public final class FreezeTrap extends SurvivorTrap {
 
   public FreezeTrap() {
     super(
-        "freeze",
-        Material.PACKED_ICE,
-        Message.FREEZE_NAME.build(),
-        Message.FREEZE_LORE.build(),
-        Message.FREEZE_ACTIVATE.build(),
-        GameProperties.FREEZE_COST,
-        Color.BLUE);
+      "freeze",
+      Material.PACKED_ICE,
+      Message.FREEZE_NAME.build(),
+      Message.FREEZE_LORE.build(),
+      Message.FREEZE_ACTIVATE.build(),
+      GameProperties.FREEZE_COST,
+      Color.BLUE
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-
     final GameScheduler scheduler = game.getScheduler();
     final int duration = GameProperties.FREEZE_EFFECT_DURATION;
     murderer.disableJump(scheduler, duration);

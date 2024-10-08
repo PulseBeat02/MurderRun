@@ -8,17 +8,20 @@ public final class PathAdapter implements JsonDeserializer<Path>, JsonSerializer
 
   @Override
   public Path deserialize(
-      final JsonElement jsonElement,
-      final Type type,
-      final JsonDeserializationContext jsonDeserializationContext)
-      throws JsonParseException {
+    final JsonElement jsonElement,
+    final Type type,
+    final JsonDeserializationContext jsonDeserializationContext
+  ) throws JsonParseException {
     final String path = jsonElement.getAsString();
     return Path.of(path);
   }
 
   @Override
   public JsonElement serialize(
-      final Path path, final Type type, final JsonSerializationContext jsonSerializationContext) {
+    final Path path,
+    final Type type,
+    final JsonSerializationContext jsonSerializationContext
+  ) {
     final String pathString = path.toString();
     return new JsonPrimitive(pathString);
   }

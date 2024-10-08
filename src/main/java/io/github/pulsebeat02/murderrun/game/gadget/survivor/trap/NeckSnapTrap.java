@@ -18,21 +18,21 @@ public final class NeckSnapTrap extends SurvivorTrap {
 
   public NeckSnapTrap() {
     super(
-        "neck_snap",
-        Material.BONE,
-        Message.NECK_SNAP_NAME.build(),
-        Message.NECK_SNAP_LORE.build(),
-        Message.NECK_SNAP_ACTIVATE.build(),
-        GameProperties.NECK_SNAP_COST,
-        Color.GREEN);
+      "neck_snap",
+      Material.BONE,
+      Message.NECK_SNAP_NAME.build(),
+      Message.NECK_SNAP_LORE.build(),
+      Message.NECK_SNAP_ACTIVATE.build(),
+      GameProperties.NECK_SNAP_COST,
+      Color.GREEN
+    );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(
-        () -> this.setLookDirection(murderer), 0, 5, GameProperties.NECK_SNAP_DURATION);
+    scheduler.scheduleRepeatedTask(() -> this.setLookDirection(murderer), 0, 5, GameProperties.NECK_SNAP_DURATION);
     manager.playSoundForAllParticipants(GameProperties.NECK_SNAP_SOUND);
   }
 

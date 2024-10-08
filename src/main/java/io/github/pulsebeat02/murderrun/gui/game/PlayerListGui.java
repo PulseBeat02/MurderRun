@@ -38,12 +38,8 @@ public final class PlayerListGui extends ChestGui {
 
   private PaginatedPane pages;
 
-  public PlayerListGui(
-      final MurderRun plugin, final HumanEntity watcher, final GameManager manager) {
-    super(
-        6,
-        AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()),
-        plugin);
+  public PlayerListGui(final MurderRun plugin, final HumanEntity watcher, final GameManager manager) {
+    super(6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()), plugin);
     this.watcher = watcher;
     this.manager = manager;
   }
@@ -58,7 +54,6 @@ public final class PlayerListGui extends ChestGui {
   }
 
   public PaginatedPane updatePane() {
-
     if (this.pages != null) {
       this.pages.clear();
     }
@@ -71,7 +66,6 @@ public final class PlayerListGui extends ChestGui {
   }
 
   private void handlePlayerClick(final InventoryClickEvent event) {
-
     final ItemStack item = event.getCurrentItem();
     if (item == null) {
       return;
@@ -103,7 +97,9 @@ public final class PlayerListGui extends ChestGui {
   private OutlinePane createBackgroundPane() {
     final OutlinePane background = new OutlinePane(0, 5, 9, 1);
     final GuiItem border = new GuiItem(
-        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+      Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
+      this.plugin
+    );
     background.addItem(border);
     background.setRepeat(true);
     background.setPriority(Pane.Priority.LOWEST);
@@ -124,8 +120,8 @@ public final class PlayerListGui extends ChestGui {
     for (final Player player : online) {
       final PreGameManager preGameManager = this.manager.getGame(player);
       final ItemStack stack = preGameManager == null
-          ? this.createNormalStack(player)
-          : this.getInGameStack(player, preGameManager);
+        ? this.createNormalStack(player)
+        : this.getInGameStack(player, preGameManager);
       items.add(stack);
     }
     return items;
@@ -148,11 +144,11 @@ public final class PlayerListGui extends ChestGui {
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
-        .name(Message.INVITE_PLAYER_GUI_DISPLAY.build(name))
-        .lore(Message.INVITE_PLAYER_GUI_LORE_NORMAL.build())
-        .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
-        .head(player)
-        .build();
+      .name(Message.INVITE_PLAYER_GUI_DISPLAY.build(name))
+      .lore(Message.INVITE_PLAYER_GUI_LORE_NORMAL.build())
+      .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
+      .head(player)
+      .build();
   }
 
   private ItemStack createKillerStack(final Player player) {
@@ -160,11 +156,11 @@ public final class PlayerListGui extends ChestGui {
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
-        .name(Message.INVITE_PLAYER_GUI_KILLER.build(name))
-        .lore(Message.INVITE_PLAYER_GUI_LORE.build())
-        .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
-        .head(player)
-        .build();
+      .name(Message.INVITE_PLAYER_GUI_KILLER.build(name))
+      .lore(Message.INVITE_PLAYER_GUI_LORE.build())
+      .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
+      .head(player)
+      .build();
   }
 
   private ItemStack createSurvivorStack(final Player player) {
@@ -172,25 +168,27 @@ public final class PlayerListGui extends ChestGui {
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
-        .name(Message.INVITE_PLAYER_GUI_SURVIVOR.build(name))
-        .lore(Message.INVITE_PLAYER_GUI_LORE.build())
-        .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
-        .head(player)
-        .build();
+      .name(Message.INVITE_PLAYER_GUI_SURVIVOR.build(name))
+      .lore(Message.INVITE_PLAYER_GUI_LORE.build())
+      .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
+      .head(player)
+      .build();
   }
 
   private GuiItem createCloseStack() {
     return new GuiItem(
-        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-        event -> this.watcher.closeInventory(),
-        this.plugin);
+      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+      event -> this.watcher.closeInventory(),
+      this.plugin
+    );
   }
 
   private GuiItem createForwardStack() {
     return new GuiItem(
-        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
-        this::handleForwardPage,
-        this.plugin);
+      Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+      this::handleForwardPage,
+      this.plugin
+    );
   }
 
   private void handleForwardPage(final InventoryClickEvent event) {
@@ -204,9 +202,10 @@ public final class PlayerListGui extends ChestGui {
 
   private GuiItem createBackStack() {
     return new GuiItem(
-        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
-        this::handleBackPage,
-        this.plugin);
+      Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+      this::handleBackPage,
+      this.plugin
+    );
   }
 
   private void handleBackPage(final InventoryClickEvent event) {

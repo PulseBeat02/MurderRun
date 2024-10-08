@@ -23,18 +23,17 @@ public final class Distorter extends SurvivorGadget {
 
   public Distorter() {
     super(
-        "distorter",
-        Material.CHORUS_FLOWER,
-        Message.DISTORTER_NAME.build(),
-        Message.DISTORTER_LORE.build(),
-        GameProperties.DISTORTER_COST);
+      "distorter",
+      Material.CHORUS_FLOWER,
+      Message.DISTORTER_NAME.build(),
+      Message.DISTORTER_LORE.build(),
+      GameProperties.DISTORTER_COST
+    );
     this.removed = new HashSet<>();
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
@@ -50,8 +49,7 @@ public final class Distorter extends SurvivorGadget {
     manager.applyToAllMurderers(killer -> this.applyDistortionEffect(manager, killer, item));
   }
 
-  private void applyDistortionEffect(
-      final PlayerManager manager, final GamePlayer killer, final Item item) {
+  private void applyDistortionEffect(final PlayerManager manager, final GamePlayer killer, final Item item) {
     final Location location = killer.getLocation();
     final Location origin = item.getLocation();
     final double distance = location.distanceSquared(origin);

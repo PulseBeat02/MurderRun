@@ -16,17 +16,16 @@ public final class HealthCut extends KillerGadget {
 
   public HealthCut() {
     super(
-        "health_cut",
-        Material.GOLDEN_SWORD,
-        Message.HEALTH_CUT_NAME.build(),
-        Message.HEALTH_CUT_LORE.build(),
-        GameProperties.HEALTH_CUT_COST);
+      "health_cut",
+      Material.GOLDEN_SWORD,
+      Message.HEALTH_CUT_NAME.build(),
+      Message.HEALTH_CUT_LORE.build(),
+      GameProperties.HEALTH_CUT_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();

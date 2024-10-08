@@ -24,20 +24,21 @@ public final class Decoy extends SurvivorGadget {
 
   public Decoy() {
     super(
-        "decoy",
-        Material.PLAYER_HEAD,
-        Message.DECOY_NAME.build(),
-        Message.DECOY_LORE.build(),
-        GameProperties.DECOY_COST);
+      "decoy",
+      Material.PLAYER_HEAD,
+      Message.DECOY_NAME.build(),
+      Message.DECOY_LORE.build(),
+      GameProperties.DECOY_COST
+    );
   }
 
   @Override
   public boolean onGadgetDrop(
-      final Game game,
-      final GamePlayer player,
-      final org.bukkit.entity.Item item,
-      final boolean remove) {
-
+    final Game game,
+    final GamePlayer player,
+    final org.bukkit.entity.Item item,
+    final boolean remove
+  ) {
     super.onGadgetDrop(game, player, item, true);
 
     final CitizensManager manager = game.getNPCManager();
@@ -52,9 +53,7 @@ public final class Decoy extends SurvivorGadget {
     return false;
   }
 
-  private NPC customizeNPC(
-      final CitizensManager manager, final GamePlayer player, final String name) {
-
+  private NPC customizeNPC(final CitizensManager manager, final GamePlayer player, final String name) {
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, name);
     this.customizeNPC(npc);

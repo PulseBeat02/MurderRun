@@ -33,21 +33,24 @@ public final class IOUtils {
   }
 
   public static Writable getWritableStreamFromResource(final String path) {
-
     final Path dataFolder = getPluginDataFolderPath();
     final Path filePath = dataFolder.resolve(path);
     if (Files.notExists(filePath)) {
       createFile(filePath);
-      try (final InputStream stream = IOUtils.getResourceAsStream(path);
-          final FastBufferedInputStream fast = new FastBufferedInputStream(stream)) {
+      try (
+        final InputStream stream = IOUtils.getResourceAsStream(path);
+        final FastBufferedInputStream fast = new FastBufferedInputStream(stream)
+      ) {
         Files.copy(fast, filePath, StandardCopyOption.REPLACE_EXISTING);
       } catch (final IOException e) {
         throw new AssertionError(e);
       }
     }
 
-    try (final InputStream stream = Files.newInputStream(filePath);
-        final FastBufferedInputStream fast = new FastBufferedInputStream(stream)) {
+    try (
+      final InputStream stream = Files.newInputStream(filePath);
+      final FastBufferedInputStream fast = new FastBufferedInputStream(stream)
+    ) {
       return Writable.copyInputStream(fast);
     } catch (final IOException e) {
       throw new AssertionError(e);
@@ -61,11 +64,12 @@ public final class IOUtils {
     return new FastBufferedInputStream(stream);
   }
 
-  public static String generateFileHash(final Path path)
-      throws IOException, NoSuchAlgorithmException {
+  public static String generateFileHash(final Path path) throws IOException, NoSuchAlgorithmException {
     final HashFunction function = Hashing.sha1();
-    try (final InputStream fileStream = Files.newInputStream(path);
-        final InputStream stream = new FastBufferedInputStream(fileStream)) {
+    try (
+      final InputStream fileStream = Files.newInputStream(path);
+      final InputStream stream = new FastBufferedInputStream(fileStream)
+    ) {
       final byte[] bytes = stream.readAllBytes();
       final HashCode code = function.hashBytes(bytes);
       return code.toString();
@@ -105,20 +109,14 @@ public final class IOUtils {
     return path.toAbsolutePath();
   }
 
-  public static Path createTemporaryPath(final String prefix, final String suffix)
-      throws IOException {
-
+  public static Path createTemporaryPath(final String prefix, final String suffix) throws IOException {
     final String os = System.getProperty("os.name").toLowerCase();
 
     if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
-
       final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwx------");
-      final FileAttribute<Set<PosixFilePermission>> attr =
-          PosixFilePermissions.asFileAttribute(permissions);
+      final FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(permissions);
       return Files.createTempFile(prefix, suffix, attr);
-
     } else {
-
       final File parent = new File("murderrun");
       if (!parent.exists()) {
         if (!parent.mkdirs()) {

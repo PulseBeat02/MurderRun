@@ -72,34 +72,43 @@ public final class GameManager {
   }
 
   public PreGameManager createGame(
-      final CommandSender leader,
-      final String id,
-      final String arenaName,
-      final String lobbyName,
-      final int min,
-      final int max,
-      final boolean quickJoinable) {
+    final CommandSender leader,
+    final String id,
+    final String arenaName,
+    final String lobbyName,
+    final int min,
+    final int max,
+    final boolean quickJoinable
+  ) {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
     final PreGameManager manager =
-        this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener);
+      this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener);
     this.addGameToRegistry(id, manager);
     this.autoJoinIfLeaderPlayer(leader, id);
     return manager;
   }
 
   private @NotNull PreGameManager createClampedGame(
-      final CommandSender leader,
-      final String id,
-      final String arenaName,
-      final String lobbyName,
-      final int min,
-      final int max,
-      final boolean quickJoinable,
-      final GameEventsListener listener) {
+    final CommandSender leader,
+    final String id,
+    final String arenaName,
+    final String lobbyName,
+    final int min,
+    final int max,
+    final boolean quickJoinable,
+    final GameEventsListener listener
+  ) {
     final int finalMin = Math.clamp(min, 2, Integer.MAX_VALUE);
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
-    final PreGameManager manager =
-        new PreGameManager(this.plugin, leader, id, finalMin, finalMax, quickJoinable, listener);
+    final PreGameManager manager = new PreGameManager(
+      this.plugin,
+      leader,
+      id,
+      finalMin,
+      finalMax,
+      quickJoinable,
+      listener
+    );
     this.setSettings(manager, arenaName, lobbyName);
     manager.initialize();
     return manager;
@@ -146,8 +155,7 @@ public final class GameManager {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
       final PreGamePlayerManager preGamePlayerManager = manager.getPlayerManager();
-      final boolean join =
-          preGamePlayerManager.isQuickJoinable() && !preGamePlayerManager.isGameFull();
+      final boolean join = preGamePlayerManager.isQuickJoinable() && !preGamePlayerManager.isGameFull();
       if (join) {
         preGamePlayerManager.addParticipantToLobby(player, false);
         return true;

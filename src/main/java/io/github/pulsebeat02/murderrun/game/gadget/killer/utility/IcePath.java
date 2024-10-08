@@ -21,17 +21,16 @@ public final class IcePath extends KillerGadget {
 
   public IcePath() {
     super(
-        "ice_path",
-        Material.ICE,
-        Message.ICE_PATH_NAME.build(),
-        Message.ICE_PATH_LORE.build(),
-        GameProperties.ICE_PATH_COST);
+      "ice_path",
+      Material.ICE,
+      Message.ICE_PATH_NAME.build(),
+      Message.ICE_PATH_LORE.build(),
+      GameProperties.ICE_PATH_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final GameScheduler scheduler = game.getScheduler();
@@ -44,7 +43,6 @@ public final class IcePath extends KillerGadget {
   }
 
   private void setIceTrail(final Game game, final GamePlayer player) {
-
     final Location location = player.getLocation();
     final Map<Location, Material> originalBlocks = new HashMap<>();
     for (int x = -1; x <= 1; x++) {
@@ -63,17 +61,17 @@ public final class IcePath extends KillerGadget {
     final Map<Location, Material> blocksToRestore = new HashMap<>(originalBlocks);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(
-        () -> {
-          final Collection<Entry<@KeyFor("blocksToRestore") Location, Material>> entries =
-              blocksToRestore.entrySet();
-          for (final Map.Entry<Location, Material> entry : entries) {
-            final Location blockLocation = entry.getKey();
-            final Block block = blockLocation.getBlock();
-            final Material material = entry.getValue();
-            block.setType(material);
-            block.getState().update(true);
-          }
-        },
-        3 * 20L);
+      () -> {
+        final Collection<Entry<@KeyFor("blocksToRestore") Location, Material>> entries = blocksToRestore.entrySet();
+        for (final Map.Entry<Location, Material> entry : entries) {
+          final Location blockLocation = entry.getKey();
+          final Block block = blockLocation.getBlock();
+          final Material material = entry.getValue();
+          block.setType(material);
+          block.getState().update(true);
+        }
+      },
+      3 * 20L
+    );
   }
 }

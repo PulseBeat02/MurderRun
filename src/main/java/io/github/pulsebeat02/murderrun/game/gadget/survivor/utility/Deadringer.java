@@ -18,24 +18,24 @@ public final class Deadringer extends SurvivorGadget {
 
   public Deadringer() {
     super(
-        "deadringer",
-        Material.ZOMBIE_HEAD,
-        Message.DEADRINGER_NAME.build(),
-        Message.DEADRINGER_LORE.build(),
-        GameProperties.DEADRINGER_COST);
+      "deadringer",
+      Material.ZOMBIE_HEAD,
+      Message.DEADRINGER_NAME.build(),
+      Message.DEADRINGER_LORE.build(),
+      GameProperties.DEADRINGER_COST
+    );
   }
 
   @Override
-  public boolean onGadgetDrop(
-      final Game game, final GamePlayer player, final Item item, final boolean remove) {
-
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final int duration = GameProperties.DEADRINGER_DURATION;
     player.setInvulnerable(true);
     player.addPotionEffects(
-        new PotionEffect(PotionEffectType.SPEED, duration, 1, true, false),
-        new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1, true, false));
+      new PotionEffect(PotionEffectType.SPEED, duration, 1, true, false),
+      new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1, true, false)
+    );
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> player.setInvulnerable(false), duration);

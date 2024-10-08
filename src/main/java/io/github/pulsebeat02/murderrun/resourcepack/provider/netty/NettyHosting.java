@@ -22,7 +22,6 @@ public final class NettyHosting extends ResourcePackProvider {
 
   @Override
   public String getRawUrl(final Path zip) {
-
     if (this.handler == null) {
       this.handler = new NettyChannelInitializer(zip);
       PacketToolsProvider.PACKET_API.injectNettyHandler("resourcePackInitializer", this.handler);
@@ -40,9 +39,11 @@ public final class NettyHosting extends ResourcePackProvider {
   public @Nullable String getPublicAddress() {
     try {
       final URL url = new URL("http://checkip.amazonaws.com");
-      try (final InputStream stream = url.openStream();
-          final InputStreamReader reader = new InputStreamReader(stream);
-          final BufferedReader in = new BufferedReader(reader)) {
+      try (
+        final InputStream stream = url.openStream();
+        final InputStreamReader reader = new InputStreamReader(stream);
+        final BufferedReader in = new BufferedReader(reader)
+      ) {
         return in.readLine();
       }
     } catch (final IOException e) {

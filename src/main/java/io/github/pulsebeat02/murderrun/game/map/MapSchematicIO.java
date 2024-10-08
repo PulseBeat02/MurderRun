@@ -62,11 +62,11 @@ public final class MapSchematicIO {
   }
 
   private void performResetPaste(
-      final WorldEdit instance,
-      final com.sk89q.worldedit.world.World world,
-      final Clipboard clipboard,
-      final BlockVector3 vector3)
-      throws WorldEditException {
+    final WorldEdit instance,
+    final com.sk89q.worldedit.world.World world,
+    final Clipboard clipboard,
+    final BlockVector3 vector3
+  ) throws WorldEditException {
     try (final EditSession session = instance.newEditSession(world)) {
       final ClipboardHolder holder = new ClipboardHolder(clipboard);
       final PasteBuilder extent = holder.createPaste(session).to(vector3).ignoreAirBlocks(false);
@@ -79,9 +79,11 @@ public final class MapSchematicIO {
     final Path path = schematic.getSchematicPath();
     final File legacyPath = path.toFile();
     final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(legacyPath));
-    try (final InputStream stream = Files.newInputStream(path);
-        final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
-        final ClipboardReader reader = format.getReader(fast)) {
+    try (
+      final InputStream stream = Files.newInputStream(path);
+      final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
+      final ClipboardReader reader = format.getReader(fast)
+    ) {
       return reader.read();
     }
   }

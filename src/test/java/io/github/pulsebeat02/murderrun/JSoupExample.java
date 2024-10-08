@@ -15,12 +15,11 @@ public class JSoupExample {
     final Path path = Path.of("C:\\Users\\brand\\Downloads\\resourcepack.zip");
     final String name = requireNonNull(path.getFileName()).toString();
     final Connection.Response uploadResponse = Jsoup.connect("https://mc-packs.net/")
-        .data("file", name, Files.newInputStream(path))
-        .method(Connection.Method.POST)
-        .execute();
+      .data("file", name, Files.newInputStream(path))
+      .method(Connection.Method.POST)
+      .execute();
     final Document document = uploadResponse.parse();
-    final Element downloadUrlElement =
-        document.select("input[readonly][value^=https]").first();
+    final Element downloadUrlElement = document.select("input[readonly][value^=https]").first();
     final String downloadUrl = downloadUrlElement != null ? downloadUrlElement.val() : null;
     System.out.println("Download URL: " + downloadUrl);
   }
