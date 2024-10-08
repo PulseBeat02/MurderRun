@@ -151,6 +151,11 @@ tasks {
         minecraftVersion("1.21.1")
     }
 
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        filteringCharset = "UTF-8"
+    }
+
     shadowJar {
         val libPath = "io.github.pulsebeat02.murderrun.libs"
         relocate("org.bstats", "$libPath.org.bstats")
