@@ -15,17 +15,14 @@ public final class RelationalDataImplAssignation {
 
   private final MurderRun plugin;
   private HibernateManager hibernate;
-  private ConfigurationManager<ArenaManager> arenas;
-  private ConfigurationManager<LobbyManager> lobbies;
-  private ConfigurationManager<StatisticsManager> statistics;
+  private final ConfigurationManager<ArenaManager> arenas;
+  private final ConfigurationManager<LobbyManager> lobbies;
+  private final ConfigurationManager<StatisticsManager> statistics;
 
   public RelationalDataImplAssignation(final MurderRun plugin) {
-    this.plugin = plugin;
-  }
-
-  public void assignImplementations() {
-    final PluginDataConfigurationMapper mapper = this.plugin.getConfiguration();
+    final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
     final RelationalDataMethod method = mapper.getRelationalDataMethod();
+    this.plugin = plugin;
     switch (method) {
       case JSON:
         this.arenas = new ArenaDataJSONMapper();
@@ -34,7 +31,6 @@ public final class RelationalDataImplAssignation {
         break;
       case SQL:
         this.hibernate = new HibernateManager(this.plugin);
-        this.hibernate.createSession();
         this.arenas = this.hibernate.getArenaController();
         this.lobbies = this.hibernate.getLobbyController();
         this.statistics = this.hibernate.getStatisticsController();

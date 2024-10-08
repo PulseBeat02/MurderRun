@@ -76,7 +76,8 @@ public final class CentralGui extends ChestGui {
   }
 
   private void handleGameClick(final InventoryClickEvent event) {
-    final ChestGui gui = new GameCreationGui(this.plugin, this.watcher);
+    final GameCreationGui gui = new GameCreationGui(this.plugin, this.watcher);
+    gui.registerEvents();
     gui.update();
     gui.show(this.watcher);
   }

@@ -114,14 +114,14 @@ public final class MurderRun extends JavaPlugin {
   private void readPluginData() {
     this.configuration = new PluginDataConfigurationMapper(this);
     this.configuration.deserialize();
+    this.handleRelationalDataManagement();
+  }
 
+  private void handleRelationalDataManagement() {
     final RelationalDataImplAssignation relationalDataImplAssignation = new RelationalDataImplAssignation(this);
-    relationalDataImplAssignation.assignImplementations();
-
     this.arenaDataConfigurationMapper = relationalDataImplAssignation.getArenas();
     this.lobbyDataConfigurationMapper = relationalDataImplAssignation.getLobbies();
     this.statisticsConfigurationMapper = relationalDataImplAssignation.getStatistics();
-
     this.arenaManager = this.arenaDataConfigurationMapper.deserialize();
     this.lobbyManager = this.lobbyDataConfigurationMapper.deserialize();
     this.statisticsManager = this.statisticsConfigurationMapper.deserialize();
