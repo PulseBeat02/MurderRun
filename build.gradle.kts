@@ -181,7 +181,7 @@ tasks {
                     "tabWidth" to 2,
                     "plugins" to listOf("prettier-plugin-java"),
                     "printWidth" to 140))
-                .npmExecutable(provider { setupNpmEnvironment() })
+                .nodeExecutable(provider { setupNodeEnvironment() })
         }
     }
 
@@ -200,8 +200,8 @@ tasks {
     }
 }
 
-fun setupNpmEnvironment(): File {
-    val npmExec = if (windows) "npm.cmd" else "lib/node_modules/npm/bin/npm"
+fun setupNodeEnvironment(): File {
+    val npmExec = if (windows) "node.exe" else "bin/node"
     val folder = node.resolvedNodeDir.get()
     val executable = folder.file(npmExec).asFile
     return executable

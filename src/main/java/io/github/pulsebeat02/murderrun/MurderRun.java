@@ -27,6 +27,7 @@ public final class MurderRun extends JavaPlugin {
 
   - Rewrite all messy code
   - Trial Database Support (test)
+  - Fix nodejs support
 
    */
 
