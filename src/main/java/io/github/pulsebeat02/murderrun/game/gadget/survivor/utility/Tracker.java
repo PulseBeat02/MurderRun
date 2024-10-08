@@ -16,13 +16,7 @@ import org.bukkit.entity.Item;
 public final class Tracker extends SurvivorGadget {
 
   public Tracker() {
-    super(
-      "tracker",
-      Material.COMPASS,
-      Message.TRACKER_NAME.build(),
-      Message.TRACKER_LORE.build(),
-      GameProperties.TRACKER_COST
-    );
+    super("tracker", Material.COMPASS, Message.TRACKER_NAME.build(), Message.TRACKER_LORE.build(), GameProperties.TRACKER_COST);
   }
 
   @Override

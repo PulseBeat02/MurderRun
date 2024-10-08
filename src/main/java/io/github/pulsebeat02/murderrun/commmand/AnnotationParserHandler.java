@@ -33,15 +33,9 @@ public final class AnnotationParserHandler {
     return parser;
   }
 
-  private CommandManager<CommandSender> getCommandManager(
-    @UnderInitialization AnnotationParserHandler this,
-    final MurderRun plugin
-  ) {
+  private CommandManager<CommandSender> getCommandManager(@UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
     final ExecutionCoordinator<CommandSender> coordinator = ExecutionCoordinator.simpleCoordinator();
-    final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(
-      plugin,
-      coordinator
-    );
+    final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(plugin, coordinator);
     this.registerBrigadierCapability(manager);
     return manager;
   }
@@ -61,9 +55,9 @@ public final class AnnotationParserHandler {
 
   public void registerCommands() {
     final List<AnnotationCommandFeature> features = Commands.getFeatures();
-    features.forEach(feature -> {
+    for (final AnnotationCommandFeature feature : features) {
       feature.registerFeature(this.plugin, this.parser);
       this.parser.parse(feature);
-    });
+    }
   }
 }

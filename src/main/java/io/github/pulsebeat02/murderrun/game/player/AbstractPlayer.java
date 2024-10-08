@@ -93,10 +93,10 @@ public abstract class AbstractPlayer implements Participant {
   public void removeAllPotionEffects() {
     this.apply(player -> {
         final Collection<PotionEffect> effects = player.getActivePotionEffects();
-        effects.forEach(effect -> {
+        for (final PotionEffect effect : effects) {
           final PotionEffectType type = effect.getType();
           player.removePotionEffect(type);
-        });
+        }
       });
   }
 

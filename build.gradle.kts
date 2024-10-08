@@ -179,7 +179,7 @@ tasks {
                 .config(mapOf("parser" to "java",
                     "tabWidth" to 2,
                     "plugins" to listOf("prettier-plugin-java"),
-                    "printWidth" to 120))
+                    "printWidth" to 140))
                 .npmExecutable(nodePath)
         }
     }

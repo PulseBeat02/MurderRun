@@ -42,6 +42,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GameCreationGui extends ChestGui implements Listener {
 
@@ -65,20 +66,26 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private volatile boolean listenForMin;
   private volatile boolean listenForMax;
 
-  @SuppressWarnings("all")
   public GameCreationGui(final MurderRun plugin, final HumanEntity watcher) {
     super(4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_GAME_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = watcher;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_GAME_PATTERN);
-    final Server server = plugin.getServer();
+    this.audience = this.getAudience(plugin, watcher);
+    this.noCancel = true;
+  }
+
+  public void registerEvents() {
+    final Server server = this.plugin.getServer();
     final PluginManager manager = server.getPluginManager();
+    manager.registerEvents(this, this.plugin);
+  }
+
+  private Audience getAudience(@UnderInitialization GameCreationGui this, final MurderRun plugin, final HumanEntity watcher) {
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
-    this.audience = audiences.player(uuid);
-    noCancel = true;
-    manager.registerEvents(this, plugin);
+    return audiences.player(uuid);
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
@@ -115,15 +122,15 @@ public final class GameCreationGui extends ChestGui implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerChat(final AsyncPlayerChatEvent event) {
-    if (!this.listenForId && !this.listenForMin && !this.listenForMax) {
-      return;
-    }
-    event.setCancelled(true);
-
     final Player player = event.getPlayer();
     if (player != this.watcher) {
       return;
     }
+
+    if (!this.listenForId && !this.listenForMin && !this.listenForMax) {
+      return;
+    }
+    event.setCancelled(true);
 
     final String msg = event.getMessage();
     if (this.listenForId) {
@@ -139,7 +146,7 @@ public final class GameCreationGui extends ChestGui implements Listener {
       this.listenForMax = this.parsePlayerCount(msg, false);
     }
 
-    this.showInventory(player);
+    this.showAsync(player);
   }
 
   private boolean parsePlayerCount(final String msg, final boolean isMin) {
@@ -161,7 +168,7 @@ public final class GameCreationGui extends ChestGui implements Listener {
     return false;
   }
 
-  private void showInventory(final HumanEntity player) {
+  private void showAsync(final HumanEntity player) {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.callSyncMethod(this.plugin, () -> {
       this.update();
@@ -264,32 +271,29 @@ public final class GameCreationGui extends ChestGui implements Listener {
   }
 
   private void createNewGame(final InventoryClickEvent event) {
-    final AudienceProvider provider = this.plugin.getAudience();
-    final BukkitAudiences bukkitAudiences = provider.retrieve();
-    final Audience audience = bukkitAudiences.player(this.watcher.getUniqueId());
-    if (
-      this.lobby == null || this.arena == null || this.id == null || this.min < 2 || this.max < 2 || this.min > this.max
-    ) {
+    if (this.checkMissingProperty()) {
       final Component msg = Message.CREATE_GAME_GUI_ERROR.build();
-      audience.sendMessage(msg);
+      this.audience.sendMessage(msg);
       return;
     }
+    this.watcher.closeInventory();
 
     final Player player = (Player) this.watcher;
+    final String cmd = this.constructCommand();
+
+    player.performCommand(cmd);
+
+    this.noCancel = false;
+  }
+
+  private String constructCommand() {
     final String lobbyName = this.lobby.getName();
     final String arenaName = this.arena.getName();
-    player.performCommand(
-      "murder game create %s %s %s %s %s %s".formatted(
-          arenaName,
-          lobbyName,
-          this.id,
-          this.min,
-          this.max,
-          this.quickJoin
-        )
-    );
-    this.noCancel = false;
-    this.watcher.closeInventory();
+    return "murder game create %s %s %s %s %s %s".formatted(arenaName, lobbyName, this.id, this.min, this.max, this.quickJoin);
+  }
+
+  private boolean checkMissingProperty() {
+    return (this.lobby == null || this.arena == null || this.id == null || this.min < 2 || this.max < 2 || this.min > this.max);
   }
 
   private GuiItem createArenaStack() {

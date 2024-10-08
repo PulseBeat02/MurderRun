@@ -40,16 +40,8 @@ public final class ItemFactory {
       .enchantment(Enchantment.PROTECTION, 3)
       .model(1)
       .build();
-    final ItemStack legs = Item.builder(Material.LEATHER_LEGGINGS)
-      .dye(Color.RED)
-      .enchantment(Enchantment.PROTECTION, 3)
-      .model(1)
-      .build();
-    final ItemStack boots = Item.builder(Material.LEATHER_BOOTS)
-      .dye(Color.RED)
-      .enchantment(Enchantment.PROTECTION, 3)
-      .model(1)
-      .build();
+    final ItemStack legs = Item.builder(Material.LEATHER_LEGGINGS).dye(Color.RED).enchantment(Enchantment.PROTECTION, 3).model(1).build();
+    final ItemStack boots = Item.builder(Material.LEATHER_BOOTS).dye(Color.RED).enchantment(Enchantment.PROTECTION, 3).model(1).build();
     return new ItemStack[] { boots, legs, chest, head };
   }
 

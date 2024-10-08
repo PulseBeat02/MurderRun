@@ -149,19 +149,11 @@ public final class PortalGun extends KillerGadget implements Listener {
     scheduler.scheduleRepeatedTask(() -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 20L);
   }
 
-  private void handleParticipants(
-    final PlayerManager manager,
-    final Location sendingLocation,
-    final Location receivingLocation
-  ) {
+  private void handleParticipants(final PlayerManager manager, final Location sendingLocation, final Location receivingLocation) {
     manager.applyToAllParticipants(player -> this.handleTeleports(player, sendingLocation, receivingLocation));
   }
 
-  private void handleTeleports(
-    final GamePlayer player,
-    final Location sendingLocation,
-    final Location receivingLocation
-  ) {
+  private void handleTeleports(final GamePlayer player, final Location sendingLocation, final Location receivingLocation) {
     final long last = player.getLastPortalUse();
     final long current = System.currentTimeMillis();
     if (current - last < 2000L) {
@@ -194,8 +186,7 @@ public final class PortalGun extends KillerGadget implements Listener {
     final double radiusY = 1.5d;
     final int particleCount = 40;
     final int insideParticleCount = 20;
-    final Runnable task = () ->
-      this.handlePortalEffects(center, particleCount, radiusX, radiusY, world, insideParticleCount);
+    final Runnable task = () -> this.handlePortalEffects(center, particleCount, radiusX, radiusY, world, insideParticleCount);
     scheduler.scheduleRepeatedTask(task, 0L, 2L);
   }
 

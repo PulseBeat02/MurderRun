@@ -23,8 +23,7 @@ public interface LocaleTools {
     final @Nullable Function<T, String> function1,
     final @Nullable Function<U, String> function2
   ) {
-    return (arg1, arg2) ->
-      MANAGER.render(translatable(key, createFinalText(arg1, function1), createFinalText(arg2, function2)));
+    return (arg1, arg2) -> MANAGER.render(translatable(key, createFinalText(arg1, function1), createFinalText(arg2, function2)));
   }
 
   static <T, U, V> TriComponent<Sender, T, U, V> direct(
@@ -35,12 +34,7 @@ public interface LocaleTools {
   ) {
     return (arg1, arg2, arg3) ->
       MANAGER.render(
-        translatable(
-          key,
-          createFinalText(arg1, function1),
-          createFinalText(arg2, function2),
-          createFinalText(arg3, function3)
-        )
+        translatable(key, createFinalText(arg1, function1), createFinalText(arg2, function2), createFinalText(arg3, function3))
       );
   }
 

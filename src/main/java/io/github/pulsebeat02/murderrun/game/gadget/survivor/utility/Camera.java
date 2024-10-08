@@ -14,13 +14,7 @@ public final class Camera extends SurvivorGadget {
   private CameraGadget gadget;
 
   public Camera() {
-    super(
-      "camera",
-      Material.OBSERVER,
-      Message.CAMERA_NAME.build(),
-      Message.CAMERA_LORE.build(),
-      GameProperties.CAMERA_COST
-    );
+    super("camera", Material.OBSERVER, Message.CAMERA_NAME.build(), Message.CAMERA_LORE.build(), GameProperties.CAMERA_COST);
   }
 
   @Override

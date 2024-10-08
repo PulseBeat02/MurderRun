@@ -9,13 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class SurvivorGadget extends AbstractGadget implements SurvivorApparatus {
 
-  public SurvivorGadget(
-    final String name,
-    final Material material,
-    final Component itemName,
-    final Component itemLore,
-    final int cost
-  ) {
+  public SurvivorGadget(final String name, final Material material, final Component itemName, final Component itemLore, final int cost) {
     super(name, material, itemName, itemLore, cost);
   }
 

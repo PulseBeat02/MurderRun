@@ -11,7 +11,6 @@ import java.util.Map;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.jetbrains.annotations.NotNull;
 
 public final class GameManager {
 
@@ -81,14 +80,13 @@ public final class GameManager {
     final boolean quickJoinable
   ) {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
-    final PreGameManager manager =
-      this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener);
+    final PreGameManager manager = this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener);
     this.addGameToRegistry(id, manager);
     this.autoJoinIfLeaderPlayer(leader, id);
     return manager;
   }
 
-  private @NotNull PreGameManager createClampedGame(
+  private PreGameManager createClampedGame(
     final CommandSender leader,
     final String id,
     final String arenaName,
@@ -100,17 +98,9 @@ public final class GameManager {
   ) {
     final int finalMin = Math.clamp(min, 2, Integer.MAX_VALUE);
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
-    final PreGameManager manager = new PreGameManager(
-      this.plugin,
-      leader,
-      id,
-      finalMin,
-      finalMax,
-      quickJoinable,
-      listener
-    );
+    final PreGameManager manager = new PreGameManager(this.plugin, id, listener);
     this.setSettings(manager, arenaName, lobbyName);
-    manager.initialize();
+    manager.initialize(leader, finalMin, finalMax, quickJoinable);
     return manager;
   }
 

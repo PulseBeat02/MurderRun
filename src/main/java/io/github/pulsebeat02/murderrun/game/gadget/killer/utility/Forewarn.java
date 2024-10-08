@@ -20,13 +20,7 @@ import org.bukkit.entity.Item;
 public final class Forewarn extends KillerGadget {
 
   public Forewarn() {
-    super(
-      "forewarn",
-      Material.GLOWSTONE_DUST,
-      Message.FOREWARN_NAME.build(),
-      Message.FOREWARN_LORE.build(),
-      GameProperties.FOREWARN_COST
-    );
+    super("forewarn", Material.GLOWSTONE_DUST, Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build(), GameProperties.FOREWARN_COST);
   }
 
   @Override

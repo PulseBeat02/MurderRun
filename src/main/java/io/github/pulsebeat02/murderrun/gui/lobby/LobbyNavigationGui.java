@@ -25,12 +25,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class LobbyNavigationGui extends ChestGui {
 
-  private static final Pattern NAVIGATION_LOBBY_PATTERN = new Pattern(
-    "111111111",
-    "111314111",
-    "111111111",
-    "111121111"
-  );
+  private static final Pattern NAVIGATION_LOBBY_PATTERN = new Pattern("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
@@ -91,7 +86,8 @@ public final class LobbyNavigationGui extends ChestGui {
     final LobbyManager manager = this.plugin.getLobbyManager();
     final Lobby lobby = requireNonNull(manager.getLobby(name));
     final Location spawn = lobby.getLobbySpawn();
-    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true);
+    final LobbyModificationGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true);
+    gui.registerEvents();
     gui.update();
     gui.show(this.watcher);
   }
@@ -105,7 +101,8 @@ public final class LobbyNavigationGui extends ChestGui {
   }
 
   private void createLobbyMenu(final InventoryClickEvent event) {
-    final ChestGui gui = new LobbyModificationGui(this.plugin, this.watcher, false);
+    final LobbyModificationGui gui = new LobbyModificationGui(this.plugin, this.watcher, false);
+    gui.registerEvents();
     gui.update();
     gui.show(this.watcher);
   }

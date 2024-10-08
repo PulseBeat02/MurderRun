@@ -40,12 +40,7 @@ public final class PoisonSmog extends KillerGadget {
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleRepeatedTask(
-      () -> this.handleSmog(world, location, manager),
-      0,
-      2 * 20L,
-      GameProperties.POISON_SMOG_DURATION
-    );
+    scheduler.scheduleRepeatedTask(() -> this.handleSmog(world, location, manager), 0, 2 * 20L, GameProperties.POISON_SMOG_DURATION);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.POISON_SMOG_SOUND);

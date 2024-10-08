@@ -34,18 +34,12 @@ public final class GadgetLoadingMechanism {
     this.survivorGadgets = this.getSurvivorGadgets(this.gameGadgets);
   }
 
-  private Set<Gadget> getKillerGadgets(
-    @UnderInitialization GadgetLoadingMechanism this,
-    final Map<String, Gadget> gameGadgets
-  ) {
+  private Set<Gadget> getKillerGadgets(@UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
     final Collection<Gadget> gadgets = gameGadgets.values();
     return gadgets.stream().filter(StreamUtils.isInstanceOf(KillerApparatus.class)).collect(Collectors.toSet());
   }
 
-  private Set<Gadget> getSurvivorGadgets(
-    @UnderInitialization GadgetLoadingMechanism this,
-    final Map<String, Gadget> gameGadgets
-  ) {
+  private Set<Gadget> getSurvivorGadgets(@UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
     final Collection<Gadget> gadgets = gameGadgets.values();
     return gadgets.stream().filter(StreamUtils.isInstanceOf(SurvivorApparatus.class)).collect(Collectors.toSet());
   }

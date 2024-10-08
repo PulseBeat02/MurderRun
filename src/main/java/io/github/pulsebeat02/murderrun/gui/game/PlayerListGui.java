@@ -40,6 +40,7 @@ public final class PlayerListGui extends ChestGui {
 
   public PlayerListGui(final MurderRun plugin, final HumanEntity watcher, final GameManager manager) {
     super(6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()), plugin);
+    this.pages = new PaginatedPane(0, 0, 9, 3);
     this.watcher = watcher;
     this.manager = manager;
   }
@@ -54,10 +55,7 @@ public final class PlayerListGui extends ChestGui {
   }
 
   public PaginatedPane updatePane() {
-    if (this.pages != null) {
-      this.pages.clear();
-    }
-
+    this.pages.clear();
     this.pages = new PaginatedPane(0, 0, 9, 3);
     this.pages.populateWithItemStacks(this.getPlayerStacks(), this.plugin);
     this.pages.setOnClick(this::handlePlayerClick);
@@ -96,10 +94,7 @@ public final class PlayerListGui extends ChestGui {
 
   private OutlinePane createBackgroundPane() {
     final OutlinePane background = new OutlinePane(0, 5, 9, 1);
-    final GuiItem border = new GuiItem(
-      Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-      this.plugin
-    );
+    final GuiItem border = new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
     background.addItem(border);
     background.setRepeat(true);
     background.setPriority(Pane.Priority.LOWEST);
@@ -119,24 +114,16 @@ public final class PlayerListGui extends ChestGui {
     final List<ItemStack> items = new ArrayList<>();
     for (final Player player : online) {
       final PreGameManager preGameManager = this.manager.getGame(player);
-      final ItemStack stack = preGameManager == null
-        ? this.createNormalStack(player)
-        : this.getInGameStack(player, preGameManager);
+      final ItemStack stack = preGameManager == null ? this.createNormalStack(player) : this.getInGameStack(player, preGameManager);
       items.add(stack);
     }
     return items;
   }
 
   private ItemStack getInGameStack(final Player player, final PreGameManager triplet) {
-    final ItemStack stack;
     final PreGamePlayerManager manager = triplet.getPlayerManager();
     final Collection<Player> killers = manager.getMurderers();
-    if (killers.contains(player)) {
-      stack = this.createKillerStack(player);
-    } else {
-      stack = this.createSurvivorStack(player);
-    }
-    return stack;
+    return killers.contains(player) ? this.createKillerStack(player) : this.createSurvivorStack(player);
   }
 
   private ItemStack createNormalStack(final Player player) {
@@ -201,11 +188,7 @@ public final class PlayerListGui extends ChestGui {
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(
-      Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
-      this::handleBackPage,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(), this::handleBackPage, this.plugin);
   }
 
   private void handleBackPage(final InventoryClickEvent event) {

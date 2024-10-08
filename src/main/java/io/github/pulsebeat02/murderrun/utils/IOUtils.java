@@ -66,10 +66,7 @@ public final class IOUtils {
 
   public static String generateFileHash(final Path path) throws IOException, NoSuchAlgorithmException {
     final HashFunction function = Hashing.sha1();
-    try (
-      final InputStream fileStream = Files.newInputStream(path);
-      final InputStream stream = new FastBufferedInputStream(fileStream)
-    ) {
+    try (final InputStream fileStream = Files.newInputStream(path); final InputStream stream = new FastBufferedInputStream(fileStream)) {
       final byte[] bytes = stream.readAllBytes();
       final HashCode code = function.hashBytes(bytes);
       return code.toString();

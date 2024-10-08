@@ -23,13 +23,7 @@ import org.bukkit.potion.PotionEffectType;
 public final class FakePart extends KillerGadget {
 
   public FakePart() {
-    super(
-      "fake_part",
-      Material.COMPARATOR,
-      Message.FAKE_PART_NAME.build(),
-      Message.FAKE_PART_LORE.build(),
-      GameProperties.FAKE_PART_COST
-    );
+    super("fake_part", Material.COMPARATOR, Message.FAKE_PART_NAME.build(), Message.FAKE_PART_LORE.build(), GameProperties.FAKE_PART_COST);
   }
 
   @Override
@@ -52,21 +46,11 @@ public final class FakePart extends KillerGadget {
     return false;
   }
 
-  private void handlePlayers(
-    final GameScheduler scheduler,
-    final PlayerManager manager,
-    final GamePlayer killer,
-    final Item item
-  ) {
+  private void handlePlayers(final GameScheduler scheduler, final PlayerManager manager, final GamePlayer killer, final Item item) {
     manager.applyToAllLivingInnocents(survivor -> this.checkNear(scheduler, survivor, killer, item));
   }
 
-  private void checkNear(
-    final GameScheduler scheduler,
-    final GamePlayer survivor,
-    final GamePlayer killer,
-    final Item item
-  ) {
+  private void checkNear(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer, final Item item) {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
@@ -80,12 +64,7 @@ public final class FakePart extends KillerGadget {
     }
   }
 
-  private void handleDebuff(
-    final GameScheduler scheduler,
-    final GamePlayer survivor,
-    final GamePlayer killer,
-    final Item item
-  ) {
+  private void handleDebuff(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer, final Item item) {
     final int duration = GameProperties.FAKE_PART_DURATION;
     survivor.disableJump(scheduler, duration);
     survivor.disableWalkWithFOVEffects(duration);

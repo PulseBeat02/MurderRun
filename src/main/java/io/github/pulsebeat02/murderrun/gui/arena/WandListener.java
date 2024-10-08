@@ -38,9 +38,12 @@ public final class WandListener implements Listener {
     this.locations = locations;
     this.remove = remove;
     this.add = add;
-    final Server server = plugin.getServer();
+  }
+
+  public void registerEvents() {
+    final Server server = this.plugin.getServer();
     final PluginManager manager = server.getPluginManager();
-    manager.registerEvents(this, plugin);
+    manager.registerEvents(this, this.plugin);
   }
 
   public void runScheduledTask() {
@@ -50,19 +53,19 @@ public final class WandListener implements Listener {
 
   private void checkPlayerHand() {
     final Collection<? extends Player> online = Bukkit.getOnlinePlayers();
-    online.forEach(player -> {
+    for (final Player player : online) {
       final PlayerInventory inventory = player.getInventory();
       final ItemStack item = inventory.getItemInMainHand();
-      if (PDCUtils.isWand(item)) {
-        for (final Location loc : this.locations) {
-          PacketToolsProvider.PACKET_API.setBlockGlowing(player, loc, true);
-        }
-      } else {
-        for (final Location loc : this.locations) {
-          PacketToolsProvider.PACKET_API.setBlockGlowing(player, loc, false);
-        }
-      }
-    });
+      this.sendGlowingPackets(player, item);
+    }
+  }
+
+  private void sendGlowingPackets(final Player player, final ItemStack item) {
+    if (PDCUtils.isWand(item)) {
+      this.locations.forEach(loc -> PacketToolsProvider.PACKET_API.setBlockGlowing(player, loc, true));
+    } else {
+      this.locations.forEach(loc -> PacketToolsProvider.PACKET_API.setBlockGlowing(player, loc, false));
+    }
   }
 
   public void unregister() {

@@ -64,16 +64,11 @@ public final class GadgetShopGui extends ChestGui {
     final Collection<Gadget> gadgets = registry.getGadgets();
     final List<ItemStack> items = new ArrayList<>();
     for (final Gadget gadget : gadgets) {
-      if (isSurvivorGadgets) {
-        if (gadget instanceof SurvivorApparatus) {
-          final ItemStack stack = this.getModifiedLoreWithCost(gadget);
-          items.add(stack);
-        }
-      } else {
-        if (gadget instanceof KillerApparatus) {
-          final ItemStack stack = this.getModifiedLoreWithCost(gadget);
-          items.add(stack);
-        }
+      final boolean add =
+        (isSurvivorGadgets && gadget instanceof SurvivorApparatus) || (!isSurvivorGadgets && gadget instanceof KillerApparatus);
+      if (add) {
+        final ItemStack stack = this.getModifiedLoreWithCost(gadget);
+        items.add(stack);
       }
     }
     return items;
@@ -171,11 +166,7 @@ public final class GadgetShopGui extends ChestGui {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(
-      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-      this::handleClose,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), this::handleClose, this.plugin);
   }
 
   private void handleClose(final InventoryClickEvent event) {

@@ -20,13 +20,7 @@ import org.checkerframework.checker.nullness.qual.KeyFor;
 public final class IcePath extends KillerGadget {
 
   public IcePath() {
-    super(
-      "ice_path",
-      Material.ICE,
-      Message.ICE_PATH_NAME.build(),
-      Message.ICE_PATH_LORE.build(),
-      GameProperties.ICE_PATH_COST
-    );
+    super("ice_path", Material.ICE, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build(), GameProperties.ICE_PATH_COST);
   }
 
   @Override

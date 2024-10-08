@@ -53,10 +53,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
 
   @Permission("murderrun.command.debug.gadget")
   @Command(value = "murder debug gadget <gadgetName>", requiredSender = Player.class)
-  public void debugGadget(
-    final Player sender,
-    @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName
-  ) {
+  public void debugGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
     final Audience audience = this.audiences.player(sender);
     final List<MerchantRecipe> allGadgets = TradingUtils.parseRecipes(gadgetName);
     if (this.checkIfInvalidGadget(audience, allGadgets)) {

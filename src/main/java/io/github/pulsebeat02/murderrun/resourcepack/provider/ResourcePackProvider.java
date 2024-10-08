@@ -42,12 +42,7 @@ public abstract class ResourcePackProvider implements PackProvider {
     final Component message = Message.RESOURCEPACK_PROMPT.build();
     final CompletableFuture<ResourcePackInfo> info = ResourcePackInfo.resourcePackInfo().uri(uri).computeHashAndBuild();
     return info.thenApplyAsync(pack ->
-      ResourcePackRequest.resourcePackRequest()
-        .packs(pack)
-        .required(true)
-        .prompt(message)
-        .replace(true)
-        .asResourcePackRequest()
+      ResourcePackRequest.resourcePackRequest().packs(pack).required(true).prompt(message).replace(true).asResourcePackRequest()
     );
   }
 

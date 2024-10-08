@@ -34,6 +34,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class LobbyModificationGui extends ChestGui implements Listener {
 
@@ -42,7 +43,6 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private final MurderRun plugin;
   private final HumanEntity watcher;
   private final Audience audience;
-  private final String original;
   private final boolean editMode;
   private final PatternPane pane;
 
@@ -63,21 +63,26 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     final boolean editMode
   ) {
     super(4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()), plugin);
-    final Server server = plugin.getServer();
+    this.pane = new PatternPane(0, 0, 9, 4, CREATE_LOBBY_PATTERN);
+    this.audience = this.getAudience(plugin, watcher);
+    this.plugin = plugin;
+    this.watcher = watcher;
+    this.spawn = spawn;
+    this.lobbyName = lobbyName;
+    this.editMode = editMode;
+  }
+
+  public void registerEvents() {
+    final Server server = this.plugin.getServer();
     final PluginManager manager = server.getPluginManager();
+    manager.registerEvents(this, this.plugin);
+  }
+
+  private Audience getAudience(@UnderInitialization LobbyModificationGui this, final MurderRun plugin, final HumanEntity watcher) {
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
-    this.plugin = plugin;
-    this.watcher = watcher;
-    this.audience = audiences.player(uuid);
-    this.spawn = spawn;
-    this.original = lobbyName;
-    this.lobbyName = lobbyName;
-    this.listenForSpawn = false;
-    this.editMode = editMode;
-    this.pane = new PatternPane(0, 0, 9, 4, CREATE_LOBBY_PATTERN);
-    manager.registerEvents(this, plugin);
+    return audiences.player(uuid);
   }
 
   @Override
@@ -104,53 +109,57 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     if (this.listenForSpawn || this.listenForName) {
       return;
     }
+
     final HandlerList list = BlockBreakEvent.getHandlerList();
     list.unregister(this);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerChat(final AsyncPlayerChatEvent event) {
-    if (!this.listenForName) {
-      return;
-    }
-
     final Player player = event.getPlayer();
     if (player != this.watcher) {
       return;
     }
 
+    if (!this.listenForName) {
+      return;
+    }
+    event.setCancelled(true);
+
     this.lobbyName = event.getMessage();
     this.listenForName = false;
 
+    this.showAsync();
+  }
+
+  private void showAsync() {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.callSyncMethod(this.plugin, () -> {
       this.update();
       this.show(this.watcher);
       return null;
     });
-
-    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerInteract(final BlockBreakEvent event) {
-    if (!this.listenForSpawn) {
-      return;
-    }
-
     final Player player = event.getPlayer();
     if (player != this.watcher) {
       return;
     }
 
+    if (!this.listenForSpawn) {
+      return;
+    }
+    event.setCancelled(true);
+
     final Block block = event.getBlock();
     final Location temp = block.getLocation();
     this.spawn = MapUtils.getHighestSpawnLocation(temp);
+
     this.listenForSpawn = false;
     this.update();
     this.show(this.watcher);
-
-    event.setCancelled(true);
   }
 
   private GuiItem createCloseStack() {
@@ -175,18 +184,14 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
       this.audience.sendMessage(msg);
       return;
     }
-
-    final LobbyManager manager = this.plugin.getLobbyManager();
-    if (this.editMode) {
-      manager.removeLobby(this.original);
-    }
-    manager.addLobby(this.lobbyName, this.spawn);
-
-    this.plugin.updatePluginData();
     this.watcher.closeInventory();
 
-    final Component msg1 = Message.LOBBY_BUILT.build();
-    this.audience.sendMessage(msg1);
+    final LobbyManager manager = this.plugin.getLobbyManager();
+    manager.addLobby(this.lobbyName, this.spawn);
+    this.plugin.updatePluginData();
+
+    final Component msg = Message.LOBBY_BUILT.build();
+    this.audience.sendMessage(msg);
   }
 
   private GuiItem createDeleteStack() {
@@ -210,12 +215,11 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   }
 
   private GuiItem createEditSpawnStack() {
-    final Component message = AdventureUtils.createLocationComponent(
-      Message.CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY,
-      this.spawn
-    );
     return new GuiItem(
-      Item.builder(Material.ANVIL).name(message).lore(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_LORE.build()).build(),
+      Item.builder(Material.ANVIL)
+        .name(AdventureUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY, this.spawn))
+        .lore(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_LORE.build())
+        .build(),
       this::listenForBlockBreak,
       this.plugin
     );

@@ -26,13 +26,7 @@ import org.bukkit.entity.Item;
 public final class CryoFreeze extends SurvivorGadget {
 
   public CryoFreeze() {
-    super(
-      "cryo_freeze",
-      Material.ICE,
-      Message.CRYO_FREEZE_NAME.build(),
-      Message.CRYO_FREEZE_LORE.build(),
-      GameProperties.CRYO_FREEZE_COST
-    );
+    super("cryo_freeze", Material.ICE, Message.CRYO_FREEZE_NAME.build(), Message.CRYO_FREEZE_LORE.build(), GameProperties.CRYO_FREEZE_COST);
   }
 
   @Override

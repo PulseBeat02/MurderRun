@@ -31,22 +31,11 @@ import org.bukkit.util.EulerAngle;
 public final class MedBot extends SurvivorGadget {
 
   public MedBot() {
-    super(
-      "med_bot",
-      Material.DISPENSER,
-      Message.MED_BOT_NAME.build(),
-      Message.MED_BOT_LORE.build(),
-      GameProperties.MED_BOT_COST
-    );
+    super("med_bot", Material.DISPENSER, Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build(), GameProperties.MED_BOT_COST);
   }
 
   @Override
-  public boolean onGadgetDrop(
-    final Game game,
-    final GamePlayer player,
-    final org.bukkit.entity.Item item,
-    final boolean remove
-  ) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final org.bukkit.entity.Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();
@@ -111,8 +100,7 @@ public final class MedBot extends SurvivorGadget {
   private void handleVerticalMotion(final GameScheduler scheduler, final ArmorStand stand) {
     final AtomicDouble lastYOffset = new AtomicDouble();
     final AtomicLong currentTick = new AtomicLong();
-    final Runnable task = () ->
-      lastYOffset.set(this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
+    final Runnable task = () -> lastYOffset.set(this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
     scheduler.scheduleConditionalTask(task, 0, 1, stand::isDead);
   }
 

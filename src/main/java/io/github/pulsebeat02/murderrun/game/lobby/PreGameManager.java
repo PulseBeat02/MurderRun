@@ -14,29 +14,21 @@ public final class PreGameManager {
   private final GameSettings settings;
   private final String id;
   private final GameEventsListener callback;
-  private final PreGamePlayerManager manager;
 
+  private PreGamePlayerManager manager;
   private PreGameEvents events;
 
-  @SuppressWarnings("all")
-  public PreGameManager(
-    final MurderRun plugin,
-    final CommandSender leader,
-    final String id,
-    final int min,
-    final int max,
-    final boolean quickJoinable,
-    final GameEventsListener callback
-  ) {
+  public PreGameManager(final MurderRun plugin, final String id, final GameEventsListener callback) {
     this.plugin = plugin;
     this.callback = callback;
     this.id = id;
     this.game = new Game(plugin);
-    this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
+
     this.settings = new GameSettings();
   }
 
-  public void initialize() {
+  public void initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
+    this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.events = new PreGameEvents(this);
     this.events.registerEvents();
     this.manager.initialize();

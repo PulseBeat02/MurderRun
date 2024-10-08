@@ -23,23 +23,12 @@ public final class Fright extends KillerGadget {
   private final Set<GamePlayer> currentlyJumpScared;
 
   public Fright() {
-    super(
-      "fright",
-      Material.BLACK_CONCRETE,
-      Message.FRIGHT_NAME.build(),
-      Message.FRIGHT_LORE.build(),
-      GameProperties.FRIGHT_COST
-    );
+    super("fright", Material.BLACK_CONCRETE, Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build(), GameProperties.FRIGHT_COST);
     this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
   }
 
   @Override
-  public boolean onGadgetDrop(
-    final Game game,
-    final GamePlayer player,
-    final org.bukkit.entity.Item item,
-    final boolean remove
-  ) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final org.bukkit.entity.Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final PlayerManager manager = game.getPlayerManager();

@@ -15,13 +15,7 @@ import org.bukkit.entity.Item;
 public final class Phantom extends KillerGadget {
 
   public Phantom() {
-    super(
-      "phantom",
-      Material.PHANTOM_MEMBRANE,
-      Message.PHANTOM_NAME.build(),
-      Message.PHANTOM_LORE.build(),
-      GameProperties.PHANTOM_COST
-    );
+    super("phantom", Material.PHANTOM_MEMBRANE, Message.PHANTOM_NAME.build(), Message.PHANTOM_LORE.build(), GameProperties.PHANTOM_COST);
   }
 
   @Override

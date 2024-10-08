@@ -74,10 +74,7 @@ public final class MetadataManager {
     return team;
   }
 
-  private Map<ChatColor, Team> createGlowTeams(
-    @UnderInitialization MetadataManager this,
-    final GamePlayer participant
-  ) {
+  private Map<ChatColor, Team> createGlowTeams(@UnderInitialization MetadataManager this, final GamePlayer participant) {
     final Map<ChatColor, Team> teams = new HashMap<>();
     participant.apply(player -> {
       final Scoreboard scoreboard = player.getScoreboard();
@@ -90,11 +87,7 @@ public final class MetadataManager {
     return teams;
   }
 
-  private Team createGlowTeam(
-    @UnderInitialization MetadataManager this,
-    final ChatColor color,
-    final Scoreboard scoreboard
-  ) {
+  private Team createGlowTeam(@UnderInitialization MetadataManager this, final ChatColor color, final Scoreboard scoreboard) {
     final UUID uuid = UUID.randomUUID();
     final String name = uuid.toString();
     final Team team = scoreboard.registerNewTeam(name);
@@ -128,12 +121,7 @@ public final class MetadataManager {
     this.sidebar.shutdown();
   }
 
-  public void setEntityGlowing(
-    final GameScheduler scheduler,
-    final GamePlayer participant,
-    final ChatColor color,
-    final long time
-  ) {
+  public void setEntityGlowing(final GameScheduler scheduler, final GamePlayer participant, final ChatColor color, final long time) {
     this.setEntityGlowing(participant, color, true);
     scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time);
   }

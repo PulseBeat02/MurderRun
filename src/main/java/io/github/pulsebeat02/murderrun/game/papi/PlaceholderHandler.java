@@ -10,14 +10,8 @@ public final class PlaceholderHandler {
 
   private static final Collection<Placeholder> PLACEHOLDERS = new HashSet<>();
 
-  private static final Placeholder FASTEST_WIN_KILLER = of(
-    "fastest_win_killer",
-    checkValue(PlayerStatistics::getFastestWinKiller)
-  );
-  private static final Placeholder FASTEST_WIN_SURVIVOR = of(
-    "fastest_win_survivor",
-    checkValue(PlayerStatistics::getFastestWinSurvivor)
-  );
+  private static final Placeholder FASTEST_WIN_KILLER = of("fastest_win_killer", checkValue(PlayerStatistics::getFastestWinKiller));
+  private static final Placeholder FASTEST_WIN_SURVIVOR = of("fastest_win_survivor", checkValue(PlayerStatistics::getFastestWinSurvivor));
   private static final Placeholder TOTAL_KILLS = of("total_kills", PlayerStatistics::getTotalKills);
   private static final Placeholder TOTAL_DEATHS = of("total_deaths", PlayerStatistics::getTotalDeaths);
   private static final Placeholder TOTAL_WINS = of("total_wins", PlayerStatistics::getTotalWins);

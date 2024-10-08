@@ -31,13 +31,7 @@ import org.bukkit.util.BoundingBox;
 public final class EMPBlast extends KillerGadget {
 
   public EMPBlast() {
-    super(
-      "emp_blast",
-      Material.TARGET,
-      Message.EMP_BLAST_NAME.build(),
-      Message.EMP_BLAST_LORE.build(),
-      GameProperties.EMP_BLAST_COST
-    );
+    super("emp_blast", Material.TARGET, Message.EMP_BLAST_NAME.build(), Message.EMP_BLAST_LORE.build(), GameProperties.EMP_BLAST_COST);
   }
 
   @Override

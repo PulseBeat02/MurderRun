@@ -11,13 +11,10 @@ import java.util.stream.Collectors;
 
 public final class StreamUtils {
 
-  private static final Collector<?, ?, ?> SHUFFLER = Collectors.collectingAndThen(
-    Collectors.toCollection(ArrayList::new),
-    list -> {
-      Collections.shuffle(list);
-      return list;
-    }
-  );
+  private static final Collector<?, ?, ?> SHUFFLER = Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), list -> {
+    Collections.shuffle(list);
+    return list;
+  });
 
   private StreamUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");

@@ -19,13 +19,7 @@ import org.bukkit.entity.Item;
 public final class PartWarp extends KillerGadget {
 
   public PartWarp() {
-    super(
-      "part_warp",
-      Material.REPEATER,
-      Message.PART_WARP_NAME.build(),
-      Message.PART_WARP_LORE.build(),
-      GameProperties.PART_WARP_COST
-    );
+    super("part_warp", Material.REPEATER, Message.PART_WARP_NAME.build(), Message.PART_WARP_LORE.build(), GameProperties.PART_WARP_COST);
   }
 
   @Override

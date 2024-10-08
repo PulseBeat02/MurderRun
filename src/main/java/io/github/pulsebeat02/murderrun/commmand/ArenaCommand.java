@@ -173,10 +173,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   public void createArena(final Player sender) {
     final Audience audience = this.audiences.player(sender);
     if (
-      this.handleNullCorner(audience) ||
-      this.handleNullSpawn(audience) ||
-      this.handleNullTruck(audience) ||
-      this.handleNullName(audience)
+      this.handleNullCorner(audience) || this.handleNullSpawn(audience) || this.handleNullTruck(audience) || this.handleNullName(audience)
     ) {
       return;
     }

@@ -65,10 +65,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.gadget.retrieve")
   @CommandDescription("murderrun.command.gadget.retrieve.info")
   @Command(value = "murder gadget retrieve <gadgetName>", requiredSender = Player.class)
-  public void retrieveGadget(
-    final Player sender,
-    @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName
-  ) {
+  public void retrieveGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
     final PlayerInventory inventory = sender.getInventory();
     final Audience audience = this.audiences.player(sender);
     final List<MerchantRecipe> allGadgets = TradingUtils.parseRecipes(gadgetName);

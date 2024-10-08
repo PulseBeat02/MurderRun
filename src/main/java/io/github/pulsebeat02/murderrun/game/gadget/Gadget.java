@@ -6,7 +6,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface Gadget {
   void onGadgetNearby(final Game game, final GamePlayer activator, final Item item);
@@ -21,6 +20,5 @@ public interface Gadget {
 
   int getPrice();
 
-  @NonNull
   MerchantRecipe createRecipe();
 }

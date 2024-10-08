@@ -69,10 +69,7 @@ public final class GameCommand implements AnnotationCommandFeature {
 
   @Permission("murderrun.command.game.create")
   @CommandDescription("murderrun.command.game.create.info")
-  @Command(
-    value = "murder game create <arenaName> <lobbyName> <id> <min> <max> <quickJoinable>",
-    requiredSender = CommandSender.class
-  )
+  @Command(value = "murder game create <arenaName> <lobbyName> <id> <min> <max> <quickJoinable>", requiredSender = CommandSender.class)
   public void createGame(
     final CommandSender sender,
     @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
@@ -104,10 +101,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void cancelGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
     final PreGameManager data = this.manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
@@ -242,8 +236,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final PreGameManager data = this.manager.getGame(sender);
     if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, requireNonNull(data))
+      this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, requireNonNull(data))
     ) {
       return;
     }
@@ -261,10 +254,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void setMurderer(final Player sender, final Player murderer) {
     final Audience audience = this.audiences.player(sender);
     final PreGameManager data = this.manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
@@ -282,10 +272,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void setInnocent(final Player sender, final Player innocent) {
     final Audience audience = this.audiences.player(sender);
     final PreGameManager data = this.manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
@@ -303,10 +290,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void quickJoinGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
     final PreGameManager temp = this.manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfAlreadyInGame(audience, temp) ||
-      this.sanitizer.checkIfNoQuickJoinableGame(sender, audience, this.manager)
-    ) {
+    if (this.sanitizer.checkIfAlreadyInGame(audience, temp) || this.sanitizer.checkIfNoQuickJoinableGame(sender, audience, this.manager)) {
       return;
     }
 

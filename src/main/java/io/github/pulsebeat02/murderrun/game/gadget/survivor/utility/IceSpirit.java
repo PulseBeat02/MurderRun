@@ -101,12 +101,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
   }
 
   @Override
-  public boolean onGadgetDrop(
-    final Game game,
-    final GamePlayer player,
-    final org.bukkit.entity.Item item,
-    final boolean remove
-  ) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final org.bukkit.entity.Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     final Location location = player.getLocation();

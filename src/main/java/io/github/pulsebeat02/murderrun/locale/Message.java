@@ -18,30 +18,15 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> BOSS_BAR = direct("murderrun.game.time.remaining");
   UniComponent<Sender, String> PLAYER_DEATH = direct("murderrun.game.player.death", null);
   NullComponent<Sender> RESOURCEPACK_PROMPT = direct("murderrun.resourcepack.prompt");
-  TriComponent<Sender, Integer, Integer, Integer> ARENA_FIRST_CORNER = direct(
-    "murderrun.command.arena.set.corner.first",
-    null,
-    null,
-    null
-  );
+  TriComponent<Sender, Integer, Integer, Integer> ARENA_FIRST_CORNER = direct("murderrun.command.arena.set.corner.first", null, null, null);
   TriComponent<Sender, Integer, Integer, Integer> ARENA_SECOND_CORNER = direct(
     "murderrun.command.arena.set.corner.second",
     null,
     null,
     null
   );
-  TriComponent<Sender, Integer, Integer, Integer> ARENA_SPAWN = direct(
-    "murderrun.command.arena.set.spawn",
-    null,
-    null,
-    null
-  );
-  TriComponent<Sender, Integer, Integer, Integer> ARENA_TRUCK = direct(
-    "murderrun.command.arena.set.truck",
-    null,
-    null,
-    null
-  );
+  TriComponent<Sender, Integer, Integer, Integer> ARENA_SPAWN = direct("murderrun.command.arena.set.spawn", null, null, null);
+  TriComponent<Sender, Integer, Integer, Integer> ARENA_TRUCK = direct("murderrun.command.arena.set.truck", null, null, null);
   UniComponent<Sender, String> ARENA_NAME = direct("murderrun.command.arena.set.name", null);
   NullComponent<Sender> ARENA_CORNER_ERROR = direct("murderrun.command.arena.set.corner.error");
   NullComponent<Sender> ARENA_SPAWN_ERROR = direct("murderrun.command.arena.set.spawn.error");
@@ -50,12 +35,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> ARENA_BUILT = direct("murderrun.command.arena.create");
   UniComponent<Sender, List<String>> ARENA_LIST = direct("murderrun.command.arena.list", null);
   UniComponent<Sender, String> LOBBY_NAME = direct("murderrun.command.lobby.set.name", null);
-  TriComponent<Sender, Integer, Integer, Integer> LOBBY_SPAWN = direct(
-    "murderrun.command.lobby.set.spawn",
-    null,
-    null,
-    null
-  );
+  TriComponent<Sender, Integer, Integer, Integer> LOBBY_SPAWN = direct("murderrun.command.lobby.set.spawn", null, null, null);
   NullComponent<Sender> LOBBY_NAME_ERROR = direct("murderrun.command.lobby.set.name.error");
   NullComponent<Sender> LOBBY_SPAWN_ERROR = direct("murderrun.command.lobby.set.spawn.error");
   NullComponent<Sender> LOBBY_BUILT = direct("murderrun.command.lobby.create");
@@ -350,14 +330,8 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GADGET_RETRIEVE_ERROR = direct("murderrun.command.gadget.retrieve.error");
   NullComponent<Sender> GAME_INVITE_ALREADY_ERROR = direct("murderrun.command.game.invite.present");
   NullComponent<Sender> GAME_STARTED_ERROR = direct("murderrun.command.game.start.error");
-  UniComponent<Sender, String> MIND_CONTROL_ACTIVATE_KILLER = direct(
-    "murderrun.game.gadget.mind_control.activate_killer",
-    null
-  );
-  UniComponent<Sender, String> MIND_CONTROL_ACTIVATE_SURVIVOR = direct(
-    "murderrun.game.gadget.mind_control.activate_survivor",
-    null
-  );
+  UniComponent<Sender, String> MIND_CONTROL_ACTIVATE_KILLER = direct("murderrun.game.gadget.mind_control.activate_killer", null);
+  UniComponent<Sender, String> MIND_CONTROL_ACTIVATE_SURVIVOR = direct("murderrun.game.gadget.mind_control.activate_survivor", null);
   NullComponent<Sender> SHOP_GUI_TITLE = direct("murderrun.gui.shop.name");
   NullComponent<Sender> SHOP_GUI_CANCEL = direct("murderrun.gui.shop.cancel");
   NullComponent<Sender> SHOP_GUI_FORWARD = direct("murderrun.gui.shop.forward");
@@ -388,10 +362,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MANAGE_LOBBY_GUI_CREATE = direct("murderrun.gui.lobby.manage.create");
   NullComponent<Sender> MANAGE_LOBBY_GUI_EDIT = direct("murderrun.gui.lobby.manage.edit");
   NullComponent<Sender> CREATE_LOBBY_GUI_TITLE = direct("murderrun.gui.lobby.create.title");
-  UniComponent<Sender, String> CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY = direct(
-    "murderrun.gui.lobby.create.edit.name.name",
-    null
-  );
+  UniComponent<Sender, String> CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY = direct("murderrun.gui.lobby.create.edit.name.name", null);
   NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_NAME_LORE = direct("murderrun.gui.lobby.create.edit.name.lore");
   TriComponent<Sender, Integer, Integer, Integer> CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY = direct(
     "murderrun.gui.lobby.create.edit.spawn.name",
@@ -418,18 +389,11 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> SHOP_NPC_ERROR = direct("murderrun.npc.role.error");
   NullComponent<Sender> MISUSE_GADGET_ERROR = direct("murderrun.gadget.error");
   NullComponent<Sender> CREATE_ARENA_GUI_TITLE = direct("murderrun.gui.arena.create.title");
-  UniComponent<Sender, String> CREATE_ARENA_GUI_EDIT_NAME_DISPLAY = direct(
-    "murderrun.gui.arena.create.edit.name.name",
-    null
-  );
+  UniComponent<Sender, String> CREATE_ARENA_GUI_EDIT_NAME_DISPLAY = direct("murderrun.gui.arena.create.edit.name.name", null);
   NullComponent<Sender> CREATE_ARENA_GUI_EDIT_NAME_LORE = direct("murderrun.gui.arena.create.edit.name.lore");
   NullComponent<Sender> CREATE_ARENA_GUI_EDIT_NAME = direct("murderrun.gui.arena.create.edit.message.name");
-  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_LOCATIONS_DISPLAY = direct(
-    "murderrun.gui.arena.create.edit.locations.name"
-  );
-  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE1 = direct(
-    "murderrun.gui.arena.create.edit.locations.lore.info"
-  );
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_LOCATIONS_DISPLAY = direct("murderrun.gui.arena.create.edit.locations.name");
+  NullComponent<Sender> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE1 = direct("murderrun.gui.arena.create.edit.locations.lore.info");
   TriComponent<Sender, Integer, Integer, Integer> CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2 = direct(
     "murderrun.gui.arena.create.edit.locations.lore.spawn",
     null,
@@ -506,11 +470,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> LOBBY_TIMER_CANCEL = direct("murderrun.lobby.timer.cancel");
   NullComponent<Sender> LOBBY_SCOREBOARD_TITLE = direct("murdderun.lobby.scoreboard.title");
   UniComponent<Sender, String> LOBBY_SCOREBOARD_ARENA = direct("murderrun.lobby.scoreboard.arena", null);
-  BiComponent<Sender, Integer, Integer> LOBBY_SCOREBOARD_PLAYERS = direct(
-    "murderrun.lobby.scoreboard.players",
-    null,
-    null
-  );
+  BiComponent<Sender, Integer, Integer> LOBBY_SCOREBOARD_PLAYERS = direct("murderrun.lobby.scoreboard.players", null, null);
   UniComponent<Sender, Integer> LOBBY_SCOREBOARD_TIME = direct("murderrun.lobby.scoreboard.time", null);
   NullComponent<Sender> LOBBY_SCOREBOARD_DOMAIN = direct("murderrun.lobby.scoreboard.domain");
   NullComponent<Sender> GAME_FULL = direct("murderrun.command.game.player.join.full");
@@ -520,14 +480,8 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GAME_CREATE_EDIT_MAX = direct("murderrun.gui.game.create.edit.message.players.maximum");
   NullComponent<Sender> GAME_CREATE_EDIT_COUNT_ERROR = direct("murderrun.gui.game.create.edit.message.players.error");
   UniComponent<Sender, String> GAME_CREATE_EDIT_ID_DISPLAY = direct("murderrun.gui.game.create.edit.id.name", null);
-  UniComponent<Sender, Integer> GAME_CREATE_EDIT_MIN_DISPLAY = direct(
-    "murderrun.gui.game.create.edit.players.minimum.name",
-    null
-  );
-  UniComponent<Sender, Integer> GAME_CREATE_EDIT_MAX_DISPLAY = direct(
-    "murderrun.gui.game.create.edit.players.maximum.name",
-    null
-  );
+  UniComponent<Sender, Integer> GAME_CREATE_EDIT_MIN_DISPLAY = direct("murderrun.gui.game.create.edit.players.minimum.name", null);
+  UniComponent<Sender, Integer> GAME_CREATE_EDIT_MAX_DISPLAY = direct("murderrun.gui.game.create.edit.players.maximum.name", null);
   NullComponent<Sender> GAME_CREATE_EDIT_ID_LORE = direct("murderrun.gui.game.create.edit.id.lore");
   NullComponent<Sender> GAME_CREATE_EDIT_MIN_LORE = direct("murderrun.gui.game.create.edit.players.minimum.lore");
   NullComponent<Sender> GAME_CREATE_EDIT_MAX_LORE = direct("murderrun.gui.game.create.edit.players.maximum.lore");

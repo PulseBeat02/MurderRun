@@ -28,12 +28,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class ArenaNavigationGui extends ChestGui {
 
-  private static final Pattern NAVIGTATION_ARENA_PATTERN = new Pattern(
-    "111111111",
-    "111314111",
-    "111111111",
-    "111121111"
-  );
+  private static final Pattern NAVIGTATION_ARENA_PATTERN = new Pattern("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
@@ -88,17 +83,9 @@ public final class ArenaNavigationGui extends ChestGui {
     final Location[] items = arena.getCarPartLocations();
     final Collection<Location> locations = Arrays.asList(items);
     final Collection<Location> copy = new ArrayList<>(locations);
-    final ChestGui gui = new ArenaModificationGui(
-      this.plugin,
-      ArenaNavigationGui.this.watcher,
-      name,
-      spawn,
-      truck,
-      first,
-      second,
-      copy,
-      true
-    );
+    final HumanEntity watcher = event.getWhoClicked();
+    final ArenaModificationGui gui = new ArenaModificationGui(this.plugin, watcher, name, spawn, truck, first, second, copy, true);
+    gui.registerEvents();
     gui.update();
     gui.show(this.watcher);
   }
@@ -112,7 +99,8 @@ public final class ArenaNavigationGui extends ChestGui {
   }
 
   private void createArenaMenu(final InventoryClickEvent event) {
-    final ChestGui gui = new ArenaModificationGui(this.plugin, this.watcher, false);
+    final ArenaModificationGui gui = new ArenaModificationGui(this.plugin, this.watcher, false);
+    gui.registerEvents();
     gui.update();
     gui.show(this.watcher);
   }

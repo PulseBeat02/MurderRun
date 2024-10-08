@@ -38,10 +38,7 @@ public final class MCPackHosting extends ResourcePackProvider {
 
   private PackInfo createNewPackInfo(final Path zip) {
     final String name = IOUtils.getName(zip);
-    try (
-      final InputStream stream = Files.newInputStream(zip);
-      final InputStream fast = new FastBufferedInputStream(stream)
-    ) {
+    try (final InputStream stream = Files.newInputStream(zip); final InputStream fast = new FastBufferedInputStream(stream)) {
       final Response uploadResponse = this.getResponse(name, fast);
       final Document document = uploadResponse.parse();
       final String url = this.getDownloadUrl(document);

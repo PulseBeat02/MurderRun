@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.PlayerInventory;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class AbstractGadget implements Gadget {
@@ -23,13 +22,7 @@ public abstract class AbstractGadget implements Gadget {
   private final int cost;
   private final ItemStack gadget;
 
-  public AbstractGadget(
-    final String name,
-    final Material material,
-    final Component itemName,
-    final Component itemLore,
-    final int cost
-  ) {
+  public AbstractGadget(final String name, final Material material, final Component itemName, final Component itemLore, final int cost) {
     this(name, material, itemName, itemLore, cost, null);
   }
 
@@ -92,7 +85,7 @@ public abstract class AbstractGadget implements Gadget {
   }
 
   @Override
-  public @NonNull MerchantRecipe createRecipe() {
+  public MerchantRecipe createRecipe() {
     final ItemStack ingredient = ItemFactory.createCurrency(this.cost);
     final int uses = Integer.MAX_VALUE;
     final MerchantRecipe recipe = new MerchantRecipe(requireNonNull(this.gadget), uses);

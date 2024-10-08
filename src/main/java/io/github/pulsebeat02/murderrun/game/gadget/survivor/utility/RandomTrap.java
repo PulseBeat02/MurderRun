@@ -16,13 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
 public final class RandomTrap extends SurvivorGadget {
 
   public RandomTrap() {
-    super(
-      "random",
-      Material.END_PORTAL_FRAME,
-      Message.RANDOM_NAME.build(),
-      Message.RANDOM_LORE.build(),
-      GameProperties.RANDOM_TRAP_COST
-    );
+    super("random", Material.END_PORTAL_FRAME, Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build(), GameProperties.RANDOM_TRAP_COST);
   }
 
   @Override

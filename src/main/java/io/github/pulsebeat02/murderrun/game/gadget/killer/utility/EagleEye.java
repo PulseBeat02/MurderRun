@@ -21,13 +21,7 @@ import org.bukkit.entity.Item;
 public final class EagleEye extends KillerGadget {
 
   public EagleEye() {
-    super(
-      "eagle_eye",
-      Material.FEATHER,
-      Message.EAGLE_EYE_NAME.build(),
-      Message.EAGLE_EYE_LORE.build(),
-      GameProperties.EAGLE_EYE_COST
-    );
+    super("eagle_eye", Material.FEATHER, Message.EAGLE_EYE_NAME.build(), Message.EAGLE_EYE_LORE.build(), GameProperties.EAGLE_EYE_COST);
   }
 
   @Override

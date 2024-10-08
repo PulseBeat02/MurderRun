@@ -76,19 +76,14 @@ public final class PlayerManager {
       .filter(StreamUtils.isInstanceOf(Killer.class))
       .map(murderer -> (Killer) murderer)
       .collect(StreamUtils.toSynchronizedSet());
-    this.cachedDeadPlayers = players
-      .stream()
-      .filter(StreamUtils.inverse(GamePlayer::isAlive))
-      .collect(StreamUtils.toSynchronizedSet());
+    this.cachedDeadPlayers = players.stream().filter(StreamUtils.inverse(GamePlayer::isAlive)).collect(StreamUtils.toSynchronizedSet());
     this.cachedSurvivors = players
       .stream()
       .filter(player -> player instanceof Survivor)
       .map(murderer -> (Survivor) murderer)
       .collect(StreamUtils.toSynchronizedSet());
     this.cachedAlivePlayers = players.stream().filter(GamePlayer::isAlive).collect(StreamUtils.toSynchronizedSet());
-    this.cachedAliveSurvivors = this.cachedSurvivors.stream()
-      .filter(GamePlayer::isAlive)
-      .collect(StreamUtils.toSynchronizedSet());
+    this.cachedAliveSurvivors = this.cachedSurvivors.stream().filter(GamePlayer::isAlive).collect(StreamUtils.toSynchronizedSet());
   }
 
   public @Nullable GamePlayer getNearestKiller(final Location origin) {
@@ -381,8 +376,7 @@ public final class PlayerManager {
   }
 
   public Survivor getRandomAliveInnocentPlayer() {
-    final List<Survivor> list =
-      this.cachedSurvivors.stream().filter(Survivor::isAlive).collect(StreamUtils.toShuffledList());
+    final List<Survivor> list = this.cachedSurvivors.stream().filter(Survivor::isAlive).collect(StreamUtils.toShuffledList());
     return list.getFirst();
   }
 

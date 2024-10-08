@@ -65,14 +65,13 @@ public final class LobbyListGui extends ChestGui {
   }
 
   private OutlinePane createBackgroundPane() {
+    final GuiItem border = new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+
     final OutlinePane background = new OutlinePane(0, 5, 9, 1);
-    final GuiItem border = new GuiItem(
-      Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(),
-      this.plugin
-    );
     background.addItem(border);
     background.setRepeat(true);
     background.setPriority(Pane.Priority.LOWEST);
+
     return background;
   }
 
@@ -101,11 +100,7 @@ public final class LobbyListGui extends ChestGui {
   private ItemStack constructLobbyItem(final String name, final Location spawn) {
     final Component title = Message.CHOOSE_LOBBY_GUI_LOBBY_DISPLAY.build(name);
     final Component lore = AdventureUtils.createLocationComponent(Message.CHOOSE_LOBBY_GUI_LOBBY_LORE, spawn);
-    return Item.builder(Material.WHITE_BANNER)
-      .name(title)
-      .lore(lore)
-      .pdc(Keys.LOBBY_NAME, PersistentDataType.STRING, name)
-      .build();
+    return Item.builder(Material.WHITE_BANNER).name(title).lore(lore).pdc(Keys.LOBBY_NAME, PersistentDataType.STRING, name).build();
   }
 
   private GuiItem createCloseStack() {
@@ -134,11 +129,7 @@ public final class LobbyListGui extends ChestGui {
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(
-      Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
-      this::handleBackPage,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(), this::handleBackPage, this.plugin);
   }
 
   private void handleBackPage(final InventoryClickEvent event) {

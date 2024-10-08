@@ -111,10 +111,7 @@ public final class CursedNote extends KillerGadget {
     });
   }
 
-  private Collection<CarPart> getCarPartsInRange(
-    final io.github.pulsebeat02.murderrun.game.map.Map map,
-    final Location origin
-  ) {
+  private Collection<CarPart> getCarPartsInRange(final io.github.pulsebeat02.murderrun.game.map.Map map, final Location origin) {
     final PartsManager manager = map.getCarPartManager();
     final Map<String, CarPart> mapping = manager.getParts();
     final Collection<CarPart> parts = mapping.values();

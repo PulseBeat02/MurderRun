@@ -13,11 +13,8 @@ import java.lang.reflect.Type;
 public final class BlockVectorAdapter implements JsonSerializer<BlockVector3>, JsonDeserializer<BlockVector3> {
 
   @Override
-  public BlockVector3 deserialize(
-    final JsonElement jsonString,
-    final Type typeOfT,
-    final JsonDeserializationContext context
-  ) throws JsonParseException {
+  public BlockVector3 deserialize(final JsonElement jsonString, final Type typeOfT, final JsonDeserializationContext context)
+    throws JsonParseException {
     final JsonObject obj = (JsonObject) jsonString;
     final JsonElement x = obj.get("x");
     final JsonElement y = obj.get("y");

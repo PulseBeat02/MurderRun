@@ -21,13 +21,7 @@ import org.bukkit.inventory.PlayerInventory;
 public final class Gamble extends KillerGadget {
 
   public Gamble() {
-    super(
-      "gamble",
-      Material.END_PORTAL_FRAME,
-      Message.GAMBLE_NAME.build(),
-      Message.GAMBLE_LORE.build(),
-      GameProperties.GAMBLE_COST
-    );
+    super("gamble", Material.END_PORTAL_FRAME, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build(), GameProperties.GAMBLE_COST);
   }
 
   @Override

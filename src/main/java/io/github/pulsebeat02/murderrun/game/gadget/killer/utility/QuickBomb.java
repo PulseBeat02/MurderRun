@@ -18,13 +18,7 @@ import org.bukkit.entity.TNTPrimed;
 public final class QuickBomb extends KillerGadget {
 
   public QuickBomb() {
-    super(
-      "quick_bomb",
-      Material.TNT,
-      Message.QUICK_BOMB_NAME.build(),
-      Message.QUICK_BOMB_LORE.build(),
-      GameProperties.QUICK_BOMB_COST
-    );
+    super("quick_bomb", Material.TNT, Message.QUICK_BOMB_NAME.build(), Message.QUICK_BOMB_LORE.build(), GameProperties.QUICK_BOMB_COST);
   }
 
   @Override

@@ -15,13 +15,7 @@ import org.bukkit.entity.Item;
 public final class Drone extends SurvivorGadget {
 
   public Drone() {
-    super(
-      "drone",
-      Material.PHANTOM_MEMBRANE,
-      Message.DRONE_NAME.build(),
-      Message.DRONE_LORE.build(),
-      GameProperties.DRONE_COST
-    );
+    super("drone", Material.PHANTOM_MEMBRANE, Message.DRONE_NAME.build(), Message.DRONE_LORE.build(), GameProperties.DRONE_COST);
   }
 
   @Override

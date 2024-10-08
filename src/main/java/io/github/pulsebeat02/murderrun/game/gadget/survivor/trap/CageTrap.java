@@ -19,20 +19,11 @@ import org.incendo.cloud.type.tuple.Triplet;
 
 public final class CageTrap extends SurvivorTrap {
 
-  private static final Set<BlockFace> faces = Set.of(
-    BlockFace.DOWN,
-    BlockFace.EAST,
-    BlockFace.WEST,
-    BlockFace.NORTH,
-    BlockFace.SOUTH
-  );
+  private static final Set<BlockFace> faces = Set.of(BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH);
   private static final List<Triplet<Integer, Integer, Integer>> CAGE_TRAP_VECTORS;
 
   static {
-    CAGE_TRAP_VECTORS = faces
-      .stream()
-      .map(face -> Triplet.of(face.getModX(), face.getModY(), face.getModZ()))
-      .collect(Collectors.toList());
+    CAGE_TRAP_VECTORS = faces.stream().map(face -> Triplet.of(face.getModX(), face.getModY(), face.getModZ())).collect(Collectors.toList());
     CAGE_TRAP_VECTORS.add(Triplet.of(0, 2, 0));
   }
 

@@ -23,13 +23,7 @@ public final class Parasite extends SurvivorGadget {
   private final Set<Integer> removed;
 
   public Parasite() {
-    super(
-      "parasite",
-      Material.VINE,
-      Message.PARASITE_NAME.build(),
-      Message.PARASITE_LORE.build(),
-      GameProperties.PARASITE_COST
-    );
+    super("parasite", Material.VINE, Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build(), GameProperties.PARASITE_COST);
     this.removed = new HashSet<>();
   }
 

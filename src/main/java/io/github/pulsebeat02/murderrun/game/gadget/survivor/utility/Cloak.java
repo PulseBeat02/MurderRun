@@ -13,13 +13,7 @@ import org.bukkit.entity.Item;
 public final class Cloak extends SurvivorGadget {
 
   public Cloak() {
-    super(
-      "cloak",
-      Material.WHITE_BANNER,
-      Message.CLOAK_NAME.build(),
-      Message.CLOAK_LORE.build(),
-      GameProperties.CLOAK_COST
-    );
+    super("cloak", Material.WHITE_BANNER, Message.CLOAK_NAME.build(), Message.CLOAK_LORE.build(), GameProperties.CLOAK_COST);
   }
 
   @Override

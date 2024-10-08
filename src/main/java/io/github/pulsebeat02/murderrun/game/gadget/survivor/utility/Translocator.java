@@ -49,9 +49,7 @@ public final class Translocator extends SurvivorGadget {
       return;
     }
 
-    final byte[] data = requireNonNull(
-      PDCUtils.getPersistentDataAttribute(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY)
-    );
+    final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = MapUtils.byteArrayToLocation(data);
     player.teleport(location);
 
@@ -62,12 +60,7 @@ public final class Translocator extends SurvivorGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(
-    final Game game,
-    final GamePlayer player,
-    final org.bukkit.entity.Item item,
-    final boolean remove
-  ) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final org.bukkit.entity.Item item, final boolean remove) {
     final Location location = player.getLocation();
     final ItemStack stack = item.getItemStack();
     final byte[] bytes = MapUtils.locationToByteArray(location);

@@ -32,12 +32,7 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfGameFull(
-    final Player sender,
-    final Audience audience,
-    final GameManager manager,
-    final PreGameManager game
-  ) {
+  public boolean checkIfGameFull(final Player sender, final Audience audience, final GameManager manager, final PreGameManager game) {
     final String id = game.getId();
     final boolean success = manager.joinGame(sender, id);
     if (!success) {
@@ -131,11 +126,7 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfOwnerOfCurrentGame(
-    final CommandSender sender,
-    final Audience audience,
-    final PreGameManager temp
-  ) {
+  public boolean checkIfOwnerOfCurrentGame(final CommandSender sender, final Audience audience, final PreGameManager temp) {
     final PreGamePlayerManager manager = temp.getPlayerManager();
     if (manager.isLeader(sender)) {
       final Component message = Message.GAME_LEAVE_ERROR.build();

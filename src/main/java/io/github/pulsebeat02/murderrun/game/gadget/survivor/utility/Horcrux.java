@@ -18,13 +18,7 @@ import org.bukkit.entity.Item;
 public final class Horcrux extends SurvivorGadget {
 
   public Horcrux() {
-    super(
-      "horcrux",
-      Material.CHARCOAL,
-      Message.HORCRUX_NAME.build(),
-      Message.HORCRUX_LORE.build(),
-      GameProperties.HORCRUX_COST
-    );
+    super("horcrux", Material.CHARCOAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build(), GameProperties.HORCRUX_COST);
   }
 
   @Override

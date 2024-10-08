@@ -70,8 +70,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
     final int duration = GameProperties.SMOKE_GRENADE_DURATION;
-    final Runnable task = () ->
-      world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
+    final Runnable task = () -> world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
     scheduler.scheduleRepeatedTask(task, 0, 1, duration);
 
     final PlayerManager manager = this.game.getPlayerManager();

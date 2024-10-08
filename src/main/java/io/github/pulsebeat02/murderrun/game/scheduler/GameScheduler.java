@@ -33,12 +33,7 @@ public final class GameScheduler {
     this.tasks.clear();
   }
 
-  public BukkitTask scheduleConditionalTask(
-    final Runnable runnable,
-    final long delay,
-    final long period,
-    final BooleanSupplier condition
-  ) {
+  public BukkitTask scheduleConditionalTask(final Runnable runnable, final long delay, final long period, final BooleanSupplier condition) {
     final ConditionalTask task = new ConditionalTask(this.game, runnable, condition);
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);
@@ -59,12 +54,7 @@ public final class GameScheduler {
     return bukkit;
   }
 
-  public BukkitTask scheduleRepeatedTask(
-    final Runnable runnable,
-    final long delay,
-    final long period,
-    final long duration
-  ) {
+  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period, final long duration) {
     final TemporaryRepeatedTask custom = new TemporaryRepeatedTask(this.game, runnable, period, duration);
     final BukkitTask bukkit = custom.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);

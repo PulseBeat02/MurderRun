@@ -23,13 +23,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class PortalTrap extends SurvivorGadget {
 
   public PortalTrap() {
-    super(
-      "portal",
-      Material.PURPLE_WOOL,
-      Message.PORTAL_NAME.build(),
-      Message.PORTAL_LORE.build(),
-      GameProperties.PORTAL_TRAP_COST
-    );
+    super("portal", Material.PURPLE_WOOL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build(), GameProperties.PORTAL_TRAP_COST);
   }
 
   @Override

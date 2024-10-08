@@ -26,22 +26,11 @@ import org.bukkit.inventory.PlayerInventory;
 public final class Ghosting extends SurvivorGadget {
 
   public Ghosting() {
-    super(
-      "ghosting",
-      Material.WHITE_WOOL,
-      Message.GHOSTING_NAME.build(),
-      Message.GHOSTING_LORE.build(),
-      GameProperties.GHOSTING_COST
-    );
+    super("ghosting", Material.WHITE_WOOL, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build(), GameProperties.GHOSTING_COST);
   }
 
   @Override
-  public boolean onGadgetDrop(
-    final Game game,
-    final GamePlayer player,
-    final org.bukkit.entity.Item item,
-    final boolean remove
-  ) {
+  public boolean onGadgetDrop(final Game game, final GamePlayer player, final org.bukkit.entity.Item item, final boolean remove) {
     super.onGadgetDrop(game, player, item, true);
 
     if (!(player instanceof final Survivor survivor)) {

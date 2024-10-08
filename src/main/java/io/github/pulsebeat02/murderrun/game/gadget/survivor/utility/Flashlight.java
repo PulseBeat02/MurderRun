@@ -93,12 +93,7 @@ public final class Flashlight extends SurvivorGadget {
     }
   }
 
-  private Location getParticleLocation(
-    final Vector direction,
-    final Location handLocation,
-    final double t,
-    final double angle
-  ) {
+  private Location getParticleLocation(final Vector direction, final Location handLocation, final double t, final double angle) {
     final Vector copy = direction.clone();
     final Vector offset = copy.multiply(t);
     offset.rotateAroundY(angle);

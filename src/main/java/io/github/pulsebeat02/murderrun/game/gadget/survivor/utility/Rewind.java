@@ -17,13 +17,7 @@ import org.bukkit.entity.Item;
 public final class Rewind extends SurvivorGadget {
 
   public Rewind() {
-    super(
-      "rewind",
-      Material.DIAMOND,
-      Message.REWIND_NAME.build(),
-      Message.REWIND_LORE.build(),
-      GameProperties.REWIND_COST
-    );
+    super("rewind", Material.DIAMOND, Message.REWIND_NAME.build(), Message.REWIND_LORE.build(), GameProperties.REWIND_COST);
   }
 
   @Override

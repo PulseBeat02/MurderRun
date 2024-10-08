@@ -27,13 +27,7 @@ import org.bukkit.util.Vector;
 public final class TrapVest extends SurvivorGadget {
 
   public TrapVest() {
-    super(
-      "trap_vest",
-      Material.IRON_DOOR,
-      Message.TRAP_VEST_NAME.build(),
-      Message.TRAP_VEST_LORE.build(),
-      GameProperties.TRAP_VEST_COST
-    );
+    super("trap_vest", Material.IRON_DOOR, Message.TRAP_VEST_NAME.build(), Message.TRAP_VEST_LORE.build(), GameProperties.TRAP_VEST_COST);
   }
 
   @Override

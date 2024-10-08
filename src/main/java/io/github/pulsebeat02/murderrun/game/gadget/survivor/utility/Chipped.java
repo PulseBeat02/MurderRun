@@ -16,13 +16,7 @@ import org.bukkit.entity.Item;
 public final class Chipped extends SurvivorGadget {
 
   public Chipped() {
-    super(
-      "chipped",
-      Material.GOLD_NUGGET,
-      Message.CHIPPED_NAME.build(),
-      Message.CHIPPED_LORE.build(),
-      GameProperties.CHIPPED_COST
-    );
+    super("chipped", Material.GOLD_NUGGET, Message.CHIPPED_NAME.build(), Message.CHIPPED_LORE.build(), GameProperties.CHIPPED_COST);
   }
 
   @Override
@@ -40,11 +34,7 @@ public final class Chipped extends SurvivorGadget {
     return false;
   }
 
-  private void setOtherSurvivorsGlowing(
-    final PlayerManager manager,
-    final MetadataManager metadata,
-    final GameScheduler scheduler
-  ) {
+  private void setOtherSurvivorsGlowing(final PlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
     manager.applyToAllLivingInnocents(innocent ->
       metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, GameProperties.CHIPPED_DURATION)
     );

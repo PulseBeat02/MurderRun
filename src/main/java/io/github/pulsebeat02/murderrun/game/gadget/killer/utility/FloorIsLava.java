@@ -71,11 +71,7 @@ public final class FloorIsLava extends KillerGadget {
   }
 
   private boolean checkLocationSame(final Location first, final Location second) {
-    return (
-      first.getBlockX() == second.getBlockX() &&
-      first.getBlockY() == second.getBlockY() &&
-      first.getBlockZ() == second.getBlockZ()
-    );
+    return (first.getBlockX() == second.getBlockX() && first.getBlockY() == second.getBlockY() && first.getBlockZ() == second.getBlockZ());
   }
 
   private void sendFloorIsLavaMessage(final Participant participant) {
