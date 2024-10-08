@@ -107,6 +107,7 @@ tasks.withType<AbstractRun>().configureEach {
     jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }
 
+val windows = System.getProperty("os.name").lowercase().contains("windows")
 tasks {
 
     bukkit {
@@ -164,6 +165,12 @@ tasks {
         dependsOn("npmSetup")
     }
 
+    if (!windows) {
+        named("spotlessJava") {
+            dependsOn("npmSetup")
+        }
+    }
+
     sourceSets {
         main {
             java.srcDir("src/main/java")
@@ -200,15 +207,8 @@ tasks {
 }
 
 fun setupNpmEnvironment(): File {
-    val windows = System.getProperty("os.name").lowercase().contains("windows")
     val npmExec = if (windows) "npm.cmd" else "bin/npm"
     val folder = node.resolvedNodeDir.get()
-
-    val temp = folder.asFile
-    temp.walk().forEach {
-        println(it.absolutePath)
-    }
-
     val executable = folder.file(npmExec).asFile
     return executable
 }
