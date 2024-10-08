@@ -201,7 +201,7 @@ tasks {
 }
 
 fun setupNpmEnvironment(): File {
-    val npmExec = if (windows) "npm.cmd" else "bin/npm"
+    val npmExec = if (windows) "npm.cmd" else "lib/node_modules/npm/bin/npm"
     val folder = node.resolvedNodeDir.get()
     val executable = folder.file(npmExec).asFile
     return executable
