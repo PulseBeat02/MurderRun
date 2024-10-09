@@ -164,7 +164,8 @@ public final class GameInputSanitizer {
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     final CommandSender owner = playerManager.getLeader();
     final InviteManager invites = this.command.getInviteManager();
-    if (!(invites.hasInvite(owner, sender) || playerManager.isQuickJoinable())) {
+    final boolean canJoin = invites.hasInvite(owner, sender) || playerManager.isQuickJoinable();
+    if (!canJoin) {
       final Component message = Message.GAME_INVALID_INVITE_ERROR.build();
       audience.sendMessage(message);
       return true;

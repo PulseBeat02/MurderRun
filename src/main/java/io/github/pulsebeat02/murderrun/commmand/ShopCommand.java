@@ -11,9 +11,11 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
@@ -31,11 +33,12 @@ public final class ShopCommand implements AnnotationCommandFeature {
   private static final String GRIM_REAPER_TEXTURE_DATA =
     "ewogICJ0aW1lc3RhbXAiIDogMTYxNzIyMTc4NjAxMSwKICAicHJvZmlsZUlkIiA6ICJkZGVkNTZlMWVmOGI0MGZlOGFkMTYyOTIwZjdhZWNkYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJEaXNjb3JkQXBwIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzEwMTAyNWMxYzhmZjMwZmFkYjBiNGRjYjlhZWQ1YmRmMTU1MDQ3ZjMwNjJjYWMwOGRiNzM3ZDQ1ODVkMWYzNWYiCiAgICB9CiAgfQp9";
 
-  private NPCShopEvent event;
-
   @Override
   public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
-    this.event = new NPCShopEvent(plugin);
+    final NPCShopEvent event = new NPCShopEvent(plugin);
+    final Server server = plugin.getServer();
+    final PluginManager manager = server.getPluginManager();
+    manager.registerEvents(event, plugin);
   }
 
   @Permission("murderrun.command.npc.spawn.survivor")

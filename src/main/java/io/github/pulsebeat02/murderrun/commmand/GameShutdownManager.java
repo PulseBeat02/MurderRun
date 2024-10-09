@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
-import io.github.pulsebeat02.murderrun.game.GameStatus;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -14,12 +13,9 @@ public final class GameShutdownManager {
     this.currentGames = new HashSet<>();
   }
 
-  public void shutdown() {
+  public void forceShutdown() {
     for (final Game game : this.currentGames) {
-      final GameStatus status = game.getStatus();
-      if (status == GameStatus.KILLERS_RELEASED) {
-        game.finishGame(GameResult.INTERRUPTED);
-      }
+      game.finishGame(GameResult.INTERRUPTED);
     }
   }
 

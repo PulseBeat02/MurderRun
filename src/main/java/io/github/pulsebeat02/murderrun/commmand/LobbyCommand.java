@@ -42,13 +42,9 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final LobbyManager manager = this.plugin.getLobbyManager();
     final Map<String, Lobby> arenas = manager.getLobbies();
     final List<String> keys = new ArrayList<>(arenas.keySet());
+    final Audience audience = this.audiences.player(sender);
     final Component message = Message.LOBBY_LIST.build(keys);
-    this.sendSuccessMessage(sender, message);
-  }
-
-  private void sendSuccessMessage(final Player player, final Component component) {
-    final Audience audience = this.audiences.player(player);
-    audience.sendMessage(component);
+    audience.sendMessage(message);
   }
 
   @Permission("murderrun.command.lobby.remove")
@@ -59,10 +55,12 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     if (this.checkInvalidLobby(audience, name)) {
       return;
     }
+
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.removeLobby(name);
+
     final Component message = Message.LOBBY_REMOVE.build(name);
-    this.sendSuccessMessage(sender, message);
+    audience.sendMessage(message);
   }
 
   private boolean checkInvalidLobby(final Audience audience, final String name) {
@@ -85,11 +83,13 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     if (this.handleNullSpawn(audience) || this.handleNullName(audience)) {
       return;
     }
+
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.addLobby(this.name, this.spawn);
-    final Component message = Message.LOBBY_BUILT.build();
-    this.sendSuccessMessage(sender, message);
     this.plugin.updatePluginData();
+
+    final Component message = Message.LOBBY_BUILT.build();
+    audience.sendMessage(message);
   }
 
   private boolean handleNullSpawn(final Audience audience) {
@@ -115,20 +115,9 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   @Command(value = "murder lobby set name <name>", requiredSender = Player.class)
   public void setName(final Player sender, @Quoted final String name) {
     this.name = name;
+    final Audience audience = this.audiences.player(sender);
     final Component message = Message.LOBBY_NAME.build(name);
-    this.sendSuccessMessage(sender, message);
-  }
-
-  public MurderRun getPlugin() {
-    return this.plugin;
-  }
-
-  public void setPlugin(final MurderRun plugin) {
-    this.plugin = plugin;
-  }
-
-  public Location getSpawn() {
-    return this.spawn;
+    audience.sendMessage(message);
   }
 
   @Permission("murderrun.command.lobby.set.spawn")
@@ -137,19 +126,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   public void setSpawn(final Player sender) {
     final Location location = sender.getLocation();
     this.spawn = location;
+    final Audience audience = this.audiences.player(sender);
     final Component message = AdventureUtils.createLocationComponent(Message.LOBBY_SPAWN, location);
-    this.sendSuccessMessage(sender, message);
-  }
-
-  public void setSpawn(final Location spawn) {
-    this.spawn = spawn;
-  }
-
-  public String getName() {
-    return this.name;
-  }
-
-  public void setName(final String name) {
-    this.name = name;
+    audience.sendMessage(message);
   }
 }

@@ -98,7 +98,7 @@ public final class MurderRun extends JavaPlugin {
 
   private void shutdownGames() {
     if (this.gameShutdownManager != null) {
-      this.gameShutdownManager.shutdown();
+      this.gameShutdownManager.forceShutdown();
     }
   }
 

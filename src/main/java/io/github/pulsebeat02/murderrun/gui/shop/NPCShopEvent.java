@@ -10,13 +10,11 @@ import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.plugin.PluginManager;
 
 public final class NPCShopEvent implements Listener {
 
@@ -27,9 +25,6 @@ public final class NPCShopEvent implements Listener {
     final AudienceProvider provider = plugin.getAudience();
     this.plugin = plugin;
     this.audiences = provider.retrieve();
-    final Server server = plugin.getServer();
-    final PluginManager manager = server.getPluginManager();
-    manager.registerEvents(this, plugin);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

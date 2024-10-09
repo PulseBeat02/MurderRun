@@ -48,17 +48,13 @@ public final class GadgetCommand implements AnnotationCommandFeature {
     final List<ItemStack> stacks = allGadgets.stream().map(MerchantRecipe::getResult).toList();
     final Location location = sender.getLocation();
     final World world = requireNonNull(location.getWorld());
-
     for (final ItemStack stack : stacks) {
       final Map<Integer, ItemStack> remaining = inventory.addItem(stack);
       if (remaining.isEmpty()) {
         continue;
       }
-
       final Collection<ItemStack> left = remaining.values();
-      for (final ItemStack leftover : left) {
-        world.dropItemNaturally(location, leftover);
-      }
+      left.forEach(item -> world.dropItemNaturally(location, item));
     }
   }
 
@@ -66,7 +62,6 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.gadget.retrieve.info")
   @Command(value = "murder gadget retrieve <gadgetName>", requiredSender = Player.class)
   public void retrieveGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
-    final PlayerInventory inventory = sender.getInventory();
     final Audience audience = this.audiences.player(sender);
     final List<MerchantRecipe> allGadgets = TradingUtils.parseRecipes(gadgetName);
     if (this.checkIfInvalidGadget(audience, allGadgets)) {
@@ -77,11 +72,10 @@ public final class GadgetCommand implements AnnotationCommandFeature {
     final World world = requireNonNull(location.getWorld());
     final MerchantRecipe recipe = allGadgets.getFirst();
     final ItemStack result = recipe.getResult();
+    final PlayerInventory inventory = sender.getInventory();
     final Map<Integer, ItemStack> remaining = inventory.addItem(result);
     final Collection<ItemStack> left = remaining.values();
-    for (final ItemStack leftover : left) {
-      world.dropItemNaturally(location, leftover);
-    }
+    left.forEach(item -> world.dropItemNaturally(location, item));
   }
 
   public boolean checkIfInvalidGadget(final Audience audience, final List<MerchantRecipe> recipes) {
