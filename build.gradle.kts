@@ -161,7 +161,7 @@ tasks {
         relocate("org.bstats", "$libPath.org.bstats")
     }
 
-    spotlessApply {
+    spotlessCheck {
         dependsOn("nodeSetup", "npmSetup")
     }
 
