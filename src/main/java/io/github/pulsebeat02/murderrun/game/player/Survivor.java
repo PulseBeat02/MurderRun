@@ -13,6 +13,7 @@ public final class Survivor extends GamePlayer {
   private boolean canPlaceBlocks;
   private boolean carPart;
   private long rewindCooldown;
+  private int carPartsRetrieved;
 
   private final Collection<Item> glowingCarParts;
   private final Collection<GamePlayer> glowingKillers;
@@ -21,11 +22,17 @@ public final class Survivor extends GamePlayer {
   public Survivor(final Game game, final UUID uuid) {
     super(game, uuid);
     this.canPickupCarPart = true;
-    this.canPlaceBlocks = false;
-    this.rewindCooldown = 0;
     this.glowingCarParts = new HashSet<>();
     this.glowingKillers = new HashSet<>();
     this.lifeInsuranceTasks = new HashSet<>();
+  }
+
+  public int getCarPartsRetrieved() {
+    return this.carPartsRetrieved;
+  }
+
+  public void setCarPartsRetrieved(final int carPartsRetrieved) {
+    this.carPartsRetrieved = carPartsRetrieved;
   }
 
   public void setHasCarPart(final boolean hasCarPart) {

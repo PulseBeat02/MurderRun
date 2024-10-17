@@ -10,12 +10,8 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.WeakHashMap;
+
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.kyori.adventure.bossbar.BossBar;
@@ -427,5 +423,13 @@ public final class PlayerManager {
         final MetadataManager metadata = innocent.getMetadataManager();
         metadata.hideNameTag(scheduler, ticks);
       });
+  }
+
+  public Killer getKillerWithMostKills() {
+    return this.cachedKillers.stream().max(Comparator.comparingInt(Killer::getKills)).orElse(null);
+  }
+
+  public Survivor getSurvivorWithMostCarPartsRetrieved() {
+    return this.cachedSurvivors.stream().max(Comparator.comparingInt(Survivor::getCarPartsRetrieved)).orElse(null);
   }
 }

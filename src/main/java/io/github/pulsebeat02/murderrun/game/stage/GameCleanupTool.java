@@ -1,12 +1,12 @@
 package io.github.pulsebeat02.murderrun.game.stage;
 
-import static net.kyori.adventure.text.Component.empty;
-
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -51,13 +51,41 @@ public final class GameCleanupTool {
     manager.stopTimer();
   }
 
-  private void announceInnocentVictory() {
-    final Component innocentMessage = Message.INNOCENT_VICTORY_INNOCENT.build();
-    final Component murdererMessage = Message.INNOCENT_VICTORY_MURDERER.build();
-    final Component subtitle = empty();
+  private Component generateWinnerMessage(final boolean innocents) {
+    final Component separator = Message.WINNER_SEPARATOR.build();
+    return separator.appendNewline()
+            .append(this.getWinComponent(innocents)).appendNewline()
+            .append(this.getKillComponent()).appendNewline()
+            .append(this.getPartComponent()).appendNewline()
+            .append(separator);
+  }
+
+  private Component getPartComponent() {
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.showTitleForAllInnocents(innocentMessage, subtitle);
-    manager.showTitleForAllMurderers(murdererMessage, subtitle);
+    final Survivor survivor = manager.getSurvivorWithMostCarPartsRetrieved();
+    final int carParts = survivor.getCarPartsRetrieved();
+    final String survivorName = survivor.getDisplayName();
+    return Message.WINNER_PARTS.build(survivorName, carParts);
+  }
+
+  private Component getKillComponent() {
+    final PlayerManager manager = this.game.getPlayerManager();
+    final Killer killer = manager.getKillerWithMostKills();
+    final int count = killer.getKills();
+    final String name = killer.getDisplayName();
+    return Message.WINNER_KILLS.build(name, count);
+  }
+
+  private Component getWinComponent(final boolean innocents) {
+    final GameTimer timer = this.game.getTimeManager();
+    final long seconds = timer.getElapsedTime();
+    return innocents ? Message.WINNER_SURVIVOR.build(seconds) : Message.WINNER_KILLER.build(seconds);
+  }
+
+  private void announceInnocentVictory() {
+    final Component winner = this.generateWinnerMessage(true);
+    final PlayerManager manager = this.game.getPlayerManager();
+    manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.WIN);
     manager.playSoundForAllMurderers(Sounds.LOSS);
   }
@@ -68,12 +96,9 @@ public final class GameCleanupTool {
   }
 
   private void announceMurdererVictory() {
-    final Component innocentMessage = Message.MURDERER_VICTORY_INNOCENT.build();
-    final Component murdererMessage = Message.MURDERER_VICTORY_MURDERER.build();
-    final Component subtitle = empty();
+    final Component winner = this.generateWinnerMessage(false);
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.showTitleForAllInnocents(innocentMessage, subtitle);
-    manager.showTitleForAllMurderers(murdererMessage, subtitle);
+    manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.LOSS);
     manager.playSoundForAllMurderers(Sounds.WIN);
   }
@@ -97,14 +122,14 @@ public final class GameCleanupTool {
     final MurderRun plugin = this.game.getPlugin();
     final StatisticsManager statistics = plugin.getStatisticsManager();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllInnocents(survivor -> {
-      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(survivor);
-      stats.insertFastestWinSurvivor(timeElapsed);
-      stats.incrementTotalWins();
-    });
-    manager.applyToAllMurderers(killer -> {
-      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(killer);
-      stats.incrementTotalLosses();
+    manager.applyToAllParticipants(participant -> {
+      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(participant);
+      if (participant instanceof Survivor) {
+        stats.insertFastestWinSurvivor(timeElapsed);
+        stats.incrementTotalWins();
+      } else {
+        stats.incrementTotalLosses();
+      }
     });
     this.saveData();
   }
@@ -115,14 +140,14 @@ public final class GameCleanupTool {
     final MurderRun plugin = this.game.getPlugin();
     final StatisticsManager statistics = plugin.getStatisticsManager();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllMurderers(killer -> {
-      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(killer);
-      stats.insertFastestWinKiller(timeElapsed);
-      stats.incrementTotalWins();
-    });
-    manager.applyToAllInnocents(survivor -> {
-      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(survivor);
-      stats.incrementTotalLosses();
+    manager.applyToAllParticipants(participant -> {
+      final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(participant);
+      if (participant instanceof Killer) {
+        stats.insertFastestWinSurvivor(timeElapsed);
+        stats.incrementTotalWins();
+      } else {
+        stats.incrementTotalLosses();
+      }
     });
     this.saveData();
   }

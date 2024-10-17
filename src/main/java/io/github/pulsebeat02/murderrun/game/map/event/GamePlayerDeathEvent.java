@@ -74,6 +74,10 @@ public final class GamePlayerDeathEvent extends GameEvent {
       final GamePlayer other = manager.getGamePlayer(killer);
       final PlayerStatistics otherStats = statistics.getOrCreatePlayerStatistic(other);
       otherStats.incrementTotalKills();
+      if (other instanceof final Killer killer1) {
+        final int kills = killer1.getKills();
+        killer1.setKills(kills + 1);
+      }
     }
     plugin.updatePluginData();
 

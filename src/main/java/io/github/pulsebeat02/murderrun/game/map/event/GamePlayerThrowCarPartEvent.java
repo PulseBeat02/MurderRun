@@ -9,11 +9,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.PlayerScoreboard;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
+import io.github.pulsebeat02.murderrun.game.player.*;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import net.kyori.adventure.text.Component;
@@ -62,6 +58,16 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
     manager.removeCarPart(carPart);
 
+    final PlayerManager playerManager = game.getPlayerManager();
+    final Player player = event.getPlayer();
+    if (playerManager.checkPlayerExists(player)) {
+      final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
+      if (gamePlayer instanceof Survivor survivor) {
+        final int retrieved = survivor.getCarPartsRetrieved();
+        survivor.setCarPartsRetrieved(retrieved + 1);
+      }
+    }
+
     final int leftOver = manager.getRemainingParts();
     this.setScoreboard();
     this.announceCarPartRetrieval(leftOver);
@@ -69,9 +75,8 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
       return;
     }
 
-    final Player thrower = event.getPlayer();
-    if (!this.checkIfPlayerStillHasCarPart(thrower)) {
-      this.setPlayerCarPartStatus(thrower);
+    if (!this.checkIfPlayerStillHasCarPart(player)) {
+      this.setPlayerCarPartStatus(player);
     }
   }
 

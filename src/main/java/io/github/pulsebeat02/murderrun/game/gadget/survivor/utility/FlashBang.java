@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -53,7 +54,10 @@ public final class FlashBang extends SurvivorGadget implements Listener {
 
   @Override
   public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
-    // ignore impl
+    final GameStatus status = game.getStatus();
+    if (status != GameStatus.KILLERS_RELEASED) {
+      event.setCancelled(true);
+    }
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

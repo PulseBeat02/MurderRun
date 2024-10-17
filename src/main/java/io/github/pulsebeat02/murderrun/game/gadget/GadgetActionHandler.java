@@ -58,6 +58,7 @@ public final class GadgetActionHandler implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onRightClick(final PlayerInteractEvent event) {
+
     final Player player = event.getPlayer();
     if (this.checkKillerStatus(player)) {
       event.setCancelled(true);
@@ -105,16 +106,10 @@ public final class GadgetActionHandler implements Listener {
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
     final UUID uuid = player.getUniqueId();
-    final Audience audience = audiences.player(uuid);
     final GameStatus status = game.getStatus();
     final boolean invalidKiller = gamePlayer instanceof Killer && status != GameStatus.KILLERS_RELEASED;
     final boolean invalidSurvivor = gamePlayer instanceof Survivor && (status == GameStatus.NOT_STARTED || status == GameStatus.FINISHED);
-    if (invalidKiller || invalidSurvivor) {
-      audience.sendMessage(Message.MISUSE_GADGET_ERROR.build());
-      return true;
-    }
-
-    return false;
+    return invalidKiller || invalidSurvivor;
   }
 
   private void runGadgetDetectionTask() {

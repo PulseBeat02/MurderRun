@@ -40,17 +40,13 @@ public final class PlayerScoreboard {
     this.board.updateLines(
         empty(),
         this.generateRoleComponent(),
-        this.generateRoleMetaComponent(),
-        empty(),
         this.generateObjectiveComponent(),
-        this.generateObjectiveMetaComponent(),
         empty(),
-        this.generatePartsComponent(),
-        this.generatePartsMetaComponent()
+        this.generatePartsComponent()
       );
   }
 
-  public Component generatePartsMetaComponent() {
+  public Component generatePartsComponent() {
     final Game game = this.gamePlayer.getGame();
     final Map map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
@@ -58,29 +54,17 @@ public final class PlayerScoreboard {
     if (remaining == 0) {
       remaining = GameProperties.CAR_PARTS_COUNT;
     }
-    return Message.SCOREBOARD_PARTS_COUNT.build(remaining);
+    return Message.SCOREBOARD_PARTS.build(remaining);
   }
 
-  private Component generatePartsComponent() {
-    return Message.SCOREBOARD_PARTS.build();
-  }
-
-  private Component generateObjectiveMetaComponent() {
+  private Component generateObjectiveComponent() {
     final boolean killer = this.gamePlayer instanceof Killer;
     return killer ? Message.SCOREBOARD_OBJECTIVE_KILLER.build() : Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
   }
 
-  private Component generateObjectiveComponent() {
-    return Message.SCOREBOARD_OBJECTIVE.build();
-  }
-
-  private Component generateRoleMetaComponent() {
+  private Component generateRoleComponent() {
     final boolean killer = this.gamePlayer instanceof Killer;
     return killer ? Message.SCOREBOARD_ROLE_KILLER.build() : Message.SCOREBOARD_ROLE_SURVIVOR.build();
-  }
-
-  private Component generateRoleComponent() {
-    return Message.SCOREBOARD_ROLE.build();
   }
 
   private Component generateTitleComponent() {

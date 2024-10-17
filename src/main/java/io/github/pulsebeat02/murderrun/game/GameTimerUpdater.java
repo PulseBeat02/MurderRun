@@ -38,16 +38,14 @@ public final class GameTimerUpdater {
     manager.showBossBarForAllParticipants(id, name, progress, color, overlay);
   }
 
-  private void checkForKillerWin(final long timeLeft) {
-    if (timeLeft <= 0) {
-      this.game.finishGame(GameResult.MURDERERS);
-    }
-  }
-
   private void updateBossBars() {
+
     final GameTimer timer = this.game.getTimeManager();
     final long timeLeft = timer.getTimeLeft();
-    checkForKillerWin(timeLeft);
+    if (timeLeft <= 0) {
+      this.game.finishGame(GameResult.MURDERERS);
+      return;
+    }
 
     final long total = timer.getTotalTime();
     final float progress = (float) timeLeft / total;

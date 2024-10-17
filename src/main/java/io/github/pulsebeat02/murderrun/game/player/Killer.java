@@ -11,6 +11,7 @@ public final class Killer extends GamePlayer {
   private boolean ignoreTraps;
   private boolean forceMine;
   private long killerCooldown;
+  private int kills;
 
   private final Collection<GamePlayer> forewarnGlowing;
   private final Collection<GamePlayer> heatSeekerGlowing;
@@ -26,6 +27,14 @@ public final class Killer extends GamePlayer {
     this.floorIsLavaGlowing = new HashSet<>();
     this.enderShadowsGlowing = new HashSet<>();
     this.glowingTraps = new HashSet<>();
+  }
+
+  public int getKills() {
+    return this.kills;
+  }
+
+  public void setKills(final int kills) {
+    this.kills = kills;
   }
 
   public boolean isIgnoringTraps() {
