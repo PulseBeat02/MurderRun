@@ -48,7 +48,7 @@ var runtimeDeps = listOf(
     "me.lucko:commodore:2.2",
     "org.jsoup:jsoup:1.18.1",
     "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
-    "com.mysql:mysql-connector-j:9.0.0",
+    "com.mysql:mysql-connector-j:9.1.0",
     "fr.mrmicky:fastboard:2.1.3",
     "com.github.stefvanschie.inventoryframework:IF:0.10.17"
 );
@@ -73,8 +73,8 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly("LibsDisguises:LibsDisguises:10.0.44")
-    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.6")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.6")
+    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.7")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.7")
     compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT") {
         exclude(
             group = "*",
