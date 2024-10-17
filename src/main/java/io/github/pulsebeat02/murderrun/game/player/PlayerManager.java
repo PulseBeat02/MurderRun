@@ -426,10 +426,10 @@ public final class PlayerManager {
   }
 
   public Killer getKillerWithMostKills() {
-    return this.cachedKillers.stream().max(Comparator.comparingInt(Killer::getKills)).orElse(null);
+    return this.cachedKillers.stream().max(Comparator.comparingInt(Killer::getKills)).orElseThrow();
   }
 
   public Survivor getSurvivorWithMostCarPartsRetrieved() {
-    return this.cachedSurvivors.stream().max(Comparator.comparingInt(Survivor::getCarPartsRetrieved)).orElse(null);
+    return this.cachedSurvivors.stream().max(Comparator.comparingInt(Survivor::getCarPartsRetrieved)).orElseThrow();
   }
 }
