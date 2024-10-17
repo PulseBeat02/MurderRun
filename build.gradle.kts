@@ -48,7 +48,7 @@ var runtimeDeps = listOf(
     "me.lucko:commodore:2.2",
     "org.jsoup:jsoup:1.18.1",
     "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
-    "com.mysql:mysql-connector-j:9.0.0",
+    "com.mysql:mysql-connector-j:9.1.0",
     "fr.mrmicky:fastboard:2.1.3",
     "com.github.stefvanschie.inventoryframework:IF:0.10.17"
 );
