@@ -73,7 +73,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly("LibsDisguises:LibsDisguises:10.0.44")
-    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.6")
+    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.7")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.6")
     compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT") {
         exclude(
