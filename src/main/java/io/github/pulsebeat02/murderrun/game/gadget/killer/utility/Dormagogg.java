@@ -6,6 +6,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -108,8 +109,10 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final org.bukkit.entity.Item item, final boolean remove) {
-    super.onGadgetDrop(game, player, item, true);
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final GamePlayer player = packet.getPlayer();
+    final org.bukkit.entity.Item item = packet.getItem();
+    item.remove();
 
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());

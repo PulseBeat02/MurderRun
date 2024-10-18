@@ -1,6 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.awt.Color;
@@ -36,12 +37,13 @@ public abstract class Trap extends AbstractGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final Item item = packet.getItem();
     final GameScheduler scheduler = game.getScheduler();
     item.setUnlimitedLifetime(true);
     item.setPickupDelay(Integer.MAX_VALUE);
     this.scheduleParticleTask(item, scheduler);
-
     return false;
   }
 

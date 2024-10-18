@@ -2,18 +2,15 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetNearbyPacket;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.inventory.PlayerInventory;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class AbstractGadget implements Gadget {
@@ -40,33 +37,16 @@ public abstract class AbstractGadget implements Gadget {
   }
 
   @Override
-  public void onGadgetNearby(final Game game, final GamePlayer activator, final Item item) {}
+  public void onGadgetNearby(final GadgetNearbyPacket packet) {}
 
   @Override
-  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
-    final Player player = event.getPlayer();
-    if (remove) {
-      final PlayerInventory inventory = player.getInventory();
-      final ItemStack stack = inventory.getItemInMainHand();
-      final int amount = stack.getAmount();
-      if (amount == 1) {
-        inventory.setItemInMainHand(null);
-      } else {
-        stack.setAmount(amount - 1);
-      }
-    } else {
-      event.setCancelled(true);
-    }
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    return false;
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
-    if (remove) {
-      item.remove();
-      return false;
-    } else {
-      return true;
-    }
+  public boolean onGadgetRightClick(final GadgetRightClickPacket packet) {
+    return false;
   }
 
   @Override

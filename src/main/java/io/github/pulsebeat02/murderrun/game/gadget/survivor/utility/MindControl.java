@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -30,9 +31,10 @@ public final class MindControl extends SurvivorGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
-    super.onGadgetDrop(game, player, item, true);
-
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
     final PlayerManager manager = game.getPlayerManager();
     final Location originLoc = player.getLocation();
     final GamePlayer nearest = manager.getNearestKiller(originLoc);
@@ -43,6 +45,8 @@ public final class MindControl extends SurvivorGadget {
     if (!(player instanceof final Survivor survivor)) {
       return true;
     }
+    item.remove();
+
     survivor.setCanPickupCarPart(false);
 
     final Location location = nearest.getLocation();

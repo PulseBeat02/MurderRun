@@ -53,11 +53,15 @@ public final class GameCleanupTool {
 
   private Component generateWinnerMessage(final boolean innocents) {
     final Component separator = Message.WINNER_SEPARATOR.build();
-    return separator.appendNewline()
-            .append(this.getWinComponent(innocents)).appendNewline()
-            .append(this.getKillComponent()).appendNewline()
-            .append(this.getPartComponent()).appendNewline()
-            .append(separator);
+    return separator
+      .appendNewline()
+      .append(this.getWinComponent(innocents))
+      .appendNewline()
+      .append(this.getKillComponent())
+      .appendNewline()
+      .append(this.getPartComponent())
+      .appendNewline()
+      .append(separator);
   }
 
   private Component getPartComponent() {

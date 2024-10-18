@@ -16,7 +16,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.Vector;
@@ -35,11 +34,6 @@ public final class Hook extends KillerGadget implements Listener {
       ItemFactory::createHook
     );
     this.game = game;
-  }
-
-  @Override
-  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
-    // allow right click
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

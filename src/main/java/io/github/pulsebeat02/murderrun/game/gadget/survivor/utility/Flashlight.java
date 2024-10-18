@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -19,9 +21,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -42,42 +41,41 @@ public final class Flashlight extends SurvivorGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
-    return super.onGadgetDrop(game, player, item, false);
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    return true;
   }
 
   @Override
-  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
-    super.onGadgetRightClick(game, event, false);
-
-    final ItemStack stack = event.getItem();
+  public boolean onGadgetRightClick(final GadgetRightClickPacket packet) {
+    final ItemStack stack = packet.getItemStack();
     if (stack == null) {
-      return;
+      return true;
     }
 
     final Long last = PDCUtils.getPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG);
     if (last == null) {
-      return;
+      return true;
     }
 
     final long current = System.currentTimeMillis();
     final long difference = current - last;
     if (difference < 5000) {
-      return;
+      return true;
     }
 
     PDCUtils.setPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG, current);
 
-    final Player player = event.getPlayer();
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
     this.sprayParticlesInCone(game, player);
 
-    final PlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final PlayerAudience audience = gamePlayer.getAudience();
+    final PlayerAudience audience = player.getAudience();
     audience.playSound(Sounds.FLASHLIGHT);
+
+    return false;
   }
 
-  private void sprayParticlesInCone(final Game game, final Player player) {
+  private void sprayParticlesInCone(final Game game, final GamePlayer player) {
     final PlayerManager manager = game.getPlayerManager();
     final Location handLocation = player.getEyeLocation();
     final World world = requireNonNull(handLocation.getWorld());

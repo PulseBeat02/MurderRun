@@ -29,7 +29,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
@@ -53,11 +52,6 @@ public final class PortalGun extends KillerGadget implements Listener {
     );
     this.portals = new HashMap<>();
     this.game = game;
-  }
-
-  @Override
-  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
-    // allow right click
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

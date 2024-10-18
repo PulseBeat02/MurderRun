@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
@@ -30,7 +31,10 @@ public final class BurnTheBody extends KillerGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
     final Location location = player.getLocation();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
@@ -42,14 +46,12 @@ public final class BurnTheBody extends KillerGadget {
     final double distance = location.distanceSquared(deathLocation);
     final double radius = GameProperties.BURN_THE_BODY_RADIUS;
     if (distance > radius * radius) {
-      super.onGadgetDrop(game, player, item, false);
       return true;
     }
+    item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
     this.destroyBody(scheduler, closest, deathLocation);
-    super.onGadgetDrop(game, player, item, true);
-
     manager.playSoundForAllParticipants(GameProperties.BURN_THE_BODY_SOUND);
 
     return false;

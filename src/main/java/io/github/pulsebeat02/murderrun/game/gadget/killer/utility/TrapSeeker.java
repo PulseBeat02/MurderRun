@@ -8,6 +8,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
@@ -39,12 +40,15 @@ public final class TrapSeeker extends KillerGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
-    super.onGadgetDrop(game, player, item, true);
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
 
     if (!(player instanceof final Killer killer)) {
       return true;
     }
+    item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, killer), 0, 20L);

@@ -134,4 +134,6 @@ public interface Participant {
   String getName();
 
   PersistentDataContainer getPersistentDataContainer();
+
+  Location getEyeLocation();
 }

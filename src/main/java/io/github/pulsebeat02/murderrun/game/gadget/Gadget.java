@@ -1,18 +1,17 @@
 package io.github.pulsebeat02.murderrun.game.gadget;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import org.bukkit.entity.Item;
-import org.bukkit.event.player.PlayerInteractEvent;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetNearbyPacket;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 
 public interface Gadget {
-  void onGadgetNearby(final Game game, final GamePlayer activator, final Item item);
+  void onGadgetNearby(final GadgetNearbyPacket packet);
 
-  void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove);
+  boolean onGadgetRightClick(final GadgetRightClickPacket packet);
 
-  boolean onGadgetDrop(final Game game, GamePlayer player, final Item item, final boolean remove);
+  boolean onGadgetDrop(final GadgetDropPacket packet);
 
   ItemStack getGadget();
 

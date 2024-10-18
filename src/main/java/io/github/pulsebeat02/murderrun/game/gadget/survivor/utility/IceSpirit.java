@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -101,8 +102,11 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final org.bukkit.entity.Item item, final boolean remove) {
-    super.onGadgetDrop(game, player, item, true);
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final org.bukkit.entity.Item item = packet.getItem();
+    item.remove();
 
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());

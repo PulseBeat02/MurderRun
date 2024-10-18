@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -20,7 +21,12 @@ public final class Mimic extends KillerGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
+    item.remove();
+
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer survivor = manager.getRandomAliveInnocentPlayer();
     final DisguiseManager disguiseManager = game.getDisguiseManager();

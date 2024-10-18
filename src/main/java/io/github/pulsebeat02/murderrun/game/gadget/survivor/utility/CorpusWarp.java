@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -24,13 +25,14 @@ public final class CorpusWarp extends SurvivorGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
-    super.onGadgetDrop(game, player, item, true);
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
 
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer target = manager.getRandomDeadPlayer();
     if (target == null) {
-      super.onGadgetDrop(game, player, item, false);
       return true;
     }
 
@@ -39,6 +41,7 @@ public final class CorpusWarp extends SurvivorGadget {
       return true;
     }
     player.teleport(location);
+    item.remove();
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.CORPUS_WARP_SOUND);

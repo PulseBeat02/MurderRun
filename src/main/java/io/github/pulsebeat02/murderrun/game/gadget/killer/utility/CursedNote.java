@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -42,8 +43,10 @@ public final class CursedNote extends KillerGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
-    super.onGadgetDrop(game, player, item, true);
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
 
     final io.github.pulsebeat02.murderrun.game.map.Map map = game.getMap();
     final Location location = player.getLocation();
@@ -51,6 +54,7 @@ public final class CursedNote extends KillerGadget {
     if (closeParts.isEmpty()) {
       return true;
     }
+    item.remove();
 
     final GameSettings settings = game.getSettings();
     final Item cursed = this.spawnCursedNote(settings);

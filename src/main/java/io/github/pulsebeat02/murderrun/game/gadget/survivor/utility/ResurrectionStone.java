@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -37,14 +38,18 @@ public final class ResurrectionStone extends SurvivorGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
+
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
     final PlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
-      return super.onGadgetDrop(game, player, item, false);
+      return true;
     }
 
     final DeathManager deathManager = closest.getDeathManager();
@@ -52,13 +57,13 @@ public final class ResurrectionStone extends SurvivorGadget {
     final Location closestLocation = corpse.getStoredLocation();
     final double distance = location.distanceSquared(closestLocation);
     if (distance > range * range) {
-      return super.onGadgetDrop(game, player, item, false);
+      return true;
     }
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L);
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L);
-    super.onGadgetDrop(game, player, item, true);
+    item.remove();
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.RESSURECTION_STONE_SOUND);

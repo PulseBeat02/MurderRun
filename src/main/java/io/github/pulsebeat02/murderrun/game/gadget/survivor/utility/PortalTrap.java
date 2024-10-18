@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -27,7 +28,11 @@ public final class PortalTrap extends SurvivorGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
+
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
     final Location location = player.getLocation();
@@ -42,8 +47,9 @@ public final class PortalTrap extends SurvivorGadget {
     final GamePlayer killer = requireNonNull(playerManager.getNearestKiller(location));
     final Location killerLocation = killer.getLocation();
     closest.teleport(killerLocation);
+    item.remove();
 
-    return super.onGadgetDrop(game, player, item, true);
+    return false;
   }
 
   private @Nullable Item getClosestEntity(final Location location, final Collection<Item> items) {

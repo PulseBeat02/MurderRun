@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.MovementManager;
@@ -21,7 +22,11 @@ public final class Rewind extends SurvivorGadget {
   }
 
   @Override
-  public boolean onGadgetDrop(final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    final Game game = packet.getGame();
+    final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
+
     final PlayerManager manager = game.getPlayerManager();
     final MovementManager movementManager = manager.getMovementManager();
     if (!(player instanceof final Survivor survivor)) {
@@ -30,33 +35,16 @@ public final class Rewind extends SurvivorGadget {
 
     final long current = System.currentTimeMillis();
     final long last = survivor.getRewindCooldown();
-    if (last == 0) {
-      survivor.setRewindCooldown(current);
-      this.handleRewind(game, movementManager, survivor, item, current);
-      return false;
-    }
-
     if (current - last < GameProperties.REWIND_COOLDOWN) {
-      return super.onGadgetDrop(game, player, item, false);
+      return true;
     }
 
-    this.handleRewind(game, movementManager, survivor, item, current);
-
-    return false;
-  }
-
-  private void handleRewind(
-    final Game game,
-    final MovementManager movementManager,
-    final Survivor survivor,
-    final Item item,
-    final long current
-  ) {
-    final boolean successful = movementManager.handleRewind(survivor);
-    super.onGadgetDrop(game, survivor, item, successful);
+    final boolean successful = movementManager.handleRewind(player);
     if (!successful) {
-      return;
+      return true;
     }
+    item.remove();
+
     survivor.setRewindCooldown(current);
     survivor.setFallDistance(0.0f);
 
@@ -64,5 +52,7 @@ public final class Rewind extends SurvivorGadget {
     final PlayerAudience audience = survivor.getAudience();
     audience.sendMessage(msg);
     audience.playSound(Sounds.REWIND);
+
+    return false;
   }
 }

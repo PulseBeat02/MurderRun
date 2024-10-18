@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -25,7 +26,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -47,11 +47,9 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
   }
 
   @Override
-  public void onGadgetRightClick(final Game game, final PlayerInteractEvent event, final boolean remove) {
-    final GameStatus status = game.getStatus();
-    if (status != GameStatus.KILLERS_RELEASED) {
-      event.setCancelled(true);
-    }
+  public boolean onGadgetRightClick(final GadgetRightClickPacket packet) {
+    final GameStatus status = this.game.getStatus();
+    return status != GameStatus.KILLERS_RELEASED;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

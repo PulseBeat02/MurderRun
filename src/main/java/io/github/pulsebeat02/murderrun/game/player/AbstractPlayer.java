@@ -258,4 +258,10 @@ public abstract class AbstractPlayer implements Participant {
     final Player player = this.getInternalPlayer();
     return player.getPersistentDataContainer();
   }
+
+  @Override
+  public Location getEyeLocation() {
+    final Player player = this.getInternalPlayer();
+    return player.getEyeLocation();
+  }
 }

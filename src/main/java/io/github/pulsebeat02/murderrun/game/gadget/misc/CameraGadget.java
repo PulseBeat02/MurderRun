@@ -43,7 +43,7 @@ public class CameraGadget {
     this.glowingPlayers = HashMultimap.create();
   }
 
-  public boolean handleCamera(final Game game, final GamePlayer player, final Item item, final boolean remove) {
+  public boolean handleCamera(final Game game, final GamePlayer player, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
     final CitizensManager npcManager = game.getNPCManager();

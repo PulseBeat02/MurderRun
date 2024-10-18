@@ -97,7 +97,7 @@ public final class GlobalGadgetRegistry {
     return this.gadgetRegistry.values().stream().map(Pair::first).toList();
   }
 
-  Map<String, Gadget> getUsedGadgets(final GadgetManager manager, final MurderRun plugin) {
+  public Map<String, Gadget> getUsedGadgets(final GadgetManager manager, final MurderRun plugin) {
     final Game game = manager.getGame();
     final Server server = plugin.getServer();
     final PluginManager pluginManager = server.getPluginManager();
