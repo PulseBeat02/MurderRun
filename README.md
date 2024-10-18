@@ -4,11 +4,11 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
-[![BisectHosting](https://www.bisecthosting.com/partners/custom-banners/ba551f73-9616-4d2c-b40b-293493ca5124.png)](https://bisecthosting.com/pulse)
+[![BisectHosting](https://www.bisecthosting.com/partners/custom-banners/db8711d9-0b3a-4706-b18d-beb9cef16963.webp)](https://bisecthosting.com/pulse)
 
-I'd like to thank [BisectHosting](https://bisecthosting.com/pulse) for sponsoring open-source
-projects such as this one as well. Use code `pulse` on your next purchase to get 25% off your next
-server!
+Want to show your support for me and the development of MurderRun? Check out BisectHosting and use the `pulse` 
+for a 25% discount on your first month of a gaming server as a new customer. With their 24/7 support and quick 
+response times, you can count on excellent assistance for all your gaming requirements.
 
 ## Inspiration
 Based on the popular game Dead by Daylight, Murder Run is an advanced mini-game revolving around killers
