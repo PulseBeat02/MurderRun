@@ -9,6 +9,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  String BUILT_IN_RESOURCES = str("built_in_resources");
   int GAME_TIME_LIMIT = num("game.time_limit");
   int DORMAGOGG_EFFECT_DURATION = num("dormagogg.effect.duration");
   int DORMAGOGG_DURATION = num("dormagogg.duration");
