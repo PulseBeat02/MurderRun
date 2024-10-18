@@ -17,11 +17,6 @@ truck before the killers murder everyone. Both killers and survivors have access
 which can be used in combination to try and win. This game was also inspired by SSundee's "Murder Run" series
 on YouTube.
 
-## Commands
-`/murder gui`: Allows the player to manage lobbies, arenas, and games. Users are able to create and configure
-existing lobbies and arenas through this menu. They are also able to start games and invite players through
-this user-interface.
-
 ## Configuration
 Every-single message of this plugin is configurable inside the `/locale/murderrun_en.properties` file. This
 includes user-interface message components as well! You are also able to tweak any specific game settings by
