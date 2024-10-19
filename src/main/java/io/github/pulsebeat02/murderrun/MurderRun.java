@@ -24,9 +24,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class MurderRun extends JavaPlugin {
 
   /*
-
   - Trial Database Support (test)
-
+  - Trial performance
    */
 
   private static final int BSTATS_SERVER_ID = 22728;
