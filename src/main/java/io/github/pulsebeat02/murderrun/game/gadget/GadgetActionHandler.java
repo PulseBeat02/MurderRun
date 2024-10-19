@@ -73,12 +73,19 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    if (!PDCUtils.isGadget(stack)) {
+    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    if (data == null) {
       return;
     }
 
     final GadgetRightClickPacket packet = GadgetRightClickPacket.create(game, event);
-    this.handleEventLogic(stack, gadget -> event.setCancelled(gadget.onGadgetRightClick(packet)));
+    final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
+    final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
+    final Gadget tool = requireNonNull(gadgets.get(data));
+    final boolean result = tool.onGadgetRightClick(packet);
+    if (result) {
+      event.setCancelled(true);
+    }
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -92,14 +99,21 @@ public final class GadgetActionHandler implements Listener {
     final Game game = this.manager.getGame();
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    if (!PDCUtils.isGadget(stack)) {
+    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    if (data == null) {
       return;
     }
-    item.setUnlimitedLifetime(true);
-    item.setPickupDelay(Integer.MAX_VALUE);
 
     final GadgetDropPacket packet = GadgetDropPacket.create(game, event);
-    this.handleEventLogic(stack, gadget -> event.setCancelled(gadget.onGadgetDrop(packet)));
+    final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
+    final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
+    final Gadget tool = requireNonNull(gadgets.get(data));
+    final boolean result = tool.onGadgetDrop(packet);
+    if (result) {
+      event.setCancelled(true);
+    }
+    item.setPickupDelay(Integer.MAX_VALUE);
+    item.setUnlimitedLifetime(true);
   }
 
   private boolean checkKillerStatus(final Player player) {
@@ -148,6 +162,7 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private @Nullable GadgetSearchResult getGetClosestTrap(final GamePlayer player) {
+
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
     final double range = this.manager.getActivationRange();
@@ -169,8 +184,7 @@ public final class GadgetActionHandler implements Listener {
         continue;
       }
 
-      final boolean activate =
-        (isSurvivor && (gadget instanceof KillerApparatus)) || (!isSurvivor && (gadget instanceof SurvivorApparatus));
+      final boolean activate = (isSurvivor ? gadget instanceof KillerApparatus : gadget instanceof SurvivorApparatus);
       if (activate) {
         final Location location = item.getLocation();
         final double distance = origin.distanceSquared(location);
@@ -191,18 +205,6 @@ public final class GadgetActionHandler implements Listener {
     }
 
     return new GadgetSearchResult(closest, closestItem);
-  }
-
-  private void handleEventLogic(final ItemStack stack, final Consumer<Gadget> gadget) {
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
-    if (data == null) {
-      return;
-    }
-
-    final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
-    final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
-    final Gadget tool = requireNonNull(gadgets.get(data));
-    gadget.accept(tool);
   }
 
   record GadgetSearchResult(Gadget gadget, Item item) {}
