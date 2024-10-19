@@ -34,7 +34,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class DeathHound extends KillerGadget implements Listener, TargetableEntity {
 
-  public DeathHound() {
+  private final Game game;
+
+  public DeathHound(final Game game) {
     super(
       "death_hound",
       Material.BONE,
@@ -42,6 +44,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
       Message.DEATH_HOUND_LORE.build(),
       GameProperties.DEATH_HOUND_COST
     );
+    this.game = game;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
