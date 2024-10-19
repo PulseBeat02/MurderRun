@@ -27,6 +27,7 @@ public abstract class KillerTrap extends Trap implements KillerApparatus {
 
   @Override
   public void onGadgetNearby(final GadgetNearbyPacket packet) {
+    super.onGadgetNearby(packet);
     final Component announcement = this.getAnnouncement();
     final Component subtitle = empty();
     if (announcement != null) {

@@ -20,6 +20,8 @@ import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -144,14 +146,16 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private void handlePlayerGadgetLogic(final GamePlayer player) {
+
     final GadgetSearchResult result = this.getGetClosestTrap(player);
-    if (result == null) {
+    final Gadget gadget = result.gadget;
+    final Item item = result.item;
+    if (gadget == null || item == null) {
       return;
     }
 
-    final Gadget gadget = result.gadget;
-    final Item item = result.item;
-    if (player instanceof final Killer killer && killer.isIgnoringTraps()) {
+    final boolean ignore = player instanceof final Killer killer && killer.isIgnoringTraps();
+    if (ignore) {
       item.remove();
       return;
     }
@@ -161,15 +165,12 @@ public final class GadgetActionHandler implements Listener {
     gadget.onGadgetNearby(packet);
   }
 
-  private @Nullable GadgetSearchResult getGetClosestTrap(final GamePlayer player) {
-
+  private GadgetSearchResult getGetClosestTrap(final GamePlayer player) {
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
     final double range = this.manager.getActivationRange();
-    final Collection<Entity> entities = world.getNearbyEntities(origin, range, range, range);
-    final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
+    final Collection<Entity> entities = world.getNearbyEntities(origin, range, range, range, this::checkEntityPredicate);
     final boolean isSurvivor = player instanceof Survivor;
-
     double min = Double.MAX_VALUE;
     Gadget closest = null;
     Item closestItem = null;
@@ -177,14 +178,10 @@ public final class GadgetActionHandler implements Listener {
       if (!(entity instanceof final Item item)) {
         continue;
       }
-
       final ItemStack stack = item.getItemStack();
+      final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
       final Gadget gadget = mechanism.getGadgetFromStack(stack);
-      if (gadget == null) {
-        continue;
-      }
-
-      final boolean activate = (isSurvivor ? gadget instanceof KillerApparatus : gadget instanceof SurvivorApparatus);
+      final boolean activate = isSurvivor ? gadget instanceof KillerApparatus : gadget instanceof SurvivorApparatus;
       if (activate) {
         final Location location = item.getLocation();
         final double distance = origin.distanceSquared(location);
@@ -195,17 +192,18 @@ public final class GadgetActionHandler implements Listener {
         }
       }
     }
-
-    if (closestItem == null || closest == null) { // checker framework
-      return null;
-    }
-
-    if (closest instanceof Trap) {
-      closestItem.remove(); // checker framework
-    }
-
     return new GadgetSearchResult(closest, closestItem);
   }
 
-  record GadgetSearchResult(Gadget gadget, Item item) {}
+  private boolean checkEntityPredicate(final Entity entity) {
+
+    if (!(entity instanceof final Item item)) {
+      return false;
+    }
+
+    final ItemStack stack = item.getItemStack();
+    return PDCUtils.isGadget(stack);
+  }
+
+  record GadgetSearchResult(@Nullable Gadget gadget, @Nullable Item item) {}
 }
