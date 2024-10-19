@@ -19,9 +19,6 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -146,7 +143,6 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private void handlePlayerGadgetLogic(final GamePlayer player) {
-
     final GadgetSearchResult result = this.getGetClosestTrap(player);
     final Gadget gadget = result.gadget;
     final Item item = result.item;
@@ -196,7 +192,6 @@ public final class GadgetActionHandler implements Listener {
   }
 
   private boolean checkEntityPredicate(final Entity entity) {
-
     if (!(entity instanceof final Item item)) {
       return false;
     }
