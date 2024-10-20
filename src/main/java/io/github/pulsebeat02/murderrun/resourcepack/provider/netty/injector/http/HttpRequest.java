@@ -2,6 +2,8 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.htt
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,7 +28,7 @@ public final class HttpRequest {
     this.protocolVersion = this.requestParts[2];
   }
 
-  public String get(final String header) {
+  public @Nullable String get(final String header) {
     return this.headers.get(header);
   }
 
@@ -41,8 +43,9 @@ public final class HttpRequest {
   private static HttpRequest parse(final InputStream stream) {
     try (final InputStreamReader reader = new InputStreamReader(stream); final BufferedReader bufferedReader = new BufferedReader(reader)) {
       final String request = bufferedReader.readLine();
+      final String line = request == null ? "" : request;
       final Map<String, String> headers = readHeaders(bufferedReader);
-      return new HttpRequest(request, headers);
+      return new HttpRequest(line, headers);
     } catch (final Exception e) {
       throw new RuntimeException(e);
     }

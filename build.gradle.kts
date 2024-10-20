@@ -50,10 +50,11 @@ var runtimeDeps = listOf(
     "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
     "com.mysql:mysql-connector-j:9.1.0",
     "fr.mrmicky:fastboard:2.1.3",
-    "com.github.stefvanschie.inventoryframework:IF:0.10.17"
+    "com.github.stefvanschie.inventoryframework:IF:0.10.17",
+    "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2",
+    "javax.activation:activation:1.1.1",
+    "com.sun.xml.bind:jaxb-impl:4.0.5"
 );
-
-
 
 dependencies {
 

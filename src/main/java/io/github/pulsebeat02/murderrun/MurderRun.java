@@ -106,7 +106,9 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void shutdownAudience() {
-    this.audience.shutdown();
+    if (this.audience != null) {
+      this.audience.shutdown();
+    }
   }
 
   private void readPluginData() {
@@ -151,24 +153,32 @@ public final class MurderRun extends JavaPlugin {
   }
 
   public void updatePluginData() {
-    this.arenaDataConfigurationMapper.serialize(this.arenaManager);
-    this.lobbyDataConfigurationMapper.serialize(this.lobbyManager);
-    this.statisticsConfigurationMapper.serialize(this.statisticsManager);
-    this.configuration.serialize();
+    if (this.arenaDataConfigurationMapper != null) {
+      this.arenaDataConfigurationMapper.serialize(this.arenaManager);
+      this.lobbyDataConfigurationMapper.serialize(this.lobbyManager);
+      this.statisticsConfigurationMapper.serialize(this.statisticsManager);
+      this.configuration.serialize();
+    }
   }
 
   public void shutdownPluginData() {
-    this.arenaDataConfigurationMapper.shutdown();
-    this.lobbyDataConfigurationMapper.shutdown();
-    this.configuration.shutdown();
+    if (this.arenaDataConfigurationMapper != null) {
+      this.arenaDataConfigurationMapper.shutdown();
+      this.lobbyDataConfigurationMapper.shutdown();
+      this.configuration.shutdown();
+    }
   }
 
   private void stopHostingDaemon() {
-    this.provider.shutdown();
+    if (this.provider != null) {
+      this.provider.shutdown();
+    }
   }
 
   private void shutdownMetrics() {
-    this.metrics.shutdown();
+    if (this.metrics != null) {
+      this.metrics.shutdown();
+    }
   }
 
   public AudienceProvider getAudience() {
