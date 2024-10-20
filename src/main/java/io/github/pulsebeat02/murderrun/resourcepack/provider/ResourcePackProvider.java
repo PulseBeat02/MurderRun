@@ -8,14 +8,11 @@ import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
@@ -48,14 +45,17 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   @Override
   public CompletableFuture<ResourcePackRequest> getResourcePackRequest() {
-    return CompletableFuture.supplyAsync(() -> {
-      final Component message = Message.RESOURCEPACK_PROMPT.build();
-      final CompletableFuture<ResourcePackInfo> main = this.getMainResourceInfo();
-      final CompletableFuture<ResourcePackInfo> builtIn = this.getResourceInfo();
-      final Collection<ResourcePackInfo> infos = Set.of(main.join(), builtIn.join());
-      final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
-      return builder.required(true).packs(infos).prompt(message).replace(true).asResourcePackRequest();
-    }, this.service);
+    return CompletableFuture.supplyAsync(
+      () -> {
+        final Component message = Message.RESOURCEPACK_PROMPT.build();
+        final CompletableFuture<ResourcePackInfo> main = this.getMainResourceInfo();
+        final CompletableFuture<ResourcePackInfo> builtIn = this.getResourceInfo();
+        final Collection<ResourcePackInfo> infos = Set.of(main.join(), builtIn.join());
+        final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
+        return builder.required(true).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+      },
+      this.service
+    );
   }
 
   private CompletableFuture<ResourcePackInfo> getMainResourceInfo() {

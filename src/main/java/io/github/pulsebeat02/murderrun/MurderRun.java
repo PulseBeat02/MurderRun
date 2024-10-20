@@ -24,8 +24,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class MurderRun extends JavaPlugin {
 
   /*
-  - Trial Database Support (test)
-  - Fix GUI Creation Slow
+  - Test Database Support Using H2
+  - Fix Netty Resourcepack Hosting
    */
 
   private static final int BSTATS_SERVER_ID = 22728;

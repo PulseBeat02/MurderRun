@@ -1,10 +1,9 @@
 package io.github.pulsebeat02.murderrun.game;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import java.util.Collections;
 import java.util.Set;
 import java.util.WeakHashMap;
-
-import io.github.pulsebeat02.murderrun.MurderRun;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -12,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.plugin.PluginManager;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class PlayerResourcePackChecker implements Listener {
 
