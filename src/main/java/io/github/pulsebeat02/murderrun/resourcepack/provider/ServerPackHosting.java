@@ -55,6 +55,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
 
   @Override
   public void start() {
+    super.start();
     if (this.server == null) {
       return;
     }
@@ -63,6 +64,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
 
   @Override
   public void shutdown() {
+    super.shutdown();
     if (this.server == null) {
       return;
     }

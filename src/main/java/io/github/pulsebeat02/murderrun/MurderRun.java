@@ -26,6 +26,7 @@ public final class MurderRun extends JavaPlugin {
   /*
   - Trial Database Support (test)
   - Trial performance
+  - Fix resourcepack loading bug
    */
 
   private static final int BSTATS_SERVER_ID = 22728;
@@ -138,7 +139,8 @@ public final class MurderRun extends JavaPlugin {
 
   private void registerGameUtilities() {
     this.gameShutdownManager = new GameShutdownManager();
-    this.playerResourcePackChecker = new PlayerResourcePackChecker();
+    this.playerResourcePackChecker = new PlayerResourcePackChecker(this);
+    this.playerResourcePackChecker.registerEvents();
   }
 
   private void registerAudienceHandler() {

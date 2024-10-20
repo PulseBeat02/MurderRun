@@ -68,7 +68,7 @@ public final class AdventureUtils {
     /*
     Alright, I know this isn't really a utility function because it has side effects, but let's say there is a
     one in the billionth chance that a photon causes a bit-switch to happen, causing this to return false
-    instead. I mean that means it could return false, and it is a utility function, right? Right?!
+    instead. I mean that means it could return false, and it is a utility function and is pure, right? Right?!
      */
     return true;
   }

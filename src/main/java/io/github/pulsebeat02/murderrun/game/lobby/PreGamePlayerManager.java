@@ -125,7 +125,6 @@ public final class PreGamePlayerManager {
     final PlayerResourcePackChecker checker = plugin.getPlayerResourcePackChecker();
     if (!checker.isLoaded(player)) {
       this.setResourcePack(player);
-      checker.markLoaded(player);
     }
   }
 
