@@ -25,7 +25,7 @@ public final class MurderRun extends JavaPlugin {
 
   /*
   - Trial Database Support (test)
-  - Trial performance
+  - Fix GUI Creation Slow
    */
 
   private static final int BSTATS_SERVER_ID = 22728;

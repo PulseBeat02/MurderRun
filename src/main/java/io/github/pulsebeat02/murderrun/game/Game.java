@@ -88,8 +88,12 @@ public final class Game {
       return;
     }
     this.cancelled.set(true);
-    final BukkitScheduler shutdownHook = Bukkit.getScheduler();
-    shutdownHook.runTaskLater(this.plugin, () -> this.gracefulShutdown(code), 5);
+    if (code == GameResult.INTERRUPTED) {
+      this.gracefulShutdown(code);
+    } else {
+      final BukkitScheduler shutdownHook = Bukkit.getScheduler();
+      shutdownHook.runTaskLater(this.plugin, () -> this.gracefulShutdown(code), 5);
+    }
   }
 
   private void gracefulShutdown(final GameResult code) {
