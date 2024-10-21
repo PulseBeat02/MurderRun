@@ -1,6 +1,6 @@
 # Murder Run
 
-[![GitHub Actions](https://github.com/PulseBeat02/MurderRun/actions/workflows/pre-release.yml/badge.svg)](https://github.com/PulseBeat02/MurderRun/actions)
+[![GitHub Actions](https://github.com/PulseBeat02/MurderRun/actions/workflows/tagged-release.yml/badge.svg)](https://github.com/PulseBeat02/MurderRun/actions)
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
