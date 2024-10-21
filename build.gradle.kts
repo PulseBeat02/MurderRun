@@ -54,8 +54,7 @@ var runtimeDeps = listOf(
     "fr.mrmicky:fastboard:2.1.3",
     "com.github.stefvanschie.inventoryframework:IF:0.10.17",
     "org.bstats:bstats-bukkit:3.1.0",
-    "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
-    "org.glassfish.jaxb:jaxb-runtime:4.0.5"
+    "org.hibernate.orm:hibernate-core:7.0.0.Beta1"
 );
 
 dependencies {

@@ -33,7 +33,7 @@ database-options:
   driver: com.mysql.cj.jdbc.Driver
 
   # Database JDBC url to connect to
-  jdbc-url: jdbc:h2:tcp://localhost/~/test
+  jdbc-url: jdbc:h2:~/test
 
   # Database name for the plugin
   database-name: 'murderrun'
