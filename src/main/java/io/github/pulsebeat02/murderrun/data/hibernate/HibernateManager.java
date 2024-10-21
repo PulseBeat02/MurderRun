@@ -31,11 +31,12 @@ public final class HibernateManager {
   }
 
   private SessionFactory constructSessionFactory(@UnderInitialization HibernateManager this, final MurderRun plugin) {
-    try {
+    try (final HibernateContextCloseable closeable = new HibernateContextCloseable()) {
+      closeable.setContextClassLoader();
       final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
       return this.constructSession(mapper);
     } catch (final HibernateException e) {
-      throw new RuntimeException("Failed to connect to database!", e);
+      throw new AssertionError("Failed to connect to database!", e);
     }
   }
 

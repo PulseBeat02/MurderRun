@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
-import io.github.pulsebeat02.murderrun.data.RelationalDataImplAssignation;
+import io.github.pulsebeat02.murderrun.data.RelationalDataProvider;
 import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.dependency.DependencyManager;
@@ -118,10 +118,10 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void handleRelationalDataManagement() {
-    final RelationalDataImplAssignation relationalDataImplAssignation = new RelationalDataImplAssignation(this);
-    this.arenaDataConfigurationMapper = relationalDataImplAssignation.getArenas();
-    this.lobbyDataConfigurationMapper = relationalDataImplAssignation.getLobbies();
-    this.statisticsConfigurationMapper = relationalDataImplAssignation.getStatistics();
+    final RelationalDataProvider relationalDataProvider = new RelationalDataProvider(this);
+    this.arenaDataConfigurationMapper = relationalDataProvider.getArenas();
+    this.lobbyDataConfigurationMapper = relationalDataProvider.getLobbies();
+    this.statisticsConfigurationMapper = relationalDataProvider.getStatistics();
     this.arenaManager = this.arenaDataConfigurationMapper.deserialize();
     this.lobbyManager = this.lobbyDataConfigurationMapper.deserialize();
     this.statisticsManager = this.statisticsConfigurationMapper.deserialize();

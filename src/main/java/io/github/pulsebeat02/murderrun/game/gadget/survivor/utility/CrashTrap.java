@@ -51,7 +51,7 @@ public final class CrashTrap extends SurvivorTrap {
     try {
       CRASH_HANDLE.invoke(player);
     } catch (final Throwable e) {
-      throw new RuntimeException(e);
+      throw new AssertionError(e);
     }
   }
 }

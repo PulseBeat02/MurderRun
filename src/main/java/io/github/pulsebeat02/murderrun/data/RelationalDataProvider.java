@@ -11,7 +11,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticJSONMapper;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 
-public final class RelationalDataImplAssignation {
+public final class RelationalDataProvider {
 
   private final MurderRun plugin;
   private HibernateManager hibernate;
@@ -19,7 +19,7 @@ public final class RelationalDataImplAssignation {
   private final ConfigurationManager<LobbyManager> lobbies;
   private final ConfigurationManager<StatisticsManager> statistics;
 
-  public RelationalDataImplAssignation(final MurderRun plugin) {
+  public RelationalDataProvider(final MurderRun plugin) {
     final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
     final RelationalDataMethod method = mapper.getRelationalDataMethod();
     this.plugin = plugin;

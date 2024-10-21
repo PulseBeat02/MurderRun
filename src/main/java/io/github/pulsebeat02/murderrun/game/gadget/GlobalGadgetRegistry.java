@@ -142,7 +142,7 @@ public final class GlobalGadgetRegistry {
       final Pair<Gadget, MethodHandle> pair = Pair.of(gadget, handle);
       this.gadgetRegistry.put(name, pair);
     } catch (final Throwable e) {
-      throw new RuntimeException(e);
+      throw new AssertionError(e);
     }
   }
 
@@ -165,7 +165,7 @@ public final class GlobalGadgetRegistry {
       final int count = type.parameterCount();
       return count == 0 ? (Gadget) handle.invoke() : (Gadget) handle.invoke(game);
     } catch (final Throwable e) {
-      throw new RuntimeException(e);
+      throw new AssertionError(e);
     }
   }
 
