@@ -7,6 +7,7 @@ on:
 
 jobs:
   pre-release:
+    permissions: write-all
     name: "Pre Release"
     runs-on: "ubuntu-latest"
     steps:
