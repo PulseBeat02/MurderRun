@@ -9,9 +9,7 @@ jobs:
   pre-release:
     name: "Pre Release"
     runs-on: "ubuntu-latest"
-
     steps:
-      # ...
       - name: "Build & test"
         run: |
           gradle build
