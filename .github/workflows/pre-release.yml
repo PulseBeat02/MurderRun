@@ -10,7 +10,6 @@ jobs:
     name: "Pre Release"
     runs-on: "ubuntu-latest"
     steps:
-      - name: "Build & test"
       - run: ls
       - run: cd .. && ls
       - run: gradle build
