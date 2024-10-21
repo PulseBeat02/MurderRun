@@ -8,7 +8,6 @@ import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
-
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -42,18 +41,18 @@ public final class HibernateManager {
 
   private SessionFactory constructSession(@UnderInitialization HibernateManager this, final PluginDataConfigurationMapper mapper) {
     return new Configuration()
-            .setProperty(Environment.JAKARTA_JDBC_DRIVER, mapper.getDatabaseDriver())
-            .setProperty(Environment.JAKARTA_JDBC_USER, mapper.getDatabaseUsername())
-            .setProperty(Environment.JAKARTA_JDBC_PASSWORD, mapper.getDatabasePassword())
-            .setProperty(Environment.HBM2DDL_AUTO, mapper.getDatabaseHbm2ddl())
-            .setProperty(Environment.SHOW_SQL, mapper.isDatabaseShowSql())
-            .setProperty(Environment.JAKARTA_JDBC_URL, mapper.getDatabaseUrl())
-            .setProperty(Environment.AUTOCOMMIT, true)
-            .setProperty(Environment.AUTO_CLOSE_SESSION, true)
-            .addAnnotatedClass(ArenaManager.class)
-            .addAnnotatedClass(LobbyManager.class)
-            .addAnnotatedClass(StatisticsManager.class)
-            .buildSessionFactory();
+      .setProperty(Environment.JAKARTA_JDBC_DRIVER, mapper.getDatabaseDriver())
+      .setProperty(Environment.JAKARTA_JDBC_USER, mapper.getDatabaseUsername())
+      .setProperty(Environment.JAKARTA_JDBC_PASSWORD, mapper.getDatabasePassword())
+      .setProperty(Environment.HBM2DDL_AUTO, mapper.getDatabaseHbm2ddl())
+      .setProperty(Environment.SHOW_SQL, mapper.isDatabaseShowSql())
+      .setProperty(Environment.JAKARTA_JDBC_URL, mapper.getDatabaseUrl())
+      .setProperty(Environment.AUTOCOMMIT, true)
+      .setProperty(Environment.AUTO_CLOSE_SESSION, true)
+      .addAnnotatedClass(ArenaManager.class)
+      .addAnnotatedClass(LobbyManager.class)
+      .addAnnotatedClass(StatisticsManager.class)
+      .buildSessionFactory();
   }
 
   public MurderRun getPlugin() {

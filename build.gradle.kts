@@ -9,7 +9,6 @@ plugins {
     id("com.diffplug.spotless") version "7.0.0.BETA2"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.node-gradle.node") version "7.1.0"
-    id("org.hibernate.orm") version "7.0.0.Beta1"
 }
 
 apply(plugin = "org.checkerframework")

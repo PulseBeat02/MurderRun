@@ -2,13 +2,12 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.htt
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class HttpRequest {
 
