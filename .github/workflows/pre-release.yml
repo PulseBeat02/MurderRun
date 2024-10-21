@@ -11,8 +11,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Build & test"
-        run: |
-          gradle build
+      - run: ls
+      - run: cd .. && ls
+      - run: gradle build
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
