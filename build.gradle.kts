@@ -47,14 +47,14 @@ var runtimeDeps = listOf(
     "org.incendo:cloud-minecraft-extras:2.0.0-beta.10",
     "me.lucko:commodore:2.2",
     "org.jsoup:jsoup:1.18.1",
+    "fr.mrmicky:fastboard:2.1.3",
+    "com.github.stefvanschie.inventoryframework:IF:0.10.17",
+    "org.bstats:bstats-bukkit:3.1.0",
+    "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
     "com.mysql:mysql-connector-j:9.1.0",
     "com.h2database:h2:2.3.232",
     "org.postgresql:postgresql:42.7.4",
     "org.xerial:sqlite-jdbc:3.46.1.3",
-    "fr.mrmicky:fastboard:2.1.3",
-    "com.github.stefvanschie.inventoryframework:IF:0.10.17",
-    "org.bstats:bstats-bukkit:3.1.0",
-    "org.hibernate.orm:hibernate-core:7.0.0.Beta1"
 );
 
 dependencies {
@@ -96,11 +96,10 @@ dependencies {
 val targetJavaVersion = 21
 java {
     val javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    val language = JavaLanguageVersion.of(targetJavaVersion)
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(targetJavaVersion))
-    }
+    toolchain.languageVersion.set(language)
 }
 
 tasks.withType<AbstractRun>().configureEach {
