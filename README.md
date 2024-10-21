@@ -1,6 +1,6 @@
 # Murder Run
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/4bRcTwC4GazhXHisYNoq6N/DEXVUEzbq9mmu7ERauj15L/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/4bRcTwC4GazhXHisYNoq6N/DEXVUEzbq9mmu7ERauj15L/tree/main)
+[![GitHub Actions](https://github.com/PulseBeat02/MurderRun/actions/workflows/pre-release.yml/badge.svg)](https://github.com/PulseBeat02/MurderRun/actions)
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
