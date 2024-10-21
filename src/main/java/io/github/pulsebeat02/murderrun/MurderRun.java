@@ -72,7 +72,7 @@ public final class MurderRun extends JavaPlugin {
     this.registerCommands();
     this.registerGameUtilities();
     this.registerExpansion();
-    this.enableBStats();
+    this.enableMetrics();
   }
 
   private void installDependencies() {
@@ -148,7 +148,8 @@ public final class MurderRun extends JavaPlugin {
     this.audience = new AudienceProvider(this);
   }
 
-  private void enableBStats() {
+  private void enableMetrics() {
+    System.setProperty("bstats.relocatecheck", "false");
     this.metrics = new Metrics(this, BSTATS_SERVER_ID);
   }
 

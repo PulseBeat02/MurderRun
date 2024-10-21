@@ -9,6 +9,7 @@ plugins {
     id("com.diffplug.spotless") version "7.0.0.BETA2"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.node-gradle.node") version "7.1.0"
+    id("org.hibernate.orm") version "7.0.0.Beta1"
 }
 
 apply(plugin = "org.checkerframework")
@@ -47,27 +48,30 @@ var runtimeDeps = listOf(
     "org.incendo:cloud-minecraft-extras:2.0.0-beta.10",
     "me.lucko:commodore:2.2",
     "org.jsoup:jsoup:1.18.1",
-    "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
     "com.mysql:mysql-connector-j:9.1.0",
+    "com.h2database:h2:2.3.232",
+    "org.postgresql:postgresql:42.7.4",
+    "org.xerial:sqlite-jdbc:3.46.1.3",
     "fr.mrmicky:fastboard:2.1.3",
     "com.github.stefvanschie.inventoryframework:IF:0.10.17",
-    "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2",
-    "javax.activation:activation:1.1.1",
-    "com.sun.xml.bind:jaxb-impl:4.0.5"
+    "org.bstats:bstats-bukkit:3.1.0",
+    "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
+    "org.glassfish.jaxb:jaxb-runtime:4.0.5"
 );
 
 dependencies {
 
+    // Annotation Processors
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
 
+    // Project Dependencies
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
-    implementation("org.bstats:bstats-bukkit:3.1.0")
 
+    // Provided Dependencies
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
     compileOnly("io.netty:netty-all:4.1.97.Final")
-    compileOnly("io.netty:netty-codec-http:4.1.97.Final")
     runtimeDeps.forEach(::compileOnly)
 
     // Plugin Extensions
@@ -83,6 +87,7 @@ dependencies {
         )
     }
 
+    // Testing Dependencies
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
