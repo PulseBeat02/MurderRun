@@ -1,14 +1,14 @@
-name: "pre-release"
+name: "tagged-release"
 
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
-  pre-release:
+  tagged-release:
     permissions: write-all
-    name: "Pre Release"
+    name: "Tagged Release"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +23,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
+          prerelease: false
           title: "Development Build"
           files: |
             build/libs/*-all.jar
