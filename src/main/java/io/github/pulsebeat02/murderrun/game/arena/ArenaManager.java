@@ -1,7 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
 import jakarta.persistence.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

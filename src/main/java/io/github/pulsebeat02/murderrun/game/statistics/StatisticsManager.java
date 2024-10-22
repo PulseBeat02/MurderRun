@@ -2,7 +2,6 @@ package io.github.pulsebeat02.murderrun.game.statistics;
 
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import jakarta.persistence.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

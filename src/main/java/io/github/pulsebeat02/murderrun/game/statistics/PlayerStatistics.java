@@ -1,9 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.statistics;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -11,6 +8,10 @@ import java.util.UUID;
 public final class PlayerStatistics {
 
   @Id
+  @GeneratedValue
+  @Column(name = "id")
+  private Long id;
+
   @Column(name = "uuid")
   private final UUID uuid;
 

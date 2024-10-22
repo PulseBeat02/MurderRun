@@ -17,10 +17,8 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
-
 import java.util.Collection;
 import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -173,7 +171,6 @@ public final class GadgetActionHandler implements Listener {
     Gadget closest = null;
     Item closestItem = null;
     for (final Entity entity : entities) {
-
       if (!(entity instanceof final Item item)) {
         continue;
       }
@@ -206,6 +203,5 @@ public final class GadgetActionHandler implements Listener {
     return PDCUtils.isGadget(stack);
   }
 
-  record GadgetSearchResult(@Nullable Gadget gadget, @Nullable Item item) {
-  }
+  record GadgetSearchResult(@Nullable Gadget gadget, @Nullable Item item) {}
 }
