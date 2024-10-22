@@ -8,4 +8,9 @@ public final class LobbyController extends AbstractController<LobbyManager> {
   public LobbyController(final SessionFactory factory) {
     super(factory, "lobby_manager");
   }
+
+  @Override
+  public LobbyManager createDefaultEntity() {
+    return new LobbyManager();
+  }
 }

@@ -22,12 +22,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serial;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public final class ArenaSchematic {
+public final class ArenaSchematic implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 4953428050756665476L;
 
   @Convert(converter = PathConverter.class)
   @Column(name = "schematic_path")

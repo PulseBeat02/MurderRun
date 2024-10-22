@@ -8,4 +8,9 @@ public final class ArenaController extends AbstractController<ArenaManager> {
   public ArenaController(final SessionFactory factory) {
     super(factory, "arena_manager");
   }
+
+  @Override
+  public ArenaManager createDefaultEntity() {
+    return new ArenaManager();
+  }
 }

@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.data.hibernate.controllers;
 
+import static java.util.Objects.*;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -20,12 +22,16 @@ public abstract class AbstractController<T> implements Controller<T> {
       final Transaction transaction = session.beginTransaction();
       final Class<T> clazz = this.getGenericClass();
       final T manager = session.get(clazz, this.id);
+      final T defaultEntity = requireNonNull(this.createDefaultEntity());
+      final T returnEntity = requireNonNullElse(manager, defaultEntity);
       transaction.commit();
-      return manager;
+      return returnEntity;
     } catch (final Exception e) {
       throw new AssertionError(e);
     }
   }
+
+  public abstract T createDefaultEntity();
 
   @Override
   public void shutdown() {
@@ -40,9 +46,8 @@ public abstract class AbstractController<T> implements Controller<T> {
       return;
     }
 
-    try (final Session session = this.factory.getCurrentSession()) {
+    try (final Session session = this.factory.openSession()) {
       final Transaction transaction = session.beginTransaction();
-      session.beginTransaction();
       session.refresh(data);
       transaction.commit();
     }

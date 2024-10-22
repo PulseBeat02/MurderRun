@@ -1,22 +1,22 @@
 package io.github.pulsebeat02.murderrun.game.lobby;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import org.bukkit.Location;
 
 @Entity
 @Table(name = "lobby")
-public final class Lobby {
+public final class Lobby implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = -3340383856074756744L;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long id;
+  private String id = "lobby";
 
   @Column(name = "name")
   private final String name;

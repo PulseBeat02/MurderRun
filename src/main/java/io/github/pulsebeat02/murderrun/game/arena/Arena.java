@@ -9,16 +9,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.io.Serial;
+import java.io.Serializable;
 import org.bukkit.Location;
 import org.bukkit.util.BoundingBox;
 
 @Entity
 @Table(name = "arena")
-public final class Arena {
+public final class Arena implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = -6251041532325023867L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(name = "id")
+  private String id = "arena";
 
   @Column(name = "schematic")
   private final ArenaSchematic schematic;

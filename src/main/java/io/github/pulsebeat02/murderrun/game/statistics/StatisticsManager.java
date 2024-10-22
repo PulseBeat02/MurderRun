@@ -1,7 +1,10 @@
 package io.github.pulsebeat02.murderrun.game.statistics;
 
+import io.github.pulsebeat02.murderrun.data.hibernate.converters.UUIDConverter;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import jakarta.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,17 +13,21 @@ import org.bukkit.entity.Player;
 
 @Entity
 @Table(name = "statistics_manager")
-public final class StatisticsManager {
+public final class StatisticsManager implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 1848424616462443310L;
 
   @Id
   @GeneratedValue
   @Column(name = "id")
-  private Long id;
+  private String id = "statistics_manager";
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @MapKeyColumn(name = "uuid")
   @JoinColumn(name = "statistics_manager_id")
   @Column(name = "player_statistics")
+  @Convert(converter = UUIDConverter.class, attributeName = "key.uuid")
   private final Map<UUID, PlayerStatistics> map;
 
   public StatisticsManager() {

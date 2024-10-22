@@ -5,8 +5,11 @@ import io.github.pulsebeat02.murderrun.data.hibernate.controllers.ArenaControlle
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.LobbyController;
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.StatisticsController;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.hibernate.HibernateException;
@@ -53,6 +56,9 @@ public final class HibernateManager {
       .addAnnotatedClass(ArenaManager.class)
       .addAnnotatedClass(LobbyManager.class)
       .addAnnotatedClass(StatisticsManager.class)
+      .addAnnotatedClass(Arena.class)
+      .addAnnotatedClass(Lobby.class)
+      .addAnnotatedClass(PlayerStatistics.class)
       .buildSessionFactory();
   }
 

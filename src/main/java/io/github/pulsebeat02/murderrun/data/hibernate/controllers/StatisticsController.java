@@ -8,4 +8,9 @@ public final class StatisticsController extends AbstractController<StatisticsMan
   public StatisticsController(final SessionFactory factory) {
     super(factory, "statistics_manager");
   }
+
+  @Override
+  public StatisticsManager createDefaultEntity() {
+    return new StatisticsManager();
+  }
 }

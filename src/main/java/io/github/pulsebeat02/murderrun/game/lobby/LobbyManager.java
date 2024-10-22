@@ -1,6 +1,8 @@
 package io.github.pulsebeat02.murderrun.game.lobby;
 
 import jakarta.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,12 +12,15 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 @Entity
 @Table(name = "lobby_manager")
-public final class LobbyManager {
+public final class LobbyManager implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 7490295092814979132L;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long id;
+  private String id = "lobby_manager";
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @MapKeyColumn(name = "name")
