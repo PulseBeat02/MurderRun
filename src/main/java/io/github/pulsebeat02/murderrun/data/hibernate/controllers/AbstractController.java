@@ -48,11 +48,7 @@ public abstract class AbstractController<T> implements Controller<T> {
 
     try (final Session session = this.factory.openSession()) {
       final Transaction transaction = session.beginTransaction();
-      if (session.contains(data)) {
-        session.refresh(data);
-      } else {
-        session.persist(data);
-      }
+      session.merge(data);
       transaction.commit();
     }
   }
