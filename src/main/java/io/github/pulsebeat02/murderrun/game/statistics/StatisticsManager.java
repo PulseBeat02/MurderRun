@@ -1,14 +1,8 @@
 package io.github.pulsebeat02.murderrun.game.statistics;
 
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapKeyColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -20,7 +14,9 @@ import org.bukkit.entity.Player;
 public final class StatisticsManager {
 
   @Id
-  private transient String id = "statistics_manager";
+  @GeneratedValue
+  @Column(name = "id")
+  private Long id;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @MapKeyColumn(name = "uuid")

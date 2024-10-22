@@ -17,8 +17,10 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+
 import java.util.Collection;
 import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -171,21 +173,25 @@ public final class GadgetActionHandler implements Listener {
     Gadget closest = null;
     Item closestItem = null;
     for (final Entity entity : entities) {
+
       if (!(entity instanceof final Item item)) {
         continue;
       }
+
       final ItemStack stack = item.getItemStack();
       final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
       final Gadget gadget = mechanism.getGadgetFromStack(stack);
       final boolean activate = isSurvivor ? gadget instanceof KillerApparatus : gadget instanceof SurvivorApparatus;
-      if (activate) {
-        final Location location = item.getLocation();
-        final double distance = origin.distanceSquared(location);
-        if (distance < min) {
-          min = distance;
-          closest = gadget;
-          closestItem = item;
-        }
+      if (!activate) {
+        continue;
+      }
+
+      final Location location = item.getLocation();
+      final double distance = origin.distanceSquared(location);
+      if (distance < min) {
+        min = distance;
+        closest = gadget;
+        closestItem = item;
       }
     }
     return new GadgetSearchResult(closest, closestItem);
@@ -200,5 +206,6 @@ public final class GadgetActionHandler implements Listener {
     return PDCUtils.isGadget(stack);
   }
 
-  record GadgetSearchResult(@Nullable Gadget gadget, @Nullable Item item) {}
+  record GadgetSearchResult(@Nullable Gadget gadget, @Nullable Item item) {
+  }
 }
