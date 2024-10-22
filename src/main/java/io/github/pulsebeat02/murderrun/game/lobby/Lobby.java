@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.lobby;
 
+import io.github.pulsebeat02.murderrun.data.hibernate.HibernateIdentifiers;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -16,7 +17,7 @@ public final class Lobby implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private String id = "lobby";
+  private Long id = HibernateIdentifiers.LOBBY_ID;
 
   @Column(name = "name")
   private final String name;

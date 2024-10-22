@@ -30,22 +30,22 @@ relational-data-provider: JSON
 database-options:
 
   # The driver you want to use (only Hibernate supported drivers)
-  driver: com.mysql.cj.jdbc.Driver
+  driver: org.h2.Driver
 
   # Database JDBC url to connect to
   jdbc-url: jdbc:h2:~/test
 
   # Database name for the plugin
-  database-name: 'murderrun'
+  database-name: murderrun
 
   # Hibernate internal option
-  hbm2ddl: 'update'
+  hbm2ddl: create
 
   # Database username to connect
-  username: 'prod'
+  username: prod
 
   # Database password to connect
-  password: 'prod'
+  password: prod
 
   # Show SQL statements in the console
   show-sql: true

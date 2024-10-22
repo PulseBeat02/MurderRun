@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
+import io.github.pulsebeat02.murderrun.data.hibernate.HibernateIdentifiers;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import jakarta.persistence.Column;
@@ -24,7 +25,7 @@ public final class Arena implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private String id = "arena";
+  private Long id = HibernateIdentifiers.ARENA_ID;
 
   @Column(name = "schematic")
   private final ArenaSchematic schematic;

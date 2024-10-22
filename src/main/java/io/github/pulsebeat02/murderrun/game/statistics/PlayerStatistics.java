@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.statistics;
 
+import io.github.pulsebeat02.murderrun.data.hibernate.HibernateIdentifiers;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.UUIDConverter;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -16,7 +17,7 @@ public final class PlayerStatistics implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private String id = "player_statistics";
+  private Long id = HibernateIdentifiers.PLAYER_STATISTICS_ID;
 
   @Column(name = "uuid")
   @Convert(converter = UUIDConverter.class)

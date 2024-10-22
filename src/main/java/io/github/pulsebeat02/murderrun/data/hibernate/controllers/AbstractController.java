@@ -9,9 +9,9 @@ import org.hibernate.Transaction;
 public abstract class AbstractController<T> implements Controller<T> {
 
   private final SessionFactory factory;
-  private final String id;
+  private final Object id;
 
-  public AbstractController(final SessionFactory factory, final String id) {
+  public AbstractController(final SessionFactory factory, final Object id) {
     this.factory = factory;
     this.id = id;
   }
