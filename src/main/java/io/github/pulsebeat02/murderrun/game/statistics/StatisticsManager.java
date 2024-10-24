@@ -1,7 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.statistics;
 
-import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.UUIDConverter;
+import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -20,11 +20,11 @@ public final class StatisticsManager implements Serializable, HibernateSerializa
   private static final long serialVersionUID = 1848424616462443310L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @OneToMany(orphanRemoval = true)
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
   @MapKeyColumn(name = "uuid")
   @JoinColumn(name = "statistics_manager_id")
   @Column(name = "player_statistics")
@@ -46,7 +46,7 @@ public final class StatisticsManager implements Serializable, HibernateSerializa
   }
 
   @Override
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 }

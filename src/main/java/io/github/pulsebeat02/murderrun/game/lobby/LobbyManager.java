@@ -19,11 +19,11 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
   private static final long serialVersionUID = 7490295092814979132L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @OneToMany(orphanRemoval = true)
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
   @MapKeyColumn(name = "name")
   @JoinColumn(name = "lobby_manager_id")
   @Column(name = "lobby")
@@ -55,7 +55,7 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
   }
 
   @Override
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 }

@@ -5,7 +5,6 @@ import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerial
 import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 
 public interface Controller<T extends HibernateSerializable> extends ConfigurationManager<T> {
-
   default Class<T> getGenericClass() {
     final TypeToken<T> token = new TypeToken<>(this.getClass()) {};
     return (Class<T>) token.getRawType();

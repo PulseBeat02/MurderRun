@@ -2,8 +2,6 @@ package io.github.pulsebeat02.murderrun.data.hibernate.identifier;
 
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class HibernateIdentifierManager {
 
@@ -21,7 +20,7 @@ public final class HibernateIdentifierManager {
   public static final int ARENA_MANAGER_INDEX = 1;
   public static final int STATISTICS_MANAGER_INDEX = 2;
 
-  private final long[] identifiers;
+  private final Long[] identifiers;
   private final ExecutorService service;
   private final Path path;
   private final Lock readLock;
@@ -57,14 +56,14 @@ public final class HibernateIdentifierManager {
     }
   }
 
-  public synchronized long[] deserialize(@UnderInitialization HibernateIdentifierManager this, final Path path, final Lock read) {
+  public synchronized Long[] deserialize(@UnderInitialization HibernateIdentifierManager this, final Path path, final Lock read) {
     if (IOUtils.createFile(path)) {
-      return new long[] {-1, -1, -1};
+      return new Long[] { -1L, -1L, -1L };
     }
     read.lock();
     try (final ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path))) {
-      final long[] identifiers;
-      identifiers = (long[]) ois.readObject();
+      final Long[] identifiers;
+      identifiers = (Long[]) ois.readObject();
       return identifiers;
     } catch (final IOException | ClassNotFoundException e) {
       throw new AssertionError(e);
@@ -73,7 +72,7 @@ public final class HibernateIdentifierManager {
     }
   }
 
-  public synchronized void storeIdentifier(final int index, final long identifier) {
+  public synchronized void storeIdentifier(final int index, final Long identifier) {
     this.identifiers[index] = identifier;
     this.serialize();
   }

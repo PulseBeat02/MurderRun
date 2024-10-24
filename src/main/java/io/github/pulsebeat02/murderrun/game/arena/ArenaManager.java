@@ -19,11 +19,11 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
   private static final long serialVersionUID = -2378194945450834205L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @OneToMany(orphanRemoval = true)
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
   @MapKeyColumn(name = "name")
   @JoinColumn(name = "arena_manager_id")
   @Column(name = "arena")
@@ -62,7 +62,7 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
   }
 
   @Override
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 }

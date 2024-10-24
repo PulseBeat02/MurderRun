@@ -1,13 +1,11 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
-import io.github.pulsebeat02.murderrun.data.hibernate.HibernateIdentifiers;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serial;
@@ -23,7 +21,7 @@ public final class Arena implements Serializable {
   private static final long serialVersionUID = -6251041532325023867L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
@@ -48,6 +46,16 @@ public final class Arena implements Serializable {
   @Convert(converter = LocationConverter.class)
   @Column(name = "truck")
   private final Location truck;
+
+  @SuppressWarnings("all") // for hibernate
+  public Arena() {
+    this.schematic = null;
+    this.name = null;
+    this.corners = null;
+    this.carPartLocations = null;
+    this.spawn = null;
+    this.truck = null;
+  }
 
   public Arena(
     final ArenaSchematic schematic,
