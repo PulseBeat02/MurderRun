@@ -30,7 +30,6 @@ public final class HibernateManager {
   public HibernateManager(final MurderRun plugin) {
     this.plugin = plugin;
     this.manager = new HibernateIdentifierManager();
-    this.manager.initialize();
     this.factory = this.constructSessionFactory(plugin);
     this.arenaController = new ArenaController(this.manager, this.factory);
     this.lobbyController = new LobbyController(this.manager, this.factory);

@@ -20,8 +20,8 @@ public final class StatisticsManager implements Serializable, HibernateSerializa
   private static final long serialVersionUID = 1848424616462443310L;
 
   @Id
-  @GeneratedValue
-  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
   @OneToMany(orphanRemoval = true)

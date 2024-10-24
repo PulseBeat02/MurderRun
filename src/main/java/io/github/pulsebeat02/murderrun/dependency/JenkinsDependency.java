@@ -11,9 +11,9 @@ public final class JenkinsDependency extends PluginDependency {
 
   private final String url;
 
-  public JenkinsDependency(final String name, final String version, final String buildNumber, final String url) {
+  public JenkinsDependency(final String name, final String version, final String url) {
     super(name, version);
-    this.url = "%s/%s/artifact/dist/target".formatted(url, buildNumber);
+    this.url = url;
   }
 
   @Override

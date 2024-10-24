@@ -19,8 +19,8 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
   private static final long serialVersionUID = -2378194945450834205L;
 
   @Id
-  @GeneratedValue
-  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
   @OneToMany(orphanRemoval = true)

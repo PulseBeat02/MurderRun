@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.data.hibernate.identifier;
 
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -29,15 +30,11 @@ public final class HibernateIdentifierManager {
   public HibernateIdentifierManager() {
     final Path parent = IOUtils.getPluginDataFolderPath();
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
-    this.identifiers = new long[]{-1L, -1L, -1L};
     this.path = parent.resolve(HIBERNATE_IDENTIFIERS_FILE);
     this.service = Executors.newVirtualThreadPerTaskExecutor();
     this.readLock = lock.readLock();
     this.writeLock = lock.writeLock();
-  }
-
-  public void initialize() {
-    this.deserialize();
+    this.identifiers = this.deserialize(this.path, this.readLock);
   }
 
   public synchronized void serialize() {
@@ -60,19 +57,19 @@ public final class HibernateIdentifierManager {
     }
   }
 
-  public synchronized void deserialize() {
-    if (IOUtils.createFile(this.path)) {
-      return;
+  public synchronized long[] deserialize(@UnderInitialization HibernateIdentifierManager this, final Path path, final Lock read) {
+    if (IOUtils.createFile(path)) {
+      return new long[] {-1, -1, -1};
     }
-    this.readLock.lock();
-    try (final ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(this.path))) {
-      final Long[] identifiers;
-      identifiers = (Long[]) ois.readObject();
-      System.arraycopy(identifiers, 0, this.identifiers, 0, identifiers.length);
+    read.lock();
+    try (final ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path))) {
+      final long[] identifiers;
+      identifiers = (long[]) ois.readObject();
+      return identifiers;
     } catch (final IOException | ClassNotFoundException e) {
       throw new AssertionError(e);
     } finally {
-      this.readLock.unlock();
+      read.unlock();
     }
   }
 

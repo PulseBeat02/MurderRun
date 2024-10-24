@@ -15,8 +15,8 @@ public final class Lobby implements Serializable {
   private static final long serialVersionUID = -3340383856074756744L;
 
   @Id
-  @GeneratedValue
-  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
   @Column(name = "name")

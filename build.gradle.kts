@@ -148,7 +148,7 @@ tasks {
 
     runServer {
         downloadPlugins {
-            url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
+            url("https://ci.md-5.net/job/LibsDisguises/1463/artifact/target/LibsDisguises.jar")
             url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-200.jar")
         }
         minecraftVersion("1.21.1")

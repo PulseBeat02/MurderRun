@@ -19,8 +19,8 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
   private static final long serialVersionUID = 7490295092814979132L;
 
   @Id
-  @GeneratedValue
-  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
   @OneToMany(orphanRemoval = true)
