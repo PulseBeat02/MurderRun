@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.arena;
 
-import io.github.pulsebeat02.murderrun.data.hibernate.HibernateIdentifiers;
+import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,17 +13,17 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 @Entity
 @Table(name = "arena_manager")
-public final class ArenaManager implements Serializable {
+public final class ArenaManager implements Serializable, HibernateSerializable {
 
   @Serial
   private static final long serialVersionUID = -2378194945450834205L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id")
-  private Long id = HibernateIdentifiers.ARENA_MANAGER_ID;
+  private Long id;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(orphanRemoval = true)
   @MapKeyColumn(name = "name")
   @JoinColumn(name = "arena_manager_id")
   @Column(name = "arena")
@@ -59,5 +59,10 @@ public final class ArenaManager implements Serializable {
 
   public Set<@KeyFor("this.arenas") String> getArenaNames() {
     return this.arenas.keySet();
+  }
+
+  @Override
+  public long getId() {
+    return this.id;
   }
 }

@@ -15,9 +15,9 @@ public final class PlayerStatistics implements Serializable {
   private static final long serialVersionUID = 8818715610268669533L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id")
-  private Long id = HibernateIdentifiers.PLAYER_STATISTICS_ID;
+  private Long id;
 
   @Column(name = "uuid")
   @Convert(converter = UUIDConverter.class)

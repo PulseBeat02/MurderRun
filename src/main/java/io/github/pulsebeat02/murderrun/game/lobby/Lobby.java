@@ -15,9 +15,9 @@ public final class Lobby implements Serializable {
   private static final long serialVersionUID = -3340383856074756744L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id")
-  private Long id = HibernateIdentifiers.LOBBY_ID;
+  private Long id;
 
   @Column(name = "name")
   private final String name;

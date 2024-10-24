@@ -23,9 +23,9 @@ public final class Arena implements Serializable {
   private static final long serialVersionUID = -6251041532325023867L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id")
-  private Long id = HibernateIdentifiers.ARENA_ID;
+  private Long id;
 
   @Column(name = "schematic")
   private final ArenaSchematic schematic;

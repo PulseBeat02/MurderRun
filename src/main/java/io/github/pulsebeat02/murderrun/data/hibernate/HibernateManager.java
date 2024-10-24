@@ -4,6 +4,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.ArenaController;
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.LobbyController;
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.StatisticsController;
+import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateIdentifierManager;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
@@ -20,6 +21,7 @@ import org.hibernate.cfg.Environment;
 public final class HibernateManager {
 
   private final MurderRun plugin;
+  private final HibernateIdentifierManager manager;
   private final ArenaController arenaController;
   private final LobbyController lobbyController;
   private final StatisticsController statisticsController;
@@ -27,10 +29,22 @@ public final class HibernateManager {
 
   public HibernateManager(final MurderRun plugin) {
     this.plugin = plugin;
+    this.manager = new HibernateIdentifierManager();
+    this.manager.initialize();
     this.factory = this.constructSessionFactory(plugin);
-    this.arenaController = new ArenaController(this.factory);
-    this.lobbyController = new LobbyController(this.factory);
-    this.statisticsController = new StatisticsController(this.factory);
+    this.arenaController = new ArenaController(this.manager, this.factory);
+    this.lobbyController = new LobbyController(this.manager, this.factory);
+    this.statisticsController = new StatisticsController(this.manager, this.factory);
+  }
+
+  public void shutdown() {
+    this.arenaController.shutdown();
+    this.lobbyController.shutdown();
+    this.statisticsController.shutdown();
+    this.manager.shutdown();
+    if (this.factory.isOpen()) {
+      this.factory.close();
+    }
   }
 
   private SessionFactory constructSessionFactory(@UnderInitialization HibernateManager this, final MurderRun plugin) {

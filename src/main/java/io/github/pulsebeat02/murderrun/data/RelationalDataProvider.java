@@ -40,6 +40,15 @@ public final class RelationalDataProvider {
     }
   }
 
+  public void shutdown() {
+    if (this.hibernate != null) {
+      this.hibernate.shutdown();
+    }
+    this.arenas.shutdown();
+    this.lobbies.shutdown();
+    this.statistics.shutdown();
+  }
+
   public MurderRun getPlugin() {
     return this.plugin;
   }

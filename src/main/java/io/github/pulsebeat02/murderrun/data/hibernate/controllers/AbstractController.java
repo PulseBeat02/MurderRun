@@ -2,30 +2,40 @@ package io.github.pulsebeat02.murderrun.data.hibernate.controllers;
 
 import static java.util.Objects.*;
 
+import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
+import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateIdentifierManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-public abstract class AbstractController<T> implements Controller<T> {
+public abstract class AbstractController<T extends HibernateSerializable> implements Controller<T> {
 
   private final SessionFactory factory;
-  private final Object id;
+  private final HibernateIdentifierManager manager;
+  private final int index;
 
-  public AbstractController(final SessionFactory factory, final Object id) {
+  public AbstractController(final HibernateIdentifierManager manager, final SessionFactory factory, final int index) {
     this.factory = factory;
-    this.id = id;
+    this.manager = manager;
+    this.index = index;
   }
 
   @Override
   public T deserialize() {
+    final long id = this.manager.getIdentifier(this.index);
+    final Class<T> clazz = this.getGenericClass();
     try (final Session session = this.factory.openSession()) {
       final Transaction transaction = session.beginTransaction();
-      final Class<T> clazz = this.getGenericClass();
-      final T manager = session.get(clazz, this.id);
-      final T defaultEntity = requireNonNull(this.createDefaultEntity());
-      final T returnEntity = requireNonNullElse(manager, defaultEntity);
+      if (id == -1) {
+        final T defaultEntity = requireNonNull(this.createDefaultEntity());
+        final long updated = defaultEntity.getId();
+        this.manager.storeIdentifier(this.index, updated);
+        transaction.commit();
+        return defaultEntity;
+      }
+      final T entity = session.get(clazz, id);
       transaction.commit();
-      return returnEntity;
+      return entity;
     } catch (final Exception e) {
       throw new AssertionError(e);
     }
@@ -48,7 +58,11 @@ public abstract class AbstractController<T> implements Controller<T> {
 
     try (final Session session = this.factory.openSession()) {
       final Transaction transaction = session.beginTransaction();
-      session.refresh(data);
+      if (session.contains(data)) {
+        session.refresh(data);
+      } else {
+        session.persist(data);
+      }
       transaction.commit();
     }
   }

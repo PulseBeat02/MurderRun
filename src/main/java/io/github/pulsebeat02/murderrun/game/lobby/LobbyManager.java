@@ -1,6 +1,6 @@
 package io.github.pulsebeat02.murderrun.game.lobby;
 
-import io.github.pulsebeat02.murderrun.data.hibernate.HibernateIdentifiers;
+import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,17 +13,17 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 @Entity
 @Table(name = "lobby_manager")
-public final class LobbyManager implements Serializable {
+public final class LobbyManager implements Serializable, HibernateSerializable {
 
   @Serial
   private static final long serialVersionUID = 7490295092814979132L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   @Column(name = "id")
-  private Long id = HibernateIdentifiers.LOBBY_MANAGER_ID;
+  private Long id;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(orphanRemoval = true)
   @MapKeyColumn(name = "name")
   @JoinColumn(name = "lobby_manager_id")
   @Column(name = "lobby")
@@ -52,5 +52,10 @@ public final class LobbyManager implements Serializable {
 
   public Set<@KeyFor("this.lobbies") String> getLobbyNames() {
     return this.lobbies.keySet();
+  }
+
+  @Override
+  public long getId() {
+    return this.id;
   }
 }
