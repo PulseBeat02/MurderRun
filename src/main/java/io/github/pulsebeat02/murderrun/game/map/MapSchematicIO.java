@@ -19,12 +19,12 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
+import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -42,7 +42,7 @@ public final class MapSchematicIO {
       final GameSettings settings = game.getSettings();
       final Arena arena = requireNonNull(settings.getArena());
       final ArenaSchematic schematic = arena.getSchematic();
-      final BlockVector3 vector3 = schematic.getOrigin();
+      final SerializableVector vector3 = schematic.getOrigin();
       final Clipboard clipboard = this.loadSchematic(schematic);
       final com.sk89q.worldedit.world.World world = this.getWorld();
       final WorldEdit instance = WorldEdit.getInstance();
@@ -65,22 +65,23 @@ public final class MapSchematicIO {
     final WorldEdit instance,
     final com.sk89q.worldedit.world.World world,
     final Clipboard clipboard,
-    final BlockVector3 vector3
+    final SerializableVector vector3
   ) throws WorldEditException {
     try (final EditSession session = instance.newEditSession(world)) {
       final ClipboardHolder holder = new ClipboardHolder(clipboard);
-      final PasteBuilder extent = holder.createPaste(session).to(vector3).ignoreAirBlocks(false);
+      final BlockVector3 internal = vector3.getVector3();
+      final PasteBuilder extent = holder.createPaste(session).to(internal).ignoreAirBlocks(false);
       final Operation operation = extent.build();
       Operations.complete(operation);
     }
   }
 
   private Clipboard loadSchematic(final ArenaSchematic schematic) throws IOException {
-    final Path path = schematic.getSchematicPath();
-    final File legacyPath = path.toFile();
+    final String path = schematic.getSchematicPath();
+    final File legacyPath = new File(path);
     final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(legacyPath));
     try (
-      final InputStream stream = Files.newInputStream(path);
+      final InputStream stream = new FileInputStream(legacyPath);
       final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
       final ClipboardReader reader = format.getReader(fast)
     ) {

@@ -2,12 +2,7 @@ package io.github.pulsebeat02.murderrun.game.arena;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import org.bukkit.Location;
@@ -26,6 +21,7 @@ public final class Arena implements Serializable {
   private Long id;
 
   @Column(name = "schematic")
+  @Lob
   private final ArenaSchematic schematic;
 
   @Column(name = "name")
