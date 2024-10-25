@@ -86,7 +86,7 @@ public final class PluginDataConfigurationMapper {
   }
 
   private Locale getLocale(final FileConfiguration config) {
-    return Locale.fromString(requireNonNullElse(config.getString(PLUGIN_LANGUAGE), "EN"));
+    return Locale.fromString(requireNonNullElse(config.getString(PLUGIN_LANGUAGE), "EN_US"));
   }
 
   private String getDatabaseDriver(final FileConfiguration config) {

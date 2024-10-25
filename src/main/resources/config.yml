@@ -1,9 +1,9 @@
 # MurderRun Configuration File
 
 # Sets the language for the plugin
-# Valid options are: EN, ZH_CN
-# Default is EN
-language: EN
+# Valid options are: EN_US, ZH_CN
+# Default is EN_US
+language: EN_US
 
 # Sets the method to host the pack that is used by the plugin
 # Valid options are MC_PACK_HOSTING, LOCALLY_HOSTED_DAEMON
