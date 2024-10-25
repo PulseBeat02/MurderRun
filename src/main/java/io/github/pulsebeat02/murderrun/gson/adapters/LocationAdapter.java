@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
 public final class LocationAdapter implements JsonDeserializer<Location>, JsonSerializer<Location> {
 
@@ -26,13 +27,23 @@ public final class LocationAdapter implements JsonDeserializer<Location>, JsonSe
     final JsonElement z = obj.get("z");
     final JsonElement yaw = obj.get("yaw");
     final JsonElement pitch = obj.get("pitch");
-    final World instance = Bukkit.getWorld(world.getAsString());
+    final String worldName = world.getAsString();
+    final World instance = this.loadWorld(worldName);
     final double xValue = x.getAsDouble();
     final double yValue = y.getAsDouble();
     final double zValue = z.getAsDouble();
     final float yawValue = yaw != null ? yaw.getAsFloat() : 0.0f;
     final float pitchValue = pitch != null ? pitch.getAsFloat() : 0.0f;
     return new Location(instance, xValue, yValue, zValue, yawValue, pitchValue);
+  }
+
+  private World loadWorld(final String name) {
+    final World temporary = Bukkit.getWorld(name);
+    if (temporary == null) {
+      final WorldCreator creator = new WorldCreator(name);
+      return requireNonNull(Bukkit.createWorld(creator), "World could not be created");
+    }
+    return temporary;
   }
 
   @Override
