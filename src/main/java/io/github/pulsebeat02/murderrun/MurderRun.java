@@ -66,8 +66,8 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onEnable() {
     this.registerAudienceHandler();
-    this.registerLookUpMaps();
     this.readPluginData();
+    this.registerLookUpMaps();
     this.handlePackHosting();
     this.registerCommands();
     this.registerGameUtilities();

@@ -41,7 +41,8 @@ public final class LocationAdapter implements JsonDeserializer<Location>, JsonSe
     final World temporary = Bukkit.getWorld(name);
     if (temporary == null) {
       final WorldCreator creator = new WorldCreator(name);
-      return requireNonNull(Bukkit.createWorld(creator), "World could not be created");
+      final World world = Bukkit.createWorld(creator);
+      return requireNonNull(world, "World could not be created");
     }
     return temporary;
   }

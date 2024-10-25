@@ -3,6 +3,8 @@ package io.github.pulsebeat02.murderrun.locale;
 import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.text.Component.empty;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.minimessage.PluginTranslator;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
@@ -18,24 +20,35 @@ import java.util.ResourceBundle;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class TranslationManager {
 
-  private static final java.util.Locale DEFAULT_LOCALE = Locale.ENGLISH;
+  private static final Locale DEFAULT_LOCALE = Locale.getDefault();
   private static final Key ADVENTURE_KEY = key(Keys.NAMESPACE, "main");
-  private static final String PROPERTIES_PATH = "murderrun_en.properties";
 
+  private final String propertiesPath;
   private final ResourceBundle bundle;
   private final PluginTranslator translator;
 
   public TranslationManager() {
-    this.bundle = this.getBundle();
+    final MurderRun plugin = JavaPlugin.getPlugin(MurderRun.class);
+    this.propertiesPath = this.getPropertiesPath(plugin);
+    this.bundle = this.getBundle(this.propertiesPath);
     this.translator = new PluginTranslator(ADVENTURE_KEY, this.bundle);
   }
 
-  private PropertyResourceBundle getBundle(@UnderInitialization TranslationManager this) {
-    final Path resource = this.copyResourceToFolder();
+  private String getPropertiesPath(@UnderInitialization TranslationManager this, final MurderRun plugin) {
+    final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
+    final io.github.pulsebeat02.murderrun.locale.Locale locale = mapper.getLocale();
+    final String name = locale.name();
+    final String lower = name.toLowerCase();
+    return "locale/murderrun_%s.properties".formatted(lower);
+  }
+
+  private PropertyResourceBundle getBundle(@UnderInitialization TranslationManager this, final String propertiesPath) {
+    final Path resource = this.copyResourceToFolder(propertiesPath);
     try (final Reader reader = Files.newBufferedReader(resource)) {
       return new PropertyResourceBundle(reader);
     } catch (final IOException e) {
@@ -43,18 +56,18 @@ public final class TranslationManager {
     }
   }
 
-  private Path copyResourceToFolder(@UnderInitialization TranslationManager this) {
+  private Path copyResourceToFolder(@UnderInitialization TranslationManager this, final String propertiesPath) {
     final Path folder = IOUtils.getPluginDataFolderPath();
-    final Path locale = folder.resolve(PROPERTIES_PATH);
+    final Path locale = folder.resolve(propertiesPath);
     if (Files.notExists(locale)) {
       IOUtils.createFile(locale);
-      copyLocaleProperties(locale);
+      this.copyLocaleProperties(propertiesPath, locale);
     }
     return locale;
   }
 
-  private static void copyLocaleProperties(final Path locale) {
-    try (final InputStream stream = IOUtils.getResourceAsStream(PROPERTIES_PATH)) {
+  private void copyLocaleProperties(@UnderInitialization TranslationManager this, final String propertiesPath, final Path locale) {
+    try (final InputStream stream = IOUtils.getResourceAsStream(propertiesPath)) {
       Files.copy(stream, locale, StandardCopyOption.REPLACE_EXISTING);
     } catch (final IOException e) {
       throw new AssertionError(e);

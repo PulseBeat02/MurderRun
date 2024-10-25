@@ -1,7 +1,13 @@
 # MurderRun Configuration File
 
+# Sets the language for the plugin
+# Valid options are: EN, ZH_CN
+# Default is EN
+language: EN
+
 # Sets the method to host the pack that is used by the plugin
 # Valid options are MC_PACK_HOSTING, LOCALLY_HOSTED_DAEMON
+# Default is MC_PACK_HOSTING
 
 # MC_PACK_HOSTING will upload the pack on https://mc-packs.net/ and cache the pack link
 # This option doesn't require port-forwarding, but may be limited by web requests
@@ -14,9 +20,11 @@ pack-provider: MC_PACK_HOSTING
 server:
 
   # The host name of the daemon (for example: google.com)
+  # Default is localhost
   host-name: localhost
 
   # The port of the daemon (for example, 7270)
+  # Default is 7270
   port: 7270
 
   # With this configuration, the final pack link will be: http://localhost:7270/
@@ -24,29 +32,37 @@ server:
 # The data provider to use to store all plugin data
 # Valid options are JSON and SQL. If you are using SQL, make sure to the configuration below
 # to match your SQL database.
+# default is JSON
 relational-data-provider: JSON
 
 # Represents the database options
 database-options:
 
   # The driver you want to use (only Hibernate supported drivers)
+  # Default is org.h2.Driver
   driver: org.h2.Driver
 
   # Database JDBC url to connect to
+  # Default is jdbc:h2:~/test
   jdbc-url: jdbc:h2:~/test
 
   # Database name for the plugin
+  # Default is murderrun
   database-name: murderrun
 
   # Hibernate internal option
+  # Default is update
   hbm2ddl: create
 
   # Database username to connect
+  # Default is prod
   username: prod
 
   # Database password to connect
+  # Default is prod
   password: prod
 
   # Show SQL statements in the console
+  # Default is true
   show-sql: true
 
