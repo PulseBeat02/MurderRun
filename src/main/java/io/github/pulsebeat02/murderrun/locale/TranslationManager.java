@@ -3,91 +3,83 @@ package io.github.pulsebeat02.murderrun.locale;
 import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.text.Component.empty;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.minimessage.PluginTranslator;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.nio.file.StandardCopyOption;
 import java.util.Locale;
-import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class TranslationManager {
 
+  private static final Locale DEFAULT_LOCALE = Locale.getDefault();
   private static final Key ADVENTURE_KEY = key(Keys.NAMESPACE, "main");
-  private static final String CONFIG_PATH = "config.yml";
-  private static final String LANGUAGE_FOLDER = "languages/";
-  private ResourceBundle bundle;
-  private PluginTranslator translator;
-  // 语言代码到属性文件名的映射
-  private static final Map<String, String> LANGUAGE_FILE_MAP = new HashMap<>();
 
-  static {
-    LANGUAGE_FILE_MAP.put("en", "murderrun_en.properties");
-    LANGUAGE_FILE_MAP.put("zh_cn", "murderrun_zh_cn.properties");
-    // 添加更多的映射关系
-  }
+  private final String propertiesPath;
+  private final ResourceBundle bundle;
+  private final PluginTranslator translator;
 
   public TranslationManager() {
-    // 初始化成员变量为默认值
-    this.bundle = ResourceBundle.getBundle("murderrun_en.properties", Locale.getDefault());
+    final MurderRun plugin = JavaPlugin.getPlugin(MurderRun.class);
+    this.propertiesPath = this.getPropertiesPath(plugin);
+    this.bundle = this.getBundle(this.propertiesPath);
     this.translator = new PluginTranslator(ADVENTURE_KEY, this.bundle);
-    // 加载配置
-    loadConfig();
   }
 
-  private void loadConfig() {
-    final Path configPath = IOUtils.getPluginDataFolderPath().resolve(CONFIG_PATH);
-    FileConfiguration config = new YamlConfiguration();
-    try {
-      if (Files.notExists(configPath)) {
-        Files.createFile(configPath); // 如果文件不存在，则创建一个新文件
-        config.save(configPath.toFile()); // 保存默认配置
-      }
-      config.load(configPath.toFile());
-      final String languageCode = config.getString("languages", "en"); // 默认为英文
-      // 确保 languageCode 不是 null
-      if (languageCode != null) {
-        final String propertiesFile = LANGUAGE_FILE_MAP.getOrDefault(languageCode, "murderrun_en.properties");
-        final Locale locale = Locale.forLanguageTag(languageCode);
-        this.bundle = loadBundle(locale, propertiesFile);
-        this.translator = new PluginTranslator(ADVENTURE_KEY, this.bundle);
-      }
-    } catch (IOException | InvalidConfigurationException e) {
-      e.printStackTrace();
-    }
+  private String getPropertiesPath(@UnderInitialization TranslationManager this, final MurderRun plugin) {
+    final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
+    final io.github.pulsebeat02.murderrun.locale.Locale locale = mapper.getLocale();
+    final String name = locale.name();
+    final String lower = name.toLowerCase();
+    return "locale/murderrun_%s.properties".formatted(lower);
   }
 
-  private ResourceBundle loadBundle(Locale locale, String propertiesFile) {
-    final Path resourcePath = IOUtils.getPluginDataFolderPath().resolve(LANGUAGE_FOLDER + propertiesFile);
-    try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(resourcePath), StandardCharsets.UTF_8)) {
+  private PropertyResourceBundle getBundle(@UnderInitialization TranslationManager this, final String propertiesPath) {
+    final Path resource = this.copyResourceToFolder(propertiesPath);
+    try (final Reader reader = Files.newBufferedReader(resource)) {
       return new PropertyResourceBundle(reader);
-    } catch (IOException e) {
-      e.printStackTrace();
-      // 返回一个默认的资源包或者抛出异常
-      return ResourceBundle.getBundle("murderrun_en.properties", locale);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
     }
   }
 
-  // 获取属性文件中的值
-  public String getProperty(String key) {
+  private Path copyResourceToFolder(@UnderInitialization TranslationManager this, final String propertiesPath) {
+    final Path folder = IOUtils.getPluginDataFolderPath();
+    final Path locale = folder.resolve(propertiesPath);
+    if (Files.notExists(locale)) {
+      IOUtils.createFile(locale);
+      this.copyLocaleProperties(propertiesPath, locale);
+    }
+    return locale;
+  }
+
+  private void copyLocaleProperties(@UnderInitialization TranslationManager this, final String propertiesPath, final Path locale) {
+    try (final InputStream stream = IOUtils.getResourceAsStream(propertiesPath)) {
+      Files.copy(stream, locale, StandardCopyOption.REPLACE_EXISTING);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  public String getProperty(final String key) {
     return this.bundle.getString(key);
   }
 
-  // 渲染可翻译组件，如果翻译失败则返回一个空的组件
-  public Component render(TranslatableComponent component) {
-    final Component translated = this.translator.translate(component, Locale.getDefault());
-    return translated != null ? translated : empty();
+  public Component render(final TranslatableComponent component) {
+    final Component translated = this.translator.translate(component, DEFAULT_LOCALE);
+    return translated == null ? empty() : translated;
   }
 }

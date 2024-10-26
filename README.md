@@ -1,5 +1,4 @@
 # Murder Run
-
 [![GitHub Actions](https://github.com/PulseBeat02/MurderRun/actions/workflows/tagged-release.yml/badge.svg)](https://github.com/PulseBeat02/MurderRun/actions)
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
@@ -9,6 +8,8 @@
 Want to show your support for me and the development of MurderRun? Check out BisectHosting and use the `pulse` 
 for a 25% discount on your first month of a gaming server as a new customer. With their 24/7 support and quick 
 response times, you can count on excellent assistance for all your gaming requirements.
+
+Join the Discord https://discord.gg/cUMB6kCsh6 for plugin support and issues!
 
 ## Inspiration
 Based on the popular game Dead by Daylight, Murder Run is an advanced mini-game revolving around killers

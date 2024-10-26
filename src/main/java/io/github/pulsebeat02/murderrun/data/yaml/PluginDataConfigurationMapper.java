@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNullElse;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.RelationalDataMethod;
+import io.github.pulsebeat02.murderrun.locale.Locale;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import java.util.concurrent.CompletableFuture;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public final class PluginDataConfigurationMapper {
 
+  private static final String PLUGIN_LANGUAGE = "language";
   private static final String PACK_PROVIDER_FIELD = "pack-provider";
   private static final String RELATIONAL_DATA_FIELD = "relational-data-provider";
   private static final String SERVER_PORT_FIELD = "server.port";
@@ -33,6 +35,7 @@ public final class PluginDataConfigurationMapper {
   private final Lock readLock;
   private final Lock writeLock;
 
+  private Locale locale;
   private ProviderMethod providerMethod;
   private RelationalDataMethod relationalDataMethod;
   private String hostName;
@@ -67,6 +70,7 @@ public final class PluginDataConfigurationMapper {
     this.readLock.lock();
     final FileConfiguration config = this.plugin.getConfig();
     this.plugin.saveConfig();
+    this.locale = this.getLocale(config);
     this.hostName = this.getHostName(config);
     this.port = this.getPortServerPort(config);
     this.providerMethod = this.getProviderMethod(config);
@@ -81,8 +85,8 @@ public final class PluginDataConfigurationMapper {
     this.readLock.unlock();
   }
 
-  private int getPort(final FileConfiguration config) {
-    return config.getInt(SERVER_PORT_FIELD);
+  private Locale getLocale(final FileConfiguration config) {
+    return Locale.fromString(requireNonNullElse(config.getString(PLUGIN_LANGUAGE), "EN_US"));
   }
 
   private String getDatabaseDriver(final FileConfiguration config) {
@@ -122,13 +126,15 @@ public final class PluginDataConfigurationMapper {
   }
 
   private ProviderMethod getProviderMethod(final FileConfiguration config) {
-    final String value = config.getString(PACK_PROVIDER_FIELD);
-    return value == null ? ProviderMethod.MC_PACK_HOSTING : ProviderMethod.valueOf(value);
+    return ProviderMethod.fromString(requireNonNullElse(config.getString(PACK_PROVIDER_FIELD), "MC_PACK_HOSTING"));
   }
 
   private RelationalDataMethod getRelationalDataMethod(final FileConfiguration config) {
-    final String value = config.getString(RELATIONAL_DATA_FIELD);
-    return value == null ? RelationalDataMethod.JSON : RelationalDataMethod.valueOf(value);
+    return RelationalDataMethod.fromString(requireNonNullElse(config.getString(RELATIONAL_DATA_FIELD), "JSON"));
+  }
+
+  public synchronized Locale getLocale() {
+    return this.locale;
   }
 
   public synchronized String getHostName() {

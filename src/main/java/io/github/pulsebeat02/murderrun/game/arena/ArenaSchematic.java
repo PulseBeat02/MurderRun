@@ -14,8 +14,8 @@ import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import io.github.pulsebeat02.murderrun.data.hibernate.converters.BlockVectorConverter;
-import io.github.pulsebeat02.murderrun.data.hibernate.converters.PathConverter;
+import io.github.pulsebeat02.murderrun.data.hibernate.converters.SerializableVectorConverter;
+import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
 import jakarta.persistence.Column;
@@ -34,15 +34,14 @@ public final class ArenaSchematic implements Serializable {
   @Serial
   private static final long serialVersionUID = 4953428050756665476L;
 
-  @Convert(converter = PathConverter.class)
   @Column(name = "schematic_path")
-  private final Path schematicPath;
+  private final String schematicPath;
 
-  @Convert(converter = BlockVectorConverter.class)
+  @Convert(converter = SerializableVectorConverter.class)
   @Column(name = "origin")
-  private final BlockVector3 origin;
+  private final SerializableVector origin;
 
-  public ArenaSchematic(final Path schematicPath, final BlockVector3 origin) {
+  public ArenaSchematic(final String schematicPath, final SerializableVector origin) {
     this.schematicPath = schematicPath;
     this.origin = origin;
   }
@@ -50,9 +49,10 @@ public final class ArenaSchematic implements Serializable {
   public static ArenaSchematic copyAndCreateSchematic(final String name, final Location[] corners) {
     try {
       final Clipboard clipboard = performForwardExtentCopy(corners);
-      final Path path = performSchematicWrite(clipboard, name);
+      final String path = performSchematicWrite(clipboard, name);
       final BlockVector3 origin = clipboard.getOrigin();
-      return new ArenaSchematic(path, origin);
+      final SerializableVector serializable = new SerializableVector(origin);
+      return new ArenaSchematic(path, serializable);
     } catch (final WorldEditException | IOException e) {
       throw new AssertionError(e);
     }
@@ -72,7 +72,7 @@ public final class ArenaSchematic implements Serializable {
     }
   }
 
-  private static Path performSchematicWrite(final Clipboard clipboard, final String name) throws IOException {
+  private static String performSchematicWrite(final Clipboard clipboard, final String name) throws IOException {
     final Path data = IOUtils.getPluginDataFolderPath();
     final Path parent = data.resolve("schematics");
     IOUtils.createFolder(parent);
@@ -87,7 +87,8 @@ public final class ArenaSchematic implements Serializable {
       writer.write(clipboard);
     }
 
-    return file;
+    final Path absolute = file.toAbsolutePath();
+    return absolute.toString();
   }
 
   private static CuboidRegion createRegion(final Location[] corners) {
@@ -100,11 +101,11 @@ public final class ArenaSchematic implements Serializable {
     return new CuboidRegion(instance, firstCorner, secondCorner);
   }
 
-  public Path getSchematicPath() {
+  public String getSchematicPath() {
     return this.schematicPath;
   }
 
-  public BlockVector3 getOrigin() {
+  public SerializableVector getOrigin() {
     return this.origin;
   }
 }
