@@ -59,20 +59,20 @@ var runtimeDeps = listOf(
 
 dependencies {
 
-    // 注释处理器
+    // Annotation Processors
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
 
-    // 项目依赖性
+    // Project Dependencies
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
 
-    // 提供的依赖项
+    // Provided Dependencies
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
     compileOnly("io.netty:netty-all:4.1.97.Final")
     runtimeDeps.forEach(::compileOnly)
 
-    // 插件扩展
+    // Plugin Extensions
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
     compileOnly("LibsDisguises:LibsDisguises:10.0.44")
@@ -85,7 +85,7 @@ dependencies {
         )
     }
 
-    // 测试依赖关系
+    // Testing Dependencies
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
@@ -151,6 +151,7 @@ tasks {
             url("https://ci.md-5.net/job/LibsDisguises/1463/artifact/target/LibsDisguises.jar")
             url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-200.jar")
         }
+        systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
         minecraftVersion("1.21.1")
     }
 
