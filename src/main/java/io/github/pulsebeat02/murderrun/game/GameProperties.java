@@ -9,6 +9,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  boolean FORCE_RESOURCEPACK = bool("force_resourcepack");
   String BUILT_IN_RESOURCES = str("built_in_resources");
   int GAME_TIME_LIMIT = num("game.time_limit");
   int DORMAGOGG_EFFECT_DURATION = num("dormagogg.effect.duration");
@@ -280,6 +281,10 @@ public interface GameProperties {
   int TRANSLOCATOR_COST = num("translocator.cost");
   int PART_SNIFFER_COST = num("part_sniffer.cost");
   int TRAP_VEST_COST = num("trap_vest.cost");
+
+  private static boolean bool(final String key) {
+    return GADGET_DATA_BUNDLE.getBoolean(key);
+  }
 
   private static int num(final String key) {
     return GADGET_DATA_BUNDLE.getInt(key);
