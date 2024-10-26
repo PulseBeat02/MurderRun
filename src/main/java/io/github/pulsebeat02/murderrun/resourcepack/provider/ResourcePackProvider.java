@@ -52,7 +52,8 @@ public abstract class ResourcePackProvider implements PackProvider {
         final CompletableFuture<ResourcePackInfo> builtIn = this.getResourceInfo();
         final Collection<ResourcePackInfo> infos = Set.of(main.join(), builtIn.join());
         final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
-        return builder.required(true).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+        final boolean required = GameProperties.FORCE_RESOURCEPACK;
+        return builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
       },
       this.service
     );
