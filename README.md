@@ -42,3 +42,9 @@ by clicking on their player head (assuming that they have joined the game alread
 1) Install [Jetbrains Runtime](https://github.com/JetBrains/JetBrainsRuntime) (Java 21)
    - Used for hot swapping purposes and faster development. Set the project JDK to be this for Gradle to work.
 2) Run `gradlew build`
+
+## Contributors
+
+| Name    | Contribution                                                   |
+|---------|----------------------------------------------------------------|
+| GTedd__ | Created Simplified and Traditional Chinese Locale Translations |
