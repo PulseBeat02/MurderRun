@@ -68,6 +68,7 @@ dependencies {
 
     // Provided Dependencies
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
     compileOnly("io.netty:netty-all:4.1.97.Final")
     runtimeDeps.forEach(::compileOnly)
