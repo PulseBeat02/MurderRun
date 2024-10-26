@@ -59,20 +59,20 @@ var runtimeDeps = listOf(
 
 dependencies {
 
-    // Annotation Processors
+    // 注释处理器
     annotationProcessor("org.incendo:cloud-annotations:2.0.0")
 
-    // Project Dependencies
+    // 项目依赖性
     implementation(project(":nms-api"))
     implementation(project(":v1_21_R1"))
 
-    // Provided Dependencies
+    // 提供的依赖项
     compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
     compileOnly("io.netty:netty-all:4.1.97.Final")
     runtimeDeps.forEach(::compileOnly)
 
-    // Plugin Extensions
+    // 插件扩展
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
     compileOnly("LibsDisguises:LibsDisguises:10.0.44")
@@ -85,7 +85,7 @@ dependencies {
         )
     }
 
-    // Testing Dependencies
+    // 测试依赖关系
     testImplementation("team.unnamed:creative-api:1.7.3")
     testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
     testImplementation("team.unnamed:creative-server:1.7.3")
