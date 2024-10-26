@@ -486,4 +486,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GAME_PLAYER_ERROR = direct("murderrun.command.game.player.error");
   UniComponent<Sender, String> LOBBY_BOSSBAR_TITLE = direct("murderrun.lobby.bossbar", null);
   NullComponent<Sender> ARENA_CREATE_LOAD = direct("murderrun.command.arena.create.loading");
+  NullComponent<Sender> GAME_WINNER_TITLE = direct("murderrun.game.winner.title");
+  NullComponent<Sender> GAME_WINNER_TITLE_KILLER = direct("murderrun.game.winner.title.killer");
+  NullComponent<Sender> GAME_WINNER_TITLE_SURVIVOR = direct("murderrun.game.winner.title.survivor");
 }
