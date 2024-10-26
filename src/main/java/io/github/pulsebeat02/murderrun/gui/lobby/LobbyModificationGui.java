@@ -11,7 +11,6 @@ import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
@@ -154,8 +153,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     event.setCancelled(true);
 
     final Block block = event.getBlock();
-    final Location temp = block.getLocation();
-    this.spawn = MapUtils.getHighestSpawnLocation(temp);
+    this.spawn = block.getLocation();
 
     this.listenForSpawn = false;
     this.update();
