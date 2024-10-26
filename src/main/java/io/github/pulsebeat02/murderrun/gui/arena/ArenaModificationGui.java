@@ -11,7 +11,6 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -111,7 +110,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   public void registerEvents() {
     final Server server = this.plugin.getServer();
     final PluginManager manager = server.getPluginManager();
-    this.listener = new WandListener(plugin, itemLocations, this::removeItemLocation, this::addItemLocation);
+    this.listener = new WandListener(this.plugin, this.itemLocations, this::removeItemLocation, this::addItemLocation);
     this.listener.registerEvents();
     this.listener.runScheduledTask();
     manager.registerEvents(this, this.plugin);
@@ -334,7 +333,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
         case 0 -> this.first = location;
         case 1 -> this.second = location;
         case 2 -> this.truck = location;
-        case 3 -> this.spawn = MapUtils.getHighestSpawnLocation(location);
+        case 3 -> this.spawn = location;
       }
     }
 
