@@ -3,19 +3,14 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
-[![BisectHosting](https://www.bisecthosting.com/partners/custom-banners/db8711d9-0b3a-4706-b18d-beb9cef16963.webp)](https://bisecthosting.com/pulse)
-
-Want to show your support for me and the development of MurderRun? Check out BisectHosting and use the `pulse` 
-for a 25% discount on your first month of a gaming server as a new customer. With their 24/7 support and quick 
-response times, you can count on excellent assistance for all your gaming requirements.
-
 ## Support Discord
 [![Discord Banner 3](https://discord.com/api/guilds/817501569108017223/widget.png?style=banner3)](https://discord.gg/cUMB6kCsh6)
-
+<img style="float: right; margin: 25px" src="./icon.webp"/>
 ## Minigame Inspiration
+
 Inspired by the popular game Dead by Daylight, Murder Run is an advanced mini-game revolving around killers
 and survivors. In a desolate map, survivors must find all the vehicle parts and throw them back onto the
-truck before the killers murder everyone. Both killers and survivors have access to a 100+ different gadgets,
+truck before the killers murder everyone. Both killers and survivors have access to a 100+ different gadgets, 
 which can be used in combination to try and win. This game took inspiration from SSundee's "Murder Run" series
 on YouTube.
 
@@ -89,6 +84,14 @@ recommended that you use LuckPerms to handle your permissions.
 1) Install [Jetbrains Runtime](https://github.com/JetBrains/JetBrainsRuntime) (Java 21)
    - Used for hot swapping purposes and faster development. Set the project JDK to be this for Gradle to work.
 2) Run `/gradlew build`
+
+## Sponsors
+[![BisectHosting](https://www.bisecthosting.com/partners/custom-banners/db8711d9-0b3a-4706-b18d-beb9cef16963.webp)](https://bisecthosting.com/pulse)
+
+Want to show your support for me and the development of MurderRun? Check out BisectHosting and use the `pulse`
+for a 25% discount on your first month of a gaming server as a new customer. With their 24/7 support and quick
+response times, you can count on excellent assistance for all your gaming requirements.
+
 
 ## Contributors
 
