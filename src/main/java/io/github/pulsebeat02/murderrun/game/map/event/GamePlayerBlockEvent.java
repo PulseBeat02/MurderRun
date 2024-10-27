@@ -122,6 +122,12 @@ public final class GamePlayerBlockEvent extends GameEvent {
     final Block block = event.getBlock();
     final Material material = block.getType();
     if (BLACKLISTED_BLOCKS.contains(material)) {
+      event.setCancelled(true);
+      return;
+    }
+
+    if (!PDCUtils.canBreakMapBlocks(hand)) {
+      event.setCancelled(true);
       return;
     }
 

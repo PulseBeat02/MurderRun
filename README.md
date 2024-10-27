@@ -24,7 +24,7 @@ on YouTube.
 - Over 100+ Killer/Survivor Gadgets
 - Easy Lobby / Arena Creation and Customization
   - Either use GUI's or Commands to Create and Modify Arenas / Lobbies
-- Resets Arenas Automatically using FastAsyncWorldEdit
+- Resets Arenas Automatically using WorldEdit
 - Game Creation with Quick Join System or Private Games
   - Either use GUI's or Commands to Create Games
 - Integration with PlaceholderAPI, LibsDisguises, Citizens, and WorldEdit
