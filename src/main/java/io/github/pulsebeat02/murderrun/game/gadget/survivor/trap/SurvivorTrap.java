@@ -6,10 +6,12 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Trap;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetNearbyPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 
 public abstract class SurvivorTrap extends Trap implements SurvivorApparatus {
 
