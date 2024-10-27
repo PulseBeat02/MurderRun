@@ -23,7 +23,6 @@ public final class PreGameManager {
     this.callback = callback;
     this.id = id;
     this.game = new Game(plugin);
-
     this.settings = new GameSettings();
   }
 

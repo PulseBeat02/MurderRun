@@ -51,6 +51,9 @@ public abstract class Trap extends AbstractGadget {
   @Override
   public void onGadgetNearby(final GadgetNearbyPacket packet) {
     final Item item = packet.getItem();
+    final Game game = packet.getGame();
+    final GamePlayer activator = packet.getActivator();
+    this.onTrapActivate(game, activator, item);
     item.remove();
   }
 

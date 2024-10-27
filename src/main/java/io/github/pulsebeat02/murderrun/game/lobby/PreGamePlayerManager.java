@@ -109,7 +109,7 @@ public final class PreGamePlayerManager {
   public void removeParticipantFromLobby(final Player player) {
     this.murderers.remove(player);
     this.participants.remove(player);
-    this.scoreboard.generatePlayerComponent();
+    this.scoreboard.updateScoreboard();
     this.clearInventory(player);
     this.removePersistentData(player);
     this.checkIfEnoughPlayers();
