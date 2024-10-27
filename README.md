@@ -3,16 +3,16 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
-## Support Discord
-[![Discord Banner 3](https://discord.com/api/guilds/817501569108017223/widget.png?style=banner3)](https://discord.gg/cUMB6kCsh6)
-<img style="float: right; margin: 25px" src="./icon.webp"/>
 ## Minigame Inspiration
-
+<img align="right" style="margin: 25px" src="https://raw.githubusercontent.com/PulseBeat02/MurderRun/refs/heads/main/icon.webp"/>
 Inspired by the popular game Dead by Daylight, Murder Run is an advanced mini-game revolving around killers
 and survivors. In a desolate map, survivors must find all the vehicle parts and throw them back onto the
 truck before the killers murder everyone. Both killers and survivors have access to a 100+ different gadgets, 
 which can be used in combination to try and win. This game took inspiration from SSundee's "Murder Run" series
 on YouTube.
+<br/><br/>
+
+[![Discord Banner 3](https://discord.com/api/guilds/817501569108017223/widget.png?style=banner3)](https://discord.gg/cUMB6kCsh6)
 
 ## Features
 - Free and Open Source
