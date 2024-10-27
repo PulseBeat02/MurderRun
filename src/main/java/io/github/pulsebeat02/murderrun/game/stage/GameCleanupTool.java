@@ -1,9 +1,13 @@
 package io.github.pulsebeat02.murderrun.game.stage;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
+import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
@@ -12,6 +16,12 @@ import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Firework;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 public final class GameCleanupTool {
 
@@ -37,13 +47,14 @@ public final class GameCleanupTool {
   private void handleKillerVictory() {
     this.handleKillerWinStatistics();
     this.announceMurdererVictory();
-    this.announceMurdererTime();
+    this.sprayFireworks();
   }
 
   private void handleInnocentVictory() {
     this.handleSurvivorWinStatistics();
     this.announceInnocentVictory();
     this.invalidateTimer();
+    this.sprayFireworks();
   }
 
   private void stopTimer() {
@@ -88,10 +99,13 @@ public final class GameCleanupTool {
 
   private void announceInnocentVictory() {
     final Component winner = this.generateWinnerMessage(true);
+    final Component title = Message.GAME_WINNER_TITLE.build();
+    final Component subtitle = Message.GAME_WINNER_TITLE_SURVIVOR.build();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.WIN);
     manager.playSoundForAllMurderers(Sounds.LOSS);
+    manager.showTitleForAllInnocents(title, subtitle);
   }
 
   private void invalidateTimer() {
@@ -101,18 +115,13 @@ public final class GameCleanupTool {
 
   private void announceMurdererVictory() {
     final Component winner = this.generateWinnerMessage(false);
+    final Component title = Message.GAME_WINNER_TITLE.build();
+    final Component subtitle = Message.GAME_WINNER_TITLE_SURVIVOR.build();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.LOSS);
     manager.playSoundForAllMurderers(Sounds.WIN);
-  }
-
-  private void announceMurdererTime() {
-    final GameTimer timer = this.game.getTimeManager();
-    final long timeElapsed = timer.getElapsedTime();
-    final Component message = Message.FINAL_TIME.build(timeElapsed);
-    final PlayerManager manager = this.game.getPlayerManager();
-    manager.sendMessageToAllParticipants(message);
+    manager.showTitleForAllInnocents(title, subtitle);
   }
 
   private void saveData() {
@@ -154,6 +163,27 @@ public final class GameCleanupTool {
       }
     });
     this.saveData();
+  }
+
+  private void sprayFireworks() {
+    final GameSettings settings = this.game.getSettings();
+    final Lobby lobby = requireNonNull(settings.getLobby());
+    final Location spawn = lobby.getLobbySpawn();
+    final World world = requireNonNull(spawn.getWorld());
+    for (int i = 0; i < 10; i++) {
+      final Firework firework = world.spawn(spawn, Firework.class);
+      final FireworkMeta meta = firework.getFireworkMeta();
+      final FireworkEffect effect = FireworkEffect.builder()
+        .withColor(Color.fromRGB(255, 0, 0))
+        .withFade(Color.fromRGB(0, 255, 0))
+        .with(FireworkEffect.Type.BALL)
+        .withTrail()
+        .withFlicker()
+        .build();
+      meta.addEffect(effect);
+      meta.setPower(3);
+      firework.setFireworkMeta(meta);
+    }
   }
 
   public Game getGame() {

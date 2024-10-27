@@ -44,6 +44,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final boolean isLogging = gamePlayer.isLoggingOut();
     final Location current = player.getLocation();
     player.setLastDeathLocation(current);
+    event.setDroppedExp(0);
 
     if (deathManager.checkDeathCancellation() && !isLogging) {
       event.setKeepInventory(true);
@@ -56,7 +57,6 @@ public final class GamePlayerDeathEvent extends GameEvent {
     death.initiateDeathSequence(gamePlayer);
     manager.resetCachedPlayers();
 
-    event.setDroppedExp(0);
     event.setKeepInventory(true);
     event.setDeathMessage(null);
     deathManager.runDeathTasks();
