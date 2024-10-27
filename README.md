@@ -4,7 +4,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
 ## Minigame Inspiration
-<img align="right" style="margin: 25px" src="./icon.webp"/>
+<img align="right" style="margin: 25px" src="https://raw.githubusercontent.com/PulseBeat02/MurderRun/refs/heads/main/icon.webp"/>
 Inspired by the popular game Dead by Daylight, Murder Run is an advanced mini-game revolving around killers
 and survivors. In a desolate map, survivors must find all the vehicle parts and throw them back onto the
 truck before the killers murder everyone. Both killers and survivors have access to a 100+ different gadgets, 
