@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.stage;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
@@ -20,8 +22,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
-
-import static java.util.Objects.requireNonNull;
 
 public final class GameCleanupTool {
 
@@ -47,7 +47,6 @@ public final class GameCleanupTool {
   private void handleKillerVictory() {
     this.handleKillerWinStatistics();
     this.announceMurdererVictory();
-    this.announceMurdererTime();
     this.sprayFireworks();
   }
 
@@ -125,14 +124,6 @@ public final class GameCleanupTool {
     manager.showTitleForAllInnocents(title, subtitle);
   }
 
-  private void announceMurdererTime() {
-    final GameTimer timer = this.game.getTimeManager();
-    final long timeElapsed = timer.getElapsedTime();
-    final Component message = Message.FINAL_TIME.build(timeElapsed);
-    final PlayerManager manager = this.game.getPlayerManager();
-    manager.sendMessageToAllParticipants(message);
-  }
-
   private void saveData() {
     final MurderRun plugin = this.game.getPlugin();
     plugin.updatePluginData();
@@ -190,9 +181,8 @@ public final class GameCleanupTool {
         .withFlicker()
         .build();
       meta.addEffect(effect);
-      meta.setPower(2);
+      meta.setPower(3);
       firework.setFireworkMeta(meta);
-      firework.detonate();
     }
   }
 

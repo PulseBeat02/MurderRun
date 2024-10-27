@@ -17,6 +17,7 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class Translocator extends SurvivorGadget {
@@ -48,7 +49,9 @@ public final class Translocator extends SurvivorGadget {
     final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = MapUtils.byteArrayToLocation(data);
     player.teleport(location);
-    stack.setType(Material.AIR);
+
+    final PlayerInventory inventory = player.getInventory();
+    inventory.removeItem(stack);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.TRANSLOCATOR_SOUND);

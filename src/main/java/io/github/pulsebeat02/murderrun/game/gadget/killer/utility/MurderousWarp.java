@@ -45,7 +45,7 @@ public final class MurderousWarp extends KillerGadget {
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     audienceRand.sendMessage(msg);
 
-    final PlayerAudience audienceKiller = random.getAudience();
+    final PlayerAudience audienceKiller = player.getAudience();
     audienceKiller.sendMessage(msg);
 
     return false;
