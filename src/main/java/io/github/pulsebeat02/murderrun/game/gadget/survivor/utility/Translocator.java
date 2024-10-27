@@ -48,6 +48,7 @@ public final class Translocator extends SurvivorGadget {
     final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = MapUtils.byteArrayToLocation(data);
     player.teleport(location);
+    stack.setType(Material.AIR);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.TRANSLOCATOR_SOUND);
@@ -68,6 +69,6 @@ public final class Translocator extends SurvivorGadget {
       .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
       .type(Material.LEVER);
 
-    return false;
+    return true;
   }
 }
