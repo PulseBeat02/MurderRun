@@ -15,6 +15,7 @@ import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import java.util.Optional;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -22,8 +23,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
-
-import java.util.Optional;
 
 public final class GameCleanupTool {
 
@@ -91,7 +90,6 @@ public final class GameCleanupTool {
   }
 
   private Component getKillComponent() {
-
     final PlayerManager manager = this.game.getPlayerManager();
     final Optional<Killer> optional = manager.getKillerWithMostKills();
     if (optional.isEmpty()) {

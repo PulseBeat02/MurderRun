@@ -3,10 +3,8 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-
-import java.util.UUID;
-
 import io.github.pulsebeat02.murderrun.game.player.PlayerResetTool;
+import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
