@@ -98,9 +98,14 @@ public final class PlayerDeathTool {
       if (!PDCUtils.isCarPart(slot)) {
         continue;
       }
+
       final Map map = this.game.getMap();
       final PartsManager manager = map.getCarPartManager();
-      final CarPart stack = requireNonNull(manager.getCarPartItemStack(slot));
+      final CarPart stack = manager.getCarPartItemStack(slot);
+      if (stack == null) {
+        continue;
+      }
+
       final Location death = requireNonNull(player.getLocation());
       stack.setPickedUp(false);
       stack.setLocation(death);

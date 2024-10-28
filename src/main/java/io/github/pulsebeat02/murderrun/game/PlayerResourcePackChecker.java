@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.plugin.PluginManager;
@@ -28,7 +29,7 @@ public final class PlayerResourcePackChecker implements Listener {
     manager.registerEvents(this, this.plugin);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onResourcePackLoad(final PlayerResourcePackStatusEvent event) {
     final Player player = event.getPlayer();
     final PlayerResourcePackStatusEvent.Status status = event.getStatus();

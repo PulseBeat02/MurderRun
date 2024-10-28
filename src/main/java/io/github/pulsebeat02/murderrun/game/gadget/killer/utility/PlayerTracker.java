@@ -12,6 +12,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
@@ -43,16 +44,12 @@ public final class PlayerTracker extends KillerGadget {
     final GamePlayer player = packet.getPlayer();
     final Location location = player.getLocation();
     final int distance = (int) Math.round(this.getNearestSurvivorDistance(manager, location));
-    final int count = this.increaseAndGetSurvivorCount(player);
+    final ItemStack stack = packet.getItemStack();
+    final int count = this.increaseAndGetSurvivorCount(stack);
     final boolean destroy = count >= GameProperties.PLAYER_TRACKER_USES;
     if (destroy) {
-      final ItemStack stack = packet.getItemStack();
-      final int newAmount = stack.getAmount() - 1;
-      if (newAmount == 0) {
-        stack.setType(Material.AIR);
-      } else {
-        stack.setAmount(newAmount);
-      }
+      final PlayerInventory inventory = player.getInventory();
+      InventoryUtils.consumeStack(inventory, stack);
     }
 
     final PlayerAudience audience = player.getAudience();
@@ -63,9 +60,7 @@ public final class PlayerTracker extends KillerGadget {
     return false;
   }
 
-  private int increaseAndGetSurvivorCount(final GamePlayer player) {
-    final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = inventory.getItemInMainHand();
+  private int increaseAndGetSurvivorCount(final ItemStack stack) {
     final NamespacedKey key = Keys.PLAYER_TRACKER;
     final PersistentDataType<Integer, Integer> type = PersistentDataType.INTEGER;
     final Integer val = requireNonNull(PDCUtils.getPersistentDataAttribute(stack, key, type));

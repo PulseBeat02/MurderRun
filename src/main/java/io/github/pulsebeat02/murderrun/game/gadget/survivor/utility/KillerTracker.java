@@ -13,6 +13,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
@@ -49,16 +50,12 @@ public final class KillerTracker extends SurvivorGadget {
     final GamePlayer player = packet.getPlayer();
     final Location location = player.getLocation();
     final int distance = (int) Math.round(this.getNearestKillerDistance(manager, location));
-    final int count = this.increaseAndGetKillerCount(player);
+    final ItemStack stack = packet.getItemStack();
+    final int count = this.increaseAndGetKillerCount(stack);
     final boolean destroy = count >= GameProperties.KILLER_TRACKER_USES;
     if (destroy) {
-      final ItemStack stack = packet.getItemStack();
-      final int newAmount = stack.getAmount() - 1;
-      if (newAmount == 0) {
-        stack.setType(Material.AIR);
-      } else {
-        stack.setAmount(newAmount);
-      }
+      final PlayerInventory inventory = player.getInventory();
+      InventoryUtils.consumeStack(inventory, stack);
     }
 
     final PlayerAudience audience = player.getAudience();
@@ -69,15 +66,12 @@ public final class KillerTracker extends SurvivorGadget {
     return false;
   }
 
-  private int increaseAndGetKillerCount(final GamePlayer player) {
-    final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = inventory.getItemInMainHand();
+  private int increaseAndGetKillerCount(final ItemStack stack) {
     final NamespacedKey key = Keys.KILLER_TRACKER;
     final PersistentDataType<Integer, Integer> type = PersistentDataType.INTEGER;
     final Integer val = requireNonNull(PDCUtils.getPersistentDataAttribute(stack, key, type));
     final int count = val + 1;
     PDCUtils.setPersistentDataAttribute(stack, key, type, count);
-
     return count;
   }
 

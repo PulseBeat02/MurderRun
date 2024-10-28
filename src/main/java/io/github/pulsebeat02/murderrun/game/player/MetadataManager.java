@@ -145,8 +145,7 @@ public final class MetadataManager {
           PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
           if (entity instanceof final Player player1) {
             // fixes a protocol bug
-            final GameMode gameMode = player1.getGameMode();
-            if (gameMode == GameMode.SPECTATOR || player1.isDead()) {
+            if (!player.isValid()) {
               return;
             }
           }

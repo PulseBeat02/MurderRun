@@ -10,6 +10,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -51,7 +52,7 @@ public final class Translocator extends SurvivorGadget {
     player.teleport(location);
 
     final PlayerInventory inventory = player.getInventory();
-    inventory.removeItem(stack);
+    InventoryUtils.consumeStack(inventory, stack);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.TRANSLOCATOR_SOUND);
