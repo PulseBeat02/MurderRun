@@ -42,7 +42,7 @@ public final class CryoFreeze extends SurvivorGadget {
     for (int x = -radius; x <= radius; x++) {
       for (int y = -radius; y <= radius; y++) {
         for (int z = -radius; z <= radius; z++) {
-          final double distance = Math.sqrt(x * x + y * y + z * z);
+          final double distance = Math.sqrt((double) x * x + (double) y * y + (double) z * z);
           if (distance >= radius - 0.5 && distance <= radius + 0.5) {
             final Block block = world.getBlockAt(cx + x, cy + y, cz + z);
             block.setType(Material.PACKED_ICE);
