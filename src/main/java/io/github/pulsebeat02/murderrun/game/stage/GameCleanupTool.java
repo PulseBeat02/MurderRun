@@ -105,7 +105,7 @@ public final class GameCleanupTool {
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.WIN);
     manager.playSoundForAllMurderers(Sounds.LOSS);
-    manager.showTitleForAllInnocents(title, subtitle);
+    manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void invalidateTimer() {
@@ -121,7 +121,7 @@ public final class GameCleanupTool {
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.LOSS);
     manager.playSoundForAllMurderers(Sounds.WIN);
-    manager.showTitleForAllInnocents(title, subtitle);
+    manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void saveData() {
