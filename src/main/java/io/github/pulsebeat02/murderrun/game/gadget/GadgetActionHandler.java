@@ -118,6 +118,10 @@ public final class GadgetActionHandler implements Listener {
   private boolean checkKillerStatus(final Player player) {
     final Game game = this.manager.getGame();
     final PlayerManager manager = game.getPlayerManager();
+    if (manager.checkPlayerExists(player)) {
+      return false;
+    }
+
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final GameStatus status = game.getStatus();
     final boolean invalidKiller = gamePlayer instanceof Killer && status != GameStatus.KILLERS_RELEASED;

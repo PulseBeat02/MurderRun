@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerResetTool;
 import java.util.UUID;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +31,9 @@ public final class GamePlayerLeaveEvent extends GameEvent {
     if (gamePlayer.isAlive()) {
       player.setHealth(0f);
     }
+
+    final PlayerResetTool resetTool = new PlayerResetTool(manager);
+    resetTool.handlePlayer(gamePlayer);
 
     final UUID uuid = gamePlayer.getUUID();
     manager.removePlayer(uuid);

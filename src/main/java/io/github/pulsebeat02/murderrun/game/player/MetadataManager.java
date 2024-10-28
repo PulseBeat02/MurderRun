@@ -146,7 +146,7 @@ public final class MetadataManager {
           if (entity instanceof final Player player1) {
             // fixes a protocol bug
             final GameMode gameMode = player1.getGameMode();
-            if (gameMode == GameMode.SPECTATOR) {
+            if (gameMode == GameMode.SPECTATOR || player1.isDead()) {
               return;
             }
           }
