@@ -23,6 +23,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+import java.util.Optional;
+
 public final class GameCleanupTool {
 
   private final Game game;
@@ -77,15 +79,26 @@ public final class GameCleanupTool {
 
   private Component getPartComponent() {
     final PlayerManager manager = this.game.getPlayerManager();
-    final Survivor survivor = manager.getSurvivorWithMostCarPartsRetrieved();
+    final Optional<Survivor> optional = manager.getSurvivorWithMostCarPartsRetrieved();
+    if (optional.isEmpty()) {
+      return Message.WINNER_PARTS.build("?", 0);
+    }
+
+    final Survivor survivor = optional.get();
     final int carParts = survivor.getCarPartsRetrieved();
     final String survivorName = survivor.getDisplayName();
     return Message.WINNER_PARTS.build(survivorName, carParts);
   }
 
   private Component getKillComponent() {
+
     final PlayerManager manager = this.game.getPlayerManager();
-    final Killer killer = manager.getKillerWithMostKills();
+    final Optional<Killer> optional = manager.getKillerWithMostKills();
+    if (optional.isEmpty()) {
+      return Message.WINNER_KILLS.build("?", 0);
+    }
+
+    final Killer killer = optional.get();
     final int count = killer.getKills();
     final String name = killer.getDisplayName();
     return Message.WINNER_KILLS.build(name, count);
@@ -116,7 +129,7 @@ public final class GameCleanupTool {
   private void announceMurdererVictory() {
     final Component winner = this.generateWinnerMessage(false);
     final Component title = Message.GAME_WINNER_TITLE.build();
-    final Component subtitle = Message.GAME_WINNER_TITLE_SURVIVOR.build();
+    final Component subtitle = Message.GAME_WINNER_TITLE_KILLER.build();
     final PlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.LOSS);
@@ -181,7 +194,7 @@ public final class GameCleanupTool {
         .withFlicker()
         .build();
       meta.addEffect(effect);
-      meta.setPower(3);
+      meta.setPower(2);
       firework.setFireworkMeta(meta);
     }
   }

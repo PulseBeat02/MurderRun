@@ -424,11 +424,11 @@ public final class PlayerManager {
       });
   }
 
-  public Killer getKillerWithMostKills() {
-    return this.cachedKillers.stream().max(Comparator.comparingInt(Killer::getKills)).orElseThrow();
+  public Optional<Killer> getKillerWithMostKills() {
+    return this.cachedKillers.stream().max(Comparator.comparingInt(Killer::getKills));
   }
 
-  public Survivor getSurvivorWithMostCarPartsRetrieved() {
-    return this.cachedSurvivors.stream().max(Comparator.comparingInt(Survivor::getCarPartsRetrieved)).orElseThrow();
+  public Optional<Survivor> getSurvivorWithMostCarPartsRetrieved() {
+    return this.cachedSurvivors.stream().max(Comparator.comparingInt(Survivor::getCarPartsRetrieved));
   }
 }
