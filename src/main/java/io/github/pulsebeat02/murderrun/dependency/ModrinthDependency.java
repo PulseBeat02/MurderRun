@@ -43,7 +43,7 @@ public final class ModrinthDependency extends PluginDependency {
     final ModrinthVersion[] versions = ModrinthVersion.serializeVersions(json);
     final String target = this.getVersion();
     for (final ModrinthVersion version : versions) {
-      final String number = version.getVersionNumber();
+      final String number = version.getId();
       if (!number.equals(target)) {
         continue;
       }

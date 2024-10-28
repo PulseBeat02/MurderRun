@@ -40,11 +40,9 @@ public final class DebugCommand implements AnnotationCommandFeature {
   @Command(value = "murder debug start", requiredSender = Player.class)
   public void startDebugGame(final Player sender) {
     final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
-    final Player other1 = requireNonNull(Bukkit.getPlayer("Player2"));
-    sender.performCommand("murder game create Arena Lobby test 2 5 true");
+    sender.performCommand("murder game create Arena Lobby game 2 5 true");
     sender.performCommand("murder game set murderer PulseBeat_02");
-    other.performCommand("murder game join test");
-    other1.performCommand("murder game join test");
+    other.performCommand("murder game join game");
     sender.performCommand("murder game start");
   }
 

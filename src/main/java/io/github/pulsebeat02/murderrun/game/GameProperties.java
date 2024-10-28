@@ -79,7 +79,7 @@ public interface GameProperties {
   int CLOAK_DURATION = num("cloak.duration");
   String CLOAK_SOUND = str("cloak.sound");
   String CORPUS_WARP_SOUND = str("corpus_warp.sound");
-  double CRYO_FREEZE_RADIUS = dec("cryo_freeze.radius");
+  int CRYO_FREEZE_RADIUS = num("cryo_freeze.radius");
   String CRYO_FREEZE_SOUND = str("cryo_freeze.sound");
   int DEADRINGER_DURATION = num("deadringer.duration");
   String DEADRINGER_SOUND = str("deadringer.sound");
