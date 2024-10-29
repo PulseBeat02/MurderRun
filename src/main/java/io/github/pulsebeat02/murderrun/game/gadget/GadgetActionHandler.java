@@ -55,6 +55,11 @@ public final class GadgetActionHandler implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onRightClick(final PlayerInteractEvent event) {
+    final Action action = event.getAction();
+    if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+      return;
+    }
+
     final Player player = event.getPlayer();
     if (this.checkKillerStatus(player)) {
       event.setCancelled(true);
@@ -64,11 +69,6 @@ public final class GadgetActionHandler implements Listener {
     final Game game = this.manager.getGame();
     final ItemStack stack = event.getItem();
     if (stack == null) {
-      return;
-    }
-
-    final Action action = event.getAction();
-    if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
 
@@ -111,6 +111,7 @@ public final class GadgetActionHandler implements Listener {
     if (result) {
       event.setCancelled(true);
     }
+
     item.setPickupDelay(Integer.MAX_VALUE);
     item.setUnlimitedLifetime(true);
   }
