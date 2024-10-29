@@ -1,10 +1,11 @@
-package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
+package io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool;
 
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -35,6 +36,11 @@ public final class PlayerTracker extends KillerGadget {
       GameProperties.PLAYER_TRACKER_COST,
       ItemFactory::createPlayerTracker
     );
+  }
+
+  @Override
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    return true;
   }
 
   @Override
