@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.utils;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -12,13 +11,14 @@ public final class InventoryUtils {
 
   public static boolean consumeStack(final PlayerInventory inventory, final ItemStack stack) {
     final ItemStack[] contents = inventory.getContents();
-    for (final ItemStack item : contents) {
+    for (int i = 0; i < contents.length; i++) {
+      final ItemStack item = contents[i];
       if (item == null || !item.isSimilar(stack)) {
         continue;
       }
       final int amount = item.getAmount();
       if (amount == 1) {
-        item.setType(Material.AIR);
+        inventory.setItem(i, null);
       } else {
         item.setAmount(amount - 1);
       }

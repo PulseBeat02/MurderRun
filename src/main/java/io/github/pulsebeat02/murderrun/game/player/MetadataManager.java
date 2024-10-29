@@ -137,22 +137,32 @@ public final class MetadataManager {
         final String watcher = player.getName();
         if (glowing) {
           this.glowEntities.put(color, entity);
+          if (!checkValidity(player, entity)) {
+            return;
+          }
           team.addEntry(name);
           team.addEntry(watcher);
           PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
         } else {
           this.glowEntities.remove(color, entity);
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-          if (entity instanceof final Player player1) {
-            // fixes a protocol bug
-            if (!player.isValid()) {
-              return;
-            }
+          if (!checkValidity(player, entity)) {
+            return;
           }
+          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
           team.removeEntry(name);
           team.removeEntry(watcher);
         }
       });
+  }
+
+  private boolean checkValidity(final Player player, final Entity entity) {
+    if (entity instanceof final Player player1) {
+      // fixes a protocol bug
+      if (!player.isValid() || !player1.isValid()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private String getMemberID(final Entity entity) {

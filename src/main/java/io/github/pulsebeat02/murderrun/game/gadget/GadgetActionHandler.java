@@ -102,8 +102,6 @@ public final class GadgetActionHandler implements Listener {
     if (data == null) {
       return;
     }
-    item.setPickupDelay(Integer.MAX_VALUE);
-    item.setUnlimitedLifetime(true);
 
     final GadgetDropPacket packet = GadgetDropPacket.create(game, event);
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
@@ -113,6 +111,9 @@ public final class GadgetActionHandler implements Listener {
     if (result) {
       event.setCancelled(true);
     }
+
+    item.setPickupDelay(Integer.MAX_VALUE);
+    item.setUnlimitedLifetime(true);
   }
 
   private boolean checkKillerStatus(final Player player) {

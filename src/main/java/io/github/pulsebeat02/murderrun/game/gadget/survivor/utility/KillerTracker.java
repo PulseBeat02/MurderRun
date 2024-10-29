@@ -54,6 +54,7 @@ public final class KillerTracker extends SurvivorGadget {
     final int count = this.increaseAndGetKillerCount(stack);
     final boolean destroy = count >= GameProperties.KILLER_TRACKER_USES;
     if (destroy) {
+      this.resetTrackerCount(stack);
       final PlayerInventory inventory = player.getInventory();
       InventoryUtils.consumeStack(inventory, stack);
     }
@@ -64,6 +65,12 @@ public final class KillerTracker extends SurvivorGadget {
     audience.playSound(GameProperties.KILLER_TRACKER_SOUND);
 
     return false;
+  }
+
+  private void resetTrackerCount(final ItemStack stack) {
+    final NamespacedKey key = Keys.PLAYER_TRACKER;
+    final PersistentDataType<Integer, Integer> type = PersistentDataType.INTEGER;
+    PDCUtils.setPersistentDataAttribute(stack, key, type, 0);
   }
 
   private int increaseAndGetKillerCount(final ItemStack stack) {

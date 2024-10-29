@@ -46,6 +46,18 @@ public final class DebugCommand implements AnnotationCommandFeature {
     sender.performCommand("murder game start");
   }
 
+  @Permission("murderrun.command.debug.start-multiple")
+  @Command(value = "murder debug start-multiple", requiredSender = Player.class)
+  public void startMultipleDebugGame(final Player sender) {
+    final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
+    final Player other1 = requireNonNull(Bukkit.getPlayer("Player2"));
+    sender.performCommand("murder game create Arena Lobby game 2 5 true");
+    sender.performCommand("murder game set murderer PulseBeat_02");
+    other.performCommand("murder game join game");
+    other1.performCommand("murder game join game");
+    sender.performCommand("murder game start");
+  }
+
   @Permission("murderrun.command.debug.gadget")
   @Command(value = "murder debug gadget <gadgetName>", requiredSender = Player.class)
   public void debugGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
