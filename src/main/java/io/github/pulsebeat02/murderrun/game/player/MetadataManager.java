@@ -104,16 +104,15 @@ public final class MetadataManager {
 
   public void shutdown() {
     final Collection<ChatColor> keys = this.glowTeams.keySet();
-    this.gamePlayer.apply(player -> {
-        for (final ChatColor key : keys) {
-          final Collection<Entity> stillGlowing = this.glowEntities.get(key);
-          for (final Entity entity : stillGlowing) {
-            PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-          }
-          final Team team = requireNonNull(this.glowTeams.get(key));
-          team.unregister();
-        }
-      });
+    final Player player = this.gamePlayer.getInternalPlayer();
+    for (final ChatColor key : keys) {
+      final Collection<Entity> stillGlowing = this.glowEntities.get(key);
+      for (final Entity entity : stillGlowing) {
+        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+      }
+      final Team team = requireNonNull(this.glowTeams.get(key));
+      team.unregister();
+    }
     this.glowEntities.clear();
     this.glowTeams.clear();
     this.hideNameTagTeam.unregister();
@@ -130,25 +129,29 @@ public final class MetadataManager {
   }
 
   public void setEntityGlowing(final Entity entity, final ChatColor color, final boolean glowing) {
-    this.gamePlayer.apply(player -> {
-        if (!this.checkValidity(player, entity)) {
-          return;
-        }
-        final Team team = requireNonNull(this.glowTeams.get(color));
-        final String name = this.getMemberID(entity);
-        final String watcher = player.getName();
-        if (glowing) {
-          this.glowEntities.put(color, entity);
-          team.addEntry(name);
-          team.addEntry(watcher);
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
-        } else {
-          this.glowEntities.remove(color, entity);
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-          team.removeEntry(name);
-          team.removeEntry(watcher);
-        }
-      });
+    if (!this.gamePlayer.isAlive()) {
+      return;
+    }
+
+    final Player player = this.gamePlayer.getInternalPlayer();
+    if (!this.checkValidity(player, entity)) {
+      return;
+    }
+
+    final Team team = requireNonNull(this.glowTeams.get(color));
+    final String name = this.getMemberID(entity);
+    final String watcher = player.getName();
+    if (glowing) {
+      this.glowEntities.put(color, entity);
+      team.addEntry(name);
+      team.addEntry(watcher);
+      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
+    } else {
+      this.glowEntities.remove(color, entity);
+      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+      team.removeEntry(name);
+      team.removeEntry(watcher);
+    }
   }
 
   private boolean checkValidity(final Entity... entities) {
@@ -169,19 +172,23 @@ public final class MetadataManager {
   }
 
   public void setNameTagStatus(final boolean hide) {
-    this.gamePlayer.apply(player -> {
-        if (!this.checkValidity(player)) {
-          return;
-        }
-        final String name = player.getName();
-        if (hide) {
-          this.hideNameTagTeam.addEntry(name);
-        } else {
-          if (this.hideNameTagTeam.hasEntry(name)) {
-            this.hideNameTagTeam.removeEntry(name);
-          }
-        }
-      });
+    if (!this.gamePlayer.isAlive()) {
+      return;
+    }
+
+    final Player player = this.gamePlayer.getInternalPlayer();
+    if (!this.checkValidity(player)) {
+      return;
+    }
+
+    final String name = player.getName();
+    if (hide) {
+      this.hideNameTagTeam.addEntry(name);
+    } else {
+      if (this.hideNameTagTeam.hasEntry(name)) {
+        this.hideNameTagTeam.removeEntry(name);
+      }
+    }
   }
 
   public void hideNameTag(final GameScheduler scheduler, final long ticks) {
