@@ -9,6 +9,8 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  String KILLER_WIN_COMMANDS_AFTER = str("killer_win_commands_after");
+  String SURVIVOR_WIN_COMMANDS_AFTER = str("survivor_win_commands_after");
   boolean FORCE_RESOURCEPACK = bool("force_resourcepack");
   String BUILT_IN_RESOURCES = str("built_in_resources");
   int GAME_TIME_LIMIT = num("game.time_limit");

@@ -127,7 +127,7 @@ public final class PlayerDeathTool {
     }
 
     final Entity entity = stand.getEntity();
-    if (entity.isDead()) {
+    if (entity == null || entity.isDead()) {
       manager.setCorpse(null);
       return;
     }
