@@ -489,4 +489,8 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GAME_WINNER_TITLE = direct("murderrun.game.winner.title");
   NullComponent<Sender> GAME_WINNER_TITLE_KILLER = direct("murderrun.game.winner.title.killer");
   NullComponent<Sender> GAME_WINNER_TITLE_SURVIVOR = direct("murderrun.game.winner.title.survivor");
+  NullComponent<Sender> MINIATURIZER_NAME = direct("murderrun.game.gadget.miniaturizer.name");
+  NullComponent<Sender> MINIATURIZER_LORE = direct("murderrun.game.gadget.miniaturizer.lore");
+  NullComponent<Sender> EXPANDER_NAME = direct("murderrun.game.gadget.expander.name");
+  NullComponent<Sender> EXPANDER_LORE = direct("murderrun.game.gadget.expander.lore");
 }

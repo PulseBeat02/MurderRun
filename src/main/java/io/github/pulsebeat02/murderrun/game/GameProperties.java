@@ -9,6 +9,12 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  double MINIATURIZER_SCALE = dec("minitaturizer.scale");
+  String MINIATURIZER_SOUND = str("minitaturizer.sound");
+  int MINIATURIZER_COST = num("minitaturizer.cost");
+  double EXPANDER_SCALE = dec("expander.scale");
+  String EXPANDER_SOUND = str("expander.sound");
+  int EXPANDER_COST = num("expander.cost");
   String KILLER_WIN_COMMANDS_AFTER = str("killer_win_commands_after");
   String SURVIVOR_WIN_COMMANDS_AFTER = str("survivor_win_commands_after");
   boolean FORCE_RESOURCEPACK = bool("force_resourcepack");

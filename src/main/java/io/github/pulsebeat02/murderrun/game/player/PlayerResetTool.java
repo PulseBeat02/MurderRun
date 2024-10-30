@@ -8,6 +8,8 @@ import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.persistence.PersistentDataContainer;
 
 public final class PlayerResetTool {
@@ -50,5 +52,17 @@ public final class PlayerResetTool {
     gamePlayer.setFireTicks(0);
     gamePlayer.stopAllSounds();
     gamePlayer.setInvulnerable(false);
+    this.resetAttributes(gamePlayer);
+  }
+
+  private void resetAttributes(final GamePlayer player) {
+    final Attribute[] attributes = Attribute.values();
+    for (final Attribute attribute : attributes) {
+      final AttributeInstance instance = player.getAttribute(attribute);
+      if (instance != null) {
+        final double defaultValue = instance.getDefaultValue();
+        instance.setBaseValue(defaultValue);
+      }
+    }
   }
 }

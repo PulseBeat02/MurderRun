@@ -40,7 +40,8 @@ public enum KillerGadgets {
   TRAP_SEEKER(TrapSeeker.class),
   TRAP_WRECKER(TrapWrecker.class),
   WARP_DISTORT(WarpDistort.class),
-  MIMIC(Mimic.class);
+  MIMIC(Mimic.class),
+  EXPANDER(Expander.class);
 
   /*
 

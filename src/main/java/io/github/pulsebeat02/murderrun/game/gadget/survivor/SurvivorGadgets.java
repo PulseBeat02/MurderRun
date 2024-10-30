@@ -30,44 +30,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SmokeTrap;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SpasmTrap;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SpawnTrap;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.StarTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.BlastOff;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Bush;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Camera;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Chipped;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Cloak;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.CorpusWarp;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.CryoFreeze;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Deadringer;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Decoy;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Distorter;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Drone;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.FlashBang;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.FriendWarp;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Ghosting;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Horcrux;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.IceSkatin;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.IceSpirit;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.KillerRewind;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.LifeInsurance;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.MagnetMode;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.MedBot;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.MedKit;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.MindControl;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Parasite;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.PartSniffer;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.PortalTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.RandomTeleport;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.RandomTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.ResurrectionStone;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Retaliation;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Rewind;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.SixthSense;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.SmokeGrenade;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.SpeedPendant;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.SupplyDrop;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Tracker;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.Translocator;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.TrapVest;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.*;
 
 public enum SurvivorGadgets {
   SURVIVOR_BOOTS(SurvivorBoots.class),
@@ -137,7 +100,8 @@ public enum SurvivorGadgets {
   SMOKE_TRAP(SmokeTrap.class),
   SPASM_TRAP(SpasmTrap.class),
   SPAWN_TRAP(SpawnTrap.class),
-  STAR_TRAP(StarTrap.class);
+  STAR_TRAP(StarTrap.class),
+  MINIATURIZER(Miniaturizer.class);
 
   /*
 
