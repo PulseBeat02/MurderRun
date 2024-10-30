@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 import org.bukkit.GameMode;
@@ -18,6 +20,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -263,5 +266,16 @@ public abstract class AbstractPlayer implements Participant {
   public Location getEyeLocation() {
     final Player player = this.getInternalPlayer();
     return player.getEyeLocation();
+  }
+
+  @Override
+  public void resetAllAttributes() {
+    final Map<Attribute, AttributeInstance> attributes = this.getDefaultAttributes();
+    final Set<Map.Entry<@KeyFor("attributes") Attribute, AttributeInstance>> entries = attributes.entrySet();
+    for (final Map.Entry<Attribute, AttributeInstance> entry : entries) {
+      final AttributeInstance instance = entry.getValue();
+      final double value = instance.getValue();
+      instance.setBaseValue(value);
+    }
   }
 }

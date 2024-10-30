@@ -4,14 +4,21 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 
 public class GamePlayer extends AbstractPlayer {
 
   private final Game game;
   private final UUID uuid;
+
+  private final Map<Attribute, AttributeInstance> attributes;
 
   private MetadataManager metadata;
   private DeathManager deathManager;
@@ -28,6 +35,7 @@ public class GamePlayer extends AbstractPlayer {
     this.uuid = uuid;
     this.alive = true;
     this.canDismount = true;
+    this.attributes = new HashMap<>();
   }
 
   public void start() {
@@ -35,6 +43,17 @@ public class GamePlayer extends AbstractPlayer {
     this.metadata = new MetadataManager(this);
     this.deathManager = new DeathManager();
     this.metadata.start();
+    this.setDefaultAttributes();
+  }
+
+  private void setDefaultAttributes() {
+    final Attribute[] attributes = Attribute.values();
+    for (final Attribute attribute : attributes) {
+      final AttributeInstance instance = this.getAttribute(attribute);
+      if (instance != null) {
+        this.attributes.put(attribute, instance);
+      }
+    }
   }
 
   @Override
@@ -110,5 +129,10 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public void setLoggingOut(final boolean loggingOut) {
     this.loggingOut = loggingOut;
+  }
+
+  @Override
+  public Map<Attribute, AttributeInstance> getDefaultAttributes() {
+    return this.attributes;
   }
 }
