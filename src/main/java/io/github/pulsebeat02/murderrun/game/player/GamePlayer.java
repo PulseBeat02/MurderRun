@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,7 +17,7 @@ public class GamePlayer extends AbstractPlayer {
   private final Game game;
   private final UUID uuid;
 
-  private final Map<Attribute, AttributeInstance> attributes;
+  private final Map<Attribute, Double> attributes;
 
   private MetadataManager metadata;
   private DeathManager deathManager;
@@ -51,7 +50,8 @@ public class GamePlayer extends AbstractPlayer {
     for (final Attribute attribute : attributes) {
       final AttributeInstance instance = this.getAttribute(attribute);
       if (instance != null) {
-        this.attributes.put(attribute, instance);
+        final double value = instance.getValue();
+        this.attributes.put(attribute, value);
       }
     }
   }
@@ -132,7 +132,7 @@ public class GamePlayer extends AbstractPlayer {
   }
 
   @Override
-  public Map<Attribute, AttributeInstance> getDefaultAttributes() {
+  public Map<Attribute, Double> getDefaultAttributes() {
     return this.attributes;
   }
 }

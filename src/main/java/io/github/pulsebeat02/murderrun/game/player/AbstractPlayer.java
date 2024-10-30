@@ -270,11 +270,12 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void resetAllAttributes() {
-    final Map<Attribute, AttributeInstance> attributes = this.getDefaultAttributes();
-    final Set<Map.Entry<@KeyFor("attributes") Attribute, AttributeInstance>> entries = attributes.entrySet();
-    for (final Map.Entry<Attribute, AttributeInstance> entry : entries) {
-      final AttributeInstance instance = entry.getValue();
-      final double value = instance.getValue();
+    final Map<Attribute, Double> attributes = this.getDefaultAttributes();
+    final Set<Map.Entry<@KeyFor("attributes") Attribute, Double>> entries = attributes.entrySet();
+    for (final Map.Entry<Attribute, Double> entry : entries) {
+      final Attribute attribute = entry.getKey();
+      final double value = entry.getValue();
+      final AttributeInstance instance = requireNonNull(this.getAttribute(attribute));
       instance.setBaseValue(value);
     }
   }

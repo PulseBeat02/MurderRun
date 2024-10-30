@@ -3,7 +3,6 @@ package io.github.pulsebeat02.murderrun.game.player;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -140,7 +139,7 @@ public interface Participant {
 
   Location getEyeLocation();
 
-  Map<Attribute, AttributeInstance> getDefaultAttributes();
+  Map<Attribute, Double> getDefaultAttributes();
 
   void resetAllAttributes();
 }
