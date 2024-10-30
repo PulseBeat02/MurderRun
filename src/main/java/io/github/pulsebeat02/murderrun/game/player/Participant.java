@@ -43,6 +43,7 @@ public interface Participant {
 
   PlayerInventory getInventory();
 
+  @Nullable
   AttributeInstance getAttribute(final Attribute attribute);
 
   void removeAllPotionEffects();

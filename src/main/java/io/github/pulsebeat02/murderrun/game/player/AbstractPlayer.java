@@ -25,7 +25,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableJump(final GameScheduler scheduler, final long ticks) {
-    final AttributeInstance instance = this.getAttribute(Attribute.GENERIC_JUMP_STRENGTH);
+    final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.GENERIC_JUMP_STRENGTH));
     final double before = instance.getValue();
     instance.setBaseValue(0.0);
     scheduler.scheduleTask(() -> instance.setBaseValue(before), ticks);
@@ -84,9 +84,9 @@ public abstract class AbstractPlayer implements Participant {
   }
 
   @Override
-  public AttributeInstance getAttribute(final Attribute attribute) {
+  public @Nullable AttributeInstance getAttribute(final Attribute attribute) {
     final Player player = this.getInternalPlayer();
-    return requireNonNull(player.getAttribute(attribute));
+    return player.getAttribute(attribute);
   }
 
   @Override

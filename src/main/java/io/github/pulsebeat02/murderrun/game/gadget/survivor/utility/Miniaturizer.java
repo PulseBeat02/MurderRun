@@ -1,5 +1,7 @@
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -8,6 +10,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.Item;
 
 public final class Miniaturizer extends SurvivorGadget {
 
@@ -24,9 +27,11 @@ public final class Miniaturizer extends SurvivorGadget {
   @Override
   public boolean onGadgetDrop(final GadgetDropPacket packet) {
     final GamePlayer player = packet.getPlayer();
+    final Item item = packet.getItem();
     final double scale = GameProperties.MINIATURIZER_SCALE;
-    final AttributeInstance instance = player.getAttribute(Attribute.GENERIC_SCALE);
+    final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.GENERIC_SCALE));
     instance.setBaseValue(scale);
-    return true;
+    item.remove();
+    return false;
   }
 }

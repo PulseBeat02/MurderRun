@@ -64,5 +64,10 @@ public final class PlayerResetTool {
         instance.setBaseValue(defaultValue);
       }
     }
+
+    // overrides
+    // LivingEntity.createLivingAttributes().add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, 0.10000000149011612D).add(Attributes.ATTACK_SPEED).add(Attributes.LUCK).add(Attributes.BLOCK_INTERACTION_RANGE, 4.5D).add(Attributes.ENTITY_INTERACTION_RANGE, 3.0D)
+    final AttributeInstance speed = requireNonNull(player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
+    speed.setBaseValue(0.10000000149011612D);
   }
 }
