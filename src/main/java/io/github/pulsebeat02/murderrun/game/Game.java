@@ -106,8 +106,8 @@ public final class Game {
       this.cleanupManager.start(code);
       this.map.shutdown();
       this.executor.shutdown();
-      this.callback.onGameFinish(this, code);
       this.disableDisguiseHandler();
+      this.callback.onGameFinish(this, code);
     }
   }
 

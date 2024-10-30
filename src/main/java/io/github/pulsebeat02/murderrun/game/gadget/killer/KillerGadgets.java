@@ -2,6 +2,8 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer;
 
 import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.*;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool.Hook;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool.PlayerTracker;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool.PortalGun;
 
 public enum KillerGadgets {
   ALL_SEEING_EYE(AllSeeingEye.class),
@@ -38,7 +40,8 @@ public enum KillerGadgets {
   TRAP_SEEKER(TrapSeeker.class),
   TRAP_WRECKER(TrapWrecker.class),
   WARP_DISTORT(WarpDistort.class),
-  MIMIC(Mimic.class);
+  MIMIC(Mimic.class),
+  EXPANDER(Expander.class);
 
   /*
 

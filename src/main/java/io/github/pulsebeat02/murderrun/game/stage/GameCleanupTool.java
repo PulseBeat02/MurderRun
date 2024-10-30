@@ -3,10 +3,7 @@ package io.github.pulsebeat02.murderrun.game.stage;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameResult;
-import io.github.pulsebeat02.murderrun.game.GameSettings;
-import io.github.pulsebeat02.murderrun.game.GameTimer;
+import io.github.pulsebeat02.murderrun.game.*;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
@@ -17,10 +14,8 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Optional;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
@@ -49,6 +44,7 @@ public final class GameCleanupTool {
     this.handleKillerWinStatistics();
     this.announceMurdererVictory();
     this.sprayFireworks();
+    this.executeCommands(false);
   }
 
   private void handleInnocentVictory() {
@@ -56,6 +52,7 @@ public final class GameCleanupTool {
     this.announceInnocentVictory();
     this.invalidateTimer();
     this.sprayFireworks();
+    this.executeCommands(true);
   }
 
   private void stopTimer() {
@@ -65,9 +62,10 @@ public final class GameCleanupTool {
 
   private Component generateWinnerMessage(final boolean innocents) {
     final Component separator = Message.WINNER_SEPARATOR.build();
+    final Component win = innocents ? this.getSurvivorWinComponent() : this.getKillerWinComponent();
     return separator
       .appendNewline()
-      .append(this.getWinComponent(innocents))
+      .append(win)
       .appendNewline()
       .append(this.getKillComponent())
       .appendNewline()
@@ -102,10 +100,16 @@ public final class GameCleanupTool {
     return Message.WINNER_KILLS.build(name, count);
   }
 
-  private Component getWinComponent(final boolean innocents) {
+  private Component getSurvivorWinComponent() {
     final GameTimer timer = this.game.getTimeManager();
     final long seconds = timer.getElapsedTime();
-    return innocents ? Message.WINNER_SURVIVOR.build(seconds) : Message.WINNER_KILLER.build(seconds);
+    return Message.WINNER_SURVIVOR.build(seconds);
+  }
+
+  private Component getKillerWinComponent() {
+    final GameTimer timer = this.game.getTimeManager();
+    final long seconds = timer.getElapsedTime();
+    return Message.WINNER_KILLER.build(seconds);
   }
 
   private void announceInnocentVictory() {
@@ -194,6 +198,20 @@ public final class GameCleanupTool {
       meta.addEffect(effect);
       meta.setPower(2);
       firework.setFireworkMeta(meta);
+    }
+  }
+
+  private void executeCommands(final boolean survivor) {
+    final String chain = survivor ? GameProperties.SURVIVOR_WIN_COMMANDS_AFTER : GameProperties.KILLER_WIN_COMMANDS_AFTER;
+    if (chain.equalsIgnoreCase("none")) {
+      return;
+    }
+
+    final String[] commands = chain.split(";");
+    final Server server = Bukkit.getServer();
+    final ConsoleCommandSender console = server.getConsoleSender();
+    for (final String command : commands) {
+      server.dispatchCommand(console, command);
     }
   }
 

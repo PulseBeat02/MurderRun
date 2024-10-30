@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
+package io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool;
 
 import static io.github.pulsebeat02.murderrun.immutable.Holder.empty;
 import static java.util.Objects.requireNonNull;
@@ -6,6 +6,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -52,6 +53,11 @@ public final class PortalGun extends KillerGadget implements Listener {
     );
     this.portals = new HashMap<>();
     this.game = game;
+  }
+
+  @Override
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    return true;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

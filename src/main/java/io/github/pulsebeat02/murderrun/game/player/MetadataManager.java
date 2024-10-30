@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Entity;
@@ -105,16 +104,15 @@ public final class MetadataManager {
 
   public void shutdown() {
     final Collection<ChatColor> keys = this.glowTeams.keySet();
-    this.gamePlayer.apply(player -> {
-        for (final ChatColor key : keys) {
-          final Collection<Entity> stillGlowing = this.glowEntities.get(key);
-          for (final Entity entity : stillGlowing) {
-            PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-          }
-          final Team team = requireNonNull(this.glowTeams.get(key));
-          team.unregister();
-        }
-      });
+    final Player player = this.gamePlayer.getInternalPlayer();
+    for (final ChatColor key : keys) {
+      final Collection<Entity> stillGlowing = this.glowEntities.get(key);
+      for (final Entity entity : stillGlowing) {
+        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+      }
+      final Team team = requireNonNull(this.glowTeams.get(key));
+      team.unregister();
+    }
     this.glowEntities.clear();
     this.glowTeams.clear();
     this.hideNameTagTeam.unregister();
@@ -131,34 +129,34 @@ public final class MetadataManager {
   }
 
   public void setEntityGlowing(final Entity entity, final ChatColor color, final boolean glowing) {
-    this.gamePlayer.apply(player -> {
-        final Team team = requireNonNull(this.glowTeams.get(color));
-        final String name = this.getMemberID(entity);
-        final String watcher = player.getName();
-        if (glowing) {
-          this.glowEntities.put(color, entity);
-          if (!checkValidity(player, entity)) {
-            return;
-          }
-          team.addEntry(name);
-          team.addEntry(watcher);
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
-        } else {
-          this.glowEntities.remove(color, entity);
-          if (!checkValidity(player, entity)) {
-            return;
-          }
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-          team.removeEntry(name);
-          team.removeEntry(watcher);
-        }
-      });
+    if (!this.gamePlayer.isAlive()) {
+      return;
+    }
+
+    final Player player = this.gamePlayer.getInternalPlayer();
+    if (!this.checkValidity(player, entity)) {
+      return;
+    }
+
+    final Team team = requireNonNull(this.glowTeams.get(color));
+    final String name = this.getMemberID(entity);
+    final String watcher = player.getName();
+    if (glowing) {
+      this.glowEntities.put(color, entity);
+      team.addEntry(name);
+      team.addEntry(watcher);
+      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
+    } else {
+      this.glowEntities.remove(color, entity);
+      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+      team.removeEntry(name);
+      team.removeEntry(watcher);
+    }
   }
 
-  private boolean checkValidity(final Player player, final Entity entity) {
-    if (entity instanceof final Player player1) {
-      // fixes a protocol bug
-      if (!player.isValid() || !player1.isValid()) {
+  private boolean checkValidity(final Entity... entities) {
+    for (final Entity entity : entities) {
+      if (!entity.isValid()) {
         return false;
       }
     }
@@ -174,23 +172,22 @@ public final class MetadataManager {
   }
 
   public void setNameTagStatus(final boolean hide) {
-    if (hide) {
-      this.gamePlayer.apply(player -> {
-          final String name = player.getName();
-          this.hideNameTagTeam.addEntry(name);
-        });
-    } else {
-      this.gamePlayer.apply(player -> {
-          final GameMode gameMode = player.getGameMode();
-          if (gameMode == GameMode.SPECTATOR) {
-            return;
-          }
+    if (!this.gamePlayer.isAlive()) {
+      return;
+    }
 
-          final String name = player.getName();
-          if (this.hideNameTagTeam.hasEntry(name)) {
-            this.hideNameTagTeam.removeEntry(name);
-          }
-        });
+    final Player player = this.gamePlayer.getInternalPlayer();
+    if (!this.checkValidity(player)) {
+      return;
+    }
+
+    final String name = player.getName();
+    if (hide) {
+      this.hideNameTagTeam.addEntry(name);
+    } else {
+      if (this.hideNameTagTeam.hasEntry(name)) {
+        this.hideNameTagTeam.removeEntry(name);
+      }
     }
   }
 

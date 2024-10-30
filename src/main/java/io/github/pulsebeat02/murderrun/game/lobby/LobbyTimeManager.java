@@ -7,6 +7,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.Set;
@@ -18,7 +19,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -42,7 +42,7 @@ public final class LobbyTimeManager {
     this.timer.runTaskTimer(plugin, 0L, 20L);
 
     final BukkitScheduler scheduler = Bukkit.getScheduler();
-    this.started = scheduler.runTaskTimer(plugin, this::checkCurrency, 0L, 20L);
+    this.started = scheduler.runTaskTimer(plugin, this::checkCurrency, 0L, 5 * 20L);
   }
 
   public void shutdown() {
@@ -114,8 +114,8 @@ public final class LobbyTimeManager {
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
-      final PlayerInventory inventory = player.getInventory();
-      if (this.checkAllSlots(inventory)) {
+      final ItemStack[] slots = InventoryUtils.getAllSlotsOnScreen(player);
+      if (this.checkAllSlots(slots)) {
         return;
       }
     }
@@ -137,9 +137,8 @@ public final class LobbyTimeManager {
     this.timer.setTime(15);
   }
 
-  private boolean checkAllSlots(final PlayerInventory inventory) {
+  private boolean checkAllSlots(final ItemStack[] contents) {
     final ItemStack sample = ItemFactory.createCurrency(1);
-    final ItemStack[] contents = inventory.getContents();
     for (final ItemStack stack : contents) {
       if (stack != null && stack.isSimilar(sample)) {
         return true;

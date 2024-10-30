@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
@@ -34,6 +35,11 @@ public final class Hook extends KillerGadget implements Listener {
       ItemFactory::createHook
     );
     this.game = game;
+  }
+
+  @Override
+  public boolean onGadgetDrop(final GadgetDropPacket packet) {
+    return true;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

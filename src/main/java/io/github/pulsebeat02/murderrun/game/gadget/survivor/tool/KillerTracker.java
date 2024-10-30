@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
+package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
 import static java.util.Objects.requireNonNull;
 

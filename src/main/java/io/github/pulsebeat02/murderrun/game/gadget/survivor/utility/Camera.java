@@ -24,7 +24,7 @@ public final class Camera extends SurvivorGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
     if (this.gadget == null) {
-      this.gadget = new CameraGadget(this);
+      this.gadget = new CameraGadget();
     }
     return this.gadget.handleCamera(game, player, item);
   }
