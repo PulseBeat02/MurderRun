@@ -18,6 +18,7 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.format.TextDecoration.State;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.KeyFor;
@@ -25,6 +26,7 @@ import org.checkerframework.checker.nullness.qual.KeyFor;
 public final class AdventureUtils {
 
   private static final LegacyComponentSerializer SERIALIZER = BukkitComponentSerializer.legacy();
+  private static final PlainTextComponentSerializer PLAIN_SERIALIZER = PlainTextComponentSerializer.plainText();
   private static final TextComponent UNSUPPORTED = text("ERROR WRAPPING").color(DARK_RED);
   private static final String COMPONENT_REGEX = "(?<=\\s)|(?=\\n)";
 
@@ -40,6 +42,10 @@ public final class AdventureUtils {
     final int y = location.getBlockY();
     final int z = location.getBlockZ();
     return function.build(x, y, z);
+  }
+
+  public static String serializeComponentToPlain(final Component component) {
+    return PLAIN_SERIALIZER.serialize(component);
   }
 
   public static String serializeComponentToLegacyString(final Component component) {

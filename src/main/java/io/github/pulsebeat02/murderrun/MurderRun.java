@@ -14,6 +14,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.papi.MurderRunExpansion;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
+import io.github.pulsebeat02.murderrun.gui.shop.GadgetShopGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
@@ -98,6 +99,7 @@ public final class MurderRun extends JavaPlugin {
     GlobalGadgetRegistry.init();
     PacketToolsProvider.init();
     GameProperties.init();
+    GadgetShopGui.init();
   }
 
   private void shutdownAudience() {

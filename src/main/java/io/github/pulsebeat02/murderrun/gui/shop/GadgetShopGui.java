@@ -1,6 +1,5 @@
 package io.github.pulsebeat02.murderrun.gui.shop;
 
-import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.sound.Sound.sound;
 import static net.kyori.adventure.text.Component.empty;
@@ -15,16 +14,14 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.TradingUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -39,10 +36,16 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class GadgetShopGui extends ChestGui {
+
+  private static final Collection<ItemStack> SORTED_SURVIVOR_ITEMS = TradingUtils.getShopItems(true);
+  private static final Collection<ItemStack> SORTED_KILLER_ITEMS = TradingUtils.getShopItems(false);
+
+  public static void init() {
+    // copy ItemStack fields
+  }
 
   private final MurderRun plugin;
   private final PaginatedPane pages;
@@ -59,46 +62,6 @@ public final class GadgetShopGui extends ChestGui {
       });
   }
 
-  private List<ItemStack> getShopItems(final boolean isSurvivorGadgets) {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
-    final Collection<Gadget> gadgets = registry.getGadgets();
-    final List<ItemStack> items = new ArrayList<>();
-    for (final Gadget gadget : gadgets) {
-      final boolean add =
-        (isSurvivorGadgets && gadget instanceof SurvivorApparatus) || (!isSurvivorGadgets && gadget instanceof KillerApparatus);
-      if (add) {
-        final ItemStack stack = this.getModifiedLoreWithCost(gadget);
-        items.add(stack);
-      }
-    }
-    return items;
-  }
-
-  private ItemStack getModifiedLoreWithCost(final Gadget gadget) {
-    final ItemStack stack = gadget.getGadget();
-    final ItemStack clone = stack.clone();
-    final ItemMeta meta = requireNonNull(clone.getItemMeta());
-    List<String> lore = meta.getLore();
-    if (lore == null) {
-      lore = new ArrayList<>();
-    }
-
-    final List<String> copy = new ArrayList<>(lore);
-    final String raw = this.getLegacyComponent(gadget);
-    copy.addFirst("");
-    copy.addFirst(raw);
-    meta.setLore(copy);
-    clone.setItemMeta(meta);
-
-    return clone;
-  }
-
-  private String getLegacyComponent(final Gadget gadget) {
-    final int cost = gadget.getPrice();
-    final Component full = Message.SHOP_GUI_COST_LORE.build(cost);
-    return AdventureUtils.serializeComponentToLegacyString(full);
-  }
-
   private void addItems(final boolean isSurvivorGadgets) {
     this.addPane(this.createPaginatedPane(isSurvivorGadgets));
     this.addPane(this.createBackgroundPane());
@@ -106,7 +69,8 @@ public final class GadgetShopGui extends ChestGui {
   }
 
   private PaginatedPane createPaginatedPane(final boolean isSurvivorGadgets) {
-    final List<ItemStack> items = this.getShopItems(isSurvivorGadgets);
+    final Collection<ItemStack> raw = isSurvivorGadgets ? SORTED_SURVIVOR_ITEMS : SORTED_KILLER_ITEMS;
+    final List<ItemStack> items = List.copyOf(raw);
     this.pages.populateWithItemStacks(items, this.plugin);
     this.pages.setOnClick(this::handleClick);
     return this.pages;
