@@ -13,6 +13,4 @@ public interface PacketToolAPI {
   void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing);
 
   void setBlockGlowing(final Player watcher, final Location target, final boolean glowing);
-
-  void injectNettyHandler(final String key, final Object handler);
 }

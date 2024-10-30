@@ -6,7 +6,7 @@
 language: EN_US
 
 # Sets the method to host the pack that is used by the plugin
-# Valid options are MC_PACK_HOSTING, LOCALLY_HOSTED_DAEMON
+# Valid options are MC_PACK_HOSTING, LOCALLY_HOSTED_DAEMON, ON_SERVER
 # Default is MC_PACK_HOSTING
 
 # MC_PACK_HOSTING will upload the pack on https://mc-packs.net/ and cache the pack link
@@ -14,6 +14,9 @@ language: EN_US
 
 # LOCALLY_HOSTED_DAEMON will start a local daemon that will host the pack using the below options
 # This option requires port-forwarding to work properly
+
+# ON_SERVER is experimental and hosts the resource-pack without any setup required as it hosts it
+# on the same port as the server
 pack-provider: MC_PACK_HOSTING
 
 # If using LOCALLY_HOSTED_DAEMON, the below options will be used

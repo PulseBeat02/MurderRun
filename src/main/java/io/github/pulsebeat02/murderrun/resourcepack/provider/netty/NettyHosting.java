@@ -1,44 +1,44 @@
 package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.BukkitInjector;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 import org.bukkit.Bukkit;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class NettyHosting extends ResourcePackProvider {
 
-  private NettyChannelInitializer handler;
+  private static final String IP_URL = "http://checkip.amazonaws.com";
+
+  private final String url;
+  private boolean injected;
 
   public NettyHosting() {
     super(ProviderMethod.ON_SERVER);
+    this.url = this.getPackUrl();
   }
 
-  @Override
-  public String getRawUrl(final Path zip) {
-    if (this.handler == null) {
-      this.handler = new NettyChannelInitializer(zip);
-      PacketToolsProvider.PACKET_API.injectNettyHandler("resourcePackInitializer", this.handler);
-    }
-
+  private String getPackUrl(@UnderInitialization NettyHosting this) {
     final String ip = this.getPublicAddress();
     final int port = Bukkit.getPort();
     if (ip != null) {
       return "http://%s:%s/resourcepack".formatted(ip, port);
     }
-
-    throw new AssertionError("Failed to get public address");
+    return "http://localhost:%s/resourcepack".formatted(port);
   }
 
-  public @Nullable String getPublicAddress() {
+  private @Nullable String getPublicAddress(@UnderInitialization NettyHosting this) {
     try {
-      final URL url = new URL("http://checkip.amazonaws.com");
+      final URI uri = URI.create(IP_URL);
+      final URL url = uri.toURL();
       try (
         final InputStream stream = url.openStream();
         final InputStreamReader reader = new InputStreamReader(stream);
@@ -49,5 +49,15 @@ public final class NettyHosting extends ResourcePackProvider {
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
+  }
+
+  @Override
+  public String getRawUrl(final Path zip) {
+    if (!this.injected) {
+      final BukkitInjector injector = new BukkitInjector(zip);
+      injector.injectAgentIntoServer();
+      this.injected = true;
+    }
+    return this.url;
   }
 }

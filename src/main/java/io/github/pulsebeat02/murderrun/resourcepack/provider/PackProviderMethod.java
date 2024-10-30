@@ -2,6 +2,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.NettyHosting;
 
 public final class PackProviderMethod {
 
@@ -23,7 +24,9 @@ public final class PackProviderMethod {
         final int port = config.getPort();
         return new ServerPackHosting(hostName, port);
       }
-      case ON_SERVER -> throw new UnsupportedOperationException("NettyHosting is not implemented yet"); // return new NettyHosting();
+      case ON_SERVER -> {
+        return new NettyHosting();
+      }
       default -> throw new IllegalStateException("Unexpected value: %s".formatted(method));
     }
   }

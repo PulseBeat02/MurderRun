@@ -7,9 +7,7 @@ import com.mojang.datafixers.DSL;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.serialization.Dynamic;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelPipeline;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,13 +16,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.SplittableRandom;
+
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
@@ -37,7 +35,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerConnectionListener;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.EntityType;
@@ -170,18 +167,6 @@ public class PacketTools implements PacketToolAPI {
 
     final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);
     connection.send(packet);
-  }
-
-  @Override
-  public void injectNettyHandler(final String key, final Object handler) {
-    final MinecraftServer server = MinecraftServer.getServer();
-    final ServerConnectionListener serverConnection = server.getConnection();
-    final List<Connection> connections = serverConnection.getConnections();
-    for (final Connection connection : connections) {
-      final Channel channel = connection.channel;
-      final ChannelPipeline pipeline = channel.pipeline();
-      pipeline.addFirst(key, (ChannelHandler) handler);
-    }
   }
 
   @Override

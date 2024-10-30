@@ -14,9 +14,9 @@ public final class HttpRequest {
   private final String request;
   private final Map<String, String> headers;
   private final String[] requestParts;
-  public final String requestMethod;
-  public final String requestURI;
-  public final String protocolVersion;
+  private final String requestMethod;
+  private final String requestURI;
+  private final String protocolVersion;
 
   public HttpRequest(final String request, final Map<String, String> headers) {
     this.request = request;
@@ -63,5 +63,29 @@ public final class HttpRequest {
       throw new AssertionError(e);
     }
     return headers;
+  }
+
+  public String getRequest() {
+    return this.request;
+  }
+
+  public Map<String, String> getHeaders() {
+    return this.headers;
+  }
+
+  public String[] getRequestParts() {
+    return this.requestParts;
+  }
+
+  public String getRequestMethod() {
+    return this.requestMethod;
+  }
+
+  public String getRequestURI() {
+    return this.requestURI;
+  }
+
+  public String getProtocolVersion() {
+    return this.protocolVersion;
   }
 }
