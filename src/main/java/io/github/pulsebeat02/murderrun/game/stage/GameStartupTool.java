@@ -55,6 +55,7 @@ public final class GameStartupTool {
     world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
     world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
     world.setGameRule(GameRule.DO_INSOMNIA, false);
+    world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
   }
 
   private void teleportInnocentPlayers() {
