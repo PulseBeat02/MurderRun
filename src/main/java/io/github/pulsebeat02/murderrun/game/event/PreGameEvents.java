@@ -17,7 +17,12 @@ public final class PreGameEvents {
 
   public PreGameEvents(final PreGameManager manager) {
     this.manager = manager;
-    this.events = Set.of(new DupePreventListener(manager), new DamagePreventionListener(manager), new PlayerLeaveListener(manager));
+    this.events = Set.of(
+      new DupePreventListener(manager),
+      new DamagePreventionListener(manager),
+      new PlayerLeaveListener(manager),
+      new BlockModifyListener(manager)
+    );
   }
 
   public void registerEvents() {

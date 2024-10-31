@@ -16,11 +16,8 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
 
 public final class LobbyTimeManager {
 
@@ -29,7 +26,6 @@ public final class LobbyTimeManager {
   private final PreGameManager manager;
 
   private LobbyTimer timer;
-  private BukkitTask started;
 
   public LobbyTimeManager(final PreGameManager manager) {
     this.manager = manager;
@@ -40,14 +36,10 @@ public final class LobbyTimeManager {
     final int time = GameProperties.LOBBY_STARTING_TIME;
     this.timer = new LobbyTimer(time, this::handleTimer);
     this.timer.runTaskTimer(plugin, 0L, 20L);
-
-    final BukkitScheduler scheduler = Bukkit.getScheduler();
-    this.started = scheduler.runTaskTimer(plugin, this::checkCurrency, 0L, 5 * 20L);
   }
 
   public void shutdown() {
     this.timer.cancel();
-    this.started.cancel();
   }
 
   public void cancelTimer() {
@@ -69,6 +61,8 @@ public final class LobbyTimeManager {
   }
 
   private void handleTimer(final int seconds) {
+    this.checkCurrency(seconds);
+
     if (ANNOUNCE_TIMES.contains(seconds)) {
       this.playTimerSound(seconds);
     }
@@ -80,7 +74,6 @@ public final class LobbyTimeManager {
     this.setLevel(seconds);
 
     if (seconds == 0) {
-      this.started.cancel();
       this.manager.startGame();
     }
   }
@@ -110,7 +103,11 @@ public final class LobbyTimeManager {
     }
   }
 
-  private void checkCurrency() {
+  private void checkCurrency(final int seconds) {
+    if (seconds % 2 == 0) {
+      return;
+    }
+
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
@@ -120,8 +117,7 @@ public final class LobbyTimeManager {
       }
     }
 
-    final int currentTime = this.timer.getTime();
-    if (currentTime <= 15) {
+    if (seconds <= 15) {
       return;
     }
 
