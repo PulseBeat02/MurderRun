@@ -3,13 +3,12 @@ package io.github.pulsebeat02.murderrun.commmand;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.gui.shop.NPCShopEvent;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.locale.TranslationManager;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -58,8 +57,10 @@ public final class ShopCommand implements AnnotationCommandFeature {
   }
 
   private void createNPC(final Location location, final boolean survivor) {
-    final Component name = (survivor ? Message.GUARDIAN_ANGEL_NPC : Message.GRIM_REAPER_NPC).build();
-    final String raw = AdventureUtils.serializeComponentToLegacyString(name);
+    final TranslationManager manager = Message.MANAGER;
+    final String survivorMM = manager.getProperty("murderrun.npc.survivor.name");
+    final String killerMM = manager.getProperty("murderrun.npc.killer.name");
+    final String raw = survivor ? survivorMM : killerMM;
     final NPCRegistry registry = CitizensAPI.getNPCRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, raw);
     this.setSkin(npc, survivor);

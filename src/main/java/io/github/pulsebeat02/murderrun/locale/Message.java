@@ -338,8 +338,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> SHOP_GUI_BACK = direct("murderrun.gui.shop.back");
   UniComponent<Sender, Integer> SHOP_GUI_COST_LORE = direct("murderrun.gui.shop.price", null);
   NullComponent<Sender> SHOP_GUI_ERROR = direct("murderrun.gui.shop.price.insufficient");
-  NullComponent<Sender> GRIM_REAPER_NPC = direct("murderrun.npc.killer.name");
-  NullComponent<Sender> GUARDIAN_ANGEL_NPC = direct("murderrun.npc.survivor.name");
   TriComponent<Sender, Integer, Integer, Integer> ARENA_ITEM_ADD = direct(
     "murderrun.command.arena.item.spawn.location.add",
     null,
