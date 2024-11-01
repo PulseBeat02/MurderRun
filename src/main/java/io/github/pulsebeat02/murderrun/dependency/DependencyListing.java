@@ -21,7 +21,7 @@ public final class DependencyListing {
   private static final Dependency WORLD_EDIT = new UrlDependency(
     "WorldEdit",
     "worldedit-bukkit-7.3.9-SNAPSHOT",
-    "https://ci.enginehub.org/repository/download/bt10/25547:id/worldedit-bukkit-7.3.9-SNAPSHOT-dist.jar?branch=ot/feature/1.21.2&guest=1"
+    "https://ci.enginehub.org/repository/download/bt10/25583:id/worldedit-bukkit-7.3.9-SNAPSHOT-dist.jar?branch=ot/feature/1.21.2&guest=1"
   );
   private static final Dependency WETS = new UrlDependency(
     "WorldEditTickSpreader",
