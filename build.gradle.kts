@@ -125,6 +125,7 @@ tasks {
         main = "io.github.pulsebeat02.murderrun.MurderRun"
         softDepend = listOf(
             "WorldEdit",
+            "WorldEditTickSpreader",
             "Citizens",
             "LibsDisguises",
             "PlaceholderAPI")
