@@ -24,7 +24,7 @@ public interface TargetableEntity {
     if (killer) {
       nearest = manager.getNearestKiller(location);
     } else {
-      nearest = manager.getNearestSurvivor(location);
+      nearest = manager.getNearestLivingSurvivor(location);
     }
 
     if (nearest == null) {

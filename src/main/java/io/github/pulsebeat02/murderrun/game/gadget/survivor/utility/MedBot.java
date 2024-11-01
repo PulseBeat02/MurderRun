@@ -69,8 +69,8 @@ public final class MedBot extends SurvivorGadget {
     final Consumer<GamePlayer> consumer = survivor -> this.handleInnocentEffects(survivor, stand);
     final Consumer<GamePlayer> killerConsumer = killer -> this.handleKillerDestroy(manager, killer, stand);
     final Runnable task = () -> {
-      manager.applyToAllLivingInnocents(consumer);
-      manager.applyToAllMurderers(killerConsumer);
+      manager.applyToLivingSurvivors(consumer);
+      manager.applyToKillers(killerConsumer);
     };
     scheduler.scheduleConditionalTask(task, 0, 5L, stand::isDead);
   }
@@ -82,7 +82,7 @@ public final class MedBot extends SurvivorGadget {
     final double radius = GameProperties.MED_BOT_DESTROY_RADIUS;
     if (distance < radius * radius) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
-      manager.sendMessageToAllSurvivors(message);
+      manager.sendMessageToAllLivingSurvivors(message);
       stand.remove();
     }
   }

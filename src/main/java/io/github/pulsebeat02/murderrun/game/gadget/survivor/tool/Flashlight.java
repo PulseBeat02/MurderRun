@@ -86,7 +86,7 @@ public final class Flashlight extends SurvivorGadget {
       for (double angle = -maxAngle; angle <= maxAngle; angle += increment) {
         final Location particleLocation = this.getParticleLocation(direction, handLocation, t, angle);
         world.spawnParticle(Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
-        manager.applyToAllMurderers(killer -> this.applyPotionEffects(killer, particleLocation));
+        manager.applyToKillers(killer -> this.applyPotionEffects(killer, particleLocation));
       }
     }
   }

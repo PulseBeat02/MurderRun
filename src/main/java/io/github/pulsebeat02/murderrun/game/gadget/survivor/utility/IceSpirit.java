@@ -98,7 +98,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
     nearest.disableWalkWithFOVEffects(duration);
 
     final Component msg = Message.FREEZE_ACTIVATE.build();
-    manager.sendMessageToAllSurvivors(msg);
+    manager.sendMessageToAllLivingSurvivors(msg);
   }
 
   @Override

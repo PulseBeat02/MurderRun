@@ -45,7 +45,7 @@ public final class Parasite extends SurvivorGadget {
   }
 
   private void handleKillers(final PlayerManager manager, final Item item) {
-    manager.applyToAllMurderers(killer -> this.checkActivationDistance(killer, manager, item));
+    manager.applyToKillers(killer -> this.checkActivationDistance(killer, manager, item));
   }
 
   private void checkActivationDistance(final GamePlayer player, final PlayerManager manager, final Item item) {
@@ -57,7 +57,7 @@ public final class Parasite extends SurvivorGadget {
     final int id = item.getEntityId();
     if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.PARASITE_DEACTIVATE.build();
-      manager.sendMessageToAllSurvivors(message);
+      manager.sendMessageToAllLivingSurvivors(message);
       item.remove();
       this.removed.add(id);
     } else if (distance < radius * radius) {

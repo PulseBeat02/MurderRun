@@ -63,7 +63,7 @@ public final class GameStartupTool {
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllLivingInnocents(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
+    manager.applyToLivingSurvivors(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
   }
 
   private void announceHidePhase() {
@@ -74,7 +74,7 @@ public final class GameStartupTool {
 
   private void clearSurvivorNetherStars() {
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllInnocents(player -> {
+    manager.applyToSurvivors(player -> {
       final PlayerInventory inventory = player.getInventory();
       inventory.remove(Material.NETHER_STAR);
     });
@@ -82,7 +82,7 @@ public final class GameStartupTool {
 
   private void clearKillerNetherStars() {
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllMurderers(player -> {
+    manager.applyToKillers(player -> {
       final PlayerInventory inventory = player.getInventory();
       inventory.remove(Material.NETHER_STAR);
     });
@@ -166,7 +166,7 @@ public final class GameStartupTool {
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllMurderers(murderer -> murderer.teleport(spawnLocation));
+    manager.applyToKillers(murderer -> murderer.teleport(spawnLocation));
   }
 
   private void announceReleasePhase() {

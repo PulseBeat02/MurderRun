@@ -36,7 +36,7 @@ public final class Fright extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.applyToAllLivingInnocents(survivor -> this.jumpScareSurvivor(survivor, scheduler));
+    manager.applyToLivingSurvivors(survivor -> this.jumpScareSurvivor(survivor, scheduler));
 
     return false;
   }

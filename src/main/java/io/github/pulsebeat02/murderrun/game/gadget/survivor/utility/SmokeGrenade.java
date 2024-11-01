@@ -76,7 +76,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     scheduler.scheduleRepeatedTask(task, 0, 1, duration);
 
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllMurderers(player -> {
+    manager.applyToKillers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);
       final double radius = GameProperties.SMOKE_GRENADE_RADIUS;

@@ -9,7 +9,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.Collection;
+import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -48,13 +48,14 @@ public final class Retaliation extends SurvivorGadget {
   }
 
   private void checkForDeadPlayers(final PlayerManager manager, final GamePlayer player) {
-    final Collection<GamePlayer> deathCount = manager.getDead();
-    final int dead = deathCount.size();
+    final Stream<GamePlayer> deathCount = manager.getDeceasedSurvivors();
+    final long dead = deathCount.count();
     if (dead == 0) {
       return;
     }
 
-    final int effectLevel = Math.min(dead - 1, GameProperties.RETALIATION_MAX_AMPLIFIER);
+    final int level = (int) (dead - 1);
+    final int effectLevel = Math.min(level, GameProperties.RETALIATION_MAX_AMPLIFIER);
     player.addPotionEffects(
       new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
       new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),

@@ -28,7 +28,7 @@ public final class Cloak extends SurvivorGadget {
     manager.hideNameTagForAliveInnocents(GameProperties.CLOAK_DURATION);
 
     final Component message = Message.CLOAK_ACTIVATE.build();
-    manager.sendMessageToAllSurvivors(message);
+    manager.sendMessageToAllLivingSurvivors(message);
     manager.playSoundForAllParticipants(GameProperties.CLOAK_SOUND);
 
     return false;

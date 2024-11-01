@@ -89,7 +89,7 @@ public final class ItemFactory {
   }
 
   public static ItemStack createSpeedPendant(final ItemStack stack) {
-    return Item.builder(stack).modifier(Attribute.GENERIC_MOVEMENT_SPEED, 0.03).build();
+    return Item.builder(stack).modifier(Attribute.MOVEMENT_SPEED, 0.03).build();
   }
 
   public static ItemStack createRedArrow(final ItemStack stack) {
@@ -179,7 +179,7 @@ public final class ItemFactory {
       .name(Message.KILLER_SWORD.build())
       .model(1)
       .hideAttributes()
-      .modifier(Attribute.GENERIC_ATTACK_DAMAGE, 8)
+      .modifier(Attribute.ATTACK_DAMAGE, 8)
       .pdc(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true)
       .pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true)
       .enchantment(Enchantment.VANISHING_CURSE, 1)

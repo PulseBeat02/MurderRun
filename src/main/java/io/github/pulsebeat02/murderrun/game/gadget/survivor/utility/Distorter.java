@@ -50,7 +50,7 @@ public final class Distorter extends SurvivorGadget {
   }
 
   private void handleKillers(final PlayerManager manager, final Item item) {
-    manager.applyToAllMurderers(killer -> this.applyDistortionEffect(manager, killer, item));
+    manager.applyToKillers(killer -> this.applyDistortionEffect(manager, killer, item));
   }
 
   private void applyDistortionEffect(final PlayerManager manager, final GamePlayer killer, final Item item) {
@@ -62,7 +62,7 @@ public final class Distorter extends SurvivorGadget {
     final int id = item.getEntityId();
     if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();
-      manager.sendMessageToAllSurvivors(message);
+      manager.sendMessageToAllLivingSurvivors(message);
       item.remove();
       this.removed.add(id);
     } else if (distance < effectRadius * effectRadius) {

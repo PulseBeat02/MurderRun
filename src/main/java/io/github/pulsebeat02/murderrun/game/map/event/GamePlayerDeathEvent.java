@@ -6,14 +6,13 @@ import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 import org.bukkit.Location;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
@@ -55,7 +54,6 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final PlayerDeathTool death = manager.getDeathManager();
     gamePlayer.setAlive(false);
     death.initiateDeathSequence(gamePlayer);
-    manager.resetCachedPlayers();
 
     event.setKeepInventory(true);
     event.setDeathMessage(null);
@@ -99,14 +97,14 @@ public final class GamePlayerDeathEvent extends GameEvent {
   private boolean allInnocentDead() {
     final Game game = this.getGame();
     final PlayerManager manager = game.getPlayerManager();
-    final Collection<Survivor> players = manager.getInnocentPlayers();
-    return players.stream().noneMatch(GamePlayer::isAlive);
+    final Stream<GamePlayer> players = manager.getSurvivors();
+    return players.noneMatch(GamePlayer::isAlive);
   }
 
   private boolean allKillersDead() {
     final Game game = this.getGame();
     final PlayerManager manager = game.getPlayerManager();
-    final Collection<Killer> players = manager.getMurderers();
-    return players.stream().noneMatch(GamePlayer::isAlive);
+    final Stream<GamePlayer> players = manager.getKillers();
+    return players.noneMatch(GamePlayer::isAlive);
   }
 }

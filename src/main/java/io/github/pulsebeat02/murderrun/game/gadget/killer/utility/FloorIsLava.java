@@ -53,7 +53,7 @@ public final class FloorIsLava extends KillerGadget {
   }
 
   private void handleSurvivors(final PlayerManager manager, final GameScheduler scheduler, final Killer killer) {
-    manager.applyToAllLivingInnocents(survivor -> this.handleMovement(scheduler, survivor, killer));
+    manager.applyToLivingSurvivors(survivor -> this.handleMovement(scheduler, survivor, killer));
   }
 
   private void handleMovement(final GameScheduler scheduler, final GamePlayer player, final Killer killer) {

@@ -39,7 +39,7 @@ public final class Chipped extends SurvivorGadget {
   }
 
   private void setOtherSurvivorsGlowing(final PlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
-    manager.applyToAllLivingInnocents(innocent ->
+    manager.applyToLivingSurvivors(innocent ->
       metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, GameProperties.CHIPPED_DURATION)
     );
   }

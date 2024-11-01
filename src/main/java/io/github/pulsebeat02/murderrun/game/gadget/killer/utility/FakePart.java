@@ -51,7 +51,7 @@ public final class FakePart extends KillerGadget {
   }
 
   private void handlePlayers(final GameScheduler scheduler, final PlayerManager manager, final GamePlayer killer, final Item item) {
-    manager.applyToAllLivingInnocents(survivor -> this.checkNear(scheduler, survivor, killer, item));
+    manager.applyToLivingSurvivors(survivor -> this.checkNear(scheduler, survivor, killer, item));
   }
 
   private void checkNear(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer, final Item item) {

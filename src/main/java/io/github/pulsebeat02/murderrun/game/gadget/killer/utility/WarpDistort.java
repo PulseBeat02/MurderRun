@@ -7,9 +7,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.Collection;
+import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,8 +32,8 @@ public final class WarpDistort extends KillerGadget {
     final Item item = packet.getItem();
 
     final PlayerManager manager = game.getPlayerManager();
-    final Collection<Survivor> survivors = manager.getAliveInnocentPlayers();
-    final int size = survivors.size();
+    final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
+    final long size = survivors.count();
     if (size < 2) {
       return true;
     }

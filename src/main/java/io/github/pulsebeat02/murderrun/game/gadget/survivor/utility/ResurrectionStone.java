@@ -82,7 +82,6 @@ public final class ResurrectionStone extends SurvivorGadget {
     final PlayerStartupTool temp = new PlayerStartupTool(playerManager);
     temp.handleInnocent(closest);
     closest.setAlive(true);
-    playerManager.resetCachedPlayers();
 
     final Location death = requireNonNull(closest.getDeathLocation());
     closest.clearInventory();

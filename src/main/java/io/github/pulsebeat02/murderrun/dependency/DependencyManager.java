@@ -16,11 +16,11 @@ import org.bukkit.plugin.PluginManager;
 public final class DependencyManager {
 
   private static final Collection<PluginDependency> PLUGIN_JAR_DEPENDENCIES = Set.of(
-    new JenkinsDependency("Citizens", "Citizens-2.0.35-b3590", "https://ci.citizensnpcs.co/job/Citizens2/3590/artifact/dist/target/"),
+    new JenkinsDependency("Citizens", "Citizens-2.0.36-b3612", "https://ci.citizensnpcs.co/job/Citizens2/3612/artifact/dist/target/"),
     new JenkinsDependency(
       "WorldEdit",
-      "FastAsyncWorldEdit-Bukkit-2.11.3-SNAPSHOT-940",
-      "https://ci.athion.net/job/FastAsyncWorldEdit/940/artifact/artifacts/"
+      "FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-952",
+      "https://ci.athion.net/job/FastAsyncWorldEdit/952/artifact/artifacts/"
     )
   );
 

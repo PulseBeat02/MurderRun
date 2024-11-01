@@ -116,7 +116,7 @@ public final class PlayerDeathTool {
   public void spawnParticles() {
     final PlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> manager.applyToAllDead(this::spawnParticleOnCorpse), 0, 20L);
+    scheduler.scheduleRepeatedTask(() -> manager.applyToDeceased(this::spawnParticleOnCorpse), 0, 20L);
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {

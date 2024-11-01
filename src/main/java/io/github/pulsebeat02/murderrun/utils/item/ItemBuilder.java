@@ -120,7 +120,7 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder dummyAttribute() {
-    final Attribute attribute = Attribute.GENERIC_OXYGEN_BONUS;
+    final Attribute attribute = Attribute.OXYGEN_BONUS;
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;

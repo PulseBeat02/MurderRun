@@ -78,7 +78,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     world.spawnParticle(Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final PlayerManager manager = this.game.getPlayerManager();
-    manager.applyToAllMurderers(killer -> {
+    manager.applyToKillers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);
       final double radius = GameProperties.FLASHBANG_RADIUS;

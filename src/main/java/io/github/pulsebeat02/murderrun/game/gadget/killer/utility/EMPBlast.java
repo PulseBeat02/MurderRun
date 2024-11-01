@@ -56,7 +56,7 @@ public final class EMPBlast extends KillerGadget {
 
     final PlayerManager playerManager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    playerManager.applyToAllLivingInnocents(survivor -> this.stunSurvivors(scheduler, survivor));
+    playerManager.applyToLivingSurvivors(survivor -> this.stunSurvivors(scheduler, survivor));
     playerManager.playSoundForAllParticipants(Sounds.FLASHBANG);
 
     return false;

@@ -1,4 +1,4 @@
-package io.github.pulsebeat02.murderrun.reflect.v1_21_R1;
+package io.github.pulsebeat02.murderrun.reflect.v1_21_R3;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
@@ -24,7 +24,6 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -38,7 +37,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.monster.Slime;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -256,22 +254,6 @@ public class PacketTools implements PacketToolAPI {
   private void removeEntity(final ServerGamePacketListenerImpl connection, final Collection<Integer> ids) {
     final int[] remove = Ints.toArray(ids);
     final ClientboundRemoveEntitiesPacket packet = new ClientboundRemoveEntitiesPacket(remove);
-    connection.send(packet);
-  }
-
-  public void crashPlayerClient(final Player player) {
-    final ClientboundPlayerPositionPacket packet = new ClientboundPlayerPositionPacket(
-      Double.MIN_VALUE,
-      Double.MIN_VALUE,
-      Double.MIN_VALUE,
-      Float.MIN_VALUE,
-      Float.MIN_VALUE,
-      RelativeMovement.unpack(Byte.MIN_VALUE),
-      Integer.MIN_VALUE
-    );
-    final CraftPlayer craftPlayer = (CraftPlayer) player;
-    final ServerPlayer handle = craftPlayer.getHandle();
-    final ServerGamePacketListenerImpl connection = handle.connection;
     connection.send(packet);
   }
 }

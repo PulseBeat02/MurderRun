@@ -39,6 +39,6 @@ public final class GamePlayerChatEvent extends GameEvent {
     }
 
     final Component msg = Message.DEAD_CHAT_PREFIX.build(formatted);
-    manager.sendMessageToAllDeadParticipants(msg);
+    manager.sendMessageToAllDeceased(msg);
   }
 }

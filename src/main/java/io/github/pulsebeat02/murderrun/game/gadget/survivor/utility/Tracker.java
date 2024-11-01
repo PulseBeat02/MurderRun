@@ -28,7 +28,7 @@ public final class Tracker extends SurvivorGadget {
     item.remove();
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllMurderers(killer -> this.handleGlowing(killer, player));
+    manager.applyToKillers(killer -> this.handleGlowing(killer, player));
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.TRACKER_SOUND);

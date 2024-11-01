@@ -30,7 +30,7 @@ public final class QuickBomb extends KillerGadget {
     item.remove();
 
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllLivingInnocents(this::spawnPrimedTnt);
+    manager.applyToLivingSurvivors(this::spawnPrimedTnt);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.QUICK_BOMB_SOUND);

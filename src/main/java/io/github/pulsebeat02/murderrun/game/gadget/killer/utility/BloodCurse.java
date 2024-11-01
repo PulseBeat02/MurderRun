@@ -38,11 +38,11 @@ public final class BloodCurse extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final PlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleRepeatedTask(() -> manager.applyToAllInnocents(this::setBloodBlock), 0, 7L);
+    scheduler.scheduleRepeatedTask(() -> manager.applyToSurvivors(this::setBloodBlock), 0, 7L);
     manager.playSoundForAllParticipants(GameProperties.BLOOD_CURSE_SOUND);
 
     final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
-    manager.sendMessageToAllSurvivors(msg);
+    manager.sendMessageToAllLivingSurvivors(msg);
 
     return false;
   }

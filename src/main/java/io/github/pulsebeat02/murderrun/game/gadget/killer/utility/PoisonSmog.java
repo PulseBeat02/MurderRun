@@ -58,7 +58,7 @@ public final class PoisonSmog extends KillerGadget {
   }
 
   private void handleSurvivors(final PlayerManager manager, final Location origin) {
-    manager.applyToAllLivingInnocents(survivor -> this.handleDebuffs(survivor, origin));
+    manager.applyToLivingSurvivors(survivor -> this.handleDebuffs(survivor, origin));
   }
 
   private void handleDebuffs(final GamePlayer survivor, final Location origin) {

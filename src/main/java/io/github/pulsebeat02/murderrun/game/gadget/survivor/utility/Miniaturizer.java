@@ -29,7 +29,7 @@ public final class Miniaturizer extends SurvivorGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
     final double scale = GameProperties.MINIATURIZER_SCALE;
-    final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.GENERIC_SCALE));
+    final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);
     item.remove();
     return false;

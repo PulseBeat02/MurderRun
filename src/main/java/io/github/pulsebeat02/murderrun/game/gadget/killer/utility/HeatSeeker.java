@@ -54,7 +54,7 @@ public final class HeatSeeker extends KillerGadget {
   }
 
   private void scheduleTasks(final PlayerManager manager, final Killer player) {
-    manager.applyToAllLivingInnocents(innocent -> this.handleGlowInnocent(innocent, player));
+    manager.applyToLivingSurvivors(innocent -> this.handleGlowInnocent(innocent, player));
   }
 
   private void handleGlowInnocent(final GamePlayer innocent, final Killer owner) {

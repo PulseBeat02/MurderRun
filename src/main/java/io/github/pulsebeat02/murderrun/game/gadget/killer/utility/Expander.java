@@ -23,7 +23,7 @@ public final class Expander extends KillerGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
     final double scale = GameProperties.EXPANDER_SCALE;
-    final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.GENERIC_SCALE));
+    final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);
     item.remove();
     return false;

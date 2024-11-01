@@ -28,7 +28,7 @@ public final class StarTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
-    manager.applyToAllLivingInnocents(this::addPotionEffect);
+    manager.applyToLivingSurvivors(this::addPotionEffect);
     manager.playSoundForAllParticipants(GameProperties.STAR_SOUND);
   }
 

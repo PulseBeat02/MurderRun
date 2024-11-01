@@ -158,7 +158,7 @@ public final class GlobalGadgetRegistry {
     }
   }
 
-  @SuppressWarnings("all")
+  @SuppressWarnings("all") // for checker
   private Gadget invokeGadgetConstructor(final MethodHandle handle, final @Nullable Game game) {
     try {
       final MethodType type = handle.type();

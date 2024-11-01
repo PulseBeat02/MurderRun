@@ -54,7 +54,7 @@ public final class SixthSense extends SurvivorGadget {
   }
 
   private void handleKillers(final PlayerManager manager, final Survivor player) {
-    manager.applyToAllMurderers(murderer -> this.handleGlowMurderer(murderer, player));
+    manager.applyToKillers(murderer -> this.handleGlowMurderer(murderer, player));
   }
 
   private void handleGlowMurderer(final GamePlayer killer, final Survivor survivor) {

@@ -28,7 +28,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableJump(final GameScheduler scheduler, final long ticks) {
-    final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.GENERIC_JUMP_STRENGTH));
+    final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.JUMP_STRENGTH));
     final double before = instance.getValue();
     instance.setBaseValue(0.0);
     scheduler.scheduleTask(() -> instance.setBaseValue(before), ticks);

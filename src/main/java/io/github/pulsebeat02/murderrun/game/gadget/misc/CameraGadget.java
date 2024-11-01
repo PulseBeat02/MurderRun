@@ -54,9 +54,9 @@ public class CameraGadget {
 
     final Runnable task;
     if (player instanceof Survivor) {
-      task = () -> manager.applyToAllMurderers(handleGlow);
+      task = () -> manager.applyToKillers(handleGlow);
     } else {
-      task = () -> manager.applyToAllLivingInnocents(handleGlow);
+      task = () -> manager.applyToLivingSurvivors(handleGlow);
     }
     scheduler.scheduleRepeatedTask(task, 0, 20L);
 

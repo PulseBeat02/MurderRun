@@ -34,7 +34,7 @@ public final class HealthCut extends KillerGadget {
 
     final PlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    manager.applyToAllLivingInnocents(survivor -> this.setState(survivor, scheduler));
+    manager.applyToLivingSurvivors(survivor -> this.setState(survivor, scheduler));
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.HEALTH_CUT_SOUND);

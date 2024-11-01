@@ -14,7 +14,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "io.github.pulsebeat02"
-version = "1.21.1-v1.0.0"
+version = "1.21.3-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -66,10 +66,10 @@ dependencies {
 
     // Project Dependencies
     implementation(project(":nms-api"))
-    implementation(project(":v1_21_R1"))
+    implementation(project(":v1_21_R3"))
 
     // Provided Dependencies
-    compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.21.3-R0.1-SNAPSHOT")
     compileOnly("fastutil:fastutil:5.0.9")
     compileOnly("io.netty:netty-all:4.1.97.Final")
     runtimeDeps.forEach(::compileOnly)
@@ -117,7 +117,7 @@ tasks {
 
     bukkit {
         name = "MurderRun"
-        version = "1.21.1-v1.0.0"
+        version = "1.21.3-v1.0.0"
         description = "Pulse's MurderRun Plugin"
         authors = listOf("PulseBeat_02")
         apiVersion = "1.21"
@@ -140,7 +140,7 @@ tasks {
     }
 
     assemble {
-        dependsOn(":v1_21_R1:reobfJar")
+        dependsOn(":v1_21_R3:reobfJar")
         dependsOn("shadowJar")
     }
 
@@ -150,11 +150,11 @@ tasks {
 
     runServer {
         downloadPlugins {
-            url("https://ci.md-5.net/job/LibsDisguises/1463/artifact/target/LibsDisguises.jar")
+            url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
             url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-200.jar")
         }
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("1.21.1")
+        minecraftVersion("1.21.3")
     }
 
     processResources {

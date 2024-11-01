@@ -71,7 +71,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
 
     final PlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
-    final GamePlayer nearest = manager.getNearestSurvivor(location);
+    final GamePlayer nearest = manager.getNearestLivingSurvivor(location);
     if (nearest == null) {
       return true;
     }

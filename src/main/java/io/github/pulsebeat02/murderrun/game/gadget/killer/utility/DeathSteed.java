@@ -55,7 +55,7 @@ public final class DeathSteed extends KillerGadget {
   }
 
   private void handleSurvivors(final PlayerManager manager, final Horse horse) {
-    manager.applyToAllLivingInnocents(survivor -> this.handleSurvivor(survivor, horse));
+    manager.applyToLivingSurvivors(survivor -> this.handleSurvivor(survivor, horse));
   }
 
   private Horse spawnHorse(final World world, final Location location, final GamePlayer player) {

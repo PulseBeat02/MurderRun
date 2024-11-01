@@ -57,7 +57,7 @@ public final class PonyTrap extends SurvivorTrap {
   }
 
   private void setSpeed(final Horse horse) {
-    final AttributeInstance attribute = requireNonNull(horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED));
+    final AttributeInstance attribute = requireNonNull(horse.getAttribute(Attribute.MOVEMENT_SPEED));
     attribute.setBaseValue(GameProperties.PONY_HORSE_SPEED);
   }
 

@@ -35,7 +35,7 @@ public final class Gamble extends KillerGadget {
     final PlayerManager playerManager = game.getPlayerManager();
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
-    playerManager.applyToAllLivingInnocents(survivor -> this.applyGamble(mechanism, survivor, player));
+    playerManager.applyToLivingSurvivors(survivor -> this.applyGamble(mechanism, survivor, player));
 
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.GAMBLE_ACTIVATE.build();

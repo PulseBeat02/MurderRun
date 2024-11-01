@@ -29,7 +29,7 @@ public final class GhostTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final PlayerManager manager = game.getPlayerManager();
     final int duration = GameProperties.GHOST_DURATION;
-    manager.applyToAllLivingInnocents(player ->
+    manager.applyToLivingSurvivors(player ->
       player.addPotionEffects(
         new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1),
         new PotionEffect(PotionEffectType.SPEED, duration, 1)
