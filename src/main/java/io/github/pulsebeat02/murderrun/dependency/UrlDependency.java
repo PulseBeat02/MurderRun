@@ -44,6 +44,8 @@ public final class UrlDependency extends PluginDependency {
       }
       return finalPath;
     } catch (final IOException | InterruptedException e) {
+      final Thread thread = Thread.currentThread();
+      thread.interrupt();
       throw new AssertionError(e);
     }
   }
