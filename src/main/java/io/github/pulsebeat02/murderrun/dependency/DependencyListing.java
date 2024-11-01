@@ -1,9 +1,8 @@
 package io.github.pulsebeat02.murderrun.dependency;
 
 import io.github.pulsebeat02.murderrun.reflect.versioning.ServerEnvironment;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.util.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class DependencyListing {
 

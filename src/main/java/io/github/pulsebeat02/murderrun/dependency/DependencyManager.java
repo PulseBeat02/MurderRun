@@ -15,7 +15,6 @@ import org.bukkit.plugin.PluginManager;
 public final class DependencyManager {
 
   public void installDependencies() {
-
     final DependencyListing listing = DependencyListing.getCurrentListing();
     if (listing == null) {
       throw new UnsupportedOperationException("The current server version isn't supported by this plugin!");

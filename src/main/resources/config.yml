@@ -17,7 +17,7 @@ language: EN_US
 
 # ON_SERVER is experimental and hosts the resource-pack without any setup required as it hosts it
 # on the same port as the server
-pack-provider: MC_PACK_HOSTING
+pack-provider: ON_SERVER
 
 # If using LOCALLY_HOSTED_DAEMON, the below options will be used
 server:

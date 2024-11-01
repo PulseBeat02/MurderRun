@@ -3,6 +3,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ByteBuddyBukkitInjector;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ReflectInjector;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,10 +55,19 @@ public final class NettyHosting extends ResourcePackProvider {
   @Override
   public String getRawUrl(final Path zip) {
     if (!this.injected) {
-      final ByteBuddyBukkitInjector injector = new ByteBuddyBukkitInjector(zip);
-      injector.injectAgentIntoServer();
+      this.injectHandler(zip);
       this.injected = true;
     }
     return this.url;
+  }
+
+  private void injectHandler(final Path zip) {
+    try {
+      final ReflectInjector injector = new ReflectInjector(zip);
+      injector.inject();
+    } catch (final AssertionError e) {
+      final ByteBuddyBukkitInjector injector = new ByteBuddyBukkitInjector(zip);
+      injector.injectAgentIntoServer();
+    }
   }
 }
