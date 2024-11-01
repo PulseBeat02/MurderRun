@@ -55,7 +55,7 @@ var runtimeDeps = listOf(
     "com.h2database:h2:2.3.232",
     "org.postgresql:postgresql:42.7.4",
     "org.xerial:sqlite-jdbc:3.46.1.3",
-    "net.bytebuddy:byte-buddy:1.15.7",
+    "net.bytebuddy:byte-buddy:1.15.8",
     "net.bytebuddy:byte-buddy-agent:1.15.8"
 );
 
