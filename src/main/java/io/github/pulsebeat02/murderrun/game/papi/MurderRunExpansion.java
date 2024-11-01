@@ -14,7 +14,7 @@ public final class MurderRunExpansion extends PlaceholderExpansion {
 
   private static final String MURDER_RUN_IDENTIFIER = "murderrun";
 
-  private final PlaceholderHandler handler;
+  private final PAPIPlaceholderParser handler;
   private final MurderRun plugin;
   private final String authors;
   private final String version;
@@ -22,7 +22,7 @@ public final class MurderRunExpansion extends PlaceholderExpansion {
   public MurderRunExpansion(final MurderRun plugin) {
     final PluginDescriptionFile description = plugin.getDescription();
     final List<String> authors = description.getAuthors();
-    this.handler = new PlaceholderHandler();
+    this.handler = new PAPIPlaceholderParser();
     this.plugin = plugin;
     this.authors = String.join(", ", authors);
     this.version = description.getVersion();

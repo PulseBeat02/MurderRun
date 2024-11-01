@@ -15,7 +15,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ public final class PlayerListGui extends ChestGui {
   private PaginatedPane pages;
 
   public PlayerListGui(final MurderRun plugin, final HumanEntity watcher, final GameManager manager) {
-    super(6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()), plugin);
+    super(6, ComponentUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()), plugin);
     this.pages = new PaginatedPane(0, 0, 9, 3);
     this.watcher = watcher;
     this.manager = manager;

@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.utils;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
-import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -30,13 +30,13 @@ public final class TradingUtils {
   }
 
   public static Stream<String> getTradeSuggestions() {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     return gadgets.stream().map(Gadget::getName);
   }
 
   public static List<MerchantRecipe> getAllRecipes() {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final Gadget gadget : gadgets) {
@@ -47,7 +47,7 @@ public final class TradingUtils {
   }
 
   public static List<MerchantRecipe> parseRecipes(final String... args) {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String arg : args) {
       final Gadget gadget = registry.getGadget(arg);
@@ -61,7 +61,7 @@ public final class TradingUtils {
   }
 
   public static Collection<ItemStack> getShopItems(final boolean isSurvivorGadgets) {
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     final Set<ItemStack> items = new TreeSet<>(ITEM_STACK_COMPARATOR);
     for (final Gadget gadget : gadgets) {
@@ -97,6 +97,6 @@ public final class TradingUtils {
   private static String getLegacyComponent(final Gadget gadget) {
     final int cost = gadget.getPrice();
     final Component full = Message.SHOP_GUI_COST_LORE.build(cost);
-    return AdventureUtils.serializeComponentToLegacyString(full);
+    return ComponentUtils.serializeComponentToLegacyString(full);
   }
 }

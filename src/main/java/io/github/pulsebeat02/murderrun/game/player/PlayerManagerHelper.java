@@ -246,8 +246,7 @@ public interface PlayerManagerHelper {
     return this.getNearestGamePlayer0(origin, survivors);
   }
 
-  @Nullable
-  private GamePlayer getNearestGamePlayer0(final Location origin, final Stream<GamePlayer> survivors) {
+  private @Nullable GamePlayer getNearestGamePlayer0(final Location origin, final Stream<GamePlayer> survivors) {
     double min = Double.MAX_VALUE;
     GamePlayer nearest = null;
     final Collection<GamePlayer> collection = survivors.toList();

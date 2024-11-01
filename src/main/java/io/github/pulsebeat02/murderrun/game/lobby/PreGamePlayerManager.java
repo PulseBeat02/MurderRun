@@ -10,7 +10,7 @@ import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
@@ -198,7 +198,7 @@ public final class PreGamePlayerManager {
     final MurderRun plugin = this.manager.getPlugin();
     final ResourcePackProvider daemon = plugin.getProvider();
     final CompletableFuture<ResourcePackRequest> requestFuture = daemon.getResourcePackRequest();
-    requestFuture.thenAccept(request -> AdventureUtils.sendPacksLegacy(player, request));
+    requestFuture.thenAccept(request -> ComponentUtils.sendPacksLegacy(player, request));
   }
 
   public boolean hasPlayer(final CommandSender player) {
@@ -214,7 +214,7 @@ public final class PreGamePlayerManager {
       final int index = RandomUtils.generateInt(size);
       final Player random = Iterables.get(this.participants, index);
       final Component msg = Message.KILLER_ASSIGN.build();
-      final String raw = AdventureUtils.serializeComponentToLegacyString(msg);
+      final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
       this.setPlayerToMurderer(random);
       random.sendMessage(raw);
     }

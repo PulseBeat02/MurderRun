@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -15,17 +14,15 @@ import org.bukkit.plugin.PluginManager;
 
 public final class DependencyManager {
 
-  private static final Collection<PluginDependency> PLUGIN_JAR_DEPENDENCIES = Set.of(
-    new JenkinsDependency("Citizens", "Citizens-2.0.36-b3612", "https://ci.citizensnpcs.co/job/Citizens2/3612/artifact/dist/target/"),
-    new JenkinsDependency(
-      "WorldEdit",
-      "FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-952",
-      "https://ci.athion.net/job/FastAsyncWorldEdit/952/artifact/artifacts/"
-    )
-  );
-
   public void installDependencies() {
-    for (final PluginDependency dependency : PLUGIN_JAR_DEPENDENCIES) {
+
+    final DependencyListing listing = DependencyListing.getCurrentListing();
+    if (listing == null) {
+      throw new UnsupportedOperationException("The current server version isn't supported by this plugin!");
+    }
+
+    final Collection<Dependency> dependencies = listing.getDependencies();
+    for (final Dependency dependency : dependencies) {
       if (!this.needsInstallation(dependency)) {
         continue;
       }
@@ -47,7 +44,7 @@ public final class DependencyManager {
     }
   }
 
-  private boolean needsInstallation(final PluginDependency dependency) {
+  private boolean needsInstallation(final Dependency dependency) {
     final Server server = Bukkit.getServer();
     final PluginManager manager = server.getPluginManager();
     final String target = dependency.getName();

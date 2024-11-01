@@ -4,7 +4,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +33,7 @@ public final class GamePlayerChatEvent extends GameEvent {
     final String display = player.getDisplayName();
     final String formatted = String.format(format, display, raw);
     if (gamePlayer.isAlive()) {
-      final Component msg = AdventureUtils.deserializeLegacyStringToComponent(formatted);
+      final Component msg = ComponentUtils.deserializeLegacyStringToComponent(formatted);
       manager.sendMessageToAllParticipants(msg);
       return;
     }

@@ -10,7 +10,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -91,7 +91,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Collection<Location> itemLocations,
     final boolean editMode
   ) {
-    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()), plugin);
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_ARENA_PATTERN);
     this.audience = this.getAudience(plugin, watcher);
     this.plugin = plugin;
@@ -136,7 +136,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Location blockLoc = block.getLocation();
     this.itemLocations.add(blockLoc);
 
-    final Component msg = AdventureUtils.createLocationComponent(Message.ARENA_ITEM_ADD, blockLoc);
+    final Component msg = ComponentUtils.createLocationComponent(Message.ARENA_ITEM_ADD, blockLoc);
     this.audience.sendMessage(msg);
   }
 
@@ -144,7 +144,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Block block = location.getBlock();
     final Location blockLoc = block.getLocation();
     if (this.itemLocations.remove(blockLoc)) {
-      final Component msg = AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
+      final Component msg = ComponentUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
       this.audience.sendMessage(msg);
     } else {
       final Component err = Message.ARENA_ITEM_REMOVE_ERROR.build();
@@ -363,10 +363,10 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Component title = Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_DISPLAY.build();
     final Component tooltip = Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE1.build();
     final Component space = empty();
-    final Component spawnMsg = AdventureUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2, this.spawn);
-    final Component truckMsg = AdventureUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE3, this.truck);
-    final Component firstMsg = AdventureUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE4, this.first);
-    final Component secondMsg = AdventureUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5, this.second);
+    final Component spawnMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2, this.spawn);
+    final Component truckMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE3, this.truck);
+    final Component firstMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE4, this.first);
+    final Component secondMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5, this.second);
     final List<Component> lore = List.of(tooltip, space, spawnMsg, truckMsg, firstMsg, secondMsg);
     return new GuiItem(Item.builder(Material.ANVIL).name(title).lore(lore).build(), this::listenForBlockBreak, this.plugin);
   }

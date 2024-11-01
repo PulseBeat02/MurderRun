@@ -11,7 +11,7 @@ import io.github.pulsebeat02.murderrun.gui.arena.ArenaNavigationGui;
 import io.github.pulsebeat02.murderrun.gui.game.GameCreationGui;
 import io.github.pulsebeat02.murderrun.gui.lobby.LobbyNavigationGui;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -25,7 +25,7 @@ public final class CentralGui extends ChestGui {
   private final HumanEntity watcher;
 
   public CentralGui(final MurderRun plugin, final HumanEntity watcher) {
-    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = watcher;
   }

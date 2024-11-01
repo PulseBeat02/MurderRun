@@ -5,7 +5,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +127,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.spawn = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = AdventureUtils.createLocationComponent(Message.LOBBY_SPAWN, location);
+    final Component message = ComponentUtils.createLocationComponent(Message.LOBBY_SPAWN, location);
     audience.sendMessage(message);
   }
 }

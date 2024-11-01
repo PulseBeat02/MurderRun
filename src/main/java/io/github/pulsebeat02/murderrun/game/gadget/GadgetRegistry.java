@@ -21,9 +21,9 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
 
-public final class GlobalGadgetRegistry {
+public final class GadgetRegistry {
 
-  private static final GlobalGadgetRegistry GLOBAL_GADGET_REGISTRY = new GlobalGadgetRegistry();
+  private static final GadgetRegistry GLOBAL_GADGET_REGISTRY = new GadgetRegistry();
 
   public static void init() {
     // load registry
@@ -33,14 +33,14 @@ public final class GlobalGadgetRegistry {
   private final Collection<String> disabled;
   private final AtomicBoolean frozen;
 
-  private GlobalGadgetRegistry() {
+  private GadgetRegistry() {
     this.gadgetRegistry = new HashMap<>();
     this.frozen = new AtomicBoolean(true);
     this.disabled = this.getDisabledGadgets();
     this.load();
   }
 
-  private Collection<String> getDisabledGadgets(@UnderInitialization GlobalGadgetRegistry this) {
+  private Collection<String> getDisabledGadgets(@UnderInitialization GadgetRegistry this) {
     final String raw = GameProperties.DISABLED_GADGETS;
     final String[] split = raw.split(",");
     if (split[0].equals("none")) {
@@ -127,7 +127,7 @@ public final class GlobalGadgetRegistry {
       this.handleGadgetClass(clazz);
     }
 
-    final DependencyGadgetHandler handler = new DependencyGadgetHandler();
+    final GadgetDisabler handler = new GadgetDisabler();
     handler.disableGadgets(this);
   }
 
@@ -169,7 +169,7 @@ public final class GlobalGadgetRegistry {
     }
   }
 
-  public static GlobalGadgetRegistry getRegistry() {
+  public static GadgetRegistry getRegistry() {
     return GLOBAL_GADGET_REGISTRY;
   }
 }

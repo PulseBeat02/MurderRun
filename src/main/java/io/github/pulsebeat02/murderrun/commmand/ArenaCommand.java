@@ -7,7 +7,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -86,7 +86,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     this.itemLocations.add(blockLoc);
 
     final Audience audience = this.audiences.player(sender);
-    final Component msg = AdventureUtils.createLocationComponent(Message.ARENA_ITEM_ADD, blockLoc);
+    final Component msg = ComponentUtils.createLocationComponent(Message.ARENA_ITEM_ADD, blockLoc);
     audience.sendMessage(msg);
   }
 
@@ -103,7 +103,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location blockLoc = block.getLocation();
     final Audience audience = this.audiences.player(sender);
     final Component msg = this.itemLocations.remove(blockLoc)
-      ? AdventureUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc)
+      ? ComponentUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc)
       : Message.ARENA_ITEM_REMOVE_ERROR.build();
     audience.sendMessage(msg);
   }
@@ -243,7 +243,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.spawn = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_SPAWN, location);
+    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_SPAWN, location);
     audience.sendMessage(message);
   }
 
@@ -254,7 +254,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.truck = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_TRUCK, location);
+    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_TRUCK, location);
     audience.sendMessage(message);
   }
 
@@ -265,7 +265,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.first = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
+    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
     audience.sendMessage(message);
   }
 
@@ -276,7 +276,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.second = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = AdventureUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
+    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
     audience.sendMessage(message);
   }
 }

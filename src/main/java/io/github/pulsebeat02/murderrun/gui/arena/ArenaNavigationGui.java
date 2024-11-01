@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +34,7 @@ public final class ArenaNavigationGui extends ChestGui {
   private final HumanEntity watcher;
 
   public ArenaNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
-    super(4, AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_ARENA_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.MANAGE_ARENA_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = clicker;
   }

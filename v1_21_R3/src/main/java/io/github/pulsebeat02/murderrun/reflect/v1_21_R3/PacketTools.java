@@ -59,7 +59,6 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 public class PacketTools implements PacketToolAPI {
 
   private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";
-  private static final SplittableRandom RANDOM = new SplittableRandom();
 
   private final Table<Player, Location, Slime> glowBlocks;
   private final Team noCollisions;

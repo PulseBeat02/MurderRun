@@ -13,7 +13,7 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public final class ArenaListGui extends ChestGui {
   private final Consumer<InventoryClickEvent> consumer;
 
   public ArenaListGui(final MurderRun plugin, final HumanEntity watcher, final Consumer<InventoryClickEvent> consumer) {
-    super(6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_ARENA_GUI_TITLE.build()), plugin);
+    super(6, ComponentUtils.serializeComponentToLegacyString(Message.CHOOSE_ARENA_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = watcher;
     this.consumer = consumer;
@@ -93,7 +93,7 @@ public final class ArenaListGui extends ChestGui {
 
   private ItemStack constructArenaItem(final String name, final Location spawn) {
     final Component title = Message.CHOOSE_ARENA_GUI_ARENA_DISPLAY.build(name);
-    final Component lore = AdventureUtils.createLocationComponent(Message.CHOOSE_ARENA_GUI_ARENA_LORE, spawn);
+    final Component lore = ComponentUtils.createLocationComponent(Message.CHOOSE_ARENA_GUI_ARENA_LORE, spawn);
     return Item.builder(Material.WHITE_BANNER).name(title).lore(lore).pdc(Keys.ARENA_NAME, PersistentDataType.STRING, name).build();
   }
 

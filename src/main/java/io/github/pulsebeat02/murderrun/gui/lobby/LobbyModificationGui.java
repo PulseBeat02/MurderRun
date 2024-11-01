@@ -10,7 +10,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
@@ -61,7 +61,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     final Location spawn,
     final boolean editMode
   ) {
-    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()), plugin);
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_LOBBY_PATTERN);
     this.audience = this.getAudience(plugin, watcher);
     this.plugin = plugin;
@@ -215,7 +215,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private GuiItem createEditSpawnStack() {
     return new GuiItem(
       Item.builder(Material.ANVIL)
-        .name(AdventureUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY, this.spawn))
+        .name(ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY, this.spawn))
         .lore(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_LORE.build())
         .build(),
       this::listenForBlockBreak,

@@ -23,14 +23,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 
-public final class AdventureUtils {
+public final class ComponentUtils {
 
   private static final LegacyComponentSerializer SERIALIZER = BukkitComponentSerializer.legacy();
   private static final PlainTextComponentSerializer PLAIN_SERIALIZER = PlainTextComponentSerializer.plainText();
   private static final TextComponent UNSUPPORTED = text("ERROR WRAPPING").color(DARK_RED);
   private static final String COMPONENT_REGEX = "(?<=\\s)|(?=\\n)";
 
-  private AdventureUtils() {
+  private ComponentUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
@@ -106,7 +106,7 @@ public final class AdventureUtils {
   }
 
   public static List<String> serializeLoreToLegacyLore(final Component lore) {
-    final List<Component> wrapped = AdventureUtils.wrapLoreLines(lore, 40);
+    final List<Component> wrapped = ComponentUtils.wrapLoreLines(lore, 40);
     return serializeLoreToLegacyLore(wrapped);
   }
 

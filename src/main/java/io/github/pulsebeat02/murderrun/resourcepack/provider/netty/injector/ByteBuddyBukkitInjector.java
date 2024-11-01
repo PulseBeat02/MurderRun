@@ -23,14 +23,14 @@ import net.bytebuddy.implementation.bind.annotation.*;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 
-public final class BukkitInjector {
+public final class ByteBuddyBukkitInjector {
 
   private static final String INJECTOR_CLASS_NAME = "net.minecraft.network.Connection";
   private static final String INJECTOR_SYSTEM_PROPERTY = "murderrun.resourcepack";
 
   private final Path path;
 
-  public BukkitInjector(final Path path) {
+  public ByteBuddyBukkitInjector(final Path path) {
     this.path = path;
   }
 

@@ -34,7 +34,8 @@ public final class JenkinsDependency extends PluginDependency {
         .header("Accept", "application/json")
         .GET()
         .build();
-      client.sendAsync(request, HttpResponse.BodyHandlers.ofFile(filePath)).join();
+      final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(filePath);
+      client.sendAsync(request, bodyHandler).join();
       return filePath;
     }
   }

@@ -15,6 +15,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.session.PasteBuilder;
+import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -25,8 +26,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 public final class MapSchematicIO {
 
@@ -38,6 +41,7 @@ public final class MapSchematicIO {
 
   public void resetMap() {
     try {
+      this.performWetsCommand();
       final Game game = this.map.getGame();
       final GameSettings settings = game.getSettings();
       final Arena arena = requireNonNull(settings.getArena());
@@ -49,6 +53,13 @@ public final class MapSchematicIO {
       this.performResetPaste(instance, world, clipboard, vector3);
     } catch (final WorldEditException | IOException e) {
       throw new AssertionError(e);
+    }
+  }
+
+  private void performWetsCommand() {
+    if (Capabilities.WETS.isEnabled()) {
+      final CommandSender sender = Bukkit.getConsoleSender();
+      Bukkit.dispatchCommand(sender, "wets 50000");
     }
   }
 

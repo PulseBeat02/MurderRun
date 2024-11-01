@@ -13,11 +13,11 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
-import io.github.pulsebeat02.murderrun.game.gadget.GlobalGadgetRegistry;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.TradingUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -51,7 +51,7 @@ public final class GadgetShopGui extends ChestGui {
   private final PaginatedPane pages;
 
   public GadgetShopGui(final MurderRun plugin, final boolean isSurvivorGadgets) {
-    super(6, AdventureUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), plugin);
+    super(6, ComponentUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.pages = new PaginatedPane(0, 0, 9, 5);
     this.addItems(isSurvivorGadgets);
@@ -99,7 +99,7 @@ public final class GadgetShopGui extends ChestGui {
 
   private void handleClick(final InventoryClickEvent event) {
     final ItemStack stack = event.getCurrentItem();
-    final GlobalGadgetRegistry registry = GlobalGadgetRegistry.getRegistry();
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
     if (stack == null) {
       return;
     }

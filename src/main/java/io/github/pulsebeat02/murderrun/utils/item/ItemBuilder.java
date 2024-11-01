@@ -2,7 +2,7 @@ package io.github.pulsebeat02.murderrun.utils.item;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item.Builder;
 import java.util.List;
@@ -56,7 +56,7 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder name(final Component name) {
-    final String legacy = AdventureUtils.serializeComponentToLegacyString(name);
+    final String legacy = ComponentUtils.serializeComponentToLegacyString(name);
     final ItemMeta meta = this.meta();
     meta.setDisplayName(legacy);
     this.stack.setItemMeta(meta);
@@ -65,7 +65,7 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder lore(final Component lore) {
-    final List<String> legacy = AdventureUtils.serializeLoreToLegacyLore(lore);
+    final List<String> legacy = ComponentUtils.serializeLoreToLegacyLore(lore);
     final ItemMeta meta = this.meta();
     meta.setLore(legacy);
     this.stack.setItemMeta(meta);
@@ -74,7 +74,7 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder lore(final List<Component> lore) {
-    final List<String> legacy = AdventureUtils.serializeLoreToLegacyLore(lore);
+    final List<String> legacy = ComponentUtils.serializeLoreToLegacyLore(lore);
     final ItemMeta meta = this.meta();
     meta.setLore(legacy);
     this.stack.setItemMeta(meta);

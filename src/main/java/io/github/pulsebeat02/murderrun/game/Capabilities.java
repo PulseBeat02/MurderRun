@@ -16,6 +16,12 @@ public enum Capabilities {
     final Server server = Bukkit.getServer();
     final PluginManager manager = server.getPluginManager();
     return manager.isPluginEnabled("PlaceholderAPI");
+  }),
+
+  WETS(() -> {
+    final Server server = Bukkit.getServer();
+    final PluginManager manager = server.getPluginManager();
+    return manager.isPluginEnabled("WorldEditTickSpreader");
   });
 
   private final boolean enabled;

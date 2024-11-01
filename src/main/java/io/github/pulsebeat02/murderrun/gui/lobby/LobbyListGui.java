@@ -13,7 +13,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public final class LobbyListGui extends ChestGui {
   private PaginatedPane pages;
 
   public LobbyListGui(final MurderRun plugin, final HumanEntity watcher, final Consumer<InventoryClickEvent> consumer) {
-    super(6, AdventureUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()), plugin);
+    super(6, ComponentUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = watcher;
     this.consumer = consumer;
@@ -99,7 +99,7 @@ public final class LobbyListGui extends ChestGui {
 
   private ItemStack constructLobbyItem(final String name, final Location spawn) {
     final Component title = Message.CHOOSE_LOBBY_GUI_LOBBY_DISPLAY.build(name);
-    final Component lore = AdventureUtils.createLocationComponent(Message.CHOOSE_LOBBY_GUI_LOBBY_LORE, spawn);
+    final Component lore = ComponentUtils.createLocationComponent(Message.CHOOSE_LOBBY_GUI_LOBBY_LORE, spawn);
     return Item.builder(Material.WHITE_BANNER).name(title).lore(lore).pdc(Keys.LOBBY_NAME, PersistentDataType.STRING, name).build();
   }
 

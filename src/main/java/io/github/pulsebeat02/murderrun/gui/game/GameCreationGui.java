@@ -18,7 +18,7 @@ import io.github.pulsebeat02.murderrun.gui.lobby.LobbyListGui;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
@@ -67,7 +67,7 @@ public final class GameCreationGui extends ChestGui implements Listener {
   private volatile boolean listenForMax;
 
   public GameCreationGui(final MurderRun plugin, final HumanEntity watcher) {
-    super(4, AdventureUtils.serializeComponentToLegacyString(Message.CREATE_GAME_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_GAME_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = watcher;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_GAME_PATTERN);

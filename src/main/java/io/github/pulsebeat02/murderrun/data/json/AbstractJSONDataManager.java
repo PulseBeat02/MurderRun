@@ -42,7 +42,9 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
 
   @Override
   public synchronized void serialize(final T manager) {
-    requireNonNull(manager);
+    if (manager == null) {
+      return;
+    }
     CompletableFuture.runAsync(() -> this.writeJson(manager), this.service);
   }
 

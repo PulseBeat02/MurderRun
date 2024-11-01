@@ -12,7 +12,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.AdventureUtils;
+import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,7 +31,7 @@ public final class LobbyNavigationGui extends ChestGui {
   private final HumanEntity watcher;
 
   public LobbyNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
-    super(4, AdventureUtils.serializeComponentToLegacyString(Message.MANAGE_LOBBY_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.MANAGE_LOBBY_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.watcher = clicker;
   }

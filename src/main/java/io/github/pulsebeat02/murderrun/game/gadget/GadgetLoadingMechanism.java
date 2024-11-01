@@ -26,7 +26,7 @@ public final class GadgetLoadingMechanism {
   private final Set<Gadget> survivorGadgets;
 
   public GadgetLoadingMechanism(final GadgetManager manager) {
-    final GlobalGadgetRegistry instance = GlobalGadgetRegistry.getRegistry();
+    final GadgetRegistry instance = GadgetRegistry.getRegistry();
     final MurderRun run = manager.getPlugin();
     this.manager = manager;
     this.gameGadgets = instance.getUsedGadgets(manager, run);
