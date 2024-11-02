@@ -28,10 +28,9 @@ public final class JenkinsDependency extends PluginDependency {
     final String name = IOUtils.getFileName(jarUrl);
     final Path filePath = parent.resolve(name);
     try (final HttpClient client = HttpClient.newHttpClient()) {
+      final URI uri = URI.create(jarUrl);
       final HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(jarUrl))
-        .header("User-Agent", "PulseBeat02/murderrun")
-        .header("Accept", "application/json")
+        .uri(uri)
         .GET()
         .build();
       final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(filePath);

@@ -66,13 +66,13 @@ public final class ModrinthDependency extends PluginDependency {
     final Path parent = this.getParentDirectory();
     final Path finalPath = parent.resolve(fileName);
     try (final HttpClient client = HttpClient.newHttpClient()) {
+      final URI uri = URI.create(fileUrl);
       final HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(fileUrl))
-        .header("User-Agent", "PulseBeat02/murderrun")
-        .header("Accept", "application/json")
+        .uri(uri)
         .GET()
         .build();
-      return client.sendAsync(request, HttpResponse.BodyHandlers.ofFile(finalPath)).thenApplyAsync(HttpResponse::body);
+      final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(finalPath);
+      return client.sendAsync(request, bodyHandler).thenApplyAsync(HttpResponse::body);
     }
   }
 }
