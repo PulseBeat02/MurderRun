@@ -147,7 +147,8 @@ public final class GameManager {
       final PreGamePlayerManager preGamePlayerManager = manager.getPlayerManager();
       final boolean join = preGamePlayerManager.isQuickJoinable() && !preGamePlayerManager.isGameFull();
       if (join) {
-        preGamePlayerManager.addParticipantToLobby(player, false);
+        final String id = manager.getId();
+        this.joinGame(player, id);
         return true;
       }
     }
