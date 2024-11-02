@@ -66,7 +66,7 @@ dependencies {
 
     // Project Dependencies
     implementation(project(":nms-api"))
-    implementation(project(":v1_21_R3"))
+    runtimeOnly(project(":v1_21_R3", "reobf"))
 
     // Provided Dependencies
     compileOnly("org.spigotmc:spigot-api:1.21.3-R0.1-SNAPSHOT")
@@ -184,6 +184,13 @@ tasks {
                     "plugins" to listOf("prettier-plugin-java"),
                     "printWidth" to 140))
                 .nodeExecutable(provider { setupNodeEnvironment() })
+        }
+    }
+
+    shadowJar {
+        dependencies {
+            include(project(":v1_21_R3"))
+            include(project(":nms-api"))
         }
     }
 

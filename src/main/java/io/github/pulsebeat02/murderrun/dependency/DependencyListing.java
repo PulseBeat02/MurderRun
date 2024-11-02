@@ -9,8 +9,8 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.36-b3612",
-    "https://ci.citizensnpcs.co/job/Citizens2/3612/artifact/dist/target/Citizens-2.0.36-b3612.jar"
+    "Citizens-2.0.36-b3619",
+    "https://ci.citizensnpcs.co/job/Citizens2/3619/artifact/dist/target/Citizens-2.0.36-b3619.jar"
   );
   private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(
     "WorldEdit",
@@ -22,13 +22,8 @@ public final class DependencyListing {
     "worldedit-bukkit-7.3.9-SNAPSHOT",
     "https://ci.enginehub.org/repository/download/bt10/25583:id/worldedit-bukkit-7.3.9-SNAPSHOT-dist.jar?branch=ot/feature/1.21.2&guest=1"
   );
-  private static final Dependency WETS = new UrlDependency(
-    "WorldEditTickSpreader",
-    "WETS-0.0.3-bukkit",
-    "https://cdn.modrinth.com/data/S0GwusT4/versions/lPHdbL5F/WETS-0.0.3-bukkit.jar"
-  );
 
-  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, WORLD_EDIT, WETS);
+  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, WORLD_EDIT);
 
   private static DependencyListing create(final String revision, final Dependency... deps) {
     final Collection<Dependency> dependencies = List.of(deps);
