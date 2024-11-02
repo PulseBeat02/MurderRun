@@ -3,7 +3,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ByteBuddyBukkitInjector;
-import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ReflectInjector;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ReflectBukkitInjector;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class NettyHosting extends ResourcePackProvider {
 
-  private static final String IP_URL = "http://checkip.amazonaws.com";
+  private static final String IP_URL = "https://ipv4.icanhazip.com/";
 
   private final String url;
   private boolean injected;
@@ -31,12 +31,17 @@ public final class NettyHosting extends ResourcePackProvider {
     final String ip = this.getPublicAddress();
     final int port = Bukkit.getPort();
     if (ip != null) {
-      return "http://%s:%s/resourcepack".formatted(ip, port);
+      return "http://%s:%s".formatted(ip, port);
     }
-    return "http://localhost:%s/resourcepack".formatted(port);
+    return "http://localhost:%s".formatted(port);
   }
 
   private @Nullable String getPublicAddress(@UnderInitialization NettyHosting this) {
+    final String ip = Bukkit.getIp();
+    if (!ip.isEmpty()) {
+      return ip;
+    }
+
     try {
       final URI uri = URI.create(IP_URL);
       final URL url = uri.toURL();
@@ -63,11 +68,12 @@ public final class NettyHosting extends ResourcePackProvider {
 
   private void injectHandler(final Path zip) {
     try {
-      final ReflectInjector injector = new ReflectInjector(zip);
+      final ReflectBukkitInjector injector = new ReflectBukkitInjector(zip);
       injector.inject();
     } catch (final AssertionError e) {
       final ByteBuddyBukkitInjector injector = new ByteBuddyBukkitInjector(zip);
       injector.injectAgentIntoServer();
+      throw new AssertionError(e);
     }
   }
 }

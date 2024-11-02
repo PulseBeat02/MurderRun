@@ -2,6 +2,8 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector;
 
 import static java.util.Objects.requireNonNull;
 
+import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
+import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.http.HttpByteBuf;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.http.HttpInjector;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.http.HttpRequest;
@@ -22,16 +24,23 @@ import net.bytebuddy.dynamic.loading.ClassReloadingStrategy;
 import net.bytebuddy.implementation.bind.annotation.*;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class ByteBuddyBukkitInjector {
 
-  private static final String INJECTOR_CLASS_NAME = "net.minecraft.network.Connection";
   private static final String INJECTOR_SYSTEM_PROPERTY = "murderrun.resourcepack";
 
   private final Path path;
+  private final Class<?> clazz;
 
   public ByteBuddyBukkitInjector(final Path path) {
     this.path = path;
+    this.clazz = this.getConnectionClass();
+  }
+
+  private Class<?> getConnectionClass(@UnderInitialization ByteBuddyBukkitInjector this) {
+    final PacketToolAPI api = PacketToolsProvider.PACKET_API;
+    return api.getMappedConnectionClass();
   }
 
   public void injectAgentIntoServer() {
@@ -46,17 +55,15 @@ public final class ByteBuddyBukkitInjector {
   }
 
   private void injectIntoConnectionMethod() throws ClassNotFoundException {
-    final Class<?> target = Class.forName(INJECTOR_CLASS_NAME);
-    final ClassLoader classLoader = requireNonNull(target.getClassLoader());
+    final ClassLoader classLoader = requireNonNull(this.clazz.getClassLoader());
     final ElementMatcher.Junction<NamedElement> matcher = ElementMatchers.named("configureSerialization");
     final Advice advice = Advice.to(ConnectionInterceptor.class);
     final ClassReloadingStrategy classLoadingStrategy = ClassReloadingStrategy.fromInstalledAgent();
-    new ByteBuddy().rebase(target).method(matcher).intercept(advice).make().load(classLoader, classLoadingStrategy);
+    new ByteBuddy().rebase(this.clazz).method(matcher).intercept(advice).make().load(classLoader, classLoadingStrategy);
   }
 
   private void injectClassesIntoClassLoader() throws ClassNotFoundException {
-    final Class<?> target = Class.forName(INJECTOR_CLASS_NAME);
-    final ClassLoader classLoader = requireNonNull(target.getClassLoader());
+    final ClassLoader classLoader = requireNonNull(this.clazz.getClassLoader());
     new ClassInjector.UsingReflection(classLoader).inject(this.getInjections());
   }
 

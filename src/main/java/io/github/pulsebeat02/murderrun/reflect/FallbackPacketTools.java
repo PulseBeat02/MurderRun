@@ -1,8 +1,10 @@
 package io.github.pulsebeat02.murderrun.reflect;
 
+import io.netty.channel.ChannelFuture;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -46,5 +48,15 @@ public final class FallbackPacketTools implements PacketToolAPI {
   @Override
   public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
     throw new UnsupportedOperationException("Can't set block glowing! Use a different pack provider solution");
+  }
+
+  @Override
+  public Class<?> getMappedConnectionClass() {
+    throw new UnsupportedOperationException("Unable to get mapped connection class!");
+  }
+
+  @Override
+  public List<ChannelFuture> getServerChannels() {
+    throw new UnsupportedOperationException("Unable to get server channels!");
   }
 }

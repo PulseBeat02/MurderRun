@@ -11,17 +11,21 @@ import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import io.netty.channel.ChannelFuture;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
@@ -30,17 +34,17 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.DataValue;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerConnectionListener;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Slime;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.UnsafeValues;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -115,8 +119,8 @@ public class PacketTools implements PacketToolAPI {
       fixer.update(reference, dynamic, dataVersion, ver);
       final CompoundTag newCompound = (CompoundTag) dynamic.getValue();
       final net.minecraft.world.item.ItemStack stack = net.minecraft.world.item.ItemStack.parseOptional(
-        dimension,
-        newCompound
+              dimension,
+              newCompound
       );
       return CraftItemStack.asCraftMirror(stack);
     } catch (final IOException e) {
@@ -184,9 +188,9 @@ public class PacketTools implements PacketToolAPI {
   }
 
   private void removeGlowingSlime0(
-    final Location target,
-    final CraftPlayer player,
-    final ServerGamePacketListenerImpl connection
+          final Location target,
+          final CraftPlayer player,
+          final ServerGamePacketListenerImpl connection
   ) {
     final Slime value = this.glowBlocks.get(player, target);
     if (value == null) {
@@ -199,9 +203,9 @@ public class PacketTools implements PacketToolAPI {
   }
 
   private void createGlowingSlime0(
-    final Location target,
-    final CraftPlayer player,
-    final ServerGamePacketListenerImpl connection
+          final Location target,
+          final CraftPlayer player,
+          final ServerGamePacketListenerImpl connection
   ) {
     final Slime existing = this.glowBlocks.get(player, target);
     if (existing != null) {
@@ -222,7 +226,8 @@ public class PacketTools implements PacketToolAPI {
     slime.setYBodyRot(0);
     slime.setYHeadRot(0);
 
-    final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false, ignored -> {}, Set.of());
+    final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false, ignored -> {
+    }, Set.of());
     final ClientboundAddEntityPacket packet = new ClientboundAddEntityPacket(slime, entity);
     connection.send(packet);
 
@@ -253,5 +258,39 @@ public class PacketTools implements PacketToolAPI {
     final int[] remove = Ints.toArray(ids);
     final ClientboundRemoveEntitiesPacket packet = new ClientboundRemoveEntitiesPacket(remove);
     connection.send(packet);
+  }
+
+  @Override
+  public Class<?> getMappedConnectionClass() {
+    return Connection.class;
+  }
+
+  @Override
+  public List<ChannelFuture> getServerChannels() {
+    final Server server = Bukkit.getServer();
+    final CraftServer craftServer = (CraftServer) server;
+    final DedicatedServer dedicated = craftServer.getServer();
+    final ServerConnectionListener connection = dedicated.getConnection();
+    final VarHandle handle = this.getProperHandle(connection);
+    return (List<ChannelFuture>) handle.get(connection);
+  }
+
+  private VarHandle getProperHandle(final ServerConnectionListener connection) {
+    final Class<?> target = connection.getClass();
+    final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(target, lookup);
+      try {
+        return privateLookup.findVarHandle(target, "channels", List.class);
+      } catch (final NoSuchFieldException | IllegalAccessException e) {
+        try {
+          return privateLookup.findVarHandle(target, "f", List.class);
+        } catch (final NoSuchFieldException | IllegalAccessException ex) {
+          throw new AssertionError(ex);
+        }
+      }
+    } catch (final IllegalAccessException e) {
+      throw new AssertionError(e);
+    }
   }
 }

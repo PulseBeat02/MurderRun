@@ -45,18 +45,15 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   @Override
   public CompletableFuture<ResourcePackRequest> getResourcePackRequest() {
-    return CompletableFuture.supplyAsync(
-      () -> {
-        final Component message = Message.RESOURCEPACK_PROMPT.build();
-        final CompletableFuture<ResourcePackInfo> main = this.getMainResourceInfo();
-        final CompletableFuture<ResourcePackInfo> builtIn = this.getResourceInfo();
-        final Collection<ResourcePackInfo> infos = Set.of(main.join(), builtIn.join());
-        final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
-        final boolean required = GameProperties.FORCE_RESOURCEPACK;
-        return builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
-      },
-      this.service
-    );
+    final CompletableFuture<ResourcePackInfo> info = this.getMainResourceInfo();
+    final CompletableFuture<ResourcePackInfo> other = this.getResourceInfo();
+    return info.thenCombine(other, (main, builtIn) -> {
+      final Component message = Message.RESOURCEPACK_PROMPT.build();
+      final Collection<ResourcePackInfo> infos = Set.of(main, builtIn);
+      final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
+      final boolean required = GameProperties.FORCE_RESOURCEPACK;
+      return builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+    });
   }
 
   private CompletableFuture<ResourcePackInfo> getMainResourceInfo() {

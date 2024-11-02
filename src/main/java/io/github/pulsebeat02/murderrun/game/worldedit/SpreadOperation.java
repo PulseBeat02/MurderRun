@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class SpreadOperation implements Operation {
 
-  private static final long BLOCKS_PER_TICK = 3000L;
+  private static final long BLOCKS_PER_TICK = 4000L;
 
   private final MurderRun plugin;
   private final Iterator<Map.Entry<BlockVector3, BaseBlock>> it;
