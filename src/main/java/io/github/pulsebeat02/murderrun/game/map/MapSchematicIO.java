@@ -15,23 +15,25 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.session.PasteBuilder;
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
+import io.github.pulsebeat02.murderrun.game.worldedit.WESpreader;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 
 public final class MapSchematicIO {
+
+  private static final String WE_SPREADER = "worldedit.spreader.enabled";
 
   private final Map map;
 
@@ -41,7 +43,7 @@ public final class MapSchematicIO {
 
   public void resetMap() {
     try {
-      this.performWetsCommand();
+      this.enableExtent();
       final Game game = this.map.getGame();
       final GameSettings settings = game.getSettings();
       final Arena arena = requireNonNull(settings.getArena());
@@ -56,10 +58,15 @@ public final class MapSchematicIO {
     }
   }
 
-  private void performWetsCommand() {
-    if (Capabilities.WETS.isEnabled()) {
-      final CommandSender sender = Bukkit.getConsoleSender();
-      Bukkit.dispatchCommand(sender, "wets 50000");
+  private void enableExtent() {
+    final String property = System.getProperty(WE_SPREADER);
+    final boolean enabled = Boolean.parseBoolean(property);
+    if (Capabilities.FAWE.isDisabled() && !enabled) {
+      System.setProperty(WE_SPREADER, "true");
+      final Game game = this.map.getGame();
+      final MurderRun plugin = game.getPlugin();
+      final WESpreader spreader = new WESpreader(plugin);
+      spreader.load();
     }
   }
 

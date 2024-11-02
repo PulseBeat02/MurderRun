@@ -6,22 +6,25 @@ import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 
 public enum Capabilities {
-  LIB_DISGUISES(() -> {
+  LIBDISG(() -> {
     final Server server = Bukkit.getServer();
     final PluginManager manager = server.getPluginManager();
     return manager.isPluginEnabled("LibsDisguises");
   }),
 
-  PLACEHOLDER_API(() -> {
+  PAPI(() -> {
     final Server server = Bukkit.getServer();
     final PluginManager manager = server.getPluginManager();
     return manager.isPluginEnabled("PlaceholderAPI");
   }),
 
-  WETS(() -> {
-    final Server server = Bukkit.getServer();
-    final PluginManager manager = server.getPluginManager();
-    return manager.isPluginEnabled("WorldEditTickSpreader");
+  FAWE(() -> {
+    try {
+      Class.forName("com.fastasyncworldedit.bukkit.FaweBukkit");
+      return true;
+    } catch (ClassNotFoundException e) {
+      return false;
+    }
   });
 
   private final boolean enabled;

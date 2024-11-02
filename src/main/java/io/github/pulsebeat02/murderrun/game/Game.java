@@ -74,7 +74,7 @@ public final class Game {
   }
 
   private void registerExtensions() {
-    if (Capabilities.LIB_DISGUISES.isEnabled()) {
+    if (Capabilities.LIBDISG.isEnabled()) {
       this.disguiseManager = new DisguiseManager();
     }
   }
@@ -112,7 +112,7 @@ public final class Game {
   }
 
   private void disableDisguiseHandler() {
-    if (Capabilities.LIB_DISGUISES.isDisabled()) {
+    if (Capabilities.LIBDISG.isDisabled()) {
       return;
     }
     this.disguiseManager.shutdown();

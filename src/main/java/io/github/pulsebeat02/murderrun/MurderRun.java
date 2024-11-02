@@ -77,13 +77,13 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void unregisterExpansion() {
-    if (Capabilities.PLACEHOLDER_API.isEnabled() && this.expansion != null) {
+    if (Capabilities.PAPI.isEnabled() && this.expansion != null) {
       this.expansion.unregister();
     }
   }
 
   private void registerExpansion() {
-    if (Capabilities.PLACEHOLDER_API.isEnabled()) {
+    if (Capabilities.PAPI.isEnabled()) {
       this.expansion = new MurderRunExpansion(this);
       this.expansion.register();
     }

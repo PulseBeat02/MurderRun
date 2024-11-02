@@ -6,7 +6,7 @@ public final class GadgetDisabler {
 
   public void disableGadgets(final GadgetRegistry instance) {
     instance.unfreeze();
-    if (Capabilities.LIB_DISGUISES.isDisabled()) {
+    if (Capabilities.LIBDISG.isDisabled()) {
       this.removeIfExists(instance, "mimic");
     }
     instance.freeze();
