@@ -67,10 +67,7 @@ public final class ModrinthDependency extends PluginDependency {
     final Path finalPath = parent.resolve(fileName);
     try (final HttpClient client = HttpClient.newHttpClient()) {
       final URI uri = URI.create(fileUrl);
-      final HttpRequest request = HttpRequest.newBuilder()
-        .uri(uri)
-        .GET()
-        .build();
+      final HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
       final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(finalPath);
       return client.sendAsync(request, bodyHandler).thenApplyAsync(HttpResponse::body);
     }

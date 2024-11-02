@@ -5,6 +5,7 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> RESOURCE_PACK_META = direct("murderrun.resourcepack.meta");
   NullComponent<Sender> CAR_PART_ITEM_NAME = direct("murderrun.item.part.name");
   NullComponent<Sender> CAR_PART_ITEM_LORE = direct("murderrun.item.part.lore");
   UniComponent<Sender, Integer> CAR_PART_ITEM_RETRIEVAL = direct("murderrun.game.part.retrieval", null);

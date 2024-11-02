@@ -29,10 +29,7 @@ public final class JenkinsDependency extends PluginDependency {
     final Path filePath = parent.resolve(name);
     try (final HttpClient client = HttpClient.newHttpClient()) {
       final URI uri = URI.create(jarUrl);
-      final HttpRequest request = HttpRequest.newBuilder()
-        .uri(uri)
-        .GET()
-        .build();
+      final HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
       final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(filePath);
       client.sendAsync(request, bodyHandler).join();
       return filePath;

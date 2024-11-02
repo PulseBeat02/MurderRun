@@ -23,10 +23,7 @@ public final class UrlDependency extends PluginDependency {
       final Path parent = this.getParentDirectory();
       final Path finalPath = parent.resolve(jar);
       final URI uri = URI.create(this.url);
-      final HttpRequest request = HttpRequest.newBuilder()
-        .uri(uri)
-        .GET()
-        .build();
+      final HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
       final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(finalPath);
       final HttpResponse<Path> result = client.sendAsync(request, bodyHandler).join();
       return result.body();

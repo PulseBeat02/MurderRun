@@ -1,5 +1,6 @@
 package io.github.pulsebeat02.murderrun.resourcepack;
 
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.atlas.AtlasResource;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ItemModel;
 import io.github.pulsebeat02.murderrun.resourcepack.model.ItemResource;
@@ -15,9 +16,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Set;
+import net.kyori.adventure.text.Component;
 import team.unnamed.creative.ResourcePack;
 import team.unnamed.creative.atlas.Atlas;
 import team.unnamed.creative.base.Writable;
+import team.unnamed.creative.metadata.pack.PackFormat;
 import team.unnamed.creative.model.Model;
 import team.unnamed.creative.serialize.minecraft.MinecraftResourcePackWriter;
 import team.unnamed.creative.sound.Sound;
@@ -65,7 +68,9 @@ public final class PackWrapper {
 
   private void addMetadata() throws IOException {
     final InputStream stream = IOUtils.getResourceAsStream(PACK_PNG_PATH);
-    this.pack.packMeta(34, "Murder Run Plugin Resources");
+    final PackFormat format = PackFormat.format(42, 34, 42);
+    final Component component = Message.RESOURCE_PACK_META.build();
+    this.pack.packMeta(format, component);
     this.pack.icon(Writable.copyInputStream(stream));
   }
 
