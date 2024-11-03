@@ -50,6 +50,8 @@ public final class NettyHosting extends ResourcePackProvider {
       final boolean valid = IOUtils.checkValidUrl(check);
       return valid ? address : "localhost";
     } catch (final IOException | InterruptedException e) {
+      final Thread current = Thread.currentThread();
+      current.interrupt();
       throw new AssertionError(e);
     }
   }
