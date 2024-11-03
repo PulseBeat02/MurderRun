@@ -35,7 +35,6 @@ public final class ServerPackHosting extends ResourcePackProvider {
     if (this.server != null) {
       return HOST_URL.formatted(this.hostName, this.port);
     }
-
     return this.startInternalServer(zip);
   }
 

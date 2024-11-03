@@ -16,7 +16,6 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -197,8 +196,8 @@ public final class PreGamePlayerManager {
   private void setResourcePack(final Player player) {
     final MurderRun plugin = this.manager.getPlugin();
     final ResourcePackProvider daemon = plugin.getProvider();
-    final CompletableFuture<ResourcePackRequest> requestFuture = daemon.getResourcePackRequest();
-    requestFuture.thenAccept(request -> ComponentUtils.sendPacksLegacy(player, request));
+    final ResourcePackRequest request = daemon.getResourcePackRequest();
+    ComponentUtils.sendPacksLegacy(player, request);
   }
 
   public boolean hasPlayer(final CommandSender player) {

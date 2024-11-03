@@ -9,6 +9,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  int BLOCKS_PER_TICK = num("worldedit.blocks_per_tick");
   double MINIATURIZER_SCALE = dec("minitaturizer.scale");
   String MINIATURIZER_SOUND = str("minitaturizer.sound");
   int MINIATURIZER_COST = num("minitaturizer.cost");

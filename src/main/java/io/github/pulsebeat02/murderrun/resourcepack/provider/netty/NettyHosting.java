@@ -4,20 +4,19 @@ import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ByteBuddyBukkitInjector;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ReflectBukkitInjector;
-import java.io.BufferedReader;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import org.bukkit.Bukkit;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class NettyHosting extends ResourcePackProvider {
 
-  private static final String IP_URL = "https://ipv4.icanhazip.com/";
+  private static final String IP_URL = "http://checkip.amazonaws.com";
 
   private final String url;
   private boolean injected;
@@ -30,13 +29,10 @@ public final class NettyHosting extends ResourcePackProvider {
   private String getPackUrl(@UnderInitialization NettyHosting this) {
     final String ip = this.getPublicAddress();
     final int port = Bukkit.getPort();
-    if (ip != null) {
-      return "http://%s:%s".formatted(ip, port);
-    }
-    return "http://localhost:%s".formatted(port);
+    return "http://%s:%s".formatted(ip, port);
   }
 
-  private @Nullable String getPublicAddress(@UnderInitialization NettyHosting this) {
+  private String getPublicAddress(@UnderInitialization NettyHosting this) {
     final String ip = Bukkit.getIp();
     if (!ip.isEmpty()) {
       return ip;
@@ -44,15 +40,16 @@ public final class NettyHosting extends ResourcePackProvider {
 
     try {
       final URI uri = URI.create(IP_URL);
-      final URL url = uri.toURL();
-      try (
-        final InputStream stream = url.openStream();
-        final InputStreamReader reader = new InputStreamReader(stream);
-        final BufferedReader in = new BufferedReader(reader)
-      ) {
-        return in.readLine();
-      }
-    } catch (final IOException e) {
+      final HttpClient client = HttpClient.newHttpClient();
+      final HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
+      final HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+      final HttpResponse<String> response = client.send(request, handler);
+      final String address = response.body();
+      final String encodedAddress = address.trim();
+      final URI check = URI.create(encodedAddress);
+      final boolean valid = IOUtils.checkValidUrl(check);
+      return valid ? address : "localhost";
+    } catch (final IOException | InterruptedException e) {
       throw new AssertionError(e);
     }
   }

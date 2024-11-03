@@ -12,11 +12,7 @@ public final class DependencyListing {
     "Citizens-2.0.36-b3621",
     "https://ci.citizensnpcs.co/job/Citizens2/3621/artifact/dist/target/Citizens-2.0.36-b3621.jar"
   );
-  private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(
-    "WorldEdit",
-    "FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-952",
-    "https://ci.athion.net/job/FastAsyncWorldEdit/952/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-952.jar"
-  );
+
   private static final Dependency WORLD_EDIT = new UrlDependency(
     "WorldEdit",
     "worldedit-bukkit-7.3.9-SNAPSHOT",

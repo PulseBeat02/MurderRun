@@ -54,7 +54,10 @@ public final class ComponentUtils {
 
   @Deprecated // when Adventure platform implements new resourcepack logic use that
   public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
-    removeResourcePacks(player, request);
+    System.out.println(player.getDisplayName());
+    if (request.replace()) {
+      player.removeResourcePacks();
+    }
 
     final List<ResourcePackInfo> packs = request.packs();
     final boolean required = request.required();
@@ -85,12 +88,6 @@ public final class ComponentUtils {
       prompt = empty();
     }
     return prompt;
-  }
-
-  private static void removeResourcePacks(final Player player, final ResourcePackRequest request) {
-    if (request.replace()) {
-      player.removeResourcePacks();
-    }
   }
 
   public static Component deserializeLegacyStringToComponent(final String legacy) {

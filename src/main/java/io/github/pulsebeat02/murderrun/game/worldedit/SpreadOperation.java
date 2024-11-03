@@ -5,6 +5,7 @@ import com.sk89q.worldedit.function.operation.RunContext;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.world.block.BaseBlock;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -14,11 +15,10 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class SpreadOperation implements Operation {
 
-  private static final long BLOCKS_PER_TICK = 4000L;
-
   private final MurderRun plugin;
   private final Iterator<Map.Entry<BlockVector3, BaseBlock>> it;
   private final BiFunction<BlockVector3, BaseBlock, Void> placeFunction;
+  private final int blocksPerTick;
   private BukkitTask task;
 
   public SpreadOperation(
@@ -26,6 +26,7 @@ public final class SpreadOperation implements Operation {
     final BiFunction<BlockVector3, BaseBlock, Void> placeFunction,
     final Iterator<Map.Entry<BlockVector3, BaseBlock>> it
   ) {
+    this.blocksPerTick = GameProperties.BLOCKS_PER_TICK;
     this.plugin = plugin;
     this.placeFunction = placeFunction;
     this.it = it;
@@ -43,7 +44,7 @@ public final class SpreadOperation implements Operation {
 
   private void placeBlock() {
     long i = 0;
-    while (this.it.hasNext() && i < BLOCKS_PER_TICK) {
+    while (this.it.hasNext() && i < this.blocksPerTick) {
       final Map.Entry<BlockVector3, BaseBlock> entry = this.it.next();
       final BlockVector3 position = entry.getKey();
       final BaseBlock block = entry.getValue();

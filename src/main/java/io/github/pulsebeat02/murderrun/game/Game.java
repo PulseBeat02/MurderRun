@@ -92,7 +92,7 @@ public final class Game {
       this.gracefulShutdown(code);
     } else {
       final BukkitScheduler shutdownHook = Bukkit.getScheduler();
-      shutdownHook.runTaskLater(this.plugin, () -> this.gracefulShutdown(code), 3);
+      shutdownHook.runTaskLater(this.plugin, () -> this.gracefulShutdown(code), 20L);
     }
   }
 

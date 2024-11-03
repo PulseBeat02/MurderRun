@@ -15,6 +15,8 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.session.PasteBuilder;
+import com.sk89q.worldedit.util.SideEffect;
+import com.sk89q.worldedit.util.SideEffectSet;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.Game;
@@ -28,11 +30,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 public final class MapSchematicIO {
 
+  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
 
   private final Map map;
@@ -86,9 +90,13 @@ public final class MapSchematicIO {
     final SerializableVector vector3
   ) throws WorldEditException {
     try (final EditSession session = instance.newEditSession(world)) {
+      final SideEffectSet set = session.getSideEffectApplier();
+      for (final SideEffect effect : DISABLED_SIDE_EFFECTS) {
+        set.with(effect, SideEffect.State.OFF);
+      }
       final ClipboardHolder holder = new ClipboardHolder(clipboard);
       final BlockVector3 internal = vector3.getVector3();
-      final PasteBuilder extent = holder.createPaste(session).to(internal).ignoreAirBlocks(false);
+      final PasteBuilder extent = holder.createPaste(session).to(internal).ignoreAirBlocks(true).copyBiomes(false);
       final Operation operation = extent.build();
       Operations.complete(operation);
     }

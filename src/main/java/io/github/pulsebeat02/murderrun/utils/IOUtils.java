@@ -10,6 +10,9 @@ import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -17,6 +20,8 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
+import java.util.Locale;
 import java.util.Set;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +31,57 @@ public final class IOUtils {
 
   private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static boolean checkValidUrl(final URI uri) {
+    try {
+      final URL url = uri.toURL();
+      final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+      urlConnection.setRequestMethod("HEAD");
+      urlConnection.setConnectTimeout(1000);
+      urlConnection.setReadTimeout(1000);
+      final int code = urlConnection.getResponseCode();
+      return (code == HttpURLConnection.HTTP_OK);
+    } catch (final Exception e) {
+      return false;
+    }
+  }
+
+  public static String getSHA1Hash(final URI uri) {
+    try {
+      final HashFunction function = Hashing.sha1();
+      final URL url = uri.toURL();
+      try (final InputStream stream = url.openStream(); final InputStream fast = new FastBufferedInputStream(stream)) {
+        final byte[] bytes = fast.readAllBytes();
+        final HashCode code = function.hashBytes(bytes);
+        final byte[] hash = code.asBytes();
+        return bytesToString(hash);
+      }
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  private static String bytesToString(final byte[] arr) {
+    final StringBuilder builder = new StringBuilder(arr.length * 2);
+    final Formatter fmt = new Formatter(builder, Locale.ROOT);
+    for (final byte b : arr) {
+      fmt.format("%02x", b & 0xff);
+    }
+    return builder.toString();
+  }
+
+  public static byte[] getSHA1Hash(final Path path) {
+    try {
+      final HashFunction function = Hashing.sha1();
+      try (final InputStream stream = Files.newInputStream(path); final InputStream fast = new FastBufferedInputStream(stream)) {
+        final byte[] bytes = fast.readAllBytes();
+        final HashCode code = function.hashBytes(bytes);
+        return code.asBytes();
+      }
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
   }
 
   public static String getFileName(final String url) {
