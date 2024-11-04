@@ -6,8 +6,8 @@ plugins {
     id("com.gradleup.shadow") version "8.3.5"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.45"
-    id("com.diffplug.spotless") version "7.0.0.BETA2"
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
+    id("com.diffplug.spotless") version "7.0.0.BETA4"
+    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.2.0"
     id("com.github.node-gradle.node") version "7.1.0"
 }
 
@@ -115,7 +115,7 @@ tasks.withType<AbstractRun>().configureEach {
 val windows = System.getProperty("os.name").lowercase().contains("windows")
 tasks {
 
-    bukkit {
+    bukkitPluginYaml {
         name = "MurderRun"
         version = "1.21.3-v1.0.0"
         description = "Pulse's MurderRun Plugin"
@@ -184,6 +184,7 @@ tasks {
                     "plugins" to listOf("prettier-plugin-java"),
                     "printWidth" to 140))
                 .nodeExecutable(provider { setupNodeEnvironment() })
+            licenseHeaderFile("LICENSE-HEADER")
         }
     }
 
