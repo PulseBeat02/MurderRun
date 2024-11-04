@@ -38,6 +38,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -48,14 +51,42 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Set;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import team.unnamed.creative.base.Writable;
 
 public final class IOUtils {
 
+  private static final String IP_URL = "http://checkip.amazonaws.com";
+
   private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static String getPublicIPAddress() {
+    final String ip = Bukkit.getIp();
+    return ip.isEmpty() ? getPublicIPAddress0() : ip;
+  }
+
+  private static String getPublicIPAddress0() {
+    try {
+      final URI uri = URI.create(IP_URL);
+      try (final HttpClient client = HttpClient.newHttpClient()) {
+        final HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
+        final HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+        final HttpResponse<String> response = client.send(request, handler);
+        final String address = response.body();
+        final String encodedAddress = address.trim();
+        final URI check = URI.create(encodedAddress);
+        final boolean valid = IOUtils.checkValidUrl(check);
+        return valid ? address : "localhost";
+      }
+    } catch (final IOException | InterruptedException e) {
+      final Thread current = Thread.currentThread();
+      current.interrupt();
+      throw new AssertionError(e);
+    }
   }
 
   public static boolean checkValidUrl(final URI uri) {

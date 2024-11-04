@@ -79,7 +79,6 @@ public final class ComponentUtils {
 
   @Deprecated // when Adventure platform implements new resourcepack logic use that
   public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
-    System.out.println(player.getDisplayName());
     if (request.replace()) {
       player.removeResourcePacks();
     }

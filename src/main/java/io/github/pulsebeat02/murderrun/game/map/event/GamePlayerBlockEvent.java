@@ -27,6 +27,7 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
 import io.github.pulsebeat02.murderrun.game.map.Map;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -95,6 +96,12 @@ public final class GamePlayerBlockEvent extends GameEvent {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     if (gamePlayer instanceof final Killer killer) {
       if (!killer.canForceMineBlocks()) {
+        event.setCancelled(true);
+        return;
+      }
+
+      final GameStatus status = game.getStatus();
+      if (status == GameStatus.SURVIVORS_RELEASED) {
         event.setCancelled(true);
         return;
       }

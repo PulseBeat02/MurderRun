@@ -93,6 +93,7 @@ public final class PartsManager {
   private void spawnParticleOnPart(final CarPart stack) {
     final Location location = stack.getLocation();
     final World world = requireNonNull(location.getWorld());
+    location.add(0, 1, 0);
     world.spawnParticle(Particle.DUST, location, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 2));
   }
 
