@@ -56,7 +56,7 @@ var runtimeDeps = listOf(
     "org.postgresql:postgresql:42.7.4",
     "org.xerial:sqlite-jdbc:3.46.1.3",
     "net.bytebuddy:byte-buddy:1.15.9",
-    "net.bytebuddy:byte-buddy-agent:1.15.9"
+    "net.bytebuddy:byte-buddy-agent:1.15.10"
 );
 
 dependencies {
