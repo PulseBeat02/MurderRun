@@ -20,6 +20,11 @@ on YouTube.
 - Easy Lobby / Arena Creation and Customization
   - Either use GUI's or Commands to Create and Modify Arenas / Lobbies
 - Resets Arenas Automatically using WorldEdit
+- Customize Item Drop Locations
+  - Supports Automatic Item Drop Locations
+  - No Setup Required for Arenas
+- Pre-made NPC Gadget Shop with Adjustable Prices
+  - Prevent Certain Gadgets from Showing Up
 - Game Creation with Quick Join System or Private Games
   - Either use GUI's or Commands to Create Games
 - Integration with PlaceholderAPI, LibsDisguises, Citizens, and WorldEdit
@@ -31,7 +36,10 @@ on YouTube.
 - No Dependencies / Setup Involved, Just Drop the JAR into Plugins Folder
 - Customisable Resource Pack
   - Customisable Item Textures, Sounds
-  - Customisable Resource Pack Provider Method (MC Packs, Local Hosting)
+  - Customisable Resource Pack Provider Method
+  - No Server Hosting or Setup Required
+    - Hosted on Server Automatically
+    - Gives Option to Host via Other Options
   - Caches Resource Pack for Faster Loading Times
 - Customisable Locale (Change / Reformat Messages)
   - Uses MiniMessage for Easy Formatting
