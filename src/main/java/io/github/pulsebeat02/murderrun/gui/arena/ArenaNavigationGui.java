@@ -95,7 +95,11 @@ public final class ArenaNavigationGui extends ChestGui {
   }
 
   private void handleArenaClickEvent(final InventoryClickEvent event) {
-    final ItemStack item = requireNonNull(event.getCurrentItem());
+    final ItemStack item = event.getCurrentItem();
+    if (item == null) {
+      return;
+    }
+
     final ItemMeta meta = requireNonNull(item.getItemMeta());
     final PersistentDataContainer container = meta.getPersistentDataContainer();
     final String name = requireNonNull(container.get(Keys.ARENA_NAME, PersistentDataType.STRING));

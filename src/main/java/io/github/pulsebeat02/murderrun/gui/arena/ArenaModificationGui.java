@@ -33,6 +33,7 @@ import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
@@ -44,6 +45,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -320,12 +322,23 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
     final Location[] corners = { this.first, this.second };
     final Location[] drops = this.itemLocations.toArray(new Location[0]);
-    final ArenaManager manager = this.plugin.getArenaManager();
-    manager.addArena(this.arenaName, corners, drops, this.spawn, this.truck);
-    this.plugin.updatePluginData();
 
-    final Component msg1 = Message.ARENA_BUILT.build();
-    this.audience.sendMessage(msg1);
+    final CompletableFuture<Location[]> future;
+    if (drops.length == 0) {
+      final TerrainDropAnalyzer analyzer = new TerrainDropAnalyzer(this.plugin, corners, this.spawn);
+      future = analyzer.getRandomDrops();
+    } else {
+      future = CompletableFuture.completedFuture(drops);
+    }
+
+    future.thenAccept(items -> {
+      final ArenaManager manager = this.plugin.getArenaManager();
+      manager.addArena(this.arenaName, corners, items, this.spawn, this.truck);
+      this.plugin.updatePluginData();
+
+      final Component msg1 = Message.ARENA_BUILT.build();
+      this.audience.sendMessage(msg1);
+    });
   }
 
   private void clearWands() {

@@ -30,6 +30,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
@@ -40,6 +41,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -206,13 +208,23 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     audience.sendMessage(loadMsg);
 
     final Location[] corners = new Location[] { this.first, this.second };
-    final ArenaManager manager = this.plugin.getArenaManager();
     final Location[] locations = this.itemLocations.toArray(new Location[0]);
-    manager.addArena(this.name, corners, locations, this.spawn, this.truck);
-    this.plugin.updatePluginData();
+    final CompletableFuture<Location[]> future;
+    if (locations.length == 0) {
+      final TerrainDropAnalyzer analyzer = new TerrainDropAnalyzer(this.plugin, corners, this.spawn);
+      future = analyzer.getRandomDrops();
+    } else {
+      future = CompletableFuture.completedFuture(locations);
+    }
 
-    final Component message = Message.ARENA_BUILT.build();
-    audience.sendMessage(message);
+    future.thenAccept(items -> {
+      final ArenaManager manager = this.plugin.getArenaManager();
+      manager.addArena(this.name, corners, items, this.spawn, this.truck);
+      this.plugin.updatePluginData();
+
+      final Component msg1 = Message.ARENA_BUILT.build();
+      audience.sendMessage(msg1);
+    });
   }
 
   private boolean handleNullCorner(final Audience audience) {
