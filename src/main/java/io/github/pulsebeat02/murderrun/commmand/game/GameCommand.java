@@ -132,6 +132,7 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final String id = data.getId();
     this.manager.removeGame(id);
+    data.shutdown();
 
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
