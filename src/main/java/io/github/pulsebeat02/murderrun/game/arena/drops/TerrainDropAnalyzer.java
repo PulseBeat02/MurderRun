@@ -38,11 +38,13 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -128,11 +130,11 @@ public final class TerrainDropAnalyzer {
   }
 
   private boolean checkValidNeighbor(
-    final BlockVector3 neighbor,
-    final EditSession session,
-    final Set<BlockVector3> visited,
-    final BlockVector3 min,
-    final BlockVector3 max
+          final BlockVector3 neighbor,
+          final EditSession session,
+          final Set<BlockVector3> visited,
+          final BlockVector3 min,
+          final BlockVector3 max
   ) {
     if (visited.contains(neighbor)) {
       return true;
@@ -143,13 +145,13 @@ public final class TerrainDropAnalyzer {
     }
 
     final BlockState state = session.getBlock(neighbor);
-    if (!TerrainDropAnalyzer.this.checkValidMaterial(state)) {
+    if (!this.checkValidMaterial(state)) {
       return true;
     }
 
     final BlockVector3 above = neighbor.add(0, 1, 0);
     final BlockState aboveState = session.getBlock(above);
-    return !TerrainDropAnalyzer.this.checkValidMaterialAbove(aboveState);
+    return !this.checkValidMaterialAbove(aboveState);
   }
 
   private BlockVector3 getTrueStartingVector() {
