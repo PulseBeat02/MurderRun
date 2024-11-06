@@ -184,7 +184,7 @@ tasks {
                     "plugins" to listOf("prettier-plugin-java"),
                     "printWidth" to 140))
                 .nodeExecutable(provider { setupNodeEnvironment() })
-            licenseHeaderFile("LICENSE-HEADER")
+            licenseHeaderFile("HEADER")
         }
     }
 
