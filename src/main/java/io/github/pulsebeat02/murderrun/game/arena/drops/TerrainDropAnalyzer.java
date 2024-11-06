@@ -38,18 +38,33 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
-
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class TerrainDropAnalyzer {
+
+  private static final Set<BlockType> DOOR_TYPES;
+
+  static {
+    DOOR_TYPES = new HashSet<>();
+    final Material[] values = Material.values();
+    for (final Material material : values) {
+      final String name = material.name();
+      if (name.contains("DOOR")) {
+        final BlockType type = BukkitAdapter.asBlockType(material);
+        DOOR_TYPES.add(type);
+      }
+    }
+  }
+
+  public static void init() {}
 
   private final MurderRun plugin;
   private final Location[] corners;
@@ -103,11 +118,11 @@ public final class TerrainDropAnalyzer {
       public void run() {
         int iterations = 0;
         try (final EditSession session = worldEdit.newEditSession(world)) {
-          while (!queue.isEmpty() && ++iterations <= count) {
+          while (!queue.isEmpty() && ++iterations < count) {
             final BlockVector3 current = requireNonNull(queue.poll());
             final Set<BlockVector3> neighbors = TerrainDropAnalyzer.this.getNeighbors(current);
             for (final BlockVector3 neighbor : neighbors) {
-              if (TerrainDropAnalyzer.this.checkValidNeighbor(neighbor, session, visited, min, max)) {
+              if (!TerrainDropAnalyzer.this.checkValidNeighbor(neighbor, session, visited, min, max)) {
                 continue;
               }
               queue.add(neighbor);
@@ -130,28 +145,28 @@ public final class TerrainDropAnalyzer {
   }
 
   private boolean checkValidNeighbor(
-          final BlockVector3 neighbor,
-          final EditSession session,
-          final Set<BlockVector3> visited,
-          final BlockVector3 min,
-          final BlockVector3 max
+    final BlockVector3 neighbor,
+    final EditSession session,
+    final Set<BlockVector3> visited,
+    final BlockVector3 min,
+    final BlockVector3 max
   ) {
     if (visited.contains(neighbor)) {
-      return true;
+      return false;
     }
 
     if (!neighbor.containedWithin(min, max)) {
-      return true;
+      return false;
     }
 
     final BlockState state = session.getBlock(neighbor);
     if (!this.checkValidMaterial(state)) {
-      return true;
+      return false;
     }
 
     final BlockVector3 above = neighbor.add(0, 1, 0);
     final BlockState aboveState = session.getBlock(above);
-    return !this.checkValidMaterialAbove(aboveState);
+    return this.checkValidMaterialAbove(aboveState);
   }
 
   private BlockVector3 getTrueStartingVector() {
@@ -173,7 +188,7 @@ public final class TerrainDropAnalyzer {
   private boolean checkValidMaterialAbove(final BlockState state) {
     final BlockType aboveType = state.getBlockType();
     final BlockMaterial aboveMaterial = aboveType.getMaterial();
-    return !aboveMaterial.isSolid();
+    return !aboveMaterial.isSolid() || DOOR_TYPES.contains(aboveType);
   }
 
   private boolean checkValidMaterial(final BlockState state) {

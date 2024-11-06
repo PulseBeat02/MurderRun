@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.papi.MurderRunExpansion;
@@ -125,6 +126,7 @@ public final class MurderRun extends JavaPlugin {
     PacketToolsProvider.init();
     GameProperties.init();
     GadgetShopGui.init();
+    TerrainDropAnalyzer.init();
   }
 
   private void shutdownAudience() {
