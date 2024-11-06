@@ -57,8 +57,11 @@ public final class TerrainDropAnalyzer {
     final Material[] values = Material.values();
     for (final Material material : values) {
       final String name = material.name();
-      if (name.contains("DOOR")) {
-        final BlockType type = BukkitAdapter.asBlockType(material);
+      if (!name.contains("DOOR")) {
+        continue;
+      }
+      final BlockType type = BukkitAdapter.asBlockType(material);
+      if (type != null) {
         DOOR_TYPES.add(type);
       }
     }

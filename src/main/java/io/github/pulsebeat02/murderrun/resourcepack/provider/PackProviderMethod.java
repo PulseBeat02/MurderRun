@@ -57,8 +57,8 @@ public final class PackProviderMethod {
   }
 
   private void deferCaching(final ResourcePackProvider provider) {
-    // for netty because url isn't valid yet
+    // wait for netty because url isn't valid yet
     final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.runTask(this.plugin, provider::cachePack);
+    scheduler.runTaskAsynchronously(this.plugin, provider::cachePack);
   }
 }
