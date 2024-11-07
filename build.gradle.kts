@@ -33,54 +33,54 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-releases/")
 }
 
-var runtimeDeps = listOf(
-    "net.kyori:adventure-api:4.17.0",
-    "net.kyori:adventure-platform-bukkit:4.3.4",
-    "net.kyori:adventure-text-minimessage:4.17.0",
-    "net.kyori:adventure-text-serializer-plain:4.17.0",
-    "net.kyori:adventure-text-serializer-legacy:4.17.0",
-    "team.unnamed:creative-api:1.7.3",
-    "team.unnamed:creative-serializer-minecraft:1.7.3",
-    "team.unnamed:creative-server:1.7.3",
-    "org.incendo:cloud-annotations:2.0.0",
-    "org.incendo:cloud-paper:2.0.0-beta.10",
-    "org.incendo:cloud-minecraft-extras:2.0.0-beta.10",
-    "me.lucko:commodore:2.2",
-    "org.jsoup:jsoup:1.18.1",
-    "fr.mrmicky:fastboard:2.1.3",
-    "com.github.stefvanschie.inventoryframework:IF:0.10.18",
-    "org.bstats:bstats-bukkit:3.1.0",
-    "org.hibernate.orm:hibernate-core:7.0.0.Beta1",
-    "com.mysql:mysql-connector-j:9.1.0",
-    "com.h2database:h2:2.3.232",
-    "org.postgresql:postgresql:42.7.4",
-    "org.xerial:sqlite-jdbc:3.46.1.3",
-    "net.bytebuddy:byte-buddy:1.15.10",
-    "net.bytebuddy:byte-buddy-agent:1.15.10"
-);
+val runtimeDeps = listOf(
+    libs.adventureApi,
+    libs.adventurePlatformBukkit,
+    libs.adventureTextMinimessage,
+    libs.adventureTextSerializerPlain,
+    libs.adventureTextSerializerLegacy,
+    libs.creativeApi,
+    libs.creativeSerializerMinecraft,
+    libs.creativeServer,
+    libs.cloudAnnotations,
+    libs.cloudPaper,
+    libs.cloudMinecraftExtras,
+    libs.commodore,
+    libs.jsoup,
+    libs.fastboard,
+    libs.inventoryFramework,
+    libs.bstatsBukkit,
+    libs.hibernateCore,
+    libs.mysqlConnector,
+    libs.h2,
+    libs.postgresql,
+    libs.sqliteJdbc,
+    libs.byteBuddy,
+    libs.byteBuddyAgent
+)
 
 dependencies {
 
     // Annotation Processors
-    annotationProcessor("org.incendo:cloud-annotations:2.0.0")
+    annotationProcessor(libs.cloudAnnotations)
 
     // Project Dependencies
     implementation(project(":nms-api"))
     runtimeOnly(project(":v1_21_R3", "reobf"))
 
     // Provided Dependencies
-    compileOnly("org.spigotmc:spigot-api:1.21.3-R0.1-SNAPSHOT")
-    compileOnly("fastutil:fastutil:5.0.9")
-    compileOnly("io.netty:netty-all:4.1.97.Final")
+    compileOnly(libs.spigotApi)
+    compileOnly(libs.fastutil)
+    compileOnly(libs.nettyAll)
     runtimeDeps.forEach(::compileOnly)
 
     // Plugin Extensions
-    compileOnly("me.clip:placeholderapi:2.11.6")
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
-    compileOnly("LibsDisguises:LibsDisguises:10.0.44")
-    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.7")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.7")
-    compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT") {
+    compileOnly(libs.placeholderapi)
+    compileOnly(libs.protocolLib)
+    compileOnly(libs.libsDisguises)
+    compileOnly(libs.worldeditCore)
+    compileOnly(libs.worldeditBukkit)
+    compileOnly(libs.citizensMain) {
         exclude(
             group = "*",
             module = "*"
@@ -88,11 +88,11 @@ dependencies {
     }
 
     // Testing Dependencies
-    testImplementation("team.unnamed:creative-api:1.7.3")
-    testImplementation("team.unnamed:creative-serializer-minecraft:1.7.3")
-    testImplementation("team.unnamed:creative-server:1.7.3")
-    testImplementation("org.jsoup:jsoup:1.18.1")
-    testImplementation("fastutil:fastutil:5.0.9")
+    testImplementation(libs.creativeApi)
+    testImplementation(libs.creativeSerializerMinecraft)
+    testImplementation(libs.creativeServer)
+    testImplementation(libs.jsoup)
+    testImplementation(libs.fastutil)
 }
 
 val targetJavaVersion = 21
@@ -116,8 +116,9 @@ val windows = System.getProperty("os.name").lowercase().contains("windows")
 tasks {
 
     bukkitPluginYaml {
+        val updatedLibraries = runtimeDeps.stream().map { it.get().toString() }.toList()
         name = "MurderRun"
-        version = "1.21.3-v1.0.0"
+        version = "${project.version}"
         description = "Pulse's MurderRun Plugin"
         authors = listOf("PulseBeat_02")
         apiVersion = "1.21"
@@ -129,7 +130,7 @@ tasks {
             "Citizens",
             "LibsDisguises",
             "PlaceholderAPI")
-        libraries = runtimeDeps
+        libraries = updatedLibraries
     }
 
     withType<JavaCompile>().configureEach {
