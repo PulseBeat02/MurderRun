@@ -116,7 +116,7 @@ val windows = System.getProperty("os.name").lowercase().contains("windows")
 tasks {
 
     bukkitPluginYaml {
-        val updatedLibraries = runtimeDeps.stream().map { it.get().toString() }.toList()
+        val updatedLibraries = runtimeDeps.map { it.get().toString() }
         name = "MurderRun"
         version = "${project.version}"
         description = "Pulse's MurderRun Plugin"
