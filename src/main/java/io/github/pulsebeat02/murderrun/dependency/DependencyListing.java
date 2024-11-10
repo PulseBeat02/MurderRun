@@ -41,10 +41,16 @@ public final class DependencyListing {
   private static final Dependency WORLD_EDIT = new UrlDependency(
     "WorldEdit",
     "worldedit-bukkit-7.3.9-SNAPSHOT",
-    "https://ci.enginehub.org/repository/download/bt10/25583:id/worldedit-bukkit-7.3.9-SNAPSHOT-dist.jar?branch=ot/feature/1.21.2&guest=1"
+    "https://ci.enginehub.org/repository/download/bt10/25607:id/worldedit-bukkit-7.3.9-SNAPSHOT-dist.jar?branch=version/7.3.x&guest=1"
   );
 
-  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, WORLD_EDIT);
+  private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(
+    "WorldEdit",
+    "FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-962",
+    "https://ci.athion.net/job/FastAsyncWorldEdit/lastSuccessfulBuild/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-962.jar"
+  );
+
+  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, FAST_ASYNC_WORLD_EDIT);
 
   private static DependencyListing create(final String revision, final Dependency... deps) {
     final Collection<Dependency> dependencies = List.of(deps);

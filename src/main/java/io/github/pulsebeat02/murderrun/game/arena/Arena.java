@@ -47,36 +47,28 @@ public final class Arena implements Serializable {
 
   @Column(name = "schematic")
   @Lob
-  private final ArenaSchematic schematic;
+  private ArenaSchematic schematic;
 
   @Column(name = "name")
-  private final String name;
+  private String name;
 
   @Convert(converter = LocationConverter.class)
   @Column(name = "corners")
-  private final Location[] corners;
+  private Location[] corners;
 
   @Convert(converter = LocationConverter.class)
   @Column(name = "car_part_locations")
-  private final Location[] carPartLocations;
+  private Location[] carPartLocations;
 
   @Convert(converter = LocationConverter.class)
   @Column(name = "spawn")
-  private final Location spawn;
+  private Location spawn;
 
   @Convert(converter = LocationConverter.class)
   @Column(name = "truck")
-  private final Location truck;
+  private Location truck;
 
-  @SuppressWarnings("all") // for hibernate
-  public Arena() {
-    this.schematic = null;
-    this.name = null;
-    this.corners = null;
-    this.carPartLocations = null;
-    this.spawn = null;
-    this.truck = null;
-  }
+  public Arena() {}
 
   public Arena(
     final ArenaSchematic schematic,

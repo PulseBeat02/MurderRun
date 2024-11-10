@@ -95,6 +95,7 @@ public final class MurderRun extends JavaPlugin {
     this.registerGameUtilities();
     this.registerExpansion();
     this.enableMetrics();
+    System.out.println(Capabilities.FAWE.isEnabled());
   }
 
   private void installDependencies() {

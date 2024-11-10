@@ -183,12 +183,12 @@ public final class GadgetRegistry {
     }
   }
 
-  @SuppressWarnings("all") // for checker
+  @SuppressWarnings("all") // checker
   private Gadget invokeGadgetConstructor(final MethodHandle handle, final @Nullable Game game) {
     try {
       final MethodType type = handle.type();
       final int count = type.parameterCount();
-      return count == 0 ? (Gadget) handle.invoke() : (Gadget) handle.invoke(game);
+      return (Gadget) (count == 0 ? handle.invoke() : handle.invoke(game));
     } catch (final Throwable e) {
       throw new AssertionError(e);
     }

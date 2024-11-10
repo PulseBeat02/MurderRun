@@ -251,12 +251,12 @@ public interface PlayerManagerHelper {
       });
   }
 
-  @SuppressWarnings("all") // for checker
+  @SuppressWarnings("all") // checker
   default Optional<Killer> getKillerWithMostKills() {
     return this.getKillers().map(Killer.class::cast).max(Comparator.comparingInt(Killer::getKills));
   }
 
-  @SuppressWarnings("all") // for checker
+  @SuppressWarnings("all") // checker
   default Optional<Survivor> getSurvivorWithMostCarPartsRetrieved() {
     return this.getSurvivors().map(Survivor.class::cast).max(Comparator.comparingInt(Survivor::getCarPartsRetrieved));
   }

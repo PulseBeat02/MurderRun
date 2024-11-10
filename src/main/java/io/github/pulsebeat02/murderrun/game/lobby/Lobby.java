@@ -44,17 +44,13 @@ public final class Lobby implements Serializable {
   private Long id;
 
   @Column(name = "name")
-  private final String name;
+  private String name;
 
   @Convert(converter = LocationConverter.class)
   @Column(name = "lobby_spawn")
-  private final Location lobbySpawn;
+  private Location lobbySpawn;
 
-  @SuppressWarnings("all") // for hibernate
-  public Lobby() {
-    this.name = null;
-    this.lobbySpawn = null;
-  }
+  public Lobby() {}
 
   public Lobby(final String name, final Location lobbySpawn) {
     this.name = name;
