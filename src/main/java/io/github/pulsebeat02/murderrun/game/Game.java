@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
@@ -99,7 +100,7 @@ public final class Game {
   }
 
   private void registerExtensions() {
-    if (Capabilities.LIBDISG.isEnabled()) {
+    if (Capabilities.LIBSDISGUISES.isEnabled()) {
       this.disguiseManager = new DisguiseManager();
     }
   }
@@ -137,7 +138,7 @@ public final class Game {
   }
 
   private void disableDisguiseHandler() {
-    if (Capabilities.LIBDISG.isDisabled()) {
+    if (Capabilities.LIBSDISGUISES.isDisabled()) {
       return;
     }
     this.disguiseManager.shutdown();

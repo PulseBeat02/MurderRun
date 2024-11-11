@@ -23,23 +23,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget;
+package io.github.pulsebeat02.murderrun.game.capability;
 
-import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
+public final class PluginClassCapability extends Capability {
 
-public final class GadgetDisabler {
-
-  public void disableGadgets(final GadgetRegistry instance) {
-    instance.unfreeze();
-    if (Capabilities.LIBSDISGUISES.isDisabled()) {
-      this.removeIfExists(instance, "mimic");
-    }
-    instance.freeze();
-  }
-
-  public void removeIfExists(final GadgetRegistry registry, final String gadget) {
-    if (registry.getGadget(gadget) != null) {
-      registry.removeGadget(gadget);
-    }
+  public PluginClassCapability(final String name) {
+    super(() -> {
+      try {
+        Class.forName(name);
+        return true;
+      } catch (final ClassNotFoundException e) {
+        return false;
+      }
+    });
   }
 }

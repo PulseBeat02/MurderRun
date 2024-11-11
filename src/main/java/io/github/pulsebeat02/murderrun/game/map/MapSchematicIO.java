@@ -43,11 +43,11 @@ import com.sk89q.worldedit.session.PasteBuilder;
 import com.sk89q.worldedit.util.SideEffect;
 import com.sk89q.worldedit.util.SideEffectSet;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.worldedit.WESpreader;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
@@ -90,7 +90,7 @@ public final class MapSchematicIO {
   private void enableExtent() {
     final String property = System.getProperty(WE_SPREADER);
     final boolean enabled = Boolean.parseBoolean(property);
-    if (Capabilities.FAWE.isDisabled() && !enabled) {
+    if (Capabilities.FASTASYNCWORLDEDIT.isDisabled() && !enabled) {
       System.setProperty(WE_SPREADER, "true");
       final Game game = this.map.getGame();
       final MurderRun plugin = game.getPlugin();

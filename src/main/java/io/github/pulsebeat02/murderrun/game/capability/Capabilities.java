@@ -23,23 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget;
+package io.github.pulsebeat02.murderrun.game.capability;
 
-import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
+public final class Capabilities {
 
-public final class GadgetDisabler {
-
-  public void disableGadgets(final GadgetRegistry instance) {
-    instance.unfreeze();
-    if (Capabilities.LIBSDISGUISES.isDisabled()) {
-      this.removeIfExists(instance, "mimic");
-    }
-    instance.freeze();
-  }
-
-  public void removeIfExists(final GadgetRegistry registry, final String gadget) {
-    if (registry.getGadget(gadget) != null) {
-      registry.removeGadget(gadget);
-    }
-  }
+  public static Capability LIBSDISGUISES = new PluginCapability("LibsDisguises");
+  public static Capability PLACEHOLDERAPI = new PluginCapability("PlaceholderAPI");
+  public static Capability FASTASYNCWORLDEDIT = new PluginClassCapability("com.fastasyncworldedit.bukkit.FaweBukkit");
 }

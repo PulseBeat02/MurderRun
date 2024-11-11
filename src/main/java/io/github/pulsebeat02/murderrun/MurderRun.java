@@ -31,11 +31,11 @@ import io.github.pulsebeat02.murderrun.data.RelationalDataProvider;
 import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.dependency.DependencyManager;
-import io.github.pulsebeat02.murderrun.game.Capabilities;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.papi.MurderRunExpansion;
@@ -95,7 +95,6 @@ public final class MurderRun extends JavaPlugin {
     this.registerGameUtilities();
     this.registerExpansion();
     this.enableMetrics();
-    System.out.println(Capabilities.FAWE.isEnabled());
   }
 
   private void installDependencies() {
@@ -104,13 +103,13 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void unregisterExpansion() {
-    if (Capabilities.PAPI.isEnabled() && this.expansion != null) {
+    if (Capabilities.PLACEHOLDERAPI.isEnabled() && this.expansion != null) {
       this.expansion.unregister();
     }
   }
 
   private void registerExpansion() {
-    if (Capabilities.PAPI.isEnabled()) {
+    if (Capabilities.PLACEHOLDERAPI.isEnabled()) {
       this.expansion = new MurderRunExpansion(this);
       this.expansion.register();
     }
