@@ -23,13 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.player;
+package io.github.pulsebeat02.murderrun.game.player.phase;
 
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -37,9 +41,9 @@ import org.bukkit.persistence.PersistentDataContainer;
 
 public final class PlayerResetTool {
 
-  private final PlayerManager manager;
+  private final GamePlayerManager manager;
 
-  public PlayerResetTool(final PlayerManager manager) {
+  public PlayerResetTool(final GamePlayerManager manager) {
     this.manager = manager;
   }
 

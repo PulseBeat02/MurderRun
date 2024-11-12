@@ -30,8 +30,8 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
@@ -60,7 +60,7 @@ public final class ShockwaveTrap extends SurvivorTrap {
     final World world = requireNonNull(origin.getWorld());
     world.createExplosion(origin, 0, false, false);
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(participant -> this.applyShockwave(participant, origin));
     manager.playSoundForAllParticipants(GameProperties.SHOCKWAVE_SOUND);
   }

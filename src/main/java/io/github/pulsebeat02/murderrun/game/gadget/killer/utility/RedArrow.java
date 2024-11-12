@@ -30,8 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -64,7 +64,7 @@ public final class RedArrow extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, GameProperties.RED_ARROW_DURATION);
 
@@ -76,7 +76,7 @@ public final class RedArrow extends KillerGadget {
     return false;
   }
 
-  private void handleSurvivors(final PlayerManager manager) {
+  private void handleSurvivors(final GamePlayerManager manager) {
     manager.applyToLivingSurvivors(this::spawnParticleBeam);
   }
 

@@ -30,8 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.GameMode;
@@ -59,7 +59,7 @@ public final class AllSeeingEye extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer random = manager.getRandomAliveInnocentPlayer();
     final Location before = player.getLocation();
     this.setPlayerState(player, random);

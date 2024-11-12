@@ -32,9 +32,9 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -63,7 +63,7 @@ public final class FakePart extends KillerGadget {
     final Item fakeItem = this.spawnItem(location);
 
     final GameScheduler scheduler = game.getScheduler();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(fakeItem), 0, 2, fakeItem::isDead);
 
     final Runnable task = () -> this.handlePlayers(scheduler, manager, player, fakeItem);
@@ -75,7 +75,7 @@ public final class FakePart extends KillerGadget {
     return false;
   }
 
-  private void handlePlayers(final GameScheduler scheduler, final PlayerManager manager, final GamePlayer killer, final Item item) {
+  private void handlePlayers(final GameScheduler scheduler, final GamePlayerManager manager, final GamePlayer killer, final Item item) {
     manager.applyToLivingSurvivors(survivor -> this.checkNear(scheduler, survivor, killer, item));
   }
 

@@ -32,7 +32,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -57,7 +57,7 @@ public final class CryoFreeze extends SurvivorGadget {
 
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
-    final Map map = game.getMap();
+    final GameMap map = game.getMap();
     final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
     final int cx = location.getBlockX();
     final int cy = location.getBlockY();

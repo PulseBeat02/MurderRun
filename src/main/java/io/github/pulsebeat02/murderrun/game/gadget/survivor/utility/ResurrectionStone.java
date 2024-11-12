@@ -33,10 +33,10 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
+import io.github.pulsebeat02.murderrun.game.player.phase.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.citizensnpcs.api.npc.NPC;
@@ -71,7 +71,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
       return true;
@@ -103,7 +103,7 @@ public final class ResurrectionStone extends SurvivorGadget {
   }
 
   private void resurrectPlayer(final Game game, final GamePlayer closest) {
-    final PlayerManager playerManager = game.getPlayerManager();
+    final GamePlayerManager playerManager = game.getPlayerManager();
     final PlayerStartupTool temp = new PlayerStartupTool(playerManager);
     temp.handleInnocent(closest);
     closest.setAlive(true);

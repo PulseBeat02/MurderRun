@@ -31,7 +31,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.*;
@@ -74,7 +74,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
     item.remove();
 
-    final Map map = game.getMap();
+    final GameMap map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final CarPart carPart = manager.getCarPartItemStack(stack);
     if (carPart == null) {
@@ -83,7 +83,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
     manager.removeCarPart(carPart);
 
-    final PlayerManager playerManager = game.getPlayerManager();
+    final GamePlayerManager playerManager = game.getPlayerManager();
     final Player player = event.getPlayer();
     if (playerManager.checkPlayerExists(player)) {
       final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
@@ -107,7 +107,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
 
   private void setScoreboard() {
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(player -> {
       final MetadataManager metadata = player.getMetadataManager();
       final PlayerScoreboard scoreboard = metadata.getSidebar();
@@ -118,7 +118,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
   private void announceCarPartRetrieval(final int leftOver) {
     final Game game = this.getGame();
     final Component title = Message.CAR_PART_ITEM_RETRIEVAL.build(leftOver);
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);
     manager.playSoundForAllParticipants("block.anvil.use");
   }
@@ -149,7 +149,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
     }
 
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer player = manager.getGamePlayer(thrower);
     if (player instanceof final Survivor survivor) {
       survivor.setHasCarPart(false);

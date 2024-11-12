@@ -25,7 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game;
 
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.UUID;
@@ -55,7 +55,7 @@ public final class GameTimerUpdater {
   }
 
   private void setBossBars() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final Component name = Message.BOSS_BAR.build();
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
@@ -73,7 +73,7 @@ public final class GameTimerUpdater {
 
     final long total = timer.getTotalTime();
     final float progress = (float) timeLeft / total;
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.updateBossBarForAllParticipants(id, progress);
 
     final int time = (int) timeLeft / 1000;

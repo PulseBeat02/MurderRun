@@ -30,8 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.HashSet;
@@ -63,7 +63,7 @@ public final class Distorter extends SurvivorGadget {
     final Game game = packet.getGame();
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
     scheduler.scheduleParticleTaskUntilDeath(item, Color.PURPLE);
@@ -74,11 +74,11 @@ public final class Distorter extends SurvivorGadget {
     return false;
   }
 
-  private void handleKillers(final PlayerManager manager, final Item item) {
+  private void handleKillers(final GamePlayerManager manager, final Item item) {
     manager.applyToKillers(killer -> this.applyDistortionEffect(manager, killer, item));
   }
 
-  private void applyDistortionEffect(final PlayerManager manager, final GamePlayer killer, final Item item) {
+  private void applyDistortionEffect(final GamePlayerManager manager, final GamePlayer killer, final Item item) {
     final Location location = killer.getLocation();
     final Location origin = item.getLocation();
     final double distance = location.distanceSquared(origin);

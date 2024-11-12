@@ -33,11 +33,12 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -73,7 +74,7 @@ public final class CursedNote extends KillerGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
 
-    final io.github.pulsebeat02.murderrun.game.map.Map map = game.getMap();
+    final GameMap map = game.getMap();
     final Location location = player.getLocation();
     final Collection<CarPart> closeParts = this.getCarPartsInRange(map, location);
     if (closeParts.isEmpty()) {
@@ -124,7 +125,7 @@ public final class CursedNote extends KillerGadget {
   }
 
   private void handleSurvivorCurse(final Game game, final CarPart part) {
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     manager.applyToLivingSurvivors(survivor -> {
       final Location partLocation = part.getLocation();
       final Location survivorLocation = survivor.getLocation();
@@ -140,7 +141,7 @@ public final class CursedNote extends KillerGadget {
     });
   }
 
-  private Collection<CarPart> getCarPartsInRange(final io.github.pulsebeat02.murderrun.game.map.Map map, final Location origin) {
+  private Collection<CarPart> getCarPartsInRange(final GameMap map, final Location origin) {
     final PartsManager manager = map.getCarPartManager();
     final Map<String, CarPart> mapping = manager.getParts();
     final Collection<CarPart> parts = mapping.values();

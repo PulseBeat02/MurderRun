@@ -30,8 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.stream.Stream;
@@ -60,7 +60,7 @@ public final class Retaliation extends SurvivorGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L);
 
@@ -72,7 +72,7 @@ public final class Retaliation extends SurvivorGadget {
     return false;
   }
 
-  private void checkForDeadPlayers(final PlayerManager manager, final GamePlayer player) {
+  private void checkForDeadPlayers(final GamePlayerManager manager, final GamePlayer player) {
     final Stream<GamePlayer> deathCount = manager.getDeceasedSurvivors();
     final long dead = deathCount.count();
     if (dead == 0) {

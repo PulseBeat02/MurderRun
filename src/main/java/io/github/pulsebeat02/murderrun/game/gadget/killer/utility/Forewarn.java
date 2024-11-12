@@ -30,10 +30,10 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -55,7 +55,7 @@ public final class Forewarn extends KillerGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     if (!(player instanceof final Killer killer)) {
       return true;
     }
@@ -72,7 +72,7 @@ public final class Forewarn extends KillerGadget {
     return false;
   }
 
-  private void handleInnocents(final PlayerManager manager, final Killer gamePlayer) {
+  private void handleInnocents(final GamePlayerManager manager, final Killer gamePlayer) {
     manager.applyToLivingSurvivors(survivor -> this.handleForewarn(survivor, gamePlayer));
   }
 

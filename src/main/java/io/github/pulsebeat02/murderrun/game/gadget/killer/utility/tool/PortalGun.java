@@ -33,7 +33,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Holder;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -141,7 +141,7 @@ public final class PortalGun extends KillerGadget implements Listener {
     }
     PDCUtils.setPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, !status);
 
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     final Pair<Holder<Location>, Holder<Location>> newPair = this.portals.get(uuid);
     final Location location = raw.add(0, 2, 0);
@@ -149,7 +149,7 @@ public final class PortalGun extends KillerGadget implements Listener {
   }
 
   private void spawnPortal(
-    final PlayerManager manager,
+    final GamePlayerManager manager,
     final GameScheduler scheduler,
     final Pair<Holder<Location>, Holder<Location>> parent,
     final Location center
@@ -159,7 +159,7 @@ public final class PortalGun extends KillerGadget implements Listener {
   }
 
   private void handlePortalTeleportationLogic(
-    final PlayerManager manager,
+    final GamePlayerManager manager,
     final GameScheduler scheduler,
     final Pair<Holder<Location>, Holder<Location>> parent
   ) {
@@ -174,7 +174,7 @@ public final class PortalGun extends KillerGadget implements Listener {
     scheduler.scheduleRepeatedTask(() -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 20L);
   }
 
-  private void handleParticipants(final PlayerManager manager, final Location sendingLocation, final Location receivingLocation) {
+  private void handleParticipants(final GamePlayerManager manager, final Location sendingLocation, final Location receivingLocation) {
     manager.applyToAllParticipants(player -> this.handleTeleports(player, sendingLocation, receivingLocation));
   }
 

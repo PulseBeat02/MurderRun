@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
 import java.util.stream.Stream;
@@ -48,14 +48,14 @@ public final class KillerLocationTracker {
   }
 
   public void spawnParticles() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> manager.applyToKillers(this::spawnParticlesWhenClose), 0, 20L);
   }
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
     final Location murdererLocation = murdererPlayer.getLocation();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final Collection<GamePlayer> players = survivors.toList();
     for (final GamePlayer survivor : players) {

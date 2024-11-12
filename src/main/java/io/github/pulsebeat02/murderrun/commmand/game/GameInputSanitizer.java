@@ -91,7 +91,8 @@ public final class GameInputSanitizer {
   public boolean checkIfGameAlreadyStarted(final Audience audience, final PreGameManager data) {
     final Game game = data.getGame();
     final GameStatus status = game.getStatus();
-    if (status == GameStatus.SURVIVORS_RELEASED) {
+    final GameStatus.Status gameStatus = status.getStatus();
+    if (gameStatus == GameStatus.Status.SURVIVORS_RELEASED) {
       final Component message = Message.GAME_STARTED_ERROR.build();
       audience.sendMessage(message);
       return true;

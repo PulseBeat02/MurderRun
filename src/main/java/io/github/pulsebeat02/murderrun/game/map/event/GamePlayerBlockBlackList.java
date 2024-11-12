@@ -28,8 +28,8 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -45,7 +45,7 @@ public final class GamePlayerBlockBlackList extends GameEvent {
   public void onBlockBreak(final BlockBreakEvent event) {
     final Player player = event.getPlayer();
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     if (!manager.checkPlayerExists(player)) {
       return;
     }
@@ -56,7 +56,8 @@ public final class GamePlayerBlockBlackList extends GameEvent {
     }
 
     final GameStatus status = game.getStatus();
-    if (status == GameStatus.SURVIVORS_RELEASED) {
+    final GameStatus.Status gameStatus = status.getStatus();
+    if (gameStatus == GameStatus.Status.SURVIVORS_RELEASED) {
       event.setCancelled(true);
     }
   }

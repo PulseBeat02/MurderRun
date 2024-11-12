@@ -30,7 +30,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Set;
@@ -62,7 +62,7 @@ public final class BloodCurse extends KillerGadget {
     item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     scheduler.scheduleRepeatedTask(() -> manager.applyToSurvivors(this::setBloodBlock), 0, 7L);
     manager.playSoundForAllParticipants(GameProperties.BLOOD_CURSE_SOUND);
 

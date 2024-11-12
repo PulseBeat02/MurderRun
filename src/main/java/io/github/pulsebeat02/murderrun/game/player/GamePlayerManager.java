@@ -30,6 +30,8 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.KillerLocationTracker;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
+import io.github.pulsebeat02.murderrun.game.player.phase.PlayerResetTool;
+import io.github.pulsebeat02.murderrun.game.player.phase.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +39,7 @@ import java.util.stream.Stream;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class PlayerManager implements PlayerManagerHelper {
+public final class GamePlayerManager implements PlayerManagerHelper {
 
   private final Game game;
   private final PlayerDeathTool deathManager;
@@ -45,7 +47,7 @@ public final class PlayerManager implements PlayerManagerHelper {
   private final MovementManager movementManager;
   private final Map<UUID, GamePlayer> lookupMap;
 
-  public PlayerManager(final Game game) {
+  public GamePlayerManager(final Game game) {
     this.game = game;
     this.deathManager = new PlayerDeathTool(game);
     this.killerLocationTracker = new KillerLocationTracker(game);

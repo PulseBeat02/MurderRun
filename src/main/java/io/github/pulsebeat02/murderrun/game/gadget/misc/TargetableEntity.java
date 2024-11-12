@@ -27,7 +27,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.misc;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Mob;
@@ -38,7 +38,7 @@ public interface TargetableEntity {
   default void handle(final EntityTargetEvent event, final String target, final Mob entity, final boolean killer) {
     final Game game = this.getGame();
     final UUID uuid = UUID.fromString(target);
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     if (!manager.checkPlayerExists(uuid)) {
       entity.remove();
       return;

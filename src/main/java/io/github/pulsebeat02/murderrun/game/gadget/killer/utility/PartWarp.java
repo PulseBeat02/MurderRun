@@ -29,6 +29,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -55,7 +56,7 @@ public final class PartWarp extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final io.github.pulsebeat02.murderrun.game.map.Map map = game.getMap();
+    final GameMap map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> values = parts.values();

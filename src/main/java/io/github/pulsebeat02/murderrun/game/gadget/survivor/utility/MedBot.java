@@ -33,8 +33,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -67,7 +67,7 @@ public final class MedBot extends SurvivorGadget {
     final org.bukkit.entity.Item item = packet.getItem();
     item.remove();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final ArmorStand armorStand = (ArmorStand) world.spawnEntity(location, EntityType.ARMOR_STAND);
@@ -90,7 +90,7 @@ public final class MedBot extends SurvivorGadget {
     return false;
   }
 
-  private void handleMedBotUpdate(final GameScheduler scheduler, final PlayerManager manager, final ArmorStand stand) {
+  private void handleMedBotUpdate(final GameScheduler scheduler, final GamePlayerManager manager, final ArmorStand stand) {
     final Consumer<GamePlayer> consumer = survivor -> this.handleInnocentEffects(survivor, stand);
     final Consumer<GamePlayer> killerConsumer = killer -> this.handleKillerDestroy(manager, killer, stand);
     final Runnable task = () -> {
@@ -100,7 +100,7 @@ public final class MedBot extends SurvivorGadget {
     scheduler.scheduleConditionalTask(task, 0, 5L, stand::isDead);
   }
 
-  private void handleKillerDestroy(final PlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
+  private void handleKillerDestroy(final GamePlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final double distance = origin.distanceSquared(location);

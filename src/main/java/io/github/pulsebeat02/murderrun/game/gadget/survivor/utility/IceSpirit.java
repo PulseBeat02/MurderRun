@@ -33,8 +33,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.misc.TargetableEntity;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -110,7 +110,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
     zombie.remove();
 
     final UUID uuid = UUID.fromString(target);
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     if (!manager.checkPlayerExists(uuid)) {
       return;
     }

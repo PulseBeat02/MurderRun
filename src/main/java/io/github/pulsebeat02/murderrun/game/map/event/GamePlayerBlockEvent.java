@@ -29,10 +29,10 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.map.BlockWhitelistManager;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
@@ -92,7 +92,7 @@ public final class GamePlayerBlockEvent extends GameEvent {
     }
 
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     if (gamePlayer instanceof final Killer killer) {
       if (!killer.canForceMineBlocks()) {
@@ -101,7 +101,8 @@ public final class GamePlayerBlockEvent extends GameEvent {
       }
 
       final GameStatus status = game.getStatus();
-      if (status == GameStatus.SURVIVORS_RELEASED) {
+      final GameStatus.Status gameStatus = status.getStatus();
+      if (gameStatus == GameStatus.Status.SURVIVORS_RELEASED) {
         event.setCancelled(true);
         return;
       }
@@ -123,7 +124,7 @@ public final class GamePlayerBlockEvent extends GameEvent {
       }
 
       final Block block = event.getBlock();
-      final Map map = game.getMap();
+      final GameMap map = game.getMap();
       final BlockWhitelistManager whitelistManager = map.getBlockWhitelistManager();
       final boolean canBreak = whitelistManager.checkAndRemoveBlock(block);
       if (!canBreak) {
@@ -145,7 +146,7 @@ public final class GamePlayerBlockEvent extends GameEvent {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack hand = inventory.getItemInMainHand();
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer murderer = manager.getGamePlayer(player);
     if (murderer instanceof Survivor) {
       return;
@@ -175,11 +176,11 @@ public final class GamePlayerBlockEvent extends GameEvent {
     }
 
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     if (gamePlayer instanceof final Survivor survivor) {
       if (survivor.canPlaceBlocks()) {
-        final Map map = game.getMap();
+        final GameMap map = game.getMap();
         final BlockWhitelistManager whitelist = map.getBlockWhitelistManager();
         final Block block = event.getBlock();
         whitelist.addWhitelistedBlock(block);

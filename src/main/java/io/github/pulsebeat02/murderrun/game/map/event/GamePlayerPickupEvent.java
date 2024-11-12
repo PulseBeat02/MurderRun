@@ -26,12 +26,12 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.entity.Item;
@@ -60,7 +60,7 @@ public final class GamePlayerPickupEvent extends GameEvent {
     }
 
     final Game game = this.getGame();
-    final PlayerManager playerManager = game.getPlayerManager();
+    final GamePlayerManager playerManager = game.getPlayerManager();
     final Item item = event.getItem();
     final ItemStack stack = item.getItemStack();
     final boolean isCarPart = PDCUtils.isCarPart(stack);
@@ -87,7 +87,7 @@ public final class GamePlayerPickupEvent extends GameEvent {
     }
     survivor.setHasCarPart(true);
 
-    final Map map = game.getMap();
+    final GameMap map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final CarPart carPart = manager.getCarPartItemStack(stack);
     if (carPart != null) {

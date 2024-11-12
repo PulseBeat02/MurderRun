@@ -31,7 +31,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
@@ -48,10 +48,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PartsManager {
 
-  private final Map map;
+  private final GameMap map;
   private final java.util.Map<String, CarPart> parts;
 
-  public PartsManager(final Map map) {
+  public PartsManager(final GameMap map) {
     this.map = map;
     this.parts = new HashMap<>();
   }
@@ -97,7 +97,7 @@ public final class PartsManager {
     world.spawnParticle(Particle.DUST, location, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 2));
   }
 
-  public Map getMap() {
+  public GameMap getMap() {
     return this.map;
   }
 

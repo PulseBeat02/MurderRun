@@ -30,7 +30,7 @@ import static net.kyori.adventure.text.Component.empty;
 import fr.mrmicky.fastboard.adventure.FastBoard;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
@@ -73,7 +73,7 @@ public final class PlayerScoreboard {
 
   public Component generatePartsComponent() {
     final Game game = this.gamePlayer.getGame();
-    final Map map = game.getMap();
+    final GameMap map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     int remaining = manager.getRemainingParts();
     if (remaining == 0) {

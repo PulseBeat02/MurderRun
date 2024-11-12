@@ -37,9 +37,9 @@ import org.bukkit.World;
 
 public final class TruckManager {
 
-  private final Map map;
+  private final GameMap map;
 
-  public TruckManager(final Map map) {
+  public TruckManager(final GameMap map) {
     this.map = map;
   }
 

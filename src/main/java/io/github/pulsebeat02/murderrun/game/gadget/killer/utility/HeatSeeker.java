@@ -30,10 +30,10 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
@@ -61,7 +61,7 @@ public final class HeatSeeker extends KillerGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     if (!(player instanceof final Killer killer)) {
       return true;
     }
@@ -78,7 +78,7 @@ public final class HeatSeeker extends KillerGadget {
     return false;
   }
 
-  private void scheduleTasks(final PlayerManager manager, final Killer player) {
+  private void scheduleTasks(final GamePlayerManager manager, final Killer player) {
     manager.applyToLivingSurvivors(innocent -> this.handleGlowInnocent(innocent, player));
   }
 

@@ -37,11 +37,11 @@ import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.GameTimer;
 import io.github.pulsebeat02.murderrun.game.GameTimerUpdater;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
@@ -87,18 +87,18 @@ public final class GameStartupTool {
     final GameSettings configuration = this.game.getSettings();
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToLivingSurvivors(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
   }
 
   private void announceHidePhase() {
     final Component title = Message.PREPARATION_PHASE.build();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);
   }
 
   private void clearSurvivorNetherStars() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToSurvivors(player -> {
       final PlayerInventory inventory = player.getInventory();
       inventory.remove(Material.NETHER_STAR);
@@ -106,7 +106,7 @@ public final class GameStartupTool {
   }
 
   private void clearKillerNetherStars() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToKillers(player -> {
       final PlayerInventory inventory = player.getInventory();
       inventory.remove(Material.NETHER_STAR);
@@ -138,19 +138,19 @@ public final class GameStartupTool {
   }
 
   private void setTimeRemaining(final int time) {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllParticipants(gamePlayer -> gamePlayer.apply(player -> player.setLevel(time)));
   }
 
   private void announceCountdown(final int seconds) {
     final Component title = text(seconds, RED);
     final Component subtitle = empty();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void countDownAudio() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.COUNTDOWN);
   }
 
@@ -166,12 +166,13 @@ public final class GameStartupTool {
   }
 
   private void setGameStatus() {
-    this.game.setStatus(GameStatus.KILLERS_RELEASED);
+    final GameStatus status = this.game.getStatus();
+    status.setStatus(GameStatus.Status.KILLERS_RELEASED);
   }
 
   private void playMusic() {
     final GameScheduler scheduler = this.game.getScheduler();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final Consumer<GamePlayer> sound = gamePlayer -> {
       final Key key = Sounds.BACKGROUND.getKey();
       final PlayerAudience audience = gamePlayer.getAudience();
@@ -181,7 +182,7 @@ public final class GameStartupTool {
   }
 
   private void spawnCarParts() {
-    final Map map = this.game.getMap();
+    final GameMap map = this.game.getMap();
     final PartsManager manager = map.getCarPartManager();
     manager.spawnParts();
   }
@@ -190,19 +191,19 @@ public final class GameStartupTool {
     final GameSettings configuration = this.game.getSettings();
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToKillers(murderer -> murderer.teleport(spawnLocation));
   }
 
   private void announceReleasePhase() {
     final Component title = Message.RELEASE_PHASE.build();
     final Component subtitle = empty();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.showTitleForAllParticipants(title, subtitle);
   }
 
   private void playReleaseSoundEffect() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.RELEASED_1, Sounds.RELEASED_2);
   }
 

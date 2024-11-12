@@ -25,9 +25,28 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game;
 
-public enum GameStatus {
-  NOT_STARTED,
-  SURVIVORS_RELEASED,
-  KILLERS_RELEASED,
-  FINISHED,
+import java.util.concurrent.atomic.AtomicReference;
+
+public final class GameStatus {
+
+  private final AtomicReference<Status> status;
+
+  public GameStatus() {
+    this.status = new AtomicReference<>(Status.NOT_STARTED);
+  }
+
+  public Status getStatus() {
+    return this.status.get();
+  }
+
+  public void setStatus(final Status status) {
+    this.status.set(status);
+  }
+
+  public enum Status {
+    NOT_STARTED,
+    SURVIVORS_RELEASED,
+    KILLERS_RELEASED,
+    FINISHED,
+  }
 }

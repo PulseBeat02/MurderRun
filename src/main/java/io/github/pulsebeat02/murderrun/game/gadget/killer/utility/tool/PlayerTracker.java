@@ -33,8 +33,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
@@ -71,7 +71,7 @@ public final class PlayerTracker extends KillerGadget {
   @Override
   public boolean onGadgetRightClick(final GadgetRightClickPacket packet) {
     final Game game = packet.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer player = packet.getPlayer();
     final Location location = player.getLocation();
     final int distance = (int) Math.round(this.getNearestSurvivorDistance(manager, location));
@@ -107,7 +107,7 @@ public final class PlayerTracker extends KillerGadget {
     return count;
   }
 
-  private double getNearestSurvivorDistance(final PlayerManager manager, final Location origin) {
+  private double getNearestSurvivorDistance(final GamePlayerManager manager, final Location origin) {
     double min = Double.MAX_VALUE;
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final Collection<GamePlayer> collection = survivors.toList();

@@ -29,11 +29,12 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
@@ -79,7 +80,8 @@ public final class PlayerDeathTool {
   }
 
   private NPC spawnDeadNPC(final Player player) {
-    final CitizensManager manager = this.game.getNPCManager();
+    final GameExtensionManager extensionManager = this.game.getExtensionManager();
+    final CitizensManager manager = extensionManager.getNPCManager();
     final NPCRegistry registry = manager.getRegistry();
     final Location location = player.getLocation();
     final String name = player.getDisplayName();
@@ -112,7 +114,7 @@ public final class PlayerDeathTool {
   private void announcePlayerDeath(final Player dead) {
     final String name = dead.getDisplayName();
     final Component title = Message.PLAYER_DEATH.build(name);
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);
   }
 
@@ -124,7 +126,7 @@ public final class PlayerDeathTool {
         continue;
       }
 
-      final Map map = this.game.getMap();
+      final GameMap map = this.game.getMap();
       final PartsManager manager = map.getCarPartManager();
       final CarPart stack = manager.getCarPartItemStack(slot);
       if (stack == null) {
@@ -139,7 +141,7 @@ public final class PlayerDeathTool {
   }
 
   public void spawnParticles() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> manager.applyToDeceased(this::spawnParticleOnCorpse), 0, 20L);
   }

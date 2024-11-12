@@ -37,8 +37,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
@@ -79,7 +79,7 @@ public final class EMPBlast extends KillerGadget {
     final Collection<Entity> entities = world.getNearbyEntities(box);
     this.removeAllSurvivorGadgets(entities, mechanism);
 
-    final PlayerManager playerManager = game.getPlayerManager();
+    final GamePlayerManager playerManager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     playerManager.applyToLivingSurvivors(survivor -> this.stunSurvivors(scheduler, survivor));
     playerManager.playSoundForAllParticipants(Sounds.FLASHBANG);

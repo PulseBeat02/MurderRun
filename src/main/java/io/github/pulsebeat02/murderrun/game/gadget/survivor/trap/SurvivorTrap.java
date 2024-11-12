@@ -31,7 +31,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Trap;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetNearbyPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -57,7 +57,7 @@ public abstract class SurvivorTrap extends Trap implements SurvivorApparatus {
     final Component subtitle = empty();
     if (announcement != null) {
       final Game game = packet.getGame();
-      final PlayerManager manager = game.getPlayerManager();
+      final GamePlayerManager manager = game.getPlayerManager();
       manager.showTitleForAllInnocents(announcement, subtitle);
     }
   }

@@ -36,8 +36,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetNearbyPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -143,15 +143,17 @@ public final class GadgetActionHandler implements Listener {
 
   private boolean checkKillerStatus(final Player player) {
     final Game game = this.manager.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     if (!manager.checkPlayerExists(player)) {
       return false;
     }
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final GameStatus status = game.getStatus();
-    final boolean invalidKiller = gamePlayer instanceof Killer && status != GameStatus.KILLERS_RELEASED;
-    final boolean invalidSurvivor = gamePlayer instanceof Survivor && (status == GameStatus.NOT_STARTED || status == GameStatus.FINISHED);
+    final GameStatus.Status gameStatus = status.getStatus();
+    final boolean invalidKiller = gamePlayer instanceof Killer && gameStatus != GameStatus.Status.KILLERS_RELEASED;
+    final boolean invalidSurvivor =
+      gamePlayer instanceof Survivor && (gameStatus == GameStatus.Status.NOT_STARTED || gameStatus == GameStatus.Status.FINISHED);
     return invalidKiller || invalidSurvivor;
   }
 
@@ -168,7 +170,7 @@ public final class GadgetActionHandler implements Listener {
 
   private void onNearGadget() {
     final Game game = this.manager.getGame();
-    final PlayerManager playerManager = game.getPlayerManager();
+    final GamePlayerManager playerManager = game.getPlayerManager();
     playerManager.applyToAllParticipants(this::handlePlayerGadgetLogic);
   }
 

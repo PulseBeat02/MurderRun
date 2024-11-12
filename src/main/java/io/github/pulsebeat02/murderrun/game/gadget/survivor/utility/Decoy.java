@@ -28,6 +28,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
+import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -59,7 +60,8 @@ public final class Decoy extends SurvivorGadget {
     final org.bukkit.entity.Item item = packet.getItem();
     item.remove();
 
-    final CitizensManager manager = game.getNPCManager();
+    final GameExtensionManager extensions = game.getExtensionManager();
+    final CitizensManager manager = extensions.getNPCManager();
     final String name = player.getDisplayName();
     final NPC npc = this.customizeNPC(manager, player, name);
     final Location location = player.getLocation();

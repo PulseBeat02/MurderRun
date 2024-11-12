@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.player;
+package io.github.pulsebeat02.murderrun.game.player.phase;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,6 +31,9 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.potion.PotionEffect;
@@ -38,9 +41,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class PlayerStartupTool {
 
-  private final PlayerManager manager;
+  private final GamePlayerManager manager;
 
-  public PlayerStartupTool(final PlayerManager manager) {
+  public PlayerStartupTool(final GamePlayerManager manager) {
     this.manager = manager;
   }
 

@@ -33,7 +33,7 @@ import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.EventUtils;
@@ -79,7 +79,8 @@ public final class FlashBang extends SurvivorGadget implements Listener {
   @Override
   public boolean onGadgetRightClick(final GadgetRightClickPacket packet) {
     final GameStatus status = this.game.getStatus();
-    return status != GameStatus.KILLERS_RELEASED;
+    final GameStatus.Status gameStatus = status.getStatus();
+    return gameStatus != GameStatus.Status.KILLERS_RELEASED;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -102,7 +103,7 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToKillers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);

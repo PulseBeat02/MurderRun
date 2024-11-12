@@ -30,10 +30,11 @@ import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
+import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
@@ -66,9 +67,10 @@ public class CameraGadget {
   }
 
   public boolean handleCamera(final Game game, final GamePlayer player, final Item item) {
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final Location location = player.getLocation();
-    final CitizensManager npcManager = game.getNPCManager();
+    final GameExtensionManager extensionManager = game.getExtensionManager();
+    final CitizensManager npcManager = extensionManager.getNPCManager();
     final NPC npc = this.customizeNPC(npcManager);
     npc.spawn(location);
     item.remove();

@@ -32,7 +32,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
@@ -74,7 +74,8 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
   @Override
   public boolean onGadgetRightClick(final GadgetRightClickPacket packet) {
     final GameStatus status = this.game.getStatus();
-    return status != GameStatus.KILLERS_RELEASED;
+    final GameStatus.Status gameStatus = status.getStatus();
+    return gameStatus != GameStatus.Status.KILLERS_RELEASED;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -100,7 +101,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final Runnable task = () -> world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
     scheduler.scheduleRepeatedTask(task, 0, 1, duration);
 
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToKillers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);

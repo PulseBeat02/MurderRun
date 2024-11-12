@@ -29,8 +29,8 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
@@ -61,7 +61,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     }
 
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
     final List<ItemStack> drops = event.getDrops();
@@ -115,20 +115,20 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
   private void playDeathSoundEffect() {
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.DEATH);
   }
 
   private boolean allInnocentDead() {
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final Stream<GamePlayer> players = manager.getSurvivors();
     return players.noneMatch(GamePlayer::isAlive);
   }
 
   private boolean allKillersDead() {
     final Game game = this.getGame();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final Stream<GamePlayer> players = manager.getKillers();
     return players.noneMatch(GamePlayer::isAlive);
   }

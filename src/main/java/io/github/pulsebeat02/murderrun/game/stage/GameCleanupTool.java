@@ -30,8 +30,8 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.*;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
@@ -100,7 +100,7 @@ public final class GameCleanupTool {
   }
 
   private Component getPartComponent() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final Optional<Survivor> optional = manager.getSurvivorWithMostCarPartsRetrieved();
     if (optional.isEmpty()) {
       return Message.WINNER_PARTS.build("?", 0);
@@ -113,7 +113,7 @@ public final class GameCleanupTool {
   }
 
   private Component getKillComponent() {
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final Optional<Killer> optional = manager.getKillerWithMostKills();
     if (optional.isEmpty()) {
       return Message.WINNER_KILLS.build("?", 0);
@@ -141,7 +141,7 @@ public final class GameCleanupTool {
     final Component winner = this.generateWinnerMessage(true);
     final Component title = Message.GAME_WINNER_TITLE.build();
     final Component subtitle = Message.GAME_WINNER_TITLE_SURVIVOR.build();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.WIN);
     manager.playSoundForAllMurderers(Sounds.LOSS);
@@ -157,7 +157,7 @@ public final class GameCleanupTool {
     final Component winner = this.generateWinnerMessage(false);
     final Component title = Message.GAME_WINNER_TITLE.build();
     final Component subtitle = Message.GAME_WINNER_TITLE_KILLER.build();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.LOSS);
     manager.playSoundForAllMurderers(Sounds.WIN);
@@ -174,7 +174,7 @@ public final class GameCleanupTool {
     final long timeElapsed = timer.getElapsedTime();
     final MurderRun plugin = this.game.getPlugin();
     final StatisticsManager statistics = plugin.getStatisticsManager();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllParticipants(participant -> {
       final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(participant);
       if (participant instanceof Survivor) {
@@ -192,7 +192,7 @@ public final class GameCleanupTool {
     final long timeElapsed = timer.getElapsedTime();
     final MurderRun plugin = this.game.getPlugin();
     final StatisticsManager statistics = plugin.getStatisticsManager();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToAllParticipants(participant -> {
       final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(participant);
       if (participant instanceof Killer) {

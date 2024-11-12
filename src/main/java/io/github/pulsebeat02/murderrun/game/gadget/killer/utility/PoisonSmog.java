@@ -32,8 +32,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Color;
@@ -68,7 +68,7 @@ public final class PoisonSmog extends KillerGadget {
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     scheduler.scheduleRepeatedTask(() -> this.handleSmog(world, location, manager), 0, 2 * 20L, GameProperties.POISON_SMOG_DURATION);
 
     final PlayerAudience audience = player.getAudience();
@@ -77,12 +77,12 @@ public final class PoisonSmog extends KillerGadget {
     return false;
   }
 
-  private void handleSmog(final World world, final Location location, final PlayerManager manager) {
+  private void handleSmog(final World world, final Location location, final GamePlayerManager manager) {
     this.spawnSmogParticles(world, location);
     this.handleSurvivors(manager, location);
   }
 
-  private void handleSurvivors(final PlayerManager manager, final Location origin) {
+  private void handleSurvivors(final GamePlayerManager manager, final Location origin) {
     manager.applyToLivingSurvivors(survivor -> this.handleDebuffs(survivor, origin));
   }
 

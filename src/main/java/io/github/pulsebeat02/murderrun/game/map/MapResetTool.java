@@ -40,9 +40,9 @@ import org.bukkit.util.BoundingBox;
 
 public final class MapResetTool {
 
-  private final Map map;
+  private final GameMap map;
 
-  public MapResetTool(final Map map) {
+  public MapResetTool(final GameMap map) {
     this.map = map;
   }
 
@@ -73,7 +73,7 @@ public final class MapResetTool {
     io.resetMap();
   }
 
-  public Map getMap() {
+  public GameMap getMap() {
     return this.map;
   }
 }

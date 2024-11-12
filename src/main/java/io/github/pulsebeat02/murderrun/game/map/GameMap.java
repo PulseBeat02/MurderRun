@@ -29,7 +29,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.map.event.GameEventManager;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 
-public final class Map {
+public final class GameMap {
 
   private final Game game;
 
@@ -40,7 +40,7 @@ public final class Map {
   private MapSchematicIO mapSchematicIO;
   private BlockWhitelistManager blockWhitelistManager;
 
-  public Map(final Game game) {
+  public GameMap(final Game game) {
     this.game = game;
   }
 

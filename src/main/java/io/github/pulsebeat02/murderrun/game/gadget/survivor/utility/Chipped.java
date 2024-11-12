@@ -30,9 +30,9 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.ChatColor;
@@ -52,7 +52,7 @@ public final class Chipped extends SurvivorGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final MetadataManager metadata = player.getMetadataManager();
     final GameScheduler scheduler = game.getScheduler();
     this.setOtherSurvivorsGlowing(manager, metadata, scheduler);
@@ -63,7 +63,7 @@ public final class Chipped extends SurvivorGadget {
     return false;
   }
 
-  private void setOtherSurvivorsGlowing(final PlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
+  private void setOtherSurvivorsGlowing(final GamePlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
     manager.applyToLivingSurvivors(innocent ->
       metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, GameProperties.CHIPPED_DURATION)
     );

@@ -29,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -49,7 +49,7 @@ public final class GadgetRightClickPacket {
   public static GadgetRightClickPacket create(final Game game, final PlayerInteractEvent event) {
     final Player player = event.getPlayer();
     final ItemStack item = requireNonNull(event.getItem());
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     return new GadgetRightClickPacket(game, gamePlayer, item);
   }

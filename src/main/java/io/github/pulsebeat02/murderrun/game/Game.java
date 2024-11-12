@@ -26,18 +26,14 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
-import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
+import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
-import io.github.pulsebeat02.murderrun.game.map.Map;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.phase.GamePhaseInvoker;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.stage.GameCleanupTool;
-import io.github.pulsebeat02.murderrun.game.stage.GameStartupTool;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -46,31 +42,23 @@ public final class Game {
 
   private final MurderRun plugin;
   private final UUID gameID;
-  private final AtomicBoolean cancelled;
+  private final GameStatus status;
 
-  private Map map;
+  private GameMap map;
   private GameSettings configuration;
-  private PlayerManager playerManager;
-  private GameStartupTool preparationManager;
-  private GameCleanupTool cleanupManager;
+  private GamePlayerManager playerManager;
   private GameTimer murderGameTimer;
   private GameScheduler scheduler;
-  private GameStatus status;
   private GadgetManager gadgetManager;
   private GameExecutor executor;
-  private CitizensManager npcManager;
+  private GamePhaseInvoker phaseInvoker;
+  private GameExtensionManager extensionManager;
   private GameEventsListener callback;
-  private DisguiseManager disguiseManager;
 
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
-    this.status = GameStatus.NOT_STARTED;
+    this.status = new GameStatus();
     this.gameID = UUID.randomUUID();
-    this.cancelled = new AtomicBoolean(false);
-  }
-
-  public GameSettings getConfiguration() {
-    return this.configuration;
   }
 
   public void startGame(
@@ -79,30 +67,23 @@ public final class Game {
     final Collection<Player> participants,
     final GameEventsListener callback
   ) {
-    this.status = GameStatus.SURVIVORS_RELEASED;
+    this.status.setStatus(GameStatus.Status.SURVIVORS_RELEASED);
     this.configuration = settings;
     this.callback = callback;
     this.executor = new GameExecutor();
     this.scheduler = new GameScheduler(this);
-    this.map = new Map(this);
-    this.playerManager = new PlayerManager(this);
-    this.preparationManager = new GameStartupTool(this);
-    this.cleanupManager = new GameCleanupTool(this);
+    this.map = new GameMap(this);
+    this.playerManager = new GamePlayerManager(this);
     this.murderGameTimer = new GameTimer();
     this.gadgetManager = new GadgetManager(this);
-    this.npcManager = new CitizensManager(this);
+    this.extensionManager = new GameExtensionManager(this);
+    this.phaseInvoker = new GamePhaseInvoker(this);
     this.map.start();
     this.gadgetManager.start();
     this.playerManager.start(murderers, participants);
-    this.preparationManager.start();
-    this.registerExtensions();
+    this.extensionManager.registerExtensions();
+    this.phaseInvoker.invokeStartup();
     this.callback.onGameStart(this);
-  }
-
-  private void registerExtensions() {
-    if (Capabilities.LIBSDISGUISES.isEnabled()) {
-      this.disguiseManager = new DisguiseManager();
-    }
   }
 
   public GameSettings getSettings() {
@@ -110,41 +91,36 @@ public final class Game {
   }
 
   public void finishGame(final GameResult code) {
-    if (this.cancelled.get()) {
+    final GameStatus.Status gameStatus = this.status.getStatus();
+    if (gameStatus == GameStatus.Status.FINISHED || gameStatus == GameStatus.Status.NOT_STARTED) {
       return;
     }
-    this.cancelled.set(true);
+    this.status.setStatus(GameStatus.Status.FINISHED);
+
     if (code == GameResult.INTERRUPTED) {
-      this.gracefulShutdown(code);
+      this.forceShutdown(code);
     } else {
-      final BukkitScheduler shutdownHook = Bukkit.getScheduler();
-      shutdownHook.runTaskLater(this.plugin, () -> this.gracefulShutdown(code), 20L);
+      this.gracefulShutdown(code);
     }
   }
 
   private void gracefulShutdown(final GameResult code) {
-    if (this.status != GameStatus.NOT_STARTED) {
-      this.status = GameStatus.FINISHED;
-      this.gadgetManager.shutdown();
-      this.scheduler.cancelAllTasks();
-      this.npcManager.shutdown();
-      this.playerManager.resetAllPlayers();
-      this.cleanupManager.start(code);
-      this.map.shutdown();
-      this.executor.shutdown();
-      this.disableDisguiseHandler();
-      this.callback.onGameFinish(this, code);
-    }
+    final BukkitScheduler shutdownHook = Bukkit.getScheduler();
+    shutdownHook.runTaskLater(this.plugin, () -> this.forceShutdown(code), 20L);
   }
 
-  private void disableDisguiseHandler() {
-    if (Capabilities.LIBSDISGUISES.isDisabled()) {
-      return;
-    }
-    this.disguiseManager.shutdown();
+  private void forceShutdown(final GameResult code) {
+    this.gadgetManager.shutdown();
+    this.scheduler.cancelAllTasks();
+    this.playerManager.resetAllPlayers();
+    this.phaseInvoker.invokeCleanup(code);
+    this.map.shutdown();
+    this.executor.shutdown();
+    this.extensionManager.disableExtensions();
+    this.callback.onGameFinish(this, code);
   }
 
-  public PlayerManager getPlayerManager() {
+  public GamePlayerManager getPlayerManager() {
     return this.playerManager;
   }
 
@@ -156,16 +132,8 @@ public final class Game {
     return this.plugin;
   }
 
-  public Map getMap() {
+  public GameMap getMap() {
     return this.map;
-  }
-
-  public GameStartupTool getPreparationManager() {
-    return this.preparationManager;
-  }
-
-  public GameCleanupTool getCleanupManager() {
-    return this.cleanupManager;
   }
 
   public UUID getGameUUID() {
@@ -174,10 +142,6 @@ public final class Game {
 
   public GameTimer getTimeManager() {
     return this.murderGameTimer;
-  }
-
-  public boolean isFinished() {
-    return this.status == GameStatus.FINISHED;
   }
 
   public GameScheduler getScheduler() {
@@ -192,15 +156,7 @@ public final class Game {
     return this.executor;
   }
 
-  public CitizensManager getNPCManager() {
-    return this.npcManager;
-  }
-
-  public void setStatus(final GameStatus status) {
-    this.status = status;
-  }
-
-  public DisguiseManager getDisguiseManager() {
-    return this.disguiseManager;
+  public GameExtensionManager getExtensionManager() {
+    return this.extensionManager;
   }
 }

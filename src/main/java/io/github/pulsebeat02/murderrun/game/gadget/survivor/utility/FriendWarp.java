@@ -30,8 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.stream.Stream;
 import org.bukkit.Location;
@@ -56,7 +56,7 @@ public final class FriendWarp extends SurvivorGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer target = this.getRandomSurvivorNotSame(manager, player);
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final long size = survivors.count();
@@ -78,7 +78,7 @@ public final class FriendWarp extends SurvivorGadget {
     return false;
   }
 
-  private GamePlayer getRandomSurvivorNotSame(final PlayerManager manager, final GamePlayer gamePlayer) {
+  private GamePlayer getRandomSurvivorNotSame(final GamePlayerManager manager, final GamePlayer gamePlayer) {
     GamePlayer random = manager.getRandomAliveInnocentPlayer();
     while (random == gamePlayer) {
       random = manager.getRandomAliveInnocentPlayer();

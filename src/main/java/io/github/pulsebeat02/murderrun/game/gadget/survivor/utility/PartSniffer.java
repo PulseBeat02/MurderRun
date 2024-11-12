@@ -29,7 +29,7 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.game.map.Map;
+import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
@@ -81,7 +81,7 @@ public final class PartSniffer extends SurvivorGadget {
 
   private void handleTrapSniffing(final Game game, final Survivor player) {
     final Location origin = player.getLocation();
-    final Map map = game.getMap();
+    final GameMap map = game.getMap();
     final PartsManager manager = map.getCarPartManager();
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();

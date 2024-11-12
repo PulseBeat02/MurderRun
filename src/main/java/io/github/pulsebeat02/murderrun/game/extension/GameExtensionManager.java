@@ -23,44 +23,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.packet;
+package io.github.pulsebeat02.murderrun.game.extension;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
+import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
+import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
 
-public final class GadgetDropPacket {
+public final class GameExtensionManager {
 
   private final Game game;
-  private final GamePlayer player;
-  private final Item item;
+  private DisguiseManager disguiseManager;
+  private CitizensManager npcManager;
 
-  public GadgetDropPacket(final Game game, final GamePlayer player, final Item item) {
+  public GameExtensionManager(final Game game) {
     this.game = game;
-    this.player = player;
-    this.item = item;
   }
 
-  public static GadgetDropPacket create(final Game game, final PlayerDropItemEvent event) {
-    final Player player = event.getPlayer();
-    final Item item = event.getItemDrop();
-    final GamePlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    return new GadgetDropPacket(game, gamePlayer, item);
+  public void registerExtensions() {
+    if (Capabilities.LIBSDISGUISES.isEnabled()) {
+      this.disguiseManager = new DisguiseManager();
+    }
+    this.npcManager = new CitizensManager(this.game);
   }
 
-  public Game getGame() {
-    return this.game;
+  public void disableExtensions() {
+    if (Capabilities.LIBSDISGUISES.isEnabled()) {
+      this.disguiseManager.shutdown();
+    }
   }
 
-  public GamePlayer getPlayer() {
-    return this.player;
+  public DisguiseManager getDisguiseManager() {
+    return this.disguiseManager;
   }
 
-  public Item getItem() {
-    return this.item;
+  public CitizensManager getNPCManager() {
+    return this.npcManager;
   }
 }

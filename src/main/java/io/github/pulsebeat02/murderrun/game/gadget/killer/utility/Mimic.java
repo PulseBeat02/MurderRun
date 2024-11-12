@@ -26,12 +26,13 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -52,9 +53,10 @@ public final class Mimic extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer survivor = manager.getRandomAliveInnocentPlayer();
-    final DisguiseManager disguiseManager = game.getDisguiseManager();
+    final GameExtensionManager extensionManager = game.getExtensionManager();
+    final DisguiseManager disguiseManager = extensionManager.getDisguiseManager();
     disguiseManager.disguisePlayerAsOtherPlayer(player, survivor);
 
     final PlayerInventory otherInventory = survivor.getInventory();

@@ -32,8 +32,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -70,7 +70,7 @@ public final class DeathSteed extends KillerGadget {
     final World world = requireNonNull(location.getWorld());
     final Horse horse = this.spawnHorse(world, location, player);
     final GameScheduler scheduler = game.getScheduler();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     scheduler.scheduleConditionalTask(() -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
 
     final PlayerAudience audience = player.getAudience();
@@ -79,7 +79,7 @@ public final class DeathSteed extends KillerGadget {
     return false;
   }
 
-  private void handleSurvivors(final PlayerManager manager, final Horse horse) {
+  private void handleSurvivors(final GamePlayerManager manager, final Horse horse) {
     manager.applyToLivingSurvivors(survivor -> this.handleSurvivor(survivor, horse));
   }
 

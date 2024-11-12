@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.scheduler;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameScheduledTask extends BukkitRunnable implements ScheduledTask {
@@ -41,7 +42,9 @@ public class GameScheduledTask extends BukkitRunnable implements ScheduledTask {
   @Override
   public void run() {
     this.runnable.run();
-    if (this.game.isFinished()) {
+    final GameStatus status = this.game.getStatus();
+    final GameStatus.Status gameStatus = status.getStatus();
+    if (gameStatus == GameStatus.Status.FINISHED) {
       this.cancel();
     }
   }

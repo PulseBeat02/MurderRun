@@ -64,9 +64,9 @@ public final class MapSchematicIO {
   private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
 
-  private final Map map;
+  private final GameMap map;
 
-  public MapSchematicIO(final Map map) {
+  public MapSchematicIO(final GameMap map) {
     this.map = map;
   }
 

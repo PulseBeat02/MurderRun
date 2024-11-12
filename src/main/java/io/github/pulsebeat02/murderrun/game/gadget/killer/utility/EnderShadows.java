@@ -33,13 +33,14 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
+import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
@@ -79,7 +80,7 @@ public final class EnderShadows extends KillerGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
@@ -89,7 +90,8 @@ public final class EnderShadows extends KillerGadget {
     }
     item.remove();
 
-    final CitizensManager npcManager = game.getNPCManager();
+    final GameExtensionManager extensionManager = game.getExtensionManager();
+    final CitizensManager npcManager = extensionManager.getNPCManager();
     manager.applyToLivingSurvivors(survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
     manager.playSoundForAllParticipants(GameProperties.ENDER_SHADOWS_SOUND);
 

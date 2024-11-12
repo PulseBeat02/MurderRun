@@ -51,13 +51,14 @@ public final class MovementManager {
 
   public void start() {
     final GameScheduler scheduler = this.game.getScheduler();
-    final PlayerManager manager = this.game.getPlayerManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
     scheduler.scheduleRepeatedTask(() -> this.trackMovement(manager), 0, 5);
   }
 
-  private void trackMovement(final PlayerManager manager) {
+  private void trackMovement(final GamePlayerManager manager) {
     final GameStatus status = this.game.getStatus();
-    if (status != GameStatus.KILLERS_RELEASED) {
+    final GameStatus.Status gameStatus = status.getStatus();
+    if (gameStatus != GameStatus.Status.KILLERS_RELEASED) {
       return;
     }
 

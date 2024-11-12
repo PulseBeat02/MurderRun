@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
@@ -71,7 +71,7 @@ public final class LevitationTrap extends SurvivorTrap {
     scheduler.scheduleTask(() -> murderer.teleport(location), duration);
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(murderer), 0, 5, duration);
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.LEVITATION_SOUND);
   }
 

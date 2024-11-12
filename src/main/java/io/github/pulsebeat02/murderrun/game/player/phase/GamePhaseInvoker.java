@@ -23,44 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.packet;
+package io.github.pulsebeat02.murderrun.game.player.phase;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import io.github.pulsebeat02.murderrun.game.GameResult;
+import io.github.pulsebeat02.murderrun.game.stage.GameCleanupTool;
+import io.github.pulsebeat02.murderrun.game.stage.GameStartupTool;
 
-public final class GadgetDropPacket {
+public final class GamePhaseInvoker {
 
   private final Game game;
-  private final GamePlayer player;
-  private final Item item;
 
-  public GadgetDropPacket(final Game game, final GamePlayer player, final Item item) {
+  public GamePhaseInvoker(final Game game) {
     this.game = game;
-    this.player = player;
-    this.item = item;
   }
 
-  public static GadgetDropPacket create(final Game game, final PlayerDropItemEvent event) {
-    final Player player = event.getPlayer();
-    final Item item = event.getItemDrop();
-    final GamePlayerManager manager = game.getPlayerManager();
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    return new GadgetDropPacket(game, gamePlayer, item);
+  public void invokeStartup() {
+    final GameStartupTool startup = new GameStartupTool(this.game);
+    startup.start();
   }
 
-  public Game getGame() {
-    return this.game;
-  }
-
-  public GamePlayer getPlayer() {
-    return this.player;
-  }
-
-  public Item getItem() {
-    return this.item;
+  public void invokeCleanup(final GameResult code) {
+    final GameCleanupTool cleanup = new GameCleanupTool(this.game);
+    cleanup.start(code);
   }
 }

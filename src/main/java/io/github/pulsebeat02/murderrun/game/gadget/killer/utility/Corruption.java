@@ -33,10 +33,10 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.PlayerResetTool;
-import io.github.pulsebeat02.murderrun.game.player.PlayerStartupTool;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
+import io.github.pulsebeat02.murderrun.game.player.phase.PlayerResetTool;
+import io.github.pulsebeat02.murderrun.game.player.phase.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -76,7 +76,7 @@ public final class Corruption extends KillerGadget {
     final Location location = player.getLocation();
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double range = gadgetManager.getActivationRange();
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer closest = manager.getNearestDeadSurvivor(location);
     if (closest == null) {
       return true;
@@ -101,7 +101,7 @@ public final class Corruption extends KillerGadget {
   }
 
   private void corruptPlayer(final Game game, final GamePlayer closest) {
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     manager.promoteToKiller(closest);
 
     final PlayerResetTool tool = new PlayerResetTool(manager);

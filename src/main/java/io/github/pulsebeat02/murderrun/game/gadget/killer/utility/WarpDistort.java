@@ -30,8 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.PlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
@@ -56,7 +56,7 @@ public final class WarpDistort extends KillerGadget {
     final Game game = packet.getGame();
     final Item item = packet.getItem();
 
-    final PlayerManager manager = game.getPlayerManager();
+    final GamePlayerManager manager = game.getPlayerManager();
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final long size = survivors.count();
     if (size < 2) {
@@ -86,7 +86,7 @@ public final class WarpDistort extends KillerGadget {
     return false;
   }
 
-  private GamePlayer[] getRandomPlayers(final PlayerManager manager) {
+  private GamePlayer[] getRandomPlayers(final GamePlayerManager manager) {
     final GamePlayer random = manager.getRandomAliveInnocentPlayer();
     GamePlayer random2 = manager.getRandomAliveInnocentPlayer();
     while (random == random2) {
