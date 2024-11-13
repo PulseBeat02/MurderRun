@@ -23,39 +23,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.event;
+package io.github.pulsebeat02.murderrun.game.extension.libsdiguises;
 
-import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
-import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import java.util.ArrayList;
 import java.util.Collection;
-import org.bukkit.entity.Entity;
+import me.libraryaddict.disguise.disguisetypes.Disguise;
+import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 
-public final class DamagePreventionListener implements Listener {
+public final class DisguiseManager {
 
-  private final PreGameManager manager;
+  private final Collection<Disguise> disguises;
 
-  public DamagePreventionListener(final PreGameManager manager) {
-    this.manager = manager;
+  public DisguiseManager() {
+    this.disguises = new ArrayList<>();
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
-  public void onDamage(final EntityDamageEvent event) {
-    final Entity entity = event.getEntity();
-    if (!(entity instanceof final Player player)) {
-      return;
-    }
+  public void disguisePlayerAsOtherPlayer(final GamePlayer owner, final GamePlayer other) {
+    final String name = other.getName();
+    final Player disguisable = owner.getInternalPlayer();
+    final PlayerDisguise disguise = new PlayerDisguise(name);
+    disguise.setEntity(disguisable);
+    disguise.startDisguise();
+    this.disguises.add(disguise);
+  }
 
-    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
-    final Collection<Player> participants = playerManager.getParticipants();
-    if (!participants.contains(player)) {
-      return;
+  public void shutdown() {
+    for (final Disguise disguise : this.disguises) {
+      disguise.removeDisguise();
     }
-
-    event.setCancelled(true);
   }
 }

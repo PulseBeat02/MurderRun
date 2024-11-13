@@ -27,9 +27,9 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
+import io.github.pulsebeat02.murderrun.game.extension.libsdiguises.DisguiseManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
-import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;

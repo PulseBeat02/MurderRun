@@ -23,44 +23,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.event;
+package io.github.pulsebeat02.murderrun.game.lobby.event;
 
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
-import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
-public final class DupePreventListener implements Listener {
+public final class BlockModifyListener implements Listener {
 
   private final PreGameManager manager;
 
-  public DupePreventListener(final PreGameManager manager) {
+  public BlockModifyListener(final PreGameManager manager) {
     this.manager = manager;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onItemDrop(final PlayerDropItemEvent event) {
+  public void onBlockBreak(final BlockBreakEvent event) {
     final Player player = event.getPlayer();
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
     if (!participants.contains(player)) {
       return;
     }
+    event.setCancelled(true);
+  }
 
-    final Item item = event.getItemDrop();
-    final ItemStack stack = item.getItemStack();
-    final ItemStack other = ItemFactory.createCurrency(1);
-    if (!stack.isSimilar(other)) {
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onBlockBreak(final BlockPlaceEvent event) {
+    final Player player = event.getPlayer();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
+    final Collection<Player> participants = playerManager.getParticipants();
+    if (!participants.contains(player)) {
       return;
     }
-
     event.setCancelled(true);
   }
 }

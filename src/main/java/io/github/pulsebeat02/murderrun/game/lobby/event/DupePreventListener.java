@@ -23,41 +23,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.event;
+package io.github.pulsebeat02.murderrun.game.lobby.event;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
-import java.util.Set;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.event.HandlerList;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.ItemStack;
 
-public final class PreGameEvents {
+public final class DupePreventListener implements Listener {
 
   private final PreGameManager manager;
-  private final Collection<Listener> events;
 
-  public PreGameEvents(final PreGameManager manager) {
+  public DupePreventListener(final PreGameManager manager) {
     this.manager = manager;
-    this.events = Set.of(
-      new DupePreventListener(manager),
-      new DamagePreventionListener(manager),
-      new PlayerLeaveListener(manager),
-      new BlockModifyListener(manager)
-    );
   }
 
-  public void registerEvents() {
-    final Server server = Bukkit.getServer();
-    final PluginManager manager = server.getPluginManager();
-    final MurderRun plugin = this.manager.getPlugin();
-    this.events.forEach(event -> manager.registerEvents(event, plugin));
-  }
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onItemDrop(final PlayerDropItemEvent event) {
+    final Player player = event.getPlayer();
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
+    final Collection<Player> participants = playerManager.getParticipants();
+    if (!participants.contains(player)) {
+      return;
+    }
 
-  public void unregisterEvents() {
-    this.events.forEach(HandlerList::unregisterAll);
+    final Item item = event.getItemDrop();
+    final ItemStack stack = item.getItemStack();
+    final ItemStack other = ItemFactory.createCurrency(1);
+    if (!stack.isSimilar(other)) {
+      return;
+    }
+
+    event.setCancelled(true);
   }
 }

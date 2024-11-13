@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.papi;
+package io.github.pulsebeat02.murderrun.game.extension.papi;
 
 import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import java.util.Collection;

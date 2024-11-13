@@ -27,8 +27,8 @@ package io.github.pulsebeat02.murderrun.game.extension;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
-import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
-import io.github.pulsebeat02.murderrun.game.libsdiguises.DisguiseManager;
+import io.github.pulsebeat02.murderrun.game.extension.citizens.CitizensManager;
+import io.github.pulsebeat02.murderrun.game.extension.libsdiguises.DisguiseManager;
 
 public final class GameExtensionManager {
 

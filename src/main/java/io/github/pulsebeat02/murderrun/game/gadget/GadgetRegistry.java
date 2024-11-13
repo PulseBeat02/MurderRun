@@ -25,19 +25,17 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget;
 
+import static java.util.Objects.requireNonNull;
+
+import com.google.common.reflect.ClassPath;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadgets;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadgets;
+import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Server;
 import org.bukkit.event.Listener;
@@ -141,19 +139,26 @@ public final class GadgetRegistry {
   }
 
   private void load() {
-    final SurvivorGadgets[] survivorGadgets = SurvivorGadgets.values();
-    final KillerGadgets[] killerGadgets = KillerGadgets.values();
-    for (final SurvivorGadgets gadget : survivorGadgets) {
-      final Class<?> clazz = gadget.getClazz();
-      this.handleGadgetClass(clazz);
+    final Class<?> clazz = this.getClass();
+    final ClassLoader loader = requireNonNull(clazz.getClassLoader());
+    try {
+      final ClassPath classPath = ClassPath.from(loader);
+      final Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
+      classes.stream().parallel().forEach(this::loadClassInfo);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
     }
-    for (final KillerGadgets gadget : killerGadgets) {
-      final Class<?> clazz = gadget.getClazz();
-      this.handleGadgetClass(clazz);
-    }
-
     final GadgetDisabler handler = new GadgetDisabler();
     handler.disableGadgets(this);
+  }
+
+  private void loadClassInfo(final ClassPath.ClassInfo info) {
+    try {
+      final Class<?> classObject = info.load();
+      if (Gadget.class.isAssignableFrom(classObject)) {
+        this.handleGadgetClass(classObject);
+      }
+    } catch (final Throwable ignored) {}
   }
 
   private void handleGadgetClass(final Class<?> clazz) {

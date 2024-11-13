@@ -27,7 +27,7 @@ package io.github.pulsebeat02.murderrun.game.lobby;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.*;
-import io.github.pulsebeat02.murderrun.game.event.PreGameEvents;
+import io.github.pulsebeat02.murderrun.game.lobby.event.PreGameEvents;
 import java.util.Collection;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

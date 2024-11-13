@@ -23,39 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.citizens;
+package io.github.pulsebeat02.murderrun.game.extension.papi;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import java.util.UUID;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.npc.NPCRegistry;
+import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
+import java.util.function.Function;
 
-public final class CitizensManager {
+public final class PAPIPlaceholder {
 
-  private final Game game;
-  private final NPCRegistry registry;
+  private final String name;
+  private final Function<PlayerStatistics, Object> function;
 
-  public CitizensManager(final Game game) {
-    final UUID uuid = game.getGameUUID();
-    final String str = uuid.toString();
-    final String id = "murderrun-%s".formatted(str);
-    this.game = game;
-    this.registry = CitizensAPI.createInMemoryNPCRegistry(id);
+  public PAPIPlaceholder(final String name, final Function<PlayerStatistics, Object> function) {
+    this.name = name;
+    this.function = function;
   }
 
-  public void shutdown() {
-    final Iterable<NPC> npcs = this.registry.sorted();
-    for (final NPC npc : npcs) {
-      npc.destroy();
-    }
+  public String getStatistic(final PlayerStatistics statistics) {
+    return String.valueOf(this.function.apply(statistics));
   }
 
-  public Game getGame() {
-    return this.game;
-  }
-
-  public NPCRegistry getRegistry() {
-    return this.registry;
+  public String getName() {
+    return this.name;
   }
 }

@@ -23,34 +23,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.event;
+package io.github.pulsebeat02.murderrun.game.lobby.event;
 
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import java.util.Collection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
-public final class PlayerLeaveListener implements Listener {
+public final class DamagePreventionListener implements Listener {
 
   private final PreGameManager manager;
 
-  public PlayerLeaveListener(final PreGameManager manager) {
+  public DamagePreventionListener(final PreGameManager manager) {
     this.manager = manager;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onPlayerQuit(final PlayerQuitEvent event) {
-    final Player player = event.getPlayer();
+  public void onDamage(final EntityDamageEvent event) {
+    final Entity entity = event.getEntity();
+    if (!(entity instanceof final Player player)) {
+      return;
+    }
+
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
     if (!participants.contains(player)) {
       return;
     }
 
-    playerManager.removeParticipantFromLobby(player);
+    event.setCancelled(true);
   }
 }

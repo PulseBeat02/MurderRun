@@ -25,49 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.killer;
 
-import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.*;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool.Hook;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool.PlayerTracker;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool.PortalGun;
-
 public enum KillerGadgets {
-  ALL_SEEING_EYE(AllSeeingEye.class),
-  BLOOD_CURSE(BloodCurse.class),
-  BURN_THE_BODY(BurnTheBody.class),
-  CAMERA(Camera.class),
-  CORRUPTION(Corruption.class),
-  CURSED_NOTE(CursedNote.class),
-  DEATH_HOUND(DeathHound.class),
-  DEATH_STEED(DeathSteed.class),
-  DORMAGOGG(Dormagogg.class),
-  EAGLE_EYE(EagleEye.class),
-  EMP_BLAST(EMPBlast.class),
-  ENDER_SHADOWS(EnderShadows.class),
-  FAKE_PART(FakePart.class),
-  FIRE_TRAIL(FireTrail.class),
-  FLOOR_IS_LAVA(FloorIsLava.class),
-  FOREWARN(Forewarn.class),
-  FRIGHT(Fright.class),
-  GAMBLE(Gamble.class),
-  HEALTH_CUT(HealthCut.class),
-  HEAT_SEEKER(HeatSeeker.class),
-  HOOK(Hook.class),
-  ICE_PATH(IcePath.class),
-  INFRARED_VISION(InfraredVision.class),
-  MURDEROUS_WARP(MurderousWarp.class),
-  PART_WARP(PartWarp.class),
-  PHANTOM(Phantom.class),
-  PLAYER_TRACKER(PlayerTracker.class),
-  POISON_SMOG(PoisonSmog.class),
-  PORTAL_GUN(PortalGun.class),
-  QUICK_BOMB(QuickBomb.class),
-  RED_ARROW(RedArrow.class),
-  TRAP_SEEKER(TrapSeeker.class),
-  TRAP_WRECKER(TrapWrecker.class),
-  WARP_DISTORT(WarpDistort.class),
-  MIMIC(Mimic.class),
-  EXPANDER(Expander.class);
-
   /*
 
   KILLER TRAPS DEBUGGED
@@ -131,13 +89,4 @@ public enum KillerGadgets {
 
   */
 
-  private final Class<?> clazz;
-
-  KillerGadgets(final Class<?> clazz) {
-    this.clazz = clazz;
-  }
-
-  public Class<?> getClazz() {
-    return this.clazz;
-  }
 }

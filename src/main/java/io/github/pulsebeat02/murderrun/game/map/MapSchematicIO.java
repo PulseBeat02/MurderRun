@@ -48,7 +48,7 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
 import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
-import io.github.pulsebeat02.murderrun.game.worldedit.WESpreader;
+import io.github.pulsebeat02.murderrun.game.extension.worldedit.WESpreader;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.File;

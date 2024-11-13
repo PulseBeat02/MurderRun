@@ -28,8 +28,8 @@ package io.github.pulsebeat02.murderrun.game.player.death;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.citizens.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
+import io.github.pulsebeat02.murderrun.game.extension.citizens.CitizensManager;
 import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;

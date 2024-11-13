@@ -25,109 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.survivor;
 
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.armor.SurvivorBoots;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.armor.SurvivorChestplate;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.armor.SurvivorHelmet;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.armor.SurvivorLeggings;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.tool.Excavator;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.tool.Flashlight;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.tool.KillerTracker;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.tool.Shield;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.BearTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.BlindTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.BurrowTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.CageTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.DistortTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.FartTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.FireworkTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.FreezeTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.GhostTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.GlowTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.HackTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.HauntTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.JebTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.JumpScareTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.LevitationTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.NeckSnapTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.PonyTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.ShockwaveTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SmokeTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SpasmTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SpawnTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.StarTrap;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.utility.*;
-
 public enum SurvivorGadgets {
-  SURVIVOR_BOOTS(SurvivorBoots.class),
-  SURVIVOR_CHESTPLATE(SurvivorChestplate.class),
-  SURVIVOR_HELMET(SurvivorHelmet.class),
-  SURVIVOR_LEGGINGS(SurvivorLeggings.class),
-  EXCAVATOR(Excavator.class),
-  SHIELD(Shield.class),
-  BLAST_OFF(BlastOff.class),
-  BUSH(Bush.class),
-  CAMERA(Camera.class),
-  CHIPPED(Chipped.class),
-  CLOAK(Cloak.class),
-  CORUPUS_WARP(CorpusWarp.class),
-  CRYO_FREEZE(CryoFreeze.class),
-  DEADRINGER(Deadringer.class),
-  DECOY(Decoy.class),
-  DISTORTER(Distorter.class),
-  DRONE(Drone.class),
-  FLASH_BANG(FlashBang.class),
-  FLASHLIGHT(Flashlight.class),
-  FRIEND_WARP(FriendWarp.class),
-  GHOSTING(Ghosting.class),
-  HORCRUX(Horcrux.class),
-  ICE_SKATING(IceSkatin.class),
-  ICE_SPIRIT(IceSpirit.class),
-  KILLER_REWIND(KillerRewind.class),
-  KILLER_TRACKER(KillerTracker.class),
-  LIFE_INSURANCE(LifeInsurance.class),
-  MAGNET_MODE(MagnetMode.class),
-  MED_BOT(MedBot.class),
-  MED_KIT(MedKit.class),
-  MIND_CONTROL(MindControl.class),
-  PARASITE(Parasite.class),
-  PORTAL_TRAP(PortalTrap.class),
-  RANDOM_TELEPORT(RandomTeleport.class),
-  RANDOM_TRAP(RandomTrap.class),
-  RESURRECTION_STONE(ResurrectionStone.class),
-  RETALIATION(Retaliation.class),
-  REWINDED(Rewind.class),
-  SIXTH_SENSE(SixthSense.class),
-  SMOKE_GRENADE(SmokeGrenade.class),
-  SPEED_PENDANT(SpeedPendant.class),
-  SUPPLY_DROP(SupplyDrop.class),
-  TRACKER(Tracker.class),
-  TRANSLOCATOR(Translocator.class),
-  TRAP_SNIFFER(PartSniffer.class),
-  TRAP_VEST(TrapVest.class),
-  BEAR_TRAP(BearTrap.class),
-  BLIND_TRAP(BlindTrap.class),
-  BURROW_TRAP(BurrowTrap.class),
-  CAGE_TRAP(CageTrap.class),
-  DISTORT_TRAP(DistortTrap.class),
-  FART_TRAP(FartTrap.class),
-  FIREWORK_TRAP(FireworkTrap.class),
-  FREEZE_TRAP(FreezeTrap.class),
-  GHOST_TRAP(GhostTrap.class),
-  GLOW_TRAP(GlowTrap.class),
-  HACK_TRAP(HackTrap.class),
-  HAUNT_TRAP(HauntTrap.class),
-  JEB_TRAP(JebTrap.class),
-  JUMP_SCARE_TRAP(JumpScareTrap.class),
-  LEVITATION_TRAP(LevitationTrap.class),
-  NECK_SNAP_TRAP(NeckSnapTrap.class),
-  PONY_TRAP(PonyTrap.class),
-  SHOCKWAVE_TRAP(ShockwaveTrap.class),
-  SMOKE_TRAP(SmokeTrap.class),
-  SPASM_TRAP(SpasmTrap.class),
-  SPAWN_TRAP(SpawnTrap.class),
-  STAR_TRAP(StarTrap.class),
-  MINIATURIZER(Miniaturizer.class);
-
   /*
 
   SURVIVOR TRAPS COMPLETELY DONE
@@ -226,14 +124,4 @@ public enum SurvivorGadgets {
   Some Cake in Vegas -- Sends killer to gamble for a random debuff
 
    */
-
-  private final Class<?> clazz;
-
-  SurvivorGadgets(final Class<?> clazz) {
-    this.clazz = clazz;
-  }
-
-  public Class<?> getClazz() {
-    return this.clazz;
-  }
 }

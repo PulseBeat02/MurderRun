@@ -23,45 +23,41 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.event;
+package io.github.pulsebeat02.murderrun.game.lobby.event;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
-import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import java.util.Collection;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
+import java.util.Set;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.plugin.PluginManager;
 
-public final class BlockModifyListener implements Listener {
+public final class PreGameEvents {
 
   private final PreGameManager manager;
+  private final Collection<Listener> events;
 
-  public BlockModifyListener(final PreGameManager manager) {
+  public PreGameEvents(final PreGameManager manager) {
     this.manager = manager;
+    this.events = Set.of(
+      new DupePreventListener(manager),
+      new DamagePreventionListener(manager),
+      new PlayerLeaveListener(manager),
+      new BlockModifyListener(manager)
+    );
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
-  public void onBlockBreak(final BlockBreakEvent event) {
-    final Player player = event.getPlayer();
-    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
-    final Collection<Player> participants = playerManager.getParticipants();
-    if (!participants.contains(player)) {
-      return;
-    }
-    event.setCancelled(true);
+  public void registerEvents() {
+    final Server server = Bukkit.getServer();
+    final PluginManager manager = server.getPluginManager();
+    final MurderRun plugin = this.manager.getPlugin();
+    this.events.forEach(event -> manager.registerEvents(event, plugin));
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
-  public void onBlockBreak(final BlockPlaceEvent event) {
-    final Player player = event.getPlayer();
-    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
-    final Collection<Player> participants = playerManager.getParticipants();
-    if (!participants.contains(player)) {
-      return;
-    }
-    event.setCancelled(true);
+  public void unregisterEvents() {
+    this.events.forEach(HandlerList::unregisterAll);
   }
 }
