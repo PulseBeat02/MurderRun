@@ -51,6 +51,7 @@ public final class GameExtensionManager {
     if (Capabilities.LIBSDISGUISES.isEnabled()) {
       this.disguiseManager.shutdown();
     }
+    this.npcManager.shutdown();
   }
 
   public DisguiseManager getDisguiseManager() {

@@ -62,6 +62,26 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 public class PacketTools implements PacketToolAPI {
 
   private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";
+  private static final VarHandle SERVER_CONNECTION_HANDLE = getServerConnectionHandle();
+
+  private static VarHandle getServerConnectionHandle() {
+    final Class<?> target = ServerConnectionListener.class;
+    final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(target, lookup);
+      try {
+        return privateLookup.findVarHandle(target, "channels", List.class);
+      } catch (final NoSuchFieldException | IllegalAccessException e) {
+        try {
+          return privateLookup.findVarHandle(target, "f", List.class);
+        } catch (final NoSuchFieldException | IllegalAccessException ex) {
+          throw new AssertionError(ex);
+        }
+      }
+    } catch (final IllegalAccessException e) {
+      throw new AssertionError(e);
+    }
+  }
 
   private final Table<Player, Location, Slime> glowBlocks;
   private final Team noCollisions;
@@ -271,26 +291,6 @@ public class PacketTools implements PacketToolAPI {
     final CraftServer craftServer = (CraftServer) server;
     final DedicatedServer dedicated = craftServer.getServer();
     final ServerConnectionListener connection = dedicated.getConnection();
-    final VarHandle handle = this.getProperHandle(connection);
-    return (List<ChannelFuture>) handle.get(connection);
-  }
-
-  private VarHandle getProperHandle(final ServerConnectionListener connection) {
-    final Class<?> target = connection.getClass();
-    final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    try {
-      final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(target, lookup);
-      try {
-        return privateLookup.findVarHandle(target, "channels", List.class);
-      } catch (final NoSuchFieldException | IllegalAccessException e) {
-        try {
-          return privateLookup.findVarHandle(target, "f", List.class);
-        } catch (final NoSuchFieldException | IllegalAccessException ex) {
-          throw new AssertionError(ex);
-        }
-      }
-    } catch (final IllegalAccessException e) {
-      throw new AssertionError(e);
-    }
+    return (List<ChannelFuture>) SERVER_CONNECTION_HANDLE.get(connection);
   }
 }
