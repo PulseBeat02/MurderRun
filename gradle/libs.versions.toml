@@ -26,6 +26,7 @@ libsDisguises = "10.0.44"
 worldeditCore = "7.3.7"
 worldeditBukkit = "7.3.7"
 citizensMain = "2.0.35-SNAPSHOT"
+classGraph = "4.8.179"
 
 [libraries]
 adventureApi = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
@@ -60,3 +61,4 @@ libsDisguises = { group = "LibsDisguises", name = "LibsDisguises", version.ref =
 worldeditCore = { group = "com.sk89q.worldedit", name = "worldedit-core", version.ref = "worldeditCore" }
 worldeditBukkit = { group = "com.sk89q.worldedit", name = "worldedit-bukkit", version.ref = "worldeditBukkit" }
 citizensMain = { group = "net.citizensnpcs", name = "citizens-main", version.ref = "citizensMain" }
+classGraph = { group = "io.github.classgraph", name = "classgraph", version.ref = "classGraph" }

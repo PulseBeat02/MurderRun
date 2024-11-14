@@ -25,17 +25,20 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget;
 
-import static java.util.Objects.requireNonNull;
-
-import com.google.common.reflect.ClassPath;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ScanResult;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
-import java.io.IOException;
+import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Server;
 import org.bukkit.event.Listener;
@@ -138,27 +141,27 @@ public final class GadgetRegistry {
     return gadgets;
   }
 
+  @SuppressWarnings("all") // checker
   private void load() {
-    final Class<?> clazz = this.getClass();
-    final ClassLoader loader = requireNonNull(clazz.getClassLoader());
-    try {
-      final ClassPath classPath = ClassPath.from(loader);
-      final Set<ClassPath.ClassInfo> classes = classPath.getAllClasses();
-      classes.stream().parallel().forEach(this::loadClassInfo);
-    } catch (final IOException e) {
-      throw new AssertionError(e);
+    final ClassGraph graph = new ClassGraph().enableClassInfo();
+    Thread.getAllStackTraces().keySet().stream().map(Thread::getContextClassLoader).filter(Objects::nonNull).forEach(graph::addClassLoader);
+
+    final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
+    try (final ScanResult result = graph.scan(service, 64)) {
+      final ClassInfoList list = result.getClassesImplementing(Gadget.class);
+      final ClassInfoList implementations = list.getStandardClasses();
+      for (final ClassInfo info : implementations) {
+        if (!info.isAbstract()) {
+          final Class<?> loaded = info.loadClass();
+          this.handleGadgetClass(loaded);
+        }
+      }
+    } finally {
+      ExecutorUtils.shutdownExecutorGracefully(service);
     }
+
     final GadgetDisabler handler = new GadgetDisabler();
     handler.disableGadgets(this);
-  }
-
-  private void loadClassInfo(final ClassPath.ClassInfo info) {
-    try {
-      final Class<?> classObject = info.load();
-      if (Gadget.class.isAssignableFrom(classObject)) {
-        this.handleGadgetClass(classObject);
-      }
-    } catch (final Throwable ignored) {}
   }
 
   private void handleGadgetClass(final Class<?> clazz) {

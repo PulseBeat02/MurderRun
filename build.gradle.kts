@@ -56,7 +56,8 @@ val runtimeDeps = listOf(
     libs.postgresql,
     libs.sqliteJdbc,
     libs.byteBuddy,
-    libs.byteBuddyAgent
+    libs.byteBuddyAgent,
+    libs.classGraph
 )
 
 dependencies {

@@ -44,7 +44,7 @@ import org.bukkit.entity.Player;
 
 public final class CrashTrap extends SurvivorTrap {
 
-  private static final MethodHandle CRASH_HANDLE;
+  private static MethodHandle CRASH_HANDLE;
 
   static {
     try {
@@ -53,9 +53,7 @@ public final class CrashTrap extends SurvivorTrap {
       final MethodHandles.Lookup lookup = MethodHandles.lookup();
       final MethodType type = MethodType.methodType(Void.TYPE, Player.class);
       CRASH_HANDLE = lookup.findVirtual(clazz, "crashPlayerClient", type);
-    } catch (final NoSuchMethodException | IllegalAccessException e) {
-      throw new AssertionError(e);
-    }
+    } catch (final NoSuchMethodException | IllegalAccessException ignored) {}
   }
 
   public CrashTrap() {
