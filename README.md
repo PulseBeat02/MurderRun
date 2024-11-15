@@ -7,6 +7,7 @@
 [![Discord](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_discord.webp)](https://discord.gg/cUMB6kCsh6)
 [![Kofi](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_kofi.webp)](https://ko-fi.com/pulsebeat_02)
 ![Description](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_description.webp)
+
 Inspired by the popular game Dead by Daylight, Murder Run is an advanced gamemode revolving around killers
 and survivors. In a desolate map, survivors must find all the vehicle parts and throw them back onto the
 truck before the killers murder everyone. Both killers and survivors have access to a 100+ different gadgets, 
@@ -57,9 +58,9 @@ on YouTube. Here are some more awesome features about this plugin.
 <br></br>
 
 ![Screenshots](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_screenshots.webp)
-![Survivor Gadgets](https://i.imgur.com/pmMHJCt.gif)
-![Killer Gadgets](https://i.imgur.com/QUk7GHb.gif)
-![Gadgets](https://i.imgur.com/IrO97OM.gif)
+![Survivor Gadgets](https://raw.githubusercontent.com/PulseBeat02/MurderRun/refs/heads/main/survivor.gif)
+![Killer Gadgets](https://raw.githubusercontent.com/PulseBeat02/MurderRun/refs/heads/main/killer.gif)
+![Gadgets](https://raw.githubusercontent.com/PulseBeat02/MurderRun/refs/heads/main/gadget.gif)
 <br></br>
 
 ![Installation](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_installation.webp)
