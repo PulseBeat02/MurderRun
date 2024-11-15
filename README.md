@@ -3,6 +3,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
 ![Banner](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_header.webp)
+[![Sponsor](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_promo2.webp)](https://bisecthosting.com/pulse)
 [![GitHub](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_github.webp)](https://github.com/PulseBeat02/MurderRun)
 [![Discord](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_discord.webp)](https://discord.gg/cUMB6kCsh6)
 [![Kofi](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_kofi.webp)](https://ko-fi.com/pulsebeat_02)
