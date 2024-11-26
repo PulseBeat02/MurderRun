@@ -34,20 +34,20 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.36-b3632",
-    "https://ci.citizensnpcs.co/job/Citizens2/3632/artifact/dist/target/Citizens-2.0.36-b3632.jar"
+    "Citizens-2.0.36-b3637",
+    "https://ci.citizensnpcs.co/job/Citizens2/3632/artifact/dist/target/Citizens-2.0.36-b3637.jar"
   );
 
   private static final Dependency WORLD_EDIT = new UrlDependency(
     "WorldEdit",
-    "worldedit-bukkit-7.3.9-SNAPSHOT",
-    "https://ci.enginehub.org/repository/download/bt10/25607:id/worldedit-bukkit-7.3.9-SNAPSHOT-dist.jar?branch=version/7.3.x&guest=1"
+    "worldedit-bukkit-7.3.10-SNAPSHOT",
+    "https://ci.enginehub.org/repository/download/bt10/25684:id/worldedit-bukkit-7.3.10-SNAPSHOT-dist.jar?branch=version/7.3.x&guest=1"
   );
 
   private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(
     "WorldEdit",
-    "FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-965",
-    "https://ci.athion.net/job/FastAsyncWorldEdit/965/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.12.1-SNAPSHOT-965.jar"
+    "FastAsyncWorldEdit-Bukkit-2.12.3-SNAPSHOT-986",
+    "https://ci.athion.net/job/FastAsyncWorldEdit/986/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.12.3-SNAPSHOT-986.jar"
   );
 
   private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, FAST_ASYNC_WORLD_EDIT);
