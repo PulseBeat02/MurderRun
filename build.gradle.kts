@@ -5,7 +5,7 @@ plugins {
     `java-library`
     id("com.gradleup.shadow") version "8.3.5"
     id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("org.checkerframework") version "0.6.46"
+    id("org.checkerframework") version "0.6.47"
     id("com.diffplug.spotless") version "7.0.0.BETA4"
     id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.2.0"
     id("com.github.node-gradle.node") version "7.1.0"
