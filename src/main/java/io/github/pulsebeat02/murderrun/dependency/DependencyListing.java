@@ -35,7 +35,7 @@ public final class DependencyListing {
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
     "Citizens-2.0.36-b3637",
-    "https://ci.citizensnpcs.co/job/Citizens2/3632/artifact/dist/target/Citizens-2.0.36-b3637.jar"
+    "https://ci.citizensnpcs.co/job/Citizens2/3637/artifact/dist/target/Citizens-2.0.36-b3637.jar"
   );
 
   private static final Dependency WORLD_EDIT = new UrlDependency(
