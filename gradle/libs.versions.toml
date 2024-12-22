@@ -1,5 +1,5 @@
 [versions]
-adventure = "4.17.0"
+adventure = "4.18.0"
 adventurePlatformBukkit = "4.3.4"
 creativeApi = "1.7.3"
 cloudAnnotations = "2.0.0"
