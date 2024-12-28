@@ -14,7 +14,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "io.github.pulsebeat02"
-version = "1.21.3-v1.0.0"
+version = "1.21.4-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -67,7 +67,7 @@ dependencies {
 
     // Project Dependencies
     implementation(project(":nms-api"))
-    runtimeOnly(project(":v1_21_R3", "reobf"))
+    runtimeOnly(project(":v1_21_R4", "reobf"))
 
     // Provided Dependencies
     compileOnly(libs.spigotApi)
@@ -113,6 +113,13 @@ tasks.withType<AbstractRun>().configureEach {
     jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }
 
+configurations.all {
+    resolutionStrategy {
+        force(libs.guava)
+        force(libs.gson)
+    }
+}
+
 val windows = System.getProperty("os.name").lowercase().contains("windows")
 tasks {
 
@@ -143,7 +150,7 @@ tasks {
     }
 
     assemble {
-        dependsOn(":v1_21_R3:reobfJar")
+        dependsOn(":v1_21_R4:reobfJar")
         dependsOn("shadowJar")
     }
 
@@ -157,7 +164,7 @@ tasks {
             url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-200.jar")
         }
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("1.21.3")
+        minecraftVersion("1.21.4")
     }
 
     processResources {
@@ -192,7 +199,7 @@ tasks {
 
     shadowJar {
         dependencies {
-            include(project(":v1_21_R3"))
+            include(project(":v1_21_R4"))
             include(project(":nms-api"))
         }
     }
@@ -207,7 +214,7 @@ tasks {
 
     node {
         download = true
-        version = "22.9.0"
+        version = "22.12.0"
         workDir = file("build/nodejs")
     }
 }

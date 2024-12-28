@@ -55,6 +55,7 @@ import team.unnamed.creative.texture.Texture;
 public final class PackWrapper {
 
   private static final String PACK_PNG_PATH = "textures/pack.png";
+  private static final int CURRENT_PACK_FORMAT = 46;
 
   private final ResourcePack pack;
   private final Path path;
@@ -93,7 +94,7 @@ public final class PackWrapper {
 
   private void addMetadata() throws IOException {
     final InputStream stream = IOUtils.getResourceAsStream(PACK_PNG_PATH);
-    final PackFormat format = PackFormat.format(42, 34, 42);
+    final PackFormat format = PackFormat.format(CURRENT_PACK_FORMAT, 34, CURRENT_PACK_FORMAT);
     final Component component = Message.RESOURCE_PACK_META.build();
     this.pack.packMeta(format, component);
     this.pack.icon(Writable.copyInputStream(stream));
