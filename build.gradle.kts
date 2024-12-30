@@ -40,7 +40,6 @@ val runtimeDeps = listOf(
     libs.adventureTextSerializerPlain,
     libs.adventureTextSerializerLegacy,
     libs.creativeApi,
-    libs.creativeSerializerMinecraft,
     libs.creativeServer,
     libs.cloudAnnotations,
     libs.cloudPaper,
@@ -51,10 +50,7 @@ val runtimeDeps = listOf(
     libs.inventoryFramework,
     libs.bstatsBukkit,
     libs.hibernateCore,
-    libs.mysqlConnector,
     libs.h2,
-    libs.postgresql,
-    libs.sqliteJdbc,
     libs.byteBuddy,
     libs.byteBuddyAgent,
     libs.classGraph
@@ -90,7 +86,6 @@ dependencies {
 
     // Testing Dependencies
     testImplementation(libs.creativeApi)
-    testImplementation(libs.creativeSerializerMinecraft)
     testImplementation(libs.creativeServer)
     testImplementation(libs.jsoup)
     testImplementation(libs.fastutil)

@@ -37,7 +37,6 @@ adventureTextMinimessage = { group = "net.kyori", name = "adventure-text-minimes
 adventureTextSerializerPlain = { group = "net.kyori", name = "adventure-text-serializer-plain", version.ref = "adventure" }
 adventureTextSerializerLegacy = { group = "net.kyori", name = "adventure-text-serializer-legacy", version.ref = "adventure" }
 creativeApi = { group = "team.unnamed", name = "creative-api", version.ref = "creativeApi" }
-creativeSerializerMinecraft = { group = "team.unnamed", name = "creative-serializer-minecraft", version.ref = "creativeApi" }
 creativeServer = { group = "team.unnamed", name = "creative-server", version.ref = "creativeApi" }
 cloudAnnotations = { group = "org.incendo", name = "cloud-annotations", version.ref = "cloudAnnotations" }
 cloudPaper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloudPaper" }

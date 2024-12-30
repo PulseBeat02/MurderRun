@@ -23,30 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.resourcepack.atlas;
+package io.github.pulsebeat02.murderrun;
 
-import net.kyori.adventure.key.Key;
-import team.unnamed.creative.atlas.Atlas;
-import team.unnamed.creative.atlas.AtlasSource;
+import static java.util.Objects.requireNonNull;
 
-public final class AtlasResource {
+import java.io.IOException;
+import java.io.InputStream;
 
-  private final Key key;
+public class SandboxExample {
 
-  public AtlasResource() {
-    this.key = Atlas.BLOCKS;
-  }
-
-  public Atlas stitchAtlas() {
-    final AtlasSource source = this.getSource();
-    return Atlas.atlas().key(this.key).addSource(source).build();
-  }
-
-  private AtlasSource getSource() {
-    return AtlasSource.directory("item", "item/");
-  }
-
-  public Key getKey() {
-    return this.key;
+  public static void main(final String[] args) throws IOException {
+    final Class<SandboxExample> clazz = SandboxExample.class;
+    final ClassLoader loader = requireNonNull(clazz.getClassLoader());
+    final InputStream stream = requireNonNull(loader.getResourceAsStream("pack"));
+    System.out.println(stream);
   }
 }

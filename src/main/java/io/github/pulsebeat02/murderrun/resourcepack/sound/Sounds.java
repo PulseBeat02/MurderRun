@@ -25,8 +25,12 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.resourcepack.sound;
 
+import static net.kyori.adventure.key.Key.key;
+
+import io.github.pulsebeat02.murderrun.immutable.Keys;
 import java.util.HashSet;
 import java.util.Set;
+import net.kyori.adventure.key.Key;
 
 public final class Sounds {
 
@@ -48,8 +52,8 @@ public final class Sounds {
   public static final SoundResource REWIND = of("rewind");
 
   private static SoundResource of(final String name) {
-    final SoundFile sound = new SoundFile(name);
-    final SoundResource soundResource = new SoundResource(sound);
+    final Key key = key(Keys.NAMESPACE, name);
+    final SoundResource soundResource = new SoundResource(key);
     ALL.add(soundResource);
     return soundResource;
   }

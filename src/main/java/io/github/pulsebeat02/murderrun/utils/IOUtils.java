@@ -35,15 +35,15 @@ import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -51,10 +51,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import team.unnamed.creative.base.Writable;
+import org.jetbrains.annotations.NotNull;
 
 public final class IOUtils {
 
@@ -144,31 +146,6 @@ public final class IOUtils {
     return url.substring(url.lastIndexOf('/') + 1);
   }
 
-  public static Writable getWritableStreamFromResource(final String path) {
-    final Path dataFolder = getPluginDataFolderPath();
-    final Path filePath = dataFolder.resolve(path);
-    if (Files.notExists(filePath)) {
-      createFile(filePath);
-      try (
-        final InputStream stream = IOUtils.getResourceAsStream(path);
-        final FastBufferedInputStream fast = new FastBufferedInputStream(stream)
-      ) {
-        Files.copy(fast, filePath, StandardCopyOption.REPLACE_EXISTING);
-      } catch (final IOException e) {
-        throw new AssertionError(e);
-      }
-    }
-
-    try (
-      final InputStream stream = Files.newInputStream(filePath);
-      final FastBufferedInputStream fast = new FastBufferedInputStream(stream)
-    ) {
-      return Writable.copyInputStream(fast);
-    } catch (final IOException e) {
-      throw new AssertionError(e);
-    }
-  }
-
   public static InputStream getResourceAsStream(final String name) {
     final Class<IOUtils> clazz = IOUtils.class;
     final ClassLoader loader = requireNonNull(clazz.getClassLoader());
@@ -247,5 +224,41 @@ public final class IOUtils {
 
   public static String getName(final Path path) {
     return requireNonNull(path.getFileName()).toString();
+  }
+
+  public static void zipFolderContents(final Path srcFolder, final Path destZipFile) throws IOException {
+    try (
+      final OutputStream outputStream = Files.newOutputStream(destZipFile);
+      final ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)
+    ) {
+      Files.walkFileTree(
+        srcFolder,
+        new SimpleFileVisitor<>() {
+          @Override
+          public @NotNull FileVisitResult visitFile(final Path file, final @NotNull BasicFileAttributes attrs) throws IOException {
+            final Path relativePath = srcFolder.relativize(file);
+            final String name = relativePath.toString();
+            final ZipEntry entry = new ZipEntry(name);
+            zipOutputStream.putNextEntry(entry);
+            Files.copy(file, zipOutputStream);
+            zipOutputStream.closeEntry();
+            return FileVisitResult.CONTINUE;
+          }
+
+          @Override
+          public @NotNull FileVisitResult preVisitDirectory(final Path dir, final @NotNull BasicFileAttributes attrs) throws IOException {
+            final Path relativePath = srcFolder.relativize(dir);
+            final String name = relativePath.toString();
+            if (!name.isEmpty()) {
+              final String directory = relativePath + "/";
+              final ZipEntry entry = new ZipEntry(directory);
+              zipOutputStream.putNextEntry(entry);
+              zipOutputStream.closeEntry();
+            }
+            return FileVisitResult.CONTINUE;
+          }
+        }
+      );
+    }
   }
 }
