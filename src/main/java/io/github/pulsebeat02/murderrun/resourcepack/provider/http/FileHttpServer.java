@@ -89,7 +89,8 @@ public final class FileHttpServer {
       if (future.isSuccess()) {
         latch.countDown();
       } else {
-        throw new AssertionError(future.cause());
+        final Throwable cause = future.cause();
+        throw new AssertionError(cause);
       }
     };
   }
