@@ -27,6 +27,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.http.ServerPackHosting;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.NettyHosting;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;

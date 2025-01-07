@@ -39,8 +39,6 @@ val runtimeDeps = listOf(
     libs.adventureTextMinimessage,
     libs.adventureTextSerializerPlain,
     libs.adventureTextSerializerLegacy,
-    libs.creativeApi,
-    libs.creativeServer,
     libs.cloudAnnotations,
     libs.cloudPaper,
     libs.cloudMinecraftExtras,
@@ -85,8 +83,7 @@ dependencies {
     }
 
     // Testing Dependencies
-    testImplementation(libs.creativeApi)
-    testImplementation(libs.creativeServer)
+    testImplementation(libs.nettyAll)
     testImplementation(libs.jsoup)
     testImplementation(libs.fastutil)
 }

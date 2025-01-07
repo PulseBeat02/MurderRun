@@ -73,7 +73,7 @@ public final class PackWrapper {
     final Path parent = requireNonNull(pack.getParent());
     for (final Resource resource : list) {
       final String path = resource.getPath();
-      if (path.startsWith("pack/"))  {
+      if (path.startsWith("pack/")) {
         try (final InputStream stream = IOUtils.getResourceAsStream(path)) {
           final Path file = parent.resolve(path);
           final Path fileParent = requireNonNull(file.getParent());

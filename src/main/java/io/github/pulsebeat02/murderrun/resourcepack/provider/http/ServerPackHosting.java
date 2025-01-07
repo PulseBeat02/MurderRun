@@ -23,22 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.resourcepack.provider;
+package io.github.pulsebeat02.murderrun.resourcepack.provider.http;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.utils.IOUtils;
-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
+import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import team.unnamed.creative.BuiltResourcePack;
-import team.unnamed.creative.base.Writable;
-import team.unnamed.creative.server.ResourcePackServer;
 
 public final class ServerPackHosting extends ResourcePackProvider {
 
@@ -47,7 +38,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
   private final String hostName;
   private final int port;
 
-  private ResourcePackServer server;
+  private FileHttpServer server;
 
   public ServerPackHosting(final String hostName, final int port) {
     super(ProviderMethod.LOCALLY_HOSTED_DAEMON);
@@ -64,27 +55,14 @@ public final class ServerPackHosting extends ResourcePackProvider {
   }
 
   private String startInternalServer(final Path zip) {
-    try (final InputStream stream = Files.newInputStream(zip); final InputStream fast = new FastBufferedInputStream(stream)) {
-      final String hash = IOUtils.generateFileHash(zip);
-      final Writable writable = Writable.copyInputStream(fast);
-      final BuiltResourcePack pack = BuiltResourcePack.of(writable, hash);
-      final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
-      this.server = ResourcePackServer.server().address(this.hostName, this.port).pack(pack).executor(service).build();
-      this.server.start();
-      return HOST_URL.formatted(this.hostName, this.port);
-    } catch (final IOException | NoSuchAlgorithmException e) {
-      throw new AssertionError(e);
-    }
+    super.start();
+    this.server = new FileHttpServer(this.port, zip);
+    this.server.start();
+    return HOST_URL.formatted(this.hostName, this.port);
   }
 
   @Override
-  public void start() {
-    super.start();
-    if (this.server == null) {
-      return;
-    }
-    this.server.start();
-  }
+  public void start() {}
 
   @Override
   public void shutdown() {
@@ -92,7 +70,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
     if (this.server == null) {
       return;
     }
-    this.server.stop(0);
+    this.server.stop();
   }
 
   public String getHostName() {
@@ -103,7 +81,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
     return this.port;
   }
 
-  public ResourcePackServer getServer() {
+  public FileHttpServer getServer() {
     return this.server;
   }
 }
