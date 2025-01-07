@@ -85,7 +85,7 @@ public final class FileHttpServer {
   }
 
   private static @NotNull ChannelFutureListener getChannelFutureListener(final CountDownLatch latch) {
-    return (ChannelFutureListener) future -> {
+    return future -> {
       if (future.isSuccess()) {
         latch.countDown();
       } else {
