@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.resourcepack.provider.http;
 
+import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -32,36 +33,65 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.jetbrains.annotations.NotNull;
 
 public final class FileHttpServer {
 
   private final int port;
   private final Path filePath;
+  private final ExecutorService service;
+
   private EventLoopGroup bossGroup;
   private EventLoopGroup workerGroup;
 
   public FileHttpServer(final int port, final Path filePath) {
     this.port = port;
     this.filePath = filePath;
+    this.service = Executors.newVirtualThreadPerTaskExecutor();
   }
 
   public void start() {
     this.bossGroup = new NioEventLoopGroup();
     this.workerGroup = new NioEventLoopGroup();
+    final CountDownLatch latch = new CountDownLatch(1);
+    CompletableFuture.runAsync(
+      () -> {
+        try {
+          final ServerBootstrap b = new ServerBootstrap();
+          b.group(this.bossGroup, this.workerGroup).channel(NioServerSocketChannel.class).childHandler(this.getChannelInitializer());
+          final ChannelFuture before = b.bind(this.port);
+          before.addListener(getChannelFutureListener(latch));
+          final ChannelFuture f = before.sync();
+          final Channel channel = f.channel();
+          final ChannelFuture closeFuture = channel.closeFuture();
+          closeFuture.sync();
+        } catch (final InterruptedException e) {
+          throw new AssertionError(e);
+        } finally {
+          this.stop();
+        }
+      },
+      this.service
+    );
     try {
-      final ServerBootstrap b = new ServerBootstrap();
-      b.group(this.bossGroup, this.workerGroup).channel(NioServerSocketChannel.class).childHandler(this.getChannelInitializer());
-      final ChannelFuture before = b.bind(this.port);
-      final ChannelFuture f = before.sync();
-      final Channel channel = f.channel();
-      final ChannelFuture closeFuture = channel.closeFuture();
-      closeFuture.sync();
+      latch.await();
     } catch (final InterruptedException e) {
       throw new AssertionError(e);
-    } finally {
-      this.stop();
     }
+  }
+
+  private static @NotNull ChannelFutureListener getChannelFutureListener(final CountDownLatch latch) {
+    return (ChannelFutureListener) future -> {
+      if (future.isSuccess()) {
+        latch.countDown();
+      } else {
+        throw new AssertionError(future.cause());
+      }
+    };
   }
 
   public void stop() {
@@ -71,6 +101,7 @@ public final class FileHttpServer {
     if (this.workerGroup != null) {
       this.workerGroup.shutdownGracefully();
     }
+    ExecutorUtils.shutdownExecutorGracefully(this.service);
   }
 
   private @NotNull ChannelInitializer<SocketChannel> getChannelInitializer() {
@@ -78,8 +109,10 @@ public final class FileHttpServer {
       @Override
       public void initChannel(final SocketChannel ch) {
         final ChannelPipeline p = ch.pipeline();
-        p.addLast(new ChunkedWriteHandler());
-        p.addLast(new FileServerHandler(FileHttpServer.this.filePath));
+        final ChunkedWriteHandler handler = new ChunkedWriteHandler();
+        final FileServerHandler fileHandler = new FileServerHandler(FileHttpServer.this.filePath);
+        p.addLast(handler);
+        p.addLast(fileHandler);
       }
     };
   }

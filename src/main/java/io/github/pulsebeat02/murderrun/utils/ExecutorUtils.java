@@ -41,6 +41,9 @@ public final class ExecutorUtils {
       final boolean await = service.awaitTermination(5, TimeUnit.SECONDS);
       if (!await) {
         final List<Runnable> tasks = service.shutdownNow();
+        if (tasks.isEmpty()) {
+          return true;
+        }
         final String msg = createExecutorShutdownErrorMessage(tasks);
         throw new AssertionError(msg);
       }
