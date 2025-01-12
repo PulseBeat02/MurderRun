@@ -44,10 +44,8 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   static {
     try {
-      final Path data = IOUtils.getPluginDataFolderPath();
-      SERVER_PACK = data.resolve("serverpack.zip");
-      final PackWrapper wrapper = new PackWrapper(SERVER_PACK);
-      wrapper.wrapPack();
+      final PackWrapper wrapper = new PackWrapper();
+      SERVER_PACK = wrapper.wrapPack();
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

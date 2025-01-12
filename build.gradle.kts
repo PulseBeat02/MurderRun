@@ -115,8 +115,8 @@ configurations.all {
 val windows = System.getProperty("os.name").lowercase().contains("windows")
 
 val zipPack by tasks.registering(Zip::class) {
-    from("src/main/resources/pack")
-    archiveFileName.set("murderrun-internal-pack.zip")
+    from("/resourcepack")
+    archiveFileName.set("pack.zip")
     destinationDirectory.set(layout.buildDirectory.dir("tmp/pack"))
 }
 
@@ -174,7 +174,6 @@ tasks {
         from(zipPack) {
             into("")
         }
-        exclude("pack/**")
     }
 
     spotlessInternalRegisterDependencies {

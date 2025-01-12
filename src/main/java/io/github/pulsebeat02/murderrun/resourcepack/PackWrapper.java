@@ -26,6 +26,8 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.resourcepack;
 
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -35,16 +37,18 @@ public final class PackWrapper {
 
   private final Path path;
 
-  public PackWrapper(final Path path) {
-    this.path = path;
+  public PackWrapper() {
+    final Path data = IOUtils.getPluginDataFolderPath();
+    this.path = data.resolve("pack.zip");
   }
 
-  public void wrapPack() throws IOException {
+  public Path wrapPack() throws IOException {
     if (Files.exists(this.path)) {
-      return;
+      return this.path;
     }
-    try (final InputStream stream = IOUtils.getResourceAsStream("murderrun-internal-pack.zip")) {
+    try (final InputStream stream = IOUtils.getResourceAsStream("pack.zip")) {
       Files.copy(stream, this.path);
     }
+    return this.path;
   }
 }
