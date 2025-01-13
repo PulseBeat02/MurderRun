@@ -39,6 +39,16 @@ import java.nio.file.Path;
 
 public final class FileServerHandler extends ChannelInboundHandlerAdapter {
 
+  private static final String RESPONSE_HEADERS_TEMPLATE =
+    """
+    HTTP/1.1 200 OK\r
+    Content-Type: application/octet-stream\r
+    Content-Length: %s\r
+    Content-Disposition: attachment; filename="%s"\r
+    Connection: keep-alive\r
+    \r
+    """;
+
   private final Path filePath;
 
   public FileServerHandler(final Path filePath) {
@@ -62,16 +72,7 @@ public final class FileServerHandler extends ChannelInboundHandlerAdapter {
   public byte[] createHeader(final RandomAccessFile file) throws IOException {
     final long fileLength = file.length();
     final String fileName = IOUtils.getName(this.filePath);
-    final String responseHeaders =
-      "HTTP/1.1 200 OK\r\n" +
-      "Content-Type: application/octet-stream\r\n" +
-      "Content-Length: " +
-      fileLength +
-      "\r\n" +
-      "Content-Disposition: attachment; filename=\"" +
-      fileName +
-      "\"\r\n" +
-      "Connection: keep-alive\r\n\r\n";
+    final String responseHeaders = String.format(RESPONSE_HEADERS_TEMPLATE, fileLength, fileName);
     return responseHeaders.getBytes();
   }
 

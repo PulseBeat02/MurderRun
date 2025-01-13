@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.resourcepack;
+package io.github.pulsebeat02.murderrun.resourcepack.provider.http;
 
-import io.github.pulsebeat02.murderrun.utils.IOUtils;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import java.nio.file.Path;
 
-public final class PackWrapper {
+public final class FileHttpChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-  private final Path path;
+  private final FileHttpServer server;
 
-  public PackWrapper(final Path path) {
-    this.path = path;
+  public FileHttpChannelInitializer(final FileHttpServer server) {
+    this.server = server;
   }
 
-  public void wrapPack() throws IOException {
-    if (Files.exists(this.path)) {
-      return;
-    }
-    try (final InputStream stream = IOUtils.getResourceAsStream("murderrun-internal-pack.zip")) {
-      Files.copy(stream, this.path);
-    }
+  @Override
+  public void initChannel(final SocketChannel ch) {
+    final Path file = this.server.getFilePath();
+    final ChannelPipeline p = ch.pipeline();
+    final ChunkedWriteHandler handler = new ChunkedWriteHandler();
+    final FileServerHandler fileHandler = new FileServerHandler(file);
+    p.addLast(handler);
+    p.addLast(fileHandler);
   }
 }

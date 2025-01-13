@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
+import com.google.common.collect.Lists;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.PackWrapper;
@@ -33,7 +34,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
@@ -44,7 +44,8 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   static {
     try {
-      SERVER_PACK = IOUtils.createTemporaryPath("murder-run-pack", ".zip");
+      final Path data = IOUtils.getPluginDataFolderPath();
+      SERVER_PACK = data.resolve("serverpack.zip");
       final PackWrapper wrapper = new PackWrapper(SERVER_PACK);
       wrapper.wrapPack();
     } catch (final IOException e) {
@@ -65,7 +66,7 @@ public abstract class ResourcePackProvider implements PackProvider {
     final ResourcePackInfo info = this.getMainResourceInfo();
     final ResourcePackInfo other = this.getResourceInfo();
     final Component message = Message.RESOURCEPACK_PROMPT.build();
-    final Collection<ResourcePackInfo> infos = List.of(other, info);
+    final Collection<ResourcePackInfo> infos = Lists.newArrayList(other, info);
     final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
     final boolean required = GameProperties.FORCE_RESOURCEPACK;
     this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();

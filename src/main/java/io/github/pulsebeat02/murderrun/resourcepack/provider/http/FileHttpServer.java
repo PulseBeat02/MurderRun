@@ -29,9 +29,7 @@ import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.stream.ChunkedWriteHandler;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -51,25 +49,23 @@ public final class FileHttpServer {
   public FileHttpServer(final int port, final Path filePath) {
     this.port = port;
     this.filePath = filePath;
-    this.service = Executors.newVirtualThreadPerTaskExecutor();
+    this.service = Executors.newSingleThreadExecutor();
   }
 
   public void start() {
-    this.bossGroup = new NioEventLoopGroup();
-    this.workerGroup = new NioEventLoopGroup();
     final CountDownLatch latch = new CountDownLatch(1);
     CompletableFuture.runAsync(
       () -> {
         try {
-          final ServerBootstrap b = new ServerBootstrap();
-          b.group(this.bossGroup, this.workerGroup).channel(NioServerSocketChannel.class).childHandler(this.getChannelInitializer());
-          final ChannelFuture before = b.bind(this.port);
-          before.addListener(getChannelFutureListener(latch));
+          final ServerBootstrap b = this.initializeServerBootstrap();
+          final ChannelFuture before = this.addServerListener(b, latch);
           final ChannelFuture f = before.sync();
           final Channel channel = f.channel();
           final ChannelFuture closeFuture = channel.closeFuture();
           closeFuture.sync();
         } catch (final InterruptedException e) {
+          final Thread current = Thread.currentThread();
+          current.interrupt();
           throw new AssertionError(e);
         } finally {
           this.stop();
@@ -80,8 +76,26 @@ public final class FileHttpServer {
     try {
       latch.await();
     } catch (final InterruptedException e) {
+      final Thread current = Thread.currentThread();
+      current.interrupt();
       throw new AssertionError(e);
     }
+  }
+
+  private @NotNull ChannelFuture addServerListener(final ServerBootstrap b, final CountDownLatch latch) {
+    final ChannelFuture before = b.bind(this.port);
+    final ChannelFutureListener listener = getChannelFutureListener(latch);
+    before.addListener(listener);
+    return before;
+  }
+
+  private @NotNull ServerBootstrap initializeServerBootstrap() {
+    final FileHttpChannelInitializer initializer = new FileHttpChannelInitializer(this);
+    final ServerBootstrap b = new ServerBootstrap();
+    this.bossGroup = new NioEventLoopGroup();
+    this.workerGroup = new NioEventLoopGroup();
+    b.group(this.bossGroup, this.workerGroup).channel(NioServerSocketChannel.class).childHandler(initializer);
+    return b;
   }
 
   private static @NotNull ChannelFutureListener getChannelFutureListener(final CountDownLatch latch) {
@@ -105,16 +119,31 @@ public final class FileHttpServer {
     ExecutorUtils.shutdownExecutorGracefully(this.service);
   }
 
-  private @NotNull ChannelInitializer<SocketChannel> getChannelInitializer() {
-    return new ChannelInitializer<>() {
-      @Override
-      public void initChannel(final SocketChannel ch) {
-        final ChannelPipeline p = ch.pipeline();
-        final ChunkedWriteHandler handler = new ChunkedWriteHandler();
-        final FileServerHandler fileHandler = new FileServerHandler(FileHttpServer.this.filePath);
-        p.addLast(handler);
-        p.addLast(fileHandler);
-      }
-    };
+  public int getPort() {
+    return this.port;
+  }
+
+  public Path getFilePath() {
+    return this.filePath;
+  }
+
+  public ExecutorService getService() {
+    return this.service;
+  }
+
+  public EventLoopGroup getBossGroup() {
+    return this.bossGroup;
+  }
+
+  public void setBossGroup(final EventLoopGroup bossGroup) {
+    this.bossGroup = bossGroup;
+  }
+
+  public EventLoopGroup getWorkerGroup() {
+    return this.workerGroup;
+  }
+
+  public void setWorkerGroup(final EventLoopGroup workerGroup) {
+    this.workerGroup = workerGroup;
   }
 }

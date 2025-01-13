@@ -50,6 +50,7 @@ public final class ExecutorUtils {
     } catch (final InterruptedException e) {
       final Thread current = Thread.currentThread();
       current.interrupt(); // yeah... we're fucked
+      throw new AssertionError(e);
     }
     return false;
   }

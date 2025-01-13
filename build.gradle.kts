@@ -113,6 +113,13 @@ configurations.all {
 }
 
 val windows = System.getProperty("os.name").lowercase().contains("windows")
+
+val zipPack by tasks.registering(Zip::class) {
+    from("src/main/resources/pack")
+    archiveFileName.set("murderrun-internal-pack.zip")
+    destinationDirectory.set(layout.buildDirectory.dir("tmp/pack"))
+}
+
 tasks {
 
     bukkitPluginYaml {
@@ -162,6 +169,12 @@ tasks {
     processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         filteringCharset = "UTF-8"
+        dependsOn(zipPack)
+        val zipPack = zipPack.get().archiveFile
+        from(zipPack) {
+            into("")
+        }
+        exclude("pack/**")
     }
 
     spotlessInternalRegisterDependencies {
