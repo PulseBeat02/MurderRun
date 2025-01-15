@@ -27,7 +27,6 @@ package io.github.pulsebeat02.murderrun;
 
 import io.github.pulsebeat02.murderrun.resourcepack.PackWrapper;
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class ResourcePackTest {
 

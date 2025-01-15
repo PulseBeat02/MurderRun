@@ -115,7 +115,7 @@ configurations.all {
 val windows = System.getProperty("os.name").lowercase().contains("windows")
 
 val zipPack by tasks.registering(Zip::class) {
-    from("/resourcepack")
+    from("./resourcepack")
     archiveFileName.set("pack.zip")
     destinationDirectory.set(layout.buildDirectory.dir("tmp/pack"))
 }

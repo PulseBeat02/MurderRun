@@ -26,8 +26,6 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.resourcepack;
 
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
