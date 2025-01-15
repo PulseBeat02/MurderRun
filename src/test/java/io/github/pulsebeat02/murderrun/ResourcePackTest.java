@@ -32,8 +32,8 @@ import java.nio.file.Path;
 public class ResourcePackTest {
 
   public static void main(final String[] args) throws IOException {
-    final Path path = Path.of(System.getProperty("user.dir"), "pack-testing.zip");
-    final PackWrapper wrapper = new PackWrapper(path);
+    // final Path path = Path.of(System.getProperty("user.dir"), "pack-testing.zip");
+    final PackWrapper wrapper = new PackWrapper();
     wrapper.wrapPack();
   }
 }
