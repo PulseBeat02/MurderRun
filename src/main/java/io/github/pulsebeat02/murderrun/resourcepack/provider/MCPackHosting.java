@@ -65,7 +65,11 @@ public final class MCPackHosting extends ResourcePackProvider {
       final String hash = IOUtils.getSHA1Hash(zip);
       final String url = PACK_URL.formatted(DOWNLOAD_WEBSITE_URL, hash);
       return new PackInfo(url, 0);
-    } catch (final IOException | InterruptedException e) {
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    } catch (final InterruptedException e) {
+      final Thread current = Thread.currentThread();
+      current.interrupt();
       throw new AssertionError(e);
     }
   }
