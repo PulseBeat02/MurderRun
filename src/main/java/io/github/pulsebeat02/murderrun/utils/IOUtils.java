@@ -129,17 +129,31 @@ public final class IOUtils {
     return builder.toString();
   }
 
-  public static byte[] getSHA1Hash(final Path path) {
+  public static String getSHA1Hash(final Path path) {
     try {
       final HashFunction function = Hashing.sha1();
       try (final InputStream stream = Files.newInputStream(path); final InputStream fast = new FastBufferedInputStream(stream)) {
         final byte[] bytes = fast.readAllBytes();
         final HashCode code = function.hashBytes(bytes);
-        return code.asBytes();
+        final byte[] hash = code.asBytes();
+        return bytesToHex(hash);
       }
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
+  }
+
+  public static String bytesToHex(final byte[] bytes) {
+    final int size = bytes.length;
+    final StringBuilder hexString = new StringBuilder(2 * size);
+    for (final byte b : bytes) {
+      final String hex = Integer.toHexString(0xff & b);
+      if (hex.length() == 1) {
+        hexString.append('0');
+      }
+      hexString.append(hex);
+    }
+    return hexString.toString();
   }
 
   public static String getFileName(final String url) {

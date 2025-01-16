@@ -5,7 +5,6 @@ cloudAnnotations = "2.0.0"
 cloudPaper = "2.0.0-beta.10"
 cloudMinecraftExtras = "2.0.0-beta.10"
 commodore = "2.2"
-jsoup = "1.18.3"
 fastboard = "2.1.3"
 inventoryFramework = "0.10.19"
 bstatsBukkit = "3.1.0"
@@ -36,7 +35,6 @@ cloudAnnotations = { group = "org.incendo", name = "cloud-annotations", version.
 cloudPaper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloudPaper" }
 cloudMinecraftExtras = { group = "org.incendo", name = "cloud-minecraft-extras", version.ref = "cloudMinecraftExtras" }
 commodore = { group = "me.lucko", name = "commodore", version.ref = "commodore" }
-jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
 fastboard = { group = "fr.mrmicky", name = "fastboard", version.ref = "fastboard" }
 inventoryFramework = { group = "com.github.stefvanschie.inventoryframework", name = "IF", version.ref = "inventoryFramework" }
 bstatsBukkit = { group = "org.bstats", name = "bstats-bukkit", version.ref = "bstatsBukkit" }

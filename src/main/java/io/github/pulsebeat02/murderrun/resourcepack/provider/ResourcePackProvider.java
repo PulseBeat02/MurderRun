@@ -37,6 +37,7 @@ import java.util.Collection;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class ResourcePackProvider implements PackProvider {
 
@@ -64,7 +65,7 @@ public abstract class ResourcePackProvider implements PackProvider {
     final ResourcePackInfo info = this.getMainResourceInfo();
     final ResourcePackInfo other = this.getResourceInfo();
     final Component message = Message.RESOURCEPACK_PROMPT.build();
-    final Collection<ResourcePackInfo> infos = Lists.newArrayList(other, info);
+    final Collection<ResourcePackInfo> infos = other == null ? Lists.newArrayList(info) : Lists.newArrayList(other, info);
     final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
     final boolean required = GameProperties.FORCE_RESOURCEPACK;
     this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
@@ -84,8 +85,11 @@ public abstract class ResourcePackProvider implements PackProvider {
     return ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
   }
 
-  private ResourcePackInfo getResourceInfo() {
+  private @Nullable ResourcePackInfo getResourceInfo() {
     final String url = GameProperties.BUILT_IN_RESOURCES;
+    if (url.equalsIgnoreCase("none")) {
+      return null;
+    }
     final URI uri = URI.create(url);
     final String hash = IOUtils.getSHA1Hash(uri);
     return ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();

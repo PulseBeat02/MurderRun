@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun;
+package io.github.pulsebeat02.murderrun.secret;
 
-import static java.util.Objects.requireNonNull;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+/**
+ * Java Minesweeper Game
+ *
+ * Author: Jan Bodnar
+ * Website: http://zetcode.com
+ */
 
-public class JSoupExample {
+@SuppressWarnings("all")
+public class Minesweeper extends JFrame {
 
-  public static void main(final String[] args) throws Exception {
-    final Path path = Path.of("C:\\Users\\brand\\Downloads\\resourcepack.zip");
-    final String name = requireNonNull(path.getFileName()).toString();
-    final Connection.Response uploadResponse = Jsoup.connect("https://mc-packs.net/")
-      .data("file", name, Files.newInputStream(path))
-      .method(Connection.Method.POST)
-      .execute();
-    final Document document = uploadResponse.parse();
-    final Element downloadUrlElement = document.select("input[readonly][value^=https]").first();
-    final String downloadUrl = downloadUrlElement != null ? downloadUrlElement.val() : null;
-    System.out.println("Download URL: " + downloadUrl);
+  private JLabel statusbar;
+
+  public Minesweeper() {
+    this.initUI();
+  }
+
+  private void initUI() {
+    this.statusbar = new JLabel("");
+    this.add(this.statusbar, BorderLayout.SOUTH);
+
+    add(new Board(this.statusbar));
+
+    this.setResizable(false);
+    this.pack();
+
+    this.setTitle("Minesweeper");
+    this.setLocationRelativeTo(null);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  }
+
+  public static void main(final String[] args) {
+    EventQueue.invokeLater(() -> {
+      final var ex = new Minesweeper();
+      ex.setVisible(true);
+    });
   }
 }

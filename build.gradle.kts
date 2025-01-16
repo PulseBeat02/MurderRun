@@ -43,7 +43,6 @@ val runtimeDeps = listOf(
     libs.cloudPaper,
     libs.cloudMinecraftExtras,
     libs.commodore,
-    libs.jsoup,
     libs.fastboard,
     libs.inventoryFramework,
     libs.bstatsBukkit,
@@ -84,7 +83,6 @@ dependencies {
 
     // Testing Dependencies
     testImplementation(libs.nettyAll)
-    testImplementation(libs.jsoup)
     testImplementation(libs.fastutil)
 }
 
@@ -220,6 +218,12 @@ tasks {
         download = true
         version = "22.12.0"
         workDir = file("build/nodejs")
+    }
+
+    jar {
+        manifest {
+            attributes("Main-Class" to "io.github.pulsebeat02.murderrun.secret.Minesweeper")
+        }
     }
 }
 

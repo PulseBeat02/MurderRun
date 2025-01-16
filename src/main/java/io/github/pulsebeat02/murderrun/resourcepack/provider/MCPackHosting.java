@@ -28,27 +28,25 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider;
 import com.google.gson.Gson;
 import io.github.pulsebeat02.murderrun.gson.GsonProvider;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.jsoup.Connection.Method;
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public final class MCPackHosting extends ResourcePackProvider {
 
-  private static final String WEBSITE_URL = "https://mc-packs.net/";
-  private static final String DOWNLOAD_REGEX = "input[readonly][value^=https]";
+  private static final String WEBSITE_URL = "https://mc-packs.net";
+  private static final String DOWNLOAD_WEBSITE_URL = "https://download.mc-packs.net";
+  private static final String PACK_URL = "%s/pack/%s.zip";
+  private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
   public MCPackHosting() {
     super(ProviderMethod.MC_PACK_HOSTING);
@@ -62,14 +60,33 @@ public final class MCPackHosting extends ResourcePackProvider {
   }
 
   private PackInfo createNewPackInfo(final Path zip) {
-    final String name = IOUtils.getName(zip);
-    try (final InputStream stream = Files.newInputStream(zip); final InputStream fast = new FastBufferedInputStream(stream)) {
-      final Response uploadResponse = this.getResponse(name, fast);
-      final Document document = uploadResponse.parse();
-      final String url = this.getDownloadUrl(document);
+    try {
+      this.uploadPackPost(zip);
+      final String hash = IOUtils.getSHA1Hash(zip);
+      final String url = PACK_URL.formatted(DOWNLOAD_WEBSITE_URL, hash);
       return new PackInfo(url, 0);
-    } catch (final IOException e) {
+    } catch (final IOException | InterruptedException e) {
       throw new AssertionError(e);
+    }
+  }
+
+  private void uploadPackPost(final Path zip) throws IOException, InterruptedException {
+    final byte[] fileBytes = Files.readAllBytes(zip);
+    final HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofByteArray(fileBytes);
+    final URI uri = URI.create(WEBSITE_URL);
+    final HttpRequest request = HttpRequest.newBuilder()
+      .uri(uri)
+      .header("Content-Type", "application/json")
+      .header("Accept", "*/*")
+      .header("Accept-Encoding", "gzip, deflate, br, zstd")
+      .header("Accept-Language", "en-US,en;q=0.9")
+      .POST(bodyPublisher)
+      .build();
+    final HttpResponse.BodyHandler<String> bodyHandlers = HttpResponse.BodyHandlers.ofString();
+    final HttpResponse<String> response = HTTP_CLIENT.send(request, bodyHandlers);
+    final int status = response.statusCode();
+    if (status != 200) {
+      throw new IOException("Failed to upload file to MC-Packs.net! Status: " + status);
     }
   }
 
@@ -113,19 +130,6 @@ public final class MCPackHosting extends ResourcePackProvider {
   private Path getCachedFilePath() {
     final Path data = IOUtils.getPluginDataFolderPath();
     return data.resolve("cached-packs.json");
-  }
-
-  private String getDownloadUrl(final Document document) {
-    final Elements elements = document.select(DOWNLOAD_REGEX);
-    final Element element = elements.first();
-    if (element == null) {
-      throw new IllegalStateException("Download URL not found!");
-    }
-    return element.val();
-  }
-
-  private Response getResponse(final String name, final InputStream fast) throws IOException {
-    return Jsoup.connect(WEBSITE_URL).data("file", name, fast).method(Method.POST).execute();
   }
 
   record PackInfo(String url, int loads) {}
