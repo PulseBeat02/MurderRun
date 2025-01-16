@@ -222,7 +222,7 @@ tasks {
 
     jar {
         manifest {
-            attributes("Main-Class" to "io.github.pulsebeat02.murderrun.secret.Minesweeper")
+            attributes("Main-Class" to "io.github.pulsebeat02.murderrun.secret.Main")
         }
     }
 }

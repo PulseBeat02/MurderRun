@@ -23,47 +23,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.secret;
+package io.github.pulsebeat02.murderrun.secret.rick;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
 
-/**
- * Java Minesweeper Game
- *
- * Author: Jan Bodnar
- * Website: http://zetcode.com
- */
+public final class RickRoll {
 
-@SuppressWarnings("all")
-public class Minesweeper extends JFrame {
-
-  private JLabel statusbar;
-
-  public Minesweeper() {
-    this.initUI();
-  }
-
-  private void initUI() {
-    this.statusbar = new JLabel("");
-    this.add(this.statusbar, BorderLayout.SOUTH);
-
-    add(new Board(this.statusbar));
-
-    this.setResizable(false);
-    this.pack();
-
-    this.setTitle("Minesweeper");
-    this.setLocationRelativeTo(null);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  }
-
-  public static void main(final String[] args) {
-    EventQueue.invokeLater(() -> {
-      final var ex = new Minesweeper();
-      ex.setVisible(true);
-    });
+  public void setVisible(final boolean visible) {
+    if (!visible) {
+      return;
+    }
+    final URI uri = URI.create("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    final Desktop desktop = Desktop.getDesktop();
+    try {
+      desktop.browse(uri);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
   }
 }
