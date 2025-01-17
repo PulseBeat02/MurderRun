@@ -58,13 +58,17 @@ public final class KillerLocationTracker {
     final GamePlayerManager manager = this.game.getPlayerManager();
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final Collection<GamePlayer> players = survivors.toList();
+    final World killerWorld = murdererLocation.getWorld();
     for (final GamePlayer survivor : players) {
       final Location location = survivor.getLocation();
+      final World world = requireNonNull(location.getWorld());
+      if (killerWorld != world) {
+        continue;
+      }
       if (location.distanceSquared(murdererLocation) > 25) {
         continue;
       }
       final Location clone = location.clone().add(0, 1, 0);
-      final World world = requireNonNull(clone.getWorld());
       world.spawnParticle(Particle.DUST, clone, 15, 1, 1, 1, new DustOptions(Color.WHITE, 4));
     }
   }

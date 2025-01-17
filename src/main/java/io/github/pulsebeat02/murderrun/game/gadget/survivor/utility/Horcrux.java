@@ -68,8 +68,13 @@ public final class Horcrux extends SurvivorGadget {
   private void handleHorcrux(final GamePlayer player, final Item item) {
     final Location location = item.getLocation();
     player.setRespawnLocation(location, true);
+    player.setInvulnerable(true);
     player.teleport(location);
     item.remove();
+
+    final Game game = player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), 20L);
 
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.HORCRUX_ACTIVATE.build();
