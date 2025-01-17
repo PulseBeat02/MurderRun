@@ -9,6 +9,8 @@
 [![Kofi](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_kofi.webp)](https://ko-fi.com/pulsebeat_02)
 ![Description](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_description.webp)
 
+# UPDATE JANUARY 2025: Connect to the plugin testing server **`murderrun.mcserver.us`** to try Murder Run with your friends!
+
 Inspired by the popular game Dead by Daylight, Murder Run is an advanced gamemode revolving around killers
 and survivors. In a desolate map, survivors must find all the vehicle parts and throw them back onto the
 truck before the killers murder everyone. Both killers and survivors have access to a 100+ different gadgets, 
