@@ -96,8 +96,8 @@ public final class IOUtils {
       final URL url = uri.toURL();
       final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
       urlConnection.setRequestMethod("HEAD");
-      urlConnection.setConnectTimeout(1000);
-      urlConnection.setReadTimeout(1000);
+      urlConnection.setConnectTimeout(5000);
+      urlConnection.setReadTimeout(5000);
       final int code = urlConnection.getResponseCode();
       return (code == HttpURLConnection.HTTP_OK);
     } catch (final Exception e) {
