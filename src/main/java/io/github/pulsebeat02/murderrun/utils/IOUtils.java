@@ -109,7 +109,10 @@ public final class IOUtils {
     try {
       final HashFunction function = Hashing.sha1();
       final URL url = uri.toURL();
-      try (final InputStream stream = url.openStream(); final InputStream fast = new FastBufferedInputStream(stream)) {
+      final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+      urlConnection.setConnectTimeout(1000);
+      urlConnection.setReadTimeout(1000);
+      try (final InputStream stream = urlConnection.getInputStream(); final InputStream fast = new FastBufferedInputStream(stream)) {
         final byte[] bytes = fast.readAllBytes();
         final HashCode code = function.hashBytes(bytes);
         final byte[] hash = code.asBytes();

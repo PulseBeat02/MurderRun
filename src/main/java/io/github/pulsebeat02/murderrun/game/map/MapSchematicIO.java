@@ -121,7 +121,7 @@ public final class MapSchematicIO {
       }
       final ClipboardHolder holder = new ClipboardHolder(clipboard);
       final BlockVector3 internal = vector3.getVector3();
-      final PasteBuilder extent = holder.createPaste(session).to(internal).ignoreAirBlocks(true).copyBiomes(false);
+      final PasteBuilder extent = holder.createPaste(session).to(internal).copyBiomes(false);
       final Operation operation = extent.build();
       Operations.complete(operation);
     }

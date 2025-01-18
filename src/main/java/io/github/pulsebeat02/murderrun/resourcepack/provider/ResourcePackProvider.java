@@ -81,8 +81,18 @@ public abstract class ResourcePackProvider implements PackProvider {
   private ResourcePackInfo getMainResourceInfo() {
     final String url = this.getFinalUrl();
     final URI uri = URI.create(url);
-    final String hash = IOUtils.getSHA1Hash(uri);
+    final String hash = this.getFileHash(uri);
     return ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
+  }
+
+  private String getFileHash(final URI uri) {
+    try {
+      return IOUtils.getSHA1Hash(uri);
+    } catch (final AssertionError e) {
+      final String msg =
+        "Unable to retrieve resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
+      throw new AssertionError(msg);
+    }
   }
 
   private @Nullable ResourcePackInfo getResourceInfo() {
