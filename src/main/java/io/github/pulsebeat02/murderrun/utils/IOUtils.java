@@ -48,7 +48,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Set;
@@ -105,6 +104,7 @@ public final class IOUtils {
     }
   }
 
+  @SuppressWarnings("deprecation")
   public static String getSHA1Hash(final URI uri) {
     try {
       final HashFunction function = Hashing.sha1();
@@ -132,6 +132,7 @@ public final class IOUtils {
     return builder.toString();
   }
 
+  @SuppressWarnings("deprecation")
   public static String getSHA1Hash(final Path path) {
     try {
       final HashFunction function = Hashing.sha1();
@@ -170,7 +171,8 @@ public final class IOUtils {
     return new FastBufferedInputStream(stream);
   }
 
-  public static String generateFileHash(final Path path) throws IOException, NoSuchAlgorithmException {
+  @SuppressWarnings("deprecation")
+  public static String generateFileHash(final Path path) throws IOException {
     final HashFunction function = Hashing.sha1();
     try (final InputStream fileStream = Files.newInputStream(path); final InputStream stream = new FastBufferedInputStream(fileStream)) {
       final byte[] bytes = stream.readAllBytes();

@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -71,7 +72,7 @@ public class GamePlayer extends AbstractPlayer {
   }
 
   private void setDefaultAttributes() {
-    final Attribute[] attributes = Attribute.values();
+    final Registry<Attribute> attributes = Registry.ATTRIBUTE;
     for (final Attribute attribute : attributes) {
       final AttributeInstance instance = this.getAttribute(attribute);
       if (instance != null) {

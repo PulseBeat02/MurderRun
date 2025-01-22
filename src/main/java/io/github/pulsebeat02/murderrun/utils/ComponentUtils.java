@@ -77,7 +77,6 @@ public final class ComponentUtils {
     return SERIALIZER.serialize(component);
   }
 
-  @Deprecated // when Adventure platform implements new resourcepack logic use that
   public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
     if (request.replace()) {
       player.removeResourcePacks();

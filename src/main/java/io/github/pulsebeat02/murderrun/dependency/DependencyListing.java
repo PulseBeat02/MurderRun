@@ -34,8 +34,8 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.37-b3693",
-    "https://ci.citizensnpcs.co/job/Citizens2/3693/artifact/dist/target/Citizens-2.0.37-b3693.jar"
+    "Citizens-2.0.37-b3695",
+    "https://ci.citizensnpcs.co/job/Citizens2/3695/artifact/dist/target/Citizens-2.0.37-b3695.jar"
   );
 
   private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(

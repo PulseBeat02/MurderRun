@@ -53,6 +53,7 @@ public final class StreamUtils {
     return clazz::isInstance;
   }
 
+  @SuppressWarnings("unchecked")
   public static <T> Collector<T, ?, List<T>> toShuffledList() {
     return (Collector<T, ?, List<T>>) SHUFFLER;
   }

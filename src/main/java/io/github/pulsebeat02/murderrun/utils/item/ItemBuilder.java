@@ -144,9 +144,10 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
+  @SuppressWarnings("UnstableApiUsage")
   public Builder dummyAttribute() {
     final Attribute attribute = Attribute.OXYGEN_BONUS;
-    final NamespacedKey key = attribute.getKey();
+    final NamespacedKey key = attribute.getKeyOrThrow();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
     final AttributeModifier modifier = new AttributeModifier(key, 0, operation, group);
@@ -166,8 +167,9 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
+  @SuppressWarnings("UnstableApiUsage")
   public Builder modifier(final Attribute attribute, final double amount) {
-    final NamespacedKey key = attribute.getKey();
+    final NamespacedKey key = attribute.getKeyOrThrow();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
     final AttributeModifier modifier = new AttributeModifier(key, amount, operation, group);

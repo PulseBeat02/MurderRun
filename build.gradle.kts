@@ -139,7 +139,8 @@ tasks {
     }
 
     withType<JavaCompile>().configureEach {
-        options.compilerArgs.add("-parameters")
+        val set = setOf("-parameters", "-Xlint:deprecation", "-Xlint:unchecked")
+        options.compilerArgs.addAll(set)
         options.encoding = "UTF-8"
         options.release.set(targetJavaVersion)
         options.isFork = true

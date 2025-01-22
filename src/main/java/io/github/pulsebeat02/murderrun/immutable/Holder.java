@@ -39,6 +39,7 @@ public final class Holder<T> {
     return new Holder<>(value);
   }
 
+  @SuppressWarnings("unchecked")
   public static <T> Holder<T> empty() {
     return (Holder<T>) EMPTY;
   }

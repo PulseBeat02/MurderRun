@@ -37,7 +37,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
-@Deprecated
 public final class FallbackPacketTools implements PacketToolAPI {
 
   @Override
