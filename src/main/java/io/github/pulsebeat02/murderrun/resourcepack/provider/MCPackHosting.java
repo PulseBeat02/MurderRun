@@ -37,6 +37,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -48,15 +49,26 @@ public final class MCPackHosting extends ResourcePackProvider {
   private static final String PACK_URL = "%s/pack/%s.zip";
   private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
+  private String url;
+  private PackInfo info;
+
   public MCPackHosting() {
     super(ProviderMethod.MC_PACK_HOSTING);
   }
 
   @Override
-  public String getRawUrl(final Path zip) {
+  public String getRawUrl() {
+    return this.url;
+  }
+
+  @Override
+  public void start() {
+    super.start();
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     final PackInfo info = this.checkFileUrl(lock);
-    return this.updateAndRetrievePackJSON(lock, info == null ? this.createNewPackInfo(zip) : info);
+    final Path zip = ResourcePackProvider.getServerPack();
+    this.info = Objects.requireNonNullElseGet(info, () -> this.createNewPackInfo(zip));
+    this.url = this.updateAndRetrievePackJSON(lock, this.info);
   }
 
   private PackInfo createNewPackInfo(final Path zip) {

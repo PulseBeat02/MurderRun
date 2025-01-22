@@ -35,6 +35,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.plugin.PluginManager;
 
@@ -61,6 +62,12 @@ public final class PlayerResourcePackChecker implements Listener {
     if (status == PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED) {
       this.markLoaded(player);
     }
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerLeave(final PlayerQuitEvent event) {
+    final Player player = event.getPlayer();
+    this.players.remove(player);
   }
 
   public void markLoaded(final Player player) {

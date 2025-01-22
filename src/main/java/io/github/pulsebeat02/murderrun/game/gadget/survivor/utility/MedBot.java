@@ -103,6 +103,12 @@ public final class MedBot extends SurvivorGadget {
   private void handleKillerDestroy(final GamePlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
+    final World first = stand.getWorld();
+    final World second = location.getWorld();
+    if (first != second) {
+      return;
+    }
+
     final double distance = origin.distanceSquared(location);
     final double radius = GameProperties.MED_BOT_DESTROY_RADIUS;
     if (distance < radius * radius) {

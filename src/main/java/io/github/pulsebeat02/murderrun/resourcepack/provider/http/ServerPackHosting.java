@@ -47,22 +47,17 @@ public final class ServerPackHosting extends ResourcePackProvider {
   }
 
   @Override
-  public String getRawUrl(final Path zip) {
-    if (this.server != null) {
-      return HOST_URL.formatted(this.hostName, this.port);
-    }
-    return this.startInternalServer(zip);
-  }
-
-  private String startInternalServer(final Path zip) {
-    super.start();
-    this.server = new FileHttpServer(this.port, zip);
-    this.server.start();
+  public String getRawUrl() {
     return HOST_URL.formatted(this.hostName, this.port);
   }
 
   @Override
-  public void start() {}
+  public void start() {
+    super.start();
+    final Path zip = ResourcePackProvider.getServerPack();
+    this.server = new FileHttpServer(this.port, zip);
+    this.server.start();
+  }
 
   @Override
   public void shutdown() {

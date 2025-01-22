@@ -71,7 +71,7 @@ public abstract class ResourcePackProvider implements PackProvider {
     this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
   }
 
-  public abstract String getRawUrl(final Path zip);
+  public abstract String getRawUrl();
 
   @Override
   public ResourcePackRequest getResourcePackRequest() {
@@ -115,9 +115,13 @@ public abstract class ResourcePackProvider implements PackProvider {
     return this.method;
   }
 
+  public static Path getServerPack() {
+    return SERVER_PACK;
+  }
+
   public String getFinalUrl() {
     if (this.url == null) {
-      this.url = this.getRawUrl(SERVER_PACK);
+      this.url = this.getRawUrl();
     }
     return this.url;
   }

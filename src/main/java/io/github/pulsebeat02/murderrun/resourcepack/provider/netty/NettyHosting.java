@@ -37,7 +37,6 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 public final class NettyHosting extends ResourcePackProvider {
 
   private final String url;
-  private boolean injected;
 
   public NettyHosting() {
     super(ProviderMethod.ON_SERVER);
@@ -51,12 +50,15 @@ public final class NettyHosting extends ResourcePackProvider {
   }
 
   @Override
-  public String getRawUrl(final Path zip) {
-    if (!this.injected) {
-      this.injectHandler(zip);
-      this.injected = true;
-    }
+  public String getRawUrl() {
     return this.url;
+  }
+
+  @Override
+  public void start() {
+    super.start();
+    final Path zip = ResourcePackProvider.getServerPack();
+    this.injectHandler(zip);
   }
 
   private void injectHandler(final Path zip) {
