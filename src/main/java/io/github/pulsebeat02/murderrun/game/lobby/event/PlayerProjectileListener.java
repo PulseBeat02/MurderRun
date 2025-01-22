@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,40 +25,38 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.lobby.event;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import java.util.Collection;
-import java.util.Set;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.event.HandlerList;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
-public final class PreGameEvents {
+public final class PlayerProjectileListener implements Listener {
 
   private final PreGameManager manager;
-  private final Collection<Listener> events;
 
-  public PreGameEvents(final PreGameManager manager) {
+  public PlayerProjectileListener(final PreGameManager manager) {
     this.manager = manager;
-    this.events = Set.of(
-      new DupePreventListener(manager),
-      new DamagePreventionListener(manager),
-      new PlayerLeaveListener(manager),
-      new BlockModifyListener(manager),
-      new PlayerProjectileListener(manager)
-    );
   }
 
-  public void registerEvents() {
-    final Server server = Bukkit.getServer();
-    final PluginManager manager = server.getPluginManager();
-    final MurderRun plugin = this.manager.getPlugin();
-    this.events.forEach(event -> manager.registerEvents(event, plugin));
-  }
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerProjectile(final ProjectileLaunchEvent event) {
+    final Projectile projectile = event.getEntity();
+    final ProjectileSource source = projectile.getShooter();
+    if (!(source instanceof final Player player)) {
+      return;
+    }
 
-  public void unregisterEvents() {
-    this.events.forEach(HandlerList::unregisterAll);
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
+    final Collection<Player> participants = playerManager.getParticipants();
+    if (!participants.contains(player)) {
+      return;
+    }
+    event.setCancelled(true);
   }
 }
