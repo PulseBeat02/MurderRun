@@ -32,6 +32,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.awt.Color;
@@ -65,8 +67,9 @@ public final class JebTrap extends SurvivorTrap {
       world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
     }
 
+    final SchedulerReference reference = NullReference.of();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> spawnRainbowParticles(location), 0, 5, GameProperties.JEB_DURATION);
+    scheduler.scheduleRepeatedTask(() -> spawnRainbowParticles(location), 0, 5, GameProperties.JEB_DURATION, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.JEB_SOUND);

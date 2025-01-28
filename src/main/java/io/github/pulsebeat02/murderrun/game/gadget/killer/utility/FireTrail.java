@@ -32,6 +32,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -61,8 +63,9 @@ public final class FireTrail extends KillerGadget {
 
     player.addPotionEffects(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
 
+    final SchedulerReference reference = PlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4);
+    scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.FIRE_TRAIL_SOUND);

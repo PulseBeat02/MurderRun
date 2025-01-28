@@ -36,6 +36,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
@@ -64,10 +66,11 @@ public final class FakePart extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final GamePlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleConditionalTask(() -> this.spawnParticleOnPart(fakeItem), 0, 2, fakeItem::isDead);
+    final SchedulerReference reference = EntityReference.of(fakeItem);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticleOnPart(fakeItem), 0, 2, reference);
 
     final Runnable task = () -> this.handlePlayers(scheduler, manager, player, fakeItem);
-    scheduler.scheduleConditionalTask(task, 0, 20L, fakeItem::isDead);
+    scheduler.scheduleRepeatedTask(task, 0, 20L, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.FAKE_PART_SOUND);

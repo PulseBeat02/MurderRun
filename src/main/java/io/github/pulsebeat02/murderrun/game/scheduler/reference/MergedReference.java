@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,33 +23,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.scheduler;
+package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameStatus;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
-import org.bukkit.scheduler.BukkitRunnable;
+public final class MergedReference implements SchedulerReference {
 
-public class GameScheduledTask extends BukkitRunnable implements ScheduledTask {
+  private final SchedulerReference first;
+  private final SchedulerReference second;
 
-  private final Game game;
-  private final Runnable runnable;
-  private final SchedulerReference reference;
+  MergedReference(final SchedulerReference first, final SchedulerReference second) {
+    this.first = first;
+    this.second = second;
+  }
 
-  public GameScheduledTask(final Game game, final Runnable runnable, final SchedulerReference reference) {
-    this.game = game;
-    this.runnable = runnable;
-    this.reference = reference;
+  public static MergedReference of(final SchedulerReference first, final SchedulerReference second) {
+    return new MergedReference(first, second);
   }
 
   @Override
-  public void run() {
-    final GameStatus status = this.game.getStatus();
-    final GameStatus.Status gameStatus = status.getStatus();
-    if (gameStatus == GameStatus.Status.FINISHED || this.reference.isInvalid()) {
-      this.cancel();
-      return;
-    }
-    this.runnable.run();
+  public boolean isInvalid() {
+    return false;
   }
 }

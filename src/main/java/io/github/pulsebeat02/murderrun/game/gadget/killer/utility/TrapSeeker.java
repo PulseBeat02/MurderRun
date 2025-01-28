@@ -39,6 +39,8 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import java.util.HashSet;
@@ -76,7 +78,8 @@ public final class TrapSeeker extends KillerGadget {
     item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, killer), 0, 20L);
+    final SchedulerReference reference = PlayerReference.of(killer);
+    scheduler.scheduleRepeatedTask(() -> this.handleTrapSeeking(game, killer), 0, 20L, reference);
 
     final PlayerAudience audience = killer.getAudience();
     final Component message = Message.TRAP_SEEKER_ACTIVATE.build();

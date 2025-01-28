@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.scheduler;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -34,8 +35,14 @@ public final class CountdownTask extends GameScheduledTask {
   private final AtomicInteger seconds;
   private final Consumer<Integer> tasks;
 
-  public CountdownTask(final Game game, final Runnable runnable, final int seconds, final Consumer<Integer> tasks) {
-    super(game, runnable);
+  public CountdownTask(
+    final Game game,
+    final Runnable runnable,
+    final int seconds,
+    final Consumer<Integer> tasks,
+    final SchedulerReference reference
+  ) {
+    super(game, runnable, reference);
     this.seconds = new AtomicInteger(seconds + 1);
     this.tasks = tasks;
   }

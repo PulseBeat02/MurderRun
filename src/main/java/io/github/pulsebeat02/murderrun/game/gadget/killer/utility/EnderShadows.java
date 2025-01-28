@@ -42,6 +42,9 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.MergedReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.citizensnpcs.api.npc.MetadataStore;
@@ -110,10 +113,13 @@ public final class EnderShadows extends KillerGadget {
     audience.sendMessage(msg);
 
     final Entity shadow = this.getNPCEntity(manager, spawn);
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivorTeleport(killer, survivor, shadow), 2 * 20L, 20L);
+    final SchedulerReference survivorRef = PlayerReference.of(survivor);
+    final SchedulerReference killerRef = PlayerReference.of(killer);
+    final SchedulerReference merged = MergedReference.of(survivorRef, killerRef);
+    scheduler.scheduleRepeatedTask(() -> this.handleSurvivorTeleport(killer, survivor, shadow), 2 * 20L, 20L, merged);
 
     final Location[] old = { survivor.getLocation() };
-    scheduler.scheduleRepeatedTask(() -> this.teleportShadow(survivor, shadow, old), 0, 10 * 20L);
+    scheduler.scheduleRepeatedTask(() -> this.teleportShadow(survivor, shadow, old), 0, 10 * 20L, survivorRef);
   }
 
   private void teleportShadow(final GamePlayer survivor, final Entity shadow, final Location[] old) {

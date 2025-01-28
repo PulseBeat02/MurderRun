@@ -36,6 +36,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.concurrent.atomic.AtomicLong;
@@ -97,7 +99,8 @@ public final class MedBot extends SurvivorGadget {
       manager.applyToLivingSurvivors(consumer);
       manager.applyToKillers(killerConsumer);
     };
-    scheduler.scheduleConditionalTask(task, 0, 5L, stand::isDead);
+    final SchedulerReference reference = EntityReference.of(stand);
+    scheduler.scheduleRepeatedTask(task, 0, 5L, reference);
   }
 
   private void handleKillerDestroy(final GamePlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
@@ -129,18 +132,21 @@ public final class MedBot extends SurvivorGadget {
   }
 
   private void handleRotation(final GameScheduler scheduler, final ArmorStand stand) {
-    scheduler.scheduleConditionalTask(() -> this.rotateOneIteration(stand), 0, 1, stand::isDead);
+    final SchedulerReference reference = EntityReference.of(stand);
+    scheduler.scheduleRepeatedTask(() -> this.rotateOneIteration(stand), 0, 1, reference);
   }
 
   private void handleVerticalMotion(final GameScheduler scheduler, final ArmorStand stand) {
     final AtomicDouble lastYOffset = new AtomicDouble();
     final AtomicLong currentTick = new AtomicLong();
     final Runnable task = () -> lastYOffset.set(this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
-    scheduler.scheduleConditionalTask(task, 0, 1, stand::isDead);
+    final SchedulerReference reference = EntityReference.of(stand);
+    scheduler.scheduleRepeatedTask(task, 0, 1, reference);
   }
 
   private void handleParticles(final GameScheduler scheduler, final ArmorStand stand) {
-    scheduler.scheduleConditionalTask(() -> this.spawnParticle(stand), 0, 2, stand::isDead);
+    final SchedulerReference reference = EntityReference.of(stand);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(stand), 0, 2, reference);
   }
 
   private void spawnParticle(final ArmorStand stand) {

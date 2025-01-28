@@ -29,6 +29,8 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.character.ability.AbstractAbility;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.Collection;
 
 public abstract class AbstractCharacter implements Character {
@@ -46,6 +48,7 @@ public abstract class AbstractCharacter implements Character {
   @Override
   public void scheduleTask() {
     final GameScheduler scheduler = this.game.getScheduler();
+    final SchedulerReference reference = PlayerReference.of(this.player);
     scheduler.scheduleRepeatedTask(
       () -> {
         for (final AbstractAbility ability : this.abilities) {
@@ -54,7 +57,8 @@ public abstract class AbstractCharacter implements Character {
         }
       },
       0L,
-      5L
+      5L,
+      reference
     );
     this.preparePlayer(this.player);
   }

@@ -33,6 +33,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.ArrayList;
@@ -65,7 +67,8 @@ public final class FireworkTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final Location location = murderer.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location), 0, 5, GameProperties.FIREWORK_DURATION);
+    final SchedulerReference reference = NullReference.of();
+    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location), 0, 5, GameProperties.FIREWORK_DURATION, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.FIREWORK_SOUND);

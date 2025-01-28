@@ -32,6 +32,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -56,7 +58,8 @@ public final class Phantom extends KillerGadget {
 
     final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setDefault(player, old), GameProperties.PHANTOM_DURATION);
+    final SchedulerReference reference = PlayerReference.of(player);
+    scheduler.scheduleTask(() -> this.setDefault(player, old), GameProperties.PHANTOM_DURATION, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.PHANTOM_SOUND);

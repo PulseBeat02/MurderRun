@@ -33,6 +33,8 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
@@ -78,7 +80,8 @@ public final class PartsManager {
   private void spawnParticles() {
     final Game game = this.map.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(this::spawnParticleTask, 0, 5L);
+    final SchedulerReference reference = NullReference.of();
+    scheduler.scheduleRepeatedTask(this::spawnParticleTask, 0, 5L, reference);
   }
 
   private void spawnParticleTask() {

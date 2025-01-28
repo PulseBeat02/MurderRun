@@ -36,6 +36,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Set;
@@ -103,7 +105,8 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
 
     final GameScheduler scheduler = game.getScheduler();
     final Wolf wolf = this.spawnWolf(location, player, nearest);
-    scheduler.scheduleTask(wolf::remove, GameProperties.DEATH_HOUND_DESPAWN);
+    final SchedulerReference reference = EntityReference.of(wolf);
+    scheduler.scheduleTask(wolf::remove, GameProperties.DEATH_HOUND_DESPAWN, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.DEATH_HOUND_SOUND);
@@ -137,15 +140,15 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   }
 
   private void customizeProperties(final Wolf entity, final GamePlayer owner, final GamePlayer target) {
-    owner.apply(internal -> {
+    entity.setTamed(true);
+    entity.setAngry(true);
+    entity.setVariant(Variant.BLACK);
+    owner.apply(internal ->
       target.apply(internalTarget -> {
         entity.setOwner(internal);
         entity.setTarget(internalTarget);
-        entity.setTamed(true);
-        entity.setAngry(true);
-        entity.setVariant(Variant.BLACK);
-      });
-    });
+      })
+    );
   }
 
   @Override

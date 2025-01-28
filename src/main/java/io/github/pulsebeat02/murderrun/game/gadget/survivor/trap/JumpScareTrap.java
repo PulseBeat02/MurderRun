@@ -31,6 +31,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -82,7 +84,8 @@ public final class JumpScareTrap extends SurvivorTrap {
 
     final ItemStack before = this.getHelmet(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), GameProperties.JUMP_SCARE_DURATION);
+    final SchedulerReference reference = PlayerReference.of(murderer);
+    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), GameProperties.JUMP_SCARE_DURATION, reference);
     this.currentlyJumpScared.add(murderer);
   }
 

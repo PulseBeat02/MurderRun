@@ -35,6 +35,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.immutable.Holder;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -171,7 +173,8 @@ public final class PortalGun extends KillerGadget implements Listener {
 
     final Location sendingLocation = sending.get();
     final Location receivingLocation = receiving.get();
-    scheduler.scheduleRepeatedTask(() -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 20L);
+    final SchedulerReference reference = NullReference.of();
+    scheduler.scheduleRepeatedTask(() -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 20L, reference);
   }
 
   private void handleParticipants(final GamePlayerManager manager, final Location sendingLocation, final Location receivingLocation) {
@@ -211,8 +214,9 @@ public final class PortalGun extends KillerGadget implements Listener {
     final double radiusY = 1.5d;
     final int particleCount = 40;
     final int insideParticleCount = 20;
+    final SchedulerReference reference = NullReference.of();
     final Runnable task = () -> this.handlePortalEffects(center, particleCount, radiusX, radiusY, world, insideParticleCount);
-    scheduler.scheduleRepeatedTask(task, 0L, 2L);
+    scheduler.scheduleRepeatedTask(task, 0L, 2L, reference);
   }
 
   private void handlePortalEffects(

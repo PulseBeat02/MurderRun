@@ -33,6 +33,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -75,8 +77,9 @@ public final class HealthCut extends KillerGadget {
   }
 
   private void resetState(final GamePlayer survivor, final GameScheduler scheduler) {
+    final SchedulerReference reference = PlayerReference.of(survivor);
     final double before = survivor.getHealth();
     survivor.setHealth(2d);
-    scheduler.scheduleTask(() -> survivor.setHealth(before), 5 * 20L);
+    scheduler.scheduleTask(() -> survivor.setHealth(before), 5 * 20L, reference);
   }
 }

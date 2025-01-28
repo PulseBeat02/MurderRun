@@ -32,6 +32,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
@@ -67,9 +69,10 @@ public final class LevitationTrap extends SurvivorTrap {
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, duration, 1));
     murderer.teleport(clone);
 
+    final SchedulerReference reference = PlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> murderer.teleport(location), duration);
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(murderer), 0, 5, duration);
+    scheduler.scheduleTask(() -> murderer.teleport(location), duration, reference);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(murderer), 0, 5, duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.LEVITATION_SOUND);

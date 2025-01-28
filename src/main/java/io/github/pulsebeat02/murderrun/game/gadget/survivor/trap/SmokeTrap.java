@@ -32,6 +32,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
@@ -65,8 +67,9 @@ public final class SmokeTrap extends SurvivorTrap {
       new PotionEffect(PotionEffectType.SLOWNESS, duration, 2)
     );
 
+    final SchedulerReference reference = PlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 1, duration);
+    scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 1, duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.SMOKE_SOUND);

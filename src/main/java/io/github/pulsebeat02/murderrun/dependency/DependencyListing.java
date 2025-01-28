@@ -34,14 +34,14 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.37-b3695",
-    "https://ci.citizensnpcs.co/job/Citizens2/3695/artifact/dist/target/Citizens-2.0.37-b3695.jar"
+    "Citizens-2.0.37-b3706",
+    "https://ci.citizensnpcs.co/job/Citizens2/3706/artifact/dist/target/Citizens-2.0.37-b3706.jar"
   );
 
   private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(
     "WorldEdit",
-    "FastAsyncWorldEdit-Bukkit-2.12.4-SNAPSHOT-1025",
-    "https://ci.athion.net/job/FastAsyncWorldEdit/1025/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.12.4-SNAPSHOT-1025.jar"
+    "FastAsyncWorldEdit-Bukkit-2.12.4-SNAPSHOT-1030",
+    "https://ci.athion.net/job/FastAsyncWorldEdit/1030/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.12.4-SNAPSHOT-1030.jar"
   );
 
   private static final DependencyListing V1_21_R4 = create("V1_21_R4", CITIZENS, FAST_ASYNC_WORLD_EDIT);
