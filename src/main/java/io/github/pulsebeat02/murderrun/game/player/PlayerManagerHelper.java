@@ -274,9 +274,14 @@ public interface PlayerManagerHelper {
   private @Nullable GamePlayer getNearestGamePlayer0(final Location origin, final Stream<GamePlayer> survivors) {
     double min = Double.MAX_VALUE;
     GamePlayer nearest = null;
+    final World target = origin.getWorld();
     final Collection<GamePlayer> collection = survivors.toList();
     for (final GamePlayer survivor : collection) {
       final Location location = survivor.getLocation();
+      final World world = location.getWorld();
+      if (target != world) {
+        continue;
+      }
       final double distance = location.distanceSquared(origin);
       if (distance < min) {
         nearest = survivor;

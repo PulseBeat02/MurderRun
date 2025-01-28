@@ -85,9 +85,10 @@ public final class DeathSteed extends KillerGadget {
 
   private Horse spawnHorse(final World world, final Location location, final GamePlayer player) {
     return world.spawn(location, Horse.class, entity -> {
-      final Player owner = player.getInternalPlayer();
-      this.customizeAttributes(entity, owner);
-      this.setSaddle(entity);
+      player.apply(owner -> {
+        this.customizeAttributes(entity, owner);
+        this.setSaddle(entity);
+      });
     });
   }
 

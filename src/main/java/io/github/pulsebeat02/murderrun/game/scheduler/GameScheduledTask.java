@@ -41,7 +41,17 @@ public class GameScheduledTask extends BukkitRunnable implements ScheduledTask {
 
   @Override
   public void run() {
-    this.runnable.run();
+    try {
+      this.runnable.run(); // TODO: fix this cursed setup
+    } catch (final NullPointerException e) {
+      final StackTraceElement[] elements = e.getStackTrace();
+      final StackTraceElement first = elements[1];
+      final String name = first.getMethodName();
+      if (!name.equalsIgnoreCase("getInternalPlayer")) {
+        throw new AssertionError(e);
+      }
+    }
+
     final GameStatus status = this.game.getStatus();
     final GameStatus.Status gameStatus = status.getStatus();
     if (gameStatus == GameStatus.Status.FINISHED) {

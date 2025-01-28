@@ -50,7 +50,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class CameraGadget {
@@ -94,18 +93,19 @@ public class CameraGadget {
   }
 
   private void handleGlow(final GamePlayer owner, final GamePlayer opponent, final LivingEntity npc) {
-    final Player internal = opponent.getInternalPlayer();
-    final boolean detected = npc.hasLineOfSight(internal);
-    final MetadataManager metadata = owner.getMetadataManager();
-    final Collection<GamePlayer> glow = this.glowingPlayers.get(owner);
-    if (detected) {
-      glow.add(opponent);
-      this.setLookDirection(opponent, npc);
-      metadata.setEntityGlowing(opponent, ChatColor.RED, true);
-    } else if (glow.contains(opponent)) {
-      glow.remove(opponent);
-      metadata.setEntityGlowing(opponent, ChatColor.RED, false);
-    }
+    opponent.apply(internal -> {
+      final boolean detected = npc.hasLineOfSight(internal);
+      final MetadataManager metadata = owner.getMetadataManager();
+      final Collection<GamePlayer> glow = this.glowingPlayers.get(owner);
+      if (detected) {
+        glow.add(opponent);
+        this.setLookDirection(opponent, npc);
+        metadata.setEntityGlowing(opponent, ChatColor.RED, true);
+      } else if (glow.contains(opponent)) {
+        glow.remove(opponent);
+        metadata.setEntityGlowing(opponent, ChatColor.RED, false);
+      }
+    });
   }
 
   private void setLookDirection(final GamePlayer target, final Entity entity) {

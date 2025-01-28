@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class PlayerScoreboard {
@@ -48,8 +47,7 @@ public final class PlayerScoreboard {
   }
 
   private FastBoard createSidebar(@UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
-    final Player player = gamePlayer.getInternalPlayer();
-    return new FastBoard(player);
+    return gamePlayer.applyFunction(FastBoard::new);
   }
 
   public void shutdown() {

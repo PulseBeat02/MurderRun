@@ -31,7 +31,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.entity.Mob;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 public interface TargetableEntity {
@@ -59,8 +58,7 @@ public interface TargetableEntity {
 
     event.setCancelled(true);
 
-    final Player internal = nearest.getInternalPlayer();
-    entity.setTarget(internal);
+    nearest.apply(entity::setTarget);
   }
 
   Game getGame();

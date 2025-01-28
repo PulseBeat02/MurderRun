@@ -70,11 +70,11 @@ public final class CrashTrap extends SurvivorTrap {
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer activee, final Item item) {
-    final Player player = activee.getInternalPlayer();
-    try {
-      CRASH_HANDLE.invoke(player);
-    } catch (final Throwable e) {
-      throw new AssertionError(e);
-    }
+    //    final Player player = activee.getInternalPlayer();
+    //    try {
+    //      CRASH_HANDLE.invoke(player);
+    //    } catch (final Throwable e) {
+    //      throw new AssertionError(e);
+    //    }
   }
 }

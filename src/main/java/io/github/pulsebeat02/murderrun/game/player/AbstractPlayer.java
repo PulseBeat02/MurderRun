@@ -33,9 +33,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
@@ -44,6 +46,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -75,8 +78,16 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void apply(final Consumer<Player> consumer) {
+    this.applyFunction(player -> {
+        consumer.accept(player);
+        return null;
+      });
+  }
+
+  @Override
+  public <T> T applyFunction(final Function<Player, T> function) {
     final Player player = this.getInternalPlayer();
-    consumer.accept(player);
+    return function.apply(player);
   }
 
   @Override
@@ -95,26 +106,22 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public @NonNull Location getLocation() {
-    final Player player = this.getInternalPlayer();
-    return player.getLocation();
+    return this.applyFunction(Player::getLocation);
   }
 
   @Override
   public @Nullable Location getDeathLocation() {
-    final Player player = this.getInternalPlayer();
-    return player.getLastDeathLocation();
+    return this.applyFunction(Player::getLastDeathLocation);
   }
 
   @Override
   public PlayerInventory getInventory() {
-    final Player player = this.getInternalPlayer();
-    return player.getInventory();
+    return this.applyFunction(Player::getInventory);
   }
 
   @Override
   public @Nullable AttributeInstance getAttribute(final Attribute attribute) {
-    final Player player = this.getInternalPlayer();
-    return player.getAttribute(attribute);
+    return this.applyFunction(player -> player.getAttribute(attribute));
   }
 
   @Override
@@ -135,8 +142,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public String getDisplayName() {
-    final Player player = this.getInternalPlayer();
-    return player.getDisplayName();
+    return this.applyFunction(Player::getDisplayName);
   }
 
   @Override
@@ -161,8 +167,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public UUID getUUID() {
-    final Player player = this.getInternalPlayer();
-    return player.getUniqueId();
+    return this.applyFunction(Player::getUniqueId);
   }
 
   @Override
@@ -187,8 +192,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void clearInventory() {
-    final Player player = this.getInternalPlayer();
-    final PlayerInventory inventory = player.getInventory();
+    final PlayerInventory inventory = this.getInventory();
     inventory.clear();
   }
 
@@ -219,8 +223,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public double getHealth() {
-    final Player player = this.getInternalPlayer();
-    return player.getHealth();
+    return this.applyFunction(Player::getHealth);
   }
 
   @Override
@@ -240,14 +243,12 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public float getFlySpeed() {
-    final Player player = this.getInternalPlayer();
-    return player.getFlySpeed();
+    return this.applyFunction(Player::getFlySpeed);
   }
 
   @Override
   public Vector getVelocity() {
-    final Player player = this.getInternalPlayer();
-    return player.getVelocity();
+    return this.applyFunction(Player::getVelocity);
   }
 
   @Override
@@ -277,20 +278,17 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public String getName() {
-    final Player player = this.getInternalPlayer();
-    return player.getName();
+    return this.applyFunction(Player::getName);
   }
 
   @Override
   public PersistentDataContainer getPersistentDataContainer() {
-    final Player player = this.getInternalPlayer();
-    return player.getPersistentDataContainer();
+    return this.applyFunction(Player::getPersistentDataContainer);
   }
 
   @Override
   public Location getEyeLocation() {
-    final Player player = this.getInternalPlayer();
-    return player.getEyeLocation();
+    return this.applyFunction(Player::getEyeLocation);
   }
 
   @Override
@@ -303,5 +301,15 @@ public abstract class AbstractPlayer implements Participant {
       final AttributeInstance instance = requireNonNull(this.getAttribute(attribute));
       instance.setBaseValue(value);
     }
+  }
+
+  @Override
+  public Scoreboard getScoreboard() {
+    return this.applyFunction(Player::getScoreboard);
+  }
+
+  @Override
+  public void setWorldBorder(final @Nullable WorldBorder border) {
+    this.apply(player -> player.setWorldBorder(border));
   }
 }

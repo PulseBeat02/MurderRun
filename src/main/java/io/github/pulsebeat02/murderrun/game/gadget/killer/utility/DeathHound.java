@@ -45,7 +45,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Wolf.Variant;
 import org.bukkit.event.EventHandler;
@@ -138,13 +137,15 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   }
 
   private void customizeProperties(final Wolf entity, final GamePlayer owner, final GamePlayer target) {
-    final Player internal = owner.getInternalPlayer();
-    final Player internalTarget = target.getInternalPlayer();
-    entity.setOwner(internal);
-    entity.setTarget(internalTarget);
-    entity.setTamed(true);
-    entity.setAngry(true);
-    entity.setVariant(Variant.BLACK);
+    owner.apply(internal -> {
+      target.apply(internalTarget -> {
+        entity.setOwner(internal);
+        entity.setTarget(internalTarget);
+        entity.setTamed(true);
+        entity.setAngry(true);
+        entity.setVariant(Variant.BLACK);
+      });
+    });
   }
 
   @Override
