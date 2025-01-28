@@ -43,7 +43,6 @@ import net.citizensnpcs.trait.MirrorTrait;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -89,11 +88,12 @@ public final class Decoy extends SurvivorGadget {
   }
 
   private void setMirrorTrait(final GamePlayer player, final NPC npc) {
-    final Player internal = player.getInternalPlayer();
-    final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);
-    mirror.isMirroring(internal);
-    mirror.setMirrorName(true);
-    mirror.setEnabled(true);
+    player.apply(internal -> {
+      final MirrorTrait mirror = npc.getOrAddTrait(MirrorTrait.class);
+      mirror.isMirroring(internal);
+      mirror.setMirrorName(true);
+      mirror.setEnabled(true);
+    });
   }
 
   private void setNPCArmor(final GamePlayer player, final NPC npc) {

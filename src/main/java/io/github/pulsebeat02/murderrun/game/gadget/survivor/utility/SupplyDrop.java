@@ -37,6 +37,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.FallingBlockReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
@@ -94,7 +96,8 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     container.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
 
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleConditionalTask(() -> this.spawnParticleTrail(chest), 0, 2, chest::isOnGround);
+    final SchedulerReference reference = FallingBlockReference.of(chest);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticleTrail(chest), 0, 2, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(Sounds.SUPPLY_DROP);

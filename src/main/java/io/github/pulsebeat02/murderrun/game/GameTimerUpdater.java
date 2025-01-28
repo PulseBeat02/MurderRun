@@ -27,6 +27,8 @@ package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.UUID;
 import net.kyori.adventure.bossbar.BossBar;
@@ -40,7 +42,7 @@ public final class GameTimerUpdater {
 
   public GameTimerUpdater(final Game game) {
     this.game = game;
-    this.id = generateRandomID();
+    this.id = this.generateRandomID();
   }
 
   private String generateRandomID(@UnderInitialization GameTimerUpdater this) {
@@ -49,9 +51,10 @@ public final class GameTimerUpdater {
   }
 
   public void start() {
-    setBossBars();
+    this.setBossBars();
+    final SchedulerReference reference = NullReference.of();
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleRepeatedTask(this::updateBossBars, 0, 20);
+    scheduler.scheduleRepeatedTask(this::updateBossBars, 0, 20, reference);
   }
 
   private void setBossBars() {
@@ -60,7 +63,7 @@ public final class GameTimerUpdater {
     final BossBar.Color color = BossBar.Color.GREEN;
     final BossBar.Overlay overlay = BossBar.Overlay.NOTCHED_20;
     final float progress = 1.0f;
-    manager.showBossBarForAllParticipants(id, name, progress, color, overlay);
+    manager.showBossBarForAllParticipants(this.id, name, progress, color, overlay);
   }
 
   private void updateBossBars() {
@@ -74,7 +77,7 @@ public final class GameTimerUpdater {
     final long total = timer.getTotalTime();
     final float progress = (float) timeLeft / total;
     final GamePlayerManager manager = this.game.getPlayerManager();
-    manager.updateBossBarForAllParticipants(id, progress);
+    manager.updateBossBarForAllParticipants(this.id, progress);
 
     final int time = (int) timeLeft / 1000;
     manager.applyToAllParticipants(player -> player.setLevel(time));

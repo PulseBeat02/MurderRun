@@ -30,6 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import java.util.List;
@@ -71,9 +73,10 @@ public final class CageTrap extends SurvivorTrap {
     final Block[] blocks = this.getBlocksInOrder(block);
     final Material[] history = this.getBlockHistory(blocks);
 
+    final SchedulerReference reference = NullReference.of();
     final GameScheduler scheduler = game.getScheduler();
     final Runnable task = () -> this.resetBlocks(history, blocks);
-    scheduler.scheduleTask(task, GameProperties.CAGE_DURATION);
+    scheduler.scheduleTask(task, GameProperties.CAGE_DURATION, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.CAGE_SOUND);

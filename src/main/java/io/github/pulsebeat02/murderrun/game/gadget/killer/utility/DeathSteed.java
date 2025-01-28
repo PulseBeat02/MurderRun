@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -71,7 +72,8 @@ public final class DeathSteed extends KillerGadget {
     final Horse horse = this.spawnHorse(world, location, player);
     final GameScheduler scheduler = game.getScheduler();
     final GamePlayerManager manager = game.getPlayerManager();
-    scheduler.scheduleConditionalTask(() -> this.handleSurvivors(manager, horse), 0, 5L, horse::isDead);
+    final EntityReference reference = EntityReference.of(horse);
+    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager, horse), 0, 5L, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.DEATH_STEED_SOUND);
@@ -85,9 +87,10 @@ public final class DeathSteed extends KillerGadget {
 
   private Horse spawnHorse(final World world, final Location location, final GamePlayer player) {
     return world.spawn(location, Horse.class, entity -> {
-      final Player owner = player.getInternalPlayer();
-      this.customizeAttributes(entity, owner);
-      this.setSaddle(entity);
+      player.apply(owner -> {
+        this.customizeAttributes(entity, owner);
+        this.setSaddle(entity);
+      });
     });
   }
 

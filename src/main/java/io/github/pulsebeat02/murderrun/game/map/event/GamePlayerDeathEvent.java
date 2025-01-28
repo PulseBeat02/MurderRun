@@ -94,6 +94,9 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final DamageSource source = event.getDamageSource();
     final Entity cause = source.getCausingEntity();
     if (cause instanceof final Player killer) {
+      if (!manager.checkPlayerExists(killer)) {
+        return;
+      }
       final GamePlayer other = manager.getGamePlayer(killer);
       final PlayerStatistics otherStats = statistics.getOrCreatePlayerStatistic(other);
       otherStats.incrementTotalKills();

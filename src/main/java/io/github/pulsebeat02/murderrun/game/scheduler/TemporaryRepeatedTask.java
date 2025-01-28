@@ -26,14 +26,21 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.scheduler;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.concurrent.atomic.AtomicLong;
 
 public final class TemporaryRepeatedTask extends GameScheduledTask {
 
   private final AtomicLong time;
 
-  public TemporaryRepeatedTask(final Game game, final Runnable runnable, final long period, final long duration) {
-    super(game, runnable);
+  public TemporaryRepeatedTask(
+    final Game game,
+    final Runnable runnable,
+    final long period,
+    final long duration,
+    final SchedulerReference reference
+  ) {
+    super(game, runnable, reference);
     final long count = (duration + period - 1) / period;
     this.time = new AtomicLong(count);
   }

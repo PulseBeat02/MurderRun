@@ -40,6 +40,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
@@ -113,7 +114,8 @@ public final class CursedNote extends KillerGadget {
     part.setCursed(cursed);
 
     final BooleanSupplier condition = () -> !part.isCursed();
-    scheduler.scheduleConditionalTask(() -> this.handleSurvivorCurse(game, part), 0, 60L, condition);
+    final NullReference reference = NullReference.of();
+    scheduler.scheduleConditionalTask(() -> this.handleSurvivorCurse(game, part), 0, 60L, condition, reference);
   }
 
   private Item spawnCursedNote(final GameSettings settings) {

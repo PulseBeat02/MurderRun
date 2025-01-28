@@ -31,9 +31,11 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
@@ -42,6 +44,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -56,6 +59,8 @@ public interface Participant {
   void disableWalkWithFOVEffects(final int ticks);
 
   void apply(final Consumer<Player> consumer);
+
+  <T> T applyFunction(final Function<Player, T> function);
 
   void spawnPlayerSpecificParticle(final Particle particle);
 
@@ -167,4 +172,8 @@ public interface Participant {
   Map<Attribute, Double> getDefaultAttributes();
 
   void resetAllAttributes();
+
+  Scoreboard getScoreboard();
+
+  void setWorldBorder(final WorldBorder border);
 }

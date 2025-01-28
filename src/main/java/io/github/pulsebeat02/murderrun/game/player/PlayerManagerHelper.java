@@ -31,6 +31,8 @@ import static net.kyori.adventure.key.Key.key;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
@@ -210,8 +212,9 @@ public interface PlayerManagerHelper {
   default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color, final long duration) {
     final Game game = this.getGame();
     final GameScheduler scheduler = game.getScheduler();
+    final SchedulerReference reference = PlayerReference.of(entity);
     this.setEntityGlowingForAliveInnocents(entity, color);
-    scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity, color), duration);
+    scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity, color), duration, reference);
   }
 
   default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
@@ -274,9 +277,14 @@ public interface PlayerManagerHelper {
   private @Nullable GamePlayer getNearestGamePlayer0(final Location origin, final Stream<GamePlayer> survivors) {
     double min = Double.MAX_VALUE;
     GamePlayer nearest = null;
+    final World target = origin.getWorld();
     final Collection<GamePlayer> collection = survivors.toList();
     for (final GamePlayer survivor : collection) {
       final Location location = survivor.getLocation();
+      final World world = location.getWorld();
+      if (target != world) {
+        continue;
+      }
       final double distance = location.distanceSquared(origin);
       if (distance < min) {
         nearest = survivor;

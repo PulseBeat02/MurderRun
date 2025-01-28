@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import org.bukkit.entity.Player;
 
 public final class DisguiseManager {
 
@@ -42,11 +41,12 @@ public final class DisguiseManager {
 
   public void disguisePlayerAsOtherPlayer(final GamePlayer owner, final GamePlayer other) {
     final String name = other.getName();
-    final Player disguisable = owner.getInternalPlayer();
-    final PlayerDisguise disguise = new PlayerDisguise(name);
-    disguise.setEntity(disguisable);
-    disguise.startDisguise();
-    this.disguises.add(disguise);
+    owner.apply(disguisable -> {
+      final PlayerDisguise disguise = new PlayerDisguise(name);
+      disguise.setEntity(disguisable);
+      disguise.startDisguise();
+      this.disguises.add(disguise);
+    });
   }
 
   public void shutdown() {

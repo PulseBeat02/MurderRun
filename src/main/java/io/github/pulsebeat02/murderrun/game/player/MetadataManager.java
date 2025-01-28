@@ -30,15 +30,14 @@ import static java.util.Objects.requireNonNull;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -72,20 +71,17 @@ public final class MetadataManager {
   }
 
   private WorldBorder createWorldBorder(@UnderInitialization MetadataManager this, final Participant participant) {
-    final WorldBorder[] border = new WorldBorder[1];
-    participant.apply(player -> {
-      final World world = player.getWorld();
-      final WorldBorder worldBorder = world.getWorldBorder();
-      final WorldBorder fakeBorder = Bukkit.createWorldBorder();
-      fakeBorder.setCenter(worldBorder.getCenter());
-      fakeBorder.setDamageAmount(worldBorder.getDamageAmount());
-      fakeBorder.setDamageBuffer(worldBorder.getDamageBuffer());
-      fakeBorder.setSize(worldBorder.getSize());
-      fakeBorder.setWarningDistance(Integer.MAX_VALUE);
-      fakeBorder.setWarningTime(worldBorder.getWarningTime());
-      border[0] = fakeBorder;
-    });
-    return border[0];
+    final Location location = participant.getLocation();
+    final World world = requireNonNull(location.getWorld());
+    final WorldBorder worldBorder = world.getWorldBorder();
+    final WorldBorder fakeBorder = Bukkit.createWorldBorder();
+    fakeBorder.setCenter(worldBorder.getCenter());
+    fakeBorder.setDamageAmount(worldBorder.getDamageAmount());
+    fakeBorder.setDamageBuffer(worldBorder.getDamageBuffer());
+    fakeBorder.setSize(worldBorder.getSize());
+    fakeBorder.setWarningDistance(Integer.MAX_VALUE);
+    fakeBorder.setWarningTime(worldBorder.getWarningTime());
+    return fakeBorder;
   }
 
   private Team createHideNameTagTeam(@UnderInitialization MetadataManager this) {
@@ -100,14 +96,12 @@ public final class MetadataManager {
 
   private Map<ChatColor, Team> createGlowTeams(@UnderInitialization MetadataManager this, final GamePlayer participant) {
     final Map<ChatColor, Team> teams = new HashMap<>();
-    participant.apply(player -> {
-      final Scoreboard scoreboard = player.getScoreboard();
-      final ChatColor[] values = ChatColor.values();
-      for (final ChatColor color : values) {
-        final Team team = this.createGlowTeam(color, scoreboard);
-        teams.put(color, team);
-      }
-    });
+    final Scoreboard scoreboard = participant.getScoreboard();
+    final ChatColor[] values = ChatColor.values();
+    for (final ChatColor color : values) {
+      final Team team = this.createGlowTeam(color, scoreboard);
+      teams.put(color, team);
+    }
     return teams;
   }
 
@@ -120,24 +114,21 @@ public final class MetadataManager {
   }
 
   public void setWorldBorderEffect(final boolean fake) {
-    if (fake) {
-      this.gamePlayer.apply(player -> player.setWorldBorder(this.shadyWorldBorder));
-    } else {
-      this.gamePlayer.apply(player -> player.setWorldBorder(null));
-    }
+    this.gamePlayer.setWorldBorder(fake ? this.shadyWorldBorder : null);
   }
 
   public void shutdown() {
     final Collection<ChatColor> keys = this.glowTeams.keySet();
-    final Player player = this.gamePlayer.getInternalPlayer();
-    for (final ChatColor key : keys) {
-      final Collection<Entity> stillGlowing = this.glowEntities.get(key);
-      for (final Entity entity : stillGlowing) {
-        PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-      }
-      final Team team = requireNonNull(this.glowTeams.get(key));
-      team.unregister();
-    }
+    this.gamePlayer.apply(player -> {
+        for (final ChatColor key : keys) {
+          final Collection<Entity> stillGlowing = this.glowEntities.get(key);
+          for (final Entity entity : stillGlowing) {
+            PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+          }
+          final Team team = requireNonNull(this.glowTeams.get(key));
+          team.unregister();
+        }
+      });
     this.glowEntities.clear();
     this.glowTeams.clear();
     this.hideNameTagTeam.unregister();
@@ -145,8 +136,9 @@ public final class MetadataManager {
   }
 
   public void setEntityGlowing(final GameScheduler scheduler, final GamePlayer participant, final ChatColor color, final long time) {
+    final SchedulerReference reference = PlayerReference.of(participant);
     this.setEntityGlowing(participant, color, true);
-    scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time);
+    scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time, reference);
   }
 
   public void setEntityGlowing(final GamePlayer participant, final ChatColor color, final boolean glowing) {
@@ -158,25 +150,26 @@ public final class MetadataManager {
       return;
     }
 
-    final Player player = this.gamePlayer.getInternalPlayer();
-    if (!this.checkValidity(player, entity)) {
-      return;
-    }
+    this.gamePlayer.apply(player -> {
+        if (!this.checkValidity(player, entity)) {
+          return;
+        }
 
-    final Team team = requireNonNull(this.glowTeams.get(color));
-    final String name = this.getMemberID(entity);
-    final String watcher = player.getName();
-    if (glowing) {
-      this.glowEntities.put(color, entity);
-      team.addEntry(name);
-      team.addEntry(watcher);
-      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
-    } else {
-      this.glowEntities.remove(color, entity);
-      PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
-      team.removeEntry(name);
-      team.removeEntry(watcher);
-    }
+        final Team team = requireNonNull(this.glowTeams.get(color));
+        final String name = this.getMemberID(entity);
+        final String watcher = player.getName();
+        if (glowing) {
+          this.glowEntities.put(color, entity);
+          team.addEntry(name);
+          team.addEntry(watcher);
+          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
+        } else {
+          this.glowEntities.remove(color, entity);
+          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+          team.removeEntry(name);
+          team.removeEntry(watcher);
+        }
+      });
   }
 
   private boolean checkValidity(final Entity... entities) {
@@ -201,24 +194,26 @@ public final class MetadataManager {
       return;
     }
 
-    final Player player = this.gamePlayer.getInternalPlayer();
-    if (!this.checkValidity(player)) {
-      return;
-    }
+    this.gamePlayer.apply(player -> {
+        if (!this.checkValidity(player)) {
+          return;
+        }
 
-    final String name = player.getName();
-    if (hide) {
-      this.hideNameTagTeam.addEntry(name);
-    } else {
-      if (this.hideNameTagTeam.hasEntry(name)) {
-        this.hideNameTagTeam.removeEntry(name);
-      }
-    }
+        final String name = player.getName();
+        if (hide) {
+          this.hideNameTagTeam.addEntry(name);
+        } else {
+          if (this.hideNameTagTeam.hasEntry(name)) {
+            this.hideNameTagTeam.removeEntry(name);
+          }
+        }
+      });
   }
 
   public void hideNameTag(final GameScheduler scheduler, final long ticks) {
+    final SchedulerReference reference = PlayerReference.of(this.gamePlayer);
     this.setNameTagStatus(true);
-    scheduler.scheduleTask(() -> this.setNameTagStatus(false), ticks);
+    scheduler.scheduleTask(() -> this.setNameTagStatus(false), ticks, reference);
   }
 
   public PlayerScoreboard getSidebar() {

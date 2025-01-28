@@ -37,6 +37,8 @@ import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.Collection;
 import java.util.function.Consumer;
 import net.citizensnpcs.api.npc.MetadataStore;
@@ -50,7 +52,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class CameraGadget {
@@ -85,7 +86,8 @@ public class CameraGadget {
     } else {
       task = () -> manager.applyToLivingSurvivors(handleGlow);
     }
-    scheduler.scheduleRepeatedTask(task, 0, 20L);
+    final SchedulerReference reference = NullReference.of();
+    scheduler.scheduleRepeatedTask(task, 0, 20L, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.CAMERA_SOUND);
@@ -94,18 +96,19 @@ public class CameraGadget {
   }
 
   private void handleGlow(final GamePlayer owner, final GamePlayer opponent, final LivingEntity npc) {
-    final Player internal = opponent.getInternalPlayer();
-    final boolean detected = npc.hasLineOfSight(internal);
-    final MetadataManager metadata = owner.getMetadataManager();
-    final Collection<GamePlayer> glow = this.glowingPlayers.get(owner);
-    if (detected) {
-      glow.add(opponent);
-      this.setLookDirection(opponent, npc);
-      metadata.setEntityGlowing(opponent, ChatColor.RED, true);
-    } else if (glow.contains(opponent)) {
-      glow.remove(opponent);
-      metadata.setEntityGlowing(opponent, ChatColor.RED, false);
-    }
+    opponent.apply(internal -> {
+      final boolean detected = npc.hasLineOfSight(internal);
+      final MetadataManager metadata = owner.getMetadataManager();
+      final Collection<GamePlayer> glow = this.glowingPlayers.get(owner);
+      if (detected) {
+        glow.add(opponent);
+        this.setLookDirection(opponent, npc);
+        metadata.setEntityGlowing(opponent, ChatColor.RED, true);
+      } else if (glow.contains(opponent)) {
+        glow.remove(opponent);
+        metadata.setEntityGlowing(opponent, ChatColor.RED, false);
+      }
+    });
   }
 
   private void setLookDirection(final GamePlayer target, final Entity entity) {

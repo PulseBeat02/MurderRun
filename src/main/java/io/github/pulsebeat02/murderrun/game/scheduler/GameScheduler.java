@@ -27,6 +27,8 @@ package io.github.pulsebeat02.murderrun.game.scheduler;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -58,36 +60,48 @@ public final class GameScheduler {
     this.tasks.clear();
   }
 
-  public BukkitTask scheduleConditionalTask(final Runnable runnable, final long delay, final long period, final BooleanSupplier condition) {
-    final ConditionalTask task = new ConditionalTask(this.game, runnable, condition);
+  public BukkitTask scheduleConditionalTask(
+    final Runnable runnable,
+    final long delay,
+    final long period,
+    final BooleanSupplier condition,
+    final SchedulerReference reference
+  ) {
+    final ConditionalTask task = new ConditionalTask(this.game, runnable, condition, reference);
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);
     return bukkit;
   }
 
-  public BukkitTask scheduleTask(final Runnable runnable, final long delay) {
-    final GameScheduledTask task = new GameScheduledTask(this.game, runnable);
+  public BukkitTask scheduleTask(final Runnable runnable, final long delay, final SchedulerReference reference) {
+    final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference);
     final BukkitTask bukkit = task.runTaskLater(this.plugin, delay);
     this.tasks.add(bukkit);
     return bukkit;
   }
 
-  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period) {
-    final GameScheduledTask task = new GameScheduledTask(this.game, runnable);
+  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period, final SchedulerReference reference) {
+    final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference);
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);
     return bukkit;
   }
 
-  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period, final long duration) {
-    final TemporaryRepeatedTask custom = new TemporaryRepeatedTask(this.game, runnable, period, duration);
+  public BukkitTask scheduleRepeatedTask(
+    final Runnable runnable,
+    final long delay,
+    final long period,
+    final long duration,
+    final SchedulerReference reference
+  ) {
+    final TemporaryRepeatedTask custom = new TemporaryRepeatedTask(this.game, runnable, period, duration, reference);
     final BukkitTask bukkit = custom.runTaskTimer(this.plugin, delay, period);
     this.tasks.add(bukkit);
     return bukkit;
   }
 
-  public BukkitTask scheduleCountdownTask(final Consumer<Integer> tasks, final int seconds) {
-    final CountdownTask task = new CountdownTask(this.game, () -> {}, seconds, tasks);
+  public BukkitTask scheduleCountdownTask(final Consumer<Integer> tasks, final int seconds, final SchedulerReference reference) {
+    final CountdownTask task = new CountdownTask(this.game, () -> {}, seconds, tasks, reference);
     final BukkitTask bukkit = task.runTaskTimer(this.plugin, 0, 20);
     this.tasks.add(bukkit);
     return bukkit;
@@ -95,8 +109,9 @@ public final class GameScheduler {
 
   public BukkitTask scheduleTaskAfterOnGround(final Runnable runnable, final Entity item) {
     final AtomicBoolean onFloor = new AtomicBoolean(false);
+    final SchedulerReference reference = EntityReference.of(item);
     final Runnable internal = () -> this.waitForFall0(runnable, item, onFloor);
-    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, onFloor::get);
+    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, onFloor::get, reference);
     this.tasks.add(task);
     return task;
   }
@@ -110,8 +125,9 @@ public final class GameScheduler {
 
   public BukkitTask scheduleTaskUntilDeath(final Runnable runnable, final Entity entity) {
     final AtomicBoolean dead = new AtomicBoolean(false);
+    final SchedulerReference reference = EntityReference.of(entity);
     final Runnable internal = () -> this.waitForDeathRepeat(runnable, entity, dead);
-    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 5L, dead::get);
+    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 5L, dead::get, reference);
     this.tasks.add(task);
     return task;
   }
@@ -130,8 +146,9 @@ public final class GameScheduler {
 
   public BukkitTask scheduleAfterDeath(final Runnable runnable, final Entity item) {
     final AtomicBoolean dead = new AtomicBoolean(false);
+    final SchedulerReference reference = EntityReference.of(item);
     final Runnable internal = () -> this.waitAfterDeath(runnable, item, dead);
-    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, dead::get);
+    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, dead::get, reference);
     this.tasks.add(task);
     return task;
   }

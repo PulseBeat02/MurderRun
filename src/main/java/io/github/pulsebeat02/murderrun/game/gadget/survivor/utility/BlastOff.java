@@ -41,7 +41,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 public final class BlastOff extends SurvivorGadget {
@@ -98,9 +97,10 @@ public final class BlastOff extends SurvivorGadget {
   }
 
   private void customizeProperties(final GamePlayer player, final Firework firework) {
-    final Player internal = player.getInternalPlayer();
-    firework.setShotAtAngle(false);
-    firework.addPassenger(internal);
+    player.apply(internal -> {
+      firework.setShotAtAngle(false);
+      firework.addPassenger(internal);
+    });
   }
 
   private void customizeMeta(final Firework firework) {

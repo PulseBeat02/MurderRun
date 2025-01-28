@@ -30,6 +30,8 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.awt.Color;
@@ -61,8 +63,9 @@ public final class HackTrap extends SurvivorTrap {
       return;
     }
 
+    final SchedulerReference reference = PlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> inventory.addItem(stack), GameProperties.HACK_DURATION);
+    scheduler.scheduleTask(() -> inventory.addItem(stack), GameProperties.HACK_DURATION, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.HACK_SOUND);

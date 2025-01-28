@@ -33,12 +33,13 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 
 public final class AllSeeingEye extends KillerGadget {
 
@@ -64,11 +65,11 @@ public final class AllSeeingEye extends KillerGadget {
     final Location before = player.getLocation();
     this.setPlayerState(player, random);
 
-    final GameScheduler scheduler = game.getScheduler();
-    final Player target = random.getInternalPlayer();
     final int duration = GameProperties.ALL_SEEING_EYE_DURATION;
-    scheduler.scheduleRepeatedTask(() -> player.setSpectatorTarget(target), 0, 10, duration);
-    scheduler.scheduleTask(() -> this.resetPlayerState(player, before), duration);
+    final GameScheduler scheduler = game.getScheduler();
+    final SchedulerReference reference = PlayerReference.of(random);
+    random.apply(target -> scheduler.scheduleRepeatedTask(() -> player.setSpectatorTarget(target), 0, 10, duration, reference));
+    scheduler.scheduleTask(() -> this.resetPlayerState(player, before), duration, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.ALL_SEEING_EYE_SOUND);
@@ -84,9 +85,10 @@ public final class AllSeeingEye extends KillerGadget {
   }
 
   private void setPlayerState(final GamePlayer player, final GamePlayer survivor) {
-    final Player internal = survivor.getInternalPlayer();
-    player.setGameMode(GameMode.SPECTATOR);
-    player.setAllowSpectatorTeleport(false);
-    player.setSpectatorTarget(internal);
+    survivor.apply(internal -> {
+      player.setGameMode(GameMode.SPECTATOR);
+      player.setAllowSpectatorTeleport(false);
+      player.setSpectatorTarget(internal);
+    });
   }
 }

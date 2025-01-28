@@ -33,6 +33,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -81,7 +83,8 @@ public final class Fright extends KillerGadget {
       return;
     }
 
-    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L);
+    final SchedulerReference reference = PlayerReference.of(survivor);
+    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L, reference);
     this.currentlyJumpScared.add(survivor);
   }
 

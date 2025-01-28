@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 @Entity
 @Table(name = "statistics_manager")
@@ -61,8 +60,7 @@ public final class StatisticsManager implements Serializable, HibernateSerializa
   }
 
   public PlayerStatistics getOrCreatePlayerStatistic(final GamePlayer player) {
-    final Player internal = player.getInternalPlayer();
-    return this.getOrCreatePlayerStatistic(internal);
+    return player.applyFunction(this::getOrCreatePlayerStatistic);
   }
 
   public PlayerStatistics getOrCreatePlayerStatistic(final OfflinePlayer player) {

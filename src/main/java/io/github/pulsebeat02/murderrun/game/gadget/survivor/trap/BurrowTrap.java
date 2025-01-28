@@ -31,6 +31,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
@@ -62,13 +64,14 @@ public final class BurrowTrap extends SurvivorTrap {
       return;
     }
 
+    final SchedulerReference reference = PlayerReference.of(killer);
     final int duration = GameProperties.BURROW_DURATION;
     killer.disableJump(scheduler, duration);
     killer.disableWalkNoFOVEffects(scheduler, duration);
     killer.setForceMineBlocks(false);
     killer.teleport(clone);
     killer.setGravity(true);
-    scheduler.scheduleTask(() -> this.resetState(killer, location), duration);
+    scheduler.scheduleTask(() -> this.resetState(killer, location), duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(GameProperties.BURROW_SOUND);
