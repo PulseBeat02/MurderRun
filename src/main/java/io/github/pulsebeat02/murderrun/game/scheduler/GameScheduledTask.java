@@ -27,16 +27,16 @@ package io.github.pulsebeat02.murderrun.game.scheduler;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.Reference;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameScheduledTask extends BukkitRunnable implements ScheduledTask {
 
   private final Game game;
   private final Runnable runnable;
-  private final SchedulerReference reference;
+  private final Reference<?> reference;
 
-  public GameScheduledTask(final Game game, final Runnable runnable, final SchedulerReference reference) {
+  public GameScheduledTask(final Game game, final Runnable runnable, final Reference<?> reference) {
     this.game = game;
     this.runnable = runnable;
     this.reference = reference;

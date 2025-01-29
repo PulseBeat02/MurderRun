@@ -38,7 +38,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.Collection;
 import java.util.function.Consumer;
 import net.citizensnpcs.api.npc.MetadataStore;
@@ -86,7 +85,7 @@ public class CameraGadget {
     } else {
       task = () -> manager.applyToLivingSurvivors(handleGlow);
     }
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(task, 0, 20L, reference);
 
     final PlayerAudience audience = player.getAudience();

@@ -44,7 +44,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.function.Consumer;
@@ -181,7 +180,7 @@ public final class GameStartupTool {
       final PlayerAudience audience = gamePlayer.getAudience();
       audience.playSound(key, Source.MUSIC, 0.1f, 1.0f);
     };
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleTask(() -> manager.applyToAllParticipants(sound), 5 * 20L, reference);
   }
 

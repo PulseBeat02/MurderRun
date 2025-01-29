@@ -32,7 +32,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.Collection;
 import java.util.stream.Stream;
 import org.bukkit.Color;
@@ -52,7 +51,7 @@ public final class KillerLocationTracker {
   public void spawnParticles() {
     final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> manager.applyToKillers(this::spawnParticlesWhenClose), 0, 20L, reference);
   }
 

@@ -32,7 +32,6 @@ import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -48,7 +47,7 @@ public final class TruckManager {
   public void spawnParticles() {
     final Game game = this.map.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(this::spawnParticleOnTruck, 0, 4L, reference);
   }
 

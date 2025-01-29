@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -83,7 +82,7 @@ public final class MindControl extends SurvivorGadget {
     player.setInvulnerable(true);
     player.teleport(location);
 
-    final SchedulerReference reference = PlayerReference.of(player);
+    final PlayerReference reference = PlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.applyMindControlEffects(player, nearest), 0L, 1L, duration, reference);
     scheduler.scheduleTask(() -> this.resetPlayer(survivor, origin), duration, reference);

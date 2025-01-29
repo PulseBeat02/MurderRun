@@ -36,7 +36,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
@@ -86,7 +85,7 @@ public final class BurnTheBody extends KillerGadget {
 
   private void destroyBody(final GameScheduler scheduler, final GamePlayer victim, final Location deathLocation) {
     final World world = requireNonNull(deathLocation.getWorld());
-    final SchedulerReference reference = PlayerReference.of(victim);
+    final PlayerReference reference = PlayerReference.of(victim);
     scheduler.scheduleRepeatedTask(() -> this.summonEffects(deathLocation, world), 0, 20L, 5 * 20L, reference);
     scheduler.scheduleTask(() -> this.handleBurnTasks(victim), 5 * 20L, reference);
   }

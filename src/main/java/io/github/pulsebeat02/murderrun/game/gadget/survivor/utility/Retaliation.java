@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
@@ -64,7 +63,7 @@ public final class Retaliation extends SurvivorGadget {
 
     final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L, reference);
 
     final Component message = Message.RETALIATION_ACTIVATE.build();

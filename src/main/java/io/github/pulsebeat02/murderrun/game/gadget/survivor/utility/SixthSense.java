@@ -36,7 +36,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -70,7 +69,7 @@ public final class SixthSense extends SurvivorGadget {
     item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, survivor), 0, 2 * 20L, reference);
 
     final PlayerAudience audience = player.getAudience();

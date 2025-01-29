@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Set;
@@ -105,7 +104,7 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
 
     final GameScheduler scheduler = game.getScheduler();
     final Wolf wolf = this.spawnWolf(location, player, nearest);
-    final SchedulerReference reference = EntityReference.of(wolf);
+    final EntityReference reference = EntityReference.of(wolf);
     scheduler.scheduleTask(wolf::remove, GameProperties.DEATH_HOUND_DESPAWN, reference);
 
     final PlayerAudience audience = player.getAudience();

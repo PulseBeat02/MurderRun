@@ -27,12 +27,10 @@ package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
 import org.bukkit.entity.Entity;
 
-public class EntityReference implements SchedulerReference {
-
-  private final Entity entity;
+public class EntityReference extends SchedulerReference<Entity> {
 
   EntityReference(final Entity entity) {
-    this.entity = entity;
+    super(entity);
   }
 
   public static EntityReference of(final Entity entity) {
@@ -41,10 +39,7 @@ public class EntityReference implements SchedulerReference {
 
   @Override
   public boolean isInvalid() {
-    return !this.entity.isValid();
-  }
-
-  public Entity getEntity() {
-    return this.entity;
+    final Entity entity = this.get();
+    return !entity.isValid();
   }
 }

@@ -29,7 +29,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.structure.CircularBuffer;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
@@ -54,7 +53,7 @@ public final class MovementManager {
   public void start() {
     final GameScheduler scheduler = this.game.getScheduler();
     final GamePlayerManager manager = this.game.getPlayerManager();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> this.trackMovement(manager), 0, 5, reference);
   }
 

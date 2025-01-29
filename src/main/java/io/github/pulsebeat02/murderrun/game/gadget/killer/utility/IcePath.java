@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import java.util.HashMap;
@@ -59,7 +58,7 @@ public final class IcePath extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final SchedulerReference reference = PlayerReference.of(player);
+    final PlayerReference reference = PlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(game, player), 0, 4, 20 * 60L, reference);
 
@@ -87,7 +86,7 @@ public final class IcePath extends KillerGadget {
 
     final Map<Location, Material> blocksToRestore = new HashMap<>(originalBlocks);
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleTask(
       () -> {
         final Collection<Entry<@KeyFor("blocksToRestore") Location, Material>> entries = blocksToRestore.entrySet();

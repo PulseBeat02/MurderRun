@@ -39,7 +39,6 @@ import io.github.pulsebeat02.murderrun.game.player.phase.PlayerResetTool;
 import io.github.pulsebeat02.murderrun.game.player.phase.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -96,7 +95,7 @@ public final class Corruption extends KillerGadget {
     item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = PlayerReference.of(closest);
+    final PlayerReference reference = PlayerReference.of(closest);
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, 5 * 20L, reference);
     scheduler.scheduleTask(() -> this.corruptPlayer(game, closest), 5 * 20L, reference);
 

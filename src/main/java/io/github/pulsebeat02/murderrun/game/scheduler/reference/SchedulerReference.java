@@ -25,6 +25,16 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
-public interface SchedulerReference {
-  boolean isInvalid();
+public abstract class SchedulerReference<T> implements Reference<T> {
+
+  private final T value;
+
+  SchedulerReference(final T value) {
+    this.value = value;
+  }
+
+  @Override
+  public T get() {
+    return value;
+  }
 }

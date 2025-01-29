@@ -25,22 +25,23 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
-public final class MergedReference implements SchedulerReference {
+import java.util.List;
 
-  private final SchedulerReference first;
-  private final SchedulerReference second;
+public final class MergedReference<U, V> extends SchedulerReference<List<Reference<?>>> {
 
-  MergedReference(final SchedulerReference first, final SchedulerReference second) {
-    this.first = first;
-    this.second = second;
+  MergedReference(final Reference<U> first, final Reference<V> second) {
+    super(List.of(first, second));
   }
 
-  public static MergedReference of(final SchedulerReference first, final SchedulerReference second) {
-    return new MergedReference(first, second);
+  public static <A, B> MergedReference<A, B> of(final Reference<A> first, final Reference<B> second) {
+    return new MergedReference<>(first, second);
   }
 
   @Override
   public boolean isInvalid() {
-    return false;
+    final List<Reference<?>> references = this.get();
+    final Reference<?> first = references.getFirst();
+    final Reference<?> second = references.getLast();
+    return first.isInvalid() || second.isInvalid();
   }
 }

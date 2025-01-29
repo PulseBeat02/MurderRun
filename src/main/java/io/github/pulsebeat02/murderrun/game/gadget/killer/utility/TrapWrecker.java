@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
@@ -73,7 +72,7 @@ public final class TrapWrecker extends KillerGadget {
       }
       killer.setLevel(time);
     };
-    final SchedulerReference reference = PlayerReference.of(killer);
+    final PlayerReference reference = PlayerReference.of(killer);
     scheduler.scheduleCountdownTask(consumer, GameProperties.TRAP_WRECKER_DURATION, reference);
 
     final PlayerAudience audience = killer.getAudience();

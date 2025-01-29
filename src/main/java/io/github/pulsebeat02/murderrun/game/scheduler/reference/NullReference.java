@@ -25,9 +25,11 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
-public final class NullReference implements SchedulerReference {
+public final class NullReference extends SchedulerReference<Void> {
 
-  private NullReference() {}
+  private NullReference() {
+    super(null);
+  }
 
   public static NullReference of() {
     return new NullReference();

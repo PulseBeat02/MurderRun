@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -65,7 +64,7 @@ public final class Bush extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     final Location location = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = PlayerReference.of(player);
+    final PlayerReference reference = PlayerReference.of(player);
     scheduler.scheduleRepeatedTask(() -> this.createFacingLocation(player, location), 0, 5, duration, reference);
 
     final ItemStack[] before = inventory.getArmorContents();
@@ -73,7 +72,7 @@ public final class Bush extends SurvivorGadget {
     inventory.setArmorContents(empty);
     scheduler.scheduleTask(() -> inventory.setArmorContents(before), duration, reference);
 
-    final SchedulerReference emptyRef = NullReference.of();
+    final NullReference emptyRef = NullReference.of();
     final Block block = location.getBlock();
     block.setType(Material.OAK_LEAVES);
     scheduler.scheduleTask(() -> block.setType(Material.AIR), duration, emptyRef);

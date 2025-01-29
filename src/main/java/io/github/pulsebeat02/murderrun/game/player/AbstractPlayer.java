@@ -29,7 +29,6 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -58,7 +57,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableJump(final GameScheduler scheduler, final long ticks) {
-    final SchedulerReference reference = PlayerReference.of(this);
+    final PlayerReference reference = PlayerReference.of(this);
     final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.JUMP_STRENGTH));
     final double before = instance.getValue();
     instance.setBaseValue(0.0);
@@ -67,7 +66,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableWalkNoFOVEffects(final GameScheduler scheduler, final long ticks) {
-    final SchedulerReference reference = PlayerReference.of(this);
+    final PlayerReference reference = PlayerReference.of(this);
     this.apply(player -> {
         final float before = player.getWalkSpeed();
         player.setWalkSpeed(0.0f);

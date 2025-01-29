@@ -39,7 +39,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.Collection;
@@ -85,7 +84,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final Consumer<GamePlayer> consumer = killer -> this.checkKillerDistance(killer, survivor, world, first, second);
     final Runnable internalTask = () -> manager.applyToKillers(consumer);
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     final BukkitTask task = scheduler.scheduleRepeatedTask(internalTask, 0, 20L, reference);
     final Collection<BukkitTask> tasks = survivor.getLifeInsuranceTasks();
     tasks.add(task);

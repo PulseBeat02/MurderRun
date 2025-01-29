@@ -26,14 +26,14 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.scheduler;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.Reference;
 import java.util.function.BooleanSupplier;
 
 public final class ConditionalTask extends GameScheduledTask {
 
   private final BooleanSupplier condition;
 
-  public ConditionalTask(final Game game, final Runnable runnable, final BooleanSupplier condition, final SchedulerReference reference) {
+  public ConditionalTask(final Game game, final Runnable runnable, final BooleanSupplier condition, final Reference<?> reference) {
     super(game, runnable, reference);
     this.condition = condition;
   }

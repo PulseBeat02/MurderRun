@@ -33,7 +33,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -61,7 +60,7 @@ public final class Drone extends SurvivorGadget {
     player.teleport(clone);
 
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = PlayerReference.of(player);
+    final PlayerReference reference = PlayerReference.of(player);
     scheduler.scheduleTask(() -> this.resetPlayer(player, origin), GameProperties.DRONE_DURATION, reference);
 
     final PlayerAudience audience = player.getAudience();

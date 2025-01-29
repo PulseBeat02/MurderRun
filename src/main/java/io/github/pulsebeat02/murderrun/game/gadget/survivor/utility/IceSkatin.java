@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -68,7 +67,7 @@ public final class IceSkatin extends SurvivorGadget {
     final World world = requireNonNull(location.getWorld());
     final Boat boat = (Boat) world.spawnEntity(location, EntityType.OAK_BOAT);
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = EntityReference.of(boat);
+    final EntityReference reference = EntityReference.of(boat);
     scheduler.scheduleRepeatedTask(() -> this.spawnIceUnderBoat(boat), 0L, 2L, reference);
     scheduler.scheduleTask(boat::remove, GameProperties.ICE_SKATIN_DURATION, reference);
 

@@ -517,4 +517,5 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MINIATURIZER_LORE = direct("murderrun.game.gadget.miniaturizer.lore");
   NullComponent<Sender> EXPANDER_NAME = direct("murderrun.game.gadget.expander.name");
   NullComponent<Sender> EXPANDER_LORE = direct("murderrun.game.gadget.expander.lore");
+  NullComponent<Sender> PLAYER_LIST_GUI_TITLE = direct("murderrun.gui.player.title");
 }

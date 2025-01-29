@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.concurrent.atomic.AtomicLong;
@@ -99,7 +98,7 @@ public final class MedBot extends SurvivorGadget {
       manager.applyToLivingSurvivors(consumer);
       manager.applyToKillers(killerConsumer);
     };
-    final SchedulerReference reference = EntityReference.of(stand);
+    final EntityReference reference = EntityReference.of(stand);
     scheduler.scheduleRepeatedTask(task, 0, 5L, reference);
   }
 
@@ -132,7 +131,7 @@ public final class MedBot extends SurvivorGadget {
   }
 
   private void handleRotation(final GameScheduler scheduler, final ArmorStand stand) {
-    final SchedulerReference reference = EntityReference.of(stand);
+    final EntityReference reference = EntityReference.of(stand);
     scheduler.scheduleRepeatedTask(() -> this.rotateOneIteration(stand), 0, 1, reference);
   }
 
@@ -140,12 +139,12 @@ public final class MedBot extends SurvivorGadget {
     final AtomicDouble lastYOffset = new AtomicDouble();
     final AtomicLong currentTick = new AtomicLong();
     final Runnable task = () -> lastYOffset.set(this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
-    final SchedulerReference reference = EntityReference.of(stand);
+    final EntityReference reference = EntityReference.of(stand);
     scheduler.scheduleRepeatedTask(task, 0, 1, reference);
   }
 
   private void handleParticles(final GameScheduler scheduler, final ArmorStand stand) {
-    final SchedulerReference reference = EntityReference.of(stand);
+    final EntityReference reference = EntityReference.of(stand);
     scheduler.scheduleRepeatedTask(() -> this.spawnParticle(stand), 0, 2, reference);
   }
 

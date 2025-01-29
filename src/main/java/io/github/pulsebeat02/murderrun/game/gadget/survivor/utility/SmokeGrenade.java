@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.EventUtils;
@@ -100,7 +99,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
     final int duration = GameProperties.SMOKE_GRENADE_DURATION;
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     final Runnable task = () -> world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
     scheduler.scheduleRepeatedTask(task, 0, 1, duration, reference);
 

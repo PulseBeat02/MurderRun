@@ -33,7 +33,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.awt.Color;
@@ -70,7 +69,7 @@ public final class FartTrap extends SurvivorTrap {
 
     final GameScheduler scheduler = game.getScheduler();
     final Location location = murderer.getLocation();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, GameProperties.FART_DURATION, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();

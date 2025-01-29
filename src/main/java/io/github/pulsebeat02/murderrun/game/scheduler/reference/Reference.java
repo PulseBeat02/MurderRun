@@ -25,22 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-
-public final class FallingBlockReference extends EntityReference {
-
-  FallingBlockReference(final FallingBlock entity) {
-    super(entity);
-  }
-
-  public static FallingBlockReference of(final FallingBlock entity) {
-    return new FallingBlockReference(entity);
-  }
-
-  @Override
-  public boolean isInvalid() {
-    final Entity entity = this.get();
-    return entity.isOnGround();
-  }
+public interface Reference<T> {
+  boolean isInvalid();
+  T get();
 }

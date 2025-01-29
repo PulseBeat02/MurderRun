@@ -41,7 +41,6 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
@@ -162,7 +161,7 @@ public final class GadgetActionHandler implements Listener {
   private void runGadgetDetectionTask() {
     final Game game = this.manager.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(this::onNearGadget, 0, 5, reference);
   }
 

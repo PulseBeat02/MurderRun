@@ -27,12 +27,10 @@ package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 
-public final class PlayerReference implements SchedulerReference {
-
-  private final Participant player;
+public final class PlayerReference extends SchedulerReference<Participant> {
 
   private PlayerReference(final Participant player) {
-    this.player = player;
+    super(player);
   }
 
   public static PlayerReference of(final Participant player) {
@@ -41,10 +39,7 @@ public final class PlayerReference implements SchedulerReference {
 
   @Override
   public boolean isInvalid() {
-    return this.player.isLoggingOut() || !this.player.isAlive();
-  }
-
-  public Participant getPlayer() {
-    return this.player;
+    final Participant player = this.get();
+    return player.isLoggingOut() || !player.isAlive();
   }
 }

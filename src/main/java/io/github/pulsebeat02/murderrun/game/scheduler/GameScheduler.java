@@ -28,10 +28,9 @@ package io.github.pulsebeat02.murderrun.game.scheduler;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.Reference;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import org.bukkit.Color;
@@ -65,26 +64,20 @@ public final class GameScheduler {
     final long delay,
     final long period,
     final BooleanSupplier condition,
-    final SchedulerReference reference
+    final Reference<?> reference
   ) {
     final ConditionalTask task = new ConditionalTask(this.game, runnable, condition, reference);
-    final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
-    this.tasks.add(bukkit);
-    return bukkit;
+    return this.scheduleTask(task, delay, period);
   }
 
-  public BukkitTask scheduleTask(final Runnable runnable, final long delay, final SchedulerReference reference) {
+  public BukkitTask scheduleTask(final Runnable runnable, final long delay, final Reference<?> reference) {
     final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference);
-    final BukkitTask bukkit = task.runTaskLater(this.plugin, delay);
-    this.tasks.add(bukkit);
-    return bukkit;
+    return this.scheduleTask(task, delay, -1);
   }
 
-  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period, final SchedulerReference reference) {
+  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period, final Reference<?> reference) {
     final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference);
-    final BukkitTask bukkit = task.runTaskTimer(this.plugin, delay, period);
-    this.tasks.add(bukkit);
-    return bukkit;
+    return this.scheduleTask(task, delay, period);
   }
 
   public BukkitTask scheduleRepeatedTask(
@@ -92,78 +85,69 @@ public final class GameScheduler {
     final long delay,
     final long period,
     final long duration,
-    final SchedulerReference reference
+    final Reference<?> reference
   ) {
-    final TemporaryRepeatedTask custom = new TemporaryRepeatedTask(this.game, runnable, period, duration, reference);
-    final BukkitTask bukkit = custom.runTaskTimer(this.plugin, delay, period);
-    this.tasks.add(bukkit);
-    return bukkit;
+    final TemporaryRepeatedTask task = new TemporaryRepeatedTask(this.game, runnable, period, duration, reference);
+    return this.scheduleTask(task, delay, period);
   }
 
-  public BukkitTask scheduleCountdownTask(final Consumer<Integer> tasks, final int seconds, final SchedulerReference reference) {
-    final CountdownTask task = new CountdownTask(this.game, () -> {}, seconds, tasks, reference);
-    final BukkitTask bukkit = task.runTaskTimer(this.plugin, 0, 20);
-    this.tasks.add(bukkit);
-    return bukkit;
+  public BukkitTask scheduleCountdownTask(final Consumer<Integer> tasks, final int seconds, final Reference<?> reference) {
+    final Runnable dummy = () -> {};
+    final CountdownTask countdownTask = new CountdownTask(this.game, dummy, seconds, tasks, reference);
+    return this.scheduleTask(countdownTask, 0, 20);
   }
 
   public BukkitTask scheduleTaskAfterOnGround(final Runnable runnable, final Entity item) {
-    final AtomicBoolean onFloor = new AtomicBoolean(false);
-    final SchedulerReference reference = EntityReference.of(item);
-    final Runnable internal = () -> this.waitForFall0(runnable, item, onFloor);
-    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, onFloor::get, reference);
-    this.tasks.add(task);
-    return task;
-  }
-
-  private void waitForFall0(final Runnable runnable, final Entity item, final AtomicBoolean onFloor) {
-    if (item.isOnGround()) {
-      onFloor.set(true);
-      runnable.run();
-    }
+    final Reference<?> reference = EntityReference.of(item);
+    final Runnable task = () -> this.waitForFall(runnable, item);
+    return this.scheduleConditionalTask(task, 0, 20L, item::isOnGround, reference);
   }
 
   public BukkitTask scheduleTaskUntilDeath(final Runnable runnable, final Entity entity) {
-    final AtomicBoolean dead = new AtomicBoolean(false);
-    final SchedulerReference reference = EntityReference.of(entity);
-    final Runnable internal = () -> this.waitForDeathRepeat(runnable, entity, dead);
-    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 5L, dead::get, reference);
-    this.tasks.add(task);
-    return task;
+    final Reference<?> reference = EntityReference.of(entity);
+    final Runnable task = () -> this.waitForDeath(runnable, entity);
+    return this.scheduleConditionalTask(task, 0, 5L, entity::isDead, reference);
   }
 
   public BukkitTask scheduleParticleTaskUntilDeath(final Item item, final Color color) {
     final World world = item.getWorld();
-    final Runnable particleTask = () -> this.spawnParticles0(item, color, world);
-    final Runnable afterOnGround = () -> this.scheduleTaskAfterOnGround(particleTask, item);
-    return this.scheduleTaskUntilDeath(afterOnGround, item);
-  }
-
-  private void spawnParticles0(final Item item, final Color color, final World world) {
-    final Location location = item.getLocation();
-    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(color, 2));
+    final Runnable particleTask = () -> this.spawnParticles(item, color, world);
+    final Runnable task = () -> this.scheduleTaskAfterOnGround(particleTask, item);
+    return this.scheduleTaskUntilDeath(task, item);
   }
 
   public BukkitTask scheduleAfterDeath(final Runnable runnable, final Entity item) {
-    final AtomicBoolean dead = new AtomicBoolean(false);
-    final SchedulerReference reference = EntityReference.of(item);
-    final Runnable internal = () -> this.waitAfterDeath(runnable, item, dead);
-    final BukkitTask task = this.scheduleConditionalTask(internal, 0, 20L, dead::get, reference);
-    this.tasks.add(task);
-    return task;
+    final Reference<?> reference = EntityReference.of(item);
+    final Runnable task = () -> this.waitAfterDeath(runnable, item);
+    return this.scheduleConditionalTask(task, 0, 20L, item::isDead, reference);
   }
 
-  private void waitAfterDeath(final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
-    if (entity.isDead()) {
-      dead.set(true);
+  private BukkitTask scheduleTask(final GameScheduledTask task, final long delay, final long period) {
+    final BukkitTask bukkitTask = (period > 0) ? task.runTaskTimer(this.plugin, delay, period) : task.runTaskLater(this.plugin, delay);
+    this.tasks.add(bukkitTask);
+    return bukkitTask;
+  }
+
+  private void waitForFall(final Runnable runnable, final Entity item) {
+    if (item.isOnGround()) {
       runnable.run();
     }
   }
 
-  private void waitForDeathRepeat(final Runnable runnable, final Entity entity, final AtomicBoolean dead) {
+  private void waitForDeath(final Runnable runnable, final Entity entity) {
     if (entity.isDead()) {
-      dead.set(true);
+      runnable.run();
     }
-    runnable.run();
+  }
+
+  private void waitAfterDeath(final Runnable runnable, final Entity entity) {
+    if (entity.isDead()) {
+      runnable.run();
+    }
+  }
+
+  private void spawnParticles(final Item item, final Color color, final World world) {
+    final Location location = item.getLocation();
+    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(color, 2));
   }
 }

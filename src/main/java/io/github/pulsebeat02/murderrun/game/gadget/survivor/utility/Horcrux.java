@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -76,7 +75,7 @@ public final class Horcrux extends SurvivorGadget {
 
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = PlayerReference.of(player);
+    final PlayerReference reference = PlayerReference.of(player);
     scheduler.scheduleTask(() -> player.setInvulnerable(false), 20L, reference);
 
     final PlayerAudience audience = player.getAudience();

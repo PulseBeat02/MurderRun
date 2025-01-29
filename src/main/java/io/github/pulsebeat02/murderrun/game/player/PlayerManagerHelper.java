@@ -32,7 +32,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.SoundResource;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
@@ -212,7 +211,7 @@ public interface PlayerManagerHelper {
   default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color, final long duration) {
     final Game game = this.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final SchedulerReference reference = PlayerReference.of(entity);
+    final PlayerReference reference = PlayerReference.of(entity);
     this.setEntityGlowingForAliveInnocents(entity, color);
     scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity, color), duration, reference);
   }

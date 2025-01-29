@@ -32,7 +32,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Material;
@@ -64,7 +63,7 @@ public final class HauntTrap extends SurvivorTrap {
       new PotionEffect(PotionEffectType.SLOWNESS, duration, 4)
     );
 
-    final SchedulerReference reference = PlayerReference.of(murderer);
+    final PlayerReference reference = PlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, duration, reference);
 
@@ -79,7 +78,7 @@ public final class HauntTrap extends SurvivorTrap {
     final MetadataManager metadata = gamePlayer.getMetadataManager();
     metadata.setWorldBorderEffect(true);
 
-    final SchedulerReference reference = PlayerReference.of(gamePlayer);
+    final PlayerReference reference = PlayerReference.of(gamePlayer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.unspook(gamePlayer), 19, reference);
   }

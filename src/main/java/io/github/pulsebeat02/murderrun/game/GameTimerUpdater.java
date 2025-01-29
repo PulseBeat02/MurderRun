@@ -28,7 +28,6 @@ package io.github.pulsebeat02.murderrun.game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.UUID;
 import net.kyori.adventure.bossbar.BossBar;
@@ -52,7 +51,7 @@ public final class GameTimerUpdater {
 
   public void start() {
     this.setBossBars();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(this::updateBossBars, 0, 20, reference);
   }

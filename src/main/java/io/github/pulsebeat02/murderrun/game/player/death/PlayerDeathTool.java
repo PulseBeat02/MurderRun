@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import net.citizensnpcs.api.npc.MetadataStore;
@@ -143,7 +142,7 @@ public final class PlayerDeathTool {
   }
 
   public void spawnParticles() {
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> manager.applyToDeceased(this::spawnParticleOnCorpse), 0, 20L, reference);

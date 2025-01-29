@@ -36,7 +36,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.SchedulerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -71,7 +70,7 @@ public final class PoisonSmog extends KillerGadget {
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = game.getScheduler();
     final GamePlayerManager manager = game.getPlayerManager();
-    final SchedulerReference reference = NullReference.of();
+    final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(
       () -> this.handleSmog(world, location, manager),
       0,
