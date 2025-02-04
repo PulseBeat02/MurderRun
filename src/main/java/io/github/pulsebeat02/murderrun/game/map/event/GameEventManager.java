@@ -44,7 +44,7 @@ public final class GameEventManager {
     this.events = Set.of(
       new GamePlayerDeathEvent(this.game),
       new GamePlayerPickupEvent(this.game),
-      new GamePlayerThrowCarPartEvent(this.game),
+      new GamePlayerThrowEvent(this.game),
       new GamePlayerLeaveEvent(this.game),
       new GamePlayerHungerEvent(this.game),
       new GamePlayerRegenEvent(this.game),

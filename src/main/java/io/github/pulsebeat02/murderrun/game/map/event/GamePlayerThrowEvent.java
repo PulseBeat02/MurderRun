@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.*;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -47,10 +48,29 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public final class GamePlayerThrowCarPartEvent extends GameEvent {
+public final class GamePlayerThrowEvent extends GameEvent {
 
-  public GamePlayerThrowCarPartEvent(final Game game) {
+  public GamePlayerThrowEvent(final Game game) {
     super(game);
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onKillerThrowItem(final PlayerDropItemEvent event) {
+    final Game game = this.getGame();
+    final GamePlayerManager playerManager = game.getPlayerManager();
+    final Player player = event.getPlayer();
+    if (!playerManager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final Item item = event.getItemDrop();
+    final ItemStack stack = item.getItemStack();
+    final ItemStack sword = ItemFactory.createKillerSword();
+    if (!stack.isSimilar(sword)) {
+      return;
+    }
+
+    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -87,7 +107,7 @@ public final class GamePlayerThrowCarPartEvent extends GameEvent {
     final Player player = event.getPlayer();
     if (playerManager.checkPlayerExists(player)) {
       final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
-      if (gamePlayer instanceof Survivor survivor) {
+      if (gamePlayer instanceof final Survivor survivor) {
         final int retrieved = survivor.getCarPartsRetrieved();
         survivor.setCarPartsRetrieved(retrieved + 1);
       }

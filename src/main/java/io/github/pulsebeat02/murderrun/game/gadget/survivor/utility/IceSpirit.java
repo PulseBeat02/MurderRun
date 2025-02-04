@@ -44,7 +44,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -150,9 +149,7 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
   private void customizeAttributes(final Zombie zombie) {
     zombie.setInvulnerable(true);
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
-    if (zombie instanceof final Ageable ageable) {
-      ageable.setBaby();
-    }
+    zombie.setBaby();
   }
 
   private void setTargetMetadata(final GamePlayer owner, final Zombie zombie) {

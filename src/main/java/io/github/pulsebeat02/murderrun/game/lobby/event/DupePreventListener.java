@@ -61,6 +61,11 @@ public final class DupePreventListener implements Listener {
       return;
     }
 
+    final ItemStack sword = ItemFactory.createKillerSword();
+    if (!stack.isSimilar(sword)) {
+      return;
+    }
+
     event.setCancelled(true);
   }
 }
