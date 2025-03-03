@@ -315,4 +315,6 @@ public abstract class AbstractPlayer implements Participant {
   public void setWorldBorder(final @Nullable WorldBorder border) {
     this.apply(player -> player.setWorldBorder(border));
   }
+
+  public abstract boolean getPlayer();
 }

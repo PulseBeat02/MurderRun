@@ -42,7 +42,7 @@
 - 可定制语言文件（修改/重排消息）
   - 使用MiniMessage简化格式
 - 多语言支持
-  - 感谢 **GTedd__** 提供简繁中文翻译！
+  - 感谢 **GTedd** 提供简繁中文翻译！
 - 可定制道具属性
   - 禁用道具
   - 修改冷却时间、音效和药水效果
@@ -79,4 +79,3 @@
 <br></br>
 
 - **权限**：权限基于命令结构，例如`/murder command gadget retrieve-all`对应`murderrun.command.gadget.retrieve-all`权限。推荐使用LuckPerms管理权限
-```
