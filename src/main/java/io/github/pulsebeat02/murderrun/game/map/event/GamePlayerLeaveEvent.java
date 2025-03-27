@@ -26,10 +26,16 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.phase.PlayerResetTool;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -52,6 +58,16 @@ public final class GamePlayerLeaveEvent extends GameEvent {
     final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     gamePlayer.setLoggingOut(true);
+
+    final String commands = GameProperties.PLAYER_LEAVE_COMMANDS_AFTER;
+    if (!commands.equals("none")) {
+      final String[] split = commands.split(",");
+      final Server server = Bukkit.getServer();
+      final ConsoleCommandSender console = server.getConsoleSender();
+      for (final String command : split) {
+        server.dispatchCommand(console, command);
+      }
+    }
 
     if (gamePlayer.isAlive()) {
       player.setHealth(0f);
