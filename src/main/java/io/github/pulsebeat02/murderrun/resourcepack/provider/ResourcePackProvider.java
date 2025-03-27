@@ -62,13 +62,19 @@ public abstract class ResourcePackProvider implements PackProvider {
   }
 
   public void cachePack() {
-    final ResourcePackInfo info = this.getMainResourceInfo();
-    final ResourcePackInfo other = this.getResourceInfo();
-    final Component message = Message.RESOURCEPACK_PROMPT.build();
-    final Collection<ResourcePackInfo> infos = other == null ? Lists.newArrayList(info) : Lists.newArrayList(other, info);
-    final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
-    final boolean required = GameProperties.FORCE_RESOURCEPACK;
-    this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+    try {
+      final ResourcePackInfo info = this.getMainResourceInfo();
+      final ResourcePackInfo other = this.getResourceInfo();
+      final Component message = Message.RESOURCEPACK_PROMPT.build();
+      final Collection<ResourcePackInfo> infos = other == null ? Lists.newArrayList(info) : Lists.newArrayList(other, info);
+      final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
+      final boolean required = GameProperties.FORCE_RESOURCEPACK;
+      this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+    } catch (final AssertionError e) {
+      final String msg =
+        "Unable to retrieve resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
+      throw new AssertionError(msg);
+    }
   }
 
   public abstract String getRawUrl();
@@ -81,18 +87,8 @@ public abstract class ResourcePackProvider implements PackProvider {
   private ResourcePackInfo getMainResourceInfo() {
     final String url = this.getFinalUrl();
     final URI uri = URI.create(url);
-    final String hash = this.getFileHash(uri);
+    final String hash = IOUtils.getSHA1Hash(uri);
     return ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
-  }
-
-  private String getFileHash(final URI uri) {
-    try {
-      return IOUtils.getSHA1Hash(uri);
-    } catch (final AssertionError e) {
-      final String msg =
-        "Unable to retrieve resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
-      throw new AssertionError(msg);
-    }
   }
 
   private @Nullable ResourcePackInfo getResourceInfo() {
