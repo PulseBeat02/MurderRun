@@ -53,8 +53,9 @@ public final class FreezeTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GameScheduler scheduler = game.getScheduler();
     final int duration = GameProperties.FREEZE_EFFECT_DURATION;
-    murderer.disableJump(scheduler, duration);
     murderer.setFreezeTicks(duration);
+    murderer.disableJump(scheduler, duration);
+    murderer.setFreezeTicks(0);
     murderer.disableWalkWithFOVEffects(GameProperties.FREEZE_DURATION);
 
     final GamePlayerManager manager = game.getPlayerManager();

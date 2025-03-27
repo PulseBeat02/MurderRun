@@ -32,26 +32,53 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public final class TradingUtils {
 
   private static final Comparator<ItemStack> ITEM_STACK_COMPARATOR = Comparator.comparing(TradingUtils::compareStackName);
 
+  private TradingUtils() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static @Nullable MerchantRecipe getRecipeByResult(final @NotNull ItemStack item) {
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
+    return registry
+      .getGadgets()
+      .stream()
+      .map(Gadget::createRecipe)
+      .filter(recipe -> matchesResult(recipe.getResult(), item))
+      .findFirst()
+      .orElse(null);
+  }
+
+  private static boolean matchesResult(final ItemStack recipeItem, final ItemStack clickedItem) {
+    return (
+      recipeItem != null &&
+      recipeItem.isSimilar(clickedItem) &&
+      recipeItem.getType() == clickedItem.getType() &&
+      recipeItem.hasItemMeta() == clickedItem.hasItemMeta()
+    );
+  }
+
   private static String compareStackName(final ItemStack stack) {
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final String display = requireNonNull(meta.getDisplayName());
     return requireNonNull(ChatColor.stripColor(display));
-  }
-
-  private TradingUtils() {
-    throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
   public static Stream<String> getTradeSuggestions() {

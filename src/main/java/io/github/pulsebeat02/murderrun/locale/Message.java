@@ -69,6 +69,7 @@ public interface Message extends LocaleTools {
   UniComponent<Sender, List<String>> LOBBY_LIST = direct("murderrun.command.lobby.list", null);
   NullComponent<Sender> GAME_LEFT = direct("murderrun.command.game.leave");
   NullComponent<Sender> GAME_CREATED = direct("murderrun.command.game.create");
+  NullComponent<Sender> GAME_ID_EXISTS_ERROR = direct("murderrun.command.game.create.id.error");
   UniComponent<Sender, String> GAME_OWNER_INVITE = direct("murderrun.command.game.invite.sender", null);
   UniComponent<Sender, String> GAME_PLAYER_INVITE = direct("murderrun.command.game.invite.receiver", null);
   NullComponent<Sender> GAME_CANCEL = direct("murderrun.command.game.cancel");

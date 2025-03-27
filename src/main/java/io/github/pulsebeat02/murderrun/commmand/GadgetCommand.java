@@ -28,23 +28,28 @@ package io.github.pulsebeat02.murderrun.commmand;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.TradingUtils;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Stream;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
@@ -53,67 +58,155 @@ import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
+import org.jetbrains.annotations.NotNull;
 
-public final class GadgetCommand implements AnnotationCommandFeature {
+public final class GadgetCommand implements AnnotationCommandFeature, Listener {
 
-  private BukkitAudiences audiences;
+  // GUI配置
+  private static final int ITEMS_PER_PAGE = 45;
+  private static final int CONTROL_ROW_START = 45;
+  private static final String GUI_TITLE = "道具选择 - 第%d/%d页";
+
+  // 分页物品
+  private static final ItemStack PREV_PAGE_ITEM = createNavItem(Material.ARROW, "上一页");
+  private static final ItemStack NEXT_PAGE_ITEM = createNavItem(Material.ARROW, "下一页");
+  private static final ItemStack CLOSE_ITEM = createNavItem(Material.BARRIER, "关闭菜单");
+  private static final ItemStack PAGE_INFO = createNavItem(Material.BOOK, "页码");
+
+  // 分页状态
+  private final Map<UUID, Integer> pageStates = new HashMap<>();
+  private MurderRun plugin;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
-    final AudienceProvider handler = plugin.getAudience();
-    this.audiences = handler.retrieve();
+  public void registerFeature(MurderRun plugin, AnnotationParser<CommandSender> parser) {
+    this.plugin = plugin;
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
-  @Permission("murderrun.command.gadget.retrieve-all")
-  @CommandDescription("murderrun.command.gadget.retrieve.all.info")
-  @Command(value = "murder gadget retrieve-all", requiredSender = Player.class)
-  public void giveAllGadgets(final Player sender) {
-    final PlayerInventory inventory = sender.getInventory();
-    final List<MerchantRecipe> allGadgets = TradingUtils.getAllRecipes();
-    final List<ItemStack> stacks = allGadgets.stream().map(MerchantRecipe::getResult).toList();
-    final Location location = sender.getLocation();
-    final World world = requireNonNull(location.getWorld());
-    for (final ItemStack stack : stacks) {
-      final Map<Integer, ItemStack> remaining = inventory.addItem(stack);
-      if (remaining.isEmpty()) {
-        continue;
+  @Command("murder gadget menu")
+  @Permission("murderrun.command.gadget.menu")
+  @CommandDescription("打开道具GUI")
+  public void openMenu(Player player) {
+    pageStates.put(player.getUniqueId(), 0);
+    openPaginatedMenu(player, 0);
+  }
+
+  private void openPaginatedMenu(Player player, int page) {
+    final List<MerchantRecipe> all = TradingUtils.getAllRecipes();
+    final int totalPages = (int) Math.ceil(all.size() / (double) ITEMS_PER_PAGE);
+    page = Math.max(0, Math.min(page, totalPages - 1));
+
+    final String title = String.format(GUI_TITLE, page + 1, totalPages);
+    final Inventory inv = Bukkit.createInventory(new GadgetHolder(), 54, title);
+
+    // 填充物品
+    final int start = page * ITEMS_PER_PAGE;
+    final int end = Math.min(start + ITEMS_PER_PAGE, all.size());
+    for (int i = start; i < end; i++) {
+      inv.setItem(i - start, all.get(i).getResult().clone());
+    }
+
+    // 底部控制栏
+    inv.setItem(49, updatePageInfo(page + 1, totalPages));
+    inv.setItem(45, page > 0 ? PREV_PAGE_ITEM : null);
+    inv.setItem(53, page < totalPages - 1 ? NEXT_PAGE_ITEM : null);
+    inv.setItem(48, CLOSE_ITEM);
+
+    player.openInventory(inv);
+  }
+
+  @EventHandler
+  public void onInventoryClick(InventoryClickEvent event) {
+    if (!(event.getInventory().getHolder() instanceof GadgetHolder)) return;
+
+    event.setCancelled(true);
+    final ItemStack item = event.getCurrentItem();
+    if (item == null || item.getType() == Material.AIR) return;
+
+    final Player player = (Player) event.getWhoClicked();
+    final UUID uuid = player.getUniqueId();
+    int page = pageStates.getOrDefault(uuid, 0);
+
+    switch (event.getRawSlot()) {
+      case 45 -> page = Math.max(0, page - 1);
+      case 53 -> page++;
+      case 48 -> {
+        player.closeInventory();
+        return;
       }
-      final Collection<ItemStack> left = remaining.values();
-      left.forEach(item -> world.dropItemNaturally(location, item));
+      default -> {
+        final MerchantRecipe recipe = TradingUtils.getRecipeByResult(item);
+        if (recipe != null) giveItem(player, recipe.getResult());
+        return;
+      }
+    }
+
+    pageStates.put(uuid, page);
+    openPaginatedMenu(player, page);
+  }
+
+  private void giveItem(Player player, ItemStack item) {
+    final Location loc = player.getLocation();
+    final World world = requireNonNull(loc.getWorld(), "World is null");
+    final ItemStack clone = item.clone();
+    final Map<Integer, ItemStack> leftover = player.getInventory().addItem(clone);
+    leftover.values().forEach(left -> world.dropItemNaturally(loc, left));
+  }
+
+  private static ItemStack updatePageInfo(int current, int total) {
+    final ItemStack clone = PAGE_INFO.clone();
+    final ItemMeta meta = clone.getItemMeta();
+    if (meta != null) {
+      meta.setDisplayName(ChatColor.GOLD + "当前: 第 " + current + "/" + total + " 页");
+    }
+    clone.setItemMeta(meta);
+    return clone;
+  }
+
+  private static ItemStack createNavItem(Material material, String name) {
+    final ItemStack item = new ItemStack(material);
+    final ItemMeta meta = item.getItemMeta();
+    if (meta != null) {
+      meta.setDisplayName(ChatColor.GREEN + name);
+    }
+    item.setItemMeta(meta);
+    return item;
+  }
+
+  public MurderRun getPlugin() {
+    return plugin;
+  }
+
+  private static class GadgetHolder implements InventoryHolder {
+
+    @Override
+    public @NotNull Inventory getInventory() {
+      return Bukkit.createInventory(null, 54);
     }
   }
 
+  @Command("murder gadget retrieve <gadgetName>")
   @Permission("murderrun.command.gadget.retrieve")
-  @CommandDescription("murderrun.command.gadget.retrieve.info")
-  @Command(value = "murder gadget retrieve <gadgetName>", requiredSender = Player.class)
-  public void retrieveGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
-    final Audience audience = this.audiences.player(sender);
-    final List<MerchantRecipe> allGadgets = TradingUtils.parseRecipes(gadgetName);
-    if (this.checkIfInvalidGadget(audience, allGadgets)) {
+  @CommandDescription("获取指定道具")
+  public void retrieveGadget(Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted String gadgetName) {
+    final List<MerchantRecipe> recipes = TradingUtils.parseRecipes(gadgetName);
+    if (recipes.isEmpty()) {
+      sender.sendMessage(Message.GADGET_RETRIEVE_ERROR.toString());
       return;
     }
 
-    final Location location = sender.getLocation();
-    final World world = requireNonNull(location.getWorld());
-    final MerchantRecipe recipe = allGadgets.getFirst();
-    final ItemStack result = recipe.getResult();
-    final PlayerInventory inventory = sender.getInventory();
-    final Map<Integer, ItemStack> remaining = inventory.addItem(result);
-    final Collection<ItemStack> left = remaining.values();
-    left.forEach(item -> world.dropItemNaturally(location, item));
+    giveItem(sender, recipes.getFirst().getResult());
   }
 
-  public boolean checkIfInvalidGadget(final Audience audience, final List<MerchantRecipe> recipes) {
-    if (recipes.isEmpty()) {
-      final Component msg = Message.GADGET_RETRIEVE_ERROR.build();
-      audience.sendMessage(msg);
-      return true;
-    }
-    return false;
+  @Command("murder gadget retrieve-all")
+  @Permission("murderrun.command.gadget.retrieve-all")
+  @CommandDescription("获取全部道具")
+  public void retrieveAllGadgets(Player sender) {
+    TradingUtils.getAllRecipes().stream().map(MerchantRecipe::getResult).forEach(item -> giveItem(sender, item));
   }
 
   @Suggestions("gadget-suggestions")
-  public Stream<String> suggestTrades(final CommandContext<CommandSender> context, final String input) {
+  public Stream<String> suggestGadgets(CommandContext<CommandSender> ctx, String input) {
     return TradingUtils.getTradeSuggestions();
   }
 }
