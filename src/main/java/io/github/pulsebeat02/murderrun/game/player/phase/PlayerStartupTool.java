@@ -82,7 +82,8 @@ public final class PlayerStartupTool {
     this.handleAll(gamePlayer);
     gamePlayer.addPotionEffects(
       new PotionEffect(PotionEffectType.NIGHT_VISION, PotionEffect.INFINITE_DURATION, 1),
-      new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 5)
+      new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 4),
+      new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4)
     );
     gamePlayer.setGameMode(GameMode.SURVIVAL);
     gamePlayer.setWalkSpeed(0.3f);

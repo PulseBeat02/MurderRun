@@ -35,7 +35,9 @@ public final class RickRoll {
     if (!visible) {
       return;
     }
-    final URI uri = URI.create("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    final URI uri = URI.create(
+      "https://www.bilibili.com/video/BV1GJ411x7h7/?share_source=copy_web&vd_source=5df1d9516726a0c25d91a86fd032eb5a"
+    );
     final Desktop desktop = Desktop.getDesktop();
     try {
       desktop.browse(uri);

@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -93,6 +94,16 @@ public final class BlastOff extends SurvivorGadget {
       this.customizeMeta(firework);
       this.customizeProperties(player, firework);
       player.setCanDismount(false);
+      // 设置临时无敌
+      player.setInvulnerable(true);
+      player
+        .getGame()
+        .getScheduler()
+        .scheduleTask(
+          () -> player.setInvulnerable(false),
+          80L, // 4秒无敌
+          PlayerReference.of(player)
+        );
     });
   }
 
@@ -105,7 +116,7 @@ public final class BlastOff extends SurvivorGadget {
 
   private void customizeMeta(final Firework firework) {
     final FireworkMeta meta = firework.getFireworkMeta();
-    meta.setPower(5);
+    meta.setPower(2);
     firework.setFireworkMeta(meta);
   }
 }

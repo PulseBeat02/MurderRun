@@ -85,7 +85,7 @@ public final class GadgetCommand implements AnnotationCommandFeature, Listener {
 
   @Command("murder gadget menu")
   @Permission("murderrun.command.gadget.menu")
-  @CommandDescription("open murder gadget menu")
+  @CommandDescription("打开道具GUI")
   public void openMenu(Player player) {
     pageStates.put(player.getUniqueId(), 0);
     openPaginatedMenu(player, 0);

@@ -66,6 +66,12 @@ public final class QuickBomb extends KillerGadget {
   private void spawnPrimedTnt(final GamePlayer survivor) {
     final Location location = survivor.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawn(location, TNTPrimed.class, tnt -> tnt.setFuseTicks(40));
+    final double bombticks = GameProperties.QUICK_BOMB_TICKS;
+    final double bombdamage = GameProperties.QUICK_BOMB_DAMAGE;
+    world.spawn(location, TNTPrimed.class, tnt -> {
+      tnt.setFuseTicks((int) bombticks);
+      // PaperMC专属API 设置爆炸威力
+      tnt.setYield((float) bombdamage);
+    });
   }
 }
