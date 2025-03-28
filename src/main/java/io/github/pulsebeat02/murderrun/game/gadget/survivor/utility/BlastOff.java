@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -73,6 +74,10 @@ public final class BlastOff extends SurvivorGadget {
     final Firework firework = this.spawnRocket(killer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleAfterDeath(() -> this.resetPlayer(killer, before), firework);
+    killer.setInvulnerable(true);
+
+    final PlayerReference reference = PlayerReference.of(killer);
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), 4 * 20L, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.BLASTOFF_SOUND);
@@ -105,7 +110,7 @@ public final class BlastOff extends SurvivorGadget {
 
   private void customizeMeta(final Firework firework) {
     final FireworkMeta meta = firework.getFireworkMeta();
-    meta.setPower(5);
+    meta.setPower(2);
     firework.setFireworkMeta(meta);
   }
 }

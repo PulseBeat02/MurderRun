@@ -36,13 +36,16 @@ import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import java.util.Objects;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
+import org.bukkit.util.Vector;
 
 public final class Horcrux extends SurvivorGadget {
+
+  private static final int COUNTDOWN_SECONDS = 5;
+  private static final long TICK_PER_SECOND = 20L;
 
   public Horcrux() {
     super("horcrux", Material.CHARCOAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build(), GameProperties.HORCRUX_COST);
@@ -53,33 +56,82 @@ public final class Horcrux extends SurvivorGadget {
     final Game game = packet.getGame();
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
-    final DeathManager deathManager = player.getDeathManager();
-    final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleHorcrux(player, item), true);
-    deathManager.addDeathTask(task);
+
+    final Location itemLocation = item.getLocation();
+    final Location respawnPoint = itemLocation.clone();
+    final Location clone = respawnPoint.clone();
+    item.setVelocity(new Vector(0, 0, 0));
+    item.setInvulnerable(true);
+
+    final Runnable task = () -> createDeathTask(item, player, clone);
+    final PlayerDeathTask deathTask = new PlayerDeathTask(task, true);
+    final DeathManager manager = player.getDeathManager();
+    manager.addDeathTask(deathTask);
 
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleParticleTaskUntilDeath(item, Color.BLACK);
 
-    final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.HORCRUX_SOUND);
-
     return false;
   }
 
-  private void handleHorcrux(final GamePlayer player, final Item item) {
-    final Location location = item.getLocation();
-    player.setRespawnLocation(location, true);
+  private void createDeathTask(Item item, GamePlayer player, Location respawnPoint) {
+    if (item.isValid()) {
+      item.remove();
+    }
+    startSpectatorRespawn(player, respawnPoint.clone());
+  }
+
+  private void startSpectatorRespawn(final GamePlayer player, final Location respawnPoint) {
+    final PlayerReference ref = PlayerReference.of(player);
+    final PlayerAudience audience = player.getAudience();
+    player.setGameMode(GameMode.SPECTATOR);
+
+    final Game game = player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleTask(
+      () -> {
+        audience.sendMessage(Message.HORCRUX_ACTIVATE.build());
+        startCountdown(player, respawnPoint);
+      },
+      20L,
+      ref
+    );
+  }
+
+  private void startCountdown(final GamePlayer player, final Location respawnPoint) {
+    final GameScheduler scheduler = player.getGame().getScheduler();
+    final PlayerReference ref = PlayerReference.of(player);
+    scheduler.scheduleTask(() -> executeFinalRespawn(player, respawnPoint), COUNTDOWN_SECONDS * TICK_PER_SECOND, ref);
+  }
+
+  private void executeFinalRespawn(final GamePlayer player, final Location point) {
+    final Location safeLocation = findSafeLocation(point);
+    player.setGameMode(GameMode.SURVIVAL);
+    player.teleport(safeLocation);
     player.setInvulnerable(true);
-    player.teleport(location);
-    item.remove();
 
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
     final PlayerReference reference = PlayerReference.of(player);
-    scheduler.scheduleTask(() -> player.setInvulnerable(false), 20L, reference);
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), 3 * 20L, reference);
+  }
 
-    final PlayerAudience audience = player.getAudience();
-    final Component message = Message.HORCRUX_ACTIVATE.build();
-    audience.sendMessage(message);
+  private Location findSafeLocation(final Location temp) {
+    Location loc = temp.clone();
+    final Block originBlock = loc.getBlock();
+    Material blockType = originBlock.getType();
+    if (!blockType.isAir()) {
+      loc = loc.add(0, 1, 0);
+      final Block block = loc.getBlock();
+      blockType = block.getType();
+      if (!blockType.isAir()) {
+        World world = Objects.requireNonNull(loc.getWorld());
+        final Block highestBlock = world.getHighestBlockAt(loc);
+        Location highestBlockLocation = highestBlock.getLocation();
+        loc = highestBlockLocation.add(0, 1, 0);
+      }
+    }
+    loc = loc.add(0, 0.5, 0);
+    return loc;
   }
 }

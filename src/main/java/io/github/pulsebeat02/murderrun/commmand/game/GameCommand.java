@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -110,6 +110,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       this.sanitizer.checkIfAlreadyInGame(audience, temp) ||
       this.sanitizer.checkIfArenaValid(audience, arenaName) ||
       this.sanitizer.checkIfLobbyValid(audience, lobbyName) ||
+      this.sanitizer.checkIfGameIdExists(audience, id) ||
       this.sanitizer.checkIfInvalidPlayerCounts(audience, min, max)
     ) {
       return;

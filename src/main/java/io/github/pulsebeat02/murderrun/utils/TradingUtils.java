@@ -39,19 +39,43 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 public final class TradingUtils {
 
   private static final Comparator<ItemStack> ITEM_STACK_COMPARATOR = Comparator.comparing(TradingUtils::compareStackName);
 
+  private TradingUtils() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static Optional<MerchantRecipe> getRecipeByResult(final @NotNull ItemStack item) {
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
+    final Collection<Gadget> gadgets = registry.getGadgets();
+    MerchantRecipe target = null;
+    for (final Gadget gadget : gadgets) {
+      final MerchantRecipe recipe = gadget.createRecipe();
+      if (matchesResult(recipe, item)) {
+        target = recipe;
+        break;
+      }
+    }
+    return Optional.ofNullable(target);
+  }
+
+  private static boolean matchesResult(final MerchantRecipe recipe, final ItemStack clickedItem) {
+    final ItemStack recipeItem = recipe.getResult();
+    return (
+      recipeItem.isSimilar(clickedItem) &&
+      recipeItem.getType() == clickedItem.getType() &&
+      recipeItem.hasItemMeta() == clickedItem.hasItemMeta()
+    );
+  }
+
   private static String compareStackName(final ItemStack stack) {
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
     final String display = requireNonNull(meta.getDisplayName());
     return requireNonNull(ChatColor.stripColor(display));
-  }
-
-  private TradingUtils() {
-    throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
   public static Stream<String> getTradeSuggestions() {

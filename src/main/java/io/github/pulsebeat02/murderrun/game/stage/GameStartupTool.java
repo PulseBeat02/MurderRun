@@ -44,6 +44,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.function.Consumer;
@@ -89,7 +90,13 @@ public final class GameStartupTool {
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final GamePlayerManager manager = this.game.getPlayerManager();
-    manager.applyToLivingSurvivors(innocentPlayer -> innocentPlayer.teleport(spawnLocation));
+    final GameScheduler scheduler = this.game.getScheduler();
+    manager.applyToLivingSurvivors(player -> {
+      final PlayerReference reference = PlayerReference.of(player);
+      player.setInvulnerable(true);
+      player.teleport(spawnLocation);
+      scheduler.scheduleTask(() -> player.setInvulnerable(false), 3 * 20L, reference);
+    });
   }
 
   private void announceHidePhase() {

@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,6 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.*;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
@@ -50,8 +49,7 @@ public final class GameInputSanitizer {
   public boolean checkIfNoQuickJoinableGame(final Player sender, final Audience audience, final GameManager manager) {
     final boolean success = manager.quickJoinGame(sender);
     if (!success) {
-      final Component message = Message.GAME_NONE.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_NONE.build());
       return true;
     }
     return false;
@@ -61,8 +59,7 @@ public final class GameInputSanitizer {
     final String id = game.getId();
     final boolean success = manager.joinGame(sender, id);
     if (!success) {
-      final Component message = Message.GAME_FULL.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_FULL.build());
       return true;
     }
     return false;
@@ -71,8 +68,7 @@ public final class GameInputSanitizer {
   @EnsuresNonNullIf(expression = "#2", result = false)
   public boolean checkIfInNoGame(final Audience audience, final @Nullable PreGameManager data) {
     if (data == null) {
-      final Component message = Message.GAME_INVALID_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_INVALID_ERROR.build());
       return true;
     }
     return false;
@@ -81,8 +77,7 @@ public final class GameInputSanitizer {
   public boolean checkIfNotOwner(final CommandSender sender, final Audience audience, final PreGameManager data) {
     final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isLeader(sender)) {
-      final Component message = Message.GAME_NOT_OWNER_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_NOT_OWNER_ERROR.build());
       return true;
     }
     return false;
@@ -91,10 +86,8 @@ public final class GameInputSanitizer {
   public boolean checkIfGameAlreadyStarted(final Audience audience, final PreGameManager data) {
     final Game game = data.getGame();
     final GameStatus status = game.getStatus();
-    final GameStatus.Status gameStatus = status.getStatus();
-    if (gameStatus == GameStatus.Status.SURVIVORS_RELEASED) {
-      final Component message = Message.GAME_STARTED_ERROR.build();
-      audience.sendMessage(message);
+    if (status.getStatus() == GameStatus.Status.SURVIVORS_RELEASED) {
+      audience.sendMessage(Message.GAME_STARTED_ERROR.build());
       return true;
     }
     return false;
@@ -103,8 +96,7 @@ public final class GameInputSanitizer {
   public boolean checkIfNotEnoughPlayers(final Audience audience, final PreGameManager data) {
     final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isEnoughPlayers()) {
-      final Component message = Message.GAME_LOW_PLAYER_COUNT_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_LOW_PLAYER_COUNT_ERROR.build());
       return true;
     }
     return false;
@@ -112,8 +104,7 @@ public final class GameInputSanitizer {
 
   public boolean checkIfAlreadyInGame(final Audience audience, final @Nullable PreGameManager temp) {
     if (temp != null) {
-      final Component message = Message.GAME_CREATE_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_CREATE_ERROR.build());
       return true;
     }
     return false;
@@ -124,8 +115,7 @@ public final class GameInputSanitizer {
     final ArenaManager arenaManager = plugin.getArenaManager();
     final Arena arena = arenaManager.getArena(arenaName);
     if (arena == null) {
-      final Component message = Message.GAME_ARENA_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_ARENA_ERROR.build());
       return true;
     }
     return false;
@@ -136,8 +126,7 @@ public final class GameInputSanitizer {
     final LobbyManager lobbyManager = plugin.getLobbyManager();
     final Lobby lobby = lobbyManager.getLobby(lobbyName);
     if (lobby == null) {
-      final Component message = Message.GAME_LOBBY_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_LOBBY_ERROR.build());
       return true;
     }
     return false;
@@ -145,8 +134,7 @@ public final class GameInputSanitizer {
 
   public boolean checkIfNotSamePlayer(final Audience audience, final Player sender, final Player invite) {
     if (sender == invite) {
-      final Component message = Message.GAME_INVITE_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_INVITE_ERROR.build());
       return true;
     }
     return false;
@@ -155,8 +143,7 @@ public final class GameInputSanitizer {
   public boolean checkIfOwnerOfCurrentGame(final CommandSender sender, final Audience audience, final PreGameManager temp) {
     final PreGamePlayerManager manager = temp.getPlayerManager();
     if (manager.isLeader(sender)) {
-      final Component message = Message.GAME_LEAVE_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_LEAVE_ERROR.build());
       return true;
     }
     return false;
@@ -165,16 +152,10 @@ public final class GameInputSanitizer {
   public boolean checkIfInvitedAlreadyInGame(final Audience audience, final Player invite, final PreGameManager data) {
     final GameManager manager = this.command.getGameManager();
     final PreGameManager otherPlayerData = manager.getGame(invite);
-    if (otherPlayerData == null) {
-      return false;
-    }
-
-    if (data == otherPlayerData) {
-      final Component message = Message.GAME_INVITE_ALREADY_ERROR.build();
-      audience.sendMessage(message);
+    if (otherPlayerData != null && data == otherPlayerData) {
+      audience.sendMessage(Message.GAME_INVITE_ALREADY_ERROR.build());
       return true;
     }
-
     return false;
   }
 
@@ -182,8 +163,7 @@ public final class GameInputSanitizer {
     final GameManager manager = this.command.getGameManager();
     final PreGameManager data = manager.getGame(id);
     if (data == null) {
-      final Component message = Message.GAME_INVALID_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_INVALID_ERROR.build());
       return true;
     }
 
@@ -192,8 +172,7 @@ public final class GameInputSanitizer {
     final InviteManager invites = this.command.getInviteManager();
     final boolean canJoin = invites.hasInvite(owner, sender) || playerManager.isQuickJoinable();
     if (!canJoin) {
-      final Component message = Message.GAME_INVALID_INVITE_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_INVALID_INVITE_ERROR.build());
       return true;
     }
 
@@ -202,8 +181,16 @@ public final class GameInputSanitizer {
 
   public boolean checkIfInvalidPlayerCounts(final Audience audience, final int min, final int max) {
     if (min > max || min < 2) {
-      final Component message = Message.GAME_PLAYER_ERROR.build();
-      audience.sendMessage(message);
+      audience.sendMessage(Message.GAME_PLAYER_ERROR.build());
+      return true;
+    }
+    return false;
+  }
+
+  public boolean checkIfGameIdExists(final Audience audience, final String id) {
+    final GameManager manager = this.command.getGameManager();
+    if (manager.getGame(id) != null) {
+      audience.sendMessage(Message.GAME_ID_EXISTS_ERROR.build());
       return true;
     }
     return false;

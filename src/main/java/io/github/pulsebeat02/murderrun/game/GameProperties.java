@@ -209,6 +209,8 @@ public interface GameProperties {
   double POISON_SMOG_RADIUS = dec("poison_smog.radius");
   int POISON_SMOG_DURATION = num("poison_smog.duration");
   String QUICK_BOMB_SOUND = str("quick_bomb.sound");
+  int QUICK_BOMB_TICKS = num("quick_bomb_ticks");
+  double QUICK_BOMB_DAMAGE = dec("quick_bomb_damage");
   String RED_ARROW_SOUND = str("red_arrow.sound");
   int RED_ARROW_DURATION = num("red_arrow.duration");
   String TRAP_SEEKER_SOUND = str("trap_seeker.sound");

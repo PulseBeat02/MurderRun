@@ -98,7 +98,7 @@ public final class IcePath extends KillerGadget {
           block.getState().update(true);
         }
       },
-      3 * 20L,
+      2 * 20L,
       reference
     );
   }
