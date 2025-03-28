@@ -29,11 +29,11 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.hibernate.HibernateManager;
 import io.github.pulsebeat02.murderrun.data.json.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.json.LobbyDataJSONMapper;
+import io.github.pulsebeat02.murderrun.data.json.StatisticJSONMapper;
 import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
-import io.github.pulsebeat02.murderrun.game.statistics.StatisticJSONMapper;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 
 public final class RelationalDataProvider {

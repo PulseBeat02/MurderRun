@@ -23,9 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.statistics;
+package io.github.pulsebeat02.murderrun.data.json;
 
-import io.github.pulsebeat02.murderrun.data.json.AbstractJSONDataManager;
+import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 
 public final class StatisticJSONMapper extends AbstractJSONDataManager<StatisticsManager> {
 
