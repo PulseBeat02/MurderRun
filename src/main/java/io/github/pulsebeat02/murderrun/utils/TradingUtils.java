@@ -32,12 +32,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -45,7 +40,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public final class TradingUtils {
 
@@ -55,20 +49,23 @@ public final class TradingUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static @Nullable MerchantRecipe getRecipeByResult(final @NotNull ItemStack item) {
+  public static Optional<MerchantRecipe> getRecipeByResult(final @NotNull ItemStack item) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
-    return registry
-      .getGadgets()
-      .stream()
-      .map(Gadget::createRecipe)
-      .filter(recipe -> matchesResult(recipe.getResult(), item))
-      .findFirst()
-      .orElse(null);
+    final Collection<Gadget> gadgets = registry.getGadgets();
+    MerchantRecipe target = null;
+    for (final Gadget gadget : gadgets) {
+      final MerchantRecipe recipe = gadget.createRecipe();
+      if (matchesResult(recipe, item)) {
+        target = recipe;
+        break;
+      }
+    }
+    return Optional.ofNullable(target);
   }
 
-  private static boolean matchesResult(final ItemStack recipeItem, final ItemStack clickedItem) {
+  private static boolean matchesResult(final MerchantRecipe recipe, final ItemStack clickedItem) {
+    final ItemStack recipeItem = recipe.getResult();
     return (
-      recipeItem != null &&
       recipeItem.isSimilar(clickedItem) &&
       recipeItem.getType() == clickedItem.getType() &&
       recipeItem.hasItemMeta() == clickedItem.hasItemMeta()

@@ -64,7 +64,6 @@ public final class CryoFreeze extends SurvivorGadget {
     final int cz = location.getBlockZ();
 
     final int radius = GameProperties.CRYO_FREEZE_RADIUS;
-    // 以物品为中心，只生成上半球
     for (int x = -radius; x <= radius; x++) {
       for (int y = 0; y <= radius; y++) {
         for (int z = -radius; z <= radius; z++) {

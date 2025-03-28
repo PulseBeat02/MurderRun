@@ -74,6 +74,10 @@ public final class BlastOff extends SurvivorGadget {
     final Firework firework = this.spawnRocket(killer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleAfterDeath(() -> this.resetPlayer(killer, before), firework);
+    killer.setInvulnerable(true);
+
+    final PlayerReference reference = PlayerReference.of(killer);
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), 4 * 20L, reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(GameProperties.BLASTOFF_SOUND);
@@ -94,16 +98,6 @@ public final class BlastOff extends SurvivorGadget {
       this.customizeMeta(firework);
       this.customizeProperties(player, firework);
       player.setCanDismount(false);
-      // 设置临时无敌
-      player.setInvulnerable(true);
-      player
-        .getGame()
-        .getScheduler()
-        .scheduleTask(
-          () -> player.setInvulnerable(false),
-          80L, // 4秒无敌
-          PlayerReference.of(player)
-        );
     });
   }
 

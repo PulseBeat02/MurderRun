@@ -31,15 +31,14 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
+import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Objects;
-import org.bukkit.Color;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
 
@@ -58,44 +57,37 @@ public final class Horcrux extends SurvivorGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
 
-    // 锁定物品状态
-    final Location respawnPoint = item.getLocation().clone();
+    final Location itemLocation = item.getLocation();
+    final Location respawnPoint = itemLocation.clone();
+    final Location clone = respawnPoint.clone();
     item.setVelocity(new Vector(0, 0, 0));
     item.setInvulnerable(true);
 
-    // 注册死亡回调
-    player
-      .getDeathManager()
-      .addDeathTask(
-        new PlayerDeathTask(
-          () -> {
-            // 立即清除物品
-            if (item.isValid()) {
-              item.remove();
-            }
+    final Runnable task = () -> createDeathTask(item, player, clone);
+    final PlayerDeathTask deathTask = new PlayerDeathTask(task, true);
+    final DeathManager manager = player.getDeathManager();
+    manager.addDeathTask(deathTask);
 
-            // 启动复活流程
-            startSpectatorRespawn(player, respawnPoint.clone());
-          },
-          true
-        )
-      );
-
-    // 粒子效果
-    game.getScheduler().scheduleParticleTaskUntilDeath(item, Color.BLACK);
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleParticleTaskUntilDeath(item, Color.BLACK);
 
     return false;
   }
 
+  private void createDeathTask(Item item, GamePlayer player, Location respawnPoint) {
+    if (item.isValid()) {
+      item.remove();
+    }
+    startSpectatorRespawn(player, respawnPoint.clone());
+  }
+
   private void startSpectatorRespawn(final GamePlayer player, final Location respawnPoint) {
-    final GameScheduler scheduler = player.getGame().getScheduler();
     final PlayerReference ref = PlayerReference.of(player);
     final PlayerAudience audience = player.getAudience();
-
-    // 设为旁观模式
     player.setGameMode(GameMode.SPECTATOR);
 
-    // 阶段1：显示初始提示
+    final Game game = player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(
       () -> {
         audience.sendMessage(Message.HORCRUX_ACTIVATE.build());
@@ -103,54 +95,43 @@ public final class Horcrux extends SurvivorGadget {
       },
       20L,
       ref
-    ); // 延迟1秒确保死亡动画完成
+    );
   }
 
   private void startCountdown(final GamePlayer player, final Location respawnPoint) {
     final GameScheduler scheduler = player.getGame().getScheduler();
     final PlayerReference ref = PlayerReference.of(player);
-    final PlayerAudience audience = player.getAudience();
-
-    // 最终传送阶段
-    scheduler.scheduleTask(
-      () -> {
-        executeFinalRespawn(player, respawnPoint);
-      },
-      COUNTDOWN_SECONDS * TICK_PER_SECOND,
-      ref
-    );
+    scheduler.scheduleTask(() -> executeFinalRespawn(player, respawnPoint), COUNTDOWN_SECONDS * TICK_PER_SECOND, ref);
   }
 
   private void executeFinalRespawn(final GamePlayer player, final Location point) {
-    final PlayerAudience audience = player.getAudience();
-
-    // 恢复生存模式
+    final Location safeLocation = findSafeLocation(point);
     player.setGameMode(GameMode.SURVIVAL);
-
-    // 安全传送
-    final Location safeLocation = findSafeLocation(point.clone());
     player.teleport(safeLocation);
-
-    // 设置临时无敌
     player.setInvulnerable(true);
-    player
-      .getGame()
-      .getScheduler()
-      .scheduleTask(
-        () -> player.setInvulnerable(false),
-        60L, // 3秒无敌
-        PlayerReference.of(player)
-      );
+
+    final Game game = player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    final PlayerReference reference = PlayerReference.of(player);
+    scheduler.scheduleTask(() -> player.setInvulnerable(false), 3 * 20L, reference);
   }
 
-  private Location findSafeLocation(Location loc) {
-    // 防止卡在方块中
-    if (!loc.getBlock().getType().isAir()) {
-      loc.add(0, 1, 0);
-      if (!loc.getBlock().getType().isAir()) {
-        loc = Objects.requireNonNull(loc.getWorld()).getHighestBlockAt(loc).getLocation().add(0, 1, 0);
+  private Location findSafeLocation(final Location temp) {
+    Location loc = temp.clone();
+    final Block originBlock = loc.getBlock();
+    Material blockType = originBlock.getType();
+    if (!blockType.isAir()) {
+      loc = loc.add(0, 1, 0);
+      final Block block = loc.getBlock();
+      blockType = block.getType();
+      if (!blockType.isAir()) {
+        World world = Objects.requireNonNull(loc.getWorld());
+        final Block highestBlock = world.getHighestBlockAt(loc);
+        Location highestBlockLocation = highestBlock.getLocation();
+        loc = highestBlockLocation.add(0, 1, 0);
       }
     }
-    return loc.add(0, 0.5, 0); // 确保站立位置
+    loc = loc.add(0, 0.5, 0);
+    return loc;
   }
 }

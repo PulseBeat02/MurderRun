@@ -90,14 +90,12 @@ public final class GameStartupTool {
     final Arena arena = requireNonNull(configuration.getArena());
     final Location spawnLocation = arena.getSpawn();
     final GamePlayerManager manager = this.game.getPlayerManager();
-
-    manager.applyToLivingSurvivors(innocentPlayer -> {
-      // 先设置无敌再传送
-      innocentPlayer.setInvulnerable(true);
-      innocentPlayer.teleport(spawnLocation);
-
-      // 3秒后取消无敌（60 ticks = 3秒）
-      this.game.getScheduler().scheduleTask(() -> innocentPlayer.setInvulnerable(false), 60L, PlayerReference.of(innocentPlayer));
+    final GameScheduler scheduler = this.game.getScheduler();
+    manager.applyToLivingSurvivors(player -> {
+      final PlayerReference reference = PlayerReference.of(player);
+      player.setInvulnerable(true);
+      player.teleport(spawnLocation);
+      scheduler.scheduleTask(() -> player.setInvulnerable(false), 3 * 20L, reference);
     });
   }
 

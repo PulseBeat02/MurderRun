@@ -56,7 +56,7 @@ public final class BurrowTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final Location location = murderer.getLocation();
     final Location clone = location.clone();
-    clone.subtract(0, 30, 0); // 修改Y轴减少量为5格
+    clone.subtract(0, 30, 0);
 
     final GameScheduler scheduler = game.getScheduler();
     if (!(murderer instanceof final Killer killer)) {
@@ -69,7 +69,7 @@ public final class BurrowTrap extends SurvivorTrap {
     killer.disableWalkNoFOVEffects(scheduler, duration);
     killer.setForceMineBlocks(false);
     killer.teleport(clone);
-    killer.setGravity(false); // 禁用重力
+    killer.setGravity(false);
     scheduler.scheduleTask(() -> this.resetState(killer, location), duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();

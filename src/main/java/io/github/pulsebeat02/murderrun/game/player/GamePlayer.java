@@ -161,9 +161,4 @@ public class GamePlayer extends AbstractPlayer {
   public Map<Attribute, Double> getDefaultAttributes() {
     return this.attributes;
   }
-
-  @Override
-  public boolean getPlayer() {
-    return this.isAlive();
-  }
 }
