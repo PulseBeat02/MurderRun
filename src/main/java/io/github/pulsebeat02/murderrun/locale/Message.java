@@ -30,6 +30,10 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> GADGET_GUI_TITLE = direct("murderrun.gadget.gui.title");
+  NullComponent<Sender> GADGET_GUI_CANCEL = direct("murderrun.gadget.gui.cancel");
+  NullComponent<Sender> GADGET_GUI_FORWARD = direct("murderrun.gadget.gui.forward");
+  NullComponent<Sender> GADGET_GUI_BACK = direct("murderrun.gadget.gui.back");
   NullComponent<Sender> RESOURCE_PACK_META = direct("murderrun.resourcepack.meta");
   NullComponent<Sender> CAR_PART_ITEM_NAME = direct("murderrun.item.part.name");
   NullComponent<Sender> CAR_PART_ITEM_LORE = direct("murderrun.item.part.lore");

@@ -25,6 +25,14 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -33,6 +41,26 @@ public final class InventoryUtils {
 
   private InventoryUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static boolean addItem(final HumanEntity player, final ItemStack stack) {
+    return addItems(player, Collections.singleton(stack));
+  }
+
+  public static boolean addItems(final HumanEntity player, final Collection<ItemStack> stacks) {
+    final PlayerInventory inventory = player.getInventory();
+    final Location location = player.getLocation();
+    final World world = requireNonNull(location.getWorld());
+    boolean allAdded = true;
+    for (final ItemStack stack : stacks) {
+      final Map<Integer, ItemStack> leftover = inventory.addItem(stack);
+      if (!leftover.isEmpty()) {
+        allAdded = false;
+        final Collection<ItemStack> leftovers = leftover.values();
+        leftovers.forEach(item -> world.dropItemNaturally(location, item));
+      }
+    }
+    return allAdded;
   }
 
   public static ItemStack[] getAllSlotsOnScreen(final Player player) {
