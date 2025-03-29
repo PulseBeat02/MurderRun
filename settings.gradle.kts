@@ -5,3 +5,4 @@ plugins {
 rootProject.name = "MurderRun"
 include("nms-api")
 include("v1_21_R4")
+include("v1_21_R5")
