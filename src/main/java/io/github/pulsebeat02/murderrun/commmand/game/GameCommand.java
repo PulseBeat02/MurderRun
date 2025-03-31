@@ -27,6 +27,9 @@ package io.github.pulsebeat02.murderrun.commmand.game;
 
 import static java.util.Objects.requireNonNull;
 
+import com.alessiodp.parties.api.Parties;
+import com.alessiodp.parties.api.interfaces.PartiesAPI;
+import com.alessiodp.parties.api.interfaces.Party;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationCommandFeature;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
@@ -37,12 +40,13 @@ import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import io.github.pulsebeat02.murderrun.gui.game.PlayerListGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import io.github.pulsebeat02.murderrun.utils.StreamUtils;
+import java.util.*;
+import java.util.function.Consumer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotation.specifier.Quoted;
@@ -70,6 +74,54 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.manager = new GameManager(plugin);
     this.invites = new InviteManager();
     this.plugin = plugin;
+  }
+
+  @SuppressWarnings("all")
+  @Permission("murderrun.command.game.party")
+  @CommandDescription("murderrun.command.game.party.info")
+  @Command(value = "murder game party <arenaName> <lobbyName>", requiredSender = Player.class)
+  public void startPartyGame(
+    final Player player,
+    @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
+    @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName
+  ) {
+    final Audience audience = this.audiences.sender(player);
+
+    if (
+      this.sanitizer.checkIfPartyCapabilityDisabled(player, audience) ||
+      this.sanitizer.checkIfPartyInvalid(player, audience) ||
+      this.sanitizer.checkIfPartyNotLeader(player, audience)
+    ) {
+      return;
+    }
+
+    final UUID uuid = player.getUniqueId();
+    final PartiesAPI parties = Parties.getApi();
+    final Party party = requireNonNull(parties.getPartyOfPlayer(uuid));
+    final Set<UUID> members = party.getMembers();
+    final UUID id = party.getId();
+    final int min = 2;
+    final int max = members.size();
+    final boolean quickJoinable = false;
+    final String command = "murder game create %s %s %s %s %s %s".formatted(arenaName, lobbyName, id, min, max, quickJoinable);
+    player.performCommand(command);
+
+    final String joinCommand = "murder game join %s".formatted(id);
+    final Consumer<Player> consumer = player1 -> {
+      final String name = player1.getName();
+      final String inviteCommand = "murder game invite %s".formatted(name);
+      player.performCommand(inviteCommand);
+      player1.performCommand(joinCommand);
+    };
+
+    members
+      .stream()
+      .map(uuid1 -> parties.getPartyPlayer(uuid1))
+      .map(player1 -> player1.getPlayerUUID())
+      .filter(StreamUtils.notEquals(uuid))
+      .map(Bukkit::getPlayer)
+      .filter(Objects::nonNull)
+      .forEach(consumer);
   }
 
   @Permission("murderrun.command.game.start")

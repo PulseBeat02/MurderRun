@@ -31,6 +31,7 @@ repositories {
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
     maven("https://repo.codemc.io/repository/maven-releases/")
+    maven("https://repo.alessiodp.com/releases/")
 }
 
 val runtimeDeps = listOf(
@@ -75,6 +76,7 @@ dependencies {
     compileOnly(libs.libsDisguises)
     compileOnly(libs.worldeditCore)
     compileOnly(libs.worldeditBukkit)
+    compileOnly(libs.partiesApi)
     compileOnly(libs.citizensMain) {
         exclude(
             group = "*",
@@ -101,7 +103,7 @@ tasks.withType<AbstractRun>().configureEach {
         vendor = JvmVendorSpec.JETBRAINS
         languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     })
-    jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
+    jvmArgs("-Xmx2040m", "-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }
 
 configurations.all {
@@ -135,7 +137,8 @@ tasks {
             "WorldEditTickSpreader",
             "Citizens",
             "LibsDisguises",
-            "PlaceholderAPI")
+            "PlaceholderAPI",
+            "Parties")
         libraries = updatedLibraries
     }
 
@@ -161,7 +164,8 @@ tasks {
     runServer {
         downloadPlugins {
             url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
-            url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-200.jar")
+            url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-206.jar")
+            url("https://cdn.modrinth.com/data/rHRYOOoq/versions/yBAIVDGP/Parties-3.2.9.jar")
         }
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
         minecraftVersion("1.21.4")

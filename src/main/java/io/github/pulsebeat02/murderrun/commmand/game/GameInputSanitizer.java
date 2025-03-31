@@ -25,13 +25,21 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.commmand.game;
 
+import static java.util.Objects.requireNonNull;
+
+import com.alessiodp.parties.api.Parties;
+import com.alessiodp.parties.api.interfaces.PartiesAPI;
+import com.alessiodp.parties.api.interfaces.Party;
+import com.alessiodp.parties.api.interfaces.PartyPlayer;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.lobby.*;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -44,6 +52,39 @@ public final class GameInputSanitizer {
 
   public GameInputSanitizer(final GameCommand command) {
     this.command = command;
+  }
+
+  public boolean checkIfPartyNotLeader(final Player player, final Audience audience) {
+    final UUID uuid = player.getUniqueId();
+    final PartiesAPI parties = Parties.getApi();
+    final Party party = requireNonNull(parties.getPartyOfPlayer(uuid));
+    final UUID leaderUUID = requireNonNull(party.getLeader());
+    final PartyPlayer partyPlayer = requireNonNull(parties.getPartyPlayer(leaderUUID));
+    final UUID leader = partyPlayer.getPlayerUUID();
+    if (!uuid.equals(leader)) {
+      audience.sendMessage(Message.GAME_PARTY_LEADER_ERROR.build());
+      return true;
+    }
+    return false;
+  }
+
+  public boolean checkIfPartyInvalid(final Player player, final Audience audience) {
+    final UUID uuid = player.getUniqueId();
+    final PartiesAPI parties = Parties.getApi();
+    final Party party = parties.getPartyOfPlayer(uuid);
+    if (party == null) {
+      audience.sendMessage(Message.GAME_PARTY_EMPTY.build());
+      return true;
+    }
+    return false;
+  }
+
+  public boolean checkIfPartyCapabilityDisabled(final Player player, final Audience audience) {
+    if (Capabilities.PARTIES.isDisabled()) {
+      audience.sendMessage(Message.GAME_PARTY_ERROR.build());
+      return true;
+    }
+    return false;
   }
 
   public boolean checkIfNoQuickJoinableGame(final Player sender, final Audience audience, final GameManager manager) {

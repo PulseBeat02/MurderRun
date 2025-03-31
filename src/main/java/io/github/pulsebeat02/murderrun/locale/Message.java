@@ -30,6 +30,10 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  BiComponent<Sender, String, String> GAME_REQUEUE = direct("murderrun.game.requeue", null, null);
+  NullComponent<Sender> GAME_PARTY_LEADER_ERROR = direct("murderrun.command.game.party.leader.error");
+  NullComponent<Sender> GAME_PARTY_EMPTY = direct("murderrun.command.game.party.empty");
+  NullComponent<Sender> GAME_PARTY_ERROR = direct("murderrun.command.game.party.error");
   NullComponent<Sender> GADGET_GUI_TITLE = direct("murderrun.gadget.gui.title");
   NullComponent<Sender> GADGET_GUI_CANCEL = direct("murderrun.gadget.gui.cancel");
   NullComponent<Sender> GADGET_GUI_FORWARD = direct("murderrun.gadget.gui.forward");

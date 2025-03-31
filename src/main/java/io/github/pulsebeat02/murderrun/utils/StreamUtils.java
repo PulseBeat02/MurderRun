@@ -45,6 +45,10 @@ public final class StreamUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static <T> Predicate<T> notEquals(final T compare) {
+    return first -> first != null && !first.equals(compare);
+  }
+
   public static <T> Predicate<T> inverse(final Predicate<T> predicate) {
     return predicate.negate();
   }

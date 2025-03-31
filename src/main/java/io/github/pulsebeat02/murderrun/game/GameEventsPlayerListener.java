@@ -25,12 +25,29 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game;
 
+import static java.util.Objects.requireNonNull;
+
+import com.alessiodp.parties.api.Parties;
+import com.alessiodp.parties.api.interfaces.PartiesAPI;
+import com.alessiodp.parties.api.interfaces.Party;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
+import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import java.util.Map;
+import java.util.UUID;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public final class GameEventsPlayerListener implements GameEventsListener {
@@ -55,9 +72,41 @@ public final class GameEventsPlayerListener implements GameEventsListener {
       if (game == game1) {
         final String id = entry.getKey();
         games.remove(id);
+        this.sendRequeueMessage(pre);
         break;
       }
     }
+  }
+
+  private void sendRequeueMessage(final PreGameManager manager) {
+    if (Capabilities.PARTIES.isDisabled()) {
+      return;
+    }
+
+    final PreGamePlayerManager playerManager = manager.getPlayerManager();
+    final CommandSender sender = playerManager.getLeader();
+    if (!(sender instanceof final Player player)) {
+      return;
+    }
+
+    final UUID uuid = player.getUniqueId();
+    final PartiesAPI api = Parties.getApi();
+    final Party party = api.getPartyOfPlayer(uuid);
+    if (party == null) {
+      return;
+    }
+
+    final GameSettings settings = manager.getSettings();
+    final Arena arena = requireNonNull(settings.getArena());
+    final Lobby lobby = requireNonNull(settings.getLobby());
+    final String arenaName = arena.getName();
+    final String lobbyName = lobby.getName();
+    final Component msg = Message.GAME_REQUEUE.build(lobbyName, arenaName);
+    final MurderRun plugin = manager.getPlugin();
+    final AudienceProvider provider = plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    final Audience audience = audiences.player(uuid);
+    audience.sendMessage(msg);
   }
 
   @Override

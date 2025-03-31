@@ -30,4 +30,5 @@ public final class Capabilities {
   public static Capability LIBSDISGUISES = new PluginCapability("LibsDisguises");
   public static Capability PLACEHOLDERAPI = new PluginCapability("PlaceholderAPI");
   public static Capability FASTASYNCWORLDEDIT = new PluginClassCapability("com.fastasyncworldedit.bukkit.FaweBukkit");
+  public static Capability PARTIES = new PluginCapability("Parties");
 }

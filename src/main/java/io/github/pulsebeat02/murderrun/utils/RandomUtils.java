@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.utils;
 
+import com.google.common.collect.Iterables;
+import java.util.Collection;
 import java.util.SplittableRandom;
 import org.intellij.lang.annotations.Subst;
 
@@ -34,6 +36,12 @@ public final class RandomUtils {
 
   private RandomUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static <T> T getRandomElement(final Collection<T> from) {
+    final int size = from.size();
+    final int i = generateInt(size);
+    return Iterables.get(from, i);
   }
 
   public static double generateDouble(final double bound) {

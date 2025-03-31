@@ -29,12 +29,13 @@ on YouTube. Here are some more awesome features about this plugin.
   - Prevent Certain Gadgets from Showing Up
 - Game Creation with Quick Join System or Private Games
   - Either use GUI's or Commands to Create Games
-- Integration with PlaceholderAPI, LibsDisguises, Citizens, and WorldEdit
+- Integration with PlaceholderAPI, LibsDisguises, Citizens, Parties, and WorldEdit
   - Integrates with PlaceholderAPI for Custom Statistics
     - `%%fastest_win_killer%%`, `&&fastest_win_survivor&&`, `%%total_kills%%`, `%%total_deaths%%`,
       `%%total_wins%%`, `%%total_losses%%`, `%%total_games%%`, `%%win_loss_ratio%%`
   - Integrates with LibsDisguises for Custom Gadgets
-  - PlaceholderAPI and LibsDisguises Not Required
+  - Integrates with Parties for Custom Games
+  - PlaceholderAPI, LibsDisguises, and Parties Not Required
 - No Dependencies / Setup Involved, Just Drop the JAR into Plugins Folder
 - Customisable Resource Pack
   - Customisable Item Textures, Sounds

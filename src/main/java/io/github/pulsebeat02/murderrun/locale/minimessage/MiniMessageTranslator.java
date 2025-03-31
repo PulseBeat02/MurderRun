@@ -28,6 +28,7 @@ package io.github.pulsebeat02.murderrun.locale.minimessage;
 import static java.util.Objects.requireNonNull;
 
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -43,7 +44,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public abstract class MiniMessageTranslator implements Translator {
 
   private static final PlainTextComponentSerializer PLAIN_TEST_SERIALIZER = PlainTextComponentSerializer.plainText();
-  private static final Set<String> SPECIAL_PLACEHOLDERS = Set.of("$GAME_ID$");
+  private static final Set<String> SPECIAL_PLACEHOLDERS = Set.of("$GAME_ID$", "$ARENA_ID$", "$LOBBY_ID$");
 
   private final MiniMessage miniMessage;
 
@@ -77,16 +78,18 @@ public abstract class MiniMessageTranslator implements Translator {
   // replacing the tag inside the command argument
   private String checkIfSpecialString(final String value, final TranslatableComponent component) {
     final List<? extends ComponentLike> args = component.arguments();
+    final Iterator<? extends ComponentLike> iterator = args.iterator();
+    String copy = value;
     for (final String placeholder : SPECIAL_PLACEHOLDERS) {
-      if (!value.contains(placeholder)) {
+      if (!copy.contains(placeholder)) {
         continue;
       }
-      final ComponentLike arg = args.getFirst();
+      final ComponentLike arg = iterator.next();
       final Component comp = arg.asComponent();
       final String name = PLAIN_TEST_SERIALIZER.serialize(comp);
-      return value.replace("$GAME_ID$", name);
+      copy = copy.replace(placeholder, name);
     }
-    return value;
+    return copy;
   }
 
   protected abstract String getMiniMessageString(final String key, final Locale locale);
