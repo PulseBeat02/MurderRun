@@ -93,7 +93,6 @@ public final class PreGamePlayerManager {
   }
 
   public void forceShutdown() {
-    this.shutdown();
     for (final Player player : this.participants) {
       this.clearInventory(player);
       this.removePersistentData(player);

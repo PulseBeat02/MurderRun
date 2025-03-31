@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.lobby;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.game.*;
@@ -132,11 +134,31 @@ public final class GameManager {
   private void addGameToRegistry(final String id, final PreGameManager manager) {
     final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
     final Game game = manager.getGame();
-    if (this.games.containsKey(id)) {
+    if (this.games.containsKey(id) /*|| this.checkGameArenaLobbyUsed(manager)*/) {
       this.removeGame(id);
     }
     this.games.put(id, manager);
     shutdownManager.addGame(game);
+  }
+
+  private boolean checkGameArenaLobbyUsed(final PreGameManager manager) {
+    final GameSettings settings = manager.getSettings();
+    final Arena arena = requireNonNull(settings.getArena());
+    final Lobby lobby = requireNonNull(settings.getLobby());
+    final String arenaName = arena.getName();
+    final String lobbyName = lobby.getName();
+    final Collection<PreGameManager> games = this.games.values();
+    for (final PreGameManager game : games) {
+      final GameSettings settingsTest = game.getSettings();
+      final Arena arenaTest = requireNonNull(settingsTest.getArena());
+      final Lobby lobbyTest = requireNonNull(settingsTest.getLobby());
+      final String arenaNameTest = arenaTest.getName();
+      final String lobbyNameTest = lobbyTest.getName();
+      if (arenaName.equals(arenaNameTest) || lobbyName.equals(lobbyNameTest)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void autoJoinIfLeaderPlayer(final CommandSender leader, final String id) {
@@ -162,6 +184,7 @@ public final class GameManager {
       final Game game = manager.getGame();
       game.finishGame(GameResult.INTERRUPTED);
       playerManager.forceShutdown();
+      manager.shutdown();
       this.games.remove(id);
     }
   }
