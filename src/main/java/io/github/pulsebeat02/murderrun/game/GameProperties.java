@@ -95,7 +95,7 @@ public interface GameProperties {
   String LEVITATION_SOUND = str("levitation.sound");
   int NECK_SNAP_DURATION = num("neck_snap.duration");
   String NECK_SNAP_SOUND = str("neck_snap.sound");
-  double PONY_HORSE_SPEED = dec("pony.horse.speed");
+  double PONY_HORSE_SPEED = dec("pony.speed");
   String PONY_SOUND = str("pony.sound");
   double SHOCKWAVE_EXPLOSION_RADIUS = dec("shockwave.explosion.radius");
   double SHOCKWAVE_EXPLOSION_POWER = dec("shockwave.explosion.power");
@@ -151,11 +151,11 @@ public interface GameProperties {
   String MED_BOT_SOUND = str("med_bot.sound");
   int MIND_CONTROL_DURATION = num("mind_control.duration");
   String MIND_CONTROL_SOUND = str("mind_control.sound");
-  double PARASITE_DESTROY_RADIUS = dec("parsite.destroy.radius");
+  double PARASITE_DESTROY_RADIUS = dec("parasite.destroy.radius");
   double PARASITE_RADIUS = dec("parasite.radius");
   String PARASITE_SOUND = str("parasite.sound");
   String RANDOM_TELEPORT_SOUND = str("random_teleport.sound");
-  String RESSURECTION_STONE_SOUND = str("resurection_stone.sound");
+  String RESURRECTION_STONE_SOUND = str("resurrection_stone.sound");
   int RETALIATION_MAX_AMPLIFIER = num("retaliation.max_amplifier");
   String RETALIATION_SOUND = str("retaliation.sound");
   int REWIND_COOLDOWN = num("rewind.cooldown");
@@ -308,7 +308,7 @@ public interface GameProperties {
   int PORTAL_TRAP_COST = num("portal_trap.cost");
   int RANDOM_TELEPORT_COST = num("random_teleport.cost");
   int RANDOM_TRAP_COST = num("random_trap.cost");
-  int RESURECTION_STONE_COST = num("resurection_stone.cost");
+  int RESURRECTION_STONE_COST = num("resurrection_stone.cost");
   int RETALIATION_COST = num("retaliation.cost");
   int REWIND_COST = num("rewind.cost");
   int SIXTH_SENSE_COST = num("sixth_sense.cost");

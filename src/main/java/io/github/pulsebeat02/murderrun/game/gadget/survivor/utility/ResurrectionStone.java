@@ -59,7 +59,7 @@ public final class ResurrectionStone extends SurvivorGadget {
       Material.BEACON,
       Message.RESURRECTION_STONE_NAME.build(),
       Message.RESURRECTION_STONE_LORE.build(),
-      GameProperties.RESURECTION_STONE_COST
+      GameProperties.RESURRECTION_STONE_COST
     );
   }
 
@@ -93,7 +93,7 @@ public final class ResurrectionStone extends SurvivorGadget {
     item.remove();
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.RESSURECTION_STONE_SOUND);
+    audience.playSound(GameProperties.RESURRECTION_STONE_SOUND);
 
     return false;
   }
