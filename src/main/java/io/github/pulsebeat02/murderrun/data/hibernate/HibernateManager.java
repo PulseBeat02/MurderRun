@@ -27,6 +27,7 @@ package io.github.pulsebeat02.murderrun.data.hibernate;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.ArenaController;
+import io.github.pulsebeat02.murderrun.data.hibernate.controllers.ArenaCreationController;
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.LobbyController;
 import io.github.pulsebeat02.murderrun.data.hibernate.controllers.StatisticsController;
 import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateIdentifierManager;
@@ -50,6 +51,7 @@ public final class HibernateManager {
   private final ArenaController arenaController;
   private final LobbyController lobbyController;
   private final StatisticsController statisticsController;
+  private final ArenaCreationController arenaCreationController;
   private final SessionFactory factory;
 
   public HibernateManager(final MurderRun plugin) {
@@ -59,12 +61,14 @@ public final class HibernateManager {
     this.arenaController = new ArenaController(this.manager, this.factory);
     this.lobbyController = new LobbyController(this.manager, this.factory);
     this.statisticsController = new StatisticsController(this.manager, this.factory);
+    this.arenaCreationController = new ArenaCreationController(this.manager, this.factory);
   }
 
   public void shutdown() {
     this.arenaController.shutdown();
     this.lobbyController.shutdown();
     this.statisticsController.shutdown();
+    this.arenaCreationController.shutdown();
     this.manager.shutdown();
     if (this.factory.isOpen()) {
       this.factory.close();
@@ -114,6 +118,10 @@ public final class HibernateManager {
 
   public StatisticsController getStatisticsController() {
     return this.statisticsController;
+  }
+
+  public ArenaCreationController getArenaCreationController() {
+    return this.arenaCreationController;
   }
 
   public SessionFactory getFactory() {

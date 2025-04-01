@@ -27,6 +27,7 @@ package io.github.pulsebeat02.murderrun.data;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.hibernate.HibernateManager;
+import io.github.pulsebeat02.murderrun.data.json.ArenaCreationDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.json.ArenaDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.json.LobbyDataJSONMapper;
 import io.github.pulsebeat02.murderrun.data.json.StatisticJSONMapper;
@@ -35,6 +36,7 @@ import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
+import io.github.pulsebeat02.murderrun.gui.arena.ArenaCreationManager;
 
 public final class RelationalDataProvider {
 
@@ -43,6 +45,7 @@ public final class RelationalDataProvider {
   private final ConfigurationManager<ArenaManager> arenas;
   private final ConfigurationManager<LobbyManager> lobbies;
   private final ConfigurationManager<StatisticsManager> statistics;
+  private final ConfigurationManager<ArenaCreationManager> arenaCreation;
 
   public RelationalDataProvider(final MurderRun plugin) {
     final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
@@ -53,12 +56,14 @@ public final class RelationalDataProvider {
         this.arenas = new ArenaDataJSONMapper();
         this.lobbies = new LobbyDataJSONMapper();
         this.statistics = new StatisticJSONMapper();
+        this.arenaCreation = new ArenaCreationDataJSONMapper();
         break;
       case SQL:
         this.hibernate = new HibernateManager(this.plugin);
         this.arenas = this.hibernate.getArenaController();
         this.lobbies = this.hibernate.getLobbyController();
         this.statistics = this.hibernate.getStatisticsController();
+        this.arenaCreation = this.hibernate.getArenaCreationController();
         break;
       default:
         throw new UnsupportedOperationException("Unsupported provider method!");
@@ -92,5 +97,9 @@ public final class RelationalDataProvider {
 
   public ConfigurationManager<StatisticsManager> getStatistics() {
     return this.statistics;
+  }
+
+  public ConfigurationManager<ArenaCreationManager> getArenaCreation() {
+    return this.arenaCreation;
   }
 }

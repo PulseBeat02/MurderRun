@@ -40,6 +40,7 @@ import io.github.pulsebeat02.murderrun.game.extension.papi.MurderRunExpansion;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
+import io.github.pulsebeat02.murderrun.gui.arena.ArenaCreationManager;
 import io.github.pulsebeat02.murderrun.gui.gadget.GadgetTestingGui;
 import io.github.pulsebeat02.murderrun.gui.shop.GadgetShopGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
@@ -59,10 +60,12 @@ public final class MurderRun extends JavaPlugin {
   private ConfigurationManager<ArenaManager> arenaDataConfigurationMapper;
   private ConfigurationManager<LobbyManager> lobbyDataConfigurationMapper;
   private ConfigurationManager<StatisticsManager> statisticsConfigurationMapper;
+  private ConfigurationManager<ArenaCreationManager> arenaCreationManagerConfigurationManager;
 
   private ArenaManager arenaManager;
   private LobbyManager lobbyManager;
   private StatisticsManager statisticsManager;
+  private ArenaCreationManager arenaCreationManager;
 
   private Metrics metrics;
   private GameShutdownManager gameShutdownManager;
@@ -148,9 +151,11 @@ public final class MurderRun extends JavaPlugin {
     this.arenaDataConfigurationMapper = relationalDataProvider.getArenas();
     this.lobbyDataConfigurationMapper = relationalDataProvider.getLobbies();
     this.statisticsConfigurationMapper = relationalDataProvider.getStatistics();
+    this.arenaCreationManagerConfigurationManager = relationalDataProvider.getArenaCreation();
     this.arenaManager = this.arenaDataConfigurationMapper.deserialize();
     this.lobbyManager = this.lobbyDataConfigurationMapper.deserialize();
     this.statisticsManager = this.statisticsConfigurationMapper.deserialize();
+    this.arenaCreationManager = this.arenaCreationManagerConfigurationManager.deserialize();
   }
 
   private void handlePackHosting() {
@@ -184,6 +189,7 @@ public final class MurderRun extends JavaPlugin {
       this.arenaDataConfigurationMapper.serialize(this.arenaManager);
       this.lobbyDataConfigurationMapper.serialize(this.lobbyManager);
       this.statisticsConfigurationMapper.serialize(this.statisticsManager);
+      this.arenaCreationManagerConfigurationManager.serialize(this.arenaCreationManager);
       this.configuration.serialize();
     }
   }
@@ -192,6 +198,8 @@ public final class MurderRun extends JavaPlugin {
     if (this.arenaDataConfigurationMapper != null) {
       this.arenaDataConfigurationMapper.shutdown();
       this.lobbyDataConfigurationMapper.shutdown();
+      this.statisticsConfigurationMapper.shutdown();
+      this.arenaCreationManagerConfigurationManager.shutdown();
       this.configuration.shutdown();
     }
   }
@@ -238,6 +246,10 @@ public final class MurderRun extends JavaPlugin {
 
   public StatisticsManager getStatisticsManager() {
     return this.statisticsManager;
+  }
+
+  public ArenaCreationManager getArenaCreationManager() {
+    return this.arenaCreationManager;
   }
 
   public MurderRunExpansion getExpansion() {

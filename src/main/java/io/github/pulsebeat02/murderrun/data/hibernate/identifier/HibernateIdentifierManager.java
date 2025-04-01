@@ -44,6 +44,7 @@ public final class HibernateIdentifierManager {
   public static final int LOBBY_MANAGER_INDEX = 0;
   public static final int ARENA_MANAGER_INDEX = 1;
   public static final int STATISTICS_MANAGER_INDEX = 2;
+  public static final int ARENA_CREATION_MANAGER_INDEX = 3;
 
   private final Long[] identifiers;
   private final ExecutorService service;

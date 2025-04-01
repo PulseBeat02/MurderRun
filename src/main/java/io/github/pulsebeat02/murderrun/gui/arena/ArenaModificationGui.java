@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.gui.arena;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
@@ -32,7 +33,9 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PatternPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
 import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -40,11 +43,8 @@ import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.audience.Audience;
@@ -81,19 +81,15 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   private final boolean editMode;
   private final PatternPane pane;
   private final AtomicInteger currentMode;
-  private final Collection<Location> itemLocations;
 
   private WandListener listener;
-  private volatile String arenaName;
-  private volatile Location spawn;
-  private volatile Location truck;
-  private volatile Location first;
-  private volatile Location second;
+  private final ArenaCreation creation;
   private volatile boolean listenForBreaks;
   private volatile boolean listenForName;
   private volatile boolean listenForItems;
 
   public ArenaModificationGui(final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
+
     this(
       plugin,
       watcher,
@@ -119,25 +115,27 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final boolean editMode
   ) {
     super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()), plugin);
+    final ArenaCreationManager manager = plugin.getArenaCreationManager();
+    final UUID uuid = watcher.getUniqueId();
+    final Map<UUID, ArenaCreation> arenas = manager.getArenas();
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_ARENA_PATTERN);
     this.audience = this.getAudience(plugin, watcher);
     this.plugin = plugin;
     this.watcher = watcher;
-    this.spawn = spawn;
-    this.arenaName = arenaName;
-    this.truck = truck;
-    this.first = first;
-    this.second = second;
-    this.itemLocations = itemLocations;
     this.listenForBreaks = false;
     this.editMode = editMode;
     this.currentMode = new AtomicInteger(0);
+    if (!arenas.containsKey(uuid)) {
+      manager.addArena(uuid, arenaName, spawn, truck, first, second, itemLocations);
+    }
+    this.creation = requireNonNull(manager.getArena(uuid));
   }
 
   public void registerEvents() {
     final Server server = this.plugin.getServer();
     final PluginManager manager = server.getPluginManager();
-    this.listener = new WandListener(this.plugin, this.itemLocations, this::removeItemLocation, this::addItemLocation);
+    final Collection<Location> locations = this.creation.getItemLocations();
+    this.listener = new WandListener(this.plugin, locations, this::removeItemLocation, this::addItemLocation);
     this.listener.registerEvents();
     this.listener.runScheduledTask();
     manager.registerEvents(this, this.plugin);
@@ -159,10 +157,12 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   }
 
   public void addItemLocation(final Player sender, final Location location) {
+
     final Block block = location.getBlock();
     final Location blockLoc = block.getLocation();
-    this.itemLocations.add(blockLoc);
-
+    final Collection<Location> locations = this.creation.getItemLocations();
+    locations.add(blockLoc);
+    
     final Component msg = ComponentUtils.createLocationComponent(Message.ARENA_ITEM_ADD, blockLoc);
     this.audience.sendMessage(msg);
   }
@@ -170,7 +170,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   public void removeItemLocation(final Player sender, final Location location) {
     final Block block = location.getBlock();
     final Location blockLoc = block.getLocation();
-    if (this.itemLocations.remove(blockLoc)) {
+    final Collection<Location> locations = this.creation.getItemLocations();
+    if (locations.remove(blockLoc)) {
       final Component msg = ComponentUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc);
       this.audience.sendMessage(msg);
     } else {
@@ -236,7 +237,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       }
     }
 
-    this.arenaName = msg;
+    this.creation.setArenaName(msg);
     this.listenForName = false;
     this.showAsync(player);
   }
@@ -309,7 +310,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   }
 
   private void createNewArena(final InventoryClickEvent event) {
-    if (this.arenaName.isEmpty() || this.arenaName.equals("None")) {
+    final String name = this.creation.getArenaName();
+    if (name.isEmpty() || name.equals("None")) {
       final Component msg = Message.ARENA_NAME_ERROR.build();
       this.audience.sendMessage(msg);
       return;
@@ -320,8 +322,13 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final Component loadMsg = Message.ARENA_CREATE_LOAD.build();
     this.audience.sendMessage(loadMsg);
 
-    final Location[] corners = { this.first, this.second };
-    final Location[] drops = this.itemLocations.toArray(new Location[0]);
+    final Location first = this.creation.getFirst();
+    final Location second = this.creation.getSecond();
+    final Location spawn = this.creation.getSpawn();
+    final Location truck = this.creation.getTruck();
+    final Collection<Location> locations = this.creation.getItemLocations();
+    final Location[] corners = { first, second };
+    final Location[] drops = locations.toArray(new Location[0]);
 
     final CompletableFuture<Location[]> future;
     if (drops.length == 0) {
@@ -333,7 +340,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
     future.thenAccept(items -> {
       final ArenaManager manager = this.plugin.getArenaManager();
-      manager.addArena(this.arenaName, corners, items, this.spawn, this.truck);
+      manager.addArena(name, corners, items, spawn, truck);
       this.plugin.updatePluginData();
 
       final Component msg1 = Message.ARENA_BUILT.build();
@@ -368,10 +375,10 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
     final int current = this.currentMode.get();
     if (!skip) {
       switch (current) {
-        case 0 -> this.first = location;
-        case 1 -> this.second = location;
-        case 2 -> this.truck = location;
-        case 3 -> this.spawn = location;
+        case 0 -> this.creation.setFirst(location);
+        case 1 -> this.creation.setSecond(location);
+        case 2 -> this.creation.setTruck(location);
+        case 3 -> this.creation.setSpawn(location);
       }
     }
 
@@ -391,20 +398,25 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
 
   private void deleteAndCreateArena(final InventoryClickEvent event) {
     final ArenaManager manager = this.plugin.getArenaManager();
-    manager.removeArena(this.arenaName);
+    final String name = this.creation.getArenaName();
+    manager.removeArena(name);
     this.watcher.closeInventory();
-    final Component msg = Message.ARENA_REMOVE.build(this.arenaName);
+    final Component msg = Message.ARENA_REMOVE.build(name);
     this.audience.sendMessage(msg);
   }
 
   private GuiItem createEditSpawnStack() {
+    final Location first = this.creation.getFirst();
+    final Location second = this.creation.getSecond();
+    final Location spawn = this.creation.getSpawn();
+    final Location truck = this.creation.getTruck();
     final Component title = Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_DISPLAY.build();
     final Component tooltip = Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE1.build();
     final Component space = empty();
-    final Component spawnMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2, this.spawn);
-    final Component truckMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE3, this.truck);
-    final Component firstMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE4, this.first);
-    final Component secondMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5, this.second);
+    final Component spawnMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE2, spawn);
+    final Component truckMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE3, truck);
+    final Component firstMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE4, first);
+    final Component secondMsg = ComponentUtils.createLocationComponent(Message.CREATE_ARENA_GUI_EDIT_LOCATIONS_LORE5, second);
     final List<Component> lore = List.of(tooltip, space, spawnMsg, truckMsg, firstMsg, secondMsg);
     return new GuiItem(Item.builder(Material.ANVIL).name(title).lore(lore).build(), this::listenForBlockBreak, this.plugin);
   }
@@ -419,9 +431,10 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
   }
 
   private GuiItem createEditNameStack() {
+    final String name = this.creation.getArenaName();
     return new GuiItem(
       Item.builder(Material.ANVIL)
-        .name(Message.CREATE_ARENA_GUI_EDIT_NAME_DISPLAY.build(this.arenaName))
+        .name(Message.CREATE_ARENA_GUI_EDIT_NAME_DISPLAY.build(name))
         .lore(Message.CREATE_ARENA_GUI_EDIT_NAME_LORE.build())
         .build(),
       this::listenForMessage,
