@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.extension.papi.MurderRunExpansion;
+import io.github.pulsebeat02.murderrun.game.extension.parties.PartiesManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
@@ -71,7 +72,9 @@ public final class MurderRun extends JavaPlugin {
   private GameShutdownManager gameShutdownManager;
   private PlayerResourcePackChecker playerResourcePackChecker;
   private ResourcePackProvider provider;
+
   private MurderRunExpansion expansion;
+  private PartiesManager partiesManager;
 
   @Override
   public void onLoad() {
@@ -81,7 +84,7 @@ public final class MurderRun extends JavaPlugin {
   @Override
   public void onDisable() {
     this.shutdownGames();
-    this.unregisterExpansion();
+    this.unregisterExtensions();
     this.updatePluginData();
     this.shutdownPluginData();
     this.stopHostingDaemon();
@@ -97,7 +100,7 @@ public final class MurderRun extends JavaPlugin {
     this.handlePackHosting();
     this.registerCommands();
     this.registerGameUtilities();
-    this.registerExpansion();
+    this.registerExtensions();
     this.enableMetrics();
   }
 
@@ -106,17 +109,18 @@ public final class MurderRun extends JavaPlugin {
     manager.installDependencies();
   }
 
-  private void unregisterExpansion() {
+  private void unregisterExtensions() {
     if (Capabilities.PLACEHOLDERAPI.isEnabled() && this.expansion != null) {
       this.expansion.unregister();
     }
   }
 
-  private void registerExpansion() {
+  private void registerExtensions() {
     if (Capabilities.PLACEHOLDERAPI.isEnabled()) {
       this.expansion = new MurderRunExpansion(this);
       this.expansion.register();
     }
+    this.partiesManager = new PartiesManager(this);
   }
 
   private void shutdownGames() {
@@ -254,5 +258,9 @@ public final class MurderRun extends JavaPlugin {
 
   public MurderRunExpansion getExpansion() {
     return this.expansion;
+  }
+
+  public PartiesManager getPartiesManager() {
+    return this.partiesManager;
   }
 }

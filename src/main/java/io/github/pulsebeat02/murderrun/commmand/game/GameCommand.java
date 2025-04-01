@@ -27,12 +27,10 @@ package io.github.pulsebeat02.murderrun.commmand.game;
 
 import static java.util.Objects.requireNonNull;
 
-import com.alessiodp.parties.api.Parties;
-import com.alessiodp.parties.api.interfaces.PartiesAPI;
-import com.alessiodp.parties.api.interfaces.Party;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationCommandFeature;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.extension.parties.PartiesManager;
 import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
@@ -95,11 +93,10 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
+    final PartiesManager manager = plugin.getPartiesManager();
     final UUID uuid = player.getUniqueId();
-    final PartiesAPI parties = Parties.getApi();
-    final Party party = requireNonNull(parties.getPartyOfPlayer(uuid));
-    final Set<UUID> members = party.getMembers();
-    final UUID id = party.getId();
+    final Collection<UUID> members = manager.getPartyMembers(player);
+    final UUID id = manager.getPartyId(player);
     final int min = 2;
     final int max = members.size();
     final boolean quickJoinable = false;
@@ -116,8 +113,7 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     members
       .stream()
-      .map(uuid1 -> parties.getPartyPlayer(uuid1))
-      .map(player1 -> player1.getPlayerUUID())
+      .map(uuid1 -> manager.getBukkitUuid(uuid1))
       .filter(StreamUtils.notEquals(uuid))
       .map(Bukkit::getPlayer)
       .filter(Objects::nonNull)

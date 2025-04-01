@@ -28,10 +28,7 @@ package io.github.pulsebeat02.murderrun.locale.minimessage;
 import static java.util.Objects.requireNonNull;
 
 import java.text.MessageFormat;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -44,7 +41,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public abstract class MiniMessageTranslator implements Translator {
 
   private static final PlainTextComponentSerializer PLAIN_TEST_SERIALIZER = PlainTextComponentSerializer.plainText();
-  private static final Set<String> SPECIAL_PLACEHOLDERS = Set.of("$GAME_ID$", "$ARENA_ID$", "$LOBBY_ID$");
+  private static final Collection<String> SPECIAL_PLACEHOLDERS = List.of("$GAME_ID$", "$ARENA_ID$", "$LOBBY_ID$");
 
   private final MiniMessage miniMessage;
 

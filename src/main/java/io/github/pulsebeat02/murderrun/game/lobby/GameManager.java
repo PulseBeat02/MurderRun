@@ -134,7 +134,7 @@ public final class GameManager {
   private void addGameToRegistry(final String id, final PreGameManager manager) {
     final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
     final Game game = manager.getGame();
-    if (this.games.containsKey(id) /*|| this.checkGameArenaLobbyUsed(manager)*/) {
+    if (this.games.containsKey(id)/*|| this.checkGameArenaLobbyUsed(manager)*/) {
       this.removeGame(id);
     }
     this.games.put(id, manager);

@@ -78,6 +78,10 @@ public final class ComponentUtils {
   }
 
   public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
+    if (request == null) {
+      return false;
+    }
+
     if (request.replace()) {
       player.removeResourcePacks();
     }

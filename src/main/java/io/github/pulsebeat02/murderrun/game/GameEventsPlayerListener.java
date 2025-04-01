@@ -101,7 +101,7 @@ public final class GameEventsPlayerListener implements GameEventsListener {
     final Lobby lobby = requireNonNull(settings.getLobby());
     final String arenaName = arena.getName();
     final String lobbyName = lobby.getName();
-    final Component msg = Message.GAME_REQUEUE.build(lobbyName, arenaName);
+    final Component msg = Message.GAME_REQUEUE.build(arenaName, lobbyName);
     final MurderRun plugin = manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
