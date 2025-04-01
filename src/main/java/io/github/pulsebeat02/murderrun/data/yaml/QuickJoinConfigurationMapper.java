@@ -28,6 +28,8 @@ package io.github.pulsebeat02.murderrun.data.yaml;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.File;
@@ -117,13 +119,24 @@ public final class QuickJoinConfigurationMapper {
     final List<String[]> result = requireNonNull(pairs)
       .stream()
       .map(pair -> pair.toArray(new String[0]))
-      .filter(pair -> pair.length == 2)
+      .filter(this::isValidParameters)
       .toList();
     if (this.enabled && result.isEmpty()) {
       this.enabled = false;
       throw new AssertionError("Please specify at least one arena-lobby pair in the quick-join.yml file.");
     }
     return result;
+  }
+
+  public boolean isValidParameters(final String[] pair) {
+    if (pair == null || pair.length != 2) {
+      return false;
+    }
+    final String arena = pair[0];
+    final String lobby = pair[1];
+    final ArenaManager arenaManager = this.plugin.getArenaManager();
+    final LobbyManager lobbyManager = this.plugin.getLobbyManager();
+    return arenaManager.getArena(arena) != null && lobbyManager.getLobby(lobby) != null;
   }
 
   public synchronized void serialize() {

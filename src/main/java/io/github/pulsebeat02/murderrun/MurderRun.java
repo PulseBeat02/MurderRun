@@ -149,10 +149,10 @@ public final class MurderRun extends JavaPlugin {
 
   private void readPluginData() {
     this.configuration = new PluginDataConfigurationMapper(this);
-    this.quickJoinConfiguration = new QuickJoinConfigurationMapper(this);
     this.configuration.deserialize();
-    this.quickJoinConfiguration.deserialize();
     this.handleRelationalDataManagement();
+    this.quickJoinConfiguration = new QuickJoinConfigurationMapper(this);
+    this.quickJoinConfiguration.deserialize();
   }
 
   private void handleRelationalDataManagement() {
