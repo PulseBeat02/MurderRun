@@ -69,6 +69,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private final Audience audience;
   private final boolean editMode;
   private final PatternPane pane;
+  private final String originalName;
 
   private volatile Location spawn;
   private volatile String lobbyName;
@@ -87,6 +88,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     final boolean editMode
   ) {
     super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()), plugin);
+    this.originalName = lobbyName;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_LOBBY_PATTERN);
     this.audience = this.getAudience(plugin, watcher);
     this.plugin = plugin;
@@ -211,6 +213,11 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.addLobby(this.lobbyName, this.spawn);
+
+    if (!this.lobbyName.equals(this.originalName)) {
+      manager.removeLobby(this.originalName);
+    }
+
     this.plugin.updatePluginData();
 
     final Component msg = Message.LOBBY_BUILT.build();
