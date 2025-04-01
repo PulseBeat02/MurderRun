@@ -29,16 +29,12 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
+import io.github.pulsebeat02.murderrun.data.yaml.QuickJoinConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.*;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
-import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
+import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import java.util.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -194,6 +190,11 @@ public final class GameManager {
   }
 
   public boolean quickJoinGame(final Player player) {
+    final QuickJoinConfigurationMapper config = this.plugin.getQuickJoinConfiguration();
+    if (!config.isEnabled()) {
+      return false;
+    }
+
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
       final PreGamePlayerManager preGamePlayerManager = manager.getPlayerManager();
@@ -204,7 +205,18 @@ public final class GameManager {
         return true;
       }
     }
-    return false;
+
+    final UUID random = UUID.randomUUID();
+    final String raw = random.toString();
+    final List<String[]> pairs = config.getLobbyArenaPairs();
+    final String[] rand = RandomUtils.getRandomElement(pairs);
+    final String arena = rand[0];
+    final String lobby = rand[1];
+    final int min = config.getMinPlayers();
+    final int max = config.getMaxPlayers();
+    this.createGame(player, raw, arena, lobby, min, max, true);
+
+    return true;
   }
 
   public MurderRun getPlugin() {

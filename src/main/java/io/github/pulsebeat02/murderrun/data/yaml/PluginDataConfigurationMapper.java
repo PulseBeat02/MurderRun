@@ -25,7 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.data.yaml;
 
-import static java.util.Objects.requireNonNullElse;
+import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.RelationalDataMethod;
@@ -111,31 +111,31 @@ public final class PluginDataConfigurationMapper {
   }
 
   private Locale getLocale(final FileConfiguration config) {
-    return Locale.fromString(requireNonNullElse(config.getString(PLUGIN_LANGUAGE), "EN_US"));
+    return Locale.fromString(requireNonNull(config.getString(PLUGIN_LANGUAGE, "EN_US")));
   }
 
   private String getDatabaseDriver(final FileConfiguration config) {
-    return requireNonNullElse(config.getString(DATABASE_DRIVER_FIELD), "com.mysql.cj.jdbc.Driver");
+    return requireNonNull(config.getString(DATABASE_DRIVER_FIELD, "com.mysql.cj.jdbc.Driver"));
   }
 
   private String getDatabaseUrl(final FileConfiguration config) {
-    return requireNonNullElse(config.getString(DATABASE_URL_FIELD), "jdbc:h2:tcp://localhost/~/test");
+    return requireNonNull(config.getString(DATABASE_URL_FIELD, "jdbc:h2:tcp://localhost/~/test"));
   }
 
   private String getDatabaseName(final FileConfiguration config) {
-    return requireNonNullElse(config.getString(DATABASE_NAME_FIELD), "murderrun");
+    return requireNonNull(config.getString(DATABASE_NAME_FIELD, "murderrun"));
   }
 
   private String getDatabaseHbm2ddl(final FileConfiguration config) {
-    return requireNonNullElse(config.getString(DATABASE_HBM2DDL_FIELD), "update");
+    return requireNonNull(config.getString(DATABASE_HBM2DDL_FIELD, "update"));
   }
 
   private String getDatabaseUsername(final FileConfiguration config) {
-    return requireNonNullElse(config.getString(DATABASE_USERNAME_FIELD), "as");
+    return requireNonNull(config.getString(DATABASE_USERNAME_FIELD, "as"));
   }
 
   private String getDatabasePassword(final FileConfiguration config) {
-    return requireNonNullElse(config.getString(DATABASE_PASSWORD_FIELD), "");
+    return requireNonNull(config.getString(DATABASE_PASSWORD_FIELD, ""));
   }
 
   private boolean getDatabaseShowSql(final FileConfiguration config) {
@@ -147,15 +147,15 @@ public final class PluginDataConfigurationMapper {
   }
 
   private String getHostName(final FileConfiguration config) {
-    return requireNonNullElse(config.getString(SERVER_HOST_FIELD), "localhost");
+    return requireNonNull(config.getString(SERVER_HOST_FIELD, "localhost"));
   }
 
   private ProviderMethod getProviderMethod(final FileConfiguration config) {
-    return ProviderMethod.fromString(requireNonNullElse(config.getString(PACK_PROVIDER_FIELD), "MC_PACK_HOSTING"));
+    return ProviderMethod.fromString(requireNonNull(config.getString(PACK_PROVIDER_FIELD, "MC_PACK_HOSTING")));
   }
 
   private RelationalDataMethod getRelationalDataMethod(final FileConfiguration config) {
-    return RelationalDataMethod.fromString(requireNonNullElse(config.getString(RELATIONAL_DATA_FIELD), "JSON"));
+    return RelationalDataMethod.fromString(requireNonNull(config.getString(RELATIONAL_DATA_FIELD, "JSON")));
   }
 
   public synchronized Locale getLocale() {

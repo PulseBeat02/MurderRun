@@ -43,7 +43,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -51,7 +50,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PreGamePlayerManager {

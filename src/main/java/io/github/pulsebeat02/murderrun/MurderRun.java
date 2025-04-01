@@ -30,6 +30,7 @@ import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.RelationalDataProvider;
 import io.github.pulsebeat02.murderrun.data.yaml.ConfigurationManager;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.data.yaml.QuickJoinConfigurationMapper;
 import io.github.pulsebeat02.murderrun.dependency.DependencyManager;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
@@ -56,6 +57,8 @@ public final class MurderRun extends JavaPlugin {
   private static final int BSTATS_SERVER_ID = 22728;
 
   private PluginDataConfigurationMapper configuration;
+  private QuickJoinConfigurationMapper quickJoinConfiguration;
+
   private AudienceProvider audience;
 
   private ConfigurationManager<ArenaManager> arenaDataConfigurationMapper;
@@ -146,7 +149,9 @@ public final class MurderRun extends JavaPlugin {
 
   private void readPluginData() {
     this.configuration = new PluginDataConfigurationMapper(this);
+    this.quickJoinConfiguration = new QuickJoinConfigurationMapper(this);
     this.configuration.deserialize();
+    this.quickJoinConfiguration.deserialize();
     this.handleRelationalDataManagement();
   }
 
@@ -195,6 +200,7 @@ public final class MurderRun extends JavaPlugin {
       this.statisticsConfigurationMapper.serialize(this.statisticsManager);
       this.arenaCreationManagerConfigurationManager.serialize(this.arenaCreationManager);
       this.configuration.serialize();
+      this.quickJoinConfiguration.serialize();
     }
   }
 
@@ -205,6 +211,7 @@ public final class MurderRun extends JavaPlugin {
       this.statisticsConfigurationMapper.shutdown();
       this.arenaCreationManagerConfigurationManager.shutdown();
       this.configuration.shutdown();
+      this.quickJoinConfiguration.shutdown();
     }
   }
 
@@ -246,6 +253,10 @@ public final class MurderRun extends JavaPlugin {
 
   public PluginDataConfigurationMapper getConfiguration() {
     return this.configuration;
+  }
+
+  public QuickJoinConfigurationMapper getQuickJoinConfiguration() {
+    return this.quickJoinConfiguration;
   }
 
   public StatisticsManager getStatisticsManager() {
