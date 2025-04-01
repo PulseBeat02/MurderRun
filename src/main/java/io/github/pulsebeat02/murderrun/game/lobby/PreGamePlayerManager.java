@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -50,6 +51,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PreGamePlayerManager {
@@ -63,6 +65,8 @@ public final class PreGamePlayerManager {
   private final boolean quickJoinable;
 
   private @Nullable LobbyTimeManager lobbyTimeManager;
+  private @Nullable PreGameExpirationTimer expirationTimer;
+
   private LobbyScoreboard scoreboard;
   private LobbyBossbar bossbar;
 
@@ -90,6 +94,7 @@ public final class PreGamePlayerManager {
     this.bossbar = new LobbyBossbar(this);
     this.scoreboard = new LobbyScoreboard(this.manager);
     this.scoreboard.updateScoreboard();
+    this.checkGameShutdownTimer();
   }
 
   public void forceShutdown() {
@@ -136,6 +141,17 @@ public final class PreGamePlayerManager {
     this.clearInventory(player);
     this.removePersistentData(player);
     this.checkIfEnoughPlayers();
+    this.checkGameShutdownTimer();
+  }
+
+  private void checkGameShutdownTimer() {
+    final int count = this.participants.size();
+    if (count != 0) {
+      return;
+    }
+    final MurderRun plugin = this.manager.getPlugin();
+    this.expirationTimer = new PreGameExpirationTimer(this);
+    this.expirationTimer.runTaskTimer(plugin, 1L, 20L);
   }
 
   private void removePersistentData(final Player player) {
@@ -163,6 +179,9 @@ public final class PreGamePlayerManager {
     this.checkIfEnoughPlayers();
     if (this.lobbyTimeManager != null) {
       this.lobbyTimeManager.resetTime();
+    }
+    if (this.expirationTimer != null) {
+      this.expirationTimer.cancel();
     }
   }
 

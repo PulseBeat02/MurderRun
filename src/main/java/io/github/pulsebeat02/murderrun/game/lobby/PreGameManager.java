@@ -39,12 +39,14 @@ public final class PreGameManager {
   private final GameSettings settings;
   private final String id;
   private final GameEventsListener callback;
+  private final GameManager gameManager;
 
   private PreGamePlayerManager manager;
   private PreGameEvents events;
 
-  public PreGameManager(final MurderRun plugin, final String id, final GameEventsListener callback) {
+  public PreGameManager(final MurderRun plugin, final GameManager manager, final String id, final GameEventsListener callback) {
     this.plugin = plugin;
+    this.gameManager = manager;
     this.callback = callback;
     this.id = id;
     this.game = new Game(plugin);
@@ -97,5 +99,9 @@ public final class PreGameManager {
 
   public PreGameEvents getEvents() {
     return this.events;
+  }
+
+  public GameManager getGameManager() {
+    return this.gameManager;
   }
 }

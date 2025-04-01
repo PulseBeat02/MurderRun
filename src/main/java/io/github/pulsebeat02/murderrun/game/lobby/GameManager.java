@@ -35,6 +35,10 @@ import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -125,7 +129,7 @@ public final class GameManager {
   ) {
     final int finalMin = Math.clamp(min, 2, Integer.MAX_VALUE);
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
-    final PreGameManager manager = new PreGameManager(this.plugin, id, listener);
+    final PreGameManager manager = new PreGameManager(this.plugin, this, id, listener);
     this.setSettings(manager, arenaName, lobbyName);
     manager.initialize(leader, finalMin, finalMax, quickJoinable);
     return manager;
