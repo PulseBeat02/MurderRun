@@ -26,6 +26,11 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.gui.gadget.shop;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.lobby.player.PlayerSelection;
+import io.github.pulsebeat02.murderrun.game.lobby.player.PlayerSelectionManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -64,14 +69,24 @@ public final class NPCShopEvent implements Listener {
     final Player clicker = event.getClicker();
     final PersistentDataContainer container = clicker.getPersistentDataContainer();
     final boolean isKiller = container.has(Keys.KILLER_ROLE);
+    final Audience audience = this.audiences.player(clicker);
     if (isKiller == value) {
       final Component msg = Message.SHOP_NPC_ERROR.build();
-      final Audience audience = this.audiences.player(clicker);
       audience.sendMessage(msg);
       return;
     }
 
-    final GadgetShopGui gui = new GadgetShopGui(this.plugin, value);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager preGameManager = manager.getGame(clicker);
+    if (preGameManager == null) {
+      audience.sendMessage(Message.GAME_INVALID_ERROR.build());
+      return;
+    }
+
+    final PreGamePlayerManager playerManager = preGameManager.getPlayerManager();
+    final PlayerSelectionManager selectionManager = playerManager.getSelectionManager();
+    final PlayerSelection selection = selectionManager.getOrCreateSelection(clicker, isKiller);
+    final GadgetShopGui gui = selection.getGadgetShopGui();
     gui.showGUI(clicker);
   }
 }

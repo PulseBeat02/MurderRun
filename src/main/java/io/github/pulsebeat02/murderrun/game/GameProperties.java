@@ -37,6 +37,19 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  String GUARDIAN_ANGEL_TEXTURE_SIGNATURE = str("guardian_angel.texture.signature");
+  String GUARDIAN_ANGEL_TEXTURE_DATA = str("guardian_angel.texture.data");
+  String GRIM_REAPER_TEXTURE_SIGNATURE = str("grim_reaper.texture.signature");
+  String GRIM_REAPER_TEXTURE_DATA = str("grim_reaper.texture.data");
+  String ANGEL_SPIRIT_TEXTURE_SIGNATURE = str("angel_spirit.texture.signature");
+  String ANGEL_SPIRIT_TEXTURE_DATA = str("angel_spirit.texture.data");
+  String WEEPING_ANGEL_TEXTURE_SIGNATURE = str("weeping_angel.texture.signature");
+  String WEEPING_ANGEL_TEXTURE_DATA = str("weeping_angel.texture.data");
+  boolean GAME_UTILITIES_RANDOM = bool("game.utilities.random");
+  int GAME_UTILITIES_KILLER_GADGETS = num("game.utilities.killer.gadgets");
+  int GAME_UTILITIES_SURVIVOR_GADGETS = num("game.utilities.survivor.gadgets");
+  int GAME_UTILITIES_KILLER_ABILITIES = num("game.utilities.killer.abilities");
+  int GAME_UTILITIES_SURVIVOR_ABILITIES = num("game.utilities.survivor.abilities");
   String PHASE_BLACKLISTED_BLOCKS = str("phase.blacklisted_blocks");
   double PHASE_DISTANCE = dec("phase.distance");
   double PHASE_COOLDOWN = dec("phase.cooldown");

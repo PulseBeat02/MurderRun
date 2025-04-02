@@ -40,7 +40,7 @@ public final class NoOpPacketTools implements PacketToolAPI {
   }
 
   @Override
-  @SuppressWarnings("all")
+  @SuppressWarnings("all") // checker
   public ItemStack fromByteArray(final byte[] bytes) {
     return null;
   }
@@ -56,7 +56,7 @@ public final class NoOpPacketTools implements PacketToolAPI {
   }
 
   @Override
-  @SuppressWarnings("all")
+  @SuppressWarnings("all") // checker
   public Class<?> getMappedConnectionClass() {
     return null;
   }

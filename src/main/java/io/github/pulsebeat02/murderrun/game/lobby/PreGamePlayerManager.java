@@ -32,6 +32,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
+import io.github.pulsebeat02.murderrun.game.lobby.player.PlayerSelectionManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
@@ -68,6 +69,7 @@ public final class PreGamePlayerManager {
 
   private @Nullable LobbyTimeManager lobbyTimeManager;
   private @Nullable PreGameExpirationTimer expirationTimer;
+  private PlayerSelectionManager selectionManager;
 
   private LobbyScoreboard scoreboard;
   private LobbyBossbar bossbar;
@@ -95,6 +97,8 @@ public final class PreGamePlayerManager {
   }
 
   public void initialize() {
+    final MurderRun plugin = this.manager.getPlugin();
+    this.selectionManager = new PlayerSelectionManager(plugin);
     this.bossbar = new LobbyBossbar(this);
     this.scoreboard = new LobbyScoreboard(this.manager);
     this.scoreboard.updateScoreboard();
@@ -186,9 +190,9 @@ public final class PreGamePlayerManager {
     this.bossbar.addPlayer(player);
     this.scoreboard.addPlayer(player);
     this.scoreboard.updateScoreboard();
-    this.teleportPlayerToLobby(player);
     this.clearInventory(player);
     this.loadResourcePack(player);
+    this.teleportPlayerToLobby(player);
     this.giveItems(player, killer);
     this.checkIfEnoughPlayers();
     if (this.lobbyTimeManager != null) {
@@ -336,5 +340,9 @@ public final class PreGamePlayerManager {
 
   public boolean isLocked() {
     return this.locked;
+  }
+
+  public PlayerSelectionManager getSelectionManager() {
+    return this.selectionManager;
   }
 }

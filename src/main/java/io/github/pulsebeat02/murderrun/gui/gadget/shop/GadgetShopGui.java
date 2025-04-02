@@ -45,11 +45,11 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
-import io.github.pulsebeat02.murderrun.utils.TradingUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
@@ -66,21 +66,14 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class GadgetShopGui extends ChestGui {
 
-  private static final Collection<ItemStack> SORTED_SURVIVOR_ITEMS = TradingUtils.getGadgetShopItems(true);
-  private static final Collection<ItemStack> SORTED_KILLER_ITEMS = TradingUtils.getGadgetShopItems(false);
-
-  public static void init() {
-    // copy ItemStack fields
-  }
-
   private final MurderRun plugin;
   private final PaginatedPane pages;
 
-  public GadgetShopGui(final MurderRun plugin, final boolean isSurvivorGadgets) {
+  public GadgetShopGui(final MurderRun plugin, final List<String> gadgets) {
     super(6, ComponentUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), plugin);
     this.plugin = plugin;
     this.pages = new PaginatedPane(0, 0, 9, 5);
-    this.addItems(isSurvivorGadgets);
+    this.addItems(gadgets);
     this.setOnGlobalClick(event -> {
         final HumanEntity entity = event.getWhoClicked();
         event.setCancelled(true);
@@ -88,14 +81,22 @@ public final class GadgetShopGui extends ChestGui {
       });
   }
 
-  private void addItems(final boolean isSurvivorGadgets) {
-    this.addPane(this.createPaginatedPane(isSurvivorGadgets));
+  private void addItems(final List<String> gadgets) {
+    this.addPane(this.createPaginatedPane(gadgets));
     this.addPane(this.createBackgroundPane());
     this.addPane(this.createNavigationPane());
   }
 
-  private PaginatedPane createPaginatedPane(final boolean isSurvivorGadgets) {
-    final Collection<ItemStack> raw = isSurvivorGadgets ? SORTED_SURVIVOR_ITEMS : SORTED_KILLER_ITEMS;
+  private PaginatedPane createPaginatedPane(final List<String> gadgets) {
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
+    @SuppressWarnings("all") // checker
+    final Collection<ItemStack> raw = gadgets
+      .stream()
+      .map(registry::getGadget)
+      .filter(Objects::nonNull)
+      .map(Gadget::getStackBuilder)
+      .map(Item.Builder::build)
+      .toList();
     final List<ItemStack> items = List.copyOf(raw);
     this.pages.populateWithItemStacks(items, this.plugin);
     this.pages.setOnClick(this::handleClick);

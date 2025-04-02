@@ -67,7 +67,7 @@ public interface Item {
 
     Builder useOneDurability();
 
-    Builder model(final String name);
+    Builder model(final @Nullable String name);
 
     Builder dummyAttribute();
 

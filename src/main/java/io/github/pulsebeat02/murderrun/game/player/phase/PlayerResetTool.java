@@ -69,12 +69,11 @@ public final class PlayerResetTool {
     gamePlayer.setLevel(0);
     gamePlayer.setSaturation(Float.MAX_VALUE);
     gamePlayer.setFreezeTicks(0);
-    gamePlayer.setWalkSpeed(0.2f);
     gamePlayer.setExp(0);
     gamePlayer.setGlowing(false);
     gamePlayer.setFireTicks(0);
     gamePlayer.setInvulnerable(false);
-    gamePlayer.resetAllAttributes();
     gamePlayer.setAllowFlight(false);
+    gamePlayer.resetAllAttributes();
   }
 }

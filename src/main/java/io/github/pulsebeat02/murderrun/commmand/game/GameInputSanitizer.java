@@ -176,7 +176,8 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfInvitedAlreadyInGame(final Audience audience, final Player invite, final PreGameManager data) {
-    final GameManager manager = this.command.getGameManager();
+    final MurderRun plugin = this.command.getPlugin();
+    final GameManager manager = plugin.getGameManager();
     final PreGameManager otherPlayerData = manager.getGame(invite);
     if (otherPlayerData != null && data == otherPlayerData) {
       audience.sendMessage(Message.GAME_INVITE_ALREADY_ERROR.build());
@@ -186,7 +187,8 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfNotInvited(final Audience audience, final Player sender, final String id) {
-    final GameManager manager = this.command.getGameManager();
+    final MurderRun plugin = this.command.getPlugin();
+    final GameManager manager = plugin.getGameManager();
     final PreGameManager data = manager.getGame(id);
     if (data == null) {
       audience.sendMessage(Message.GAME_INVALID_ERROR.build());
@@ -214,7 +216,8 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfGameIdExists(final Audience audience, final String id) {
-    final GameManager manager = this.command.getGameManager();
+    final MurderRun plugin = this.command.getPlugin();
+    final GameManager manager = plugin.getGameManager();
     if (manager.getGame(id) != null) {
       audience.sendMessage(Message.GAME_ID_EXISTS_ERROR.build());
       return true;

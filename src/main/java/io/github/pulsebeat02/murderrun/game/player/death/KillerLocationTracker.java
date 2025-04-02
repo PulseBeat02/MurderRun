@@ -99,22 +99,20 @@ public final class KillerLocationTracker {
       }
 
       final StrictPlayerReference reference = StrictPlayerReference.of(survivorPlayer);
+      audience.playSound(Sounds.HEARTBEAT);
       if (distanceSquared < halfRadiusSquared) {
+        final Location clone = location.clone().add(0, 1, 0);
+        world.spawnParticle(Particle.DUST, clone, 15, 1, 1, 1, new DustOptions(Color.WHITE, 4));
         this.sendVeryCloseEffects(scheduler, audience, reference);
       } else {
         this.sendCloseEffects(audience, scheduler, reference);
       }
-      audience.playSound(Sounds.HEARTBEAT);
-
-      final Location clone = location.clone().add(0, 1, 0);
-      world.spawnParticle(Particle.DUST, clone, 15, 1, 1, 1, new DustOptions(Color.WHITE, 4));
     }
   }
 
   private void sendCloseEffects(final PlayerAudience audience, final GameScheduler scheduler, final StrictPlayerReference reference) {
     audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 7L, reference);
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 14L, reference);
+    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 10L, reference);
   }
 
   private void sendVeryCloseEffects(final GameScheduler scheduler, final PlayerAudience audience, final StrictPlayerReference reference) {

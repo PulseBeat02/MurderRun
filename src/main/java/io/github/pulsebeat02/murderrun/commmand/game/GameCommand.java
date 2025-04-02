@@ -61,7 +61,6 @@ public final class GameCommand implements AnnotationCommandFeature {
   private MurderRun plugin;
   private BukkitAudiences audiences;
   private GameInputSanitizer sanitizer;
-  private GameManager manager;
   private InviteManager invites;
 
   @Override
@@ -69,7 +68,6 @@ public final class GameCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.sanitizer = new GameInputSanitizer(this);
-    this.manager = new GameManager(plugin);
     this.invites = new InviteManager();
     this.plugin = plugin;
   }
@@ -125,7 +123,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game start", requiredSender = CommandSender.class)
   public void startGame(final CommandSender sender) {
     final Audience audience = this.audiences.sender(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (
       this.sanitizer.checkIfInNoGame(audience, data) ||
       this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
@@ -153,7 +152,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final boolean quickJoinable
   ) {
     final Audience audience = this.audiences.sender(sender);
-    final PreGameManager temp = this.manager.getGameAsParticipant(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager temp = manager.getGameAsParticipant(sender);
     if (
       this.sanitizer.checkIfAlreadyInGame(audience, temp) ||
       this.sanitizer.checkIfArenaValid(audience, arenaName) ||
@@ -163,9 +163,9 @@ public final class GameCommand implements AnnotationCommandFeature {
     ) {
       return;
     }
-    this.manager.createGame(sender, id, arenaName, lobbyName, min, max, quickJoinable).thenRun(() ->
-        audience.sendMessage(Message.GAME_CREATED.build())
-      );
+    manager
+      .createGame(sender, id, arenaName, lobbyName, min, max, quickJoinable)
+      .thenRun(() -> audience.sendMessage(Message.GAME_CREATED.build()));
   }
 
   @Permission("murderrun.command.game.cancel")
@@ -173,13 +173,14 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game cancel", requiredSender = Player.class)
   public void cancelGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
     final String id = data.getId();
-    this.manager.removeGame(id);
+    manager.removeGame(id);
 
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
@@ -197,7 +198,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game invite <invite>", requiredSender = Player.class)
   public void invitePlayer(final Player sender, final Player invite) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (
       this.sanitizer.checkIfInNoGame(audience, data) ||
       this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
@@ -208,7 +210,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
     this.invites.invitePlayer(sender, invite);
 
-    final PreGameManager target = requireNonNull(this.manager.getGame(sender));
+    final PreGameManager target = requireNonNull(manager.getGame(sender));
     final String id = target.getId();
     final String inviteDisplayName = invite.getDisplayName();
     final Component owner = Message.GAME_OWNER_INVITE.build(inviteDisplayName);
@@ -223,13 +225,14 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game join <id>", requiredSender = Player.class)
   public void joinGame(final Player sender, @Quoted final String id) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager temp = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager temp = manager.getGame(sender);
     if (this.sanitizer.checkIfAlreadyInGame(audience, temp) || this.sanitizer.checkIfNotInvited(audience, sender, id)) {
       return;
     }
 
-    final PreGameManager data = requireNonNull(this.manager.getGame(id));
-    if (this.sanitizer.checkIfGameFull(sender, audience, this.manager, data)) {
+    final PreGameManager data = requireNonNull(manager.getGame(id));
+    if (this.sanitizer.checkIfGameFull(sender, audience, manager, data)) {
       return;
     }
 
@@ -255,7 +258,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game list", requiredSender = Player.class)
   public void listPlayers(final Player sender) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (this.sanitizer.checkIfInNoGame(audience, data)) {
       return;
     }
@@ -283,7 +287,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game kick <kick>", requiredSender = Player.class)
   public void kickPlayer(final Player sender, final Player kick) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (
       this.sanitizer.checkIfInNoGame(audience, data) ||
       this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
@@ -291,7 +296,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     ) {
       return;
     }
-    this.manager.leaveGame(kick);
+    manager.leaveGame(kick);
     this.invites.removeInvite(sender, kick);
 
     final String name = kick.getDisplayName();
@@ -307,13 +312,14 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game leave", requiredSender = Player.class)
   public void leaveGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (
       this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, requireNonNull(data))
     ) {
       return;
     }
-    this.manager.leaveGame(sender);
+    manager.leaveGame(sender);
 
     final Component message = Message.GAME_LEFT.build();
     audience.sendMessage(message);
@@ -324,7 +330,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game set murderer <murderer>", requiredSender = Player.class)
   public void setMurderer(final Player sender, final Player murderer) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
@@ -342,7 +349,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game set innocent <innocent>", requiredSender = Player.class)
   public void setInnocent(final Player sender, final Player innocent) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager data = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager data = manager.getGame(sender);
     if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
@@ -360,16 +368,17 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game quick-join", requiredSender = Player.class)
   public void quickJoinGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
-    final PreGameManager temp = this.manager.getGame(sender);
+    final GameManager manager = this.plugin.getGameManager();
+    final PreGameManager temp = manager.getGame(sender);
     if (this.sanitizer.checkIfAlreadyInGame(audience, temp)) {
       return;
     }
 
-    this.sanitizer.checkIfNoQuickJoinableGame(sender, this.manager).thenAccept(value -> {
+    this.sanitizer.checkIfNoQuickJoinableGame(sender, manager).thenAccept(value -> {
         if (value) {
           return;
         }
-        final PreGameManager data = requireNonNull(this.manager.getGame(sender));
+        final PreGameManager data = requireNonNull(manager.getGame(sender));
         final PreGamePlayerManager playerManager = data.getPlayerManager();
         final CommandSender leader = playerManager.getLeader();
         this.invites.removeInvite(leader, sender);
@@ -381,7 +390,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.game.gui.info")
   @Command(value = "murder game gui", requiredSender = Player.class)
   public void openGameGui(final Player sender) {
-    final PlayerListGui gui = new PlayerListGui(this.plugin, sender, this.manager);
+    final GameManager manager = this.plugin.getGameManager();
+    final PlayerListGui gui = new PlayerListGui(this.plugin, sender, manager);
     gui.update();
     gui.show(sender);
   }
@@ -398,10 +408,6 @@ public final class GameCommand implements AnnotationCommandFeature {
     return new ArrayList<>(manager.getLobbyNames());
   }
 
-  public GameManager getGameManager() {
-    return this.manager;
-  }
-
   public MurderRun getPlugin() {
     return this.plugin;
   }
@@ -412,10 +418,6 @@ public final class GameCommand implements AnnotationCommandFeature {
 
   public GameInputSanitizer getSanitizer() {
     return this.sanitizer;
-  }
-
-  public GameManager getManager() {
-    return this.manager;
   }
 
   public InviteManager getInviteManager() {

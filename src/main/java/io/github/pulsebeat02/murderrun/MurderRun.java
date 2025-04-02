@@ -45,14 +45,13 @@ import io.github.pulsebeat02.murderrun.game.extension.nexo.NexoManager;
 import io.github.pulsebeat02.murderrun.game.extension.papi.MurderRunExpansion;
 import io.github.pulsebeat02.murderrun.game.extension.parties.PartiesManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
+import io.github.pulsebeat02.murderrun.game.lobby.GameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.map.SchematicLoader;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.gui.ability.AbilityTestingGui;
-import io.github.pulsebeat02.murderrun.gui.ability.selection.AbilitySelectGui;
 import io.github.pulsebeat02.murderrun.gui.arena.ArenaCreationManager;
 import io.github.pulsebeat02.murderrun.gui.gadget.GadgetTestingGui;
-import io.github.pulsebeat02.murderrun.gui.gadget.shop.GadgetShopGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
@@ -84,6 +83,7 @@ public final class MurderRun extends JavaPlugin {
   private LobbyManager lobbyManager;
   private StatisticsManager statisticsManager;
   private ArenaCreationManager arenaCreationManager;
+  private GameManager gameManager;
 
   private Metrics metrics;
   private GameShutdownManager gameShutdownManager;
@@ -205,8 +205,6 @@ public final class MurderRun extends JavaPlugin {
     AbilityRegistry.init();
     PacketToolsProvider.init();
     GameProperties.init();
-    GadgetShopGui.init();
-    AbilitySelectGui.init();
     GadgetTestingGui.init();
     AbilityTestingGui.init();
     TerrainDropAnalyzer.init();
@@ -237,6 +235,7 @@ public final class MurderRun extends JavaPlugin {
     this.lobbyManager = this.lobbyDataConfigurationMapper.deserialize();
     this.statisticsManager = this.statisticsConfigurationMapper.deserialize();
     this.arenaCreationManager = this.arenaCreationManagerConfigurationManager.deserialize();
+    this.gameManager = new GameManager(this);
   }
 
   private void handlePackHosting() {
@@ -362,5 +361,9 @@ public final class MurderRun extends JavaPlugin {
 
   public static boolean isDevelopmentToolsEnabled() {
     return Boolean.getBoolean("murderrun.development.tools");
+  }
+
+  public GameManager getGameManager() {
+    return this.gameManager;
   }
 }

@@ -143,10 +143,13 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder model(final String data) {
+  public Builder model(final @Nullable String data) {
     final ItemMeta meta = this.meta();
-    final NamespacedKey temp = new NamespacedKey("murderrun", data);
-    meta.setItemModel(temp);
+    NamespacedKey key = null;
+    if (data != null) {
+      key = new NamespacedKey("murderrun", data);
+    }
+    meta.setItemModel(key);
     this.stack.setItemMeta(meta);
     return this;
   }

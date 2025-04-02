@@ -50,7 +50,7 @@ public final class EventBusTests {
     this.plugin = plugin;
   }
 
-  @SuppressWarnings("all")
+  @SuppressWarnings("all") // checker
   public void runTestUnits() {
     final ApiEventBus eventBus = EventBusProvider.getBus();
     eventBus.subscribe(plugin, MurderRunEvent.class, event -> {

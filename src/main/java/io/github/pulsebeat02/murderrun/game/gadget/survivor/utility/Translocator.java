@@ -100,6 +100,7 @@ public final class Translocator extends SurvivorGadget {
     Item.builder(stack)
       .lore(Message.TRANSLOCATOR_LORE1.build())
       .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
+      .model(null)
       .type(Material.LEVER);
 
     return true;
