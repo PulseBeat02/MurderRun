@@ -174,17 +174,17 @@ public final class GadgetRegistry {
       }
       final Pair<Gadget, MethodHandle> pair = Pair.of(gadget, handle);
       this.gadgetRegistry.put(name, pair);
-    } catch (final Throwable e) {
+    } catch (final NoSuchMethodException | IllegalAccessException e) {
       throw new AssertionError(e);
     }
   }
 
-  private MethodHandle getMethodHandleClass(final Class<?> clazz) throws Throwable {
+  private MethodHandle getMethodHandleClass(final Class<?> clazz) throws NoSuchMethodException, IllegalAccessException {
     final MethodHandles.Lookup lookup = MethodHandles.lookup();
     try {
       final MethodType type = MethodType.methodType(Void.TYPE);
       return lookup.findConstructor(clazz, type);
-    } catch (final Throwable e) {
+    } catch (final Exception e) {
       // if invalid, inject the game
       final MethodType injectGame = MethodType.methodType(Void.TYPE, Game.class);
       return lookup.findConstructor(clazz, injectGame);

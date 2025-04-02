@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.capability;
+package io.github.pulsebeat02.murderrun.data.hibernate;
 
-public final class Capabilities {
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
+import java.util.Set;
 
-  private Capabilities() {
-    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+public final class WhitelistedHibernateObjectInputStream extends ObjectInputStream {
+
+  private static final Set<String> WHITELISTED_CLASSES = Set.of("[Ljava.lang.Long;");
+
+  public WhitelistedHibernateObjectInputStream(final InputStream in) throws IOException {
+    super(in);
   }
 
-  public static Capability LIBSDISGUISES = new PluginCapability("LibsDisguises");
-  public static Capability PLACEHOLDERAPI = new PluginCapability("PlaceholderAPI");
-  public static Capability FASTASYNCWORLDEDIT = new PluginClassCapability("com.fastasyncworldedit.bukkit.FaweBukkit");
-  public static Capability PARTIES = new PluginCapability("Parties");
-  public static Capability NEXO = new PluginCapability("Nexo");
+  @Override
+  protected Class<?> resolveClass(final ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+    final String name = desc.getName();
+    if (!WHITELISTED_CLASSES.contains(name)) {
+      final String msg = "Unauthorized deserialization attempt for class: %s".formatted(name);
+      throw new AssertionError(msg);
+    }
+    return super.resolveClass(desc);
+  }
 }

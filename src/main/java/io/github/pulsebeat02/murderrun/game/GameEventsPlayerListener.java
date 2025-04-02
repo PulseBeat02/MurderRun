@@ -110,5 +110,7 @@ public final class GameEventsPlayerListener implements GameEventsListener {
   }
 
   @Override
-  public void onGameStart(final Game game) {}
+  public void onGameStart(final Game game) {
+    // Do nothing
+  }
 }

@@ -29,6 +29,10 @@ import org.bukkit.NamespacedKey;
 
 public final class Keys {
 
+  private Keys() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
   public static final String NAMESPACE = "murderrun";
 
   public static NamespacedKey SPECIAL_SWORD = createNamespacedPluginKey("sword");

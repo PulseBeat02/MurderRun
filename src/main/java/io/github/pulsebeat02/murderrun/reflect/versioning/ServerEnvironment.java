@@ -34,6 +34,10 @@ import org.bukkit.Server;
 
 public final class ServerEnvironment {
 
+  private ServerEnvironment() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
   private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)(?:\\.(\\d+))?");
   private static final int[] DEFAULT_REVISION = new int[] { 1, 8, 8 };
   private static final String MINECRAFT_PACKAGE = getMinecraftPackage();

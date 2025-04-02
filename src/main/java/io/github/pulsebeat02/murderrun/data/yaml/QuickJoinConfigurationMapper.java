@@ -51,6 +51,7 @@ public final class QuickJoinConfigurationMapper {
   private static final String MIN_PLAYERS_FIELD = "min-players";
   private static final String MAX_PLAYERS_FIELD = "max-players";
   private static final String ARENA_LOBBY_PAIRS_FIELD = "arena-lobby-pairs";
+  private static final String CONFIGURATION_YAML = "quick-join.yml";
 
   private final ExecutorService service;
   private final MurderRun plugin;
@@ -73,9 +74,9 @@ public final class QuickJoinConfigurationMapper {
 
   public void saveConfiguration(@UnderInitialization QuickJoinConfigurationMapper this, final MurderRun plugin) {
     final Path path = IOUtils.getPluginDataFolderPath();
-    final Path configPath = path.resolve("quick-join.yml");
+    final Path configPath = path.resolve(CONFIGURATION_YAML);
     if (Files.notExists(configPath)) {
-      plugin.saveResource("quick-join.yml", false);
+      plugin.saveResource(CONFIGURATION_YAML, false);
     }
   }
 
@@ -90,7 +91,7 @@ public final class QuickJoinConfigurationMapper {
   public synchronized void deserialize() {
     this.readLock.lock();
     final Path path = IOUtils.getPluginDataFolderPath();
-    final Path configPath = path.resolve("quick-join.yml");
+    final Path configPath = path.resolve(CONFIGURATION_YAML);
     final File configFile = configPath.toFile();
     final FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
     this.plugin.saveConfig();

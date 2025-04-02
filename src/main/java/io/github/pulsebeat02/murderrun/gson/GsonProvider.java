@@ -50,6 +50,10 @@ public final class GsonProvider {
     GSON = builder.create();
   }
 
+  private GsonProvider() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
   public static Gson getGson() {
     return GSON;
   }

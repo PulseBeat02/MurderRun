@@ -47,6 +47,14 @@ import net.bytebuddy.matcher.ElementMatchers;
 
 public class EventImplGenerator {
 
+  private EventImplGenerator() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  private static final String CANCELLED_FIELD_NAME = "cancelled";
+  private static final String SET_CANCELLED_METHOD_NAME = "setCancelled";
+  private static final String IS_CANCELLED_METHOD_NAME = "isCancelled";
+
   private static Map<String, Class<?>> extractProperties(final Class<?> eventInterface) {
     final Map<String, Class<?>> properties = new LinkedHashMap<>();
     final Method[] methods = eventInterface.getMethods();
@@ -57,7 +65,10 @@ public class EventImplGenerator {
       }
       final String methodName = method.getName();
       final int parameterCount = method.getParameterCount();
-      if ((methodName.equals("isCancelled") && parameterCount == 0) || (methodName.equals("setCancelled") && parameterCount == 1)) {
+      if (
+        (methodName.equals(IS_CANCELLED_METHOD_NAME) && parameterCount == 0) ||
+        (methodName.equals(SET_CANCELLED_METHOD_NAME) && parameterCount == 1)
+      ) {
         continue;
       }
       final Class<?> returnType = method.getReturnType();
@@ -185,9 +196,11 @@ public class EventImplGenerator {
     builder = builder.defineConstructor(Modifier.PUBLIC).withParameters(ctorParamTypes).intercept(ctorImplementation);
     builder = defineGetters(builder, properties);
     if (Cancellable.class.isAssignableFrom(eventInterface)) {
-      builder = builder.defineField("cancelled", Boolean.TYPE, Modifier.PRIVATE);
-      builder = builder.method(ElementMatchers.named("isCancelled")).intercept(FieldAccessor.ofField("cancelled"));
-      builder = builder.method(ElementMatchers.named("setCancelled")).intercept(FieldAccessor.ofField("cancelled").setsArgumentAt(0));
+      builder = builder.defineField(CANCELLED_FIELD_NAME, Boolean.TYPE, Modifier.PRIVATE);
+      builder = builder.method(ElementMatchers.named(IS_CANCELLED_METHOD_NAME)).intercept(FieldAccessor.ofField(CANCELLED_FIELD_NAME));
+      builder = builder
+        .method(ElementMatchers.named(SET_CANCELLED_METHOD_NAME))
+        .intercept(FieldAccessor.ofField(CANCELLED_FIELD_NAME).setsArgumentAt(0));
     }
     return builder;
   }

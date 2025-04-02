@@ -210,6 +210,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
         case 0 -> this.first = location;
         case 1 -> this.second = location;
         case 2 -> this.spawn = location;
+        default -> throw new AssertionError("Invalid mode!");
       }
     }
 
@@ -221,6 +222,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
         this.listenForName = false;
         this.showAsync();
       }
+      default -> throw new AssertionError("Invalid mode!");
     }
 
     this.currentMode.incrementAndGet();

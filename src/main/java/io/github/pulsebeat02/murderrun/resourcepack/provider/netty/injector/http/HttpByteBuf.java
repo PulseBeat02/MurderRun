@@ -55,12 +55,12 @@ public final class HttpByteBuf {
   }
 
   public void writeStatusLine(final String protocolVersion, final int statusCode, final String statusMessage) {
-    final String status = "HTTP/%s %d %s\n".formatted(protocolVersion, statusCode, statusMessage);
+    final String status = "HTTP/%s %d %s%n".formatted(protocolVersion, statusCode, statusMessage);
     this.inner.writeCharSequence(status, StandardCharsets.US_ASCII);
   }
 
   public void writeHeader(final String header, final String value) {
-    final String write = "%s: %s\n".formatted(header, value);
+    final String write = "%s: %s%n".formatted(header, value);
     this.inner.writeCharSequence(write, StandardCharsets.US_ASCII);
   }
 

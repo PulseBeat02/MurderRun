@@ -178,14 +178,12 @@ public final class GamePlayerBlockEvent extends GameEvent {
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (gamePlayer instanceof final Survivor survivor) {
-      if (survivor.canPlaceBlocks()) {
-        final GameMap map = game.getMap();
-        final BlockWhitelistManager whitelist = map.getBlockWhitelistManager();
-        final Block block = event.getBlock();
-        whitelist.addWhitelistedBlock(block);
-        return;
-      }
+    if (gamePlayer instanceof final Survivor survivor && survivor.canPlaceBlocks()) {
+      final GameMap map = game.getMap();
+      final BlockWhitelistManager whitelist = map.getBlockWhitelistManager();
+      final Block block = event.getBlock();
+      whitelist.addWhitelistedBlock(block);
+      return;
     }
 
     event.setCancelled(true);

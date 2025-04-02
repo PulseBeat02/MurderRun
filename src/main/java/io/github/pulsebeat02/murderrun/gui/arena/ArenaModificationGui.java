@@ -393,6 +393,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
         case 1 -> this.creation.setSecond(location);
         case 2 -> this.creation.setTruck(location);
         case 3 -> this.creation.setSpawn(location);
+        default -> throw new AssertionError("Invalid mode!");
       }
     }
 
@@ -405,6 +406,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
         this.listenForName = false;
         this.showAsync();
       }
+      default -> throw new AssertionError("Invalid mode!");
     }
 
     this.currentMode.incrementAndGet();

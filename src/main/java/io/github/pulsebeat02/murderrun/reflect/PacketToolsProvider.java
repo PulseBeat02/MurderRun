@@ -36,6 +36,10 @@ public final class PacketToolsProvider {
 
   public static final PacketToolAPI PACKET_API;
 
+  private PacketToolsProvider() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
   static {
     PacketToolAPI api;
     try {

@@ -53,6 +53,8 @@ import org.incendo.cloud.context.CommandContext;
 
 public final class DebugCommand implements AnnotationCommandFeature {
 
+  private static final String ACCEPT_COMMAND = "party accept";
+
   private BukkitAudiences audiences;
 
   @Override
@@ -67,7 +69,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
     final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
     sender.performCommand("party create Party");
     sender.performCommand("party invite Player1");
-    other.performCommand("party accept");
+    other.performCommand(ACCEPT_COMMAND);
     sender.performCommand("murder game party Arena Lobby");
   }
 
@@ -79,8 +81,8 @@ public final class DebugCommand implements AnnotationCommandFeature {
     sender.performCommand("party create Party");
     sender.performCommand("party invite Player1");
     sender.performCommand("party invite Player2");
-    other.performCommand("party accept");
-    other1.performCommand("party accept");
+    other.performCommand(ACCEPT_COMMAND);
+    other1.performCommand(ACCEPT_COMMAND);
     sender.performCommand("murder game party Arena Lobby");
   }
 

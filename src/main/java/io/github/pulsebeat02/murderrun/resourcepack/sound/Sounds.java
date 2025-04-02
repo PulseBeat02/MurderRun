@@ -36,6 +36,10 @@ public final class Sounds {
 
   private static final Set<SoundResource> ALL = new HashSet<>();
 
+  private Sounds() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
   public static final SoundResource COUNTDOWN = of("countdown");
   public static final SoundResource CHAINSAW = of("chainsaw");
   public static final SoundResource DEATH = of("death");

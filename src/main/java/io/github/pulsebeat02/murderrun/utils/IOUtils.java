@@ -61,7 +61,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class IOUtils {
 
-  private static final String IP_URL = "http://checkip.amazonaws.com";
+  private static final String IP_URL = "https://ipv4.icanhazip.com/";
 
   private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -147,9 +147,10 @@ public final class IOUtils {
 
   private static String bytesToString(final byte[] arr) {
     final StringBuilder builder = new StringBuilder(arr.length * 2);
-    final Formatter fmt = new Formatter(builder, Locale.ROOT);
-    for (final byte b : arr) {
-      fmt.format("%02x", b & 0xff);
+    try (final Formatter fmt = new Formatter(builder, Locale.ROOT)) {
+      for (final byte b : arr) {
+        fmt.format("%02x", b & 0xff);
+      }
     }
     return builder.toString();
   }
@@ -245,10 +246,8 @@ public final class IOUtils {
       return Files.createTempFile(prefix, suffix, attr);
     } else {
       final File parent = new File("murderrun");
-      if (!parent.exists()) {
-        if (!parent.mkdirs()) {
-          throw new IOException("Failed to create parent directory for temporary file!");
-        }
+      if (!parent.exists() && !parent.mkdirs()) {
+        throw new IOException("Failed to create parent directory for temporary file!");
       }
 
       final File file = File.createTempFile(prefix, suffix, parent);

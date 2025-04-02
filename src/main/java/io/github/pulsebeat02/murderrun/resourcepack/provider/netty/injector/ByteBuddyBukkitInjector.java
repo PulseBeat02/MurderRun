@@ -117,6 +117,10 @@ public final class ByteBuddyBukkitInjector {
 
   public static class ConnectionInterceptor {
 
+    private ConnectionInterceptor() {
+      throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
     @Advice.OnMethodExit
     @RuntimeType
     public static void intercept(@Advice.AllArguments final Object[] allArguments) {

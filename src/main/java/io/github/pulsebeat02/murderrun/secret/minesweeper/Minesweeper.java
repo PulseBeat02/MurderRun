@@ -26,8 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.secret.minesweeper;
 
 import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 public final class Minesweeper extends JFrame {
 
@@ -39,7 +38,7 @@ public final class Minesweeper extends JFrame {
     this.setResizable(false);
     this.setTitle("Minesweeper");
     this.setLocationRelativeTo(null);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     this.pack();
   }
 

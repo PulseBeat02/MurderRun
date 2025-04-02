@@ -79,5 +79,7 @@ public final class SpreadOperation implements Operation {
   }
 
   @Override
-  public void cancel() {}
+  public void cancel() {
+    // Do nothing
+  }
 }

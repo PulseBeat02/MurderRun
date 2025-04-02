@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.data.hibernate.identifier;
 
+import io.github.pulsebeat02.murderrun.data.hibernate.WhitelistedHibernateObjectInputStream;
 import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.*;
@@ -87,10 +88,8 @@ public final class HibernateIdentifierManager {
       return new Long[] { -1L, -1L, -1L };
     }
     read.lock();
-    try (final ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path))) {
-      final Long[] identifiers;
-      identifiers = (Long[]) ois.readObject();
-      return identifiers;
+    try (final InputStream fis = Files.newInputStream(path); final ObjectInputStream ois = new WhitelistedHibernateObjectInputStream(fis)) {
+      return (Long[]) ois.readObject();
     } catch (final IOException | ClassNotFoundException e) {
       throw new AssertionError(e);
     } finally {

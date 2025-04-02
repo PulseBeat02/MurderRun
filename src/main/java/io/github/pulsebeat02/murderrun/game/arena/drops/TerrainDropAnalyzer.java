@@ -67,7 +67,9 @@ public final class TerrainDropAnalyzer {
     }
   }
 
-  public static void init() {}
+  public static void init() {
+    // init
+  }
 
   private final MurderRun plugin;
   private final Location[] corners;

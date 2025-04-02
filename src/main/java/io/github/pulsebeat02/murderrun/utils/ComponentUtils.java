@@ -183,10 +183,10 @@ public final class ComponentUtils {
     final Style enforcedState = enforceStyleStates(style);
     final TextComponent first = component.style(enforcedState);
 
-    final Stack<TextComponent> toCheck = new Stack<>();
+    final Deque<TextComponent> toCheck = new ArrayDeque<>();
     toCheck.add(first);
 
-    while (!toCheck.empty()) {
+    while (!toCheck.isEmpty()) {
       final TextComponent parent = toCheck.pop();
       final String content = parent.content();
       if (!content.isEmpty()) {
@@ -198,7 +198,7 @@ public final class ComponentUtils {
     return flattened;
   }
 
-  private static void addChildComponents(final TextComponent parent, final Stack<TextComponent> toCheck) {
+  private static void addChildComponents(final TextComponent parent, final Deque<TextComponent> toCheck) {
     final List<Component> children = parent.children();
     final List<Component> reversed = children.reversed();
     for (final Component child : reversed) {

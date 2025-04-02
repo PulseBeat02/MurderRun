@@ -63,7 +63,8 @@ public final class MinefieldBoard extends JPanel {
   private int[] field;
   private boolean inGame;
   private int minesLeft;
-  private Image[] img;
+
+  private transient Image[] img;
 
   private int allCells;
   private final JLabel statusbar;
