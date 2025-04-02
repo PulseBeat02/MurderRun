@@ -368,12 +368,12 @@ public final class ItemFactory {
     return Item.builder(Material.DIAMOND_SWORD)
       .name(Message.KILLER_SWORD.build())
       .model("sword")
-      .hideAttributes()
       .modifier(Attribute.ATTACK_DAMAGE, 8)
       .pdc(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true)
       .pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true)
       .enchantment(Enchantment.VANISHING_CURSE, 1)
       .unbreakable()
+      .hideAttributes()
       .build();
   }
 }
