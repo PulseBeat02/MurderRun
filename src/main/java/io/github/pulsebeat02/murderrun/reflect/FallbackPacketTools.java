@@ -25,6 +25,9 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.reflect;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.reflect.versioning.ServerEnvironment;
 import io.netty.channel.ChannelFuture;
 import java.io.ByteArrayInputStream;
@@ -34,9 +37,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -46,6 +47,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
@@ -109,10 +111,10 @@ public final class FallbackPacketTools implements PacketToolAPI {
     return lookup.findVirtual(craftServerType, "getServer", methodType);
   }
 
-  private final Map<Location, Slime> slimes;
+  private final Table<Player, Location, Slime> slimes;
 
   public FallbackPacketTools() {
-    this.slimes = new HashMap<>();
+    this.slimes = HashBasedTable.create();
   }
 
   @Override
@@ -155,7 +157,8 @@ public final class FallbackPacketTools implements PacketToolAPI {
     final double centerZ = blockLocation.getBlockZ() + 0.5;
     final Location spawnLocation = new Location(world, centerX, centerY, centerZ);
     if (glowing) {
-      if (this.slimes.containsKey(target)) {
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+      if (this.slimes.contains(watcher, target)) {
         return;
       }
       final Slime spawned = world.spawn(spawnLocation, Slime.class, slime -> {
@@ -165,10 +168,12 @@ public final class FallbackPacketTools implements PacketToolAPI {
         slime.setAI(false);
         slime.setCollidable(false);
         slime.setInvulnerable(true);
+        slime.setVisibleByDefault(false);
+        watcher.showEntity(plugin, slime);
       });
-      this.slimes.put(target, spawned);
+      this.slimes.put(watcher, target, spawned);
     } else {
-      final Slime slime = this.slimes.remove(target);
+      final Slime slime = this.slimes.remove(watcher, target);
       if (slime != null) {
         slime.remove();
       }
