@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
 
+import static net.kyori.adventure.text.Component.empty;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
@@ -90,7 +92,7 @@ public final class MindControl extends SurvivorGadget {
     final String targetName = nearest.getDisplayName();
     final Component targetMsg = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
     final PlayerAudience audience1 = player.getAudience();
-    audience1.sendMessage(targetMsg);
+    audience1.showTitle(empty(), targetMsg);
     audience1.playSound(GameProperties.MIND_CONTROL_SOUND);
 
     final String name = player.getDisplayName();

@@ -53,9 +53,9 @@ public abstract class SurvivorTrap extends Trap implements SurvivorApparatus {
   @Override
   public void onGadgetNearby(final GadgetNearbyPacket packet) {
     super.onGadgetNearby(packet);
-    final Component announcement = this.getAnnouncement();
-    final Component subtitle = empty();
-    if (announcement != null) {
+    final Component announcement = empty();
+    final Component subtitle = this.getAnnouncement();
+    if (subtitle != null) {
       final Game game = packet.getGame();
       final GamePlayerManager manager = game.getPlayerManager();
       manager.showTitleForAllInnocents(announcement, subtitle);

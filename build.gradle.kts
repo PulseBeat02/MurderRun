@@ -61,8 +61,8 @@ dependencies {
 
     // Project Dependencies
     implementation(project(":nms-api"))
+    runtimeOnly(project(":v1_21_R3", "reobf"))
     runtimeOnly(project(":v1_21_R4", "reobf"))
-    runtimeOnly(project(":v1_21_R5", "reobf"))
 
     // Provided Dependencies
     compileOnly(libs.spigotApi)
@@ -152,8 +152,8 @@ tasks {
     }
 
     assemble {
+        dependsOn(":v1_21_R3:reobfJar")
         dependsOn(":v1_21_R4:reobfJar")
-        dependsOn(":v1_21_R5:reobfJar")
         dependsOn("shadowJar")
     }
 
@@ -208,7 +208,7 @@ tasks {
 
     shadowJar {
         dependencies {
-            include(project(":v1_21_R5"))
+            include(project(":v1_21_R3"))
             include(project(":v1_21_R4"))
             include(project(":nms-api"))
         }

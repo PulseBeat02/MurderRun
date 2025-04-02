@@ -132,7 +132,7 @@ public final class EnderShadows extends KillerGadget {
     if (distance < 1) {
       players.add(survivor);
       final PlayerAudience audience = survivor.getAudience();
-      audience.showTitle(msg, empty());
+      audience.showTitle(empty(), msg);
       metadata.setEntityGlowing(survivor, ChatColor.RED, true);
     } else if (players.contains(survivor)) {
       players.remove(survivor);

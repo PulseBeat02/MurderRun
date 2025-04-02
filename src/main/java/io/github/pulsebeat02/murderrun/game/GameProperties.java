@@ -34,6 +34,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  double CAR_PART_TRUCK_RADIUS = dec("car_parts.truck_radius");
   int MINIATURIZER_DURATION = num("minitaturizer.duration");
   int EXPANDER_DURATION = num("expander.duration");
   int WORLDEDIT_MAX_CHUNKS_PER_TICK = num("worldedit.chunks-per-tick");

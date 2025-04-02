@@ -13,10 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import io.netty.channel.ChannelFuture;
 import net.minecraft.core.RegistryAccess;
@@ -61,236 +58,248 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public class PacketTools implements PacketToolAPI {
 
-  private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";
-  private static final VarHandle SERVER_CONNECTION_HANDLE = getServerConnectionHandle();
+    private static final String ITEMS_VERSION_ATTRIBUTE = "DataVersion";
+    private static final VarHandle SERVER_CONNECTION_HANDLE = getServerConnectionHandle();
 
-  private static VarHandle getServerConnectionHandle() {
-    final Class<?> target = ServerConnectionListener.class;
-    final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    try {
-      final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(target, lookup);
-      try {
-        return privateLookup.findVarHandle(target, "channels", List.class);
-      } catch (final NoSuchFieldException | IllegalAccessException e) {
+    private static VarHandle getServerConnectionHandle() {
+        final Class<?> target = ServerConnectionListener.class;
+        final MethodHandles.Lookup lookup = MethodHandles.lookup();
         try {
-          return privateLookup.findVarHandle(target, "f", List.class);
-        } catch (final NoSuchFieldException | IllegalAccessException ex) {
-          throw new AssertionError(ex);
+            final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(target, lookup);
+            try {
+                return privateLookup.findVarHandle(target, "channels", List.class);
+            } catch (final NoSuchFieldException | IllegalAccessException e) {
+                try {
+                    return privateLookup.findVarHandle(target, "f", List.class);
+                } catch (final NoSuchFieldException | IllegalAccessException ex) {
+                    throw new AssertionError(ex);
+                }
+            }
+        } catch (final IllegalAccessException e) {
+            throw new AssertionError(e);
         }
-      }
-    } catch (final IllegalAccessException e) {
-      throw new AssertionError(e);
-    }
-  }
-
-  private final Table<Player, Location, Slime> glowBlocks;
-  private final Team noCollisions;
-
-  public PacketTools() {
-    this.glowBlocks = HashBasedTable.create();
-    this.noCollisions = this.registerTeam();
-  }
-
-  private Team registerTeam(@UnderInitialization PacketTools this) {
-    final ScoreboardManager manager = Bukkit.getScoreboardManager();
-    final Scoreboard scoreboard = manager.getMainScoreboard();
-    final Team team = scoreboard.getTeam("NoCollisions");
-    if (team != null) {
-      return team;
     }
 
-    final Team newTeam = scoreboard.registerNewTeam("NoCollisions");
-    newTeam.setOption(Option.COLLISION_RULE, OptionStatus.NEVER);
+    private final Table<Player, Location, Slime> glowBlocks;
+    private final Team noCollisions;
 
-    return newTeam;
-  }
-
-  @Override
-  public byte[] toByteArray(final ItemStack item) {
-    try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-      final MinecraftServer server = MinecraftServer.getServer();
-      final UnsafeValues values = Bukkit.getUnsafe();
-      final int version = values.getDataVersion();
-      final RegistryAccess.Frozen dimension = server.registryAccess();
-      final net.minecraft.world.item.ItemStack craftItemStack = CraftItemStack.asNMSCopy(item);
-      final CompoundTag compound = (CompoundTag) craftItemStack.save(dimension);
-      compound.putInt(ITEMS_VERSION_ATTRIBUTE, version);
-      NbtIo.writeCompressed(compound, outputStream);
-      return outputStream.toByteArray();
-    } catch (final IOException e) {
-      throw new AssertionError(e);
-    }
-  }
-
-  @Override
-  public ItemStack fromByteArray(final byte[] bytes) {
-    try (final ByteArrayInputStream stream = new ByteArrayInputStream(bytes)) {
-      final MinecraftServer server = MinecraftServer.getServer();
-      final RegistryAccess.Frozen dimension = server.registryAccess();
-      final NbtAccounter unlimited = NbtAccounter.unlimitedHeap();
-      final CompoundTag old = NbtIo.readCompressed(stream, unlimited);
-      final int dataVersion = old.getInt(ITEMS_VERSION_ATTRIBUTE);
-      final UnsafeValues values = Bukkit.getUnsafe();
-      final int ver = values.getDataVersion();
-      final DSL.TypeReference reference = References.ITEM_STACK;
-      final DataFixer fixer = server.fixerUpper;
-      final NbtOps operation = NbtOps.INSTANCE;
-      final Dynamic<Tag> dynamic = new Dynamic<>(operation, old);
-      fixer.update(reference, dynamic, dataVersion, ver);
-      final CompoundTag newCompound = (CompoundTag) dynamic.getValue();
-      final net.minecraft.world.item.ItemStack stack = net.minecraft.world.item.ItemStack.parseOptional(
-              dimension,
-              newCompound
-      );
-      return CraftItemStack.asCraftMirror(stack);
-    } catch (final IOException e) {
-      throw new AssertionError(e);
-    }
-  }
-
-  @Override
-  public void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing) {
-    final CraftEntity glow = (CraftEntity) entity;
-    final net.minecraft.world.entity.Entity nmsEntity = glow.getHandle();
-    final SynchedEntityData data = nmsEntity.getEntityData();
-    final EntityDataAccessor<Byte> glowingAccessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
-    final CraftPlayer player = (CraftPlayer) watcher;
-    final ServerPlayer handle = player.getHandle();
-    final ServerGamePacketListenerImpl connection = handle.connection;
-    final int id = entity.getEntityId();
-    final List<DataValue<?>> packed = data.getNonDefaultValues();
-    if (packed == null) {
-      return;
+    public PacketTools() {
+        this.glowBlocks = HashBasedTable.create();
+        this.noCollisions = this.registerTeam();
     }
 
-    final List<DataValue<?>> copy = new ArrayList<>(packed);
+    private Team registerTeam(@UnderInitialization PacketTools this) {
+        final ScoreboardManager manager = Bukkit.getScoreboardManager();
+        final Scoreboard scoreboard = manager.getMainScoreboard();
+        final Team team = scoreboard.getTeam("NoCollisions");
+        if (team != null) {
+            return team;
+        }
 
-    boolean found = false;
-    for (int i = 0; i < packed.size(); i++) {
-      final DataValue<?> value = packed.get(i);
-      final int valueID = value.id();
-      if (valueID == 0) {
-        final byte valueMask = (byte) value.value();
-        final byte newMask = (byte) (glowing ? (valueMask | 0x40) : (valueMask & ~0x40));
-        final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
-        copy.set(i, newValue);
-        found = true;
-        break;
-      }
+        final Team newTeam = scoreboard.registerNewTeam("NoCollisions");
+        newTeam.setOption(Option.COLLISION_RULE, OptionStatus.NEVER);
+
+        return newTeam;
     }
 
-    if (!found) {
-      final byte newMask = glowing ? 0x40 : (byte) 0;
-      final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
-      copy.addFirst(newValue);
+    @Override
+    public byte[] toByteArray(final ItemStack item) {
+        try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            final MinecraftServer server = MinecraftServer.getServer();
+            final UnsafeValues values = Bukkit.getUnsafe();
+            final int version = values.getDataVersion();
+            final RegistryAccess.Frozen dimension = server.registryAccess();
+            final net.minecraft.world.item.ItemStack craftItemStack = CraftItemStack.asNMSCopy(item);
+            final CompoundTag compound = (CompoundTag) craftItemStack.save(dimension);
+            compound.putInt(ITEMS_VERSION_ATTRIBUTE, version);
+            NbtIo.writeCompressed(compound, outputStream);
+            return outputStream.toByteArray();
+        } catch (final IOException e) {
+            throw new AssertionError(e);
+        }
     }
 
-    final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);
-    connection.send(packet);
-  }
-
-  @Override
-  public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
-    if (!this.noCollisions.hasEntity(watcher)) {
-      final String name = watcher.getName();
-      this.noCollisions.addEntry(name);
+    @Override
+    public ItemStack fromByteArray(final byte[] bytes) {
+        try (final ByteArrayInputStream stream = new ByteArrayInputStream(bytes)) {
+            final MinecraftServer server = MinecraftServer.getServer();
+            final RegistryAccess.Frozen dimension = server.registryAccess();
+            final NbtAccounter unlimited = NbtAccounter.unlimitedHeap();
+            final CompoundTag old = NbtIo.readCompressed(stream, unlimited);
+            final Optional<Integer> dataVersion = old.getInt(ITEMS_VERSION_ATTRIBUTE);
+            final int version = dataVersion.get();
+            final UnsafeValues values = Bukkit.getUnsafe();
+            final int ver = values.getDataVersion();
+            final DSL.TypeReference reference = References.ITEM_STACK;
+            final DataFixer fixer = server.fixerUpper;
+            final NbtOps operation = NbtOps.INSTANCE;
+            final Dynamic<Tag> dynamic = new Dynamic<>(operation, old);
+            fixer.update(reference, dynamic, version, ver);
+            final CompoundTag newCompound = (CompoundTag) dynamic.getValue();
+            final Optional<net.minecraft.world.item.ItemStack> stack = net.minecraft.world.item.ItemStack.parse(
+                    dimension,
+                    newCompound
+            );
+            if (stack.isEmpty()) {
+                throw new AssertionError("Failed to read ItemStack from byte array");
+            }
+            final net.minecraft.world.item.ItemStack newStack = stack.get();
+            return CraftItemStack.asCraftMirror(newStack);
+        } catch (final IOException e) {
+            throw new AssertionError(e);
+        }
     }
 
-    final CraftPlayer player = (CraftPlayer) watcher;
-    final ServerPlayer handle = player.getHandle();
-    final ServerGamePacketListenerImpl connection = handle.connection;
+    @Override
+    public void setEntityGlowing(final Entity entity, final Player watcher, final boolean glowing) {
+        final CraftEntity glow = (CraftEntity) entity;
+        final net.minecraft.world.entity.Entity nmsEntity = glow.getHandle();
+        final SynchedEntityData data = nmsEntity.getEntityData();
+        final EntityDataAccessor<Byte> glowingAccessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
+        final CraftPlayer player = (CraftPlayer) watcher;
+        final ServerPlayer handle = player.getHandle();
+        final ServerGamePacketListenerImpl connection = handle.connection;
+        final int id = entity.getEntityId();
+        final List<DataValue<?>> packed = data.getNonDefaultValues();
+        if (packed == null) {
+            return;
+        }
 
-    if (glowing) {
-      this.createGlowingSlime0(target, player, connection);
-    } else {
-      this.removeGlowingSlime0(target, player, connection);
-    }
-  }
+        final List<DataValue<?>> copy = new ArrayList<>(packed);
 
-  private void removeGlowingSlime0(
-          final Location target,
-          final CraftPlayer player,
-          final ServerGamePacketListenerImpl connection
-  ) {
-    final Slime value = this.glowBlocks.get(player, target);
-    if (value == null) {
-      return;
-    }
+        boolean found = false;
+        for (int i = 0; i < packed.size(); i++) {
+            final DataValue<?> value = packed.get(i);
+            final int valueID = value.id();
+            if (valueID == 0) {
+                final byte valueMask = (byte) value.value();
+                final byte newMask = (byte) (glowing ? (valueMask | 0x40) : (valueMask & ~0x40));
+                final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
+                copy.set(i, newValue);
+                found = true;
+                break;
+            }
+        }
 
-    final int id = value.getId();
-    this.removeEntity(connection, Set.of(id));
-    this.glowBlocks.remove(player, target);
-  }
+        if (!found) {
+            final byte newMask = glowing ? 0x40 : (byte) 0;
+            final DataValue<?> newValue = DataValue.create(glowingAccessor, newMask);
+            copy.addFirst(newValue);
+        }
 
-  private void createGlowingSlime0(
-          final Location target,
-          final CraftPlayer player,
-          final ServerGamePacketListenerImpl connection
-  ) {
-    final Slime existing = this.glowBlocks.get(player, target);
-    if (existing != null) {
-      return;
-    }
-
-    final World world = target.getWorld();
-    final CraftWorld craftWorld = (CraftWorld) world;
-    final ServerLevel nmsWorld = craftWorld.getHandle();
-    final Slime slime = new Slime(EntityType.SLIME, nmsWorld);
-    slime.setInvisible(true);
-    slime.setGlowingTag(true);
-    slime.setSize(2, false);
-    slime.setInvulnerable(true);
-    slime.setNoAi(true);
-    slime.setRot(0, 0);
-    slime.setPos(target.getX() + 0.5, target.getY(), target.getZ() + 0.5);
-    slime.setYBodyRot(0);
-    slime.setYHeadRot(0);
-
-    final ServerEntity entity = new ServerEntity(nmsWorld, slime, 0, false, ignored -> {
-    }, Set.of());
-    final ClientboundAddEntityPacket packet = new ClientboundAddEntityPacket(slime, entity);
-    connection.send(packet);
-
-    final int id = slime.getId();
-    final SynchedEntityData data = slime.getEntityData();
-    List<DataValue<?>> values = data.getNonDefaultValues();
-    if (values == null) {
-      values = new ArrayList<>();
+        final ClientboundSetEntityDataPacket packet = new ClientboundSetEntityDataPacket(id, copy);
+        connection.send(packet);
     }
 
-    final List<DataValue<?>> copy = new ArrayList<>(values);
-    copy.removeIf(value -> value.id() == 0);
+    @Override
+    public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
+        if (!this.noCollisions.hasEntity(watcher)) {
+            final String name = watcher.getName();
+            this.noCollisions.addEntry(name);
+        }
 
-    final byte newMask = 0x20 | 0x40;
-    final EntityDataAccessor<Byte> accessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
-    final DataValue<?> newValue = DataValue.create(accessor, newMask);
-    copy.addFirst(newValue);
+        final CraftPlayer player = (CraftPlayer) watcher;
+        final ServerPlayer handle = player.getHandle();
+        final ServerGamePacketListenerImpl connection = handle.connection;
 
-    final ClientboundSetEntityDataPacket dataPacket = new ClientboundSetEntityDataPacket(id, copy);
-    connection.send(dataPacket);
+        if (glowing) {
+            this.createGlowingSlime0(target, player, connection);
+        } else {
+            this.removeGlowingSlime0(target, player, connection);
+        }
+    }
 
-    final String uuid = slime.getStringUUID();
-    this.noCollisions.addEntry(uuid);
-    this.glowBlocks.put(player, target, slime);
-  }
+    private void removeGlowingSlime0(
+            final Location target,
+            final CraftPlayer player,
+            final ServerGamePacketListenerImpl connection
+    ) {
+        final Slime value = this.glowBlocks.get(player, target);
+        if (value == null) {
+            return;
+        }
 
-  private void removeEntity(final ServerGamePacketListenerImpl connection, final Collection<Integer> ids) {
-    final int[] remove = Ints.toArray(ids);
-    final ClientboundRemoveEntitiesPacket packet = new ClientboundRemoveEntitiesPacket(remove);
-    connection.send(packet);
-  }
+        final int id = value.getId();
+        this.removeEntity(connection, Set.of(id));
+        this.glowBlocks.remove(player, target);
+    }
 
-  @Override
-  public Class<?> getMappedConnectionClass() {
-    return Connection.class;
-  }
+    private void createGlowingSlime0(
+            final Location target,
+            final CraftPlayer player,
+            final ServerGamePacketListenerImpl connection
+    ) {
+        final Slime existing = this.glowBlocks.get(player, target);
+        if (existing != null) {
+            return;
+        }
 
-  @Override
-  public List<ChannelFuture> getServerChannels() {
-    final Server server = Bukkit.getServer();
-    final CraftServer craftServer = (CraftServer) server;
-    final DedicatedServer dedicated = craftServer.getServer();
-    final ServerConnectionListener connection = dedicated.getConnection();
-    return (List<ChannelFuture>) SERVER_CONNECTION_HANDLE.get(connection);
-  }
+        final World world = target.getWorld();
+        final CraftWorld craftWorld = (CraftWorld) world;
+        final ServerLevel nmsWorld = craftWorld.getHandle();
+        final Slime slime = new Slime(EntityType.SLIME, nmsWorld);
+        slime.setInvisible(true);
+        slime.setGlowingTag(true);
+        slime.setSize(2, false);
+        slime.setInvulnerable(true);
+        slime.setNoAi(true);
+        slime.setRot(0, 0);
+        slime.setPos(target.getX() + 0.5, target.getY(), target.getZ() + 0.5);
+        slime.setYBodyRot(0);
+        slime.setYHeadRot(0);
+
+        final ServerEntity entity = new ServerEntity(
+                nmsWorld,
+                slime,
+                0,
+                false, 
+                ignored -> {},
+                (ignored1, ignored2) -> {},
+                Set.of());
+        final ClientboundAddEntityPacket packet = new ClientboundAddEntityPacket(slime, entity);
+        connection.send(packet);
+
+        final int id = slime.getId();
+        final SynchedEntityData data = slime.getEntityData();
+        List<DataValue<?>> values = data.getNonDefaultValues();
+        if (values == null) {
+            values = new ArrayList<>();
+        }
+
+        final List<DataValue<?>> copy = new ArrayList<>(values);
+        copy.removeIf(value -> value.id() == 0);
+
+        final byte newMask = 0x20 | 0x40;
+        final EntityDataAccessor<Byte> accessor = new EntityDataAccessor<>(0, EntityDataSerializers.BYTE);
+        final DataValue<?> newValue = DataValue.create(accessor, newMask);
+        copy.addFirst(newValue);
+
+        final ClientboundSetEntityDataPacket dataPacket = new ClientboundSetEntityDataPacket(id, copy);
+        connection.send(dataPacket);
+
+        final String uuid = slime.getStringUUID();
+        this.noCollisions.addEntry(uuid);
+        this.glowBlocks.put(player, target, slime);
+    }
+
+    private void removeEntity(final ServerGamePacketListenerImpl connection, final Collection<Integer> ids) {
+        final int[] remove = Ints.toArray(ids);
+        final ClientboundRemoveEntitiesPacket packet = new ClientboundRemoveEntitiesPacket(remove);
+        connection.send(packet);
+    }
+
+    @Override
+    public Class<?> getMappedConnectionClass() {
+        return Connection.class;
+    }
+
+    @Override
+    public List<ChannelFuture> getServerChannels() {
+        final Server server = Bukkit.getServer();
+        final CraftServer craftServer = (CraftServer) server;
+        final DedicatedServer dedicated = craftServer.getServer();
+        final ServerConnectionListener connection = dedicated.getConnection();
+        return (List<ChannelFuture>) SERVER_CONNECTION_HANDLE.get(connection);
+    }
 }
+

@@ -174,7 +174,8 @@ public final class MapUtils {
           final BlockVector3 second = origin.add(max);
           final CuboidRegion region = new CuboidRegion(first, second);
           final BlockVector3 offset = destPos.add(min);
-          final Operation op = new ForwardExtentCopy(clipboard, region, world, offset);
+          final ForwardExtentCopy op = new ForwardExtentCopy(clipboard, region, world, offset);
+          op.setCopyingEntities(true);
           operations.add(op);
         }
       }

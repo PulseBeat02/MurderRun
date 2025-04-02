@@ -28,6 +28,7 @@ package io.github.pulsebeat02.murderrun.game.map.event;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
@@ -87,7 +88,9 @@ public final class GamePlayerThrowEvent extends GameEvent {
     final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
     final double distSquared = itemLocation.distanceSquared(truckLocation);
-    if (distSquared > 25) {
+    final double radius = GameProperties.CAR_PART_TRUCK_RADIUS;
+    final double squared = radius * radius;
+    if (distSquared > squared) {
       event.setCancelled(true);
       return;
     }

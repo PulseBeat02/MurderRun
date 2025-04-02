@@ -30,6 +30,7 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> INFRARED_VISION_ACTIVATE_TITLE = direct("murderrun.game.gadget.infrared_vision.activate.title");
   NullComponent<Sender> GAME_QUICKJOIN_CREATION_LOAD = direct("murderrun.command.game.quickjoin.loading");
   NullComponent<Sender> GAME_CREATION_LOAD = direct("murderrun.command.game.creation.loading");
   NullComponent<Sender> LOBBY_CREATE_LOAD = direct("murderrun.command.lobby.create.loading");

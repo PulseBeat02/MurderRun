@@ -217,7 +217,13 @@ public final class GameManager {
     final int min = config.getMinPlayers();
     final int max = config.getMaxPlayers();
 
-    return this.createGame(player, raw, arena, lobby, min, max, true).thenRun(() -> this.creation.set(false)).thenApply(manager -> true);
+    return this.createGame(player, raw, arena, lobby, min, max, true)
+      .thenRun(() -> this.creation.set(false))
+      .thenApply(manager -> true)
+      .exceptionally(e -> {
+        this.creation.set(false);
+        throw new AssertionError(e);
+      });
   }
 
   public MurderRun getPlugin() {

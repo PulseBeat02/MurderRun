@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
+import static net.kyori.adventure.text.Component.empty;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -62,7 +64,6 @@ public final class InfraredVision extends KillerGadget {
     final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToLivingSurvivors(innocent -> this.setSurvivorGlow(scheduler, innocent, player));
-
     manager.playSoundForAllParticipants(GameProperties.INFRARED_VISION_SOUND);
 
     return false;
@@ -71,8 +72,10 @@ public final class InfraredVision extends KillerGadget {
   private void setSurvivorGlow(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
     final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.INFRARED_VISION_ACTIVATE.build();
+    final Component title = Message.INFRARED_VISION_ACTIVATE_TITLE.build();
     final MetadataManager metadata = killer.getMetadataManager();
     metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, GameProperties.INFRARED_VISION_DURATION);
     audience.sendMessage(msg);
+    audience.showTitle(empty(), title);
   }
 }
