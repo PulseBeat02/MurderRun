@@ -37,8 +37,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -132,6 +134,40 @@ public final class MetadataManager {
     this.glowTeams.clear();
     this.hideNameTagTeam.unregister();
     this.sidebar.shutdown();
+  }
+
+  public void setBlockGlowing(final Block block, final ChatColor color, final boolean glowing) {
+    final Location location = block.getLocation();
+    if (!this.gamePlayer.isAlive()) {
+      return;
+    }
+
+    this.gamePlayer.apply(player -> {
+        final Team team = requireNonNull(this.glowTeams.get(color));
+
+        final String watcher = player.getName();
+        if (glowing) {
+          final Slime slime = GlowUtils.setBlockGlowing(player, location, true);
+          if (slime == null) {
+            return;
+          }
+          final String name = this.getMemberID(slime);
+          this.glowEntities.put(color, slime);
+          team.addEntry(name);
+          team.addEntry(watcher);
+        } else {
+          final Slime slime = GlowUtils.setBlockGlowing(player, location, false);
+          if (slime == null) {
+            return;
+          }
+          final String name = this.getMemberID(slime);
+          this.glowEntities.remove(color, slime);
+          team.removeEntry(name);
+          team.removeEntry(watcher);
+        }
+      });
+
+    this.gamePlayer.apply(player -> GlowUtils.setBlockGlowing(player, location, glowing));
   }
 
   public void setEntityGlowing(final GameScheduler scheduler, final GamePlayer participant, final ChatColor color, final long time) {

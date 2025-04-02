@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.manager.player.PlayerManager;
@@ -43,6 +45,7 @@ import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GlowUtils {
 
@@ -73,7 +76,7 @@ public final class GlowUtils {
     manager.sendPacket(watcher, packet);
   }
 
-  public static void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
+  public static @Nullable Slime setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
     final Block block = target.getBlock();
     final World world = block.getWorld();
     final Location blockLocation = block.getLocation();
@@ -84,7 +87,7 @@ public final class GlowUtils {
     if (glowing) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       if (GLOWING_BLOCKS.contains(watcher, target)) {
-        return;
+        return requireNonNull(GLOWING_BLOCKS.get(watcher, target));
       }
       final Slime spawned = world.spawn(spawnLocation, Slime.class, slime -> {
         slime.setSize(2);
@@ -103,5 +106,6 @@ public final class GlowUtils {
         slime.remove();
       }
     }
+    return GLOWING_BLOCKS.get(watcher, target);
   }
 }

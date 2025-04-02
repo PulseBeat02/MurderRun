@@ -37,6 +37,8 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  int ETHERWARP_MAX_DISTANCE = num("etherwarp.max");
+  double ETHERWARP_COOLDOWN = dec("etherwarp.cooldown");
   String GUARDIAN_ANGEL_TEXTURE_SIGNATURE = str("guardian_angel.texture.signature");
   String GUARDIAN_ANGEL_TEXTURE_DATA = str("guardian_angel.texture.data");
   String GRIM_REAPER_TEXTURE_SIGNATURE = str("grim_reaper.texture.signature");

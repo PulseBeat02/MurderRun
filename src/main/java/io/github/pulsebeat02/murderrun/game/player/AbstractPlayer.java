@@ -40,6 +40,7 @@ import java.util.function.Function;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -397,5 +398,10 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public boolean getInternalDeathState() {
     return this.applyFunction(Player::isDead);
+  }
+
+  @Override
+  public @Nullable Block getTargetBlockExact(final int max) {
+    return this.applyFunction(player -> player.getTargetBlockExact(max));
   }
 }

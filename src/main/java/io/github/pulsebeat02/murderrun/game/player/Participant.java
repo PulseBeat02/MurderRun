@@ -38,6 +38,7 @@ import org.bukkit.Particle;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
@@ -207,4 +208,7 @@ public interface Participant {
   int getFoodLevel();
 
   boolean getInternalDeathState();
+
+  @Nullable
+  Block getTargetBlockExact(final int max);
 }
