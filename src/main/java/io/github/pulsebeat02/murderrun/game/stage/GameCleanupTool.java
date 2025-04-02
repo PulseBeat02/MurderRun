@@ -30,6 +30,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.*;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
@@ -38,6 +39,8 @@ import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
@@ -227,16 +230,25 @@ public final class GameCleanupTool {
   }
 
   private void executeCommands(final boolean survivor) {
+
     final String chain = survivor ? GameProperties.SURVIVOR_WIN_COMMANDS_AFTER : GameProperties.KILLER_WIN_COMMANDS_AFTER;
     if (chain.equalsIgnoreCase("none")) {
       return;
     }
 
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    final Stream<GamePlayer> players = survivor ? manager.getSurvivors() : manager.getKillers();
     final String[] commands = chain.split(";");
+    players.forEach(player -> this.runCommands(player, commands));
+  }
+
+  private void runCommands(final GamePlayer player, final String[] commands) {
     final Server server = Bukkit.getServer();
     final ConsoleCommandSender console = server.getConsoleSender();
+    final String name = player.getName();
     for (final String command : commands) {
-      server.dispatchCommand(console, command);
+      final String replaced = command.replace("<player>", name);
+      server.dispatchCommand(console, replaced);
     }
   }
 
