@@ -49,11 +49,16 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffectType;
 
 public final class Ghosting extends SurvivorGadget {
 
   public Ghosting() {
-    super("ghosting", Material.WHITE_WOOL, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build(), GameProperties.GHOSTING_COST);
+    super(
+      "ghosting",
+      GameProperties.GHOSTING_COST,
+      ItemFactory.createGadget("ghosting", Material.WHITE_WOOL, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build())
+    );
   }
 
   @Override
@@ -81,7 +86,6 @@ public final class Ghosting extends SurvivorGadget {
 
   private void handleGhosting(final Game game, final Survivor gamePlayer) {
     this.setPlayerAttributes(gamePlayer);
-    this.giveWhiteLeatherArmor(gamePlayer);
     this.giveWhiteBone(gamePlayer);
     this.createWoolSetting(game, gamePlayer);
     this.teleport(game, gamePlayer);
@@ -100,6 +104,7 @@ public final class Ghosting extends SurvivorGadget {
     gamePlayer.setCanPickupCarPart(false);
     gamePlayer.setCanPlaceBlocks(true);
     gamePlayer.setInvulnerable(true);
+    gamePlayer.addPotionEffects(PotionEffectType.INVISIBILITY.createEffect(Integer.MAX_VALUE, 1));
   }
 
   private void createWoolSetting(final Game game, final GamePlayer player) {
@@ -114,13 +119,5 @@ public final class Ghosting extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = ItemFactory.createKnockBackBone();
     inventory.addItem(stack);
-  }
-
-  private void giveWhiteLeatherArmor(final GamePlayer player) {
-    final PlayerInventory inventory = player.getInventory();
-    inventory.setHelmet(ItemFactory.createGhostGear(Material.LEATHER_HELMET));
-    inventory.setChestplate(ItemFactory.createGhostGear(Material.LEATHER_CHESTPLATE));
-    inventory.setLeggings(ItemFactory.createGhostGear(Material.LEATHER_LEGGINGS));
-    inventory.setBoots(ItemFactory.createGhostGear(Material.LEATHER_BOOTS));
   }
 }

@@ -57,11 +57,10 @@ public final class Flashlight extends SurvivorGadget {
   public Flashlight() {
     super(
       "flashlight",
-      Material.GOLDEN_SHOVEL,
-      Message.FLASHLIGHT_NAME.build(),
-      Message.FLASHLIGHT_LORE.build(),
       GameProperties.FLASHLIGHT_COST,
-      ItemFactory::createFlashlight
+      ItemFactory.createFlashlight(
+        ItemFactory.createGadget("flashlight", Material.GOLDEN_SHOVEL, Message.FLASHLIGHT_NAME.build(), Message.FLASHLIGHT_LORE.build())
+      )
     );
   }
 

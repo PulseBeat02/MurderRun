@@ -38,6 +38,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -50,10 +51,13 @@ public final class FloorIsLava extends KillerGadget {
   public FloorIsLava() {
     super(
       "floor_is_lava",
-      Material.MAGMA_BLOCK,
-      Message.THE_FLOOR_IS_LAVA_NAME.build(),
-      Message.THE_FLOOR_IS_LAVA_LORE.build(),
-      GameProperties.FLOOR_IS_LAVA_COST
+      GameProperties.FLOOR_IS_LAVA_COST,
+      ItemFactory.createGadget(
+        "floor_is_lava",
+        Material.MAGMA_BLOCK,
+        Message.THE_FLOOR_IS_LAVA_NAME.build(),
+        Message.THE_FLOOR_IS_LAVA_LORE.build()
+      )
     );
   }
 

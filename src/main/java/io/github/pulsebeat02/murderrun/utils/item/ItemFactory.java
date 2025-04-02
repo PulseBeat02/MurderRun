@@ -33,20 +33,16 @@ import io.github.pulsebeat02.murderrun.game.extension.nexo.NexoManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemFactory {
 
@@ -74,16 +70,11 @@ public final class ItemFactory {
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      final Optional<ItemStack> head = manager.getKillerHelmet();
-      final Optional<ItemStack> chestplate = manager.getKillerChestplate();
-      final Optional<ItemStack> leggings = manager.getKillerLeggings();
-      final Optional<ItemStack> boots = manager.getKillerBoots();
-      return new ItemStack[] {
-        boots.orElse(defaultKillerBoots),
-        leggings.orElse(defaultKillerLeggings),
-        chestplate.orElse(defaultKillerChestplate),
-        head.orElse(defaultKillerHelmet),
-      };
+      final ItemStack helmet = manager.getKillerHelmet().map(Item.Builder::build).orElse(defaultKillerHelmet);
+      final ItemStack chestplate = manager.getKillerChestplate().map(Item.Builder::build).orElse(defaultKillerChestplate);
+      final ItemStack leggings = manager.getKillerLeggings().map(Item.Builder::build).orElse(defaultKillerLeggings);
+      final ItemStack boots = manager.getKillerBoots().map(Item.Builder::build).orElse(defaultKillerBoots);
+      return new ItemStack[] { boots, leggings, chestplate, helmet };
     }
     return new ItemStack[] { defaultKillerBoots, defaultKillerLeggings, defaultKillerChestplate, defaultKillerHelmet };
   }
@@ -119,153 +110,144 @@ public final class ItemFactory {
       .build();
   }
 
-  public static ItemStack createPlayerTracker(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.PLAYER_TRACKER, PersistentDataType.INTEGER, 0).build();
+  public static Item.Builder createPlayerTracker(final Item.Builder builder) {
+    return builder.pdc(Keys.PLAYER_TRACKER, PersistentDataType.INTEGER, 0);
   }
 
-  public static ItemStack createTranslocator(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]).build();
+  public static Item.Builder createTranslocator(final Item.Builder builder) {
+    return builder.pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, new byte[0]);
   }
 
-  public static ItemStack createKillerTracker(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.KILLER_TRACKER, PersistentDataType.INTEGER, 0).build();
+  public static Item.Builder createKillerTracker(final Item.Builder builder) {
+    return builder.pdc(Keys.KILLER_TRACKER, PersistentDataType.INTEGER, 0);
   }
 
-  public static ItemStack createSmokeGrenade(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true).model(2).build();
+  public static Item.Builder createSmokeGrenade(final Item.Builder builder) {
+    return builder.pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true).model(2);
   }
 
-  public static ItemStack createFlashlight(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.FLASHLIGHT_USE, PersistentDataType.LONG, 0L).build();
+  public static Item.Builder createFlashlight(final Item.Builder builder) {
+    return builder.pdc(Keys.FLASHLIGHT_USE, PersistentDataType.LONG, 0L);
   }
 
-  public static ItemStack createFlashBang(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true).model(1).build();
+  public static Item.Builder createFlashBang(final Item.Builder builder) {
+    return builder.pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true).model(1);
   }
 
-  public static ItemStack createSurvivorHelmet() {
+  public static Item.Builder createSurvivorHelmet() {
+    final Item.Builder helmet = createDefaultSurvivorHelmet();
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorHelmet().orElse(createDefaultSurvivorHelmet());
+      return manager.getSurvivorHelmet().orElse(helmet);
     }
-    return createDefaultSurvivorHelmet();
+    return helmet;
   }
 
-  public static ItemStack createSurvivorChestplate() {
+  public static Item.Builder createSurvivorChestplate() {
+    final Item.Builder chestplate = createDefaultSurvivorChestplate();
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorChestplate().orElse(createDefaultSurvivorChestplate());
+      return manager.getSurvivorChestplate().orElse(chestplate);
     }
-    return createDefaultSurvivorChestplate();
+    return chestplate;
   }
 
-  public static ItemStack createSurvivorLeggings() {
+  public static Item.Builder createSurvivorLeggings() {
+    final Item.Builder leggings = createDefaultSurvivorLeggings();
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorLeggings().orElse(createDefaultSurvivorLeggings());
+      return manager.getSurvivorLeggings().orElse(leggings);
     }
-    return createDefaultSurvivorLeggings();
+    return leggings;
   }
 
-  public static ItemStack createSurvivorBoots() {
+  public static Item.Builder createSurvivorBoots() {
+    final Item.Builder boots = createDefaultSurvivorBoots();
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorBoots().orElse(createDefaultSurvivorBoots());
+      return manager.getSurvivorBoots().orElse(boots);
     }
-    return createDefaultSurvivorBoots();
+    return boots;
   }
 
-  public static ItemStack createDefaultSurvivorHelmet() {
-    return Item.builder(Material.DIAMOND_HELMET).name(Message.SURVIVOR_HELMET.build()).enchantment(Enchantment.PROTECTION, 3).build();
+  public static Item.Builder createDefaultSurvivorHelmet() {
+    return Item.builder(Material.DIAMOND_HELMET).name(Message.SURVIVOR_HELMET.build()).enchantment(Enchantment.PROTECTION, 3);
   }
 
-  public static ItemStack createDefaultSurvivorChestplate() {
-    return Item.builder(Material.DIAMOND_CHESTPLATE)
-      .name(Message.SURVIVOR_CHESTPLATE.build())
-      .enchantment(Enchantment.PROTECTION, 3)
-      .build();
+  public static Item.Builder createDefaultSurvivorChestplate() {
+    return Item.builder(Material.DIAMOND_CHESTPLATE).name(Message.SURVIVOR_CHESTPLATE.build()).enchantment(Enchantment.PROTECTION, 3);
   }
 
-  public static ItemStack createDefaultSurvivorLeggings() {
-    return Item.builder(Material.DIAMOND_LEGGINGS).name(Message.SURVIVOR_LEGGINGS.build()).enchantment(Enchantment.PROTECTION, 3).build();
+  public static Item.Builder createDefaultSurvivorLeggings() {
+    return Item.builder(Material.DIAMOND_LEGGINGS).name(Message.SURVIVOR_LEGGINGS.build()).enchantment(Enchantment.PROTECTION, 3);
   }
 
-  public static ItemStack createDefaultSurvivorBoots() {
-    return Item.builder(Material.DIAMOND_BOOTS).name(Message.SURVIVOR_BOOTS.build()).enchantment(Enchantment.PROTECTION, 3).build();
+  public static Item.Builder createDefaultSurvivorBoots() {
+    return Item.builder(Material.DIAMOND_BOOTS).name(Message.SURVIVOR_BOOTS.build()).enchantment(Enchantment.PROTECTION, 3);
   }
 
-  public static ItemStack createPortalGun(final ItemStack stack) {
+  public static Item.Builder createPortalGun(final Item.Builder builder) {
     final UUID uuid = UUID.randomUUID();
     final String data = uuid.toString();
-    return Item.builder(stack)
+    return builder
       .pdc(Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true)
       .pdc(Keys.UUID, PersistentDataType.STRING, data)
       .enchantment(Enchantment.INFINITY, 1)
-      .unbreakable()
-      .build();
+      .unbreakable();
   }
 
-  public static ItemStack createHook(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.HOOK, PersistentDataType.BOOLEAN, true).unbreakable().build();
+  public static Item.Builder createHook(final Item.Builder builder) {
+    return builder.pdc(Keys.HOOK, PersistentDataType.BOOLEAN, true).unbreakable();
   }
 
-  public static ItemStack createSpeedPendant(final ItemStack stack) {
-    return Item.builder(stack).modifier(Attribute.MOVEMENT_SPEED, 0.03).build();
+  public static Item.Builder createSpeedPendant(final Item.Builder builder) {
+    return builder.modifier(Attribute.MOVEMENT_SPEED, 0.03);
   }
 
-  public static ItemStack createRedArrow(final ItemStack stack) {
-    return Item.builder(stack).potionColor(Color.RED).build();
+  public static Item.Builder createMedKit(final Item.Builder builder) {
+    return builder.potionColor(Color.RED).potion(PotionType.STRONG_HEALING);
   }
 
-  public static ItemStack createMedKit(final ItemStack stack) {
-    return Item.builder(stack).potionColor(Color.RED).potion(PotionType.STRONG_HEALING).build();
-  }
-
-  public static ItemStack createGadget(
+  public static Item.Builder createGadget(
     final String pdcName,
     final Material material,
     final Component itemName,
-    final Component itemLore,
-    final @Nullable Consumer<ItemStack> consumer
+    final Component itemLore
   ) {
     return Item.builder(requireNonNull(material))
       .name(requireNonNull(itemName))
       .lore(requireNonNull(itemLore))
       .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, requireNonNull(pdcName))
-      .consume(consumer)
-      .hideAttributes()
-      .build();
+      .hideAttributes();
   }
 
   public static ItemStack createSaddle() {
     return Item.builder(Material.SADDLE).build();
   }
 
-  public static ItemStack createShield(final ItemStack stack) {
-    return Item.builder(stack).durability(5).build();
+  public static Item.Builder createShield(final Item.Builder builder) {
+    return builder.durability(5);
   }
 
-  public static ItemStack createExcavator(final ItemStack stack) {
-    return Item.builder(stack).pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true).durability(10).build();
-  }
-
-  public static ItemStack createDeathGear(final Material armor) {
-    return Item.builder(armor).dye(Color.RED).build();
-  }
-
-  public static ItemStack createPlayerHead(final Player player) {
-    return Item.builder(Material.PLAYER_HEAD).head(player).build();
-  }
-
-  public static ItemStack createGhostGear(final Material armor) {
-    return Item.builder(armor).dye(Color.WHITE).build();
+  public static Item.Builder createExcavator(final Item.Builder builder) {
+    return builder.pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true).durability(10);
   }
 
   public static ItemStack createKnockBackBone() {
+    final ItemStack ghostBone = createDefaultKnockBackBone();
+    if (Capabilities.NEXO.isEnabled()) {
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+      final NexoManager manager = plugin.getNexoManager();
+      return manager.getGhostBone().map(Item.Builder::build).orElse(ghostBone);
+    }
+    return ghostBone;
+  }
+
+  public static ItemStack createDefaultKnockBackBone() {
     return Item.builder(Material.BONE).enchantment(Enchantment.KNOCKBACK, 0).build();
   }
 
@@ -287,10 +269,30 @@ public final class ItemFactory {
   }
 
   public static ItemStack createCurrency(final int amount) {
+    final ItemStack currency = createDefaultCurrency(amount);
+    if (Capabilities.NEXO.isEnabled()) {
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+      final NexoManager manager = plugin.getNexoManager();
+      return manager.getCurrency().map(Item.Builder::build).orElse(currency);
+    }
+    return currency;
+  }
+
+  public static ItemStack createDefaultCurrency(final int amount) {
     return Item.builder(Material.NETHER_STAR).name(Message.MINEBUCKS.build()).amount(amount).model(1).build();
   }
 
   public static ItemStack createKillerArrow() {
+    final ItemStack killerArrow = createDefaultKillerArrow();
+    if (Capabilities.NEXO.isEnabled()) {
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+      final NexoManager manager = plugin.getNexoManager();
+      return manager.getKillerArrow().map(Item.Builder::build).orElse(killerArrow);
+    }
+    return killerArrow;
+  }
+
+  public static ItemStack createDefaultKillerArrow() {
     return Item.builder(Material.ARROW)
       .name(Message.ARROW_NAME.build())
       .lore(Message.ARROW_LORE.build())
@@ -304,8 +306,7 @@ public final class ItemFactory {
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      final Optional<ItemStack> sword = manager.getKillerSword();
-      return sword.orElse(killerSword);
+      return manager.getKillerSword().map(Item.Builder::build).orElse(killerSword);
     }
     return killerSword;
   }

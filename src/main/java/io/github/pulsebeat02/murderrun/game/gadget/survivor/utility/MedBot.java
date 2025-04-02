@@ -39,6 +39,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
@@ -58,7 +59,11 @@ import org.bukkit.util.EulerAngle;
 public final class MedBot extends SurvivorGadget {
 
   public MedBot() {
-    super("med_bot", Material.DISPENSER, Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build(), GameProperties.MED_BOT_COST);
+    super(
+      "med_bot",
+      GameProperties.MED_BOT_COST,
+      ItemFactory.createGadget("med_bot", Material.DISPENSER, Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build())
+    );
   }
 
   @Override

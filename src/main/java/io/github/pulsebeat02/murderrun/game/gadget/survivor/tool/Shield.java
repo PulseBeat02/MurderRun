@@ -37,11 +37,10 @@ public final class Shield extends SurvivorGadget {
   public Shield() {
     super(
       "shield",
-      Material.SHIELD,
-      Message.SHIELD_NAME.build(),
-      Message.SHIELD_LORE.build(),
       GameProperties.SHIELD_COST,
-      ItemFactory::createShield
+      ItemFactory.createShield(
+        ItemFactory.createGadget("shield", Material.SHIELD, Message.SHIELD_NAME.build(), Message.SHIELD_LORE.build())
+      )
     );
   }
 

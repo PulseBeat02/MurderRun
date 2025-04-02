@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.HashSet;
 import java.util.Set;
 import net.kyori.adventure.text.Component;
@@ -50,10 +51,8 @@ public final class Distorter extends SurvivorGadget {
   public Distorter() {
     super(
       "distorter",
-      Material.CHORUS_FLOWER,
-      Message.DISTORTER_NAME.build(),
-      Message.DISTORTER_LORE.build(),
-      GameProperties.DISTORTER_COST
+      GameProperties.DISTORTER_COST,
+      ItemFactory.createGadget("distorter", Material.CHORUS_FLOWER, Message.DISTORTER_NAME.build(), Message.DISTORTER_LORE.build())
     );
     this.removed = new HashSet<>();
   }

@@ -50,7 +50,11 @@ import org.bukkit.potion.PotionEffectType;
 public final class FakePart extends KillerGadget {
 
   public FakePart() {
-    super("fake_part", Material.COMPARATOR, Message.FAKE_PART_NAME.build(), Message.FAKE_PART_LORE.build(), GameProperties.FAKE_PART_COST);
+    super(
+      "fake_part",
+      GameProperties.FAKE_PART_COST,
+      ItemFactory.createGadget("fake_part", Material.COMPARATOR, Message.FAKE_PART_NAME.build(), Message.FAKE_PART_LORE.build())
+    );
   }
 
   @Override

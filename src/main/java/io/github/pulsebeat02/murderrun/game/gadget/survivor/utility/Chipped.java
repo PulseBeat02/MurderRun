@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -42,7 +43,11 @@ import org.bukkit.entity.Item;
 public final class Chipped extends SurvivorGadget {
 
   public Chipped() {
-    super("chipped", Material.GOLD_NUGGET, Message.CHIPPED_NAME.build(), Message.CHIPPED_LORE.build(), GameProperties.CHIPPED_COST);
+    super(
+      "chipped",
+      GameProperties.CHIPPED_COST,
+      ItemFactory.createGadget("chipped", Material.GOLD_NUGGET, Message.CHIPPED_NAME.build(), Message.CHIPPED_LORE.build())
+    );
   }
 
   @Override

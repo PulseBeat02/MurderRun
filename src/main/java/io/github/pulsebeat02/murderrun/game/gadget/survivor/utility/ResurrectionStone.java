@@ -40,6 +40,7 @@ import io.github.pulsebeat02.murderrun.game.player.phase.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.LoosePlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -56,10 +57,13 @@ public final class ResurrectionStone extends SurvivorGadget {
   public ResurrectionStone() {
     super(
       "resurrection_stone",
-      Material.BEACON,
-      Message.RESURRECTION_STONE_NAME.build(),
-      Message.RESURRECTION_STONE_LORE.build(),
-      GameProperties.RESURRECTION_STONE_COST
+      GameProperties.RESURRECTION_STONE_COST,
+      ItemFactory.createGadget(
+        "resurrection_stone",
+        Material.BEACON,
+        Message.RESURRECTION_STONE_NAME.build(),
+        Message.RESURRECTION_STONE_LORE.build()
+      )
     );
   }
 

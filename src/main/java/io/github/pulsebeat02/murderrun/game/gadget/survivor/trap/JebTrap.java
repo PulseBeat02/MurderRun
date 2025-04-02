@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,11 +50,9 @@ public final class JebTrap extends SurvivorTrap {
   public JebTrap() {
     super(
       "jeb",
-      Material.CYAN_WOOL,
-      Message.JEB_NAME.build(),
-      Message.JEB_LORE.build(),
-      Message.JEB_ACTIVATE.build(),
       GameProperties.JEB_COST,
+      ItemFactory.createGadget("jeb", Material.CYAN_WOOL, Message.JEB_NAME.build(), Message.JEB_LORE.build()),
+      Message.JEB_ACTIVATE.build(),
       Color.WHITE
     );
   }

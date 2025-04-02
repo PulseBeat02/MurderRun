@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -45,10 +46,8 @@ public final class Miniaturizer extends SurvivorGadget {
   public Miniaturizer() {
     super(
       "miniaturizer",
-      Material.RED_MUSHROOM,
-      Message.MINIATURIZER_NAME.build(),
-      Message.MINIATURIZER_LORE.build(),
-      GameProperties.MINIATURIZER_COST
+      GameProperties.MINIATURIZER_COST,
+      ItemFactory.createGadget("miniaturizer", Material.RED_MUSHROOM, Message.MINIATURIZER_NAME.build(), Message.MINIATURIZER_LORE.build())
     );
   }
 

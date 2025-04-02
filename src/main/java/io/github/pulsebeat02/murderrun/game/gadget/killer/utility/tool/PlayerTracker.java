@@ -55,11 +55,15 @@ public final class PlayerTracker extends KillerGadget {
   public PlayerTracker() {
     super(
       "player_tracker",
-      Material.COMPASS,
-      Message.PLAYER_TRACKER_NAME.build(),
-      Message.PLAYER_TRACKER_LORE.build(),
       GameProperties.PLAYER_TRACKER_COST,
-      ItemFactory::createPlayerTracker
+      ItemFactory.createPlayerTracker(
+        ItemFactory.createGadget(
+          "player_tracker",
+          Material.COMPASS,
+          Message.PLAYER_TRACKER_NAME.build(),
+          Message.PLAYER_TRACKER_LORE.build()
+        )
+      )
     );
   }
 

@@ -3,8 +3,6 @@ package jakarta.persistence;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface AttributeConverter<X,Y> {
-
-    @Nullable Y convertToDatabaseColumn(X attribute);
-
-    @Nullable X convertToEntityAttribute(Y dbData);
+  @Nullable Y convertToDatabaseColumn(X attribute);
+  @Nullable X convertToEntityAttribute(Y dbData);
 }

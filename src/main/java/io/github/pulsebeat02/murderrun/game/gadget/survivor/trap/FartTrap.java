@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,11 +51,9 @@ public final class FartTrap extends SurvivorTrap {
   public FartTrap() {
     super(
       "fart",
-      Material.GREEN_WOOL,
-      Message.FART_NAME.build(),
-      Message.FART_LORE.build(),
-      Message.FART_ACTIVATE.build(),
       GameProperties.FART_COST,
+      ItemFactory.createGadget("fart", Material.GREEN_WOOL, Message.FART_NAME.build(), Message.FART_LORE.build()),
+      Message.FART_ACTIVATE.build(),
       Color.GREEN
     );
   }

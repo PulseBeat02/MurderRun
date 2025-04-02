@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -49,7 +50,11 @@ import org.bukkit.inventory.PlayerInventory;
 public final class Decoy extends SurvivorGadget {
 
   public Decoy() {
-    super("decoy", Material.PLAYER_HEAD, Message.DECOY_NAME.build(), Message.DECOY_LORE.build(), GameProperties.DECOY_COST);
+    super(
+      "decoy",
+      GameProperties.DECOY_COST,
+      ItemFactory.createGadget("decoy", Material.PLAYER_HEAD, Message.DECOY_NAME.build(), Message.DECOY_LORE.build())
+    );
   }
 
   @Override

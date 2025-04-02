@@ -33,6 +33,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -42,10 +43,8 @@ public final class MagnetMode extends SurvivorGadget {
   public MagnetMode() {
     super(
       "magnet_mode",
-      Material.IRON_INGOT,
-      Message.MAGNET_MODE_NAME.build(),
-      Message.MAGNET_MODE_LORE.build(),
-      GameProperties.MAGNET_MODE_COST
+      GameProperties.MAGNET_MODE_COST,
+      ItemFactory.createGadget("magnet_mode", Material.IRON_INGOT, Message.MAGNET_MODE_NAME.build(), Message.MAGNET_MODE_LORE.build())
     );
   }
 

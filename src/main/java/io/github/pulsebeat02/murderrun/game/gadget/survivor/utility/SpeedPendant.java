@@ -38,11 +38,10 @@ public final class SpeedPendant extends SurvivorGadget {
   public SpeedPendant() {
     super(
       "speed_pendant",
-      Material.FEATHER,
-      Message.SPEED_PENDANT_NAME.build(),
-      empty(),
       GameProperties.SPEED_PENDANT_COST,
-      ItemFactory::createSpeedPendant
+      ItemFactory.createSpeedPendant(
+        ItemFactory.createGadget("speed_pendant", Material.FEATHER, Message.SPEED_PENDANT_NAME.build(), empty())
+      )
     );
   }
 }

@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -47,10 +48,13 @@ public final class InfraredVision extends KillerGadget {
   public InfraredVision() {
     super(
       "infrared_vision",
-      Material.REDSTONE_LAMP,
-      Message.INFRARED_VISION_NAME.build(),
-      Message.INFRARED_VISION_LORE.build(),
-      GameProperties.INFRARED_VISION_COST
+      GameProperties.INFRARED_VISION_COST,
+      ItemFactory.createGadget(
+        "infrared_vision",
+        Material.REDSTONE_LAMP,
+        Message.INFRARED_VISION_NAME.build(),
+        Message.INFRARED_VISION_LORE.build()
+      )
     );
   }
 

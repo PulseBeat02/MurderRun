@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -49,10 +50,8 @@ public final class HeatSeeker extends KillerGadget {
   public HeatSeeker() {
     super(
       "heat_seeker",
-      Material.BLAZE_ROD,
-      Message.HEAT_SEEKER_NAME.build(),
-      Message.HEAT_SEEKER_LORE.build(),
-      GameProperties.HEAT_SEEKER_COST
+      GameProperties.HEAT_SEEKER_COST,
+      ItemFactory.createGadget("heat_seeker", Material.BLAZE_ROD, Message.HEAT_SEEKER_NAME.build(), Message.HEAT_SEEKER_LORE.build())
     );
   }
 

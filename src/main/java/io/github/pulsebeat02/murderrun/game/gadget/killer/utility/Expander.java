@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -43,7 +44,11 @@ import org.bukkit.entity.Item;
 public final class Expander extends KillerGadget {
 
   public Expander() {
-    super("expander", Material.BROWN_MUSHROOM, Message.EXPANDER_NAME.build(), Message.EXPANDER_LORE.build(), GameProperties.EXPANDER_COST);
+    super(
+      "expander",
+      GameProperties.EXPANDER_COST,
+      ItemFactory.createGadget("expander", Material.BROWN_MUSHROOM, Message.EXPANDER_NAME.build(), Message.EXPANDER_LORE.build())
+    );
   }
 
   @Override

@@ -61,6 +61,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
+import org.incendo.cloud.type.tuple.Triplet;
 import org.jetbrains.annotations.NotNull;
 
 public final class MapUtils {
@@ -79,6 +80,13 @@ public final class MapUtils {
 
   private MapUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static Triplet<Integer, Integer, Integer> toPosTriplet(final BlockFace face) {
+    final int x = face.getModX();
+    final int y = face.getModY();
+    final int z = face.getModZ();
+    return Triplet.of(x, y, z);
   }
 
   public static World getMainWorld() {
@@ -120,13 +128,15 @@ public final class MapUtils {
     return requireNonNull(world);
   }
 
-  @SuppressWarnings("all") // checker
   private static <T> void copyRule(final World old, final World after, final GameRule<T> rule) {
     final String name = rule.getName();
     if (!old.isGameRule(name)) {
       return;
     }
     final T value = old.getGameRuleValue(rule);
+    if (value == null) {
+      return;
+    }
     after.setGameRule(rule, value);
   }
 

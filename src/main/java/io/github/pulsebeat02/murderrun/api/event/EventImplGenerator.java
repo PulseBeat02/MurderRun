@@ -44,7 +44,6 @@ import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.MethodCall;
 import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
-import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public class EventImplGenerator {
 
@@ -69,7 +68,6 @@ public class EventImplGenerator {
     return properties;
   }
 
-  @SuppressWarnings("all") // checker
   private static Class<?>[] buildConstructorParameterTypes(final Map<String, Class<?>> properties) {
     final int propertyCount = properties.size();
     final Class<?>[] ctorParamTypes = new Class<?>[propertyCount + 2];
@@ -86,10 +84,10 @@ public class EventImplGenerator {
     return ctorParamTypes;
   }
 
-  @SuppressWarnings("all") // checker
   private static DynamicType.Builder<?> defineFields(final DynamicType.Builder<?> builder, final Map<String, Class<?>> properties) {
     DynamicType.Builder<?> updatedBuilder = builder;
-    final Set<Map.Entry<@KeyFor("properties") String, Class<? extends Object>>> entries = properties.entrySet();
+    @SuppressWarnings("all") // checker
+    final Set<Map.Entry<String, Class<?>>> entries = properties.entrySet();
     for (final Map.Entry<String, Class<?>> entry : entries) {
       final String fieldName = entry.getKey();
       final Class<?> fieldType = entry.getValue();

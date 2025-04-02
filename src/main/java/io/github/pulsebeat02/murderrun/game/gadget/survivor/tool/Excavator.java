@@ -37,11 +37,10 @@ public final class Excavator extends SurvivorGadget {
   public Excavator() {
     super(
       "excavator",
-      Material.DIAMOND_PICKAXE,
-      Message.EXCAVATOR_NAME.build(),
-      Message.EXCAVATOR_LORE.build(),
       GameProperties.EXCAVATOR_COST,
-      ItemFactory::createExcavator
+      ItemFactory.createExcavator(
+        ItemFactory.createGadget("excavator", Material.DIAMOND_PICKAXE, Message.EXCAVATOR_NAME.build(), Message.EXCAVATOR_LORE.build())
+      )
     );
   }
 

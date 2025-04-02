@@ -36,6 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -43,7 +44,11 @@ import org.bukkit.entity.Item;
 public final class Rewind extends SurvivorGadget {
 
   public Rewind() {
-    super("rewind", Material.DIAMOND, Message.REWIND_NAME.build(), Message.REWIND_LORE.build(), GameProperties.REWIND_COST);
+    super(
+      "rewind",
+      GameProperties.REWIND_COST,
+      ItemFactory.createGadget("rewind", Material.DIAMOND, Message.REWIND_NAME.build(), Message.REWIND_LORE.build())
+    );
   }
 
   @Override

@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerRefe
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.*;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +51,11 @@ public final class Fright extends KillerGadget {
   private final Set<GamePlayer> currentlyJumpScared;
 
   public Fright() {
-    super("fright", Material.BLACK_CONCRETE, Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build(), GameProperties.FRIGHT_COST);
+    super(
+      "fright",
+      GameProperties.FRIGHT_COST,
+      ItemFactory.createGadget("fright", Material.BLACK_CONCRETE, Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build())
+    );
     this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
   }
 

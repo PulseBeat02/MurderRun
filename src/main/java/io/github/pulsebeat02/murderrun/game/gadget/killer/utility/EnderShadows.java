@@ -41,6 +41,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.MergedReference;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
@@ -65,10 +66,13 @@ public final class EnderShadows extends KillerGadget {
   public EnderShadows() {
     super(
       "ender_shadows",
-      Material.BLACK_STAINED_GLASS,
-      Message.ENDER_SHADOWS_NAME.build(),
-      Message.ENDER_SHADOWS_LORE.build(),
-      GameProperties.ENDER_SHADOWS_COST
+      GameProperties.ENDER_SHADOWS_COST,
+      ItemFactory.createGadget(
+        "ender_shadows",
+        Material.BLACK_STAINED_GLASS,
+        Message.ENDER_SHADOWS_NAME.build(),
+        Message.ENDER_SHADOWS_LORE.build()
+      )
     );
   }
 

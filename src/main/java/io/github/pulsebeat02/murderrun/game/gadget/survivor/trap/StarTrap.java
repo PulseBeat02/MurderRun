@@ -30,6 +30,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -41,11 +42,9 @@ public final class StarTrap extends SurvivorTrap {
   public StarTrap() {
     super(
       "star",
-      Material.FIREWORK_STAR,
-      Message.STAR_NAME.build(),
-      Message.STAR_LORE.build(),
-      Message.STAR_ACTIVATE.build(),
       GameProperties.STAR_COST,
+      ItemFactory.createGadget("star", Material.FIREWORK_STAR, Message.STAR_NAME.build(), Message.STAR_LORE.build()),
+      Message.STAR_ACTIVATE.build(),
       new Color(255, 215, 0)
     );
   }

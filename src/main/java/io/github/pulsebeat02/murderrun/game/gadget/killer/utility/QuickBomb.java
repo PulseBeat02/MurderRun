@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -44,7 +45,11 @@ import org.bukkit.entity.TNTPrimed;
 public final class QuickBomb extends KillerGadget {
 
   public QuickBomb() {
-    super("quick_bomb", Material.TNT, Message.QUICK_BOMB_NAME.build(), Message.QUICK_BOMB_LORE.build(), GameProperties.QUICK_BOMB_COST);
+    super(
+      "quick_bomb",
+      GameProperties.QUICK_BOMB_COST,
+      ItemFactory.createGadget("quick_bomb", Material.TNT, Message.QUICK_BOMB_NAME.build(), Message.QUICK_BOMB_LORE.build())
+    );
   }
 
   @Override

@@ -150,8 +150,9 @@ public final class GadgetShopGui extends ChestGui {
       return;
     }
 
-    final ItemStack actual = gadget.getGadget();
-    final ItemStack clone = actual.clone();
+    final Item.Builder actual = gadget.getStackBuilder();
+    final ItemStack actualStack = actual.build();
+    final ItemStack clone = actualStack.clone();
     inventory.removeItem(currency);
     InventoryUtils.addItem(entity, clone);
   }

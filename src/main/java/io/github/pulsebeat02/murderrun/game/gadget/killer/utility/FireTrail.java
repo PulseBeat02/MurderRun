@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -46,10 +47,8 @@ public final class FireTrail extends KillerGadget {
   public FireTrail() {
     super(
       "fire_trail",
-      Material.MAGMA_CREAM,
-      Message.FIRE_TRAIL_NAME.build(),
-      Message.FIRE_TRAIL_LORE.build(),
-      GameProperties.FIRE_TRAIL_COST
+      GameProperties.FIRE_TRAIL_COST,
+      ItemFactory.createGadget("fire_trail", Material.MAGMA_CREAM, Message.FIRE_TRAIL_NAME.build(), Message.FIRE_TRAIL_LORE.build())
     );
   }
 

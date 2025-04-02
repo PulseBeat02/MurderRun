@@ -126,9 +126,9 @@ public final class IOUtils {
     }
   }
 
-  @SuppressWarnings("deprecation")
   public static String getSHA1Hash(final URI uri) {
     try {
+      @SuppressWarnings("deprecation")
       final HashFunction function = Hashing.sha1();
       final URL url = uri.toURL();
       final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -154,9 +154,9 @@ public final class IOUtils {
     return builder.toString();
   }
 
-  @SuppressWarnings("deprecation")
   public static String getSHA1Hash(final Path path) {
     try {
+      @SuppressWarnings("deprecation")
       final HashFunction function = Hashing.sha1();
       try (final InputStream stream = Files.newInputStream(path); final InputStream fast = new FastBufferedInputStream(stream)) {
         final byte[] bytes = fast.readAllBytes();
@@ -193,8 +193,8 @@ public final class IOUtils {
     return new FastBufferedInputStream(stream);
   }
 
-  @SuppressWarnings("deprecation")
   public static String generateFileHash(final Path path) throws IOException {
+    @SuppressWarnings("deprecation")
     final HashFunction function = Hashing.sha1();
     try (final InputStream fileStream = Files.newInputStream(path); final InputStream stream = new FastBufferedInputStream(fileStream)) {
       final byte[] bytes = stream.readAllBytes();

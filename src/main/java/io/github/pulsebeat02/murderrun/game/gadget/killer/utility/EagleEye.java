@@ -38,6 +38,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,7 +49,11 @@ import org.bukkit.entity.Item;
 public final class EagleEye extends KillerGadget {
 
   public EagleEye() {
-    super("eagle_eye", Material.FEATHER, Message.EAGLE_EYE_NAME.build(), Message.EAGLE_EYE_LORE.build(), GameProperties.EAGLE_EYE_COST);
+    super(
+      "eagle_eye",
+      GameProperties.EAGLE_EYE_COST,
+      ItemFactory.createGadget("eagle_eye", Material.FEATHER, Message.EAGLE_EYE_NAME.build(), Message.EAGLE_EYE_LORE.build())
+    );
   }
 
   @Override

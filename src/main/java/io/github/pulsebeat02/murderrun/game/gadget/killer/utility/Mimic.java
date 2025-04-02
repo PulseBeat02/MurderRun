@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.extension.libsdiguises.DisguiseManager;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
@@ -34,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -43,7 +45,11 @@ import org.bukkit.inventory.PlayerInventory;
 public final class Mimic extends KillerGadget {
 
   public Mimic() {
-    super("mimic", Material.GHAST_TEAR, Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build(), 128);
+    super(
+      "mimic",
+      GameProperties.MIMIC_COST,
+      ItemFactory.createGadget("mimic", Material.GHAST_TEAR, Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build())
+    );
   }
 
   @Override

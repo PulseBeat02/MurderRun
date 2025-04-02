@@ -36,6 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Objects;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -45,7 +46,11 @@ import org.bukkit.util.Vector;
 public final class Horcrux extends SurvivorGadget {
 
   public Horcrux() {
-    super("horcrux", Material.CHARCOAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build(), GameProperties.HORCRUX_COST);
+    super(
+      "horcrux",
+      GameProperties.HORCRUX_COST,
+      ItemFactory.createGadget("horcrux", Material.CHARCOAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build())
+    );
   }
 
   @Override

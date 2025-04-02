@@ -1,8 +1,11 @@
 package java.util;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 
 public final class Objects {
-   public static <T> T requireNonNull(@Nullable T obj, String message);
-   public static <T> T requireNonNull(@Nullable T obj);
+  @EnsuresNonNullIf(expression = "#1", result = true)
+  public static boolean nonNull(@Nullable Object obj);
+  public static <T> T requireNonNull(@Nullable T obj, String message);
+  public static <T> T requireNonNull(@Nullable T obj);
 }

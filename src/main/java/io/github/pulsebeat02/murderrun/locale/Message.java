@@ -200,6 +200,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> PARASITE_NAME = direct("murderrun.game.gadget.parasite.name");
   NullComponent<Sender> DISTORTER_NAME = direct("murderrun.game.gadget.distorter.name");
   NullComponent<Sender> SPEED_PENDANT_NAME = direct("murderrun.game.gadget.speed_pendant.name");
+  NullComponent<Sender> SPEED_PENDANT_LORE = direct("murderrun.game.gadget.speed_pendant.lore");
   NullComponent<Sender> GLOW_LORE = direct("murderrun.game.gadget.glow.lore");
   NullComponent<Sender> HACK_LORE = direct("murderrun.game.gadget.hack.lore");
   NullComponent<Sender> BEAR_LORE = direct("murderrun.game.gadget.bear.lore");

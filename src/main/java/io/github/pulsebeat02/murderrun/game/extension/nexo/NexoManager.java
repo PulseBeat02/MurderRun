@@ -32,6 +32,7 @@ import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import com.nexomc.nexo.pack.server.NexoPackServer;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.util.Optional;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import org.bukkit.inventory.ItemStack;
@@ -44,50 +45,63 @@ public final class NexoManager {
     return requireNonNull(server.packInfo());
   }
 
-  public Optional<ItemStack> getKillerSword() {
+  public Optional<Item.Builder> getCurrency() {
+    return this.getNexoItem(GameProperties.NEXO_CURRENCY);
+  }
+
+  public Optional<Item.Builder> getGhostBone() {
+    return this.getNexoItem(GameProperties.NEXO_GHOST_BONE);
+  }
+
+  public Optional<Item.Builder> getKillerArrow() {
+    return this.getNexoItem(GameProperties.NEXO_KILLER_ARROW);
+  }
+
+  public Optional<Item.Builder> getKillerSword() {
     return this.getNexoItem(GameProperties.NEXO_KILLER_SWORD);
   }
 
-  public Optional<ItemStack> getKillerHelmet() {
+  public Optional<Item.Builder> getKillerHelmet() {
     return this.getNexoItem(GameProperties.NEXO_KILLER_HELMET);
   }
 
-  public Optional<ItemStack> getKillerChestplate() {
+  public Optional<Item.Builder> getKillerChestplate() {
     return this.getNexoItem(GameProperties.NEXO_KILLER_CHESTPLATE);
   }
 
-  public Optional<ItemStack> getKillerLeggings() {
+  public Optional<Item.Builder> getKillerLeggings() {
     return this.getNexoItem(GameProperties.NEXO_KILLER_LEGGINGS);
   }
 
-  public Optional<ItemStack> getKillerBoots() {
+  public Optional<Item.Builder> getKillerBoots() {
     return this.getNexoItem(GameProperties.NEXO_KILLER_BOOTS);
   }
 
-  public Optional<ItemStack> getSurvivorHelmet() {
+  public Optional<Item.Builder> getSurvivorHelmet() {
     return this.getNexoItem(GameProperties.NEXO_SURVIVOR_HELMET);
   }
 
-  public Optional<ItemStack> getSurvivorChestplate() {
+  public Optional<Item.Builder> getSurvivorChestplate() {
     return this.getNexoItem(GameProperties.NEXO_SURVIVOR_CHESTPLATE);
   }
 
-  public Optional<ItemStack> getSurvivorLeggings() {
+  public Optional<Item.Builder> getSurvivorLeggings() {
     return this.getNexoItem(GameProperties.NEXO_SURVIVOR_LEGGINGS);
   }
 
-  public Optional<ItemStack> getSurvivorBoots() {
+  public Optional<Item.Builder> getSurvivorBoots() {
     return this.getNexoItem(GameProperties.NEXO_SURVIVOR_BOOTS);
   }
 
-  private Optional<ItemStack> getNexoItem(final String property) {
+  private Optional<Item.Builder> getNexoItem(final String property) {
     if (this.hasNexoItem(property)) {
       final ItemBuilder builder = NexoItems.itemFromId(property);
       if (builder == null) {
         return Optional.empty();
       }
       final ItemStack item = builder.build();
-      return Optional.of(item);
+      final Item.Builder builder1 = Item.builder(item);
+      return Optional.of(builder1);
     }
     return Optional.empty();
   }

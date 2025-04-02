@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -59,11 +60,14 @@ public final class CrashTrap extends SurvivorTrap {
   public CrashTrap() {
     super(
       "crash",
-      Material.STRUCTURE_VOID,
-      text("Crash Trap", RED),
-      text("Crashes the client (wtf, use at your own risk)", RED),
+      Integer.MAX_VALUE,
+      ItemFactory.createGadget(
+        "crash",
+        Material.STRUCTURE_VOID,
+        text("Crash Trap", RED),
+        text("Crashes the client (wtf, use at your own risk)", RED)
+      ),
       empty(),
-      128,
       Color.RED
     );
   }

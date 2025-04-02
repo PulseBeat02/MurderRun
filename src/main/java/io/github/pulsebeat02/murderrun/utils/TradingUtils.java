@@ -32,6 +32,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.*;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
@@ -48,12 +50,23 @@ public final class TradingUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static MerchantRecipe createRecipe(final Gadget gadget) {
+    final int cost = gadget.getPrice();
+    final Item.Builder stack = requireNonNull(gadget.getStackBuilder());
+    final ItemStack itemStack = stack.build();
+    final ItemStack ingredient = ItemFactory.createCurrency(cost);
+    final int uses = Integer.MAX_VALUE;
+    final MerchantRecipe recipe = new MerchantRecipe(itemStack, uses);
+    recipe.addIngredient(ingredient);
+    return recipe;
+  }
+
   public static Optional<MerchantRecipe> getRecipeByResult(final ItemStack item) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     MerchantRecipe target = null;
     for (final Gadget gadget : gadgets) {
-      final MerchantRecipe recipe = gadget.createRecipe();
+      final MerchantRecipe recipe = createRecipe(gadget);
       if (matchesResult(recipe, item)) {
         target = recipe;
         break;
@@ -80,7 +93,7 @@ public final class TradingUtils {
   public static Stream<String> getTradeSuggestions() {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
-    return gadgets.stream().map(Gadget::getName);
+    return gadgets.stream().map(Gadget::getId);
   }
 
   public static List<MerchantRecipe> getAllRecipes() {
@@ -88,7 +101,7 @@ public final class TradingUtils {
     final Collection<Gadget> gadgets = registry.getGadgets();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final Gadget gadget : gadgets) {
-      final MerchantRecipe recipe = gadget.createRecipe();
+      final MerchantRecipe recipe = createRecipe(gadget);
       recipes.add(recipe);
     }
     return recipes;
@@ -102,7 +115,7 @@ public final class TradingUtils {
       if (gadget == null) {
         continue;
       }
-      final MerchantRecipe recipe = gadget.createRecipe();
+      final MerchantRecipe recipe = createRecipe(gadget);
       recipes.add(recipe);
     }
     return recipes;
@@ -124,8 +137,9 @@ public final class TradingUtils {
   }
 
   private static ItemStack getModifiedLoreWithCost(final Gadget gadget) {
-    final ItemStack stack = gadget.getGadget();
-    final ItemStack clone = stack.clone();
+    final Item.Builder stack = requireNonNull(gadget.getStackBuilder());
+    final ItemStack itemStack = stack.build();
+    final ItemStack clone = itemStack.clone();
     final ItemMeta meta = requireNonNull(clone.getItemMeta());
     List<String> lore = meta.getLore();
     if (lore == null) {

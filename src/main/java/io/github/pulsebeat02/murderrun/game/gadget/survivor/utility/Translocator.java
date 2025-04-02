@@ -51,11 +51,15 @@ public final class Translocator extends SurvivorGadget {
   public Translocator() {
     super(
       "translocator",
-      Material.POPPED_CHORUS_FRUIT,
-      Message.TRANSLOCATOR_NAME.build(),
-      Message.TRANSLOCATOR_LORE.build(),
       GameProperties.TRANSLOCATOR_COST,
-      ItemFactory::createTranslocator
+      ItemFactory.createTranslocator(
+        ItemFactory.createGadget(
+          "translocator",
+          Material.POPPED_CHORUS_FRUIT,
+          Message.TRANSLOCATOR_NAME.build(),
+          Message.TRANSLOCATOR_LORE.build()
+        )
+      )
     );
   }
 

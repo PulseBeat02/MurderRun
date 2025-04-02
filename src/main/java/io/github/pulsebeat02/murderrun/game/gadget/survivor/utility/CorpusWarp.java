@@ -33,6 +33,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -42,10 +43,13 @@ public final class CorpusWarp extends SurvivorGadget {
   public CorpusWarp() {
     super(
       "corpus_warp",
-      Material.PURPLE_STAINED_GLASS,
-      Message.CORPUS_WARP_NAME.build(),
-      Message.CORPUS_WARP_LORE.build(),
-      GameProperties.CORPUS_WARP_COST
+      GameProperties.CORPUS_WARP_COST,
+      ItemFactory.createGadget(
+        "corpus_warp",
+        Material.PURPLE_STAINED_GLASS,
+        Message.CORPUS_WARP_NAME.build(),
+        Message.CORPUS_WARP_LORE.build()
+      )
     );
   }
 

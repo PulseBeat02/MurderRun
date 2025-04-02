@@ -35,8 +35,9 @@ import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
@@ -66,59 +67,54 @@ public abstract class ResourcePackProvider implements PackProvider {
     this.method = method;
   }
 
-  @SuppressWarnings("all") // checker
   public void cachePack() {
-    final ResourcePackInfo[] packs = { this.getMainResourceInfo(), this.cacheProvidedResourcesExceptionally(), this.getNexoPackInfo() };
-    final List<ResourcePackInfo> infos = new ArrayList<>();
-    for (final ResourcePackInfo pack : packs) {
-      if (pack != null) {
-        infos.add(pack);
-      }
-    }
+    final List<ResourcePackInfo> infos = Stream.of(
+      this.getMainResourceInfo(),
+      this.cacheProvidedResourcesExceptionally(),
+      this.getNexoPackInfo()
+    )
+      .flatMap(Optional::stream)
+      .toList();
     final Component message = Message.RESOURCEPACK_PROMPT.build();
     final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
     final boolean required = GameProperties.FORCE_RESOURCEPACK;
     this.cached = builder.required(required).packs(infos).prompt(message).asResourcePackRequest();
   }
 
-  private @Nullable ResourcePackInfo getNexoPackInfo() {
-    if (Capabilities.NEXO.isEnabled()) {
-      final NexoManager manager = this.plugin.getNexoManager();
-      return manager.getPackInfo();
-    }
-    return null;
+  private Optional<ResourcePackInfo> getMainResourceInfo() {
+    final String url = this.getFinalUrl();
+    final URI uri = URI.create(url);
+    final String hash = IOUtils.getSHA1Hash(uri);
+    final ResourcePackInfo info = ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
+    return Optional.of(info);
   }
 
-  private @Nullable ResourcePackInfo cacheProvidedResourcesExceptionally() {
+  private Optional<ResourcePackInfo> getNexoPackInfo() {
+    if (Capabilities.NEXO.isEnabled()) {
+      final NexoManager manager = this.plugin.getNexoManager();
+      final ResourcePackInfo packInfo = manager.getPackInfo();
+      return Optional.of(packInfo);
+    }
+    return Optional.empty();
+  }
+
+  private Optional<ResourcePackInfo> cacheProvidedResourcesExceptionally() {
     try {
       return this.cacheProvidedResources();
     } catch (final AssertionError e) {
-      return null;
+      return Optional.empty();
     }
   }
 
-  private @Nullable ResourcePackInfo cacheProvidedResources() {
+  private Optional<ResourcePackInfo> cacheProvidedResources() {
     try {
-      return this.getResourceInfo();
+      final ResourcePackInfo info = this.getResourceInfo();
+      return Optional.ofNullable(info);
     } catch (final AssertionError e) {
       final String msg =
         "Timed-out while retrieving resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
       throw new AssertionError(msg);
     }
-  }
-
-  public abstract String getRawUrl();
-
-  @Override
-  public ResourcePackRequest getResourcePackRequest() {
-    return this.cached;
-  }
-
-  private ResourcePackInfo getMainResourceInfo() {
-    final String url = this.getFinalUrl();
-    final URI uri = URI.create(url);
-    final String hash = IOUtils.getSHA1Hash(uri);
-    return ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
   }
 
   private @Nullable ResourcePackInfo getResourceInfo() {
@@ -129,6 +125,13 @@ public abstract class ResourcePackProvider implements PackProvider {
     final URI uri = URI.create(url);
     final String hash = IOUtils.getSHA1Hash(uri);
     return ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
+  }
+
+  public abstract String getRawUrl();
+
+  @Override
+  public ResourcePackRequest getResourcePackRequest() {
+    return this.cached;
   }
 
   @Override

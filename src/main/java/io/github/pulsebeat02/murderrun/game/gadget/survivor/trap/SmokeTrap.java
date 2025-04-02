@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,11 +50,9 @@ public final class SmokeTrap extends SurvivorTrap {
   public SmokeTrap() {
     super(
       "smoke",
-      Material.GUNPOWDER,
-      Message.SMOKE_NAME.build(),
-      Message.SMOKE_LORE.build(),
-      Message.SMOKE_ACTIVATE.build(),
       GameProperties.SMOKE_COST,
+      ItemFactory.createGadget("smoke", Material.GUNPOWDER, Message.SMOKE_NAME.build(), Message.SMOKE_LORE.build()),
+      Message.SMOKE_ACTIVATE.build(),
       Color.GRAY
     );
   }

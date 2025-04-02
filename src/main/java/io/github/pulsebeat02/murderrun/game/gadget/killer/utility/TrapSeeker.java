@@ -41,6 +41,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,10 +59,8 @@ public final class TrapSeeker extends KillerGadget {
   public TrapSeeker() {
     super(
       "trap_seeker",
-      Material.CLOCK,
-      Message.TRAP_SEEKER_NAME.build(),
-      Message.TRAP_SEEKER_LORE.build(),
-      GameProperties.TRAP_SEEKER_COST
+      GameProperties.TRAP_SEEKER_COST,
+      ItemFactory.createGadget("trap_seeker", Material.CLOCK, Message.TRAP_SEEKER_NAME.build(), Message.TRAP_SEEKER_LORE.build())
     );
   }
 

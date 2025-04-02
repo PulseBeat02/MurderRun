@@ -62,11 +62,10 @@ public final class FlashBang extends SurvivorGadget implements Listener {
   public FlashBang(final Game game) {
     super(
       "flash_bang",
-      Material.SNOWBALL,
-      Message.FLASHBANG_NAME.build(),
-      Message.FLASHBANG_LORE.build(),
       GameProperties.FLASHBANG_COST,
-      ItemFactory::createFlashBang
+      ItemFactory.createFlashBang(
+        ItemFactory.createGadget("flash_bang", Material.SNOWBALL, Message.FLASHBANG_NAME.build(), Message.FLASHBANG_LORE.build())
+      )
     );
     this.game = game;
   }

@@ -34,6 +34,10 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  String NEXO_CURRENCY = str("nexo.currency");
+  String NEXO_GHOST_BONE = str("nexo.ghost.bone");
+  String NEXO_KILLER_ARROW = str("nexo.killer.arrow");
+  int MIMIC_COST = num("mimic.cost");
   String NEXO_KILLER_SWORD = str("nexo.killer.sword");
   String NEXO_KILLER_HELMET = str("nexo.killer.helmet");
   String NEXO_KILLER_CHESTPLATE = str("nexo.killer.chestplate");

@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.HashSet;
 import java.util.Set;
 import net.kyori.adventure.text.Component;
@@ -49,7 +50,11 @@ public final class Parasite extends SurvivorGadget {
   private final Set<Integer> removed;
 
   public Parasite() {
-    super("parasite", Material.VINE, Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build(), GameProperties.PARASITE_COST);
+    super(
+      "parasite",
+      GameProperties.PARASITE_COST,
+      ItemFactory.createGadget("parasite", Material.VINE, Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build())
+    );
     this.removed = new HashSet<>();
   }
 

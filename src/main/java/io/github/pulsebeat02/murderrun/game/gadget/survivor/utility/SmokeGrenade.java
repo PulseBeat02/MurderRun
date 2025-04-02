@@ -63,11 +63,10 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
   public SmokeGrenade(final Game game) {
     super(
       "smoke_grenade",
-      Material.SNOWBALL,
-      Message.SMOKE_BOMB_NAME.build(),
-      Message.SMOKE_BOMB_LORE.build(),
       GameProperties.SMOKE_GRENADE_COST,
-      ItemFactory::createSmokeGrenade
+      ItemFactory.createSmokeGrenade(
+        ItemFactory.createGadget("smoke_grenade", Material.SNOWBALL, Message.SMOKE_BOMB_NAME.build(), Message.SMOKE_BOMB_LORE.build())
+      )
     );
     this.game = game;
   }

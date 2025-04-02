@@ -32,6 +32,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.misc.CameraGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
@@ -42,10 +43,8 @@ public final class Camera extends KillerGadget {
   public Camera() {
     super(
       "killer_camera",
-      Material.OBSERVER,
-      Message.KILLER_CAMERA_NAME.build(),
-      Message.KILLER_CAMERA_LORE.build(),
-      GameProperties.KILLER_CAMERA_COST
+      GameProperties.KILLER_CAMERA_COST,
+      ItemFactory.createGadget("killer_camera", Material.OBSERVER, Message.KILLER_CAMERA_NAME.build(), Message.KILLER_CAMERA_LORE.build())
     );
   }
 

@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,10 +50,13 @@ public final class BurnTheBody extends KillerGadget {
   public BurnTheBody() {
     super(
       "burn_the_body",
-      Material.RED_STAINED_GLASS,
-      Message.BURN_THE_BODY_NAME.build(),
-      Message.BURN_THE_BODY_LORE.build(),
-      GameProperties.BURN_THE_BODY_COST
+      GameProperties.BURN_THE_BODY_COST,
+      ItemFactory.createGadget(
+        "burn_the_body",
+        Material.RED_STAINED_GLASS,
+        Message.BURN_THE_BODY_NAME.build(),
+        Message.BURN_THE_BODY_LORE.build()
+      )
     );
   }
 

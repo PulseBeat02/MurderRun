@@ -25,30 +25,15 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.armor;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Message;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 
 public abstract class SurvivorGear extends SurvivorGadget {
 
-  public SurvivorGear(final String name, final Material material, final Component itemName, final @Nullable Consumer<ItemStack> consumer) {
-    super(name, material, itemName, Message.SURVIVOR_GEAR_LORE.build(), GameProperties.SURVIVOR_GEAR_COST, consumer);
-  }
-
-  @SuppressWarnings("all") // checker
-  public SurvivorGear(final String name, final Material material, final Component itemName, final Supplier<ItemStack> supplier) {
-    super(name, material, itemName, Message.SURVIVOR_GEAR_LORE.build(), GameProperties.SURVIVOR_GEAR_COST, null);
-    final ItemStack item = requireNonNull(supplier.get());
-    this.setGadget(item);
+  public SurvivorGear(final String name, final Item.Builder builder) {
+    super(name, GameProperties.SURVIVOR_GEAR_COST, builder);
   }
 
   @Override

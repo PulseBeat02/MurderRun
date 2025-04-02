@@ -42,6 +42,7 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -71,10 +72,8 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
   public SupplyDrop(final Game game) {
     super(
       "supply_drop",
-      Material.CHEST,
-      Message.SUPPLY_DROP_NAME.build(),
-      Message.SUPPLY_DROP_LORE.build(),
-      GameProperties.SUPPLY_DROP_COST
+      GameProperties.SUPPLY_DROP_COST,
+      ItemFactory.createGadget("supply_drop", Material.CHEST, Message.SUPPLY_DROP_NAME.build(), Message.SUPPLY_DROP_LORE.build())
     );
     this.game = game;
   }
@@ -181,8 +180,8 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
       final char c = mask.charAt(i);
       if (c == 'A') {
         final Gadget gadget = mechanism.getRandomInnocentGadget();
-        final ItemStack stack = gadget.getGadget();
-        items[i] = stack;
+        final io.github.pulsebeat02.murderrun.utils.item.Item.Builder stack = gadget.getStackBuilder();
+        items[i] = stack.build();
       }
     }
     return items;

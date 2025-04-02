@@ -61,10 +61,8 @@ public final class Corruption extends KillerGadget {
   public Corruption() {
     super(
       "corruption",
-      Material.ZOMBIE_HEAD,
-      Message.CORRUPTION_NAME.build(),
-      Message.CORRUPTION_LORE.build(),
-      GameProperties.CORRUPTION_COST
+      GameProperties.CORRUPTION_COST,
+      ItemFactory.createGadget("corruption", Material.ZOMBIE_HEAD, Message.CORRUPTION_NAME.build(), Message.CORRUPTION_LORE.build())
     );
   }
 

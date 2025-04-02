@@ -32,7 +32,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public abstract class Trap extends AbstractGadget {
@@ -42,14 +41,12 @@ public abstract class Trap extends AbstractGadget {
 
   public Trap(
     final String name,
-    final Material material,
-    final Component itemName,
-    final Component itemLore,
-    final Component announcement,
     final int cost,
+    final io.github.pulsebeat02.murderrun.utils.item.Item.Builder builder,
+    final Component announcement,
     final Color color
   ) {
-    super(name, material, itemName, itemLore, cost);
+    super(name, cost, builder);
     this.announcement = announcement;
     this.color = color;
   }

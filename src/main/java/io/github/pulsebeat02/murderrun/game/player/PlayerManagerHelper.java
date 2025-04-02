@@ -47,6 +47,7 @@ import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
 
 public interface PlayerManagerHelper {
   default void applyToSurvivors(final Consumer<GamePlayer> consumer) {
@@ -254,13 +255,16 @@ public interface PlayerManagerHelper {
   }
 
   @SuppressWarnings("all") // checker
-  default Optional<Killer> getKillerWithMostKills() {
-    return this.getKillers().map(Killer.class::cast).max(Comparator.comparingInt(Killer::getKills));
+  default Optional<@PolyNull Killer> getKillerWithMostKills() {
+    return this.getKillers().map(Killer.class::cast).filter(Objects::nonNull).max(Comparator.comparingInt(Killer::getKills));
   }
 
   @SuppressWarnings("all") // checker
-  default Optional<Survivor> getSurvivorWithMostCarPartsRetrieved() {
-    return this.getSurvivors().map(Survivor.class::cast).max(Comparator.comparingInt(Survivor::getCarPartsRetrieved));
+  default Optional<@PolyNull Survivor> getSurvivorWithMostCarPartsRetrieved() {
+    return this.getSurvivors()
+      .map(Survivor.class::cast)
+      .filter(Objects::nonNull)
+      .max(Comparator.comparingInt(Survivor::getCarPartsRetrieved));
   }
 
   default @Nullable GamePlayer getNearestKiller(final Location origin) {

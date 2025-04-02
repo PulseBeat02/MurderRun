@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -49,10 +50,8 @@ public final class BloodCurse extends KillerGadget {
   public BloodCurse() {
     super(
       "blood_curse",
-      Material.REDSTONE,
-      Message.BLOOD_CURSE_NAME.build(),
-      Message.BLOOD_CURSE_LORE.build(),
-      GameProperties.BLOOD_CURSE_COST
+      GameProperties.BLOOD_CURSE_COST,
+      ItemFactory.createGadget("blood_curse", Material.REDSTONE, Message.BLOOD_CURSE_NAME.build(), Message.BLOOD_CURSE_LORE.build())
     );
   }
 

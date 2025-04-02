@@ -33,6 +33,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.stream.Stream;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,10 +44,8 @@ public final class FriendWarp extends SurvivorGadget {
   public FriendWarp() {
     super(
       "friend_warp",
-      Material.EMERALD,
-      Message.FRIEND_WARP_NAME.build(),
-      Message.FRIEND_WARP_LORE.build(),
-      GameProperties.FRIEND_WARP_COST
+      GameProperties.FRIEND_WARP_COST,
+      ItemFactory.createGadget("friend_warp", Material.EMERALD, Message.FRIEND_WARP_NAME.build(), Message.FRIEND_WARP_LORE.build())
     );
   }
 

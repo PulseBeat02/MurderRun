@@ -38,6 +38,7 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,10 +52,13 @@ public final class MindControl extends SurvivorGadget {
   public MindControl() {
     super(
       "mind_control",
-      Material.STRUCTURE_VOID,
-      Message.MIND_CONTROL_NAME.build(),
-      Message.MIND_CONTROL_LORE.build(),
-      GameProperties.MIND_CONTROL_COST
+      GameProperties.MIND_CONTROL_COST,
+      ItemFactory.createGadget(
+        "mind_control",
+        Material.STRUCTURE_VOID,
+        Message.MIND_CONTROL_NAME.build(),
+        Message.MIND_CONTROL_LORE.build()
+      )
     );
   }
 

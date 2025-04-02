@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -49,10 +50,8 @@ public final class SixthSense extends SurvivorGadget {
   public SixthSense() {
     super(
       "sixth_sense",
-      Material.GOLDEN_CARROT,
-      Message.SIXTH_SENSE_NAME.build(),
-      Message.SIXTH_SENSE_LORE.build(),
-      GameProperties.SIXTH_SENSE_COST
+      GameProperties.SIXTH_SENSE_COST,
+      ItemFactory.createGadget("sixth_sense", Material.GOLDEN_CARROT, Message.SIXTH_SENSE_NAME.build(), Message.SIXTH_SENSE_LORE.build())
     );
   }
 

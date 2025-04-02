@@ -40,6 +40,7 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import java.util.Collection;
 import java.util.Iterator;
@@ -56,10 +57,8 @@ public final class LifeInsurance extends SurvivorGadget {
   public LifeInsurance() {
     super(
       "life_insurance",
-      Material.RED_DYE,
-      Message.LIFE_INSURANCE_NAME.build(),
-      Message.LIFE_INSURANCE_LORE.build(),
-      GameProperties.LIFE_INSURANCE_COST
+      GameProperties.LIFE_INSURANCE_COST,
+      ItemFactory.createGadget("life_insurance", Material.RED_DYE, Message.LIFE_INSURANCE_NAME.build(), Message.LIFE_INSURANCE_LORE.build())
     );
   }
 

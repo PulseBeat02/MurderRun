@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -47,10 +48,8 @@ public final class Retaliation extends SurvivorGadget {
   public Retaliation() {
     super(
       "retaliation",
-      Material.GOLD_BLOCK,
-      Message.RETALIATION_NAME.build(),
-      Message.RETALIATION_LORE.build(),
-      GameProperties.RETALIATION_COST
+      GameProperties.RETALIATION_COST,
+      ItemFactory.createGadget("retaliation", Material.GOLD_BLOCK, Message.RETALIATION_NAME.build(), Message.RETALIATION_LORE.build())
     );
   }
 

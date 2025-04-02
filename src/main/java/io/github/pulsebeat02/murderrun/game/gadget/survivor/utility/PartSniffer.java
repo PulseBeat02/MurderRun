@@ -39,6 +39,7 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -51,10 +52,8 @@ public final class PartSniffer extends SurvivorGadget {
   public PartSniffer() {
     super(
       "part_sniffer",
-      Material.TRIPWIRE_HOOK,
-      Message.PART_SNIFFER_NAME.build(),
-      Message.PART_SNIFFER_LORE.build(),
-      GameProperties.PART_SNIFFER_COST
+      GameProperties.PART_SNIFFER_COST,
+      ItemFactory.createGadget("part_sniffer", Material.TRIPWIRE_HOOK, Message.PART_SNIFFER_NAME.build(), Message.PART_SNIFFER_LORE.build())
     );
   }
 

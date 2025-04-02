@@ -50,11 +50,8 @@ public final class RedArrow extends KillerGadget {
   public RedArrow() {
     super(
       "red_arrow",
-      Material.TIPPED_ARROW,
-      Message.RED_ARROW_NAME.build(),
-      Message.RED_ARROW_LORE.build(),
       GameProperties.RED_ARROW_COST,
-      ItemFactory::createRedArrow
+      ItemFactory.createGadget("red_arrow", Material.TIPPED_ARROW, Message.RED_ARROW_NAME.build(), Message.RED_ARROW_LORE.build())
     );
   }
 

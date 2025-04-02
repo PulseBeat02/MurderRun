@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -45,10 +46,8 @@ public final class TrapWrecker extends KillerGadget {
   public TrapWrecker() {
     super(
       "trap_wrecker",
-      Material.BARRIER,
-      Message.TRAP_WRECKER_NAME.build(),
-      Message.TRAP_WRECKER_LORE.build(),
-      GameProperties.TRAP_WRECKER_COST
+      GameProperties.TRAP_WRECKER_COST,
+      ItemFactory.createGadget("trap_wrecker", Material.BARRIER, Message.TRAP_WRECKER_NAME.build(), Message.TRAP_WRECKER_LORE.build())
     );
   }
 

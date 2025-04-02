@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Color;
@@ -54,11 +55,9 @@ public final class FireworkTrap extends SurvivorTrap {
   public FireworkTrap() {
     super(
       "firework",
-      Material.FIREWORK_ROCKET,
-      Message.FIREWORK_NAME.build(),
-      Message.FIREWORK_LORE.build(),
-      Message.FIREWORK_ACTIVATE.build(),
       GameProperties.FIREWORK_COST,
+      ItemFactory.createGadget("firework", Material.FIREWORK_ROCKET, Message.FIREWORK_NAME.build(), Message.FIREWORK_LORE.build()),
+      Message.FIREWORK_ACTIVATE.build(),
       java.awt.Color.RED
     );
   }

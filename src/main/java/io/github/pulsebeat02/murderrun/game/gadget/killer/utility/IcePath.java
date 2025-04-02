@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,11 @@ import org.checkerframework.checker.nullness.qual.KeyFor;
 public final class IcePath extends KillerGadget {
 
   public IcePath() {
-    super("ice_path", Material.ICE, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build(), GameProperties.ICE_PATH_COST);
+    super(
+      "ice_path",
+      GameProperties.ICE_PATH_COST,
+      ItemFactory.createGadget("ice_path", Material.ICE, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build())
+    );
   }
 
   @Override

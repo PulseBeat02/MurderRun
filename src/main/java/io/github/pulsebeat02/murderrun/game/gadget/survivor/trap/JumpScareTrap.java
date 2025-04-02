@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerRefe
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,11 +54,9 @@ public final class JumpScareTrap extends SurvivorTrap {
   public JumpScareTrap() {
     super(
       "jump_scare",
-      Material.BLACK_CONCRETE,
-      Message.JUMP_SCARE_NAME.build(),
-      Message.JUMP_SCARE_LORE.build(),
-      Message.JUMP_SCARE_ACTIVATE.build(),
       GameProperties.JUMP_SCARE_COST,
+      ItemFactory.createGadget("jump_scare", Material.BLACK_CONCRETE, Message.JUMP_SCARE_NAME.build(), Message.JUMP_SCARE_LORE.build()),
+      Message.JUMP_SCARE_ACTIVATE.build(),
       Color.RED
     );
     this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());

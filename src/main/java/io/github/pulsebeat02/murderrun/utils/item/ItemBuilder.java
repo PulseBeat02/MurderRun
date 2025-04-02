@@ -150,9 +150,9 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  @SuppressWarnings({ "deprecation", "UnstableApiUsage" }) // paper
   public Builder dummyAttribute() {
     final Attribute attribute = Attribute.OXYGEN_BONUS;
+    @SuppressWarnings("deprecation")
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
@@ -173,8 +173,8 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  @SuppressWarnings({ "deprecation", "UnstableApiUsage" }) // paper
   public Builder modifier(final Attribute attribute, final double amount) {
+    @SuppressWarnings("deprecation")
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;

@@ -40,6 +40,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -67,10 +68,8 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   public Dormagogg(final Game game) {
     super(
       "dormagogg",
-      Material.WITHER_SKELETON_SKULL,
-      Message.DORMAGOGG_NAME.build(),
-      Message.DORMAGOGG_LORE.build(),
-      GameProperties.DORMAGOGG_COST
+      GameProperties.DORMAGOGG_COST,
+      ItemFactory.createGadget("dormagogg", Material.WITHER_SKELETON_SKULL, Message.DORMAGOGG_NAME.build(), Message.DORMAGOGG_LORE.build())
     );
     this.game = game;
   }

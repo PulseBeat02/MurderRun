@@ -62,10 +62,8 @@ public final class CursedNote extends KillerGadget {
   public CursedNote() {
     super(
       "cursed_note",
-      Material.PAPER,
-      Message.CURSED_NOTE_NAME.build(),
-      Message.CURSED_NOTE_LORE.build(),
-      GameProperties.CURSED_NOTE_COST
+      GameProperties.CURSED_NOTE_COST,
+      ItemFactory.createGadget("cursed_note", Material.PAPER, Message.CURSED_NOTE_NAME.build(), Message.CURSED_NOTE_LORE.build())
     );
   }
 

@@ -32,6 +32,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,11 +53,9 @@ public final class SpasmTrap extends SurvivorTrap {
   public SpasmTrap() {
     super(
       "spasm",
-      Material.SEA_LANTERN,
-      Message.SPASM_NAME.build(),
-      Message.SPASM_LORE.build(),
-      Message.SPASM_ACTIVATE.build(),
       GameProperties.SPASM_COST,
+      ItemFactory.createGadget("spasm", Material.SEA_LANTERN, Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
+      Message.SPASM_ACTIVATE.build(),
       Color.RED
     );
     this.states = new HashMap<>();

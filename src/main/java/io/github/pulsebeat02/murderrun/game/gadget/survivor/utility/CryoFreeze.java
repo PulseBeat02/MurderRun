@@ -36,6 +36,7 @@ import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -45,7 +46,11 @@ import org.bukkit.entity.Item;
 public final class CryoFreeze extends SurvivorGadget {
 
   public CryoFreeze() {
-    super("cryo_freeze", Material.ICE, Message.CRYO_FREEZE_NAME.build(), Message.CRYO_FREEZE_LORE.build(), GameProperties.CRYO_FREEZE_COST);
+    super(
+      "cryo_freeze",
+      GameProperties.CRYO_FREEZE_COST,
+      ItemFactory.createGadget("cryo_freeze", Material.ICE, Message.CRYO_FREEZE_NAME.build(), Message.CRYO_FREEZE_LORE.build())
+    );
   }
 
   @Override

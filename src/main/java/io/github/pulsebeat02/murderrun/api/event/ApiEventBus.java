@@ -226,7 +226,6 @@ public final class ApiEventBus implements EventBus {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public <T extends MurderRunEvent> boolean post(final Class<T> type, final Object... args) {
     if (type.isAnnotationPresent(NonInvokable.class)) {
       final String name = type.getName();
@@ -244,6 +243,7 @@ public final class ApiEventBus implements EventBus {
         .sorted(Comparator.comparingInt(EventSubscription::getPriority))
         .collect(Collectors.toList());
       for (final EventSubscription<?> raw : sorted) {
+        @SuppressWarnings("unchecked")
         final EventSubscription<? super T> sub = (EventSubscription<? super T>) raw;
         final Consumer<? super T> eventHandler = sub.getHandler();
         eventHandler.accept(event);
@@ -255,16 +255,16 @@ public final class ApiEventBus implements EventBus {
     return false;
   }
 
-  @SuppressWarnings("all")
   private Set<Class<? extends MurderRunEvent>> findParentEventTypes(final Class<? extends MurderRunEvent> eventType) {
     final Set<Class<? extends MurderRunEvent>> parentTypes = new HashSet<>();
     final Queue<Class<?>> processingQueue = new LinkedList<>();
     final Class<?>[] directInterfaces = eventType.getInterfaces();
     Collections.addAll(processingQueue, directInterfaces);
     while (!processingQueue.isEmpty()) {
-      final Class<?> currentInterface = processingQueue.poll();
+      final Class<?> currentInterface = requireNonNull(processingQueue.poll());
       final boolean isSubtype = MurderRunEvent.class.isAssignableFrom(currentInterface);
       if (isSubtype) {
+        @SuppressWarnings("unchecked")
         final Class<? extends MurderRunEvent> castedInterface = (Class<? extends MurderRunEvent>) currentInterface;
         final boolean alreadyAdded = parentTypes.contains(castedInterface);
         if (!alreadyAdded) {

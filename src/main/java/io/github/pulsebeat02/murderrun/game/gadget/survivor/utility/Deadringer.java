@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -46,10 +47,8 @@ public final class Deadringer extends SurvivorGadget {
   public Deadringer() {
     super(
       "deadringer",
-      Material.ZOMBIE_HEAD,
-      Message.DEADRINGER_NAME.build(),
-      Message.DEADRINGER_LORE.build(),
-      GameProperties.DEADRINGER_COST
+      GameProperties.DEADRINGER_COST,
+      ItemFactory.createGadget("deadringer", Material.ZOMBIE_HEAD, Message.DEADRINGER_NAME.build(), Message.DEADRINGER_LORE.build())
     );
   }
 

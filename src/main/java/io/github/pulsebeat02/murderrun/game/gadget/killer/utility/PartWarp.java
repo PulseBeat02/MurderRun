@@ -36,6 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,11 @@ import org.bukkit.entity.Item;
 public final class PartWarp extends KillerGadget {
 
   public PartWarp() {
-    super("part_warp", Material.REPEATER, Message.PART_WARP_NAME.build(), Message.PART_WARP_LORE.build(), GameProperties.PART_WARP_COST);
+    super(
+      "part_warp",
+      GameProperties.PART_WARP_COST,
+      ItemFactory.createGadget("part_warp", Material.REPEATER, Message.PART_WARP_NAME.build(), Message.PART_WARP_LORE.build())
+    );
   }
 
   @Override

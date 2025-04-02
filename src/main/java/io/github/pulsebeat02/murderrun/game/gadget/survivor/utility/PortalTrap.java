@@ -36,6 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.bukkit.Location;
@@ -49,7 +50,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class PortalTrap extends SurvivorGadget {
 
   public PortalTrap() {
-    super("portal", Material.PURPLE_WOOL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build(), GameProperties.PORTAL_TRAP_COST);
+    super(
+      "portal",
+      GameProperties.PORTAL_TRAP_COST,
+      ItemFactory.createGadget("portal", Material.PURPLE_WOOL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
+    );
   }
 
   @Override

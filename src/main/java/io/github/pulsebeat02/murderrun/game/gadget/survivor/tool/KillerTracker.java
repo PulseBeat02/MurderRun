@@ -55,11 +55,15 @@ public final class KillerTracker extends SurvivorGadget {
   public KillerTracker() {
     super(
       "killer_tracker",
-      Material.COMPASS,
-      Message.KILLER_TRACKER_NAME.build(),
-      Message.KILLER_TRACKER_LORE.build(),
       GameProperties.KILLER_TRACKER_COST,
-      ItemFactory::createKillerTracker
+      ItemFactory.createKillerTracker(
+        ItemFactory.createGadget(
+          "killer_tracker",
+          Material.COMPASS,
+          Message.KILLER_TRACKER_NAME.build(),
+          Message.KILLER_TRACKER_LORE.build()
+        )
+      )
     );
   }
 

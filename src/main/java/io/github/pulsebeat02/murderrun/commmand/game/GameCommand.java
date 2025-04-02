@@ -74,10 +74,10 @@ public final class GameCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @SuppressWarnings("all")
   @Permission("murderrun.command.game.party")
   @CommandDescription("murderrun.command.game.party.info")
   @Command(value = "murder game party <arenaName> <lobbyName>", requiredSender = Player.class)
+  @SuppressWarnings("all") // checker
   public void startPartyGame(
     final Player player,
     @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
@@ -93,7 +93,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    final PartiesManager manager = plugin.getPartiesManager();
+    final PartiesManager manager = this.plugin.getPartiesManager();
     final UUID uuid = player.getUniqueId();
     final Collection<UUID> members = manager.getPartyMembers(player);
     final UUID id = manager.getPartyId(player);
@@ -113,7 +113,7 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     members
       .stream()
-      .map(uuid1 -> manager.getBukkitUuid(uuid1))
+      .map(manager::getBukkitUuid)
       .filter(StreamUtils.notEquals(uuid))
       .map(Bukkit::getPlayer)
       .filter(Objects::nonNull)

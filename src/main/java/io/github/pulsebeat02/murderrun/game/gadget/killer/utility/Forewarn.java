@@ -38,6 +38,7 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -47,7 +48,11 @@ import org.bukkit.entity.Item;
 public final class Forewarn extends KillerGadget {
 
   public Forewarn() {
-    super("forewarn", Material.GLOWSTONE_DUST, Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build(), GameProperties.FOREWARN_COST);
+    super(
+      "forewarn",
+      GameProperties.FOREWARN_COST,
+      ItemFactory.createGadget("forewarn", Material.GLOWSTONE_DUST, Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
+    );
   }
 
   @Override

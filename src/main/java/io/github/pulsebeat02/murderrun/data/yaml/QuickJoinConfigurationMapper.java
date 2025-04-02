@@ -113,11 +113,11 @@ public final class QuickJoinConfigurationMapper {
     return config.getInt(MAX_PLAYERS_FIELD, 16);
   }
 
-  @SuppressWarnings("unchecked")
   private List<String[]> getLobbyArenaPairs(final FileConfiguration config) {
     if (!this.enabled) {
       return List.of();
     }
+    @SuppressWarnings("unchecked")
     final List<List<String>> pairs = (List<List<String>>) config.getList(ARENA_LOBBY_PAIRS_FIELD, List.of());
     final List<String[]> result = requireNonNull(pairs)
       .stream()

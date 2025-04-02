@@ -36,6 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -49,10 +50,8 @@ public final class IceSkatin extends SurvivorGadget {
   public IceSkatin() {
     super(
       "ice_skatin",
-      Material.OAK_BOAT,
-      Message.ICE_SKATIN_NAME.build(),
-      Message.ICE_SKATIN_LORE.build(),
-      GameProperties.ICE_SKATIN_COST
+      GameProperties.ICE_SKATIN_COST,
+      ItemFactory.createGadget("ice_skatin", Material.OAK_BOAT, Message.ICE_SKATIN_NAME.build(), Message.ICE_SKATIN_LORE.build())
     );
   }
 

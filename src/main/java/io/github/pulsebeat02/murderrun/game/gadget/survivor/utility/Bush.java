@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,7 +49,11 @@ import org.bukkit.util.Vector;
 public final class Bush extends SurvivorGadget {
 
   public Bush() {
-    super("bush", Material.OAK_LEAVES, Message.BUSH_NAME.build(), Message.BUSH_LORE.build(), GameProperties.BUSH_COST);
+    super(
+      "bush",
+      GameProperties.BUSH_COST,
+      ItemFactory.createGadget("bush", Material.OAK_LEAVES, Message.BUSH_NAME.build(), Message.BUSH_LORE.build())
+    );
   }
 
   @Override

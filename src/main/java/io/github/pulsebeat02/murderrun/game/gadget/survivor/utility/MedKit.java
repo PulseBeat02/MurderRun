@@ -37,11 +37,10 @@ public final class MedKit extends SurvivorGadget {
   public MedKit() {
     super(
       "med_kit",
-      Material.SPLASH_POTION,
-      Message.MED_KIT_NAME.build(),
-      Message.MED_KIT_LORE.build(),
       GameProperties.MED_KIT_COST,
-      ItemFactory::createMedKit
+      ItemFactory.createMedKit(
+        ItemFactory.createGadget("med_kit", Material.SPLASH_POTION, Message.MED_KIT_NAME.build(), Message.MED_KIT_LORE.build())
+      )
     );
   }
 

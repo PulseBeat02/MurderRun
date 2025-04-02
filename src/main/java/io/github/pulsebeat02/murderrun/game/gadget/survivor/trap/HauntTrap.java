@@ -33,6 +33,7 @@ import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -45,11 +46,9 @@ public final class HauntTrap extends SurvivorTrap {
   public HauntTrap() {
     super(
       "haunt",
-      Material.WITHER_SKELETON_SKULL,
-      Message.HAUNT_NAME.build(),
-      Message.HAUNT_LORE.build(),
-      Message.HAUNT_ACTIVATE.build(),
       GameProperties.HAUNT_COST,
+      ItemFactory.createGadget("haunt", Material.WITHER_SKELETON_SKULL, Message.HAUNT_NAME.build(), Message.HAUNT_LORE.build()),
+      Message.HAUNT_ACTIVATE.build(),
       Color.GRAY
     );
   }

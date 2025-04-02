@@ -53,10 +53,8 @@ public final class DeathSteed extends KillerGadget {
   public DeathSteed() {
     super(
       "death_steed",
-      Material.SADDLE,
-      Message.DEATH_STEED_NAME.build(),
-      Message.DEATH_STEED_LORE.build(),
-      GameProperties.DEATH_STEED_COST
+      GameProperties.DEATH_STEED_COST,
+      ItemFactory.createGadget("death_steed", Material.SADDLE, Message.DEATH_STEED_NAME.build(), Message.DEATH_STEED_LORE.build())
     );
   }
 

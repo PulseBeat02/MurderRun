@@ -83,7 +83,7 @@ public final class GadgetRegistry {
   }
 
   public void removeGadget(final Gadget gadget) {
-    final String name = gadget.getName();
+    final String name = gadget.getId();
     this.removeGadget(name);
   }
 
@@ -135,7 +135,7 @@ public final class GadgetRegistry {
       if (gadget instanceof final Listener listener) {
         pluginManager.registerEvents(listener, plugin);
       }
-      final String name = gadget.getName();
+      final String name = gadget.getId();
       gadgets.put(name, gadget);
     }
     return gadgets;
@@ -168,7 +168,7 @@ public final class GadgetRegistry {
     try {
       final MethodHandle handle = this.getMethodHandleClass(clazz);
       final Gadget gadget = this.invokeGadgetConstructor(handle, null);
-      final String name = gadget.getName();
+      final String name = gadget.getId();
       if (this.disabled.contains(name)) {
         return;
       }

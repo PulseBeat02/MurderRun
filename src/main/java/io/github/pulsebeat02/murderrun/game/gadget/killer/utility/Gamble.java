@@ -38,16 +38,20 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public final class Gamble extends KillerGadget {
 
   public Gamble() {
-    super("gamble", Material.END_PORTAL_FRAME, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build(), GameProperties.GAMBLE_COST);
+    super(
+      "gamble",
+      GameProperties.GAMBLE_COST,
+      ItemFactory.createGadget("gamble", Material.END_PORTAL_FRAME, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build())
+    );
   }
 
   @Override
@@ -78,8 +82,8 @@ public final class Gamble extends KillerGadget {
   }
 
   private void giveKillerItem(final GamePlayer killer, final Gadget gadget) {
-    final ItemStack stack = gadget.getGadget();
+    final io.github.pulsebeat02.murderrun.utils.item.Item.Builder stack = gadget.getStackBuilder();
     final PlayerInventory inventory = killer.getInventory();
-    inventory.addItem(stack);
+    inventory.addItem(stack.build());
   }
 }

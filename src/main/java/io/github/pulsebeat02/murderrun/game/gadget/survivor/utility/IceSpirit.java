@@ -39,6 +39,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.UUID;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -65,10 +66,8 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
   public IceSpirit(final Game game) {
     super(
       "ice_spirit",
-      Material.ZOMBIE_HEAD,
-      Message.ICE_SPIRIT_NAME.build(),
-      Message.ICE_SPIRIT_LORE.build(),
-      GameProperties.ICE_SPIRIT_COST
+      GameProperties.ICE_SPIRIT_COST,
+      ItemFactory.createGadget("ice_spirit", Material.ZOMBIE_HEAD, Message.ICE_SPIRIT_NAME.build(), Message.ICE_SPIRIT_LORE.build())
     );
     this.game = game;
   }

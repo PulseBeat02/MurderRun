@@ -42,6 +42,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -57,7 +58,11 @@ import org.bukkit.util.BoundingBox;
 public final class EMPBlast extends KillerGadget {
 
   public EMPBlast() {
-    super("emp_blast", Material.TARGET, Message.EMP_BLAST_NAME.build(), Message.EMP_BLAST_LORE.build(), GameProperties.EMP_BLAST_COST);
+    super(
+      "emp_blast",
+      GameProperties.EMP_BLAST_COST,
+      ItemFactory.createGadget("emp_blast", Material.TARGET, Message.EMP_BLAST_NAME.build(), Message.EMP_BLAST_LORE.build())
+    );
   }
 
   @Override

@@ -39,6 +39,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Set;
 import java.util.UUID;
 import org.bukkit.Location;
@@ -64,10 +65,8 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   public DeathHound(final Game game) {
     super(
       "death_hound",
-      Material.BONE,
-      Message.DEATH_HOUND_NAME.build(),
-      Message.DEATH_HOUND_LORE.build(),
-      GameProperties.DEATH_HOUND_COST
+      GameProperties.DEATH_HOUND_COST,
+      ItemFactory.createGadget("death_hound", Material.BONE, Message.DEATH_HOUND_NAME.build(), Message.DEATH_HOUND_LORE.build())
     );
     this.game = game;
   }
