@@ -320,11 +320,21 @@ public final class MurderRun extends JavaPlugin {
     this.audience.console(Message.UNLOAD_DATA.build());
     if (this.arenaDataConfigurationMapper != null) {
       this.arenaDataConfigurationMapper.shutdown();
+    }
+    if (this.lobbyDataConfigurationMapper != null) {
       this.lobbyDataConfigurationMapper.shutdown();
+    }
+    if (this.statisticsConfigurationMapper != null) {
       this.statisticsConfigurationMapper.shutdown();
+    }
+    if (this.arenaCreationManagerConfigurationManager != null) {
       this.arenaCreationManagerConfigurationManager.shutdown();
-      this.configuration.shutdown();
+    }
+    if (this.quickJoinConfiguration != null) {
       this.quickJoinConfiguration.shutdown();
+    }
+    if (this.configuration != null) {
+      this.configuration.shutdown();
     }
   }
 
