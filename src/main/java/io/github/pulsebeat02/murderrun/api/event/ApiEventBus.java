@@ -52,7 +52,6 @@ public final class ApiEventBus implements EventBus {
 
   static {
     final Set<Class<? extends MurderRunEvent>> classes = scanClasses();
-    System.out.println(classes);
     final Map<Class<? extends MurderRunEvent>, MethodHandle> temp = new HashMap<>();
     for (final Class<? extends MurderRunEvent> event : classes) {
       final MethodHandle handle = getHandle(event);

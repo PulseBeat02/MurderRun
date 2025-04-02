@@ -156,8 +156,12 @@ public class EventImplGenerator {
   }
 
   private static Class<?>[] getParameterTypes(final Object... args) {
-    final Class<?>[] paramTypes = new Class<?>[args.length];
-    for (int i = 0; i < args.length; i++) {
+    final int size = args.length;
+    if (size < 2) {
+      throw new AssertionError("The number of parameters must be at least 2");
+    }
+    final Class<?>[] paramTypes = new Class<?>[size];
+    for (int i = 0; i < size; i++) {
       paramTypes[i] = args[i].getClass();
     }
     if (paramTypes[0] != MurderRun.class) {
