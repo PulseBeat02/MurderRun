@@ -26,8 +26,14 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.api.event.contract;
 
 import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import io.github.pulsebeat02.murderrun.api.event.generated.Param;
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 
 public interface GameStatusEvent extends MurderRunEvent {
+  @Param(0)
   GameStatus getGameStatus();
+
+  @Param(1)
+  Game getGame();
 }

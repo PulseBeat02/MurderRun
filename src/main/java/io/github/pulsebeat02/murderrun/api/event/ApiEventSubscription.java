@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 public final class ApiEventSubscription<T extends MurderRunEvent> implements EventSubscription<T> {
 
   private static final Consumer<?> ILLEGAL_HANDLER = t -> {
-    throw new IllegalStateException("Inactive subscription");
+    throw new AssertionError("Inactive subscription");
   };
 
   private final Plugin plugin;

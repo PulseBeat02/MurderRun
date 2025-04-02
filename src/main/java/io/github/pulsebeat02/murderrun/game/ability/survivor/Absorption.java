@@ -50,6 +50,9 @@ public final class Absorption extends SurvivorAbility {
       if (!participant.hasAbility("absorption")) {
         return;
       }
+      if (this.invokeEvent(participant)) {
+        return;
+      }
       participant.addPotionEffects(PotionEffectType.ABSORPTION.createEffect(PotionEffect.INFINITE_DURATION, level));
     });
   }

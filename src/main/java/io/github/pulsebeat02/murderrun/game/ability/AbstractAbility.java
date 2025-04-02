@@ -26,7 +26,11 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.ability;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
+import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.contract.ability.AbilityUseEvent;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -61,6 +65,11 @@ public abstract class AbstractAbility implements Ability {
     if (this instanceof final Listener listener) {
       HandlerList.unregisterAll(listener);
     }
+  }
+
+  public boolean invokeEvent(final GamePlayer player) {
+    final ApiEventBus eventBus = EventBusProvider.getBus();
+    return eventBus.post(AbilityUseEvent.class, this, player);
   }
 
   @Override

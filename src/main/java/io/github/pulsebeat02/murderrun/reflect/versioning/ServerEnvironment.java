@@ -67,7 +67,7 @@ public final class ServerEnvironment {
     final Class<?> clazz = server.getClass();
     final String name = clazz.getName();
     if (name.equals("org.bukkit.craftbukkit.CraftServer")) {
-      versionChecker = "net.citizensnpcs.nms.%s.util.NMSImpl";
+      versionChecker = "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools";
     }
     return versionChecker;
   }
@@ -76,7 +76,7 @@ public final class ServerEnvironment {
     try {
       Class.forName(className);
       return true;
-    } catch (final ClassNotFoundException e) {
+    } catch (final ClassNotFoundException | NoClassDefFoundError e) {
       return false;
     }
   }

@@ -26,13 +26,11 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import io.github.pulsebeat02.murderrun.api.event.EventImplGenerator;
-import io.github.pulsebeat02.murderrun.api.event.contract.GameStatusEvent;
 
 public final class ByteBuddyTest {
 
   public static void main(final String[] args) {
     MockBukkit.mock();
-    EventImplGenerator.generateImplClass(GameStatusEvent.class);
+    // ApiEventBus.init();
   }
 }

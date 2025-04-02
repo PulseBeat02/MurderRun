@@ -55,6 +55,9 @@ public final class Gamble extends KillerAbility {
       if (!participant.hasAbility(GAMBLE_NAME)) {
         return;
       }
+      if (this.invokeEvent(participant)) {
+        return;
+      }
       playerManager.applyToLivingSurvivors(survivor -> this.applyGamble(mechanism, survivor, participant));
     });
   }

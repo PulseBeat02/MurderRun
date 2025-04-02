@@ -23,14 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event;
+package io.github.pulsebeat02.murderrun.api.event.generated;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import java.lang.invoke.MethodHandles;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface NonInvokable {
+public abstract class SimpleMurderRunEvent implements MurderRunEvent {
+
+  private final MurderRun api;
+
+  public SimpleMurderRunEvent(final MurderRun api) {
+    this.api = api;
+  }
+
+  @Override
+  public MurderRun getMurderRun() {
+    return this.api;
+  }
+
+  public MethodHandles.Lookup mhl() {
+    throw new UnsupportedOperationException();
+  }
 }

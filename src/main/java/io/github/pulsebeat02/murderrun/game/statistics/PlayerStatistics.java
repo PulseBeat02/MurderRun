@@ -25,6 +25,10 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.statistics;
 
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
+import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.contract.statistic.StatisticsEvent;
+import io.github.pulsebeat02.murderrun.api.event.contract.statistic.StatisticsType;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.UUIDConverter;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -80,72 +84,72 @@ public final class PlayerStatistics implements Serializable {
   public PlayerStatistics() {}
 
   public void insertFastestWinKiller(final long win) {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(StatisticsEvent.class, win, StatisticsType.FASTEST_KILLER_WIN)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(StatisticsEvent.class, win, StatisticsType.FASTEST_KILLER_WIN)) {
+      return;
+    }
     this.fastestWinKiller = Math.min(this.fastestWinKiller, win);
   }
 
   public void insertFastestWinSurvivor(final long win) {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(StatisticsEvent.class, StatisticsType.FASTEST_SURVIVOR_WIN, win)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(StatisticsEvent.class, StatisticsType.FASTEST_SURVIVOR_WIN, win)) {
+      return;
+    }
     this.fastestWinSurvivor = Math.min(this.fastestWinSurvivor, win);
   }
 
   public void incrementTotalKills() {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_KILLS, 1)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_KILLS, 1)) {
+      return;
+    }
     this.totalKills++;
   }
 
   public void incrementTotalDeaths() {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_DEATHS, 1)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_DEATHS, 1)) {
+      return;
+    }
     this.totalDeaths++;
   }
 
   public void incrementTotalWins() {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_WINS, 1)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_WINS, 1)) {
+      return;
+    }
     this.totalWins++;
     this.calculateWinLossRatio();
     this.incrementTotalGames();
   }
 
   public void incrementTotalLosses() {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_LOSSES, 1)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_LOSSES, 1)) {
+      return;
+    }
     this.totalLosses++;
     this.calculateWinLossRatio();
     this.incrementTotalGames();
   }
 
   public void incrementTotalGames() {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_GAMES, 1)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_GAMES, 1)) {
+      return;
+    }
     this.totalGames++;
   }
 
   public void calculateWinLossRatio() {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
+    final ApiEventBus bus = EventBusProvider.getBus();
     if (this.totalLosses != 0) {
       final float recalculatedWinLossRatio = (float) this.totalWins / this.totalLosses;
-      //      if (bus.post(StatisticsEvent.class, StatisticsType.WIN_LOSS_RATIO, recalculatedWinLossRatio)) {
-      //        return;
-      //      }
+      if (bus.post(StatisticsEvent.class, StatisticsType.WIN_LOSS_RATIO, recalculatedWinLossRatio)) {
+        return;
+      }
       this.winLossRatio = recalculatedWinLossRatio;
     }
   }

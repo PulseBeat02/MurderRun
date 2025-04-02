@@ -27,9 +27,12 @@ package io.github.pulsebeat02.murderrun.api.event.contract.statistic;
 
 import io.github.pulsebeat02.murderrun.api.event.Cancellable;
 import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import io.github.pulsebeat02.murderrun.api.event.generated.Param;
 
 public interface StatisticsEvent<T extends Number> extends MurderRunEvent, Cancellable {
+  @Param(0)
   StatisticsType<T> getStatisticsType();
 
+  @Param(1)
   T getChange();
 }

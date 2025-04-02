@@ -30,6 +30,8 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
 import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.contract.gadget.GadgetUseEvent;
+import io.github.pulsebeat02.murderrun.api.event.contract.gadget.TrapActivateEvent;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerDevice;
@@ -96,7 +98,6 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    final Game game = this.manager.getGame();
     final ItemStack stack = event.getItem();
     if (stack == null) {
       return;
@@ -107,13 +108,16 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
+    final Game game = this.manager.getGame();
+    final GamePlayerManager playerManager = game.getPlayerManager();
+    final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
     final GadgetRightClickPacket packet = GadgetRightClickPacket.create(game, event);
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
     final Gadget tool = requireNonNull(gadgets.get(data));
-    //    if (this.bus.post(GadgetUseEvent.class, tool)) {
-    //      return;
-    //    }
+    if (this.bus.post(GadgetUseEvent.class, tool, gamePlayer)) {
+      return;
+    }
 
     final boolean result = tool.onGadgetRightClick(packet);
     if (result) {
@@ -137,13 +141,15 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
+    final GamePlayerManager playerManager = game.getPlayerManager();
+    final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
     final GadgetDropPacket packet = GadgetDropPacket.create(game, event);
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
     final Gadget tool = requireNonNull(gadgets.get(data));
-    //    if (this.bus.post(GadgetUseEvent.class, tool)) {
-    //      return;
-    //    }
+    if (this.bus.post(GadgetUseEvent.class, tool, gamePlayer)) {
+      return;
+    }
 
     final boolean result = tool.onGadgetDrop(packet);
     if (result) {
@@ -199,6 +205,11 @@ public final class GadgetActionHandler implements Listener {
     final boolean ignore = player instanceof final Killer killer && killer.isIgnoringTraps();
     if (ignore) {
       item.remove();
+      return;
+    }
+
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(TrapActivateEvent.class, gadget, player)) {
       return;
     }
 

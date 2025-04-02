@@ -85,6 +85,10 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
       return;
     }
 
+    if (this.invokeEvent(gamePlayer)) {
+      return;
+    }
+
     final int cooldown = (int) (GameProperties.SONIC_BOOM_COOLDOWN * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);

@@ -59,9 +59,10 @@ public final class Game {
   private MapSchematicIO mapSchematicIO;
   private GameEventsListener callback;
 
+  @SuppressWarnings("all") // checker
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
-    this.status = new GameStatus();
+    this.status = new GameStatus(this);
   }
 
   public void startGame(

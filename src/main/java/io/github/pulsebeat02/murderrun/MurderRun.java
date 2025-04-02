@@ -25,7 +25,9 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun;
 
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
 import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.EventBusTests;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.RelationalDataProvider;
@@ -57,9 +59,12 @@ import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.ClassGraphUtils;
+import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
 public final class MurderRun extends JavaPlugin {
 
@@ -91,6 +96,14 @@ public final class MurderRun extends JavaPlugin {
 
   private AtomicBoolean disabling;
 
+  public MurderRun() {
+    super();
+  }
+
+  public MurderRun(final JavaPluginLoader loader, final PluginDescriptionFile description, final File dataFolder, final File file) {
+    super(loader, description, dataFolder, file);
+  }
+
   @Override
   public void onLoad() {
     this.installDependencies();
@@ -105,6 +118,7 @@ public final class MurderRun extends JavaPlugin {
     this.shutdownPluginData();
     this.stopHostingDaemon();
     this.unloadLookupMaps();
+    this.unloadEventBusApi();
     this.shutdownMetrics();
     this.shutdownAudience();
   }
@@ -122,6 +136,12 @@ public final class MurderRun extends JavaPlugin {
     this.registerExtensions();
     this.loadSchematics();
     this.enableMetrics();
+    new EventBusTests(this).runTestUnits();
+  }
+
+  private void unloadEventBusApi() {
+    final ApiEventBus bus = EventBusProvider.getBus();
+    bus.unsubscribeAll();
   }
 
   private void unloadLookupMaps() {

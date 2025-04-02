@@ -23,24 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event.contract.gadget;
+package io.github.pulsebeat02.murderrun.api.event.generated;
 
-import io.github.pulsebeat02.murderrun.api.event.Cancellable;
-import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
-import io.github.pulsebeat02.murderrun.api.event.generated.Param;
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface GadgetUseEvent extends MurderRunEvent, Cancellable {
-  @Param(0)
-  Gadget getGadget();
-
-  @Param(1)
-  GamePlayer getPlayer();
-
-  default Game getGame() {
-    final GamePlayer player = this.getPlayer();
-    return player.getGame();
-  }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface NonInvokable {
 }

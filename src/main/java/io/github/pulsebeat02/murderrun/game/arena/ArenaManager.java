@@ -25,6 +25,10 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.arena;
 
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
+import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.contract.arena.ArenaEvent;
+import io.github.pulsebeat02.murderrun.api.event.contract.arena.ArenaModificationType;
 import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
 import io.github.pulsebeat02.murderrun.game.map.Schematic;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
@@ -68,12 +72,12 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     final Location spawn,
     final Location truck
   ) {
-    //    final ApiEventBus bus = EventBusProvider.getBus();
+    final ApiEventBus bus = EventBusProvider.getBus();
     final Schematic schematic = Schematic.copyAndCreateSchematic(name, corners, true);
     final Arena arena = new Arena(schematic, name, corners, itemLocations, spawn, truck);
-    //    if (bus.post(ArenaEvent.class, arena, ArenaEvent.ModificationType.CREATION)) {
-    //      return;
-    //    }
+    if (bus.post(ArenaEvent.class, arena, ArenaModificationType.CREATION)) {
+      return;
+    }
     this.arenas.put(name, arena);
   }
 
@@ -86,10 +90,10 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     if (arena == null) {
       return;
     }
-    //    final ApiEventBus bus = EventBusProvider.getBus();
-    //    if (bus.post(ArenaEvent.class, arena, ArenaEvent.ModificationType.DELETION)) {
-    //      return;
-    //    }
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(ArenaEvent.class, arena, ArenaModificationType.DELETION)) {
+      return;
+    }
     final Path data = IOUtils.getPluginDataFolderPath();
     final Path parent = data.resolve("schematics/arenas");
     final Path schematic = parent.resolve(name);

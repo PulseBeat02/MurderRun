@@ -76,6 +76,10 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
       return;
     }
 
+    if (this.invokeEvent(gamePlayer)) {
+      return;
+    }
+
     final int cooldown = (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);

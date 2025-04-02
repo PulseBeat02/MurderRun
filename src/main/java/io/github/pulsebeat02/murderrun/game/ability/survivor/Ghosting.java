@@ -63,6 +63,9 @@ public final class Ghosting extends SurvivorAbility {
       if (!participant.hasAbility(GHOSTING_NAME)) {
         return;
       }
+      if (this.invokeEvent(participant)) {
+        return;
+      }
       final Survivor survivor = (Survivor) participant;
       final DeathManager deathManager = participant.getDeathManager();
       final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);

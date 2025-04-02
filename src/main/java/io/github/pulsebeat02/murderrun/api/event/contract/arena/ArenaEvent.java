@@ -27,15 +27,13 @@ package io.github.pulsebeat02.murderrun.api.event.contract.arena;
 
 import io.github.pulsebeat02.murderrun.api.event.Cancellable;
 import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import io.github.pulsebeat02.murderrun.api.event.generated.Param;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 
 public interface ArenaEvent extends MurderRunEvent, Cancellable {
+  @Param(0)
   Arena getArena();
 
-  ModificationType getModificationType();
-
-  enum ModificationType {
-    CREATION,
-    DELETION,
-  }
+  @Param(1)
+  ArenaModificationType getModificationType();
 }

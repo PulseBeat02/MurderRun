@@ -27,15 +27,13 @@ package io.github.pulsebeat02.murderrun.api.event.contract.lobby;
 
 import io.github.pulsebeat02.murderrun.api.event.Cancellable;
 import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import io.github.pulsebeat02.murderrun.api.event.generated.Param;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 
 public interface LobbyEvent extends MurderRunEvent, Cancellable {
+  @Param(0)
   Lobby getLobby();
 
-  ModificationType getModificationType();
-
-  enum ModificationType {
-    CREATION,
-    DELETION,
-  }
+  @Param(1)
+  LobbyModificationType getModificationType();
 }

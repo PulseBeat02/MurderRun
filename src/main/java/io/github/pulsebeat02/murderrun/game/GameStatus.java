@@ -25,14 +25,19 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game;
 
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
+import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.contract.GameStatusEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class GameStatus {
 
   private final AtomicReference<Status> status;
+  private final Game game;
 
-  public GameStatus() {
+  public GameStatus(final Game game) {
     this.status = new AtomicReference<>(Status.NOT_STARTED);
+    this.game = game;
     this.setStatus(Status.NOT_STARTED);
   }
 
@@ -41,8 +46,8 @@ public final class GameStatus {
   }
 
   public void setStatus(final Status status) {
-    //    final ApiEventBus eventBus = EventBusProvider.getBus();
-    //    eventBus.post(GameStatusEvent.class, this);
+    final ApiEventBus eventBus = EventBusProvider.getBus();
+    eventBus.post(GameStatusEvent.class, this, game);
     this.status.set(status);
   }
 

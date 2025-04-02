@@ -23,24 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event.contract.gadget;
+package io.github.pulsebeat02.murderrun.api.event.contract.arena;
 
-import io.github.pulsebeat02.murderrun.api.event.Cancellable;
-import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
-import io.github.pulsebeat02.murderrun.api.event.generated.Param;
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-
-public interface GadgetUseEvent extends MurderRunEvent, Cancellable {
-  @Param(0)
-  Gadget getGadget();
-
-  @Param(1)
-  GamePlayer getPlayer();
-
-  default Game getGame() {
-    final GamePlayer player = this.getPlayer();
-    return player.getGame();
-  }
+public enum ArenaModificationType {
+  CREATION,
+  DELETION,
 }

@@ -70,6 +70,9 @@ public final class TrapVest extends SurvivorAbility {
       if (!participant.hasAbility(TRAP_VEST_NAME)) {
         return;
       }
+      if (this.invokeEvent(participant)) {
+        return;
+      }
       final DeathManager deathManager = participant.getDeathManager();
       final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleTrapVest(participant), false);
       deathManager.addDeathTask(task);

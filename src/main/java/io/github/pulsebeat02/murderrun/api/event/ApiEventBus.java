@@ -25,38 +25,41 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.api.event;
 
-import static java.lang.invoke.MethodType.methodType;
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import io.github.classgraph.ScanResult;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.api.event.generated.GeneratedEventClass;
+import io.github.pulsebeat02.murderrun.api.event.generated.NonInvokable;
 import io.github.pulsebeat02.murderrun.utils.ClassGraphUtils;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 public final class ApiEventBus implements EventBus {
 
-  private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-  private static final Map<Class<? extends MurderRunEvent>, MethodHandle> KNOWN_EVENT_TYPES;
+  private static final Map<Class<? extends MurderRunEvent>, GeneratedEventClass> EVENT_CACHE;
+  private static final Comparator<EventSubscription<?>> EVENT_COMPARATOR;
 
   static {
-    final Set<Class<? extends MurderRunEvent>> classes = scanClasses();
-    final Map<Class<? extends MurderRunEvent>, MethodHandle> temp = new HashMap<>();
-    for (final Class<? extends MurderRunEvent> event : classes) {
-      final MethodHandle handle = getHandle(event);
-      temp.put(event, handle);
+    try {
+      final Set<Class<? extends MurderRunEvent>> classes = scanClasses();
+      final Map<Class<? extends MurderRunEvent>, GeneratedEventClass> temp = new HashMap<>();
+      for (final Class<? extends MurderRunEvent> event : classes) {
+        final GeneratedEventClass handle = new GeneratedEventClass(event);
+        temp.put(event, handle);
+      }
+      EVENT_CACHE = Map.copyOf(temp);
+      EVENT_COMPARATOR = Comparator.comparingInt(EventSubscription::getPriority);
+    } catch (final Throwable e) {
+      throw new AssertionError(e);
     }
-    KNOWN_EVENT_TYPES = Map.copyOf(temp);
   }
 
   private static Set<Class<? extends MurderRunEvent>> scanClasses() {
@@ -68,32 +71,6 @@ public final class ApiEventBus implements EventBus {
       .filter(Class::isInterface)
       .map(clazz1 -> (Class<? extends MurderRunEvent>) clazz1)
       .collect(Collectors.toSet());
-  }
-
-  private static <T extends MurderRunEvent> MethodHandle getHandle(final Class<T> eventType) {
-    try {
-      final Class<? extends T> clazz = EventImplGenerator.generateImplClass(eventType);
-      final List<Class<?>> parameterTypes = getParameterTypes(eventType);
-      final MethodType type = methodType(void.class, parameterTypes);
-      final MethodType modified = type.insertParameterTypes(0, MurderRun.class, Class.class);
-      return LOOKUP.findConstructor(clazz, modified);
-    } catch (final NoSuchMethodException | IllegalAccessException e) {
-      throw new AssertionError(e);
-    }
-  }
-
-  private static List<Class<?>> getParameterTypes(final Class<?> eventType) {
-    final Method[] methods = eventType.getMethods();
-    final List<Class<?>> parameterTypes = new ArrayList<>();
-    for (final Method method : methods) {
-      final String methodName = method.getName();
-      final int parameterCount = method.getParameterCount();
-      final Class<?> declaringClass = method.getDeclaringClass();
-      if (methodName.startsWith("get") && parameterCount == 0 && !declaringClass.equals(MurderRunEvent.class)) {
-        parameterTypes.add(method.getReturnType());
-      }
-    }
-    return parameterTypes;
   }
 
   private final ListMultimap<Class<? extends MurderRunEvent>, EventSubscription<?>> subscriptions;
@@ -113,18 +90,27 @@ public final class ApiEventBus implements EventBus {
   ) {
     final EventSubscription<T> subscription = new ApiEventSubscription<>(plugin, eventType, handler, priority);
     synchronized (this.subscriptions) {
-      final List<EventSubscription<?>> concreteList = this.subscriptions.get(eventType);
-      concreteList.add(subscription);
-      concreteList.sort(Comparator.comparingInt(EventSubscription::getPriority));
-      final Set<Class<? extends MurderRunEvent>> parentEventTypes = this.findParentEventTypes(eventType);
-      parentEventTypes.remove(eventType);
+      this.sortSubscribers(eventType, subscription);
+      final Set<Class<? extends MurderRunEvent>> parentEventTypes = this.getAllApplicableEvents(eventType);
       for (final Class<? extends MurderRunEvent> parentType : parentEventTypes) {
         final List<EventSubscription<?>> parentList = this.subscriptions.get(parentType);
         parentList.add(subscription);
-        parentList.sort(Comparator.comparingInt(EventSubscription::getPriority));
+        parentList.sort(EVENT_COMPARATOR);
       }
     }
     return subscription;
+  }
+
+  private <T extends MurderRunEvent> @NotNull Set<Class<? extends MurderRunEvent>> getAllApplicableEvents(final Class<T> eventType) {
+    final Set<Class<? extends MurderRunEvent>> parentEventTypes = this.findParentEventTypes(eventType);
+    parentEventTypes.remove(eventType);
+    return parentEventTypes;
+  }
+
+  private <T extends MurderRunEvent> void sortSubscribers(final Class<T> eventType, final EventSubscription<T> subscription) {
+    final List<EventSubscription<?>> concreteList = this.subscriptions.get(eventType);
+    concreteList.add(subscription);
+    concreteList.sort(EVENT_COMPARATOR);
   }
 
   @Override
@@ -223,13 +209,15 @@ public final class ApiEventBus implements EventBus {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public <T extends MurderRunEvent> boolean post(final Class<T> type, final Object... args) {
     if (type.isAnnotationPresent(NonInvokable.class)) {
       final String name = type.getName();
       final String msg = "Event %s is marked as @NonInvokable and cannot be posted".formatted(name);
       throw new AssertionError(msg);
     }
-    final T event = this.findEvent(type, args);
+    final GeneratedEventClass handle = requireNonNull(EVENT_CACHE.get(type));
+    final T event = (T) handle.newInstance(this.api, args);
     synchronized (this.subscriptions) {
       final Collection<Map.Entry<Class<? extends MurderRunEvent>, EventSubscription<?>>> entries = this.subscriptions.entries();
       final List<EventSubscription<?>> sorted = entries
@@ -272,15 +260,5 @@ public final class ApiEventBus implements EventBus {
       }
     }
     return parentTypes;
-  }
-
-  private <T extends MurderRunEvent> T findEvent(final Class<T> type, final Object[] args) {
-    try {
-      final MethodHandle handle = requireNonNull(KNOWN_EVENT_TYPES.get(type));
-      return type.cast(handle.bindTo(this.api).bindTo(type).invokeWithArguments(args));
-    } catch (final Throwable throwable) {
-      final String msg = "Failed to create event of unknown type " + type;
-      throw new AssertionError(msg, throwable);
-    }
   }
 }
