@@ -25,29 +25,110 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.ability;
 
-import java.util.Collection;
+import static java.util.Objects.requireNonNull;
 
-public final class AbilityActionHandler {
+import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import java.util.Collection;
+import java.util.Map;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
+
+public final class AbilityActionHandler implements Listener {
 
   private final AbilityManager manager;
+  private final Map<String, Ability> abilities;
 
   public AbilityActionHandler(final AbilityManager manager) {
+    final AbilityRegistry registry = AbilityRegistry.getRegistry();
+    final MurderRun plugin = manager.getPlugin();
     this.manager = manager;
+    this.abilities = registry.getUsedAbilities(this.manager, plugin);
   }
 
   public void start() {
-    final AbilityRegistry registry = AbilityRegistry.getRegistry();
-    final Collection<Ability> abilities = registry.getAbilities();
-    for (final Ability ability : abilities) {
+    final Server server = Bukkit.getServer();
+    final PluginManager pluginManager = server.getPluginManager();
+    final MurderRun plugin = this.manager.getPlugin();
+    pluginManager.registerEvents(this, plugin);
+    final Collection<Ability> abilityList = this.abilities.values();
+    for (final Ability ability : abilityList) {
       ability.start();
     }
   }
 
   public void shutdown() {
-    final AbilityRegistry registry = AbilityRegistry.getRegistry();
-    final Collection<Ability> abilities = registry.getAbilities();
-    for (final Ability ability : abilities) {
+    final Collection<Ability> abilityList = this.abilities.values();
+    for (final Ability ability : abilityList) {
       ability.shutdown();
     }
+    HandlerList.unregisterAll(this);
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerFish(final PlayerFishEvent event) {
+    final PlayerFishEvent.State state = event.getState();
+    if (state != PlayerFishEvent.State.FISHING) {
+      return;
+    }
+
+    final Player player = event.getPlayer();
+    final Game game = this.manager.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final PlayerInventory inventory = player.getInventory();
+    final EquipmentSlot hand = requireNonNull(event.getHand());
+    final ItemStack rod = requireNonNull(inventory.getItem(hand));
+    if (!PDCUtils.isAbility(rod)) {
+      return;
+    }
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final int cooldown = gamePlayer.getCooldown(rod);
+    if (cooldown > 0) {
+      event.setCancelled(true);
+      return;
+    }
+
+    gamePlayer.setCooldown(rod, 0);
+    event.setCancelled(true);
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerThrow(final PlayerDropItemEvent event) {
+    final Player player = event.getPlayer();
+    final Game game = this.manager.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final Item item = event.getItemDrop();
+    final ItemStack stack = item.getItemStack();
+    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+    if (data == null) {
+      return;
+    }
+    event.setCancelled(true);
   }
 }

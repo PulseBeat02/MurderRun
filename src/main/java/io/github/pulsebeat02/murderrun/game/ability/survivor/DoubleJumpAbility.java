@@ -36,6 +36,7 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.util.Vector;
@@ -62,7 +63,7 @@ public final class DoubleJumpAbility extends SurvivorAbility {
     this.cooldowns = new HashMap<>();
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerToggleFlight(final PlayerToggleFlightEvent event) {
     final GamePlayerManager manager = this.game.getPlayerManager();
     final Player player = event.getPlayer();
@@ -104,7 +105,7 @@ public final class DoubleJumpAbility extends SurvivorAbility {
     gamePlayer.setAbilityCooldowns(DOUBLE_JUMP_NAME, (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20));
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   @SuppressWarnings("deprecation")
   public void onPlayerLand(final PlayerMoveEvent event) {
     final Player player = event.getPlayer();

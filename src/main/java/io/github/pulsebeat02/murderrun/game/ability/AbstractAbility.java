@@ -25,23 +25,13 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.ability;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
-import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 
 public abstract class AbstractAbility implements Ability, Listener {
@@ -62,29 +52,6 @@ public abstract class AbstractAbility implements Ability, Listener {
     final MurderRun plugin = this.game.getPlugin();
     final PluginManager pluginManager = server.getPluginManager();
     pluginManager.registerEvents(this, plugin);
-  }
-
-  @EventHandler
-  public void onPlayerFish(final PlayerFishEvent event) {
-    final PlayerFishEvent.State state = event.getState();
-    if (state != PlayerFishEvent.State.FISHING) {
-      return;
-    }
-
-    final Player player = event.getPlayer();
-    final GamePlayerManager manager = this.game.getPlayerManager();
-    if (!manager.checkPlayerExists(player)) {
-      return;
-    }
-
-    final PlayerInventory inventory = player.getInventory();
-    final EquipmentSlot hand = requireNonNull(event.getHand());
-    final ItemStack rod = requireNonNull(inventory.getItem(hand));
-    if (!PDCUtils.isAbility(rod)) {
-      return;
-    }
-
-    event.setCancelled(true);
   }
 
   @Override

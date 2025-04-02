@@ -35,6 +35,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
@@ -45,7 +46,7 @@ public final class GameBlockBreakEvent extends GameEvent {
     super(game);
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.LOWEST)
   public void onBlockPhysics(final BlockPhysicsEvent event) {
     final Block block = event.getBlock();
     final Game game = this.getGame();
