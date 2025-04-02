@@ -64,8 +64,8 @@ import org.jetbrains.annotations.NotNull;
 public final class IOUtils {
 
   private static final String IP_URL = "https://ipv4.icanhazip.com/";
-  private static final long MAX_FILE_SIZE = 100 * 1024 * 1024;
-  private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024;
+  private static final long MAX_FILE_SIZE = 100 * 1024 * 1024L;
+  private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024L;
 
   private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
