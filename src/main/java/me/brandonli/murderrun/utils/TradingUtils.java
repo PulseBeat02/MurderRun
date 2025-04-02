@@ -188,7 +188,7 @@ public final class TradingUtils {
     return items;
   }
 
-  private static ItemStack getModifiedLoreWithCost(final Gadget gadget) {
+  public static ItemStack getModifiedLoreWithCost(final Gadget gadget) {
     final Item.Builder stack = requireNonNull(gadget.getStackBuilder());
     final ItemStack itemStack = stack.build();
     final ItemStack clone = itemStack.clone();

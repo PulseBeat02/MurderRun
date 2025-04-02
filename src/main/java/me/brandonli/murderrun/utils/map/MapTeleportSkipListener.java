@@ -31,10 +31,8 @@ import com.github.retrooper.packetevents.event.EventManager;
 import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
 import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.lobby.GameManager;
@@ -58,7 +56,7 @@ public final class MapTeleportSkipListener extends SimplePacketListenerAbstract 
 
   public MapTeleportSkipListener(final MurderRun plugin) {
     this.plugin = plugin;
-    this.changing = new HashSet<>();
+    this.changing = ConcurrentHashMap.newKeySet();
   }
 
   public void start() {

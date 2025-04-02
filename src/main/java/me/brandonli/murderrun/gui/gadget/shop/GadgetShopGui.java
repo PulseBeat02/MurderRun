@@ -48,6 +48,7 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.InventoryUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
+import me.brandonli.murderrun.utils.TradingUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
@@ -94,8 +95,7 @@ public final class GadgetShopGui extends ChestGui {
       .stream()
       .map(registry::getGadget)
       .filter(Objects::nonNull)
-      .map(Gadget::getStackBuilder)
-      .map(Item.Builder::build)
+      .map(TradingUtils::getModifiedLoreWithCost)
       .toList();
     final List<ItemStack> items = List.copyOf(raw);
     this.pages.populateWithItemStacks(items, this.plugin);

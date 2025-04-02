@@ -64,7 +64,7 @@ public final class SprintManager {
   private void applySprintLogic(final GamePlayer killer) {
     final boolean sprinting = killer.isSprinting();
     final int level = killer.getFoodLevel();
-    if (sprinting) {
+    if (sprinting && level > 6) {
       killer.setFoodLevel(level - 1);
     } else if (level < 20) {
       killer.setFoodLevel(level + 1);
