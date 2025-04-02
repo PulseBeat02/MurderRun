@@ -30,7 +30,11 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item.Builder;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -53,6 +57,8 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemBuilder implements Builder {
@@ -251,6 +257,27 @@ public final class ItemBuilder implements Builder {
     final ItemMeta meta = this.meta();
     meta.setUnbreakable(true);
     this.stack.setItemMeta(meta);
+    return this;
+  }
+
+  @Override
+  public Builder head(final String url) {
+    final ItemMeta meta = this.meta();
+    if (meta instanceof final SkullMeta skullMeta) {
+      try {
+        final UUID uuid = UUID.randomUUID();
+        final PlayerProfile profile = Bukkit.createPlayerProfile(uuid);
+        final PlayerTextures textures = profile.getTextures();
+        final URI uri = URI.create(url);
+        final URL urlObject = uri.toURL();
+        textures.setSkin(urlObject);
+        profile.setTextures(textures);
+        skullMeta.setOwnerProfile(profile);
+        this.stack.setItemMeta(skullMeta);
+      } catch (final MalformedURLException e) {
+        throw new AssertionError(e);
+      }
+    }
     return this;
   }
 

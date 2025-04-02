@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.map;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
@@ -70,9 +71,8 @@ public final class TruckManager {
     }
 
     final GamePlayerManager manager = game.getPlayerManager();
-    final Component msg = Message.TRUCK_STARTING.build();
-    final Component msg1 = Message.TRUCK_STARTING_TIMER.build(seconds);
-    manager.showTitleForAllParticipants(msg, msg1);
+    final Component msg = Message.TRUCK_STARTING_TIMER.build(seconds);
+    manager.showTitleForAllParticipants(empty(), msg);
   }
 
   private void spawnParticleOnTruck() {

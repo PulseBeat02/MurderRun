@@ -30,8 +30,12 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> KILLER_BOOTS = direct("murderrun.game.killer.boots");
+  NullComponent<Sender> KILLER_LEGGINGS = direct("murderrun.game.killer.leggings");
+  NullComponent<Sender> KILLER_CHESTPLATE = direct("murderrun.game.killer.chestplate");
+  NullComponent<Sender> KILLER_HELMET = direct("murderrun.game.killer.helmet");
+  NullComponent<Sender> SURVIVOR_GEAR_LORE = direct("murderrun.game.gadget.gear.lore");
   UniComponent<Sender, Integer> TRUCK_STARTING_TIMER = direct("murderrun.game.truck.finishing.timer", null);
-  NullComponent<Sender> TRUCK_STARTING = direct("murderrun.game.truck.finishing");
   NullComponent<Sender> INFRARED_VISION_ACTIVATE_TITLE = direct("murderrun.game.gadget.infrared_vision.activate.title");
   NullComponent<Sender> GAME_QUICKJOIN_CREATION_LOAD = direct("murderrun.command.game.quickjoin.loading");
   NullComponent<Sender> GAME_CREATION_LOAD = direct("murderrun.command.game.creation.loading");

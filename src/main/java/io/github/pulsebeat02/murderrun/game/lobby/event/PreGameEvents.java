@@ -47,7 +47,8 @@ public final class PreGameEvents {
       new PlayerDamagePreventionListener(manager),
       new PlayerLeaveListener(manager),
       new PlayerBlockModifyListener(manager),
-      new PlayerProjectileListener(manager)
+      new PlayerProjectileListener(manager),
+      new PlayerArmorEvent(manager)
     );
   }
 

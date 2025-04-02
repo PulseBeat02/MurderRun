@@ -93,6 +93,8 @@ public interface Item {
 
     Builder unbreakable();
 
+    Builder head(final String url);
+
     ItemStack build();
   }
 }

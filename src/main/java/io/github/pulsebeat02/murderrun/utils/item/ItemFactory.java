@@ -45,6 +45,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemFactory {
 
+  private static final String ITEM_SKULL_URL =
+    "http://textures.minecraft.net/texture/6e39fa3aeff671667571d6541f685ccd6c9c4185f5d3a5af5872ec9879a2044";
+
   private ItemFactory() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
@@ -59,14 +62,25 @@ public final class ItemFactory {
   }
 
   public static ItemStack[] createKillerGear() {
-    final ItemStack head = Item.builder(Material.WITHER_SKELETON_SKULL).model(1).build();
+    final ItemStack head = Item.builder(Material.PLAYER_HEAD).name(Message.KILLER_HELMET.build()).head(ITEM_SKULL_URL).build();
     final ItemStack chest = Item.builder(Material.LEATHER_CHESTPLATE)
+      .name(Message.KILLER_CHESTPLATE.build())
       .dye(Color.RED)
       .enchantment(Enchantment.PROTECTION, 3)
       .model(1)
       .build();
-    final ItemStack legs = Item.builder(Material.LEATHER_LEGGINGS).dye(Color.RED).enchantment(Enchantment.PROTECTION, 3).model(1).build();
-    final ItemStack boots = Item.builder(Material.LEATHER_BOOTS).dye(Color.RED).enchantment(Enchantment.PROTECTION, 3).model(1).build();
+    final ItemStack legs = Item.builder(Material.LEATHER_LEGGINGS)
+      .name(Message.KILLER_LEGGINGS.build())
+      .dye(Color.RED)
+      .enchantment(Enchantment.PROTECTION, 3)
+      .model(1)
+      .build();
+    final ItemStack boots = Item.builder(Material.LEATHER_BOOTS)
+      .name(Message.KILLER_BOOTS.build())
+      .dye(Color.RED)
+      .enchantment(Enchantment.PROTECTION, 3)
+      .model(1)
+      .build();
     return new ItemStack[] { boots, legs, chest, head };
   }
 
