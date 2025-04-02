@@ -85,7 +85,7 @@ public final class PlayerStatistics implements Serializable {
 
   public void insertFastestWinKiller(final long win) {
     final ApiEventBus bus = EventBusProvider.getBus();
-    if (bus.post(StatisticsEvent.class, win, StatisticsType.FASTEST_KILLER_WIN)) {
+    if (bus.post(StatisticsEvent.class, StatisticsType.FASTEST_KILLER_WIN, win)) {
       return;
     }
     this.fastestWinKiller = Math.min(this.fastestWinKiller, win);
