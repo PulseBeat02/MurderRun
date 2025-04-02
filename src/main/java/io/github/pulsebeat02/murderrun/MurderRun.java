@@ -130,7 +130,9 @@ public final class MurderRun extends JavaPlugin {
       this.expansion = new MurderRunExpansion(this);
       this.expansion.register();
     }
-    this.partiesManager = new PartiesManager(this);
+    if (Capabilities.PARTIES.isEnabled()) {
+      this.partiesManager = new PartiesManager(this);
+    }
   }
 
   private void shutdownGames() {
