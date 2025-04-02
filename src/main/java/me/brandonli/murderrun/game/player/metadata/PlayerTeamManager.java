@@ -118,7 +118,7 @@ public final class PlayerTeamManager {
     final Component prefix = empty();
     final Component suffix = empty();
     final NameTagVisibility visibility = NameTagVisibility.ALWAYS;
-    final WrapperPlayServerTeams.CollisionRule collision = WrapperPlayServerTeams.CollisionRule.ALWAYS;
+    final WrapperPlayServerTeams.CollisionRule collision = WrapperPlayServerTeams.CollisionRule.NEVER;
     final WrapperPlayServerTeams.OptionData data = WrapperPlayServerTeams.OptionData.ALL;
 
     final WrapperPlayServerTeams.ScoreBoardTeamInfo teamInfo = new WrapperPlayServerTeams.ScoreBoardTeamInfo(

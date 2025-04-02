@@ -37,41 +37,17 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GlowUtils {
 
-  private static final Table<Player, Location, Slime> GLOWING_BLOCKS;
-  private static final String NOT_COLLIDABLE_TEAM_NAME;
-  private static final Team NOT_COLLIDABLE;
-
-  static {
-    GLOWING_BLOCKS = HashBasedTable.create();
-    NOT_COLLIDABLE_TEAM_NAME = "murderrun_not_collidable";
-    final Server server = Bukkit.getServer();
-    final ScoreboardManager manager = requireNonNull(server.getScoreboardManager());
-    final Scoreboard scoreboard = manager.getMainScoreboard();
-    final Team team = scoreboard.getTeam(NOT_COLLIDABLE_TEAM_NAME);
-    if (team == null) {
-      NOT_COLLIDABLE = scoreboard.registerNewTeam(NOT_COLLIDABLE_TEAM_NAME);
-      NOT_COLLIDABLE.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-      NOT_COLLIDABLE.setCanSeeFriendlyInvisibles(true);
-    } else {
-      NOT_COLLIDABLE = team;
-    }
-  }
+  private static final Table<Player, Location, Slime> GLOWING_BLOCKS = HashBasedTable.create();
 
   public GlowUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -120,29 +96,12 @@ public final class GlowUtils {
         slime.setVisibleByDefault(false);
         watcher.showEntity(plugin, slime);
       });
-      final String playerName = watcher.getName();
-      if (!NOT_COLLIDABLE.hasEntry(playerName)) {
-        NOT_COLLIDABLE.addEntry(playerName);
-      }
-      final UUID uuid = spawned.getUniqueId();
-      final String name = uuid.toString();
-      if (!NOT_COLLIDABLE.hasEntry(name)) {
-        NOT_COLLIDABLE.addEntry(name);
-      }
       GLOWING_BLOCKS.put(watcher, target, spawned);
     } else {
       final Slime slime = GLOWING_BLOCKS.remove(watcher, target);
       if (slime != null) {
         slime.remove();
-        final String playerName = watcher.getName();
-        if (!NOT_COLLIDABLE.hasEntry(playerName)) {
-          NOT_COLLIDABLE.removeEntry(playerName);
-        }
-        final UUID uuid = slime.getUniqueId();
-        final String name = uuid.toString();
-        if (!NOT_COLLIDABLE.hasEntry(name)) {
-          NOT_COLLIDABLE.removeEntry(name);
-        }
+        return slime;
       }
     }
     return GLOWING_BLOCKS.get(watcher, target);
