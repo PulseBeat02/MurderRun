@@ -33,7 +33,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -59,7 +59,7 @@ public final class Miniaturizer extends SurvivorGadget {
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
     final int duration = GameProperties.MINIATURIZER_DURATION;
-    final PlayerReference ref = PlayerReference.of(player);
+    final StrictPlayerReference ref = StrictPlayerReference.of(player);
     final double scale = GameProperties.MINIATURIZER_SCALE;
     final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);

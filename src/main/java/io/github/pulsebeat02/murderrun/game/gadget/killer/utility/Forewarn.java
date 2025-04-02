@@ -36,7 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -63,7 +63,7 @@ public final class Forewarn extends KillerGadget {
     item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
-    final PlayerReference reference = PlayerReference.of(killer);
+    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleRepeatedTask(() -> this.handleInnocents(manager, killer), 0, 20L, reference);
 
     final PlayerAudience audience = player.getAudience();

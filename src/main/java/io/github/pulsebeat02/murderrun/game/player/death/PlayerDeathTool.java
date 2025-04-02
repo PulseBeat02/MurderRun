@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
@@ -45,7 +44,6 @@ import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.MirrorTrait;
 import net.citizensnpcs.trait.SleepTrait;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -74,7 +72,6 @@ public final class PlayerDeathTool {
     final DeathManager manager = gamePlayer.getDeathManager();
     gamePlayer.apply(player -> {
       manager.setCorpse(this.spawnDeadNPC(player));
-      this.announcePlayerDeath(player);
       this.summonCarParts(player);
       this.preparePlayer(player);
     });
@@ -110,13 +107,6 @@ public final class PlayerDeathTool {
     player.setGameMode(GameMode.SPECTATOR);
     final PlayerInventory inventory = player.getInventory();
     inventory.clear();
-  }
-
-  private void announcePlayerDeath(final Player dead) {
-    final String name = dead.getDisplayName();
-    final Component title = Message.PLAYER_DEATH.build(name);
-    final GamePlayerManager manager = this.game.getPlayerManager();
-    manager.sendMessageToAllParticipants(title);
   }
 
   private void summonCarParts(final Player player) {

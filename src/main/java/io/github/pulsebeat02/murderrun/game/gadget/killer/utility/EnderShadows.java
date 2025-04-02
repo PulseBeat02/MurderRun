@@ -39,7 +39,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.*;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.MergedReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.citizensnpcs.api.npc.MetadataStore;
@@ -108,8 +108,8 @@ public final class EnderShadows extends KillerGadget {
     audience.sendMessage(msg);
 
     final Entity shadow = this.getNPCEntity(manager, spawn);
-    final PlayerReference survivorRef = PlayerReference.of(survivor);
-    final PlayerReference killerRef = PlayerReference.of(killer);
+    final StrictPlayerReference survivorRef = StrictPlayerReference.of(survivor);
+    final StrictPlayerReference killerRef = StrictPlayerReference.of(killer);
     final MergedReference<Participant, Participant> merged = MergedReference.of(survivorRef, killerRef);
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivorTeleport(killer, survivor, shadow), 2 * 20L, 20L, merged);
 

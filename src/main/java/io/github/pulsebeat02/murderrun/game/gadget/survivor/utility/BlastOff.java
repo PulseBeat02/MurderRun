@@ -36,7 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -82,7 +82,7 @@ public final class BlastOff extends SurvivorGadget {
     scheduler.scheduleAfterDeath(() -> this.resetPlayer(killer, before), firework);
     killer.setInvulnerable(true);
 
-    final PlayerReference reference = PlayerReference.of(killer);
+    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleTask(() -> player.setInvulnerable(false), 4 * 20L, reference);
 
     final PlayerAudience audience = player.getAudience();

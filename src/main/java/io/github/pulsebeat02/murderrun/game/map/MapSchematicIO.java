@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
@@ -86,12 +87,17 @@ public final class MapSchematicIO {
     final Path pluginParent = requireNonNull(path.getParent());
     final Path moreParent = requireNonNull(pluginParent.getParent());
     final Path world = moreParent.resolve(name);
-    IOUtils.deleteExistingDirectory(world);
+    if (Files.exists(world)) {
+      IOUtils.deleteExistingDirectory(world);
+    }
   }
 
   private void unloadWorld() {
     final String name = this.uuid.toString();
-    final World world = requireNonNull(Bukkit.getWorld(name));
+    final World world = Bukkit.getWorld(name);
+    if (world == null) {
+      return;
+    }
     Bukkit.unloadWorld(world, false);
   }
 

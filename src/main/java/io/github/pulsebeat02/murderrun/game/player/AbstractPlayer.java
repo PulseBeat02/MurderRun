@@ -28,17 +28,14 @@ package io.github.pulsebeat02.murderrun.game.player;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
@@ -57,7 +54,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableJump(final GameScheduler scheduler, final long ticks) {
-    final PlayerReference reference = PlayerReference.of(this);
+    final StrictPlayerReference reference = StrictPlayerReference.of(this);
     final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.JUMP_STRENGTH));
     final double before = instance.getValue();
     instance.setBaseValue(0.0);
@@ -66,7 +63,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableWalkNoFOVEffects(final GameScheduler scheduler, final long ticks) {
-    final PlayerReference reference = PlayerReference.of(this);
+    final StrictPlayerReference reference = StrictPlayerReference.of(this);
     this.apply(player -> {
         final float before = player.getWalkSpeed();
         player.setWalkSpeed(0.0f);

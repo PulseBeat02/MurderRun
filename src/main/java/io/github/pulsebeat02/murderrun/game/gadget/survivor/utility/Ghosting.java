@@ -39,7 +39,7 @@ import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -106,7 +106,7 @@ public final class Ghosting extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
-    final PlayerReference reference = PlayerReference.of(player);
+    final StrictPlayerReference reference = StrictPlayerReference.of(player);
     scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, GameProperties.GHOSTING_WOOL_DELAY, reference);
   }
 

@@ -33,7 +33,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -64,7 +64,7 @@ public final class Bush extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     final Location location = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    final PlayerReference reference = PlayerReference.of(player);
+    final StrictPlayerReference reference = StrictPlayerReference.of(player);
     scheduler.scheduleRepeatedTask(() -> this.createFacingLocation(player, location), 0, 5, duration, reference);
 
     final ItemStack[] before = inventory.getArmorContents();

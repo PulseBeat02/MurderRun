@@ -62,18 +62,29 @@ public abstract class ResourcePackProvider implements PackProvider {
   }
 
   public void cachePack() {
+    final ResourcePackInfo info = this.getMainResourceInfo();
+    final ResourcePackInfo other = this.cacheProvidedResourcesExceptionally();
+    final Component message = Message.RESOURCEPACK_PROMPT.build();
+    final Collection<ResourcePackInfo> infos = other == null ? Lists.newArrayList(info) : Lists.newArrayList(other, info);
+    final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
+    final boolean required = GameProperties.FORCE_RESOURCEPACK;
+    this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+  }
+
+  private @Nullable ResourcePackInfo cacheProvidedResourcesExceptionally() {
     try {
-      final ResourcePackInfo info = this.getMainResourceInfo();
-      final ResourcePackInfo other = this.getResourceInfo();
-      final Component message = Message.RESOURCEPACK_PROMPT.build();
-      final Collection<ResourcePackInfo> infos = other == null ? Lists.newArrayList(info) : Lists.newArrayList(other, info);
-      final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
-      final boolean required = GameProperties.FORCE_RESOURCEPACK;
-      this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+      return this.cacheProvidedResources();
     } catch (final AssertionError e) {
-      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private @Nullable ResourcePackInfo cacheProvidedResources() {
+    try {
+      return this.getResourceInfo();
+    } catch (final AssertionError e) {
       final String msg =
-        "Unable to retrieve resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
+        "Timed-out while retrieving resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
       throw new AssertionError(msg);
     }
   }

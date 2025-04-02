@@ -35,7 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -68,7 +68,7 @@ public final class HeatSeeker extends KillerGadget {
     }
     item.remove();
 
-    final PlayerReference reference = PlayerReference.of(killer);
+    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.scheduleTasks(manager, killer), 0, 2 * 20L, reference);
 

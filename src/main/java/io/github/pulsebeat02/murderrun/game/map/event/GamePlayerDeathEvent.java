@@ -35,9 +35,11 @@ import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
 import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.List;
 import java.util.stream.Stream;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
@@ -69,6 +71,8 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final Location current = player.getLocation();
     player.setLastDeathLocation(current);
     event.setDroppedExp(0);
+    event.setDeathMessage(null);
+    this.announcePlayerDeath(player);
 
     if (deathManager.checkDeathCancellation() && !isLogging) {
       event.setKeepInventory(true);
@@ -114,6 +118,14 @@ public final class GamePlayerDeathEvent extends GameEvent {
     if (this.allKillersDead()) {
       game.finishGame(GameResult.INNOCENTS);
     }
+  }
+
+  private void announcePlayerDeath(final Player dead) {
+    final Game game = this.getGame();
+    final String name = dead.getDisplayName();
+    final Component title = Message.PLAYER_DEATH.build(name);
+    final GamePlayerManager manager = game.getPlayerManager();
+    manager.sendMessageToAllParticipants(title);
   }
 
   private void playDeathSoundEffect() {

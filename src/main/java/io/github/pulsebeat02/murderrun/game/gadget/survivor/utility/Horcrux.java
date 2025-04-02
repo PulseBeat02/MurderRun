@@ -34,7 +34,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Objects;
 import org.bukkit.*;
@@ -63,7 +63,7 @@ public final class Horcrux extends SurvivorGadget {
     item.setVelocity(new Vector(0, 0, 0));
     item.setInvulnerable(true);
 
-    final Runnable task = () -> createDeathTask(item, player, clone);
+    final Runnable task = () -> this.createDeathTask(item, player, clone);
     final PlayerDeathTask deathTask = new PlayerDeathTask(task, true);
     final DeathManager manager = player.getDeathManager();
     manager.addDeathTask(deathTask);
@@ -74,15 +74,15 @@ public final class Horcrux extends SurvivorGadget {
     return false;
   }
 
-  private void createDeathTask(Item item, GamePlayer player, Location respawnPoint) {
+  private void createDeathTask(final Item item, final GamePlayer player, final Location respawnPoint) {
     if (item.isValid()) {
       item.remove();
     }
-    startSpectatorRespawn(player, respawnPoint.clone());
+    this.startSpectatorRespawn(player, respawnPoint.clone());
   }
 
   private void startSpectatorRespawn(final GamePlayer player, final Location respawnPoint) {
-    final PlayerReference ref = PlayerReference.of(player);
+    final StrictPlayerReference ref = StrictPlayerReference.of(player);
     final PlayerAudience audience = player.getAudience();
     player.setGameMode(GameMode.SPECTATOR);
 
@@ -91,7 +91,7 @@ public final class Horcrux extends SurvivorGadget {
     scheduler.scheduleTask(
       () -> {
         audience.sendMessage(Message.HORCRUX_ACTIVATE.build());
-        startCountdown(player, respawnPoint);
+        this.startCountdown(player, respawnPoint);
       },
       20L,
       ref
@@ -100,19 +100,19 @@ public final class Horcrux extends SurvivorGadget {
 
   private void startCountdown(final GamePlayer player, final Location respawnPoint) {
     final GameScheduler scheduler = player.getGame().getScheduler();
-    final PlayerReference ref = PlayerReference.of(player);
-    scheduler.scheduleTask(() -> executeFinalRespawn(player, respawnPoint), COUNTDOWN_SECONDS * TICK_PER_SECOND, ref);
+    final StrictPlayerReference ref = StrictPlayerReference.of(player);
+    scheduler.scheduleTask(() -> this.executeFinalRespawn(player, respawnPoint), COUNTDOWN_SECONDS * TICK_PER_SECOND, ref);
   }
 
   private void executeFinalRespawn(final GamePlayer player, final Location point) {
-    final Location safeLocation = findSafeLocation(point);
+    final Location safeLocation = this.findSafeLocation(point);
     player.setGameMode(GameMode.SURVIVAL);
     player.teleport(safeLocation);
     player.setInvulnerable(true);
 
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final PlayerReference reference = PlayerReference.of(player);
+    final StrictPlayerReference reference = StrictPlayerReference.of(player);
     scheduler.scheduleTask(() -> player.setInvulnerable(false), 3 * 20L, reference);
   }
 
@@ -125,9 +125,9 @@ public final class Horcrux extends SurvivorGadget {
       final Block block = loc.getBlock();
       blockType = block.getType();
       if (!blockType.isAir()) {
-        World world = Objects.requireNonNull(loc.getWorld());
+        final World world = Objects.requireNonNull(loc.getWorld());
         final Block highestBlock = world.getHighestBlockAt(loc);
-        Location highestBlockLocation = highestBlock.getLocation();
+        final Location highestBlockLocation = highestBlock.getLocation();
         loc = highestBlockLocation.add(0, 1, 0);
       }
     }

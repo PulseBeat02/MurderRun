@@ -33,7 +33,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -54,7 +54,7 @@ public final class Expander extends KillerGadget {
     final Item item = packet.getItem();
     final double scale = GameProperties.EXPANDER_SCALE;
     final int duration = GameProperties.EXPANDER_DURATION;
-    final PlayerReference ref = PlayerReference.of(player);
+    final StrictPlayerReference ref = StrictPlayerReference.of(player);
     final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);
     scheduler.scheduleTask(() -> instance.setBaseValue(1.0), duration, ref);

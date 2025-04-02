@@ -33,7 +33,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,7 +58,7 @@ public final class IcePath extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final PlayerReference reference = PlayerReference.of(player);
+    final StrictPlayerReference reference = StrictPlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(game, player), 0, 4, 20 * 60L, reference);
 

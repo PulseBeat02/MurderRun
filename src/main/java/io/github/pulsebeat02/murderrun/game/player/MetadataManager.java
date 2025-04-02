@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import java.util.Collection;
 import java.util.HashMap;
@@ -135,7 +135,7 @@ public final class MetadataManager {
   }
 
   public void setEntityGlowing(final GameScheduler scheduler, final GamePlayer participant, final ChatColor color, final long time) {
-    final PlayerReference reference = PlayerReference.of(participant);
+    final StrictPlayerReference reference = StrictPlayerReference.of(participant);
     this.setEntityGlowing(participant, color, true);
     scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time, reference);
   }
@@ -210,7 +210,7 @@ public final class MetadataManager {
   }
 
   public void hideNameTag(final GameScheduler scheduler, final long ticks) {
-    final PlayerReference reference = PlayerReference.of(this.gamePlayer);
+    final StrictPlayerReference reference = StrictPlayerReference.of(this.gamePlayer);
     this.setNameTagStatus(true);
     scheduler.scheduleTask(() -> this.setNameTagStatus(false), ticks, reference);
   }

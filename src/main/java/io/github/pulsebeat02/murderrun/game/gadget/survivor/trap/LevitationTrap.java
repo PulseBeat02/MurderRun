@@ -32,7 +32,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.awt.Color;
 import org.bukkit.Location;
@@ -68,7 +68,7 @@ public final class LevitationTrap extends SurvivorTrap {
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, duration, 1));
     murderer.teleport(clone);
 
-    final PlayerReference reference = PlayerReference.of(murderer);
+    final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> murderer.teleport(location), duration, reference);
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(murderer), 0, 5, duration, reference);

@@ -38,7 +38,7 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.phase.PlayerStartupTool;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.LoosePlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
@@ -86,7 +86,7 @@ public final class ResurrectionStone extends SurvivorGadget {
       return true;
     }
 
-    final PlayerReference reference = PlayerReference.of(closest);
+    final LoosePlayerReference reference = LoosePlayerReference.of(closest);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L, reference);
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L, reference);

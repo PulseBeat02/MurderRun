@@ -36,7 +36,7 @@ import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.PlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
@@ -70,7 +70,7 @@ public final class FloorIsLava extends KillerGadget {
     }
     item.remove();
 
-    final PlayerReference reference = PlayerReference.of(killer);
+    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L, reference);
 
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
@@ -85,7 +85,7 @@ public final class FloorIsLava extends KillerGadget {
 
   private void handleMovement(final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
     final Location previous = player.getLocation();
-    final PlayerReference reference = PlayerReference.of(killer);
+    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 3 * 20L, reference);
   }
 
