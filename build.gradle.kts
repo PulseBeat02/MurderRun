@@ -1,4 +1,5 @@
 import xyz.jpenilla.runtask.task.AbstractRun
+import java.io.ByteArrayOutputStream
 
 plugins {
     java
@@ -9,6 +10,7 @@ plugins {
     id("com.diffplug.spotless") version "7.0.0.BETA4"
     id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.2.0"
     id("com.github.node-gradle.node") version "7.1.0"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.16"
 }
 
 apply(plugin = "org.checkerframework")
@@ -84,6 +86,8 @@ dependencies {
     compileOnly(libs.adventureApi)
     compileOnly(libs.creativeSerializerMinecraft)
     compileOnly(libs.packetEvents)
+
+    paperweight.paperDevBundle("1.21.5-no-moonrise-SNAPSHOT")
 
     // Testing Dependencies
     testImplementation(libs.nettyAll)
@@ -235,9 +239,20 @@ tasks {
         workDir = file("build/nodejs")
     }
 
+    fun getCurrentGitCommit(): String {
+        val stdout = ByteArrayOutputStream()
+        project.exec {
+            executable = "git"
+            args = listOf("rev-parse", "--short", "HEAD")
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+
     jar {
         manifest {
             attributes("Main-Class" to "me.brandonli.murderrun.secret.Main")
+            attributes["Git-Commit"] = getCurrentGitCommit()
         }
     }
 }

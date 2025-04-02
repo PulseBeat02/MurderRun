@@ -28,7 +28,6 @@ package me.brandonli.murderrun;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
-import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.api.event.ApiEventBus;
 import me.brandonli.murderrun.api.event.EventBusProvider;
@@ -63,11 +62,10 @@ import me.brandonli.murderrun.resourcepack.provider.PackProviderMethod;
 import me.brandonli.murderrun.resourcepack.provider.ResourcePackProvider;
 import me.brandonli.murderrun.utils.ClassGraphUtils;
 import me.brandonli.murderrun.utils.screen.ScreenUtils;
+import me.brandonli.murderrun.utils.versioning.VersionChecker;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 
 public final class MurderRun extends JavaPlugin {
 
@@ -99,14 +97,7 @@ public final class MurderRun extends JavaPlugin {
   private NexoManager nexoManager;
 
   private AtomicBoolean disabling;
-
-  public MurderRun() {
-    super();
-  }
-
-  public MurderRun(final JavaPluginLoader loader, final PluginDescriptionFile description, final File dataFolder, final File file) {
-    super(loader, description, dataFolder, file);
-  }
+  private VersionChecker versionChecker;
 
   @Override
   public void onLoad() {
@@ -123,6 +114,7 @@ public final class MurderRun extends JavaPlugin {
     this.stopHostingDaemon();
     this.unloadLookupMaps();
     this.unloadEventBusApi();
+    this.shutdownVersionChecker();
     this.shutdownMetrics();
     this.shutdownAudience();
   }
@@ -140,7 +132,17 @@ public final class MurderRun extends JavaPlugin {
     this.registerExtensions();
     this.loadSchematics();
     this.enableMetrics();
+    this.startVersionChecker();
     this.testEventBusApi();
+  }
+
+  private void shutdownVersionChecker() {
+    this.versionChecker.shutdown();
+  }
+
+  private void startVersionChecker() {
+    this.versionChecker = new VersionChecker(this);
+    this.versionChecker.start();
   }
 
   private void testEventBusApi() {
@@ -377,5 +379,9 @@ public final class MurderRun extends JavaPlugin {
 
   public GameManager getGameManager() {
     return this.gameManager;
+  }
+
+  public VersionChecker getVersionChecker() {
+    return this.versionChecker;
   }
 }

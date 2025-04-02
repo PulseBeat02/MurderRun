@@ -43,14 +43,11 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GlowUtils {
 
   private static final Table<Player, Location, Slime> GLOWING_BLOCKS = HashBasedTable.create();
-  private static final PotionEffect GLOWING_EFFECT = new PotionEffect(PotionEffectType.GLOWING, PotionEffect.INFINITE_DURATION, 0);
 
   public GlowUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");

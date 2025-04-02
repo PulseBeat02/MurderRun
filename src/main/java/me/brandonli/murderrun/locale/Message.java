@@ -30,6 +30,7 @@ import static me.brandonli.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  BiComponent<Sender, Integer, String> PLUGIN_OUTDATED = direct("murderrun.outdated", null, null);
   NullComponent<Sender> DEMO_LOAD = direct("murderrun.command.demo.load");
   NullComponent<Sender> DEMO_DONE = direct("murderrun.command.demo.done");
   NullComponent<Sender> DEMO_CONFIRM = direct("murderrun.command.demo.confirm");
