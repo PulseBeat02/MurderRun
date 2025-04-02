@@ -83,8 +83,7 @@ public final class Horcrux extends SurvivorGadget {
     player.setGameMode(GameMode.SPECTATOR);
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> this.startCountdown(player, respawnPoint), 0L, ref
-    );
+    scheduler.scheduleTask(() -> this.startCountdown(player, respawnPoint), 0L, ref);
   }
 
   private void startCountdown(final GamePlayer player, final Location respawnPoint) {
