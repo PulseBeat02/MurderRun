@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
-import io.github.pulsebeat02.murderrun.immutable.Holder;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
@@ -53,6 +52,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -61,12 +61,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.incendo.cloud.type.tuple.Pair;
 
 public final class PortalGun extends KillerGadget implements Listener {
 
-  private final Map<String, Pair<Holder<Location>, Holder<Location>>> portals;
+  private final Map<String, Pair<Portal, Portal>> portals;
   private final Game game;
 
   public PortalGun(final Game game) {
@@ -105,10 +106,6 @@ public final class PortalGun extends KillerGadget implements Listener {
 
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = inventory.getItemInMainHand();
-    if (stack == null) {
-      return;
-    }
-
     if (!PDCUtils.isPortalGun(stack)) {
       return;
     }
@@ -128,65 +125,84 @@ public final class PortalGun extends KillerGadget implements Listener {
       return;
     }
 
-    if (!this.portals.containsKey(uuid)) {
-      final Pair<Holder<Location>, Holder<Location>> empty = Pair.of(empty(), empty());
+    Pair<Portal, Portal> pair = this.portals.get(uuid);
+    if (pair == null) {
+      final Portal emptyPortal = new Portal(null);
+      final Portal emptyPortal2 = new Portal(null);
+      final Pair<Portal, Portal> empty = Pair.of(emptyPortal, emptyPortal2);
       this.portals.put(uuid, empty);
     }
 
     // true -> spawn sending portal
     // false -> spawn receiving portal
-    final Pair<Holder<Location>, Holder<Location>> pair = this.portals.get(uuid);
+    pair = requireNonNull(this.portals.get(uuid));
+    final GameScheduler scheduler = this.game.getScheduler();
     final Location raw = arrow.getLocation();
     final Location teleportLocation = raw.add(0, -1, 0);
-    final Holder<Location> holder = Holder.of(teleportLocation);
-
-    final Holder<Location> check = pair.first();
-    if (status && check.isPresent()) {
+    final Portal holder = new Portal(teleportLocation);
+    final Portal check = pair.first();
+    if (status && check.isValidPortal()) {
+      final Projectile projectile = event.getEntity();
+      projectile.remove();
+      event.setCancelled(true);
       return;
     }
 
+    final boolean first;
     if (status) {
-      final Holder<Location> receiving = pair.second();
-      final Pair<Holder<Location>, Holder<Location>> value = Pair.of(holder, receiving);
+      final Portal receiving = pair.second();
+      final Pair<Portal, Portal> value = Pair.of(holder, receiving);
       this.portals.put(uuid, value);
+      first = true;
     } else {
-      final Holder<Location> sending = pair.first();
-      final Pair<Holder<Location>, Holder<Location>> value = Pair.of(sending, holder);
+      final Portal sending = pair.first();
+      final Pair<Portal, Portal> value = Pair.of(sending, holder);
       this.portals.put(uuid, value);
+      first = false;
     }
     PDCUtils.setPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, !status);
 
-    final GameScheduler scheduler = this.game.getScheduler();
-    final Pair<Holder<Location>, Holder<Location>> newPair = this.portals.get(uuid);
+    final Pair<Portal, Portal> newPair = this.portals.get(uuid);
     final Location location = raw.add(0, 2, 0);
-    this.spawnPortal(manager, scheduler, newPair, location);
+    final int[] ids = this.spawnPortal(manager, scheduler, newPair, location);
+    final Portal portal = first ? pair.first() : pair.second();
+    for (final Integer id : ids) {
+      portal.addTask(id);
+    }
   }
 
-  private void spawnPortal(
+  private int[] spawnPortal(
     final GamePlayerManager manager,
     final GameScheduler scheduler,
-    final Pair<Holder<Location>, Holder<Location>> parent,
+    final Pair<Portal, Portal> parent,
     final Location center
   ) {
-    this.spawnPortalEffects(scheduler, center);
-    this.handlePortalTeleportationLogic(manager, scheduler, parent);
+    final int first = this.spawnPortalEffects(scheduler, center);
+    final int second = this.handlePortalTeleportationLogic(manager, scheduler, parent);
+    return new int[] { first, second };
   }
 
-  private void handlePortalTeleportationLogic(
+  private int handlePortalTeleportationLogic(
     final GamePlayerManager manager,
     final GameScheduler scheduler,
-    final Pair<Holder<Location>, Holder<Location>> parent
+    final Pair<Portal, Portal> parent
   ) {
-    final Holder<Location> sending = parent.first();
-    final Holder<Location> receiving = parent.second();
-    if (sending.isEmpty() || receiving.isEmpty()) {
-      return;
+    final Portal sending = parent.first();
+    final Portal receiving = parent.second();
+    if (sending.isInvalidPortal() || receiving.isInvalidPortal()) {
+      return -1;
     }
 
-    final Location sendingLocation = sending.get();
-    final Location receivingLocation = receiving.get();
+    final Location sendingLocation = requireNonNull(sending.getLocation());
+    final Location receivingLocation = requireNonNull(receiving.getLocation());
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> this.handleParticipants(manager, sendingLocation, receivingLocation), 0L, 20L, reference);
+    final BukkitTask bukkitTask = scheduler.scheduleRepeatedTask(
+      () -> this.handleParticipants(manager, sendingLocation, receivingLocation),
+      0L,
+      20L,
+      reference
+    );
+    return bukkitTask.getTaskId();
   }
 
   private void handleParticipants(final GamePlayerManager manager, final Location sendingLocation, final Location receivingLocation) {
@@ -220,7 +236,7 @@ public final class PortalGun extends KillerGadget implements Listener {
     }
   }
 
-  private void spawnPortalEffects(final GameScheduler scheduler, final Location center) {
+  private int spawnPortalEffects(final GameScheduler scheduler, final Location center) {
     final World world = requireNonNull(center.getWorld());
     final double radiusX = 0.75d;
     final double radiusY = 1.5d;
@@ -228,7 +244,8 @@ public final class PortalGun extends KillerGadget implements Listener {
     final int insideParticleCount = 20;
     final NullReference reference = NullReference.of();
     final Runnable task = () -> this.handlePortalEffects(center, particleCount, radiusX, radiusY, world, insideParticleCount);
-    scheduler.scheduleRepeatedTask(task, 0L, 2L, reference);
+    final BukkitTask bukkitTask = scheduler.scheduleRepeatedTask(task, 0L, 2L, reference);
+    return bukkitTask.getTaskId();
   }
 
   private void handlePortalEffects(

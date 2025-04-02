@@ -28,13 +28,12 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer.utility.tool;
 import java.util.Collection;
 import java.util.HashSet;
 import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitTask;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Portal {
 
   private @Nullable Location location;
-  private final Collection<BukkitTask> tasks;
+  private final Collection<Integer> tasks;
 
   public Portal(final @Nullable Location location) {
     this.location = location;
@@ -57,11 +56,11 @@ public final class Portal {
     this.location = location;
   }
 
-  public Collection<BukkitTask> getTasks() {
+  public Collection<Integer> getTasks() {
     return this.tasks;
   }
 
-  public void addTask(final BukkitTask task) {
+  public void addTask(final Integer task) {
     this.tasks.add(task);
   }
 }
