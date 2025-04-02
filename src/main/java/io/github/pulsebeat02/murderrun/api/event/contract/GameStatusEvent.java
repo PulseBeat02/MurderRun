@@ -23,6 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event.arena;
+package io.github.pulsebeat02.murderrun.api.event.contract;
 
-public interface ArenaDeletionEvent extends ArenaEvent {}
+import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
+
+public interface GameStatusEvent extends MurderRunEvent {
+  GameStatus getGameStatus();
+}

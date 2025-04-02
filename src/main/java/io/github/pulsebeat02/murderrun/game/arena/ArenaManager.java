@@ -27,8 +27,7 @@ package io.github.pulsebeat02.murderrun.game.arena;
 
 import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
 import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
-import io.github.pulsebeat02.murderrun.api.event.arena.ArenaCreationEvent;
-import io.github.pulsebeat02.murderrun.api.event.arena.ArenaDeletionEvent;
+import io.github.pulsebeat02.murderrun.api.event.contract.arena.ArenaEvent;
 import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
 import io.github.pulsebeat02.murderrun.game.map.Schematic;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
@@ -75,8 +74,10 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     final ApiEventBus bus = EventBusProvider.getBus();
     final Schematic schematic = Schematic.copyAndCreateSchematic(name, corners, true);
     final Arena arena = new Arena(schematic, name, corners, itemLocations, spawn, truck);
+    if (bus.post(ArenaEvent.class, arena, ArenaEvent.ModificationType.CREATION)) {
+      return;
+    }
     this.arenas.put(name, arena);
-    bus.post(ArenaCreationEvent.class, arena);
   }
 
   public @Nullable Arena getArena(final String name) {
@@ -89,12 +90,14 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
       return;
     }
     final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(ArenaEvent.class, arena, ArenaEvent.ModificationType.DELETION)) {
+      return;
+    }
     final Path data = IOUtils.getPluginDataFolderPath();
     final Path parent = data.resolve("schematics/arenas");
     final Path schematic = parent.resolve(name);
     IOUtils.deleteFileIfExisting(schematic);
     this.arenas.remove(name);
-    bus.post(ArenaDeletionEvent.class, arena);
   }
 
   public Map<String, Arena> getArenas() {

@@ -27,7 +27,7 @@ package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
 import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
-import io.github.pulsebeat02.murderrun.api.event.game.GameStatusEvent;
+import io.github.pulsebeat02.murderrun.api.event.contract.GameStatusEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class GameStatus {

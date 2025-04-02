@@ -28,6 +28,9 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
+import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.contract.gadget.GadgetUseEvent;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
@@ -65,9 +68,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class GadgetActionHandler implements Listener {
 
   private final GadgetManager manager;
+  private final ApiEventBus bus;
 
   public GadgetActionHandler(final GadgetManager manager) {
     this.manager = manager;
+    this.bus = EventBusProvider.getBus();
   }
 
   public void start() {
@@ -107,6 +112,10 @@ public final class GadgetActionHandler implements Listener {
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
     final Gadget tool = requireNonNull(gadgets.get(data));
+    if (this.bus.post(GadgetUseEvent.class, tool)) {
+      return;
+    }
+
     final boolean result = tool.onGadgetRightClick(packet);
     if (result) {
       event.setCancelled(true);
@@ -133,6 +142,10 @@ public final class GadgetActionHandler implements Listener {
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
     final Gadget tool = requireNonNull(gadgets.get(data));
+    if (this.bus.post(GadgetUseEvent.class, tool)) {
+      return;
+    }
+
     final boolean result = tool.onGadgetDrop(packet);
     if (result) {
       event.setCancelled(true);

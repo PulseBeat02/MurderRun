@@ -25,6 +25,9 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.statistics;
 
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
+import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.contract.statistic.StatisticsEvent;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.UUIDConverter;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -71,49 +74,77 @@ public final class PlayerStatistics implements Serializable {
   @Column(name = "win_loss_ratio")
   private float winLossRatio;
 
+  private transient ApiEventBus bus;
+
   public PlayerStatistics(final UUID uuid) {
     this.uuid = uuid;
     this.fastestWinKiller = -1;
     this.fastestWinSurvivor = -1;
+    this.bus = EventBusProvider.getBus();
   }
 
   public PlayerStatistics() {}
 
   public void insertFastestWinKiller(final long win) {
+    if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.FASTEST_KILLER_WIN, win)) {
+      return;
+    }
     this.fastestWinKiller = Math.min(this.fastestWinKiller, win);
   }
 
   public void insertFastestWinSurvivor(final long win) {
+    if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.FASTEST_SURVIVOR_WIN, win)) {
+      return;
+    }
     this.fastestWinSurvivor = Math.min(this.fastestWinSurvivor, win);
   }
 
   public void incrementTotalKills() {
+    if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.TOTAL_KILLS, 1)) {
+      return;
+    }
     this.totalKills++;
   }
 
   public void incrementTotalDeaths() {
+    if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.TOTAL_DEATHS, 1)) {
+      return;
+    }
     this.totalDeaths++;
   }
 
   public void incrementTotalWins() {
+    if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.TOTAL_WINS, 1)) {
+      return;
+    }
     this.totalWins++;
     this.calculateWinLossRatio();
     this.incrementTotalGames();
   }
 
   public void incrementTotalLosses() {
+    if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.TOTAL_LOSSES, 1)) {
+      return;
+    }
     this.totalLosses++;
     this.calculateWinLossRatio();
     this.incrementTotalGames();
   }
 
-  public void incrementTotalGames() { // dont need to update
+  public void incrementTotalGames() {
+    if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.TOTAL_GAMES, 1)) {
+      return;
+    }
     this.totalGames++;
   }
 
-  public void calculateWinLossRatio() { // dont need to update
+  public void calculateWinLossRatio() {
     if (this.totalLosses != 0) {
-      this.winLossRatio = (float) this.totalWins / this.totalLosses;
+      final float recalculatedWinLossRatio = (float) this.totalWins / this.totalLosses;
+      if (this.bus.post(StatisticsEvent.class, StatisticsEvent.StatisticsType.WIN_LOSS_RATIO, recalculatedWinLossRatio)) {
+        return;
+      }
+      this.winLossRatio = recalculatedWinLossRatio;
     }
   }
 

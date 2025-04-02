@@ -37,6 +37,10 @@ public final class EventBusProvider {
     EVENT_BUS = new ApiEventBus(plugin);
   }
 
+  public static void init() {
+    // init events
+  }
+
   private EventBusProvider() {}
 
   public static ApiEventBus getBus() {

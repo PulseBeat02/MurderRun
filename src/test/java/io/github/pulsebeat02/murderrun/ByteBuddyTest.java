@@ -27,7 +27,7 @@ package io.github.pulsebeat02.murderrun;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import io.github.pulsebeat02.murderrun.api.event.EventImplGenerator;
-import io.github.pulsebeat02.murderrun.api.event.game.GameStatusEvent;
+import io.github.pulsebeat02.murderrun.api.event.contract.GameStatusEvent;
 
 public final class ByteBuddyTest {
 

@@ -59,10 +59,6 @@ public final class ApiEventBus implements EventBus {
     KNOWN_EVENT_TYPES = Map.copyOf(temp);
   }
 
-  public static void init() {
-    // init events
-  }
-
   private static Set<Class<? extends MurderRunEvent>> scanClasses() {
     final Class<MurderRunEvent> clazz = MurderRunEvent.class;
     final String name = clazz.getName();
@@ -231,7 +227,7 @@ public final class ApiEventBus implements EventBus {
   }
 
   @SuppressWarnings("unchecked")
-  public <T extends MurderRunEvent> T post(final Class<T> type, final Object... args) {
+  public <T extends MurderRunEvent> boolean post(final Class<T> type, final Object... args) {
     if (type.isAnnotationPresent(NonInvokable.class)) {
       final String name = type.getName();
       final String msg = "Event %s is marked as @NonInvokable and cannot be posted".formatted(name);
@@ -252,11 +248,11 @@ public final class ApiEventBus implements EventBus {
         final Consumer<? super T> eventHandler = sub.getHandler();
         eventHandler.accept(event);
         if (event instanceof final Cancellable cancellable && cancellable.isCancelled()) {
-          break;
+          return true;
         }
       }
     }
-    return event;
+    return false;
   }
 
   @SuppressWarnings("all")

@@ -23,6 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event.lobby;
+package io.github.pulsebeat02.murderrun.api.event.contract.gadget;
 
-public interface LobbyDeletionEvent extends LobbyEvent {}
+public interface TrapActivateEvent extends GadgetUseEvent {}

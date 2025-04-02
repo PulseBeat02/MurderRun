@@ -23,8 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event.lobby;
+package io.github.pulsebeat02.murderrun.api.event.contract.lobby;
 
 import io.github.pulsebeat02.murderrun.api.event.Cancellable;
+import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 
-public interface LobbyCreationEvent extends LobbyEvent, Cancellable {}
+public interface LobbyEvent extends MurderRunEvent, Cancellable {
+  Lobby getLobby();
+
+  ModificationType getModificationType();
+
+  enum ModificationType {
+    CREATION,
+    DELETION,
+  }
+}
