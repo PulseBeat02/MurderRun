@@ -150,6 +150,14 @@ public final class Etherwarp extends KillerAbility implements Listener {
       }
     }
 
+    this.applyTeleport(gamePlayer, game, player);
+
+    final long current = System.currentTimeMillis();
+    this.cooldowns.put(gamePlayer, current);
+    gamePlayer.setAbilityCooldowns(ETHERWARP_NAME, (int) (GameProperties.ETHERWARP_COOLDOWN * 20));
+  }
+
+  private void applyTeleport(final GamePlayer gamePlayer, final Game game, final Player player) {
     final Integer id = requireNonNull(this.sneakingPlayers.remove(gamePlayer));
     final EtherwarpBlockSelector task = requireNonNull(this.tasks.remove(id));
     final GameScheduler scheduler = game.getScheduler();
@@ -164,10 +172,6 @@ public final class Etherwarp extends KillerAbility implements Listener {
 
     final Location targetLocation = requireNonNull(this.targetBlock.remove(gamePlayer));
     player.teleport(targetLocation);
-
-    final long current = System.currentTimeMillis();
-    this.cooldowns.put(gamePlayer, current);
-    gamePlayer.setAbilityCooldowns(ETHERWARP_NAME, (int) (GameProperties.ETHERWARP_COOLDOWN * 20));
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

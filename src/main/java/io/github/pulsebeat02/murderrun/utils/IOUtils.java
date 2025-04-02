@@ -64,6 +64,8 @@ import org.jetbrains.annotations.NotNull;
 public final class IOUtils {
 
   private static final String IP_URL = "https://ipv4.icanhazip.com/";
+  private static final long MAX_FILE_SIZE = 100 * 1024 * 1024;
+  private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024;
 
   private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -269,6 +271,7 @@ public final class IOUtils {
   }
 
   public static void unzip(final Path src, final Path dest) throws IOException {
+    long totalSize = 0;
     try (
       final InputStream fis = Files.newInputStream(src);
       final FastBufferedInputStream fast = new FastBufferedInputStream(fis);
@@ -290,7 +293,24 @@ public final class IOUtils {
           if (parent != null && Files.notExists(parent)) {
             Files.createDirectories(parent);
           }
-          Files.copy(zis, resolvedPath, StandardCopyOption.REPLACE_EXISTING);
+          try (final OutputStream os = Files.newOutputStream(resolvedPath)) {
+            final byte[] buffer = new byte[8192];
+            int bytesRead;
+            long fileSize = 0;
+            while ((bytesRead = zis.read(buffer)) != -1) {
+              fileSize += bytesRead;
+              totalSize += bytesRead;
+              if (fileSize > MAX_FILE_SIZE) {
+                final String msg = "File exceeds maximum size: %s".formatted(name);
+                throw new AssertionError(msg);
+              }
+              if (totalSize > MAX_TOTAL_SIZE) {
+                final String msg = "Total extracted size exceeds limit";
+                throw new AssertionError(msg);
+              }
+              os.write(buffer, 0, bytesRead);
+            }
+          }
         }
         zis.closeEntry();
       }

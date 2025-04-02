@@ -49,6 +49,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 public final class Phase extends KillerAbility implements Listener {
 
@@ -134,41 +135,10 @@ public final class Phase extends KillerAbility implements Listener {
     final Vector direction = eyeDirection.normalize();
     final double maxDistance = GameProperties.PHASE_DISTANCE;
 
-    Location targetLocation = null;
-    for (int i = 1; i <= maxDistance; i++) {
-      final Location clone = eyeLocation.clone();
-      final Vector cloneDirection = direction.clone();
-      final Vector multiply = cloneDirection.multiply(i);
-      final Location checkLocation = clone.add(multiply);
-      final Location clone2 = eyeLocation.clone();
-      final Vector cloneDirection2 = direction.clone();
-      final Vector multiply2 = cloneDirection2.multiply(i + 1);
-      final Location nextLocation = clone2.add(multiply2);
-      final Block checkBlock = checkLocation.getBlock();
-      final Block nextBlock = nextLocation.getBlock();
-      final Material checkType = checkBlock.getType();
-      final Material nextType = nextBlock.getType();
-      if (checkType.isSolid() && !nextType.isSolid()) {
-        targetLocation = nextLocation;
-        break;
-      }
-    }
+    final Location targetLocation = getLocation(maxDistance, eyeLocation, direction);
 
     if (targetLocation != null) {
-      boolean isPathClear = true;
-      for (int i = 1; i <= maxDistance; i++) {
-        final Location clone = eyeLocation.clone();
-        final Vector cloneDirection = direction.clone();
-        final Vector multiply = cloneDirection.multiply(i);
-        final Location checkLocation = clone.add(multiply);
-        final Block checkBlock = checkLocation.getBlock();
-        final Material checkType = checkBlock.getType();
-        if (BLACKLISTED_BLOCKS.contains(checkType)) {
-          isPathClear = false;
-          break;
-        }
-      }
-
+      final boolean isPathClear = isIsPathClear(maxDistance, eyeLocation, direction);
       if (isPathClear) {
         final Location feetLocation = targetLocation.clone();
         final Location headLocation = feetLocation.clone().add(0, 1, 0);
@@ -201,5 +171,45 @@ public final class Phase extends KillerAbility implements Listener {
         }
       }
     }
+  }
+
+  private static boolean isIsPathClear(final double maxDistance, final Location eyeLocation, final Vector direction) {
+    boolean isPathClear = true;
+    for (int i = 1; i <= maxDistance; i++) {
+      final Location clone = eyeLocation.clone();
+      final Vector cloneDirection = direction.clone();
+      final Vector multiply = cloneDirection.multiply(i);
+      final Location checkLocation = clone.add(multiply);
+      final Block checkBlock = checkLocation.getBlock();
+      final Material checkType = checkBlock.getType();
+      if (BLACKLISTED_BLOCKS.contains(checkType)) {
+        isPathClear = false;
+        break;
+      }
+    }
+    return isPathClear;
+  }
+
+  private static @Nullable Location getLocation(final double maxDistance, final Location eyeLocation, final Vector direction) {
+    Location targetLocation = null;
+    for (int i = 1; i <= maxDistance; i++) {
+      final Location clone = eyeLocation.clone();
+      final Vector cloneDirection = direction.clone();
+      final Vector multiply = cloneDirection.multiply(i);
+      final Location checkLocation = clone.add(multiply);
+      final Location clone2 = eyeLocation.clone();
+      final Vector cloneDirection2 = direction.clone();
+      final Vector multiply2 = cloneDirection2.multiply(i + 1);
+      final Location nextLocation = clone2.add(multiply2);
+      final Block checkBlock = checkLocation.getBlock();
+      final Block nextBlock = nextLocation.getBlock();
+      final Material checkType = checkBlock.getType();
+      final Material nextType = nextBlock.getType();
+      if (checkType.isSolid() && !nextType.isSolid()) {
+        targetLocation = nextLocation;
+        break;
+      }
+    }
+    return targetLocation;
   }
 }
