@@ -110,7 +110,38 @@ public final class MapSchematicIO {
     final World world = MapUtils.createVoidWorld(name, previousWorld);
     this.settings.setArena(arena.relativizeLocations(this.uuid));
     this.settings.setLobby(lobby.relativizeLocations(this.uuid));
+    this.loadArenaChunks();
+    this.loadLobbyChunks();
+    this.settings.setWorld(world);
     return world;
+  }
+
+  private void loadLobbyChunks() {
+    final Lobby lobby = requireNonNull(this.settings.getLobby());
+    final Location[] corners = lobby.getCorners();
+    this.loadChunksBetweenCorners(corners);
+  }
+
+  private void loadArenaChunks() {
+    final Arena arena = requireNonNull(this.settings.getArena());
+    final Location[] corners = arena.getCorners();
+    this.loadChunksBetweenCorners(corners);
+  }
+
+  private void loadChunksBetweenCorners(final Location[] corners) {
+    final Location first = corners[0];
+    final Location second = corners[1];
+    final int minX = Math.min(first.getBlockX(), second.getBlockX()) >> 4;
+    final int maxX = Math.max(first.getBlockX(), second.getBlockX()) >> 4;
+    final int minZ = Math.min(first.getBlockZ(), second.getBlockZ()) >> 4;
+    final int maxZ = Math.max(first.getBlockZ(), second.getBlockZ()) >> 4;
+    final World world = requireNonNull(first.getWorld());
+    for (int x = minX; x <= maxX; x++) {
+      for (int z = minZ; z <= maxZ; z++) {
+        final Chunk chunk = world.getChunkAt(x, z);
+        chunk.setForceLoaded(true);
+      }
+    }
   }
 
   public CompletableFuture<Void> pasteMap() {

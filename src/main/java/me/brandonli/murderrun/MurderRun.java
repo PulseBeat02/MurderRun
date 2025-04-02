@@ -61,6 +61,7 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.provider.PackProviderMethod;
 import me.brandonli.murderrun.resourcepack.provider.ResourcePackProvider;
 import me.brandonli.murderrun.utils.ClassGraphUtils;
+import me.brandonli.murderrun.utils.map.MapTeleportSkipListener;
 import me.brandonli.murderrun.utils.screen.ScreenUtils;
 import me.brandonli.murderrun.utils.versioning.VersionChecker;
 import org.bstats.bukkit.Metrics;
@@ -98,6 +99,7 @@ public final class MurderRun extends JavaPlugin {
 
   private AtomicBoolean disabling;
   private VersionChecker versionChecker;
+  private MapTeleportSkipListener mapTeleportSkipListener;
 
   @Override
   public void onLoad() {
@@ -114,7 +116,7 @@ public final class MurderRun extends JavaPlugin {
     this.stopHostingDaemon();
     this.unloadLookupMaps();
     this.unloadEventBusApi();
-    this.shutdownVersionChecker();
+    this.shutdownMiscListeners();
     this.shutdownMetrics();
     this.shutdownAudience();
   }
@@ -132,17 +134,24 @@ public final class MurderRun extends JavaPlugin {
     this.registerExtensions();
     this.loadSchematics();
     this.enableMetrics();
-    this.startVersionChecker();
+    this.startMiscListeners();
     this.testEventBusApi();
   }
 
-  private void shutdownVersionChecker() {
-    this.versionChecker.shutdown();
+  private void shutdownMiscListeners() {
+    if (this.mapTeleportSkipListener != null) {
+      this.mapTeleportSkipListener.shutdown();
+    }
+    if (this.versionChecker != null) {
+      this.versionChecker.shutdown();
+    }
   }
 
-  private void startVersionChecker() {
+  private void startMiscListeners() {
     this.versionChecker = new VersionChecker(this);
     this.versionChecker.start();
+    this.mapTeleportSkipListener = new MapTeleportSkipListener(this);
+    this.mapTeleportSkipListener.start();
   }
 
   private void testEventBusApi() {

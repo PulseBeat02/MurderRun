@@ -27,12 +27,14 @@ package me.brandonli.murderrun.game;
 
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.lobby.Lobby;
+import org.bukkit.World;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GameSettings {
 
   private @Nullable Arena arena;
   private @Nullable Lobby lobby;
+  private @Nullable World world;
 
   public @Nullable Lobby getLobby() {
     return this.lobby;
@@ -52,5 +54,13 @@ public final class GameSettings {
     if (arena != null) {
       this.arena = new Arena(arena);
     }
+  }
+
+  public @Nullable World getWorld() {
+    return this.world;
+  }
+
+  public void setWorld(final @Nullable World world) {
+    this.world = world;
   }
 }
