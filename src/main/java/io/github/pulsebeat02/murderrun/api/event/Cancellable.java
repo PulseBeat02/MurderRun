@@ -23,6 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event.arena;
+package io.github.pulsebeat02.murderrun.api.event;
 
-public interface ArenaDeletionEvent extends ArenaEvent {}
+public interface Cancellable {
+  boolean isCancelled();
+  void setCancelled(boolean cancelled);
+
+  default void cancel() {
+    this.setCancelled(true);
+  }
+}

@@ -25,4 +25,6 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.api.event.lobby;
 
-public non-sealed interface LobbyCreationEvent extends LobbyEvent {}
+import io.github.pulsebeat02.murderrun.api.event.Cancellable;
+
+public interface LobbyCreationEvent extends LobbyEvent, Cancellable {}

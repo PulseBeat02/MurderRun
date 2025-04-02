@@ -56,12 +56,14 @@ public class EventImplGenerator {
       if (declaringClass.equals(MurderRunEvent.class) || declaringClass.equals(Object.class)) {
         continue;
       }
-      final int count = method.getParameterCount();
+      final String methodName = method.getName();
+      final int parameterCount = method.getParameterCount();
+      if ((methodName.equals("isCancelled") && parameterCount == 0) || (methodName.equals("setCancelled") && parameterCount == 1)) {
+        continue;
+      }
       final Class<?> returnType = method.getReturnType();
-      if (count == 0 && returnType != Void.TYPE) {
-        final String name = method.getName();
-        final Class<?> type = method.getReturnType();
-        properties.put(name, type);
+      if (parameterCount == 0 && returnType != Void.TYPE) {
+        properties.put(methodName, returnType);
       }
     }
     return properties;
@@ -132,7 +134,8 @@ public class EventImplGenerator {
       final DynamicType.Builder<?> builder = decorateBuilder(
         properties,
         createByteBuddyBuilder(eventInterface, properties),
-        ctorParamTypes
+        ctorParamTypes,
+        eventInterface
       );
       final ClassLoader loader = eventInterface.getClassLoader();
       final ClassLoadingStrategy.Default strategy = ClassLoadingStrategy.Default.INJECTION;
@@ -176,12 +179,18 @@ public class EventImplGenerator {
   private static DynamicType.Builder<?> decorateBuilder(
     final Map<String, Class<?>> properties,
     DynamicType.Builder<?> builder,
-    final Class<?>[] ctorParamTypes
+    final Class<?>[] ctorParamTypes,
+    final Class<?> eventInterface
   ) throws NoSuchMethodException {
     final Constructor<?> superCtor = SimpleMurderRunEvent.class.getConstructor(MurderRun.class, Class.class);
     final Implementation.Composable ctorImplementation = defineConstructorImplementation(superCtor, properties);
     builder = builder.defineConstructor(Modifier.PUBLIC).withParameters(ctorParamTypes).intercept(ctorImplementation);
     builder = defineGetters(builder, properties);
+    if (Cancellable.class.isAssignableFrom(eventInterface)) {
+      builder = builder.defineField("cancelled", Boolean.TYPE, Modifier.PRIVATE);
+      builder = builder.method(ElementMatchers.named("isCancelled")).intercept(FieldAccessor.ofField("cancelled"));
+      builder = builder.method(ElementMatchers.named("setCancelled")).intercept(FieldAccessor.ofField("cancelled").setsArgumentAt(0));
+    }
     return builder;
   }
 

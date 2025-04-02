@@ -25,4 +25,4 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.api.event.lobby;
 
-public non-sealed interface LobbyDeletionEvent extends LobbyEvent {}
+public interface LobbyDeletionEvent extends LobbyEvent {}

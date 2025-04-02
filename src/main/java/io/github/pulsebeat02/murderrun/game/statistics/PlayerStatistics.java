@@ -45,7 +45,7 @@ public final class PlayerStatistics implements Serializable {
 
   @Column(name = "uuid")
   @Convert(converter = UUIDConverter.class)
-  private final UUID uuid;
+  private UUID uuid;
 
   @Column(name = "fastest_win_killer")
   private long fastestWinKiller;
@@ -76,6 +76,8 @@ public final class PlayerStatistics implements Serializable {
     this.fastestWinKiller = -1;
     this.fastestWinSurvivor = -1;
   }
+
+  public PlayerStatistics() {}
 
   public void insertFastestWinKiller(final long win) {
     this.fastestWinKiller = Math.min(this.fastestWinKiller, win);

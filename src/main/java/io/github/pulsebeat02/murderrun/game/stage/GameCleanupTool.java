@@ -198,7 +198,7 @@ public final class GameCleanupTool {
     manager.applyToAllParticipants(participant -> {
       final PlayerStatistics stats = statistics.getOrCreatePlayerStatistic(participant);
       if (participant instanceof Killer) {
-        stats.insertFastestWinSurvivor(timeElapsed);
+        stats.insertFastestWinKiller(timeElapsed);
         stats.incrementTotalWins();
       } else {
         stats.incrementTotalLosses();

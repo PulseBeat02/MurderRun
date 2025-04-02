@@ -28,6 +28,6 @@ package io.github.pulsebeat02.murderrun.api.event.arena;
 import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 
-public sealed interface ArenaEvent extends MurderRunEvent permits ArenaCreationEvent, ArenaDeletionEvent {
+public interface ArenaEvent extends MurderRunEvent {
   Arena getArena();
 }

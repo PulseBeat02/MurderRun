@@ -25,4 +25,4 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.api.event.arena;
 
-public non-sealed interface ArenaCreationEvent extends ArenaEvent {}
+public interface ArenaCreationEvent extends ArenaEvent {}

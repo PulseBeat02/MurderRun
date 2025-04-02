@@ -33,7 +33,6 @@ import com.google.common.collect.ListMultimap;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.utils.StreamUtils;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -72,7 +71,6 @@ public final class ApiEventBus implements EventBus {
         .getClassesImplementing(name)
         .loadClasses(MurderRunEvent.class)
         .stream()
-        .filter(StreamUtils.inverse(Class::isSealed))
         .filter(Class::isInterface)
         .map(clazz1 -> (Class<? extends MurderRunEvent>) clazz1)
         .collect(Collectors.toSet());
@@ -105,7 +103,7 @@ public final class ApiEventBus implements EventBus {
     return parameterTypes;
   }
 
-  private final ListMultimap<Class<? extends MurderRunEvent>, EventSubscription<? extends MurderRunEvent>> subscriptions;
+  private final ListMultimap<Class<? extends MurderRunEvent>, EventSubscription<?>> subscriptions;
   private final MurderRun api;
 
   public ApiEventBus(final MurderRun api) {
@@ -117,21 +115,39 @@ public final class ApiEventBus implements EventBus {
   public <T extends MurderRunEvent> EventSubscription<T> subscribe(
     final Plugin plugin,
     final Class<T> eventType,
-    final Consumer<? super T> handler
+    final Consumer<? super T> handler,
+    final int priority
   ) {
-    final EventSubscription<T> subscription = new ApiEventSubscription<>(plugin, eventType, handler);
+    final EventSubscription<T> subscription = new ApiEventSubscription<>(plugin, eventType, handler, priority);
     synchronized (this.subscriptions) {
-      final List<EventSubscription<? extends MurderRunEvent>> list = this.subscriptions.get(eventType);
-      list.add(subscription);
+      final List<EventSubscription<?>> concreteList = this.subscriptions.get(eventType);
+      concreteList.add(subscription);
+      concreteList.sort(Comparator.comparingInt(EventSubscription::getPriority));
+      final Set<Class<? extends MurderRunEvent>> parentEventTypes = this.findParentEventTypes(eventType);
+      parentEventTypes.remove(eventType);
+      for (final Class<? extends MurderRunEvent> parentType : parentEventTypes) {
+        final List<EventSubscription<?>> parentList = this.subscriptions.get(parentType);
+        parentList.add(subscription);
+        parentList.sort(Comparator.comparingInt(EventSubscription::getPriority));
+      }
     }
     return subscription;
+  }
+
+  @Override
+  public <T extends MurderRunEvent> EventSubscription<T> subscribe(
+    final Plugin plugin,
+    final Class<T> eventType,
+    final Consumer<? super T> handler
+  ) {
+    return this.subscribe(plugin, eventType, handler, 0);
   }
 
   @Override
   public <T extends MurderRunEvent> void unsubscribe(final EventSubscription<T> subscription) {
     synchronized (this.subscriptions) {
       final Class<T> eventType = subscription.getEventType();
-      final List<EventSubscription<? extends MurderRunEvent>> list = this.subscriptions.get(eventType);
+      final List<EventSubscription<?>> list = this.subscriptions.get(eventType);
       list.remove(subscription);
     }
     subscription.unsubscribe();
@@ -140,7 +156,7 @@ public final class ApiEventBus implements EventBus {
   @Override
   public void unsubscribe(final Plugin plugin) {
     synchronized (this.subscriptions) {
-      final Collection<EventSubscription<? extends MurderRunEvent>> handle = this.subscriptions.values();
+      final Collection<EventSubscription<?>> handle = this.subscriptions.values();
       handle.removeIf(subscription -> this.unsubscribePlugin(plugin, subscription));
     }
   }
@@ -148,12 +164,12 @@ public final class ApiEventBus implements EventBus {
   @Override
   public <T extends MurderRunEvent> void unsubscribe(final Plugin plugin, final Class<T> eventType) {
     synchronized (this.subscriptions) {
-      final List<EventSubscription<? extends MurderRunEvent>> list = this.subscriptions.get(eventType);
+      final List<EventSubscription<?>> list = this.subscriptions.get(eventType);
       list.removeIf(subscription -> this.unsubscribePlugin(plugin, subscription));
     }
   }
 
-  private boolean unsubscribePlugin(final Plugin plugin, final EventSubscription<? extends MurderRunEvent> subscription) {
+  private boolean unsubscribePlugin(final Plugin plugin, final EventSubscription<?> subscription) {
     final Plugin subscribedPlugin = subscription.getPlugin();
     if (plugin.equals(subscribedPlugin)) {
       subscription.unsubscribe();
@@ -165,17 +181,17 @@ public final class ApiEventBus implements EventBus {
 
   public void unsubscribeAll() {
     synchronized (this.subscriptions) {
-      final Collection<EventSubscription<? extends MurderRunEvent>> handle = this.subscriptions.values();
+      final Collection<EventSubscription<?>> handle = this.subscriptions.values();
       handle.forEach(EventSubscription::unsubscribe);
       this.subscriptions.clear();
     }
   }
 
   @Override
-  public @Unmodifiable Set<EventSubscription<? extends MurderRunEvent>> getSubscriptions(final Plugin plugin) {
+  public @Unmodifiable Set<EventSubscription<?>> getSubscriptions(final Plugin plugin) {
     synchronized (this.subscriptions) {
-      final Collection<EventSubscription<? extends MurderRunEvent>> allSubscriptions = this.subscriptions.values();
-      final Stream<EventSubscription<? extends MurderRunEvent>> filteredSubscriptions = allSubscriptions
+      final Collection<EventSubscription<?>> allSubscriptions = this.subscriptions.values();
+      final Stream<EventSubscription<?>> filteredSubscriptions = allSubscriptions
         .stream()
         .filter(subscription -> plugin.equals(subscription.getPlugin()));
       return filteredSubscriptions.collect(Collectors.toUnmodifiableSet());
@@ -189,8 +205,8 @@ public final class ApiEventBus implements EventBus {
     final Class<T> eventType
   ) {
     synchronized (this.subscriptions) {
-      final List<EventSubscription<? extends MurderRunEvent>> eventTypeSubscriptions = this.subscriptions.get(eventType);
-      final Stream<EventSubscription<? extends MurderRunEvent>> filteredSubscriptions = eventTypeSubscriptions
+      final List<EventSubscription<?>> eventTypeSubscriptions = this.subscriptions.get(eventType);
+      final Stream<EventSubscription<?>> filteredSubscriptions = eventTypeSubscriptions
         .stream()
         .filter(subscription -> plugin.equals(subscription.getPlugin()));
       return filteredSubscriptions.map(subscription -> (EventSubscription<T>) subscription).collect(Collectors.toUnmodifiableSet());
@@ -198,47 +214,71 @@ public final class ApiEventBus implements EventBus {
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public <T extends MurderRunEvent> @Unmodifiable Set<EventSubscription<? extends T>> getAllSubscriptions(
+  public @Unmodifiable <T extends MurderRunEvent> Set<EventSubscription<?>> getAllSubscriptions(
     final Plugin plugin,
     final Class<T> eventType
   ) {
     synchronized (this.subscriptions) {
-      final Collection<EventSubscription<? extends MurderRunEvent>> allSubscriptions = this.subscriptions.values();
-      final Stream<EventSubscription<? extends MurderRunEvent>> filteredByPlugin = allSubscriptions
+      final Collection<EventSubscription<?>> allSubscriptions = this.subscriptions.values();
+      final Stream<EventSubscription<?>> filteredByPlugin = allSubscriptions
         .stream()
         .filter(subscription -> plugin.equals(subscription.getPlugin()));
-      final Stream<EventSubscription<? extends MurderRunEvent>> filteredByEventType = filteredByPlugin.filter(subscription ->
+      final Stream<EventSubscription<?>> filteredByEventType = filteredByPlugin.filter(subscription ->
         subscription.getEventType().isAssignableFrom(eventType)
       );
-      return filteredByEventType.map(subscription -> (EventSubscription<? extends T>) subscription).collect(Collectors.toUnmodifiableSet());
+      return filteredByEventType.map(subscription -> (EventSubscription<?>) subscription).collect(Collectors.toUnmodifiableSet());
     }
   }
 
   @SuppressWarnings("unchecked")
   public <T extends MurderRunEvent> T post(final Class<T> type, final Object... args) {
+    if (type.isAnnotationPresent(NonInvokable.class)) {
+      final String name = type.getName();
+      final String msg = "Event %s is marked as @NonInvokable and cannot be posted".formatted(name);
+      throw new AssertionError(msg);
+    }
     final T event = this.findEvent(type, args);
     synchronized (this.subscriptions) {
-      final Collection<Map.Entry<Class<? extends MurderRunEvent>, EventSubscription<? extends MurderRunEvent>>> entries =
-        this.subscriptions.entries();
-      final Iterator<Map.Entry<Class<? extends MurderRunEvent>, EventSubscription<? extends MurderRunEvent>>> iterator = entries.iterator();
-      while (iterator.hasNext()) {
-        final Map.Entry<Class<? extends MurderRunEvent>, EventSubscription<? extends MurderRunEvent>> entry = iterator.next();
-        final Class<? extends MurderRunEvent> eventType = entry.getKey();
-        final EventSubscription<? extends MurderRunEvent> subscription = entry.getValue();
-        if (subscription.isInactive()) {
-          iterator.remove();
-          continue;
-        }
-        if (eventType.isInstance(event)) {
-          final EventSubscription<T> eventSubscription = (EventSubscription<T>) subscription;
-          final Consumer<? super T> handler = eventSubscription.getHandler();
-          handler.accept(event);
+      final Collection<Map.Entry<Class<? extends MurderRunEvent>, EventSubscription<?>>> entries = this.subscriptions.entries();
+      final List<EventSubscription<?>> sorted = entries
+        .stream()
+        .filter(entry -> entry.getKey().isInstance(event))
+        .map(Map.Entry::getValue)
+        .filter(EventSubscription::isActive)
+        .sorted(Comparator.comparingInt(EventSubscription::getPriority))
+        .collect(Collectors.toList());
+      for (final EventSubscription<?> raw : sorted) {
+        final EventSubscription<? super T> sub = (EventSubscription<? super T>) raw;
+        final Consumer<? super T> eventHandler = sub.getHandler();
+        eventHandler.accept(event);
+        if (event instanceof final Cancellable cancellable && cancellable.isCancelled()) {
+          break;
         }
       }
     }
-
     return event;
+  }
+
+  @SuppressWarnings("all")
+  private Set<Class<? extends MurderRunEvent>> findParentEventTypes(final Class<? extends MurderRunEvent> eventType) {
+    final Set<Class<? extends MurderRunEvent>> parentTypes = new HashSet<>();
+    final Queue<Class<?>> processingQueue = new LinkedList<>();
+    final Class<?>[] directInterfaces = eventType.getInterfaces();
+    Collections.addAll(processingQueue, directInterfaces);
+    while (!processingQueue.isEmpty()) {
+      final Class<?> currentInterface = processingQueue.poll();
+      final boolean isSubtype = MurderRunEvent.class.isAssignableFrom(currentInterface);
+      if (isSubtype) {
+        final Class<? extends MurderRunEvent> castedInterface = (Class<? extends MurderRunEvent>) currentInterface;
+        final boolean alreadyAdded = parentTypes.contains(castedInterface);
+        if (!alreadyAdded) {
+          parentTypes.add(castedInterface);
+          final Class<?>[] superInterfaces = currentInterface.getInterfaces();
+          Collections.addAll(processingQueue, superInterfaces);
+        }
+      }
+    }
+    return parentTypes;
   }
 
   private <T extends MurderRunEvent> T findEvent(final Class<T> type, final Object[] args) {

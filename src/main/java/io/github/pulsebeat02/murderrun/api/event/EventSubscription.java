@@ -42,4 +42,6 @@ public interface EventSubscription<T extends MurderRunEvent> {
   default boolean isInactive() {
     return !this.isActive();
   }
+
+  int getPriority();
 }

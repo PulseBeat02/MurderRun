@@ -37,15 +37,17 @@ public final class ApiEventSubscription<T extends MurderRunEvent> implements Eve
 
   private final Plugin plugin;
   private final Class<T> eventType;
+  private final int priority;
 
   private Consumer<? super T> handler;
   private boolean active;
 
-  public ApiEventSubscription(final Plugin plugin, final Class<T> eventType, final Consumer<? super T> handler) {
+  public ApiEventSubscription(final Plugin plugin, final Class<T> eventType, final Consumer<? super T> handler, final int priority) {
     this.plugin = plugin;
     this.eventType = eventType;
     this.handler = handler;
     this.active = true;
+    this.priority = priority;
   }
 
   @Override
@@ -73,5 +75,10 @@ public final class ApiEventSubscription<T extends MurderRunEvent> implements Eve
   @Override
   public boolean isActive() {
     return this.active;
+  }
+
+  @Override
+  public int getPriority() {
+    return this.priority;
   }
 }
