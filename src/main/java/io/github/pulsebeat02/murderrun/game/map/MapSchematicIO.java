@@ -68,6 +68,18 @@ public final class MapSchematicIO {
     this.deleteWorld();
   }
 
+  // special reset for shutdown
+  public void resetMapShutdown() {
+    this.removeCitizensNPCs();
+    this.addShutdownHook();
+  }
+
+  private void addShutdownHook() {
+    final Runtime runtime = Runtime.getRuntime();
+    final Thread thread = new Thread(this::deleteWorld);
+    runtime.addShutdownHook(thread);
+  }
+
   private void deleteWorld() {
     final String name = this.uuid.toString();
     final Path path = IOUtils.getPluginDataFolderPath();

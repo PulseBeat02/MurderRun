@@ -62,7 +62,6 @@ public final class GameEventsPlayerListener implements GameEventsListener {
   public void onGameFinish(final Game game, final GameResult result) {
     final MurderRun plugin = this.manager.getPlugin();
     final GameShutdownManager manager = plugin.getGameShutdownManager();
-    manager.removeGame(game);
 
     final Map<String, PreGameManager> games = this.manager.getGames();
     final Collection<Map.Entry<@KeyFor("games") String, PreGameManager>> entries = games.entrySet();
@@ -70,6 +69,7 @@ public final class GameEventsPlayerListener implements GameEventsListener {
       final PreGameManager pre = entry.getValue();
       final Game game1 = pre.getGame();
       if (game == game1) {
+        manager.removeGame(pre);
         final String id = entry.getKey();
         games.remove(id);
         this.sendRequeueMessage(pre);

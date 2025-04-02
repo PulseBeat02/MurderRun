@@ -356,7 +356,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     audience.sendMessage(message);
   }
 
-  @Permission("murderrun.command.game.quickjoin")
+  @Permission("murderrun.command.game.quick-join")
   @CommandDescription("murderrun.command.game.join.quick.info")
   @Command(value = "murder game quick-join", requiredSender = Player.class)
   public void quickJoinGame(final Player sender) {

@@ -30,6 +30,7 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
+import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
@@ -54,6 +55,11 @@ public final class BlastOff extends SurvivorGadget {
       Message.BLAST_OFF_LORE.build(),
       GameProperties.BLAST_OFF_COST
     );
+  }
+
+  @Override
+  public boolean onGadgetRightClick(final GadgetRightClickPacket packet) {
+    return true;
   }
 
   @Override

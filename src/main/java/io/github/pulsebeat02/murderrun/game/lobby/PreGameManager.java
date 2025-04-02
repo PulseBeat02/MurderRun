@@ -32,6 +32,7 @@ import io.github.pulsebeat02.murderrun.game.map.MapSchematicIO;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -77,9 +78,12 @@ public final class PreGameManager {
   }
 
   public void shutdown(final boolean forced) {
+    final AtomicBoolean disabling = this.plugin.isDisabling();
     this.events.unregisterEvents();
     this.manager.shutdown();
-    if (forced) {
+    if (disabling.get()) {
+      this.mapSchematicIO.resetMapShutdown();
+    } else if (forced) {
       this.mapSchematicIO.resetMap();
     }
   }
