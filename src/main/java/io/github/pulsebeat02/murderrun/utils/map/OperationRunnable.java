@@ -28,7 +28,7 @@ package io.github.pulsebeat02.murderrun.utils.map;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
-import java.util.Collection;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,25 +37,30 @@ public final class OperationRunnable extends BukkitRunnable {
 
   private final Iterator<Operation> iterator;
   private final CompletableFuture<Void> future;
+  private final int max;
 
-  public OperationRunnable(final Collection<Operation> operations, final CompletableFuture<Void> future) {
-    this.iterator = operations.iterator();
+  public OperationRunnable(final Iterator<Operation> iterator, final CompletableFuture<Void> future) {
+    this.iterator = iterator;
     this.future = future;
+    this.max = GameProperties.WORLDEDIT_MAX_CHUNKS_PER_TICK - 1;
   }
 
   @Override
   public void run() {
-    if (this.iterator.hasNext()) {
+    for (int i = 0; i < this.max; i++) {
+      if (!this.iterator.hasNext()) {
+        this.future.complete(null);
+        this.cancel();
+        break;
+      }
       try {
         final Operation op = this.iterator.next();
         Operations.complete(op);
       } catch (final WorldEditException e) {
         this.future.completeExceptionally(e);
         this.cancel();
+        return;
       }
-    } else {
-      this.future.complete(null);
-      this.cancel();
     }
   }
 }

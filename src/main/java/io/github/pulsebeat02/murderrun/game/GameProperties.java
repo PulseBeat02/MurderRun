@@ -34,6 +34,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  int WORLDEDIT_MAX_CHUNKS_PER_TICK = num("worldedit.chunks-per-tick");
   int GAME_EXPIRATION_TIME = num("game.expiration_time");
   String PLAYER_LEAVE_COMMANDS_AFTER = str("player_leave_commands_after");
   int BLOCKS_PER_TICK = num("worldedit.blocks_per_tick");

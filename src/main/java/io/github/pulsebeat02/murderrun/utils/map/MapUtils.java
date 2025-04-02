@@ -136,8 +136,9 @@ public final class MapUtils {
   ) {
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     final Collection<Operation> operations = splitClipboardOperation(world, clipboard, vector3);
+    final Iterator<Operation> iterator = operations.iterator();
     final CompletableFuture<Void> future = new CompletableFuture<>();
-    final OperationRunnable runnable = new OperationRunnable(operations, future);
+    final OperationRunnable runnable = new OperationRunnable(iterator, future);
     runnable.runTaskTimer(plugin, 1L, 1L);
     return future;
   }
