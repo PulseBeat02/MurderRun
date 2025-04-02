@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
 import com.google.gson.Gson;
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.gson.GsonProvider;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
@@ -52,8 +53,8 @@ public final class MCPackHosting extends ResourcePackProvider {
   private String url;
   private PackInfo info;
 
-  public MCPackHosting() {
-    super(ProviderMethod.MC_PACK_HOSTING);
+  public MCPackHosting(final MurderRun plugin) {
+    super(plugin, ProviderMethod.MC_PACK_HOSTING);
   }
 
   @Override

@@ -26,6 +26,8 @@ guava = "32.1.3-jre"
 gson = "2.12.1"
 partiesApi = "3.2.16"
 mockBukkit = "3.133.2"
+nexo = "1.1.0"
+creativeApi = "1.7.3"
 
 [libraries]
 adventureApi = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
@@ -58,3 +60,6 @@ guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 partiesApi = { group = "com.alessiodp.parties", name = "parties-api", version.ref = "partiesApi"}
 mockBukkit = { module = "com.github.seeseemelk:MockBukkit-v1.21", version.ref = "mockBukkit" }
+nexo = { group = "com.nexomc", name = "nexo", version.ref = "nexo" }
+creativeApi = { group = "team.unnamed", name = "creative-api", version.ref = "creativeApi" }
+creativeSerializerMinecraft = { group = "team.unnamed", name = "creative-serializer-minecraft", version.ref = "creativeApi" }

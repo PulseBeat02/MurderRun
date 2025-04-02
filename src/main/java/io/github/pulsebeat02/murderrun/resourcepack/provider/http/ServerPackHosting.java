@@ -27,6 +27,7 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.http;
 
 import static java.util.Objects.requireNonNull;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import java.nio.file.Path;
@@ -40,8 +41,8 @@ public final class ServerPackHosting extends ResourcePackProvider {
 
   private FileHttpServer server;
 
-  public ServerPackHosting(final String hostName, final int port) {
-    super(ProviderMethod.LOCALLY_HOSTED_DAEMON);
+  public ServerPackHosting(final MurderRun plugin, final String hostName, final int port) {
+    super(plugin, ProviderMethod.LOCALLY_HOSTED_DAEMON);
     this.hostName = requireNonNull(hostName);
     this.port = port;
   }

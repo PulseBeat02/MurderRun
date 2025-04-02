@@ -34,6 +34,15 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  String NEXO_KILLER_SWORD = str("nexo.killer.sword");
+  String NEXO_KILLER_HELMET = str("nexo.killer.helmet");
+  String NEXO_KILLER_CHESTPLATE = str("nexo.killer.chestplate");
+  String NEXO_KILLER_LEGGINGS = str("nexo.killer.leggings");
+  String NEXO_KILLER_BOOTS = str("nexo.killer.boots");
+  String NEXO_SURVIVOR_HELMET = str("nexo.survivor.helmet");
+  String NEXO_SURVIVOR_CHESTPLATE = str("nexo.survivor.chestplate");
+  String NEXO_SURVIVOR_LEGGINGS = str("nexo.survivor.leggings");
+  String NEXO_SURVIVOR_BOOTS = str("nexo.survivor.boots");
   int CAR_PARTS_REQUIRED = num("car_parts.required");
   double CAR_PART_TRUCK_RADIUS = dec("car_parts.truck_radius");
   int MINIATURIZER_DURATION = num("minitaturizer.duration");

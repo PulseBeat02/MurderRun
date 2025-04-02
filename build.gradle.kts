@@ -32,6 +32,7 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.alessiodp.com/releases/")
+    maven("https://repo.nexomc.com/releases")
 }
 
 val runtimeDeps = listOf(
@@ -83,6 +84,9 @@ dependencies {
             module = "*"
         )
     }
+    compileOnly(libs.nexo)
+    compileOnly(libs.adventureApi)
+    compileOnly(libs.creativeSerializerMinecraft)
 
     // Testing Dependencies
     testImplementation(libs.nettyAll)
@@ -136,11 +140,11 @@ tasks {
         main = "io.github.pulsebeat02.murderrun.MurderRun"
         softDepend = listOf(
             "WorldEdit",
-            "WorldEditTickSpreader",
             "Citizens",
             "LibsDisguises",
             "PlaceholderAPI",
-            "Parties")
+            "Parties",
+            "Nexo")
         libraries = updatedLibraries
     }
 

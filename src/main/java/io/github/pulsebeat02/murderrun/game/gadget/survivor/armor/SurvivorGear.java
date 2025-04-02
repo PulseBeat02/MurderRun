@@ -29,14 +29,16 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
+import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class SurvivorGear extends SurvivorGadget {
 
-  public SurvivorGear(final String name, final Material material, final Component itemName) {
-    super(name, material, itemName, Message.SURVIVOR_GEAR_LORE.build(), GameProperties.SURVIVOR_GEAR_COST, ItemFactory::createSurvivorGear);
+  public SurvivorGear(final String name, final Material material, final Component itemName, final @Nullable Consumer<ItemStack> consumer) {
+    super(name, material, itemName, Message.SURVIVOR_GEAR_LORE.build(), GameProperties.SURVIVOR_GEAR_COST, consumer);
   }
 
   @Override

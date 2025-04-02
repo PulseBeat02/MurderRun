@@ -25,15 +25,18 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.resourcepack.provider;
 
-import com.google.common.collect.Lists;
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
+import io.github.pulsebeat02.murderrun.game.extension.nexo.NexoManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.PackWrapper;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
@@ -53,22 +56,37 @@ public abstract class ResourcePackProvider implements PackProvider {
   }
 
   private final ProviderMethod method;
+  private final MurderRun plugin;
 
   private ResourcePackRequest cached;
   private String url;
 
-  public ResourcePackProvider(final ProviderMethod method) {
+  public ResourcePackProvider(final MurderRun plugin, final ProviderMethod method) {
+    this.plugin = plugin;
     this.method = method;
   }
 
+  @SuppressWarnings("all") // checker
   public void cachePack() {
-    final ResourcePackInfo info = this.getMainResourceInfo();
-    final ResourcePackInfo other = this.cacheProvidedResourcesExceptionally();
+    final ResourcePackInfo[] packs = { this.getMainResourceInfo(), this.cacheProvidedResourcesExceptionally(), this.getNexoPackInfo() };
+    final List<ResourcePackInfo> infos = new ArrayList<>();
+    for (final ResourcePackInfo pack : packs) {
+      if (pack != null) {
+        infos.add(pack);
+      }
+    }
     final Component message = Message.RESOURCEPACK_PROMPT.build();
-    final Collection<ResourcePackInfo> infos = other == null ? Lists.newArrayList(info) : Lists.newArrayList(other, info);
     final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
     final boolean required = GameProperties.FORCE_RESOURCEPACK;
-    this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
+    this.cached = builder.required(required).packs(infos).prompt(message).asResourcePackRequest();
+  }
+
+  private @Nullable ResourcePackInfo getNexoPackInfo() {
+    if (Capabilities.NEXO.isEnabled()) {
+      final NexoManager manager = this.plugin.getNexoManager();
+      return manager.getPackInfo();
+    }
+    return null;
   }
 
   private @Nullable ResourcePackInfo cacheProvidedResourcesExceptionally() {

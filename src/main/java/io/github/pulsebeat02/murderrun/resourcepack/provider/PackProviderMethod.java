@@ -45,13 +45,13 @@ public final class PackProviderMethod {
     final ProviderMethod method = config.getProviderMethod();
     final ResourcePackProvider provider =
       switch (method) {
-        case MC_PACK_HOSTING -> new MCPackHosting();
+        case MC_PACK_HOSTING -> new MCPackHosting(this.plugin);
         case LOCALLY_HOSTED_DAEMON -> {
           final String hostName = config.getHostName();
           final int port = config.getPort();
-          yield new ServerPackHosting(hostName, port);
+          yield new ServerPackHosting(this.plugin, hostName, port);
         }
-        case ON_SERVER -> new NettyHosting();
+        case ON_SERVER -> new NettyHosting(this.plugin);
       };
     this.deferCaching(provider);
     return provider;

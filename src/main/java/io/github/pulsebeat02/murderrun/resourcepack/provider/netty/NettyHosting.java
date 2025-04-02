@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.resourcepack.provider.netty;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.ByteBuddyBukkitInjector;
@@ -38,8 +39,8 @@ public final class NettyHosting extends ResourcePackProvider {
 
   private final String url;
 
-  public NettyHosting() {
-    super(ProviderMethod.ON_SERVER);
+  public NettyHosting(final MurderRun plugin) {
+    super(plugin, ProviderMethod.ON_SERVER);
     this.url = this.getPackUrl();
   }
 

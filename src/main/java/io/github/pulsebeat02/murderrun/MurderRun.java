@@ -38,6 +38,7 @@ import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
+import io.github.pulsebeat02.murderrun.game.extension.nexo.NexoManager;
 import io.github.pulsebeat02.murderrun.game.extension.papi.MurderRunExpansion;
 import io.github.pulsebeat02.murderrun.game.extension.parties.PartiesManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
@@ -81,6 +82,8 @@ public final class MurderRun extends JavaPlugin {
 
   private MurderRunExpansion expansion;
   private PartiesManager partiesManager;
+  private NexoManager nexoManager;
+
   private AtomicBoolean disabling;
 
   @Override
@@ -138,6 +141,9 @@ public final class MurderRun extends JavaPlugin {
     }
     if (Capabilities.PARTIES.isEnabled()) {
       this.partiesManager = new PartiesManager(this);
+    }
+    if (Capabilities.NEXO.isEnabled()) {
+      this.nexoManager = new NexoManager();
     }
   }
 
@@ -295,5 +301,9 @@ public final class MurderRun extends JavaPlugin {
 
   public AtomicBoolean isDisabling() {
     return this.disabling;
+  }
+
+  public NexoManager getNexoManager() {
+    return this.nexoManager;
   }
 }
