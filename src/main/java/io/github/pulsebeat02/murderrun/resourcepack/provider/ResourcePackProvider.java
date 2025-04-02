@@ -71,6 +71,7 @@ public abstract class ResourcePackProvider implements PackProvider {
       final boolean required = GameProperties.FORCE_RESOURCEPACK;
       this.cached = builder.required(required).packs(infos).prompt(message).replace(true).asResourcePackRequest();
     } catch (final AssertionError e) {
+      e.printStackTrace();
       final String msg =
         "Unable to retrieve resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
       throw new AssertionError(msg);

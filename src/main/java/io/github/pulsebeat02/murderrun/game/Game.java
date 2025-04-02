@@ -117,11 +117,12 @@ public final class Game {
   private void forceShutdown(final GameResult code) {
     this.gadgetManager.shutdown();
     this.scheduler.cancelAllTasks();
-    this.playerManager.resetAllPlayers();
     this.phaseInvoker.invokeCleanup(code);
-    this.map.shutdown();
     this.executor.shutdown();
     this.extensionManager.disableExtensions();
+    this.playerManager.resetAllPlayers();
+    this.map.shutdown();
+    this.mapSchematicIO.resetMap();
     this.callback.onGameFinish(this, code);
   }
 

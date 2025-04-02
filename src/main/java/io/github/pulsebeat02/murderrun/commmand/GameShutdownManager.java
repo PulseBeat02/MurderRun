@@ -25,30 +25,46 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.commmand;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class GameShutdownManager {
 
-  private final Collection<Game> currentGames;
+  private final Collection<PreGameManager> currentGames;
 
   public GameShutdownManager() {
     this.currentGames = new HashSet<>();
   }
 
   public void forceShutdown() {
-    for (final Game game : this.currentGames) {
+    for (final PreGameManager preGameManager : this.currentGames) {
+      final Game game = preGameManager.getGame();
+      final GameStatus status = game.getStatus();
+      final GameStatus.Status gameStatus = status.getStatus();
+      if (gameStatus == GameStatus.Status.NOT_STARTED) {
+        preGameManager.shutdown(true);
+        continue;
+      }
       game.finishGame(GameResult.INTERRUPTED);
     }
+    this.currentGames.clear();
   }
 
-  public void addGame(final Game game) {
+  public void addGame(final PreGameManager game) {
     this.currentGames.add(game);
   }
 
-  public void removeGame(final Game game) {
-    this.currentGames.remove(game);
+  public void removeGame(final PreGameManager game) {
+    final MurderRun plugin = game.getPlugin();
+    final AtomicBoolean disabling = plugin.isDisabling();
+    if (disabling.get()) {
+      this.currentGames.remove(game);
+    }
   }
 }

@@ -50,6 +50,7 @@ import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -79,6 +80,7 @@ public final class MurderRun extends JavaPlugin {
 
   private MurderRunExpansion expansion;
   private PartiesManager partiesManager;
+  private AtomicBoolean disabling;
 
   @Override
   public void onLoad() {
@@ -87,6 +89,7 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    this.disabling = new AtomicBoolean(true);
     this.shutdownGames();
     this.unregisterExtensions();
     this.updatePluginData();
@@ -98,6 +101,7 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    this.disabling = new AtomicBoolean(false);
     this.registerAudienceHandler();
     this.readPluginData();
     this.registerLookUpMaps();
@@ -282,5 +286,9 @@ public final class MurderRun extends JavaPlugin {
 
   public PartiesManager getPartiesManager() {
     return this.partiesManager;
+  }
+
+  public AtomicBoolean isDisabling() {
+    return this.disabling;
   }
 }

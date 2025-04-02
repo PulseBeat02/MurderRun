@@ -153,7 +153,7 @@ public final class GameManager {
       this.removeGame(id);
     }
     this.games.put(id, manager);
-    shutdownManager.addGame(game);
+    shutdownManager.addGame(manager);
   }
 
   private boolean checkGameArenaLobbyUsed(final PreGameManager manager) {
