@@ -29,10 +29,10 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.map.GameMap;
+import io.github.pulsebeat02.murderrun.game.map.TruckManager;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
 import io.github.pulsebeat02.murderrun.game.player.*;
@@ -67,11 +67,16 @@ public final class GamePlayerThrowEvent extends GameEvent {
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
     final ItemStack sword = ItemFactory.createKillerSword();
-    if (!stack.isSimilar(sword)) {
+    if (stack.isSimilar(sword)) {
+      event.setCancelled(true);
       return;
     }
 
-    event.setCancelled(true);
+    final ItemStack arrow = ItemFactory.createKillerArrow();
+    if (stack.isSimilar(arrow)) {
+      event.setCancelled(true);
+      return;
+    }
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -108,6 +113,7 @@ public final class GamePlayerThrowEvent extends GameEvent {
 
     final GamePlayerManager playerManager = game.getPlayerManager();
     final Player player = event.getPlayer();
+
     if (playerManager.checkPlayerExists(player)) {
       final GamePlayer gamePlayer = playerManager.getGamePlayer(player);
       if (gamePlayer instanceof final Survivor survivor) {
@@ -117,13 +123,14 @@ public final class GamePlayerThrowEvent extends GameEvent {
     }
 
     final int leftOver = manager.getRemainingParts();
-    this.setScoreboard();
-    this.announceCarPartRetrieval(leftOver);
     if (leftOver == 0) {
-      game.finishGame(GameResult.INNOCENTS);
+      final TruckManager truck = map.getTruckManager();
+      truck.startTruckFixTimer();
       return;
     }
 
+    this.announceCarPartRetrieval(leftOver);
+    this.setScoreboard();
     if (!this.checkIfPlayerStillHasCarPart(player)) {
       this.setPlayerCarPartStatus(player);
     }

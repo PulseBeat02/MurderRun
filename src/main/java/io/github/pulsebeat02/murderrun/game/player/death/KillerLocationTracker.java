@@ -53,6 +53,13 @@ public final class KillerLocationTracker {
     final GameScheduler scheduler = this.game.getScheduler();
     final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> manager.applyToKillers(this::spawnParticlesWhenClose), 0, 20L, reference);
+    scheduler.scheduleRepeatedTask(() -> manager.applyToKillers(this::spawnParticleTrail), 0, 1L, reference);
+  }
+
+  private void spawnParticleTrail(final GamePlayer killer) {
+    final Location murdererLocation = killer.getLocation();
+    final World killerWorld = requireNonNull(murdererLocation.getWorld());
+    killerWorld.spawnParticle(Particle.DUST, murdererLocation, 3, 0.2, 0.2, 0.2, new DustOptions(Color.RED, 2));
   }
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
@@ -60,7 +67,7 @@ public final class KillerLocationTracker {
     final GamePlayerManager manager = this.game.getPlayerManager();
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final Collection<GamePlayer> players = survivors.toList();
-    final World killerWorld = murdererLocation.getWorld();
+    final World killerWorld = requireNonNull(murdererLocation.getWorld());
     for (final GamePlayer survivor : players) {
       final Location location = survivor.getLocation();
       final World world = requireNonNull(location.getWorld());

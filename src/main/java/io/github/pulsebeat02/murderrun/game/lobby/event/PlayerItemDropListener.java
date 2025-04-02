@@ -28,34 +28,28 @@ package io.github.pulsebeat02.murderrun.game.lobby.event;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
 import java.util.Collection;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 
-public final class DamagePreventionListener implements Listener {
+public final class PlayerItemDropListener implements Listener {
 
   private final PreGameManager manager;
 
-  public DamagePreventionListener(final PreGameManager manager) {
+  public PlayerItemDropListener(final PreGameManager manager) {
     this.manager = manager;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onDamage(final EntityDamageEvent event) {
-    final Entity entity = event.getEntity();
-    if (!(entity instanceof final Player player)) {
-      return;
-    }
-
+  public void onItemDrop(final PlayerDropItemEvent event) {
+    final Player player = event.getPlayer();
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
     if (!participants.contains(player)) {
       return;
     }
-
     event.setCancelled(true);
   }
 }

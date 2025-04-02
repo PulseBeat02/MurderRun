@@ -95,10 +95,9 @@ public final class MapSchematicIO {
   private void unloadWorld() {
     final String name = this.uuid.toString();
     final World world = Bukkit.getWorld(name);
-    if (world == null) {
-      return;
+    if (world != null) {
+      Bukkit.unloadWorld(world, false);
     }
-    Bukkit.unloadWorld(world, false);
   }
 
   private World createWorld() {

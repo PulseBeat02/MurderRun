@@ -35,11 +35,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public final class BlockModifyListener implements Listener {
+public final class PlayerBlockModifyListener implements Listener {
 
   private final PreGameManager manager;
 
-  public BlockModifyListener(final PreGameManager manager) {
+  public PlayerBlockModifyListener(final PreGameManager manager) {
     this.manager = manager;
   }
 

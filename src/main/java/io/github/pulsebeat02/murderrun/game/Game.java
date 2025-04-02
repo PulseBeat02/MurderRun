@@ -35,9 +35,7 @@ import io.github.pulsebeat02.murderrun.game.player.phase.GamePhaseInvoker;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import java.util.Collection;
 import java.util.UUID;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public final class Game {
 
@@ -101,17 +99,7 @@ public final class Game {
       return;
     }
     this.status.setStatus(GameStatus.Status.FINISHED);
-
-    if (code == GameResult.INTERRUPTED) {
-      this.forceShutdown(code);
-    } else {
-      this.gracefulShutdown(code);
-    }
-  }
-
-  private void gracefulShutdown(final GameResult code) {
-    final BukkitScheduler shutdownHook = Bukkit.getScheduler();
-    shutdownHook.runTaskLater(this.plugin, () -> this.forceShutdown(code), 20L);
+    this.forceShutdown(code);
   }
 
   private void forceShutdown(final GameResult code) {

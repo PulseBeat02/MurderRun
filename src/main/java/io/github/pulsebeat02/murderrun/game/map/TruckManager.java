@@ -28,10 +28,14 @@ package io.github.pulsebeat02.murderrun.game.map;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameResult;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.locale.Message;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -49,6 +53,26 @@ public final class TruckManager {
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(this::spawnParticleOnTruck, 0, 2L, reference);
+  }
+
+  public void startTruckFixTimer() {
+    final Game game = this.map.getGame();
+    final NullReference reference = NullReference.of();
+    final GameScheduler scheduler = game.getScheduler();
+    scheduler.scheduleCountdownTask(this::scheduleTruckCountdown, 5, reference);
+  }
+
+  private void scheduleTruckCountdown(final int seconds) {
+    final Game game = this.map.getGame();
+    if (seconds == 0) {
+      game.finishGame(GameResult.INNOCENTS);
+      return;
+    }
+
+    final GamePlayerManager manager = game.getPlayerManager();
+    final Component msg = Message.TRUCK_STARTING.build();
+    final Component msg1 = Message.TRUCK_STARTING_TIMER.build(seconds);
+    manager.showTitleForAllParticipants(msg, msg1);
   }
 
   private void spawnParticleOnTruck() {

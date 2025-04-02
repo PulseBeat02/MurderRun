@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.map.event;
 
+import static net.kyori.adventure.text.Component.empty;
+
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameResult;
@@ -126,6 +128,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final Component title = Message.PLAYER_DEATH.build(name);
     final GamePlayerManager manager = game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);
+    manager.showTitleForAllParticipants(empty(), title);
   }
 
   private void playDeathSoundEffect() {
