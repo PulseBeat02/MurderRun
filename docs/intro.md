@@ -10,9 +10,8 @@ it's completely free.
 ```
 
 ```{note}
-Murder Run is free and open-source software licensed under the [MIT](https://opensource.org/license/mit) (or Expat)
-License, generally compatible with the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license that Bukkit
-falls under.
+Murder Run is free and open-source software licensed under the [GNU GPLv3](https://opensource.org/license/gpl-3-0)
+License, the same license that Bukkit software and all inheritors must fall under.
 ```
 
 ## What is Murder Run?
