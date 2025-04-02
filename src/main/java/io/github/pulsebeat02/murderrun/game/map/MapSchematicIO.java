@@ -119,7 +119,11 @@ public final class MapSchematicIO {
       .thenRun(this::createWorld)
       .thenCompose(v -> this.pasteLobbySchematic())
       .thenCompose(v -> this.pasteArenaSchematic())
-      .thenRun(this::pasteCitizensNPCs);
+      .thenRun(this::pasteCitizensNPCs)
+      .exceptionally(e -> {
+        e.printStackTrace();
+        throw new AssertionError(e);
+      });
   }
 
   private void removeCitizensNPCs() {
@@ -136,6 +140,7 @@ public final class MapSchematicIO {
       final Location location = npc.getStoredLocation();
       final Location clone = location.clone();
       clone.setWorld(world);
+      clone.add(0, 5, 0);
       npc.teleport(clone, PlayerTeleportEvent.TeleportCause.PLUGIN);
     }
   }

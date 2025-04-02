@@ -60,12 +60,21 @@ public final class GameManager {
   }
 
   public boolean leaveGame(final Player player) {
-    final PreGameManager game = this.getGameAsParticipant(player);
-    if (game != null) {
-      final PreGamePlayerManager manager = game.getPlayerManager();
+    final PreGameManager preGameManager = this.getGameAsParticipant(player);
+    if (preGameManager != null) {
+      final PreGamePlayerManager manager = preGameManager.getPlayerManager();
       manager.removeParticipantFromLobby(player);
+
+      final Game game = preGameManager.getGame();
+      final GameStatus status = game.getStatus();
+      final GameStatus.Status actual = status.getStatus();
+      if (actual != GameStatus.Status.NOT_STARTED) {
+        player.setHealth(0.0);
+      }
+
       return true;
     }
+
     return false;
   }
 

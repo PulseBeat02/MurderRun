@@ -314,7 +314,6 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
     this.manager.leaveGame(sender);
-    sender.setHealth(0.0);
 
     final Component message = Message.GAME_LEFT.build();
     audience.sendMessage(message);
