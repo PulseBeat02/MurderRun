@@ -42,7 +42,7 @@ options that you can configure to your own heart's desire.
   - Either use GUI's or Commands to Create Games
 - Integration with Several Plugins
   - Integrates with PlaceholderAPI for Custom Statistics
-    - `%%fastest_win_killer%%`, `&&fastest_win_survivor&&`, `%%total_kills%%`, `%%total_deaths%%`,
+    - `%%fastest_win_killer%%`, `%%fastest_win_survivor%%`, `%%total_kills%%`, `%%total_deaths%%`,
       `%%total_wins%%`, `%%total_losses%%`, `%%total_games%%`, `%%win_loss_ratio%%`
   - Integrates with LibsDisguises for Custom Gadgets
   - Integrates with Parties for Custom Games
