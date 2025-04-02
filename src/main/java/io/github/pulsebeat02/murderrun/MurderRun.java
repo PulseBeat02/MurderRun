@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun;
 
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
 import io.github.pulsebeat02.murderrun.commmand.AnnotationParserHandler;
 import io.github.pulsebeat02.murderrun.commmand.GameShutdownManager;
 import io.github.pulsebeat02.murderrun.data.RelationalDataProvider;
@@ -103,6 +104,7 @@ public final class MurderRun extends JavaPlugin {
   public void onEnable() {
     this.disabling = new AtomicBoolean(false);
     this.registerAudienceHandler();
+    this.initializeEventBusApi();
     this.readPluginData();
     this.registerLookUpMaps();
     this.handlePackHosting();
@@ -143,6 +145,10 @@ public final class MurderRun extends JavaPlugin {
     if (this.gameShutdownManager != null) {
       this.gameShutdownManager.forceShutdown();
     }
+  }
+
+  private void initializeEventBusApi() {
+    ApiEventBus.init();
   }
 
   private void registerLookUpMaps() {

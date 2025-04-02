@@ -25,6 +25,10 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.lobby;
 
+import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
+import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import io.github.pulsebeat02.murderrun.api.event.lobby.LobbyCreationEvent;
+import io.github.pulsebeat02.murderrun.api.event.lobby.LobbyDeletionEvent;
 import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
 import io.github.pulsebeat02.murderrun.game.map.Schematic;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
@@ -62,17 +66,25 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
   }
 
   public void addLobby(final String name, final Location[] corners, final Location spawn) {
+    final ApiEventBus bus = EventBusProvider.getBus();
     final Schematic schematic = Schematic.copyAndCreateSchematic(name, corners, false);
     final Lobby lobby = new Lobby(schematic, name, corners, spawn);
     this.lobbies.put(name, lobby);
+    bus.post(LobbyCreationEvent.class, lobby);
   }
 
   public void removeLobby(final String name) {
+    final Lobby lobby = this.lobbies.get(name);
+    if (lobby == null) {
+      return;
+    }
+    final ApiEventBus bus = EventBusProvider.getBus();
     final Path data = IOUtils.getPluginDataFolderPath();
     final Path parent = data.resolve("schematics/lobbies");
     final Path schematic = parent.resolve(name);
     IOUtils.deleteFileIfExisting(schematic);
     this.lobbies.remove(name);
+    bus.post(LobbyDeletionEvent.class, lobby);
   }
 
   public @Nullable Lobby getLobby(final String name) {

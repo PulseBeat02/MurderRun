@@ -39,7 +39,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 
 public final class TradingUtils {
 
@@ -49,7 +48,7 @@ public final class TradingUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static Optional<MerchantRecipe> getRecipeByResult(final @NotNull ItemStack item) {
+  public static Optional<MerchantRecipe> getRecipeByResult(final ItemStack item) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     MerchantRecipe target = null;

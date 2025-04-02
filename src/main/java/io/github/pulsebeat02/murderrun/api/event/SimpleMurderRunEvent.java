@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun.api.event;
 
-import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
-import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
-import io.github.pulsebeat02.murderrun.api.event.game.GameStatusEvent;
-import java.util.concurrent.atomic.AtomicReference;
+import io.github.pulsebeat02.murderrun.MurderRun;
 
-public final class GameStatus {
+public abstract class SimpleMurderRunEvent implements MurderRunEvent {
 
-  private final AtomicReference<Status> status;
+  private final MurderRun api;
+  private final Class<? extends MurderRunEvent> eventType;
 
-  public GameStatus() {
-    this.status = new AtomicReference<>(Status.NOT_STARTED);
-    this.setStatus(Status.NOT_STARTED);
+  public SimpleMurderRunEvent(final MurderRun api, final Class<? extends MurderRunEvent> eventType) {
+    this.api = api;
+    this.eventType = eventType;
   }
 
-  public Status getStatus() {
-    return this.status.get();
+  @Override
+  public MurderRun getMurderRun() {
+    return this.api;
   }
 
-  public void setStatus(final Status status) {
-    final ApiEventBus eventBus = EventBusProvider.getBus();
-    eventBus.post(GameStatusEvent.class, this);
-    this.status.set(status);
-  }
-
-  public enum Status {
-    NOT_STARTED,
-    SURVIVORS_RELEASED,
-    KILLERS_RELEASED,
-    FINISHED,
+  @Override
+  public Class<? extends MurderRunEvent> getEventType() {
+    return this.eventType;
   }
 }

@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun;
 
-import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
-import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
+import be.seeseemelk.mockbukkit.MockBukkit;
+import io.github.pulsebeat02.murderrun.api.event.EventImplGenerator;
 import io.github.pulsebeat02.murderrun.api.event.game.GameStatusEvent;
-import java.util.concurrent.atomic.AtomicReference;
 
-public final class GameStatus {
+public final class ByteBuddyTest {
 
-  private final AtomicReference<Status> status;
-
-  public GameStatus() {
-    this.status = new AtomicReference<>(Status.NOT_STARTED);
-    this.setStatus(Status.NOT_STARTED);
-  }
-
-  public Status getStatus() {
-    return this.status.get();
-  }
-
-  public void setStatus(final Status status) {
-    final ApiEventBus eventBus = EventBusProvider.getBus();
-    eventBus.post(GameStatusEvent.class, this);
-    this.status.set(status);
-  }
-
-  public enum Status {
-    NOT_STARTED,
-    SURVIVORS_RELEASED,
-    KILLERS_RELEASED,
-    FINISHED,
+  public static void main(final String[] args) {
+    MockBukkit.mock();
+    EventImplGenerator.generateImplClass(GameStatusEvent.class);
   }
 }

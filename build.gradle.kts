@@ -87,6 +87,8 @@ dependencies {
     // Testing Dependencies
     testImplementation(libs.nettyAll)
     testImplementation(libs.fastutil)
+    testImplementation(libs.mockBukkit)
+    runtimeDeps.forEach(::testImplementation)
 }
 
 val targetJavaVersion = 21

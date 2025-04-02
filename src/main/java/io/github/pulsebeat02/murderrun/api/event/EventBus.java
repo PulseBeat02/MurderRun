@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun.api.event;
 
-import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
-import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
-import io.github.pulsebeat02.murderrun.api.event.game.GameStatusEvent;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Set;
+import java.util.function.Consumer;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Unmodifiable;
 
-public final class GameStatus {
+public interface EventBus {
+  <T extends MurderRunEvent> EventSubscription<T> subscribe(Plugin plugin, Class<T> eventType, Consumer<? super T> handler);
 
-  private final AtomicReference<Status> status;
+  <T extends MurderRunEvent> void unsubscribe(EventSubscription<T> subscription);
 
-  public GameStatus() {
-    this.status = new AtomicReference<>(Status.NOT_STARTED);
-    this.setStatus(Status.NOT_STARTED);
-  }
+  void unsubscribe(Plugin plugin);
 
-  public Status getStatus() {
-    return this.status.get();
-  }
+  <T extends MurderRunEvent> void unsubscribe(Plugin plugin, Class<T> eventType);
 
-  public void setStatus(final Status status) {
-    final ApiEventBus eventBus = EventBusProvider.getBus();
-    eventBus.post(GameStatusEvent.class, this);
-    this.status.set(status);
-  }
+  @Unmodifiable
+  Set<EventSubscription<? extends MurderRunEvent>> getSubscriptions(Plugin plugin);
 
-  public enum Status {
-    NOT_STARTED,
-    SURVIVORS_RELEASED,
-    KILLERS_RELEASED,
-    FINISHED,
-  }
+  <T extends MurderRunEvent> @Unmodifiable Set<EventSubscription<T>> getSubscriptions(Plugin plugin, Class<T> eventType);
+
+  <T extends MurderRunEvent> @Unmodifiable Set<EventSubscription<? extends T>> getAllSubscriptions(Plugin plugin, Class<T> eventType);
 }

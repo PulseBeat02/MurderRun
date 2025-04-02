@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game;
+package io.github.pulsebeat02.murderrun.api.event;
 
-import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
-import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
-import io.github.pulsebeat02.murderrun.api.event.game.GameStatusEvent;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import org.bukkit.plugin.Plugin;
 
-public final class GameStatus {
+public interface EventSubscription<T extends MurderRunEvent> {
+  Consumer<? super T> getHandler();
 
-  private final AtomicReference<Status> status;
+  Class<T> getEventType();
 
-  public GameStatus() {
-    this.status = new AtomicReference<>(Status.NOT_STARTED);
-    this.setStatus(Status.NOT_STARTED);
-  }
+  Plugin getPlugin();
 
-  public Status getStatus() {
-    return this.status.get();
-  }
+  void unsubscribe();
 
-  public void setStatus(final Status status) {
-    final ApiEventBus eventBus = EventBusProvider.getBus();
-    eventBus.post(GameStatusEvent.class, this);
-    this.status.set(status);
-  }
+  boolean isActive();
 
-  public enum Status {
-    NOT_STARTED,
-    SURVIVORS_RELEASED,
-    KILLERS_RELEASED,
-    FINISHED,
+  default boolean isInactive() {
+    return !this.isActive();
   }
 }

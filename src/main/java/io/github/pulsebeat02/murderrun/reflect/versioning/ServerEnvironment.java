@@ -31,7 +31,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.jetbrains.annotations.NotNull;
 
 public final class ServerEnvironment {
 
@@ -58,7 +57,7 @@ public final class ServerEnvironment {
     return revision;
   }
 
-  private static @NotNull String getVersionPackage() {
+  private static String getVersionPackage() {
     String versionChecker = "org.bukkit.craftbukkit.%s.CraftServer";
     final Server server = Bukkit.getServer();
     final Class<?> clazz = server.getClass();
