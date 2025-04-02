@@ -30,6 +30,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 public final class Cannon extends SurvivorAbility implements Listener {
@@ -79,6 +81,15 @@ public final class Cannon extends SurvivorAbility implements Listener {
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     if (!gamePlayer.hasAbility(CANNON_NAME)) {
+      return;
+    }
+
+    final ItemStack item = event.getItem();
+    if (item == null) {
+      return;
+    }
+
+    if (!PDCUtils.isAbility(item)) {
       return;
     }
 

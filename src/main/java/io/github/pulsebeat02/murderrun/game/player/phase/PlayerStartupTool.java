@@ -89,11 +89,6 @@ public final class PlayerStartupTool {
     this.handleAll(gamePlayer);
     this.giveFlashlight(gamePlayer);
     this.sendFlashlightTip(gamePlayer);
-    this.setAttributes(gamePlayer);
-  }
-
-  private void setAttributes(final GamePlayer gamePlayer) {
-    gamePlayer.apply(player -> player.setWalkSpeed(0.25f));
   }
 
   private void sendFlashlightTip(final GamePlayer player) {
@@ -122,6 +117,5 @@ public final class PlayerStartupTool {
       new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4)
     );
     gamePlayer.setGameMode(GameMode.SURVIVAL);
-    gamePlayer.setWalkSpeed(0.4f);
   }
 }

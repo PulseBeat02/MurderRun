@@ -26,6 +26,10 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.map.event;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -53,6 +57,15 @@ public final class GamePlayerClickEvent extends GameEvent {
 
     final ItemStack item = event.getCurrentItem();
     if (item == null) {
+      return;
+    }
+
+    final Game game = this.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final GameStatus status = game.getStatus();
+    final GameStatus.Status gameStatus = status.getStatus();
+    if (gamePlayer instanceof Killer && gameStatus == GameStatus.Status.SURVIVORS_RELEASED) {
       return;
     }
 
