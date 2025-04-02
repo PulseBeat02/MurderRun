@@ -42,7 +42,8 @@ public abstract class AbstractGadget implements Gadget {
 
   private final String name;
   private final int cost;
-  private final ItemStack gadget;
+
+  private ItemStack gadget;
 
   public AbstractGadget(final String name, final Material material, final Component itemName, final Component itemLore, final int cost) {
     this(name, material, itemName, itemLore, cost, null);
@@ -77,6 +78,11 @@ public abstract class AbstractGadget implements Gadget {
   @Override
   public ItemStack getGadget() {
     return this.gadget;
+  }
+
+  @Override
+  public void setGadget(final ItemStack item) {
+    this.gadget = item;
   }
 
   @Override

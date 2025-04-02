@@ -40,6 +40,8 @@ public interface Gadget {
 
   ItemStack getGadget();
 
+  void setGadget(final ItemStack item);
+
   String getName();
 
   int getPrice();

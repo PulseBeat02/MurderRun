@@ -143,44 +143,40 @@ public final class ItemFactory {
     return Item.builder(stack).pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true).model(1).build();
   }
 
-  public static void createSurvivorHelmet(ItemStack stack) {
+  public static ItemStack createSurvivorHelmet() {
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      stack = manager.getSurvivorHelmet().orElse(createDefaultSurvivorHelmet());
-      return;
+      return manager.getSurvivorHelmet().orElse(createDefaultSurvivorHelmet());
     }
-    stack = createDefaultSurvivorHelmet();
+    return createDefaultSurvivorHelmet();
   }
 
-  public static void createSurvivorChestplate(ItemStack stack) {
+  public static ItemStack createSurvivorChestplate() {
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      stack = manager.getSurvivorChestplate().orElse(createDefaultSurvivorChestplate());
-      return;
+      return manager.getSurvivorChestplate().orElse(createDefaultSurvivorChestplate());
     }
-    stack = createDefaultSurvivorChestplate();
+    return createDefaultSurvivorChestplate();
   }
 
-  public static void createSurvivorLeggings(ItemStack stack) {
+  public static ItemStack createSurvivorLeggings() {
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      stack = manager.getSurvivorLeggings().orElse(createDefaultSurvivorLeggings());
-      return;
+      return manager.getSurvivorLeggings().orElse(createDefaultSurvivorLeggings());
     }
-    stack = createDefaultSurvivorLeggings();
+    return createDefaultSurvivorLeggings();
   }
 
-  public static void createSurvivorBoots(ItemStack stack) {
+  public static ItemStack createSurvivorBoots() {
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
       final NexoManager manager = plugin.getNexoManager();
-      stack = manager.getSurvivorBoots().orElse(createDefaultSurvivorBoots());
-      return;
+      return manager.getSurvivorBoots().orElse(createDefaultSurvivorBoots());
     }
-    stack = createDefaultSurvivorBoots();
+    return createDefaultSurvivorBoots();
   }
 
   public static ItemStack createDefaultSurvivorHelmet() {
