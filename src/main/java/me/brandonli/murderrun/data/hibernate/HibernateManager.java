@@ -73,7 +73,7 @@ public final class HibernateManager {
       final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
       return this.constructSession(mapper);
     } catch (final HibernateException e) {
-      throw new AssertionError("Failed to connect to database!", e);
+      throw new AssertionError(e);
     }
   }
 

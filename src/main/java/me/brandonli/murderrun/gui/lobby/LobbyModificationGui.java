@@ -196,7 +196,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
         case 0 -> this.first = location;
         case 1 -> this.second = location;
         case 2 -> this.spawn = location;
-        default -> throw new AssertionError("Invalid mode!");
+        default -> throw new IllegalStateException();
       }
     }
 
@@ -208,7 +208,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
         this.listenForName = false;
         this.showAsync();
       }
-      default -> throw new AssertionError("Invalid mode!");
+      default -> throw new IllegalStateException();
     }
 
     this.currentMode.incrementAndGet();

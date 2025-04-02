@@ -369,7 +369,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
         case 1 -> this.creation.setSecond(location);
         case 2 -> this.creation.setTruck(location);
         case 3 -> this.creation.setSpawn(location);
-        default -> throw new AssertionError("Invalid mode!");
+        default -> throw new IllegalStateException();
       }
     }
 
@@ -382,7 +382,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
         this.listenForName = false;
         this.showAsync();
       }
-      default -> throw new AssertionError("Invalid mode!");
+      default -> throw new IllegalStateException();
     }
 
     this.currentMode.incrementAndGet();

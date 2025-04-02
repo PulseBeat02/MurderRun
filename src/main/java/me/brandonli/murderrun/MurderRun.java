@@ -21,6 +21,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import dev.triumphteam.gui.TriumphGui;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.api.event.ApiEventBus;
 import me.brandonli.murderrun.api.event.EventBusProvider;
@@ -59,46 +60,46 @@ import me.brandonli.murderrun.utils.map.MapTeleportSkipListener;
 import me.brandonli.murderrun.utils.screen.ScreenUtils;
 import me.brandonli.murderrun.utils.versioning.VersionChecker;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
 
-  private static final int BSTATS_SERVER_ID = 22728;
-
-  private PluginDataConfigurationMapper configuration;
-  private QuickJoinConfigurationMapper quickJoinConfiguration;
-
-  private AudienceProvider audience;
+  private static final int BUKKIT_STATS_SERVER_ID = 22728;
 
   private ConfigurationManager<ArenaManager> arenaDataConfigurationMapper;
   private ConfigurationManager<LobbyManager> lobbyDataConfigurationMapper;
   private ConfigurationManager<StatisticsManager> statisticsConfigurationMapper;
   private ConfigurationManager<ArenaCreationManager> arenaCreationManagerConfigurationManager;
+  private PluginDataConfigurationMapper configuration;
+  private QuickJoinConfigurationMapper quickJoinConfiguration;
 
+  private ResourcePackProvider provider;
   private ArenaManager arenaManager;
   private LobbyManager lobbyManager;
   private StatisticsManager statisticsManager;
   private ArenaCreationManager arenaCreationManager;
   private GameManager gameManager;
-
-  private Metrics metrics;
   private GameShutdownManager gameShutdownManager;
   private PlayerResourcePackChecker playerResourcePackChecker;
-  private ResourcePackProvider provider;
 
+  private AudienceProvider audience;
   private MurderRunExpansion expansion;
   private PartiesManager partiesManager;
   private NexoManager nexoManager;
   private VaultManager vaultManager;
 
+  private Metrics metrics;
   private AtomicBoolean disabling;
   private VersionChecker versionChecker;
   private MapTeleportSkipListener mapTeleportSkipListener;
 
   @Override
   public void onLoad() {
-    this.installDependencies();
+    this.loadDependencies();
   }
 
   @Override
@@ -172,10 +173,26 @@ public final class MurderRun extends JavaPlugin {
     loader.loadSchematics();
   }
 
-  private void installDependencies() {
-    final DependencyManager manager = new DependencyManager();
-    manager.installDependencies();
-    this.setupPacketEvents();
+  private void loadDependencies() {
+    final Optional<UnsupportedOperationException> exception = this.installDependenciesExceptionally();
+    if (exception.isPresent()) {
+      final Server server = Bukkit.getServer();
+      final PluginManager manager = server.getPluginManager();
+      final UnsupportedOperationException e = exception.get();
+      manager.disablePlugin(this);
+      throw new AssertionError(e);
+    }
+  }
+
+  private Optional<UnsupportedOperationException> installDependenciesExceptionally() {
+    try {
+      final DependencyManager manager = new DependencyManager();
+      manager.installDependencies();
+      this.setupPacketEvents();
+    } catch (final UnsupportedOperationException e) {
+      return Optional.of(e);
+    }
+    return Optional.empty();
   }
 
   private void setupPacketEvents() {
@@ -221,7 +238,7 @@ public final class MurderRun extends JavaPlugin {
 
   private void registerLookUpMaps() {
     this.audience.console(Message.LOAD_LOOKUP.build());
-    this.fixTriumphGui();
+    TriumphGui.init(this);
     ClassGraphUtils.init();
     GadgetRegistry.init();
     AbilityRegistry.init();
@@ -230,10 +247,6 @@ public final class MurderRun extends JavaPlugin {
     AbilityTestingGui.init();
     TerrainDropAnalyzer.init();
     ScreenUtils.init(this);
-  }
-
-  private void fixTriumphGui() {
-    TriumphGui.init(this);
   }
 
   private void shutdownAudience() {
@@ -290,7 +303,7 @@ public final class MurderRun extends JavaPlugin {
   private void enableMetrics() {
     this.audience.console(Message.LOAD_METRICS.build());
     System.setProperty("bstats.relocatecheck", "false");
-    this.metrics = new Metrics(this, BSTATS_SERVER_ID);
+    this.metrics = new Metrics(this, BUKKIT_STATS_SERVER_ID);
   }
 
   public void updatePluginData() {

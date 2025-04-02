@@ -35,7 +35,7 @@ public final class Main {
     switch (random) {
       case 0 -> invokeMinesweeperMenu();
       case 1 -> invokeRickRollMenu();
-      default -> throw new AssertionError("Invalid mode!");
+      default -> throw new IllegalStateException();
     }
   }
 
