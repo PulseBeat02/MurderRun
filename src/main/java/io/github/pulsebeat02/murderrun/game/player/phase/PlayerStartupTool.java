@@ -96,8 +96,8 @@ public final class PlayerStartupTool {
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
     final PlayerAudience audience = player.getAudience();
-    scheduler.scheduleTask(() -> audience.sendMessage(Message.FLASHLIGHT_TIP.build()), 5 * 20L, reference);
-    scheduler.scheduleTask(() -> audience.sendMessage(Message.SPRINT_TIP.build()), 30 * 20L, reference);
+    scheduler.scheduleTask(() -> audience.sendMessage(Message.FLASHLIGHT_TIP.build()), 15 * 20L, reference);
+    scheduler.scheduleTask(() -> audience.sendMessage(Message.SPRINT_TIP.build()), 45 * 20L, reference);
   }
 
   private void giveFlashlight(final GamePlayer player) {

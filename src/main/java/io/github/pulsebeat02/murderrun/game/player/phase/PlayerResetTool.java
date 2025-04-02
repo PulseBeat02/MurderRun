@@ -75,5 +75,6 @@ public final class PlayerResetTool {
     gamePlayer.setFireTicks(0);
     gamePlayer.setInvulnerable(false);
     gamePlayer.resetAllAttributes();
+    gamePlayer.setAllowFlight(false);
   }
 }

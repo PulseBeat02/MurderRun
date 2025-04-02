@@ -37,6 +37,8 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  double PHASE_DISTANCE = dec("phase.distance");
+  double PHASE_COOLDOWN = dec("phase.cooldown");
   double KILLER_SPRINT_TIME = dec("killer.sprint_time");
   double SURVIVOR_SPRINT_TIME = dec("survivor.sprint_time");
   double TRAP_VEST_VELOCITY = dec("trap_vest.velocity");

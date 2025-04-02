@@ -175,6 +175,7 @@ tasks {
             url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-206.jar")
             url("https://cdn.modrinth.com/data/rHRYOOoq/versions/yBAIVDGP/Parties-3.2.9.jar")
         }
+        systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
         minecraftVersion("1.21.4")
     }
