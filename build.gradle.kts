@@ -126,6 +126,12 @@ val zipPack by tasks.registering(Zip::class) {
     destinationDirectory.set(layout.buildDirectory.dir("tmp/pack"))
 }
 
+val zipDemo by tasks.registering(Zip::class) {
+    from("./demo-setup")
+    archiveFileName.set("demo-setup.zip")
+    destinationDirectory.set(layout.buildDirectory.dir("tmp/demo-setup"))
+}
+
 tasks {
 
     bukkitPluginYaml {
@@ -179,8 +185,13 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         filteringCharset = "UTF-8"
         dependsOn(zipPack)
+        dependsOn(zipDemo)
         val zipPack = zipPack.get().archiveFile
+        val zipDemo = zipDemo.get().archiveFile
         from(zipPack) {
+            into("")
+        }
+        from(zipDemo) {
             into("")
         }
     }

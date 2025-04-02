@@ -38,19 +38,19 @@ public final class DependencyListing {
     "https://ci.citizensnpcs.co/job/Citizens2/3763/artifact/dist/target/Citizens-2.0.37-b3763.jar"
   );
 
-  private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(
+  private static final Dependency WORLD_EDIT = new UrlDependency(
     "WorldEdit",
-    "FastAsyncWorldEdit-Bukkit-2.13.1-SNAPSHOT-1089",
-    "https://ci.athion.net/job/FastAsyncWorldEdit/1089/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.13.1-SNAPSHOT-1089.jar"
+    "worldedit-bukkit-7.3.12-beta-01",
+    "https://cdn.modrinth.com/data/1u6JkXh5/versions/NhJaettg/worldedit-bukkit-7.3.12-beta-01.jar"
   );
 
-  private static final Dependency PACKETEVENTS = new UrlDependency(
+  private static final Dependency PACKET_EVENTS = new UrlDependency(
     "PacketEvents",
     "packetevents-spigot-2.8.0-SNAPSHOT",
     "https://ci.codemc.io/job/retrooper/job/packetevents/668/artifact/spigot/build/libs/packetevents-spigot-2.8.0-SNAPSHOT.jar"
   );
 
-  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, FAST_ASYNC_WORLD_EDIT, PACKETEVENTS);
+  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
 
   private static DependencyListing create(final String revision, final Dependency... deps) {
     final Collection<Dependency> dependencies = List.of(deps);
