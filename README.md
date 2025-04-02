@@ -4,14 +4,18 @@
 
 ![Banner](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_header.webp)
 [![Sponsor](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_promo2.webp)](https://bisecthosting.com/pulse)
-[![GitHub](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_github.webp)](https://github.com/PulseBeat02/MurderRun)
-[![Discord](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_discord.webp)](https://discord.gg/cUMB6kCsh6)
-[![Kofi](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_kofi.webp)](https://ko-fi.com/pulsebeat_02)
 ![Description](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_description.webp)
 
-## Connect to the plugin testing server **`murderrun.mcserver.us`** to try Murder Run with your friends!
+## Developer
+⚙️ PulseBeat02
+- **Docs**: https://murderrun.readthedocs.io/en/latest/intro.html
+- **GitHub**: https://github.com/PulseBeat02/MurderRun
+- **Support**: https://discord.gg/cUMB6kCsh6
+- **Donate**: https://ko-fi.com/pulsebeat_02
+- **Testing Server**: `murderrun.mcserver.us`
 
-## What is Murder Run?
+---
+
 If you are familiar with the game Dead by Daylight (DBD), you will be familiar with Murder Run. Murder Run is based off
 the concept in DBD, an advanced game-mode revolving around two groups: killers and survivors. In a desolate map, survivors
 must find all vehicle parts scattered everywhere and throw them back on the truck before the killers murder everyone or
