@@ -44,7 +44,6 @@ public final class PlayerTeamManager {
 
   public void destroyAllTeams() {
     final Set<Entity> keys = this.entityTeams.keySet();
-    // TODO: FIX PROTOCOL ERROR
     //        for (final Entity entity : keys) {
     //          if (!entity.isValid()) {
     //            continue;
