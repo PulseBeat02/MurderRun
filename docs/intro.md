@@ -5,7 +5,7 @@
 [![Discord](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_discord.webp)](https://discord.gg/cUMB6kCsh6)
 
 ```{note}
-Connect to the plugin testing server `murderrun.mcserver.us` to try Murder Run with your friends! There is no cost, and
+Connect to the plugin testing server `pulse.mcserver.us` to try Murder Run with your friends! There is no cost, and
 it's completely free.
 ```
 
