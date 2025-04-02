@@ -35,9 +35,7 @@ public final class GameMap {
 
   private PartsManager partsManager;
   private GameEventManager eventManager;
-  private MapResetTool resetManager;
   private TruckManager truckManager;
-  private MapSchematicIO mapSchematicIO;
   private BlockWhitelistManager blockWhitelistManager;
 
   public GameMap(final Game game) {
@@ -47,11 +45,8 @@ public final class GameMap {
   public void start() {
     this.partsManager = new PartsManager(this);
     this.eventManager = new GameEventManager(this);
-    this.resetManager = new MapResetTool(this);
     this.truckManager = new TruckManager(this);
-    this.mapSchematicIO = new MapSchematicIO(this);
     this.blockWhitelistManager = new BlockWhitelistManager();
-    this.mapSchematicIO.pasteMap();
     this.eventManager.registerEvents();
     this.truckManager.spawnParticles();
   }
@@ -60,25 +55,12 @@ public final class GameMap {
     return this.eventManager;
   }
 
-  public MapResetTool getResetManager() {
-    return this.resetManager;
-  }
-
   public void shutdown() {
     this.unregisterEvents();
-    this.resetWorld();
   }
 
   private void unregisterEvents() {
     this.eventManager.unregisterEvents();
-  }
-
-  private void resetWorld() {
-    this.resetManager.resetMap();
-  }
-
-  public MapSchematicIO getMapSchematicIO() {
-    return this.mapSchematicIO;
   }
 
   public Game getGame() {

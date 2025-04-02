@@ -27,17 +27,157 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import static java.util.Objects.requireNonNull;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.*;
+import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.session.PasteBuilder;
+import com.sk89q.worldedit.util.SideEffect;
+import com.sk89q.worldedit.util.SideEffectSet;
+import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
+import io.github.pulsebeat02.murderrun.game.extension.worldedit.WESpreader;
+import io.github.pulsebeat02.murderrun.game.map.Schematic;
+import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
+import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
 
 public final class MapUtils {
 
+  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
+  private static final String WE_SPREADER = "worldedit.spreader.enabled";
+
   private MapUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static Location[] copyLocationArray(final Location... locations) {
+    final int length = locations.length;
+    final Location[] copy = new Location[length];
+    for (int i = 0; i < copy.length; i++) {
+      final Location location = locations[i];
+      final Location clone = location.clone();
+      copy[i] = clone;
+    }
+    return copy;
+  }
+
+  public static World createVoidWorld(final String name, final World copy) {
+    final ChunkGenerator generator = new VoidChunkGenerator();
+    final World world = new WorldCreator(name).environment(copy.getEnvironment()).generator(generator).createWorld();
+    return requireNonNull(world);
+  }
+
+  public static boolean enableExtent() {
+    final String property = System.getProperty(WE_SPREADER);
+    final boolean enabled = Boolean.parseBoolean(property);
+    if (Capabilities.FASTASYNCWORLDEDIT.isDisabled() && !enabled) {
+      System.setProperty(WE_SPREADER, "true");
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class); // special case
+      final WESpreader spreader = new WESpreader(plugin);
+      spreader.load();
+      return true;
+    }
+    return false;
+  }
+
+  public static boolean performPaste(
+    final WorldEdit instance,
+    final com.sk89q.worldedit.world.World world,
+    final Clipboard clipboard,
+    final SerializableVector vector3
+  ) throws WorldEditException {
+    try (final EditSession session = instance.newEditSession(world)) {
+      final SideEffectSet set = session.getSideEffectApplier();
+      for (final SideEffect effect : DISABLED_SIDE_EFFECTS) {
+        set.with(effect, SideEffect.State.OFF);
+      }
+      final ClipboardHolder holder = new ClipboardHolder(clipboard);
+      final BlockVector3 internal = vector3.getVector3();
+      final PasteBuilder extent = holder.createPaste(session).to(internal).copyBiomes(false);
+      final Operation operation = extent.build();
+      Operations.complete(operation);
+      return true;
+    }
+  }
+
+  public static Clipboard loadSchematic(final Schematic schematic) throws IOException {
+    final String path = schematic.getSchematicPath();
+    final File legacyPath = new File(path);
+    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(legacyPath));
+    try (
+      final InputStream stream = new FileInputStream(legacyPath);
+      final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
+      final ClipboardReader reader = format.getReader(fast)
+    ) {
+      return reader.read();
+    }
+  }
+
+  public static String performSchematicWrite(final Clipboard clipboard, final String name, final boolean arena) throws IOException {
+    final String folder = arena ? "arenas" : "lobbies";
+    final Path data = IOUtils.getPluginDataFolderPath();
+    final Path parent = data.resolve("schematics");
+    final Path folderPath = parent.resolve(folder);
+    IOUtils.createFolder(folderPath);
+
+    final Path file = folderPath.resolve(name);
+    final BuiltInClipboardFormat format = BuiltInClipboardFormat.SPONGE_V3_SCHEMATIC;
+    try (
+      final OutputStream stream = Files.newOutputStream(file);
+      final OutputStream fast = new FastBufferedOutputStream(stream);
+      final ClipboardWriter writer = format.getWriter(fast)
+    ) {
+      writer.write(clipboard);
+    }
+    final Path absolute = file.toAbsolutePath();
+    return absolute.toString();
+  }
+
+  public static Clipboard performForwardExtentCopy(final Location[] corners) throws WorldEditException {
+    final CuboidRegion region = MapUtils.createRegion(corners);
+    final BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
+    final com.sk89q.worldedit.world.World world = region.getWorld();
+    final WorldEdit instance = WorldEdit.getInstance();
+    try (final EditSession session = instance.newEditSession(world)) {
+      final BlockVector3 min = region.getMinimumPoint();
+      final ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(session, region, clipboard, min);
+      forwardExtentCopy.setCopyingEntities(true);
+      Operations.complete(forwardExtentCopy);
+      return clipboard;
+    }
+  }
+
+  public static CuboidRegion createRegion(final Location[] corners) {
+    final Location first = corners[0];
+    final Location second = corners[1];
+    final World world = requireNonNull(first.getWorld());
+    final BlockVector3 firstCorner = BukkitAdapter.asBlockVector(first);
+    final BlockVector3 secondCorner = BukkitAdapter.asBlockVector(second);
+    final com.sk89q.worldedit.world.World instance = BukkitAdapter.adapt(world);
+    return new CuboidRegion(instance, firstCorner, secondCorner);
   }
 
   public static Location getHighestSpawnLocation(final Location location) {

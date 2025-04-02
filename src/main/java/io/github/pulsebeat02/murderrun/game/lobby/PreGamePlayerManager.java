@@ -41,9 +41,12 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -99,6 +102,7 @@ public final class PreGamePlayerManager {
     for (final Player player : this.participants) {
       this.clearInventory(player);
       this.removePersistentData(player);
+      this.teleportToMainWorld(player);
       player.setLevel(0);
     }
   }
@@ -138,8 +142,16 @@ public final class PreGamePlayerManager {
     this.scoreboard.updateScoreboard();
     this.clearInventory(player);
     this.removePersistentData(player);
+    this.teleportToMainWorld(player);
     this.checkIfEnoughPlayers();
     this.checkGameShutdownTimer();
+  }
+
+  private void teleportToMainWorld(final Player player) {
+    final List<World> worlds = Bukkit.getWorlds();
+    final World world = worlds.getFirst();
+    final Location spawn = world.getSpawnLocation();
+    player.teleport(spawn);
   }
 
   private void checkGameShutdownTimer() {

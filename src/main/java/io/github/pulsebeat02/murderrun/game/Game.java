@@ -29,6 +29,7 @@ import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.map.GameMap;
+import io.github.pulsebeat02.murderrun.game.map.MapSchematicIO;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.phase.GamePhaseInvoker;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
@@ -41,9 +42,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 public final class Game {
 
   private final MurderRun plugin;
-  private final UUID gameID;
   private final GameStatus status;
 
+  private UUID gameID;
   private GameMap map;
   private GameSettings configuration;
   private GamePlayerManager playerManager;
@@ -53,23 +54,27 @@ public final class Game {
   private GameExecutor executor;
   private GamePhaseInvoker phaseInvoker;
   private GameExtensionManager extensionManager;
+  private MapSchematicIO mapSchematicIO;
   private GameEventsListener callback;
 
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
     this.status = new GameStatus();
-    this.gameID = UUID.randomUUID();
   }
 
   public void startGame(
     final GameSettings settings,
     final Collection<Player> murderers,
     final Collection<Player> participants,
-    final GameEventsListener callback
+    final GameEventsListener callback,
+    final MapSchematicIO mapSchematicIO,
+    final UUID uuid
   ) {
+    this.gameID = uuid;
     this.status.setStatus(GameStatus.Status.SURVIVORS_RELEASED);
     this.configuration = settings;
     this.callback = callback;
+    this.mapSchematicIO = mapSchematicIO;
     this.executor = new GameExecutor();
     this.scheduler = new GameScheduler(this);
     this.map = new GameMap(this);
@@ -158,5 +163,9 @@ public final class Game {
 
   public GameExtensionManager getExtensionManager() {
     return this.extensionManager;
+  }
+
+  public MapSchematicIO getMapSchematicIO() {
+    return this.mapSchematicIO;
   }
 }

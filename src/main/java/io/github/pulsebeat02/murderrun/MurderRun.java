@@ -41,6 +41,7 @@ import io.github.pulsebeat02.murderrun.game.extension.papi.MurderRunExpansion;
 import io.github.pulsebeat02.murderrun.game.extension.parties.PartiesManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
+import io.github.pulsebeat02.murderrun.game.map.SchematicLoader;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.gui.arena.ArenaCreationManager;
 import io.github.pulsebeat02.murderrun.gui.gadget.GadgetTestingGui;
@@ -104,7 +105,13 @@ public final class MurderRun extends JavaPlugin {
     this.registerCommands();
     this.registerGameUtilities();
     this.registerExtensions();
+    this.loadSchematics();
     this.enableMetrics();
+  }
+
+  private void loadSchematics() {
+    final SchematicLoader loader = new SchematicLoader(this);
+    loader.loadSchematics();
   }
 
   private void installDependencies() {

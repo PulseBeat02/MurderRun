@@ -50,7 +50,6 @@ public final class PlayerLeaveListener implements Listener {
     if (!participants.contains(player)) {
       return;
     }
-
     playerManager.removeParticipantFromLobby(player);
   }
 }

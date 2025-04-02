@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.arena;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
+import io.github.pulsebeat02.murderrun.game.map.Schematic;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -67,7 +68,7 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     final Location spawn,
     final Location truck
   ) {
-    final ArenaSchematic schematic = ArenaSchematic.copyAndCreateSchematic(name, corners);
+    final Schematic schematic = Schematic.copyAndCreateSchematic(name, corners, true);
     final Arena arena = new Arena(schematic, name, corners, itemLocations, spawn, truck);
     this.arenas.put(name, arena);
   }

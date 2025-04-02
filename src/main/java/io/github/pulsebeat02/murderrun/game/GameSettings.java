@@ -39,7 +39,9 @@ public final class GameSettings {
   }
 
   public void setLobby(final @Nullable Lobby lobbySpawn) {
-    this.lobby = lobbySpawn;
+    if (lobbySpawn != null) {
+      this.lobby = new Lobby(lobbySpawn);
+    }
   }
 
   public @Nullable Arena getArena() {
@@ -47,6 +49,8 @@ public final class GameSettings {
   }
 
   public void setArena(final @Nullable Arena arena) {
-    this.arena = arena;
+    if (arena != null) {
+      this.arena = new Arena(arena);
+    }
   }
 }

@@ -28,7 +28,9 @@ package io.github.pulsebeat02.murderrun.game.lobby;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.*;
 import io.github.pulsebeat02.murderrun.game.lobby.event.PreGameEvents;
+import io.github.pulsebeat02.murderrun.game.map.MapSchematicIO;
 import java.util.Collection;
+import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -40,7 +42,9 @@ public final class PreGameManager {
   private final String id;
   private final GameEventsListener callback;
   private final GameManager gameManager;
+  private final UUID uuid;
 
+  private MapSchematicIO mapSchematicIO;
   private PreGamePlayerManager manager;
   private PreGameEvents events;
 
@@ -51,26 +55,32 @@ public final class PreGameManager {
     this.id = id;
     this.game = new Game(plugin);
     this.settings = new GameSettings();
+    this.uuid = UUID.randomUUID();
   }
 
   public void initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
     this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.events = new PreGameEvents(this);
+    this.mapSchematicIO = new MapSchematicIO(this.settings, this.uuid);
     this.events.registerEvents();
     this.manager.initialize();
+    this.mapSchematicIO.pasteMap();
   }
 
   public void startGame() {
     final Collection<Player> players = this.manager.getParticipants();
     final Collection<Player> killers = this.manager.getMurderers();
     this.manager.assignKiller();
-    this.game.startGame(this.settings, killers, players, this.callback);
-    this.shutdown();
+    this.game.startGame(this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
+    this.shutdown(false);
   }
 
-  public void shutdown() {
+  public void shutdown(final boolean forced) {
     this.events.unregisterEvents();
     this.manager.shutdown();
+    if (forced) {
+      this.mapSchematicIO.resetMap();
+    }
   }
 
   public MurderRun getPlugin() {
@@ -103,5 +113,13 @@ public final class PreGameManager {
 
   public GameManager getGameManager() {
     return this.gameManager;
+  }
+
+  public MapSchematicIO getMapSchematicIO() {
+    return this.mapSchematicIO;
+  }
+
+  public UUID getUuid() {
+    return this.uuid;
   }
 }

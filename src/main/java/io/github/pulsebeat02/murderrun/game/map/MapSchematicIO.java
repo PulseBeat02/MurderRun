@@ -27,131 +27,186 @@ package io.github.pulsebeat02.murderrun.game.map;
 
 import static java.util.Objects.requireNonNull;
 
-import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.session.PasteBuilder;
-import com.sk89q.worldedit.util.SideEffect;
-import com.sk89q.worldedit.util.SideEffectSet;
-import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.arena.ArenaSchematic;
-import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
-import io.github.pulsebeat02.murderrun.game.extension.worldedit.WESpreader;
+import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Set;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 
 public final class MapSchematicIO {
 
-  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
-  private static final String WE_SPREADER = "worldedit.spreader.enabled";
+  private final GameSettings settings;
+  private final UUID uuid;
+  private final Collection<NPC> npcs;
 
-  private final GameMap map;
-
-  public MapSchematicIO(final GameMap map) {
-    this.map = map;
+  public MapSchematicIO(final GameSettings settings, final UUID uuid) {
+    this.settings = settings;
+    this.uuid = uuid;
+    this.npcs = new HashSet<>();
   }
 
-  public void createWorld() {
-    final Game game = this.map.getGame();
-    final UUID uuid = game.getGameUUID();
-    final String name = uuid.toString();
-    final ChunkGenerator generator = new VoidChunkGenerator();
-    new WorldCreator(name).environment(World.Environment.NORMAL).generator(generator).createWorld();
-    final GameSettings settings = game.getSettings();
-    final Arena arena = requireNonNull(settings.getArena());
-    arena.relativizeLocations(uuid);
+  public void resetMap() {
+    this.removeCitizensNPCs();
+    this.unloadWorld();
+    this.deleteWorld();
+  }
+
+  private void deleteWorld() {
+    final String name = this.uuid.toString();
+    final Path path = IOUtils.getPluginDataFolderPath();
+    final Path pluginParent = requireNonNull(path.getParent());
+    final Path moreParent = requireNonNull(pluginParent.getParent());
+    final Path world = moreParent.resolve(name);
+    IOUtils.deleteExistingDirectory(world);
+  }
+
+  private void unloadWorld() {
+    final String name = this.uuid.toString();
+    final World world = requireNonNull(Bukkit.getWorld(name));
+    Bukkit.unloadWorld(world, false);
+  }
+
+  private World createWorld() {
+    final String name = this.uuid.toString();
+    final Arena arena = requireNonNull(this.settings.getArena());
+    final Lobby lobby = requireNonNull(this.settings.getLobby());
+    final Location previous = arena.getSpawn();
+    final World previousWorld = requireNonNull(previous.getWorld());
+    final World world = MapUtils.createVoidWorld(name, previousWorld);
+    arena.relativizeLocations(this.uuid);
+    lobby.relativizeLocations(this.uuid);
+    this.copyWorldAttributes(previousWorld, world);
+    return world;
+  }
+
+  private void copyWorldAttributes(final World old, final World after) {
+    final GameRule<?>[] rules = GameRule.values();
+    for (final GameRule<?> rule : rules) {
+      this.copyRule(old, after, rule);
+    }
+    after.setDifficulty(old.getDifficulty());
+  }
+
+  @SuppressWarnings("all") // checker
+  private <T> void copyRule(final World old, final World after, final GameRule<T> rule) {
+    final String name = rule.getName();
+    if (!old.isGameRule(name)) {
+      return;
+    }
+    final T value = old.getGameRuleValue(rule);
+    after.setGameRule(rule, value);
   }
 
   public void pasteMap() {
+    MapUtils.enableExtent();
     try {
+      this.copyCitizensNPCs();
       this.createWorld();
-      this.enableExtent();
-      final Game game = this.map.getGame();
-      final GameSettings settings = game.getSettings();
-      final Arena arena = requireNonNull(settings.getArena());
-      final ArenaSchematic schematic = arena.getSchematic();
-      final SerializableVector vector3 = schematic.getOrigin();
-      final Clipboard clipboard = this.loadSchematic(schematic);
-      final com.sk89q.worldedit.world.World world = this.getWorld();
-      final WorldEdit instance = WorldEdit.getInstance();
-      this.performPaste(instance, world, clipboard, vector3);
+      this.pasteLobbySchematic();
+      this.pasteArenaSchematic();
+      this.pasteCitizensNPCs();
     } catch (final WorldEditException | IOException e) {
       throw new AssertionError(e);
     }
   }
 
-  private void enableExtent() {
-    final String property = System.getProperty(WE_SPREADER);
-    final boolean enabled = Boolean.parseBoolean(property);
-    if (Capabilities.FASTASYNCWORLDEDIT.isDisabled() && !enabled) {
-      System.setProperty(WE_SPREADER, "true");
-      final Game game = this.map.getGame();
-      final MurderRun plugin = game.getPlugin();
-      final WESpreader spreader = new WESpreader(plugin);
-      spreader.load();
+  private void removeCitizensNPCs() {
+    for (final NPC npc : this.npcs) {
+      npc.destroy();
     }
   }
 
+  private void pasteCitizensNPCs() {
+    final String name = this.uuid.toString();
+    final World world = requireNonNull(Bukkit.getWorld(name));
+    for (final NPC npc : this.npcs) {
+      final Location location = npc.getStoredLocation();
+      final Location clone = location.clone();
+      clone.setWorld(world);
+      npc.teleport(clone, PlayerTeleportEvent.TeleportCause.PLUGIN);
+    }
+  }
+
+  private void copyCitizensNPCs() {
+    final NPCRegistry registry = CitizensAPI.getNPCRegistry();
+    final Lobby lobby = requireNonNull(this.settings.getLobby());
+    final Location[] corners = lobby.getCorners();
+    final Location first = corners[0];
+    final Location second = corners[1];
+    final BoundingBox boundingBox = BoundingBox.of(first, second);
+    final World realWorld = requireNonNull(first.getWorld());
+    final String realName = realWorld.getName();
+    for (final NPC npc : registry) {
+      final Location location = npc.getStoredLocation();
+      final World world = requireNonNull(location.getWorld());
+      final String name = world.getName();
+      if (!realName.equals(name)) {
+        continue;
+      }
+      final Vector vector = location.toVector();
+      if (boundingBox.contains(vector)) {
+        final NPC copy = npc.clone();
+        this.npcs.add(copy);
+      }
+    }
+  }
+
+  private void pasteArenaSchematic() throws WorldEditException, IOException {
+    final Arena arena = requireNonNull(this.settings.getArena());
+    final Schematic schematic = arena.getSchematic();
+    this.pasteSchematic(schematic);
+  }
+
+  private void pasteLobbySchematic() throws WorldEditException, IOException {
+    final Lobby lobby = requireNonNull(this.settings.getLobby());
+    final Schematic schematic = lobby.getSchematic();
+    this.pasteSchematic(schematic);
+  }
+
+  private void pasteSchematic(final Schematic schematic) throws WorldEditException {
+    final SerializableVector vector3 = schematic.getOrigin();
+    final Clipboard clipboard = schematic.getClipboard();
+    final com.sk89q.worldedit.world.World world = this.getWorld();
+    final WorldEdit instance = WorldEdit.getInstance();
+    MapUtils.performPaste(instance, world, clipboard, vector3);
+  }
+
   private com.sk89q.worldedit.world.World getWorld() {
-    final Game game = this.map.getGame();
-    final GameSettings settings = game.getSettings();
-    final Arena arena = requireNonNull(settings.getArena());
+    final Arena arena = requireNonNull(this.settings.getArena());
     final Location location = arena.getSpawn();
     final World world = requireNonNull(location.getWorld());
     return BukkitAdapter.adapt(world);
   }
 
-  private void performPaste(
-    final WorldEdit instance,
-    final com.sk89q.worldedit.world.World world,
-    final Clipboard clipboard,
-    final SerializableVector vector3
-  ) throws WorldEditException {
-    try (final EditSession session = instance.newEditSession(world)) {
-      final SideEffectSet set = session.getSideEffectApplier();
-      for (final SideEffect effect : DISABLED_SIDE_EFFECTS) {
-        set.with(effect, SideEffect.State.OFF);
-      }
-      final ClipboardHolder holder = new ClipboardHolder(clipboard);
-      final BlockVector3 internal = vector3.getVector3();
-      final PasteBuilder extent = holder.createPaste(session).to(internal).copyBiomes(false);
-      final Operation operation = extent.build();
-      Operations.complete(operation);
-    }
+  public GameSettings getSettings() {
+    return this.settings;
   }
 
-  private Clipboard loadSchematic(final ArenaSchematic schematic) throws IOException {
-    final String path = schematic.getSchematicPath();
-    final File legacyPath = new File(path);
-    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(legacyPath));
-    try (
-      final InputStream stream = new FileInputStream(legacyPath);
-      final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
-      final ClipboardReader reader = format.getReader(fast)
-    ) {
-      return reader.read();
-    }
+  public UUID getUuid() {
+    return this.uuid;
+  }
+
+  public Collection<NPC> getNpcs() {
+    return this.npcs;
   }
 }

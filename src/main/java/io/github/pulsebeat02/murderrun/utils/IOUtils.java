@@ -30,6 +30,8 @@ import static java.util.Objects.requireNonNull;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.RecursiveDeleteOption;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
@@ -48,11 +50,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Comparator;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.bukkit.Bukkit;
@@ -79,8 +79,8 @@ public final class IOUtils {
   }
 
   public static boolean deleteExistingDirectory(final Path path) {
-    try (final Stream<Path> pathStream = Files.walk(path)) {
-      pathStream.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+    try {
+      MoreFiles.deleteRecursively(path, RecursiveDeleteOption.ALLOW_INSECURE);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

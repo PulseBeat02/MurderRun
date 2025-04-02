@@ -184,7 +184,7 @@ public final class GameManager {
       final Game game = manager.getGame();
       game.finishGame(GameResult.INTERRUPTED);
       playerManager.forceShutdown();
-      manager.shutdown();
+      manager.shutdown(true);
       this.games.remove(id);
     }
   }

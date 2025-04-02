@@ -28,6 +28,8 @@ package io.github.pulsebeat02.murderrun.game.arena;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
+import io.github.pulsebeat02.murderrun.game.map.Schematic;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import jakarta.persistence.*;
 import java.io.Serial;
@@ -52,7 +54,7 @@ public final class Arena implements Serializable {
 
   @Column(name = "schematic")
   @Lob
-  private ArenaSchematic schematic;
+  private Schematic schematic;
 
   @Column(name = "name")
   private String name;
@@ -76,7 +78,7 @@ public final class Arena implements Serializable {
   public Arena() {}
 
   public Arena(
-    final ArenaSchematic schematic,
+    final Schematic schematic,
     final String name,
     final Location[] corners,
     final Location[] carPartLocations,
@@ -89,6 +91,16 @@ public final class Arena implements Serializable {
     this.carPartLocations = carPartLocations;
     this.spawn = spawn;
     this.truck = truck;
+  }
+
+  public Arena(final Arena arena) {
+    this.schematic = arena.schematic;
+    this.name = arena.name;
+    this.id = arena.id;
+    this.corners = MapUtils.copyLocationArray(arena.corners);
+    this.carPartLocations = MapUtils.copyLocationArray(arena.carPartLocations);
+    this.spawn = arena.spawn.clone();
+    this.truck = arena.truck.clone();
   }
 
   public String getName() {
@@ -115,7 +127,7 @@ public final class Arena implements Serializable {
     return this.corners;
   }
 
-  public ArenaSchematic getSchematic() {
+  public Schematic getSchematic() {
     return this.schematic;
   }
 

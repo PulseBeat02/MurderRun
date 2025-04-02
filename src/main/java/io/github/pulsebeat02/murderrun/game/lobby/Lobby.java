@@ -28,6 +28,8 @@ package io.github.pulsebeat02.murderrun.game.lobby;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
+import io.github.pulsebeat02.murderrun.game.map.Schematic;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -48,6 +50,10 @@ public final class Lobby implements Serializable {
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
+  @Column(name = "schematic")
+  @Lob
+  private Schematic schematic;
+
   @Column(name = "name")
   private String name;
 
@@ -61,14 +67,27 @@ public final class Lobby implements Serializable {
 
   public Lobby() {}
 
-  public Lobby(final String name, final Location[] corners, final Location lobbySpawn) {
+  public Lobby(final Schematic schematic, final String name, final Location[] corners, final Location lobbySpawn) {
+    this.schematic = schematic;
     this.name = name;
     this.corners = corners;
     this.lobbySpawn = lobbySpawn;
   }
 
+  public Lobby(final Lobby lobby) {
+    this.id = lobby.id;
+    this.schematic = lobby.schematic;
+    this.name = lobby.name;
+    this.corners = MapUtils.copyLocationArray(lobby.corners);
+    this.lobbySpawn = lobby.lobbySpawn.clone();
+  }
+
   public String getName() {
     return this.name;
+  }
+
+  public Schematic getSchematic() {
+    return this.schematic;
   }
 
   public Location getLobbySpawn() {
@@ -84,5 +103,6 @@ public final class Lobby implements Serializable {
     final World world = requireNonNull(Bukkit.getWorld(name));
     this.corners[0].setWorld(world);
     this.corners[1].setWorld(world);
+    this.lobbySpawn.setWorld(world);
   }
 }
