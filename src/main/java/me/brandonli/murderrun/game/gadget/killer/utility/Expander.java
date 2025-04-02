@@ -61,7 +61,7 @@ public final class Expander extends KillerGadget {
     final StrictPlayerReference ref = StrictPlayerReference.of(player);
     final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);
-    scheduler.scheduleTask(() -> instance.setBaseValue(1.0), duration, ref);
+    scheduler.scheduleTask(() -> player.resetAttribute(Attribute.SCALE), duration, ref);
     item.remove();
     return false;
   }

@@ -76,6 +76,10 @@ public final class AbilityActionHandler implements Listener {
 
   public void shutdown() {
     HandlerList.unregisterAll(this);
+    final Collection<Ability> abilityList = this.abilities.values();
+    for (final Ability ability : abilityList) {
+      ability.shutdown();
+    }
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

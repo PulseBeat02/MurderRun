@@ -176,6 +176,9 @@ public interface Participant {
 
   Map<Attribute, Double> getDefaultAttributes();
 
+  @Nullable
+  Double getDefaultAttribute(final Attribute attribute);
+
   void resetAllAttributes();
 
   Scoreboard getScoreboard();
@@ -217,4 +220,6 @@ public interface Participant {
   void sendPacket(final PacketWrapper<?> wrapper);
 
   boolean isValid();
+
+  void resetAttribute(final Attribute attribute);
 }

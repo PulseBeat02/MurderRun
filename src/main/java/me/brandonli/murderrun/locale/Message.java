@@ -30,6 +30,11 @@ import static me.brandonli.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> MOON_ACTIVATE = direct("murderrun.game.gadget.moon.activate");
+  NullComponent<Sender> MOON_LORE = direct("murderrun.game.gadget.moon.lore");
+  NullComponent<Sender> MOON_NAME = direct("murderrun.game.gadget.moon.name");
+  NullComponent<Sender> REACH_NAME = direct("murderrun.game.ability.reach.name");
+  NullComponent<Sender> REACH_LORE = direct("murderrun.game.ability.reach.lore");
   NullComponent<Sender> GAME_ERROR_STARTED = direct("murderrun.command.game.set.error.started");
   BiComponent<Sender, Integer, String> PLUGIN_OUTDATED = direct("murderrun.outdated", null, null);
   NullComponent<Sender> DEMO_LOAD = direct("murderrun.command.demo.load");

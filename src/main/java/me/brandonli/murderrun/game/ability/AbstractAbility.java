@@ -59,6 +59,9 @@ public abstract class AbstractAbility implements Ability {
     }
   }
 
+  @Override
+  public void shutdown() {}
+
   public boolean invokeEvent(final GamePlayer player) {
     final ApiEventBus eventBus = EventBusProvider.getBus();
     return eventBus.post(AbilityUseEvent.class, this, player);

@@ -66,7 +66,7 @@ public final class Miniaturizer extends SurvivorGadget {
     final double scale = GameProperties.MINIATURIZER_SCALE;
     final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);
-    scheduler.scheduleTask(() -> instance.setBaseValue(1.0), duration, ref);
+    scheduler.scheduleTask(() -> player.resetAttribute(Attribute.SCALE), duration, ref);
     item.remove();
     return false;
   }

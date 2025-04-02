@@ -37,6 +37,12 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  double MOON_GRAVITY = dec("moon.gravity");
+  int MOON_DURATION = num("moon.duration");
+  String MOON_SOUND = str("moon.sound");
+  int MOON_COST = num("moon.cost");
+  Material MOON_MATERIAL = mat("moon.material");
+  double REACH_DISTANCE = dec("reach.distance");
   int ETHERWARP_MAX_DISTANCE = num("etherwarp.max");
   double ETHERWARP_COOLDOWN = dec("etherwarp.cooldown");
   String GUARDIAN_ANGEL_TEXTURE_SIGNATURE = str("guardian_angel.texture.signature");

@@ -30,6 +30,7 @@ import me.brandonli.murderrun.utils.item.Item;
 
 public interface Ability {
   void start();
+  void shutdown();
   Item.Builder getStackBuilder();
   String getId();
   Game getGame();

@@ -66,9 +66,8 @@ public abstract class AbstractPlayer implements Participant {
   public void disableJump(final GameScheduler scheduler, final long ticks) {
     final StrictPlayerReference reference = StrictPlayerReference.of(this);
     final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.JUMP_STRENGTH));
-    final double before = instance.getValue();
     instance.setBaseValue(0.0);
-    scheduler.scheduleTask(() -> instance.setBaseValue(before), ticks, reference);
+    scheduler.scheduleTask(() -> this.resetAttribute(Attribute.JUMP_STRENGTH), ticks, reference);
   }
 
   @Override
@@ -314,6 +313,13 @@ public abstract class AbstractPlayer implements Participant {
   }
 
   @Override
+  public void resetAttribute(final Attribute attribute) {
+    final double value = requireNonNull(this.getDefaultAttribute(attribute));
+    final AttributeInstance instance = requireNonNull(this.getAttribute(attribute));
+    instance.setBaseValue(value);
+  }
+
+  @Override
   public Scoreboard getScoreboard() {
     return this.applyFunction(Player::getScoreboard);
   }
@@ -419,5 +425,11 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public boolean isValid() {
     return this.applyFunction(Player::isValid);
+  }
+
+  @Override
+  public @Nullable Double getDefaultAttribute(final Attribute attribute) {
+    final Map<Attribute, Double> attributes = this.getDefaultAttributes();
+    return attributes.get(attribute);
   }
 }
