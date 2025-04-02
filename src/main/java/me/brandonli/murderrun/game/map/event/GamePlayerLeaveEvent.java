@@ -25,9 +25,15 @@ SOFTWARE.
 */
 package me.brandonli.murderrun.game.map.event;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.UUID;
+import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
+import me.brandonli.murderrun.game.lobby.GameManager;
+import me.brandonli.murderrun.game.lobby.PreGameManager;
+import me.brandonli.murderrun.game.lobby.PreGamePlayerManager;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.phase.PlayerResetTool;
@@ -73,6 +79,12 @@ public final class GamePlayerLeaveEvent extends GameEvent {
 
     final PlayerResetTool resetTool = new PlayerResetTool(manager);
     resetTool.handlePlayer(gamePlayer);
+
+    final MurderRun plugin = game.getPlugin();
+    final GameManager gameManager = plugin.getGameManager();
+    final PreGameManager preGameManager = requireNonNull(gameManager.getGameAsParticipant(player));
+    final PreGamePlayerManager preGamePlayerManager = preGameManager.getPlayerManager();
+    preGamePlayerManager.removeParticipantFromGameInternal(player);
 
     final UUID uuid = gamePlayer.getUUID();
     manager.removePlayer(uuid);

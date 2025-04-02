@@ -157,6 +157,14 @@ public final class PreGamePlayerManager {
     this.checkGameShutdownTimer();
   }
 
+  public void removeParticipantFromGameInternal(final Player player) {
+    this.murderers.remove(player);
+    this.participants.remove(player);
+    this.clearInventory(player);
+    this.removePersistentData(player);
+    this.teleportToMainWorld(player);
+  }
+
   private void teleportToMainWorld(final Player player) {
     final List<World> worlds = Bukkit.getWorlds();
     final World world = worlds.getFirst();
