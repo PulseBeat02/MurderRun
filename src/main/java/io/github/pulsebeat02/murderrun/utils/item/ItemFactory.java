@@ -227,6 +227,15 @@ public final class ItemFactory {
     return builder.potionColor(Color.RED).potion(PotionType.STRONG_HEALING);
   }
 
+  public static Item.Builder createEmptyAbility() {
+    return Item.builder(Material.DIAMOND)
+      .name(Message.EMPTY_ABILITY_NAME.build())
+      .lore(Message.EMPTY_ABILITY_LORE.build())
+      .model("emptyability")
+      .pdc(Keys.ABILITY_KEY_NAME, PersistentDataType.STRING, "empty_ability")
+      .hideAttributes();
+  }
+
   public static Item.Builder createAbility(final String pdcName, final Component itemName, final Component itemLore, final int cooldown) {
     final String texture = pdcName.replace("_", "");
     final NamespacedKey key = new NamespacedKey("murderrun", pdcName);
@@ -277,7 +286,7 @@ public final class ItemFactory {
   }
 
   public static ItemStack createDefaultKnockBackBone() {
-    return Item.builder(Material.BONE).enchantment(Enchantment.KNOCKBACK, 0).build();
+    return Item.builder(Material.BONE).enchantment(Enchantment.KNOCKBACK, 1).build();
   }
 
   public static ItemStack createFakePart() {

@@ -35,6 +35,7 @@ import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class GamePlayer extends AbstractPlayer {
 
@@ -42,6 +43,7 @@ public class GamePlayer extends AbstractPlayer {
   private final UUID uuid;
 
   private final Map<Attribute, Double> attributes;
+  private List<ItemStack> deathLoot;
 
   private MetadataManager metadata;
   private DeathManager deathManager;
@@ -59,12 +61,13 @@ public class GamePlayer extends AbstractPlayer {
     this.alive = true;
     this.canDismount = true;
     this.attributes = new HashMap<>();
+    this.deathLoot = new ArrayList<>();
   }
 
   public void start() {
     this.audience = new PlayerAudience(this.game, this.uuid);
     this.metadata = new MetadataManager(this);
-    this.deathManager = new DeathManager();
+    this.deathManager = new DeathManager(this);
     this.metadata.start();
     this.setDefaultAttributes();
   }
@@ -158,5 +161,15 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public Map<Attribute, Double> getDefaultAttributes() {
     return this.attributes;
+  }
+
+  @Override
+  public List<ItemStack> getDeathLoot() {
+    return this.deathLoot;
+  }
+
+  @Override
+  public void setDeathLoot(final List<ItemStack> list) {
+    this.deathLoot = list;
   }
 }

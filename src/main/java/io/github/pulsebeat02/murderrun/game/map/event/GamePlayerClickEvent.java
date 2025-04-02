@@ -23,13 +23,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.api.event.contract.statistic;
+package io.github.pulsebeat02.murderrun.game.map.event;
 
-import io.github.pulsebeat02.murderrun.api.event.Cancellable;
-import io.github.pulsebeat02.murderrun.api.event.MurderRunEvent;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
-public interface StatisticsEvent<T extends Number> extends MurderRunEvent, Cancellable {
-  StatisticsType<T> getStatisticsType();
+public final class GamePlayerClickEvent extends GameEvent {
 
-  T getChange();
+  public GamePlayerClickEvent(final Game game) {
+    super(game);
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onInventoryClick(final InventoryClickEvent event) {
+    final HumanEntity entity = event.getWhoClicked();
+    if (!(entity instanceof final Player player)) {
+      return;
+    }
+
+    if (!this.isGamePlayer(player)) {
+      return;
+    }
+
+    final ItemStack item = event.getCurrentItem();
+    if (item == null) {
+      return;
+    }
+
+    if (!PDCUtils.isAbility(item)) {
+      return;
+    }
+
+    event.setCancelled(true);
+  }
 }

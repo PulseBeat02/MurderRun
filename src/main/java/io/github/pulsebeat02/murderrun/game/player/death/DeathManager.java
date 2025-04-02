@@ -25,6 +25,10 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.player.death;
 
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.LoosePlayerReference;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,9 +39,11 @@ public final class DeathManager {
 
   private @Nullable NPC corpse;
   private final Collection<PlayerDeathTask> tasks;
+  private final GamePlayer player;
 
-  public DeathManager() {
+  public DeathManager(final GamePlayer player) {
     this.tasks = new HashSet<>();
+    this.player = player;
   }
 
   public boolean checkDeathCancellation() {
@@ -47,6 +53,10 @@ public final class DeathManager {
       final PlayerDeathTask task = iterator.next();
       cancel = task.isCancelDeath();
       if (cancel) {
+        final Game game = this.player.getGame();
+        final GameScheduler scheduler = game.getScheduler();
+        final LoosePlayerReference playerReference = LoosePlayerReference.of(this.player);
+        scheduler.scheduleTask(task, 2 * 20L, playerReference);
         task.run();
         iterator.remove();
         return true;
@@ -56,12 +66,21 @@ public final class DeathManager {
   }
 
   public void runDeathTasks() {
-    final Iterator<PlayerDeathTask> iterator = this.tasks.iterator();
-    while (iterator.hasNext()) {
-      final PlayerDeathTask task = iterator.next();
-      task.run();
-      iterator.remove();
-    }
+    final Game game = this.player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    final LoosePlayerReference playerReference = LoosePlayerReference.of(this.player);
+    scheduler.scheduleTask(
+      () -> {
+        final Iterator<PlayerDeathTask> iterator = this.tasks.iterator();
+        while (iterator.hasNext()) {
+          final PlayerDeathTask task = iterator.next();
+          task.run();
+          iterator.remove();
+        }
+      },
+      2 * 20L,
+      playerReference
+    );
   }
 
   public void addDeathTask(final PlayerDeathTask task) {

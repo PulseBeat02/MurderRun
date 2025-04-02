@@ -34,7 +34,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
-public abstract class AbstractAbility implements Ability, Listener {
+public abstract class AbstractAbility implements Ability {
 
   private final Item.Builder builder;
   private final String name;
@@ -51,12 +51,16 @@ public abstract class AbstractAbility implements Ability, Listener {
     final Server server = Bukkit.getServer();
     final MurderRun plugin = this.game.getPlugin();
     final PluginManager pluginManager = server.getPluginManager();
-    pluginManager.registerEvents(this, plugin);
+    if (this instanceof final Listener listener) {
+      pluginManager.registerEvents(listener, plugin);
+    }
   }
 
   @Override
   public void shutdown() {
-    HandlerList.unregisterAll(this);
+    if (this instanceof final Listener listener) {
+      HandlerList.unregisterAll(listener);
+    }
   }
 
   @Override

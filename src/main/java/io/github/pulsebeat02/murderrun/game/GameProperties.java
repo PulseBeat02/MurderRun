@@ -37,6 +37,7 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  double TRAP_VEST_VELOCITY = dec("trap_vest.velocity");
   double SONIC_BOOM_KNOCKBACK = dec("sonicboom.knockback");
   double SONIC_BOOM_RADIUS = dec("sonicboom.radius");
   double SONIC_BOOM_COOLDOWN = dec("sonicboom.cooldown");
@@ -51,7 +52,6 @@ public interface GameProperties {
   double KILLER_PARTICLE_RADIUS = dec("killer.particles.radius");
   int FLASHLIGHT_DURATION = num("flashlight.duration");
   double FLASHLIGHT_COOLDOWN = dec("flashlight.cooldown");
-  Material TRAP_VEST_MATERIAL = mat("trap_vest.material");
   Material TRANSLOCATOR_MATERIAL = mat("translocator.material");
   Material TRACKER_MATERIAL = mat("tracker.material");
   Material SUPPLY_DROP_MATERIAL = mat("supply_drop.material");
@@ -76,7 +76,6 @@ public interface GameProperties {
   Material ICE_SPIRIT_MATERIAL = mat("ice_spirit.material");
   Material ICE_SKATIN_MATERIAL = mat("ice_skatin.material");
   Material HORCRUX_MATERIAL = mat("horcrux.material");
-  Material GHOSTING_MATERIAL = mat("ghosting.material");
   Material FRIEND_WARP_MATERIAL = mat("friend_warp.material");
   Material FLASHBANG_MATERIAL = mat("flashbang.material");
   Material DRONE_MATERIAL = mat("drone.material");
@@ -294,7 +293,6 @@ public interface GameProperties {
   double FLASHLIGHT_RADIUS = dec("flashlight.radius");
   String FRIEND_WARP_SOUND = str("friend_warp.sound");
   int GHOSTING_WOOL_DELAY = num("ghosting.wool.delay");
-  String GHOSTING_SOUND = str("ghosting.sound");
   String HORCRUX_SOUND = str("horcrux.sound");
   int ICE_SKATIN_DURATION = num("ice_skatin.duration");
   String ICE_SKATIN_SOUND = str("ice_skatin.sound");
@@ -331,7 +329,6 @@ public interface GameProperties {
   String TRANSLOCATOR_SOUND = str("translocator.sound");
   double PART_SNIFFER_RADIUS = dec("part_sniffer.radius");
   String PART_SNIFFER_SOUND = str("part_sniffer.sound");
-  String TRAP_VEST_SOUND = str("trap_vest.sound");
   String ALL_SEEING_EYE_SOUND = str("all_seeing_eye.sound");
   int ALL_SEEING_EYE_DURATION = num("all_seeing_eye.duration");
   String BLOOD_CURSE_SOUND = str("blood_curse.sound");
@@ -455,7 +452,6 @@ public interface GameProperties {
   int FLASHBANG_COST = num("flashbang.cost");
   int FLASHLIGHT_COST = num("flashlight.cost");
   int FRIEND_WARP_COST = num("friend_warp.cost");
-  int GHOSTING_COST = num("ghosting.cost");
   int HORCRUX_COST = num("horcrux.cost");
   int ICE_SKATIN_COST = num("ice_skatin.cost");
   int ICE_SPIRIT_COST = num("ice_spirit.cost");
@@ -480,7 +476,6 @@ public interface GameProperties {
   int TRACKER_COST = num("tracker.cost");
   int TRANSLOCATOR_COST = num("translocator.cost");
   int PART_SNIFFER_COST = num("part_sniffer.cost");
-  int TRAP_VEST_COST = num("trap_vest.cost");
 
   private static Material mat(final String key) {
     final String material = str(key);

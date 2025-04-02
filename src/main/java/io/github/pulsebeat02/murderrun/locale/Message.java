@@ -30,6 +30,8 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> EMPTY_ABILITY_NAME = direct("murderrun.game.ability.empty.name");
+  NullComponent<Sender> EMPTY_ABILITY_LORE = direct("murderrun.game.ability.empty.lore");
   NullComponent<Sender> SONIC_BOOM_NAME = direct("murderrun.game.ability.sonicboom.name");
   NullComponent<Sender> SONIC_BOOM_LORE = direct("murderrun.game.ability.sonicboom.lore");
   NullComponent<Sender> CANNON_NAME = direct("murderrun.game.ability.cannon.name");
@@ -181,7 +183,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MURDERER_REWIND_NAME = direct("murderrun.game.gadget.murderer_rewind.name");
   NullComponent<Sender> RESURRECTION_STONE_NAME = direct("murderrun.game.gadget.resurrection_stone.name");
   NullComponent<Sender> CORPUS_WARP_NAME = direct("murderrun.game.gadget.corpus_warp.name");
-  NullComponent<Sender> GHOSTING_NAME = direct("murderrun.game.gadget.ghosting.name");
+  NullComponent<Sender> GHOSTING_NAME = direct("murderrun.game.ability.ghosting.name");
   NullComponent<Sender> EXCAVATOR_NAME = direct("murderrun.game.gadget.excavator.name");
   NullComponent<Sender> DISTORT_NAME = direct("murderrun.game.gadget.distort.name");
   NullComponent<Sender> HORCRUX_NAME = direct("murderrun.game.gadget.horcrux.name");
@@ -246,7 +248,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MURDERER_REWIND_LORE = direct("murderrun.game.gadget.murderer_rewind.lore");
   NullComponent<Sender> RESURRECTION_STONE_LORE = direct("murderrun.game.gadget.resurrection_stone.lore");
   NullComponent<Sender> CORPUS_WARP_LORE = direct("murderrun.game.gadget.corpus_warp.lore");
-  NullComponent<Sender> GHOSTING_LORE = direct("murderrun.game.gadget.ghosting.lore");
+  NullComponent<Sender> GHOSTING_LORE = direct("murderrun.game.ability.ghosting.lore");
   NullComponent<Sender> EXCAVATOR_LORE = direct("murderrun.game.gadget.excavator.lore");
   NullComponent<Sender> DISTORT_LORE = direct("murderrun.game.gadget.distort.lore");
   NullComponent<Sender> HORCRUX_LORE = direct("murderrun.game.gadget.horcrux.lore");
@@ -270,7 +272,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> PONY_LORE = direct("murderrun.game.gadget.pony.lore");
   NullComponent<Sender> FIREWORK_LORE = direct("murderrun.game.gadget.firework.lore");
   NullComponent<Sender> FART_LORE = direct("murderrun.game.gadget.fart.lore");
-  NullComponent<Sender> TRAP_VEST_LORE = direct("murderrun.game.gadget.trap_vest.lore");
+  NullComponent<Sender> TRAP_VEST_LORE = direct("murderrun.game.ability.trap_vest.lore");
   NullComponent<Sender> RANDOM_LORE = direct("murderrun.game.gadget.random.lore");
   NullComponent<Sender> MAGNET_MODE_LORE = direct("murderrun.game.gadget.magnet_mode.lore");
   NullComponent<Sender> TRANSLOCATOR_LORE = direct("murderrun.game.gadget.translocator.lore");
@@ -324,7 +326,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GHOST_ACTIVATE = direct("murderrun.game.gadget.ghost.activate");
   NullComponent<Sender> FIREWORK_ACTIVATE = direct("murderrun.game.gadget.firework.activate");
   NullComponent<Sender> FART_ACTIVATE = direct("murderrun.game.gadget.fart.activate");
-  NullComponent<Sender> TRAP_VEST_ACTIVATE = direct("murderrun.game.gadget.trap_vest.activate");
+  NullComponent<Sender> TRAP_VEST_ACTIVATE = direct("murderrun.game.ability.trap_vest.activate");
   NullComponent<Sender> MAGNET_MODE_ACTIVATE = direct("murderrun.game.gadget.magnet_mode.activate");
   NullComponent<Sender> CLOAK_ACTIVATE = direct("murderrun.game.gadget.cloak.activate");
   NullComponent<Sender> SIXTH_SENSE_ACTIVATE = direct("murderrun.game.gadget.sixth_sense.activate");

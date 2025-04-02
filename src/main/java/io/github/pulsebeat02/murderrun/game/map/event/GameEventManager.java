@@ -56,7 +56,8 @@ public final class GameEventManager {
       new GamePlayerBlockBlackList(this.game),
       new GameBlockBreakEvent(this.game),
       new GameEntityDeathEvent(this.game),
-      new GamePlayerArmorEvent(this.game)
+      new GamePlayerArmorEvent(this.game),
+      new GamePlayerClickEvent(this.game)
     );
   }
 

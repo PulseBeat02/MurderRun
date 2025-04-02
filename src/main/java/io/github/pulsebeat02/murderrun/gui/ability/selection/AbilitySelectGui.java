@@ -43,7 +43,6 @@ import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
-import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.TradingUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -146,7 +145,7 @@ public final class AbilitySelectGui extends ChestGui {
     final Item.Builder actual = ability.getStackBuilder();
     final ItemStack actualStack = actual.build();
     final ItemStack clone = actualStack.clone();
-    InventoryUtils.addItem(entity, clone);
+    inventory.setItem(8, clone);
   }
 
   private GuiItem createCloseStack() {

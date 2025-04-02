@@ -87,11 +87,11 @@ public final class Game {
     this.extensionManager = new GameExtensionManager(this);
     this.phaseInvoker = new GamePhaseInvoker(this);
     this.map.start();
-    this.gadgetManager.start();
-    this.abilityManager.start();
     this.playerManager.start(murderers, participants);
     this.extensionManager.registerExtensions();
     this.phaseInvoker.invokeStartup();
+    this.gadgetManager.start();
+    this.abilityManager.start();
     this.callback.onGameStart(this);
   }
 

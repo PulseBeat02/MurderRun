@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,43 +25,53 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.lobby.event;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.lobby.PreGameManager;
+import io.github.pulsebeat02.murderrun.game.lobby.PreGamePlayerManager;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
-import java.util.Set;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.event.HandlerList;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
-public final class PreGameEvents {
+public final class PlayerInventoryClickEvent implements Listener {
 
   private final PreGameManager manager;
-  private final Collection<Listener> events;
 
-  public PreGameEvents(final PreGameManager manager) {
+  public PlayerInventoryClickEvent(final PreGameManager manager) {
     this.manager = manager;
-    this.events = Set.of(
-      new PlayerItemDropListener(manager),
-      new PlayerDamagePreventionListener(manager),
-      new PlayerLeaveListener(manager),
-      new PlayerBlockModifyListener(manager),
-      new PlayerProjectileListener(manager),
-      new PlayerArmorEvent(manager),
-      new PlayerRightClickEvent(manager),
-      new PlayerInventoryClickEvent(manager)
-    );
   }
 
-  public void registerEvents() {
-    final Server server = Bukkit.getServer();
-    final PluginManager manager = server.getPluginManager();
-    final MurderRun plugin = this.manager.getPlugin();
-    this.events.forEach(event -> manager.registerEvents(event, plugin));
-  }
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onInventoryClick(final InventoryClickEvent event) {
+    final HumanEntity entity = event.getWhoClicked();
+    if (!(entity instanceof final Player player)) {
+      return;
+    }
 
-  public void unregisterEvents() {
-    this.events.forEach(HandlerList::unregisterAll);
+    final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
+    final Collection<Player> participants = playerManager.getParticipants();
+    if (!participants.contains(player)) {
+      return;
+    }
+
+    final ItemStack item = event.getCurrentItem();
+    if (item == null) {
+      return;
+    }
+
+    if (!PDCUtils.isAbility(item)) {
+      return;
+    }
+
+    final int slot = event.getSlot();
+    if (slot != 8) {
+      return;
+    }
+
+    event.setCancelled(true);
   }
 }

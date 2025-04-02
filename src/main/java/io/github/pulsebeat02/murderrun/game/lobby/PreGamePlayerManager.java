@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import java.util.Collections;
@@ -226,6 +227,14 @@ public final class PreGamePlayerManager {
       this.giveSpecialItems(player);
     }
     this.addCurrency(player, killer);
+    this.giveEmptyAbility(player);
+  }
+
+  private void giveEmptyAbility(final Player player) {
+    final Item.Builder builder = ItemFactory.createEmptyAbility();
+    final ItemStack stack = builder.build();
+    final PlayerInventory inventory = player.getInventory();
+    inventory.setItem(8, stack);
   }
 
   private void clearInventory(final Player player) {

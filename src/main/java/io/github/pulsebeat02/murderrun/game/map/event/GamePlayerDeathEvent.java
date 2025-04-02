@@ -69,6 +69,8 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
     final List<ItemStack> drops = event.getDrops();
+    gamePlayer.setDeathLoot(drops);
+
     final boolean isLogging = gamePlayer.isLoggingOut();
     final Location current = player.getLocation();
     player.setLastDeathLocation(current);

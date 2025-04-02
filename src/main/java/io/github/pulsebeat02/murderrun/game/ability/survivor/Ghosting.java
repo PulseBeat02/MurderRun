@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
+package io.github.pulsebeat02.murderrun.game.ability.survivor;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,57 +31,43 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
+import io.github.pulsebeat02.murderrun.game.player.*;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.LoosePlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public final class Ghosting extends SurvivorGadget {
+public final class Ghosting extends SurvivorAbility {
 
-  public Ghosting() {
-    super(
-      "ghosting",
-      GameProperties.GHOSTING_COST,
-      ItemFactory.createGadget("ghosting", GameProperties.GHOSTING_MATERIAL, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build())
-    );
+  private static final String GHOSTING_NAME = "ghosting";
+
+  public Ghosting(final Game game) {
+    super(game, GHOSTING_NAME, ItemFactory.createAbility(GHOSTING_NAME, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build(), 1));
   }
 
   @Override
-  public boolean onGadgetDrop(final GadgetDropPacket packet) {
-    final Game game = packet.getGame();
-    final GamePlayer player = packet.getPlayer();
-    final org.bukkit.entity.Item item = packet.getItem();
-
-    if (!(player instanceof final Survivor survivor)) {
-      return true;
-    }
-    item.remove();
-
-    final DeathManager deathManager = player.getDeathManager();
-    final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
-    deathManager.addDeathTask(task);
-
-    final PlayerAudience audience = survivor.getAudience();
-    final Component message = Message.GHOSTING_ACTIVATE.build();
-    audience.sendMessage(message);
-    audience.playSound(GameProperties.GHOSTING_SOUND);
-
-    return false;
+  public void start() {
+    final Game game = this.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
+    manager.applyToLivingSurvivors(participant -> {
+      if (!participant.hasAbility(GHOSTING_NAME)) {
+        return;
+      }
+      final Survivor survivor = (Survivor) participant;
+      final DeathManager deathManager = participant.getDeathManager();
+      final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
+      deathManager.addDeathTask(task);
+    });
   }
 
   private void handleGhosting(final Game game, final Survivor gamePlayer) {
@@ -95,7 +81,9 @@ public final class Ghosting extends SurvivorGadget {
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location location = arena.getSpawn();
-    gamePlayer.setRespawnLocation(location, true);
+    final Location clone = location.clone();
+    final Location ghostLocation = clone.add(0, 1, 0);
+    gamePlayer.setRespawnLocation(ghostLocation, true);
   }
 
   private void setPlayerAttributes(final Survivor gamePlayer) {
@@ -104,15 +92,15 @@ public final class Ghosting extends SurvivorGadget {
     gamePlayer.setCanPickupCarPart(false);
     gamePlayer.setCanPlaceBlocks(true);
     gamePlayer.setInvulnerable(true);
-    gamePlayer.addPotionEffects(PotionEffectType.INVISIBILITY.createEffect(Integer.MAX_VALUE, 1));
+    gamePlayer.addPotionEffects(PotionEffectType.INVISIBILITY.createEffect(PotionEffect.INFINITE_DURATION, 1));
   }
 
   private void createWoolSetting(final Game game, final GamePlayer player) {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 0, GameProperties.GHOSTING_WOOL_DELAY, reference);
+    final LoosePlayerReference reference = LoosePlayerReference.of(player);
+    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 1L, GameProperties.GHOSTING_WOOL_DELAY, reference);
   }
 
   private void giveWhiteBone(final GamePlayer player) {

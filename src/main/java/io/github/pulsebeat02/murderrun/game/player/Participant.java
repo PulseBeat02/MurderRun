@@ -28,6 +28,7 @@ package io.github.pulsebeat02.murderrun.game.player;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -201,4 +202,8 @@ public interface Participant {
   void setAbilityCooldowns(final String cooldown, final int seconds);
 
   boolean hasAbility(final String ability);
+
+  void setDeathLoot(final List<ItemStack> list);
+
+  List<ItemStack> getDeathLoot();
 }

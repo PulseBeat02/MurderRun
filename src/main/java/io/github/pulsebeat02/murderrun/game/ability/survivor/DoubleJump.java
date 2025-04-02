@@ -37,11 +37,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.util.Vector;
 
-public final class DoubleJump extends SurvivorAbility {
+public final class DoubleJump extends SurvivorAbility implements Listener {
 
   private static final String DOUBLE_JUMP_NAME = "double_jump";
 
