@@ -136,7 +136,6 @@ public final class MurderRun extends JavaPlugin {
     this.registerExtensions();
     this.loadSchematics();
     this.enableMetrics();
-    new EventBusTests(this).runTestUnits();
   }
 
   private void unloadEventBusApi() {
