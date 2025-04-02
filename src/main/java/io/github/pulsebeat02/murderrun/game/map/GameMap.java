@@ -51,6 +51,7 @@ public final class GameMap {
     this.truckManager = new TruckManager(this);
     this.mapSchematicIO = new MapSchematicIO(this);
     this.blockWhitelistManager = new BlockWhitelistManager();
+    this.mapSchematicIO.pasteMap();
     this.eventManager.registerEvents();
     this.truckManager.spawnParticles();
   }

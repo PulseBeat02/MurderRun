@@ -48,9 +48,11 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.bukkit.Bukkit;
@@ -63,6 +65,26 @@ public final class IOUtils {
 
   private IOUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static boolean deleteFileIfExisting(final Path path) {
+    if (Files.exists(path)) {
+      try {
+        return Files.deleteIfExists(path);
+      } catch (final IOException e) {
+        throw new AssertionError(e);
+      }
+    }
+    return false;
+  }
+
+  public static boolean deleteExistingDirectory(final Path path) {
+    try (final Stream<Path> pathStream = Files.walk(path)) {
+      pathStream.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
+    return true;
   }
 
   public static String getPublicIPAddress() {

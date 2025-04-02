@@ -30,6 +30,35 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE4 = direct(
+    "murderrun.gui.lobby.create.edit.locations.lore.corner.second",
+    null,
+    null,
+    null
+  );
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE3 = direct(
+    "murderrun.gui.lobby.create.edit.locations.lore.corner.first",
+    null,
+    null,
+    null
+  );
+  TriComponent<Sender, Integer, Integer, Integer> CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE2 = direct(
+    "murderrun.gui.lobby.create.edit.locations.lore.spawn",
+    null,
+    null,
+    null
+  );
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE1 = direct("murderrun.gui.lobby.create.edit.locations.lore.info");
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_LOCATIONS_DISPLAY = direct("murderrun.gui.lobby.create.edit.locations.name");
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_FIRST = direct("murderrun.gui.lobby.create.edit.message.corner.first");
+  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_SECOND = direct("murderrun.gui.lobby.create.edit.message.corner.second");
+  TriComponent<Sender, Integer, Integer, Integer> LOBBY_SECOND_CORNER = direct(
+    "murderrun.command.lobby.set.corner.second",
+    null,
+    null,
+    null
+  );
+  TriComponent<Sender, Integer, Integer, Integer> LOBBY_FIRST_CORNER = direct("murderrun.command.lobby.set.corner.first", null, null, null);
   BiComponent<Sender, String, String> GAME_REQUEUE = direct("murderrun.game.requeue", null, null);
   NullComponent<Sender> GAME_PARTY_LEADER_ERROR = direct("murderrun.command.game.party.leader.error");
   NullComponent<Sender> GAME_PARTY_EMPTY = direct("murderrun.command.game.party.empty");

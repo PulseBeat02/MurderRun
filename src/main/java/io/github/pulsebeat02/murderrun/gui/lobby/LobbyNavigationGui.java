@@ -111,7 +111,10 @@ public final class LobbyNavigationGui extends ChestGui {
     final LobbyManager manager = this.plugin.getLobbyManager();
     final Lobby lobby = requireNonNull(manager.getLobby(name));
     final Location spawn = lobby.getLobbySpawn();
-    final LobbyModificationGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, spawn, true);
+    final Location[] corners = lobby.getCorners();
+    final Location first = corners[0];
+    final Location second = corners[1];
+    final LobbyModificationGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, first, second, spawn, true);
     gui.registerEvents();
     gui.update();
     gui.show(this.watcher);

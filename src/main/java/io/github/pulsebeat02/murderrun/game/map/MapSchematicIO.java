@@ -56,8 +56,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.generator.ChunkGenerator;
 
 public final class MapSchematicIO {
 
@@ -70,8 +73,20 @@ public final class MapSchematicIO {
     this.map = map;
   }
 
-  public void resetMap() {
+  public void createWorld() {
+    final Game game = this.map.getGame();
+    final UUID uuid = game.getGameUUID();
+    final String name = uuid.toString();
+    final ChunkGenerator generator = new VoidChunkGenerator();
+    new WorldCreator(name).environment(World.Environment.NORMAL).generator(generator).createWorld();
+    final GameSettings settings = game.getSettings();
+    final Arena arena = requireNonNull(settings.getArena());
+    arena.relativizeLocations(uuid);
+  }
+
+  public void pasteMap() {
     try {
+      this.createWorld();
       this.enableExtent();
       final Game game = this.map.getGame();
       final GameSettings settings = game.getSettings();
@@ -81,7 +96,7 @@ public final class MapSchematicIO {
       final Clipboard clipboard = this.loadSchematic(schematic);
       final com.sk89q.worldedit.world.World world = this.getWorld();
       final WorldEdit instance = WorldEdit.getInstance();
-      this.performResetPaste(instance, world, clipboard, vector3);
+      this.performPaste(instance, world, clipboard, vector3);
     } catch (final WorldEditException | IOException e) {
       throw new AssertionError(e);
     }
@@ -108,7 +123,7 @@ public final class MapSchematicIO {
     return BukkitAdapter.adapt(world);
   }
 
-  private void performResetPaste(
+  private void performPaste(
     final WorldEdit instance,
     final com.sk89q.worldedit.world.World world,
     final Clipboard clipboard,

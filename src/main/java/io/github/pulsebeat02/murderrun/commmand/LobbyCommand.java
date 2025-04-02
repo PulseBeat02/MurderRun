@@ -51,6 +51,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   private MurderRun plugin;
   private BukkitAudiences audiences;
   private Location spawn;
+  private Location first;
+  private Location second;
   private String name;
 
   @Override
@@ -58,6 +60,28 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
+  }
+
+  @Permission("murderrun.command.lobby.set.corner.first")
+  @CommandDescription("murderrun.command.lobby.set.corner.first.info")
+  @Command(value = "murder lobby set first-corner", requiredSender = Player.class)
+  public void setFirstCorner(final Player sender) {
+    final Location location = sender.getLocation();
+    this.first = location;
+    final Audience audience = this.audiences.player(sender);
+    final Component message = ComponentUtils.createLocationComponent(Message.LOBBY_FIRST_CORNER, location);
+    audience.sendMessage(message);
+  }
+
+  @Permission("murderrun.command.lobby.set.corner.second")
+  @CommandDescription("murderrun.command.lobby.set.corner.second.info")
+  @Command(value = "murder lobby set second-corner", requiredSender = Player.class)
+  public void setSecondCorner(final Player sender) {
+    final Location location = sender.getLocation();
+    this.second = location;
+    final Audience audience = this.audiences.player(sender);
+    final Component message = ComponentUtils.createLocationComponent(Message.LOBBY_SECOND_CORNER, location);
+    audience.sendMessage(message);
   }
 
   @Permission("murderrun.command.lobby.list")
@@ -109,8 +133,10 @@ public final class LobbyCommand implements AnnotationCommandFeature {
       return;
     }
 
+    final Location[] corners = { this.first, this.second };
     final LobbyManager manager = this.plugin.getLobbyManager();
-    manager.addLobby(this.name, this.spawn);
+    manager.addLobby(this.name, corners, this.spawn);
+
     this.plugin.updatePluginData();
 
     final Component message = Message.LOBBY_BUILT.build();

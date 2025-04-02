@@ -37,7 +37,9 @@ import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -70,20 +72,25 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   private final boolean editMode;
   private final PatternPane pane;
   private final String originalName;
+  private final AtomicInteger currentMode;
 
   private volatile Location spawn;
+  private volatile Location first;
+  private volatile Location second;
   private volatile String lobbyName;
-  private volatile boolean listenForSpawn;
+  private volatile boolean listenForBreaks;
   private volatile boolean listenForName;
 
   public LobbyModificationGui(final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
-    this(plugin, watcher, "None", watcher.getLocation(), editMode);
+    this(plugin, watcher, "None", watcher.getLocation(), watcher.getLocation(), watcher.getLocation(), editMode);
   }
 
   public LobbyModificationGui(
     final MurderRun plugin,
     final HumanEntity watcher,
     final String lobbyName,
+    final Location first,
+    final Location second,
     final Location spawn,
     final boolean editMode
   ) {
@@ -91,7 +98,10 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     this.originalName = lobbyName;
     this.pane = new PatternPane(0, 0, 9, 4, CREATE_LOBBY_PATTERN);
     this.audience = this.getAudience(plugin, watcher);
+    this.currentMode = new AtomicInteger(0);
     this.plugin = plugin;
+    this.first = first;
+    this.second = second;
     this.watcher = watcher;
     this.spawn = spawn;
     this.lobbyName = lobbyName;
@@ -132,10 +142,9 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
-    if (this.listenForSpawn || this.listenForName) {
+    if (this.listenForBreaks || this.listenForName) {
       return;
     }
-
     final HandlerList list = BlockBreakEvent.getHandlerList();
     list.unregister(this);
   }
@@ -152,9 +161,18 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     }
     event.setCancelled(true);
 
+    final String msg = event.getMessage();
+    if (this.listenForBreaks) {
+      final String upper = msg.toUpperCase();
+      final Location location = player.getLocation();
+      if (upper.equals("SKIP")) {
+        this.sendProperMessage(location, true);
+        return;
+      }
+    }
+
     this.lobbyName = event.getMessage();
     this.listenForName = false;
-
     this.showAsync();
   }
 
@@ -174,17 +192,37 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
       return;
     }
 
-    if (!this.listenForSpawn) {
+    if (!this.listenForBreaks) {
       return;
     }
     event.setCancelled(true);
 
     final Block block = event.getBlock();
-    this.spawn = block.getLocation();
+    final Location location = block.getLocation();
+    this.sendProperMessage(location, false);
+  }
 
-    this.listenForSpawn = false;
-    this.update();
-    this.show(this.watcher);
+  private void sendProperMessage(final Location location, final boolean skip) {
+    final int current = this.currentMode.get();
+    if (!skip) {
+      switch (current) {
+        case 0 -> this.first = location;
+        case 1 -> this.second = location;
+        case 2 -> this.spawn = location;
+      }
+    }
+
+    switch (current) {
+      case 0 -> this.audience.sendMessage(Message.CREATE_LOBBY_GUI_EDIT_SECOND.build());
+      case 1 -> this.audience.sendMessage(Message.CREATE_LOBBY_GUI_EDIT_SPAWN.build());
+      case 2 -> {
+        this.listenForBreaks = false;
+        this.listenForName = false;
+        this.showAsync();
+      }
+    }
+
+    this.currentMode.incrementAndGet();
   }
 
   private GuiItem createCloseStack() {
@@ -211,8 +249,9 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     }
     this.watcher.closeInventory();
 
+    final Location[] corners = { this.first, this.second };
     final LobbyManager manager = this.plugin.getLobbyManager();
-    manager.addLobby(this.lobbyName, this.spawn);
+    manager.addLobby(this.lobbyName, corners, this.spawn);
 
     if (!this.lobbyName.equals(this.originalName)) {
       manager.removeLobby(this.originalName);
@@ -245,20 +284,20 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
   }
 
   private GuiItem createEditSpawnStack() {
-    return new GuiItem(
-      Item.builder(Material.ANVIL)
-        .name(ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY, this.spawn))
-        .lore(Message.CREATE_LOBBY_GUI_EDIT_SPAWN_LORE.build())
-        .build(),
-      this::listenForBlockBreak,
-      this.plugin
-    );
+    final Component title = Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_DISPLAY.build();
+    final Component tooltip = Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE1.build();
+    final Component space = empty();
+    final Component spawnMsg = ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE2, this.spawn);
+    final Component firstMsg = ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE3, this.first);
+    final Component secondMsg = ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE4, this.second);
+    final List<Component> lore = List.of(tooltip, space, spawnMsg, firstMsg, secondMsg);
+    return new GuiItem(Item.builder(Material.ANVIL).name(title).lore(lore).build(), this::listenForBlockBreak, this.plugin);
   }
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
-    this.listenForSpawn = true;
+    this.listenForBreaks = true;
     this.watcher.closeInventory();
-    final Component msg = Message.CREATE_LOBBY_GUI_EDIT_SPAWN.build();
+    final Component msg = Message.CREATE_LOBBY_GUI_EDIT_FIRST.build();
     this.audience.sendMessage(msg);
   }
 

@@ -25,11 +25,16 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.lobby;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 @Entity
 @Table(name = "lobby")
@@ -50,10 +55,15 @@ public final class Lobby implements Serializable {
   @Column(name = "lobby_spawn")
   private Location lobbySpawn;
 
+  @Convert(converter = LocationConverter.class)
+  @Column(name = "corners")
+  private Location[] corners;
+
   public Lobby() {}
 
-  public Lobby(final String name, final Location lobbySpawn) {
+  public Lobby(final String name, final Location[] corners, final Location lobbySpawn) {
     this.name = name;
+    this.corners = corners;
     this.lobbySpawn = lobbySpawn;
   }
 
@@ -63,5 +73,16 @@ public final class Lobby implements Serializable {
 
   public Location getLobbySpawn() {
     return this.lobbySpawn;
+  }
+
+  public Location[] getCorners() {
+    return this.corners;
+  }
+
+  public void relativizeLocations(final UUID uuid) {
+    final String name = uuid.toString();
+    final World world = requireNonNull(Bukkit.getWorld(name));
+    this.corners[0].setWorld(world);
+    this.corners[1].setWorld(world);
   }
 }

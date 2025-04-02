@@ -26,9 +26,11 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.lobby;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -58,12 +60,16 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
     this.lobbies = new HashMap<>();
   }
 
-  public void addLobby(final String name, final Location spawn) {
-    final Lobby lobby = new Lobby(name, spawn);
+  public void addLobby(final String name, final Location[] corners, final Location spawn) {
+    final Lobby lobby = new Lobby(name, corners, spawn);
     this.lobbies.put(name, lobby);
   }
 
   public void removeLobby(final String name) {
+    final Path data = IOUtils.getPluginDataFolderPath();
+    final Path parent = data.resolve("schematics/lobbies");
+    final Path schematic = parent.resolve(name);
+    IOUtils.deleteFileIfExisting(schematic);
     this.lobbies.remove(name);
   }
 

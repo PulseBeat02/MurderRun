@@ -56,6 +56,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffectType;
 
 public final class GameStartupTool {
 
@@ -94,6 +95,8 @@ public final class GameStartupTool {
     manager.applyToLivingSurvivors(player -> {
       final PlayerReference reference = PlayerReference.of(player);
       player.setInvulnerable(true);
+      player.addPotionEffects(PotionEffectType.BLINDNESS.createEffect(5 * 20, 1));
+      player.addPotionEffects(PotionEffectType.NAUSEA.createEffect(3 * 20, 1));
       player.teleport(spawnLocation);
       scheduler.scheduleTask(() -> player.setInvulnerable(false), 3 * 20L, reference);
     });

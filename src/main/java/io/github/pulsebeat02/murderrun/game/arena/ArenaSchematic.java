@@ -99,7 +99,7 @@ public final class ArenaSchematic implements Serializable {
 
   private static String performSchematicWrite(final Clipboard clipboard, final String name) throws IOException {
     final Path data = IOUtils.getPluginDataFolderPath();
-    final Path parent = data.resolve("schematics");
+    final Path parent = data.resolve("schematics/arenas");
     IOUtils.createFolder(parent);
 
     final Path file = parent.resolve(name);

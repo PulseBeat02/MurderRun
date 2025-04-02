@@ -26,9 +26,11 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.arena;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.identifier.HibernateSerializable;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -75,6 +77,10 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
   }
 
   public void removeArena(final String name) {
+    final Path data = IOUtils.getPluginDataFolderPath();
+    final Path parent = data.resolve("schematics/arenas");
+    final Path schematic = parent.resolve(name);
+    IOUtils.deleteFileIfExisting(schematic);
     this.arenas.remove(name);
   }
 

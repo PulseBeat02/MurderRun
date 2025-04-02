@@ -28,15 +28,11 @@ package io.github.pulsebeat02.murderrun.game.map;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameSettings;
-import io.github.pulsebeat02.murderrun.game.arena.Arena;
-import java.util.Collection;
-import org.bukkit.Location;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
+import java.nio.file.Path;
+import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BoundingBox;
 
 public final class MapResetTool {
 
@@ -47,31 +43,52 @@ public final class MapResetTool {
   }
 
   public void resetMap() {
-    this.killExistingEntities();
-    this.resetMapBlocksEntities();
+    //    this.killExistingEntities();
+    //    this.resetMapBlocksEntities();
+    this.unloadWorld();
+    this.deleteWorld();
   }
 
-  private void killExistingEntities() {
+  private void deleteWorld() {
     final Game game = this.map.getGame();
-    final GameSettings settings = game.getSettings();
-    final Arena arena = requireNonNull(settings.getArena());
-    final Location first = arena.getFirstCorner();
-    final Location second = arena.getSecondCorner();
-    final BoundingBox box = BoundingBox.of(first, second);
-    final World world = requireNonNull(first.getWorld());
-    final Collection<Entity> entities = world.getNearbyEntities(box);
-    for (final Entity entity : entities) {
-      if (entity instanceof Player || entity instanceof Display) {
-        continue;
-      }
-      entity.remove();
-    }
+    final UUID uuid = game.getGameUUID();
+    final String name = uuid.toString();
+    final Path path = IOUtils.getPluginDataFolderPath();
+    final Path pluginParent = requireNonNull(path.getParent());
+    final Path moreParent = requireNonNull(pluginParent.getParent());
+    final Path world = moreParent.resolve(name);
+    IOUtils.deleteExistingDirectory(world);
   }
 
-  private void resetMapBlocksEntities() {
-    final MapSchematicIO io = this.map.getMapSchematicIO();
-    io.resetMap();
+  private void unloadWorld() {
+    final Game game = this.map.getGame();
+    final UUID uuid = game.getGameUUID();
+    final String name = uuid.toString();
+    final World world = requireNonNull(Bukkit.getWorld(name));
+    Bukkit.unloadWorld(world, false);
   }
+
+  //  private void killExistingEntities() {
+  //    final Game game = this.map.getGame();
+  //    final GameSettings settings = game.getSettings();
+  //    final Arena arena = requireNonNull(settings.getArena());
+  //    final Location first = arena.getFirstCorner();
+  //    final Location second = arena.getSecondCorner();
+  //    final BoundingBox box = BoundingBox.of(first, second);
+  //    final World world = requireNonNull(first.getWorld());
+  //    final Collection<Entity> entities = world.getNearbyEntities(box);
+  //    for (final Entity entity : entities) {
+  //      if (entity instanceof Player || entity instanceof Display) {
+  //        continue;
+  //      }
+  //      entity.remove();
+  //    }
+  //  }
+  //
+  //  private void resetMapBlocksEntities() {
+  //    final MapSchematicIO io = this.map.getMapSchematicIO();
+  //    io.pasteMap();
+  //  }
 
   public GameMap getMap() {
     return this.map;

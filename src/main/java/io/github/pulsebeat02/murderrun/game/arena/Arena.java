@@ -25,12 +25,17 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.arena;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.util.BoundingBox;
 
 @Entity
@@ -134,5 +139,17 @@ public final class Arena implements Serializable {
     drop.add(0, 1.5, 0);
 
     return drop;
+  }
+
+  public void relativizeLocations(final UUID uuid) {
+    final String name = uuid.toString();
+    final World world = requireNonNull(Bukkit.getWorld(name));
+    this.corners[0].setWorld(world);
+    this.corners[1].setWorld(world);
+    this.spawn.setWorld(world);
+    this.truck.setWorld(world);
+    for (final Location carPartLocation : this.carPartLocations) {
+      carPartLocation.setWorld(world);
+    }
   }
 }

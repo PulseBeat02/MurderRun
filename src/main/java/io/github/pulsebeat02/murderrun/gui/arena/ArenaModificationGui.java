@@ -233,21 +233,21 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       if (upper.equals("DONE")) {
         this.listenForName = false;
         this.listenForItems = false;
-        this.showAsync(player);
+        this.showAsync();
         return;
       }
     }
 
     this.creation.setArenaName(msg);
     this.listenForName = false;
-    this.showAsync(player);
+    this.showAsync();
   }
 
-  private void showAsync(final HumanEntity player) {
+  private void showAsync() {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.callSyncMethod(this.plugin, () -> {
       this.update();
-      this.show(player);
+      this.show(this.watcher);
       return null;
     });
   }
@@ -343,8 +343,8 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       final ArenaManager manager = this.plugin.getArenaManager();
       manager.addArena(name, corners, items, spawn, truck);
 
-      if (!name.equals(originalName)) {
-        manager.removeArena(originalName);
+      if (!name.equals(this.originalName)) {
+        manager.removeArena(this.originalName);
       }
 
       this.plugin.updatePluginData();
@@ -353,9 +353,9 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       this.audience.sendMessage(msg1);
     });
 
-    if (!editMode) {
-      final ArenaCreationManager manager = plugin.getArenaCreationManager();
-      final UUID uuid = watcher.getUniqueId();
+    if (!this.editMode) {
+      final ArenaCreationManager manager = this.plugin.getArenaCreationManager();
+      final UUID uuid = this.watcher.getUniqueId();
       manager.removeArena(uuid);
     }
   }
@@ -401,7 +401,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       case 3 -> {
         this.listenForBreaks = false;
         this.listenForName = false;
-        this.showAsync(this.watcher);
+        this.showAsync();
       }
     }
 
