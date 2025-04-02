@@ -119,6 +119,7 @@ public final class GadgetShopGui extends PaginatedGui {
       audience.sendMessage(message);
       return;
     }
+    this.playSound(entity);
 
     final Item.Builder actual = gadget.getStackBuilder();
     final ItemStack actualStack = actual.build();

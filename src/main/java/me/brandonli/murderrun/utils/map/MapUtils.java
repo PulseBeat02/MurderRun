@@ -75,10 +75,12 @@ public final class MapUtils {
   }
 
   public static Location getSafeSpawn(final Location location) {
-    final World world = requireNonNull(location.getWorld());
-    final Block block = world.getHighestBlockAt(location);
-    final Location blockLocation = block.getLocation();
-    return blockLocation.add(0, 1, 0);
+    final Block block = location.getBlock();
+    final Material material = block.getType();
+    if (material.isAir()) {
+      return location;
+    }
+    return location.add(0, 1, 0);
   }
 
   public static Triplet<Integer, Integer, Integer> toPosTriplet(final BlockFace face) {
