@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.armor;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -42,9 +44,10 @@ public abstract class SurvivorGear extends SurvivorGadget {
     super(name, material, itemName, Message.SURVIVOR_GEAR_LORE.build(), GameProperties.SURVIVOR_GEAR_COST, consumer);
   }
 
+  @SuppressWarnings("all") // checker
   public SurvivorGear(final String name, final Material material, final Component itemName, final Supplier<ItemStack> supplier) {
     super(name, material, itemName, Message.SURVIVOR_GEAR_LORE.build(), GameProperties.SURVIVOR_GEAR_COST, null);
-    final ItemStack item = supplier.get();
+    final ItemStack item = requireNonNull(supplier.get());
     this.setGadget(item);
   }
 
