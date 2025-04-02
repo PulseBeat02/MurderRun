@@ -92,6 +92,8 @@ dependencies {
     testImplementation(libs.nettyAll)
     testImplementation(libs.fastutil)
     testImplementation(libs.mockBukkit)
+    testImplementation(libs.creativeSerializerMinecraft)
+    testImplementation(libs.creativeApi)
     runtimeDeps.forEach(::testImplementation)
 }
 
