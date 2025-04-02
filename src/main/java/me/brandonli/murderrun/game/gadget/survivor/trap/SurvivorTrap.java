@@ -1,0 +1,56 @@
+/*
+
+MIT License
+
+Copyright (c) 2024 Brandon Li
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+package me.brandonli.murderrun.game.gadget.survivor.trap;
+
+import static net.kyori.adventure.text.Component.empty;
+
+import java.awt.Color;
+import me.brandonli.murderrun.game.Game;
+import me.brandonli.murderrun.game.gadget.Trap;
+import me.brandonli.murderrun.game.gadget.packet.GadgetNearbyPacket;
+import me.brandonli.murderrun.game.gadget.survivor.SurvivorDevice;
+import me.brandonli.murderrun.game.player.GamePlayerManager;
+import me.brandonli.murderrun.utils.item.Item;
+import net.kyori.adventure.text.Component;
+
+public abstract class SurvivorTrap extends Trap implements SurvivorDevice {
+
+  public SurvivorTrap(final String name, final int cost, final Item.Builder item, final Component announcement, final Color color) {
+    super(name, cost, item, announcement, color);
+  }
+
+  @Override
+  public void onGadgetNearby(final GadgetNearbyPacket packet) {
+    super.onGadgetNearby(packet);
+    final Component announcement = empty();
+    final Component subtitle = this.getAnnouncement();
+    if (subtitle != null) {
+      final Game game = packet.getGame();
+      final GamePlayerManager manager = game.getPlayerManager();
+      manager.showTitleForAllInnocents(announcement, subtitle);
+    }
+  }
+}

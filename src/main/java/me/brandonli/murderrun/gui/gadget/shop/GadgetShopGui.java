@@ -1,0 +1,218 @@
+/*
+
+MIT License
+
+Copyright (c) 2024 Brandon Li
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+package me.brandonli.murderrun.gui.gadget.shop;
+
+import static net.kyori.adventure.key.Key.key;
+import static net.kyori.adventure.sound.Sound.sound;
+import static net.kyori.adventure.text.Component.empty;
+
+import com.github.stefvanschie.inventoryframework.gui.GuiItem;
+import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
+import com.github.stefvanschie.inventoryframework.pane.Pane;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameProperties;
+import me.brandonli.murderrun.game.gadget.Gadget;
+import me.brandonli.murderrun.game.gadget.GadgetRegistry;
+import me.brandonli.murderrun.locale.AudienceProvider;
+import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.utils.ComponentUtils;
+import me.brandonli.murderrun.utils.InventoryUtils;
+import me.brandonli.murderrun.utils.PDCUtils;
+import me.brandonli.murderrun.utils.immutable.Keys;
+import me.brandonli.murderrun.utils.item.Item;
+import me.brandonli.murderrun.utils.item.ItemFactory;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.sound.Sound.Source;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataType;
+
+public final class GadgetShopGui extends ChestGui {
+
+  private final MurderRun plugin;
+  private final PaginatedPane pages;
+
+  public GadgetShopGui(final MurderRun plugin, final List<String> gadgets) {
+    super(6, ComponentUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), plugin);
+    this.plugin = plugin;
+    this.pages = new PaginatedPane(0, 0, 9, 5);
+    this.addItems(gadgets);
+    this.setOnGlobalClick(event -> {
+        final HumanEntity entity = event.getWhoClicked();
+        event.setCancelled(true);
+        this.playSound(entity);
+      });
+  }
+
+  private void addItems(final List<String> gadgets) {
+    this.addPane(this.createPaginatedPane(gadgets));
+    this.addPane(this.createBackgroundPane());
+    this.addPane(this.createNavigationPane());
+  }
+
+  private PaginatedPane createPaginatedPane(final List<String> gadgets) {
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
+    @SuppressWarnings("all") // checker
+    final Collection<ItemStack> raw = gadgets
+      .stream()
+      .map(registry::getGadget)
+      .filter(Objects::nonNull)
+      .map(Gadget::getStackBuilder)
+      .map(Item.Builder::build)
+      .toList();
+    final List<ItemStack> items = List.copyOf(raw);
+    this.pages.populateWithItemStacks(items, this.plugin);
+    this.pages.setOnClick(this::handleClick);
+    return this.pages;
+  }
+
+  private OutlinePane createBackgroundPane() {
+    final OutlinePane background = new OutlinePane(0, 5, 9, 1);
+    final GuiItem borderCopy = this.createBorderStack();
+    background.addItem(borderCopy);
+    background.setRepeat(true);
+    background.setPriority(Pane.Priority.LOWEST);
+    return background;
+  }
+
+  private StaticPane createNavigationPane() {
+    final StaticPane navigation = new StaticPane(0, 5, 9, 1);
+    navigation.addItem(this.createBackStack(), 0, 0);
+    navigation.addItem(this.createForwardStack(), 8, 0);
+    navigation.addItem(this.createCloseStack(), 4, 0);
+    return navigation;
+  }
+
+  private GuiItem createBorderStack() {
+    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+  }
+
+  private void handleClick(final InventoryClickEvent event) {
+    final ItemStack stack = event.getCurrentItem();
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
+    if (stack == null) {
+      return;
+    }
+
+    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final Gadget gadget = data != null ? registry.getGadget(data) : null;
+    if (gadget == null) {
+      return;
+    }
+
+    final HumanEntity entity = event.getWhoClicked();
+    final PlayerInventory inventory = entity.getInventory();
+    final int cost = gadget.getPrice();
+    final ItemStack currency = ItemFactory.createCurrency(cost);
+    if (!inventory.containsAtLeast(currency, cost)) {
+      final UUID uuid = entity.getUniqueId();
+      final Component message = Message.SHOP_GUI_ERROR.build();
+      final AudienceProvider provider = this.plugin.getAudience();
+      final BukkitAudiences bukkitAudiences = provider.retrieve();
+      final Audience audience = bukkitAudiences.player(uuid);
+      audience.sendMessage(message);
+      return;
+    }
+
+    final Item.Builder actual = gadget.getStackBuilder();
+    final ItemStack actualStack = actual.build();
+    final ItemStack clone = actualStack.clone();
+    inventory.removeItem(currency);
+    InventoryUtils.addItem(entity, clone);
+  }
+
+  private GuiItem createCloseStack() {
+    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), this::handleClose, this.plugin);
+  }
+
+  private void handleClose(final InventoryClickEvent event) {
+    final HumanEntity entity = event.getWhoClicked();
+    entity.closeInventory();
+  }
+
+  private GuiItem createForwardStack() {
+    return new GuiItem(
+      Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+      this::handleForwardOption,
+      this.plugin
+    );
+  }
+
+  private void handleForwardOption(final InventoryClickEvent event) {
+    final int current = this.pages.getPage();
+    final int max = this.pages.getPages() - 1;
+    if (current < max) {
+      this.pages.setPage(current + 1);
+      this.update();
+    }
+  }
+
+  private GuiItem createBackStack() {
+    return new GuiItem(
+      Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+      this::handleBackwardOption,
+      this.plugin
+    );
+  }
+
+  private void handleBackwardOption(final InventoryClickEvent event) {
+    final int current = this.pages.getPage();
+    if (current > 0) {
+      this.pages.setPage(current - 1);
+      this.update();
+    }
+  }
+
+  private void playSound(final HumanEntity entity) {
+    final String raw = GameProperties.SHOP_GUI_SOUND;
+    final Key key = key(raw);
+    final Source source = Source.MASTER;
+    final Sound sound = sound(key, source, 1.0f, 1.0f);
+    final UUID uuid = entity.getUniqueId();
+    final AudienceProvider provider = this.plugin.getAudience();
+    final BukkitAudiences bukkitAudiences = provider.retrieve();
+    final Audience audience = bukkitAudiences.player(uuid);
+    audience.playSound(sound);
+  }
+
+  public void showGUI(final HumanEntity entity) {
+    this.show(entity);
+  }
+}

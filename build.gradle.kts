@@ -13,7 +13,7 @@ plugins {
 
 apply(plugin = "org.checkerframework")
 
-group = "io.github.pulsebeat02"
+group = "me.brandonli"
 version = "1.21.4-v1.0.0"
 description = "MurderRun"
 
@@ -142,7 +142,7 @@ tasks {
         authors = listOf("PulseBeat_02")
         apiVersion = "1.21"
         prefix = "Murder Run"
-        main = "io.github.pulsebeat02.murderrun.MurderRun"
+        main = "me.brandonli.murderrun.MurderRun"
         softDepend = listOf(
             "WorldEdit",
             "Citizens",
@@ -237,7 +237,7 @@ tasks {
 
     jar {
         manifest {
-            attributes("Main-Class" to "io.github.pulsebeat02.murderrun.secret.Main")
+            attributes("Main-Class" to "me.brandonli.murderrun.secret.Main")
         }
     }
 }

@@ -1,0 +1,62 @@
+/*
+
+MIT License
+
+Copyright (c) 2024 Brandon Li
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+package me.brandonli.murderrun.data.hibernate.converters;
+
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+import java.lang.reflect.Type;
+import me.brandonli.murderrun.utils.gson.GsonProvider;
+import org.jetbrains.annotations.Nullable;
+
+@Converter(autoApply = true) // add annotation all subclasses
+public abstract class AbstractJSONConverter<T> implements AttributeConverter<T, String> {
+
+  private final TypeToken<T> token = new TypeToken<>(this.getClass()) {};
+
+  @Override
+  public @Nullable String convertToDatabaseColumn(final T data) {
+    if (data == null) {
+      return null;
+    }
+
+    // use json to serialize and deserialize data
+    final Gson gson = GsonProvider.getGson();
+    return gson.toJson(data);
+  }
+
+  @Override
+  public @Nullable T convertToEntityAttribute(final String dbData) {
+    if (dbData == null || dbData.isEmpty()) {
+      return null;
+    }
+
+    final Gson gson = GsonProvider.getGson();
+    final Type type = this.token.getType();
+    return gson.fromJson(dbData, type);
+  }
+}
