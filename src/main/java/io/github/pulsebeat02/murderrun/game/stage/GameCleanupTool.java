@@ -40,7 +40,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Optional;
 import java.util.stream.Stream;
-
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
@@ -230,7 +229,6 @@ public final class GameCleanupTool {
   }
 
   private void executeCommands(final boolean survivor) {
-
     final String chain = survivor ? GameProperties.SURVIVOR_WIN_COMMANDS_AFTER : GameProperties.KILLER_WIN_COMMANDS_AFTER;
     if (chain.equalsIgnoreCase("none")) {
       return;
