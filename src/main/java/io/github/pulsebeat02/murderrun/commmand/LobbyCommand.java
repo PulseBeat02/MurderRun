@@ -133,6 +133,9 @@ public final class LobbyCommand implements AnnotationCommandFeature {
       return;
     }
 
+    final Component msg = Message.LOBBY_CREATE_LOAD.build();
+    audience.sendMessage(msg);
+
     final Location[] corners = { this.first, this.second };
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.addLobby(this.name, corners, this.spawn);

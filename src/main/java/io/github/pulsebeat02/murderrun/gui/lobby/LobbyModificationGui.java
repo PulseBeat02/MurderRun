@@ -249,6 +249,9 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
     }
     this.watcher.closeInventory();
 
+    final Component msg = Message.LOBBY_CREATE_LOAD.build();
+    this.audience.sendMessage(msg);
+
     final Location[] corners = { this.first, this.second };
     final LobbyManager manager = this.plugin.getLobbyManager();
     manager.addLobby(this.lobbyName, corners, this.spawn);
@@ -259,8 +262,8 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
     this.plugin.updatePluginData();
 
-    final Component msg = Message.LOBBY_BUILT.build();
-    this.audience.sendMessage(msg);
+    final Component msgAfter = Message.LOBBY_BUILT.build();
+    this.audience.sendMessage(msgAfter);
   }
 
   private GuiItem createDeleteStack() {

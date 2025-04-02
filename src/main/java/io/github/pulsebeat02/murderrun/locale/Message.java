@@ -30,6 +30,7 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> LOBBY_CREATE_LOAD = direct("murderrun.command.lobby.create.loading");
   TriComponent<Sender, Integer, Integer, Integer> CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE4 = direct(
     "murderrun.gui.lobby.create.edit.locations.lore.corner.second",
     null,
