@@ -1,0 +1,3096 @@
+{
+  "id": null,
+  "schematic": {
+    "schematicPath": "./plugins/MurderRun/schematics/arenas/ArenaTest",
+    "origin": {
+      "x": -172,
+      "y": -33,
+      "z": -86
+    }
+  },
+  "name": "ArenaTest",
+  "corners": [
+    {
+      "world": "ArenaTestWorld",
+      "x": -65,
+      "y": -33,
+      "z": -86,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -172,
+      "y": 74,
+      "z": 84,
+      "yaw": 0,
+      "pitch": 0
+    }
+  ],
+  "carPartLocations": [
+    {
+      "world": "ArenaTestWorld",
+      "x": -65,
+      "y": -27,
+      "z": 76,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -160,
+      "y": -25,
+      "z": 81,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -79,
+      "y": -27,
+      "z": 4,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -92,
+      "y": -27,
+      "z": 84,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -158,
+      "y": -25,
+      "z": 35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -101,
+      "y": -27,
+      "z": 43,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -115,
+      "y": -27,
+      "z": -78,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -171,
+      "y": -27,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -125,
+      "y": -27,
+      "z": 78,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -66,
+      "y": -26,
+      "z": 60,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -172,
+      "y": -27,
+      "z": -31,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -171,
+      "y": -27,
+      "z": -80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -83,
+      "y": -27,
+      "z": 29,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": -62,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -116,
+      "y": -27,
+      "z": -28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -141,
+      "y": -25,
+      "z": 19,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -136,
+      "y": -27,
+      "z": -76,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -161,
+      "y": -25,
+      "z": 83,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -79,
+      "y": -19,
+      "z": 13,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -131,
+      "y": -27,
+      "z": 76,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -121,
+      "y": -25,
+      "z": -22,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -27,
+      "z": 7,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -158,
+      "y": -27,
+      "z": -5,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -170,
+      "y": -25,
+      "z": 47,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -168,
+      "y": -27,
+      "z": -24,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -164,
+      "y": -27,
+      "z": -8,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -15,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -100,
+      "y": -25,
+      "z": -83,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -170,
+      "y": -25,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -121,
+      "y": -25,
+      "z": -16,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -140,
+      "y": -27,
+      "z": 7,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -94,
+      "y": -27,
+      "z": -50,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -115,
+      "y": -25,
+      "z": 60,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -101,
+      "y": -26,
+      "z": 28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -27,
+      "z": 45,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -102,
+      "y": -25,
+      "z": 60,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -77,
+      "y": -27,
+      "z": 56,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -141,
+      "y": -27,
+      "z": 73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -145,
+      "y": -25,
+      "z": 34,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -166,
+      "y": -25,
+      "z": 66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -78,
+      "y": -27,
+      "z": -14,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -159,
+      "y": -27,
+      "z": 27,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -108,
+      "y": -25,
+      "z": -81,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -166,
+      "y": -25,
+      "z": 60,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -26,
+      "z": 3,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -156,
+      "y": -25,
+      "z": 46,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -76,
+      "y": -27,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -110,
+      "y": -20,
+      "z": 55,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -128,
+      "y": -26,
+      "z": -64,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -94,
+      "y": -27,
+      "z": 31,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -116,
+      "y": -25,
+      "z": -80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -169,
+      "y": -25,
+      "z": 23,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -78,
+      "y": -13,
+      "z": 11,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -109,
+      "y": -27,
+      "z": -35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -139,
+      "y": -27,
+      "z": 36,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -129,
+      "y": -27,
+      "z": 64,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -148,
+      "y": -25,
+      "z": 6,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -149,
+      "y": -26,
+      "z": 0,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -68,
+      "y": -26,
+      "z": -17,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -68,
+      "y": -26,
+      "z": -23,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -25,
+      "z": 82,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -165,
+      "y": -27,
+      "z": -3,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -78,
+      "y": -25,
+      "z": -81,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -124,
+      "y": -25,
+      "z": -55,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -154,
+      "y": -22,
+      "z": -5,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -146,
+      "y": -27,
+      "z": 39,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -164,
+      "y": -27,
+      "z": -74,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -114,
+      "y": -27,
+      "z": 4,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": -49,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -127,
+      "y": -26,
+      "z": 14,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -95,
+      "y": -26,
+      "z": 60,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -158,
+      "y": -27,
+      "z": 75,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -101,
+      "y": -26,
+      "z": 48,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -122,
+      "y": -27,
+      "z": 80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -152,
+      "y": -27,
+      "z": -11,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -105,
+      "y": -9,
+      "z": 21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -124,
+      "y": -25,
+      "z": -85,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -75,
+      "y": -27,
+      "z": 47,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -168,
+      "y": -27,
+      "z": -53,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -163,
+      "y": -27,
+      "z": -19,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -135,
+      "y": -25,
+      "z": -26,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -134,
+      "y": -25,
+      "z": 14,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -151,
+      "y": -25,
+      "z": 32,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -141,
+      "y": -27,
+      "z": -74,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -131,
+      "y": -26,
+      "z": 19,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -171,
+      "y": -27,
+      "z": -3,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -147,
+      "y": -13,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -159,
+      "y": -27,
+      "z": -49,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -81,
+      "y": -27,
+      "z": 50,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -126,
+      "y": -27,
+      "z": -84,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -72,
+      "y": -27,
+      "z": 6,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -104,
+      "y": -27,
+      "z": 35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -70,
+      "y": -17,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -170,
+      "y": -25,
+      "z": 6,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -71,
+      "y": -19,
+      "z": 19,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -121,
+      "y": -27,
+      "z": 11,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -86,
+      "y": -27,
+      "z": -13,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -70,
+      "y": -27,
+      "z": -32,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -25,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -25,
+      "z": -29,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -152,
+      "y": -27,
+      "z": -58,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -160,
+      "y": -27,
+      "z": -54,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -68,
+      "y": -27,
+      "z": -70,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -27,
+      "z": -5,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -96,
+      "y": -25,
+      "z": 73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -79,
+      "y": -27,
+      "z": -72,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -77,
+      "y": -12,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -73,
+      "y": -27,
+      "z": 31,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -92,
+      "y": -27,
+      "z": -47,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -75,
+      "y": -27,
+      "z": -25,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -171,
+      "y": -27,
+      "z": 79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -106,
+      "y": -25,
+      "z": -79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -155,
+      "y": -25,
+      "z": 75,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -96,
+      "y": -26,
+      "z": 55,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -88,
+      "y": -26,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -99,
+      "y": -13,
+      "z": 4,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -27,
+      "z": 46,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": 66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -90,
+      "y": -27,
+      "z": 1,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -121,
+      "y": -26,
+      "z": -15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -134,
+      "y": -25,
+      "z": -11,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -161,
+      "y": -27,
+      "z": 39,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -97,
+      "y": -27,
+      "z": -8,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -88,
+      "y": -27,
+      "z": -74,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -86,
+      "y": -27,
+      "z": 21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -165,
+      "y": -27,
+      "z": -86,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -172,
+      "y": -27,
+      "z": -40,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -125,
+      "y": -25,
+      "z": -83,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -68,
+      "y": -25,
+      "z": -69,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -85,
+      "y": -25,
+      "z": 80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -78,
+      "y": -18,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -27,
+      "z": 54,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -119,
+      "y": -25,
+      "z": -75,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -25,
+      "z": 4,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -163,
+      "y": -27,
+      "z": 48,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -84,
+      "y": -27,
+      "z": 49,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -153,
+      "y": -25,
+      "z": 66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -147,
+      "y": -27,
+      "z": -51,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -113,
+      "y": -27,
+      "z": 43,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -147,
+      "y": -27,
+      "z": -45,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -162,
+      "y": -27,
+      "z": 59,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -121,
+      "y": -27,
+      "z": -77,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -87,
+      "y": -27,
+      "z": 55,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -165,
+      "y": -27,
+      "z": -21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -27,
+      "z": 7,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -27,
+      "z": 5,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -105,
+      "y": -27,
+      "z": -14,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -80,
+      "y": -27,
+      "z": 80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -8,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -165,
+      "y": -27,
+      "z": 66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -125,
+      "y": -25,
+      "z": 72,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -77,
+      "y": -27,
+      "z": -72,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -93,
+      "y": -27,
+      "z": 56,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -144,
+      "y": -27,
+      "z": -80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -140,
+      "y": -27,
+      "z": -83,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -91,
+      "y": -25,
+      "z": 79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -97,
+      "y": -27,
+      "z": 78,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -92,
+      "y": -27,
+      "z": -71,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -153,
+      "y": -27,
+      "z": -62,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -127,
+      "y": -27,
+      "z": 81,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -132,
+      "y": -26,
+      "z": 7,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -25,
+      "z": -21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -155,
+      "y": -27,
+      "z": 18,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -161,
+      "y": -25,
+      "z": 48,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -88,
+      "y": -27,
+      "z": 42,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -118,
+      "y": -25,
+      "z": -62,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -27,
+      "z": 44,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -25,
+      "z": 73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -108,
+      "y": -26,
+      "z": 47,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -92,
+      "y": -25,
+      "z": -57,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -167,
+      "y": -27,
+      "z": -9,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -100,
+      "y": -21,
+      "z": -60,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -130,
+      "y": -26,
+      "z": 35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -77,
+      "y": -25,
+      "z": 82,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -99,
+      "y": -25,
+      "z": 72,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -27,
+      "z": -32,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -86,
+      "y": -27,
+      "z": -6,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -24,
+      "z": 21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -101,
+      "y": -8,
+      "z": 1,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -25,
+      "z": 22,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -123,
+      "y": -25,
+      "z": -85,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -132,
+      "y": -25,
+      "z": 74,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -119,
+      "y": -23,
+      "z": 62,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -158,
+      "y": -25,
+      "z": 35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": -69,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -26,
+      "z": 64,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -27,
+      "z": 25,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -25,
+      "z": 79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -91,
+      "y": -27,
+      "z": 24,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -91,
+      "y": -27,
+      "z": -12,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -73,
+      "y": -25,
+      "z": 69,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -25,
+      "z": 59,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -102,
+      "y": -25,
+      "z": -65,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -112,
+      "y": -27,
+      "z": 40,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -148,
+      "y": -11,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -111,
+      "y": -27,
+      "z": 62,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -70,
+      "y": -27,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -133,
+      "y": -27,
+      "z": 82,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": -54,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -154,
+      "y": -27,
+      "z": 18,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -161,
+      "y": -25,
+      "z": 71,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -100,
+      "y": -27,
+      "z": -32,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -25,
+      "z": 35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -170,
+      "y": -27,
+      "z": 73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -133,
+      "y": -27,
+      "z": -73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -133,
+      "y": -26,
+      "z": -56,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -155,
+      "y": -27,
+      "z": -26,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -159,
+      "y": -27,
+      "z": -78,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -145,
+      "y": -27,
+      "z": 58,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -140,
+      "y": -27,
+      "z": 70,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -110,
+      "y": -25,
+      "z": -79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -151,
+      "y": -27,
+      "z": -73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -69,
+      "y": -27,
+      "z": -38,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -156,
+      "y": -25,
+      "z": 78,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -164,
+      "y": -25,
+      "z": 45,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -118,
+      "y": -27,
+      "z": 43,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -101,
+      "y": -26,
+      "z": 26,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -101,
+      "y": -27,
+      "z": 78,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -107,
+      "y": -25,
+      "z": 59,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -167,
+      "y": -27,
+      "z": -86,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -138,
+      "y": -27,
+      "z": 68,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -167,
+      "y": -27,
+      "z": -69,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -153,
+      "y": -27,
+      "z": 48,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -73,
+      "y": -22,
+      "z": -33,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -155,
+      "y": -25,
+      "z": 38,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -120,
+      "y": -27,
+      "z": 23,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -136,
+      "y": -27,
+      "z": 68,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -108,
+      "y": -22,
+      "z": 56,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -123,
+      "y": -25,
+      "z": -85,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -85,
+      "y": -26,
+      "z": -52,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -115,
+      "y": -25,
+      "z": 83,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -67,
+      "y": -26,
+      "z": 29,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -96,
+      "y": -25,
+      "z": -80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -165,
+      "y": -27,
+      "z": 6,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -7,
+      "z": 7,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -166,
+      "y": -25,
+      "z": 35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -129,
+      "y": -25,
+      "z": 49,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -77,
+      "y": -12,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -166,
+      "y": -27,
+      "z": 48,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -158,
+      "y": -27,
+      "z": -35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -156,
+      "y": -25,
+      "z": 15,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -171,
+      "y": -27,
+      "z": 62,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -75,
+      "y": -25,
+      "z": 76,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -24,
+      "z": 21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -148,
+      "y": -27,
+      "z": 82,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -154,
+      "y": -25,
+      "z": 58,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -123,
+      "y": -24,
+      "z": 57,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -146,
+      "y": -25,
+      "z": 69,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -87,
+      "y": -26,
+      "z": 65,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -166,
+      "y": -27,
+      "z": 67,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -92,
+      "y": -22,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -164,
+      "y": -27,
+      "z": 65,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -112,
+      "y": -27,
+      "z": -75,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -97,
+      "y": -27,
+      "z": -36,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -65,
+      "y": -27,
+      "z": -44,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -81,
+      "y": -26,
+      "z": 68,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -68,
+      "y": -26,
+      "z": 39,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -151,
+      "y": 0,
+      "z": 14,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -119,
+      "y": -25,
+      "z": 68,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -71,
+      "y": -27,
+      "z": 79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -27,
+      "z": 50,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -107,
+      "y": -27,
+      "z": -28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -25,
+      "z": 68,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -89,
+      "y": -27,
+      "z": -73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -122,
+      "y": -27,
+      "z": 6,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -168,
+      "y": -25,
+      "z": 49,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -82,
+      "y": -25,
+      "z": -73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -110,
+      "y": -27,
+      "z": 34,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -27,
+      "z": -24,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -146,
+      "y": -25,
+      "z": 24,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -71,
+      "y": -27,
+      "z": -68,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -164,
+      "y": -27,
+      "z": 27,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -104,
+      "y": -26,
+      "z": -56,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -163,
+      "y": -27,
+      "z": -32,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -115,
+      "y": -27,
+      "z": -47,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -27,
+      "z": 36,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -172,
+      "y": -27,
+      "z": 44,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -141,
+      "y": -26,
+      "z": -36,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -27,
+      "z": -42,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -93,
+      "y": -26,
+      "z": 53,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -102,
+      "y": -27,
+      "z": -22,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -73,
+      "y": -27,
+      "z": 21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -131,
+      "y": -23,
+      "z": -9,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -134,
+      "y": -25,
+      "z": 53,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -153,
+      "y": -6,
+      "z": 16,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -22,
+      "z": 11,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -147,
+      "y": -27,
+      "z": 75,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -98,
+      "y": -8,
+      "z": 13,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -103,
+      "y": -26,
+      "z": 64,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -112,
+      "y": -27,
+      "z": 28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -81,
+      "y": -27,
+      "z": -28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -100,
+      "y": -27,
+      "z": -39,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -164,
+      "y": -25,
+      "z": 10,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -163,
+      "y": -27,
+      "z": -17,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -118,
+      "y": -25,
+      "z": -79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -25,
+      "z": 16,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -84,
+      "y": -27,
+      "z": -22,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -113,
+      "y": -26,
+      "z": 50,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -163,
+      "y": -27,
+      "z": 79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -129,
+      "y": -27,
+      "z": -74,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -100,
+      "y": -25,
+      "z": -66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -70,
+      "y": -25,
+      "z": -80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -25,
+      "z": 43,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -155,
+      "y": -25,
+      "z": 43,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -115,
+      "y": -26,
+      "z": 34,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -167,
+      "y": -27,
+      "z": -18,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -141,
+      "y": -24,
+      "z": 29,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -165,
+      "y": -25,
+      "z": 50,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -171,
+      "y": -27,
+      "z": 66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -162,
+      "y": -27,
+      "z": 11,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -88,
+      "y": -27,
+      "z": -84,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -27,
+      "z": -65,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -69,
+      "y": -25,
+      "z": -64,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -72,
+      "y": -27,
+      "z": -85,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -150,
+      "y": -25,
+      "z": 34,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -101,
+      "y": -27,
+      "z": -54,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -124,
+      "y": -25,
+      "z": -75,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -85,
+      "y": -27,
+      "z": -49,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -98,
+      "y": -26,
+      "z": 53,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -100,
+      "y": -27,
+      "z": -21,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -78,
+      "y": -27,
+      "z": 83,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -66,
+      "y": -27,
+      "z": -66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -145,
+      "y": -25,
+      "z": -20,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -69,
+      "y": -25,
+      "z": -74,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -145,
+      "y": -27,
+      "z": 28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -130,
+      "y": -27,
+      "z": 82,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -80,
+      "y": -27,
+      "z": 37,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -146,
+      "y": -27,
+      "z": 12,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -134,
+      "y": -27,
+      "z": -73,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -140,
+      "y": -25,
+      "z": 29,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -113,
+      "y": -27,
+      "z": 16,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -71,
+      "y": -25,
+      "z": -65,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -27,
+      "z": -67,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -155,
+      "y": -25,
+      "z": 14,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -70,
+      "y": -27,
+      "z": -65,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -117,
+      "y": -26,
+      "z": -49,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -144,
+      "y": -27,
+      "z": 46,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -79,
+      "y": -27,
+      "z": 56,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -79,
+      "y": -27,
+      "z": 80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -86,
+      "y": -25,
+      "z": -79,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -99,
+      "y": -27,
+      "z": -40,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -27,
+      "z": -64,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -114,
+      "y": -26,
+      "z": -28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -72,
+      "y": -27,
+      "z": 77,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -105,
+      "y": -10,
+      "z": 11,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -85,
+      "y": -27,
+      "z": -35,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": 4,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -124,
+      "y": -25,
+      "z": -70,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -138,
+      "y": -27,
+      "z": -41,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -109,
+      "y": -27,
+      "z": -37,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -94,
+      "y": -25,
+      "z": -74,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -87,
+      "y": -27,
+      "z": 14,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -97,
+      "y": -26,
+      "z": 63,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -118,
+      "y": -27,
+      "z": -77,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -109,
+      "y": -25,
+      "z": 76,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -67,
+      "y": -25,
+      "z": -52,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -170,
+      "y": -25,
+      "z": 33,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -87,
+      "y": -27,
+      "z": -81,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -146,
+      "y": -27,
+      "z": -22,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -135,
+      "y": -27,
+      "z": -71,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -27,
+      "z": -40,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -76,
+      "y": -27,
+      "z": -69,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -137,
+      "y": -25,
+      "z": 66,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -158,
+      "y": -27,
+      "z": -80,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -83,
+      "y": -27,
+      "z": 16,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -108,
+      "y": -27,
+      "z": 28,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -169,
+      "y": -27,
+      "z": -25,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -110,
+      "y": -27,
+      "z": 8,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -74,
+      "y": -25,
+      "z": -57,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -70,
+      "y": -25,
+      "z": -85,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -87,
+      "y": -27,
+      "z": -23,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -166,
+      "y": -27,
+      "z": -24,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -120,
+      "y": -27,
+      "z": 5,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": 45,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -110,
+      "y": -22,
+      "z": 56,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -134,
+      "y": -25,
+      "z": 81,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -140,
+      "y": -27,
+      "z": 34,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -92,
+      "y": -27,
+      "z": -13,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -143,
+      "y": -19,
+      "z": -25,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -157,
+      "y": -27,
+      "z": 5,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "ArenaTestWorld",
+      "x": -142,
+      "y": -27,
+      "z": -2,
+      "yaw": 0,
+      "pitch": 0
+    }
+  ],
+  "spawn": {
+    "world": "ArenaTestWorld",
+    "x": -92,
+    "y": -26,
+    "z": 33,
+    "yaw": 0,
+    "pitch": 0
+  },
+  "truck": {
+    "world": "ArenaTestWorld",
+    "x": -90,
+    "y": -25,
+    "z": 23,
+    "yaw": 0,
+    "pitch": 0
+  }
+}

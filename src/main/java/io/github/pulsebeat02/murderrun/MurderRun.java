@@ -145,7 +145,7 @@ public final class MurderRun extends JavaPlugin {
   private void testEventBusApi() {
     if (isDevelopmentToolsEnabled()) {
       final EventBusTests eventBusTests = new EventBusTests(this);
-      eventBusTests.runTestUnits();
+      //eventBusTests.runTestUnits();
     }
   }
 

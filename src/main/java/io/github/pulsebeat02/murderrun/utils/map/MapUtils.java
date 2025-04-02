@@ -113,7 +113,7 @@ public final class MapUtils {
   }
 
   public static World createVoidWorld(final String name, final World copy) {
-    final ChunkGenerator generator = new VoidChunkGenerator();
+    final ChunkGenerator generator = new FastChunkGenerator();
     final World.Environment environment = copy.getEnvironment();
     final World world = new WorldCreator(name).environment(environment).generator(generator).keepSpawnInMemory(false).createWorld();
     requireNonNull(world);

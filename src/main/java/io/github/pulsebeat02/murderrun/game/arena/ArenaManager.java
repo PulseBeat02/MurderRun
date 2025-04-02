@@ -65,6 +65,15 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     this.arenas = new HashMap<>();
   }
 
+  public void addInternalArena(final Arena arena) {
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(ArenaEvent.class, arena, ArenaModificationType.CREATION)) {
+      return;
+    }
+    final String name = arena.getName();
+    this.arenas.put(name, arena);
+  }
+
   public void addArena(
     final String name,
     final Location[] corners,

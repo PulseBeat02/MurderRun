@@ -65,6 +65,15 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
     this.lobbies = new HashMap<>();
   }
 
+  public void addInternalLobby(final Lobby lobby) {
+    final ApiEventBus bus = EventBusProvider.getBus();
+    if (bus.post(LobbyEvent.class, lobby, LobbyModificationType.CREATION)) {
+      return;
+    }
+    final String name = lobby.getName();
+    this.lobbies.put(name, lobby);
+  }
+
   public void addLobby(final String name, final Location[] corners, final Location spawn) {
     final ApiEventBus bus = EventBusProvider.getBus();
     final Schematic schematic = Schematic.copyAndCreateSchematic(name, corners, false);

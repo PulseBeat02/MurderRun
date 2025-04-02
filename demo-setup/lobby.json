@@ -1,0 +1,38 @@
+{
+  "id": null,
+  "schematic": {
+    "schematicPath": "./plugins/MurderRun/schematics/lobbies/LobbyTest",
+    "origin": {
+      "x": -1020,
+      "y": 89,
+      "z": -83
+    }
+  },
+  "name": "LobbyTest",
+  "lobbySpawn": {
+    "world": "LobbyTestWorld",
+    "x": -970,
+    "y": 91,
+    "z": -43,
+    "yaw": 0,
+    "pitch": 0
+  },
+  "corners": [
+    {
+      "world": "LobbyTestWorld",
+      "x": -957,
+      "y": 89,
+      "z": -27,
+      "yaw": 0,
+      "pitch": 0
+    },
+    {
+      "world": "LobbyTestWorld",
+      "x": -1020,
+      "y": 189,
+      "z": -83,
+      "yaw": 0,
+      "pitch": 0
+    }
+  ]
+}

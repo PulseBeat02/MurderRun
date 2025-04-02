@@ -54,10 +54,12 @@ import java.util.Formatter;
 import java.util.Locale;
 import java.util.Set;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public final class IOUtils {
 
@@ -266,25 +268,69 @@ public final class IOUtils {
     return requireNonNull(path.getFileName()).toString();
   }
 
-  public static void zipFolderContents(final Path srcFolder, final Path destZipFile) throws IOException {
+  public static void unzip(final Path src, final Path dest) throws IOException {
     try (
-      final OutputStream stream = Files.newOutputStream(destZipFile);
-      final OutputStream fast = new FastBufferedOutputStream(stream);
+      final InputStream fis = Files.newInputStream(src);
+      final FastBufferedInputStream fast = new FastBufferedInputStream(fis);
+      final ZipInputStream zis = new ZipInputStream(fast)
+    ) {
+      ZipEntry entry;
+      while ((entry = zis.getNextEntry()) != null) {
+        final String name = entry.getName();
+        final Path path = dest.resolve(name);
+        final Path resolvedPath = path.normalize();
+        if (entry.isDirectory()) {
+          Files.createDirectories(resolvedPath);
+        } else {
+          final Path parent = resolvedPath.getParent();
+          if (parent != null && Files.notExists(parent)) {
+            Files.createDirectories(parent);
+          }
+          Files.copy(zis, resolvedPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        zis.closeEntry();
+      }
+    }
+  }
+
+  public static void zip(final Path src, final Path dest) throws IOException {
+    try (
+      final OutputStream fis = Files.newOutputStream(src);
+      final FastBufferedOutputStream fast = new FastBufferedOutputStream(fis);
       final ZipOutputStream zip = new ZipOutputStream(fast)
     ) {
-      Files.walkFileTree(
-        srcFolder,
-        new SimpleFileVisitor<>() {
-          @Override
-          public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
-            zip.putNextEntry(new ZipEntry(srcFolder.relativize(file).toString()));
-            zip.setLevel(ZipOutputStream.STORED);
-            Files.copy(file, zip);
-            zip.closeEntry();
-            return FileVisitResult.CONTINUE;
+      {
+        Files.walkFileTree(
+          src,
+          new SimpleFileVisitor<>() {
+            @Override
+            public @NotNull FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException {
+              final Path rel = src.relativize(dir);
+              final String relName = rel.toString();
+              if (!relName.isEmpty()) {
+                final String replaced = relName.replace("\\", "/");
+                final String entryName = replaced + "/";
+                final ZipEntry entry = new ZipEntry(entryName);
+                zip.putNextEntry(entry);
+                zip.closeEntry();
+              }
+              return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public @NotNull FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+              final Path rel = src.relativize(file);
+              final String relName = rel.toString();
+              final String replaced = relName.replace("\\", "/");
+              final ZipEntry entry = new ZipEntry(replaced);
+              zip.putNextEntry(entry);
+              Files.copy(file, zip);
+              zip.closeEntry();
+              return FileVisitResult.CONTINUE;
+            }
           }
-        }
-      );
+        );
+      }
     }
   }
 }

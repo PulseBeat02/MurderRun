@@ -30,6 +30,9 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> DEMO_LOAD = direct("murderrun.command.demo.load");
+  NullComponent<Sender> DEMO_DONE = direct("murderrun.command.demo.done");
+  NullComponent<Sender> DEMO_CONFIRM = direct("murderrun.command.demo.confirm");
   NullComponent<Sender> EITHERWARP_INVALID2 = direct("murderrun.game.ability.etherwarp.invalid2");
   NullComponent<Sender> ETHERWARP_NAME = direct("murderrun.game.ability.etherwarp.name");
   NullComponent<Sender> ETHERWARP_LORE = direct("murderrun.game.ability.etherwarp.lore");
