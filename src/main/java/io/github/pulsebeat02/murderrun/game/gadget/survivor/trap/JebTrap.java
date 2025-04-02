@@ -47,9 +47,9 @@ public final class JebTrap extends SurvivorTrap {
 
   public JebTrap() {
     super(
-      "jeb",
+      "jeb_trap",
       GameProperties.JEB_COST,
-      ItemFactory.createGadget("jeb", GameProperties.JEB_MATERIAL, Message.JEB_NAME.build(), Message.JEB_LORE.build()),
+      ItemFactory.createGadget("jeb_trap", GameProperties.JEB_MATERIAL, Message.JEB_NAME.build(), Message.JEB_LORE.build()),
       Message.JEB_ACTIVATE.build(),
       GameProperties.JEB_COLOR
     );

@@ -48,9 +48,9 @@ public final class FartTrap extends SurvivorTrap {
 
   public FartTrap() {
     super(
-      "fart",
+      "fart_trap",
       GameProperties.FART_COST,
-      ItemFactory.createGadget("fart", GameProperties.FART_MATERIAL, Message.FART_NAME.build(), Message.FART_LORE.build()),
+      ItemFactory.createGadget("fart_trap", GameProperties.FART_MATERIAL, Message.FART_NAME.build(), Message.FART_LORE.build()),
       Message.FART_ACTIVATE.build(),
       GameProperties.FART_COLOR
     );

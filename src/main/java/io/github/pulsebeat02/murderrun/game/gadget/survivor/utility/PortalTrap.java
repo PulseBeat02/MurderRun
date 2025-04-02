@@ -50,9 +50,9 @@ public final class PortalTrap extends SurvivorGadget {
 
   public PortalTrap() {
     super(
-      "portal",
+      "portal_trap",
       GameProperties.PORTAL_TRAP_COST,
-      ItemFactory.createGadget("portal", GameProperties.PORTAL_TRAP_MATERIAL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
+      ItemFactory.createGadget("portal_trap", GameProperties.PORTAL_TRAP_MATERIAL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
     );
   }
 

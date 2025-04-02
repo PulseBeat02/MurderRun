@@ -39,9 +39,9 @@ public final class GhostTrap extends SurvivorTrap {
 
   public GhostTrap() {
     super(
-      "ghost",
+      "ghost_trap",
       GameProperties.GHOST_COST,
-      ItemFactory.createGadget("ghost", GameProperties.GHOST_MATERIAL, Message.GHOST_NAME.build(), Message.GHOST_LORE.build()),
+      ItemFactory.createGadget("ghost_trap", GameProperties.GHOST_MATERIAL, Message.GHOST_NAME.build(), Message.GHOST_LORE.build()),
       Message.GHOST_ACTIVATE.build(),
       GameProperties.GHOST_COLOR
     );

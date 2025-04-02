@@ -43,10 +43,10 @@ public final class NeckSnapTrap extends SurvivorTrap {
 
   public NeckSnapTrap() {
     super(
-      "neck_snap",
+      "neck_snap_trap",
       GameProperties.NECK_SNAP_COST,
       ItemFactory.createGadget(
-        "neck_snap",
+        "neck_snap_trap",
         GameProperties.NECK_SNAP_MATERIAL,
         Message.NECK_SNAP_NAME.build(),
         Message.NECK_SNAP_LORE.build()

@@ -53,9 +53,14 @@ public final class FireworkTrap extends SurvivorTrap {
 
   public FireworkTrap() {
     super(
-      "firework",
+      "firework_trap",
       GameProperties.FIREWORK_COST,
-      ItemFactory.createGadget("firework", GameProperties.FIREWORK_MATERIAL, Message.FIREWORK_NAME.build(), Message.FIREWORK_LORE.build()),
+      ItemFactory.createGadget(
+        "firework_trap",
+        GameProperties.FIREWORK_MATERIAL,
+        Message.FIREWORK_NAME.build(),
+        Message.FIREWORK_LORE.build()
+      ),
       Message.FIREWORK_ACTIVATE.build(),
       GameProperties.FIREWORK_COLOR
     );

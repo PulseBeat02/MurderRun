@@ -143,9 +143,10 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder model(final int data) {
+  public Builder model(final String data) {
     final ItemMeta meta = this.meta();
-    meta.setCustomModelData(data);
+    final NamespacedKey temp = new NamespacedKey("murderrun", data);
+    meta.setItemModel(temp);
     this.stack.setItemMeta(meta);
     return this;
   }

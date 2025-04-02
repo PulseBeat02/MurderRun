@@ -38,9 +38,9 @@ public final class GlowTrap extends SurvivorTrap {
 
   public GlowTrap() {
     super(
-      "glow",
+      "glow_trap",
       GameProperties.GLOW_COST,
-      ItemFactory.createGadget("glow", GameProperties.GLOW_MATERIAL, Message.GLOW_NAME.build(), Message.GLOW_LORE.build()),
+      ItemFactory.createGadget("glow_trap", GameProperties.GLOW_MATERIAL, Message.GLOW_NAME.build(), Message.GLOW_LORE.build()),
       Message.GLOW_ACTIVATE.build(),
       GameProperties.GLOW_COLOR
     );

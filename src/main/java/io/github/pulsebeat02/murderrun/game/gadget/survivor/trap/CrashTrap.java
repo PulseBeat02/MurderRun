@@ -40,10 +40,10 @@ public final class CrashTrap extends SurvivorTrap {
 
   public CrashTrap() {
     super(
-      "crash",
+      "crash_trap",
       Integer.MAX_VALUE,
       ItemFactory.createGadget(
-        "crash",
+        "crash_trap",
         Material.STRUCTURE_VOID,
         text("Crash Trap", RED),
         text("Crashes the client (wtf, use at your own risk)", RED)

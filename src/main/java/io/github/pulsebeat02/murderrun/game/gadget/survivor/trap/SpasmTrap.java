@@ -50,9 +50,9 @@ public final class SpasmTrap extends SurvivorTrap {
 
   public SpasmTrap() {
     super(
-      "spasm",
+      "spasm_trap",
       GameProperties.SPASM_COST,
-      ItemFactory.createGadget("spasm", GameProperties.SPASM_MATERIAL, Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
+      ItemFactory.createGadget("spasm_trap", GameProperties.SPASM_MATERIAL, Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
       Message.SPASM_ACTIVATE.build(),
       GameProperties.SPASM_COLOR
     );

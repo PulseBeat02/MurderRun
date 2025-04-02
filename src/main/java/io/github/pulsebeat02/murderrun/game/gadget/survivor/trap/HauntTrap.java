@@ -43,9 +43,9 @@ public final class HauntTrap extends SurvivorTrap {
 
   public HauntTrap() {
     super(
-      "haunt",
+      "haunt_trap",
       GameProperties.HAUNT_COST,
-      ItemFactory.createGadget("haunt", GameProperties.HAUNT_MATERIAL, Message.HAUNT_NAME.build(), Message.HAUNT_LORE.build()),
+      ItemFactory.createGadget("haunt_trap", GameProperties.HAUNT_MATERIAL, Message.HAUNT_NAME.build(), Message.HAUNT_LORE.build()),
       Message.HAUNT_ACTIVATE.build(),
       GameProperties.HAUNT_COLOR
     );

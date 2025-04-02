@@ -40,9 +40,9 @@ public final class DistortTrap extends SurvivorTrap {
 
   public DistortTrap() {
     super(
-      "distort",
+      "distort_trap",
       GameProperties.DISTORT_COST,
-      ItemFactory.createGadget("distort", GameProperties.DISTORT_MATERIAL, Message.DISTORT_NAME.build(), Message.DISTORT_LORE.build()),
+      ItemFactory.createGadget("distort_trap", GameProperties.DISTORT_MATERIAL, Message.DISTORT_NAME.build(), Message.DISTORT_LORE.build()),
       Message.DISTORT_ACTIVATE.build(),
       GameProperties.DISTORT_COLOR
     );

@@ -45,9 +45,9 @@ public final class PonyTrap extends SurvivorTrap {
 
   public PonyTrap() {
     super(
-      "pony",
+      "pony_trap",
       GameProperties.PONY_COST,
-      ItemFactory.createGadget("pony", GameProperties.PONY_MATERIAL, Message.PONY_NAME.build(), Message.PONY_LORE.build()),
+      ItemFactory.createGadget("pony_trap", GameProperties.PONY_MATERIAL, Message.PONY_NAME.build(), Message.PONY_LORE.build()),
       Message.PONY_ACTIVATE.build(),
       GameProperties.PONY_COLOR
     );

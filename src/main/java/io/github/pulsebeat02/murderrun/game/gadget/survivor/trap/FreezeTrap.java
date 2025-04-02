@@ -38,9 +38,9 @@ public final class FreezeTrap extends SurvivorTrap {
 
   public FreezeTrap() {
     super(
-      "freeze",
+      "freeze_trap",
       GameProperties.FREEZE_COST,
-      ItemFactory.createGadget("freeze", GameProperties.FREEZE_MATERIAL, Message.FREEZE_NAME.build(), Message.FREEZE_LORE.build()),
+      ItemFactory.createGadget("freeze_trap", GameProperties.FREEZE_MATERIAL, Message.FREEZE_NAME.build(), Message.FREEZE_LORE.build()),
       Message.FREEZE_ACTIVATE.build(),
       GameProperties.FREEZE_COLOR
     );

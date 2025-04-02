@@ -47,10 +47,10 @@ public final class LevitationTrap extends SurvivorTrap {
 
   public LevitationTrap() {
     super(
-      "levitation",
+      "levitation_trap",
       GameProperties.LEVITATION_COST,
       ItemFactory.createGadget(
-        "levitation",
+        "levitation_trap",
         GameProperties.LEVITATION_MATERIAL,
         Message.LEVITATION_NAME.build(),
         Message.LEVITATION_LORE.build()

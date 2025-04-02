@@ -39,9 +39,9 @@ public final class BlindTrap extends SurvivorTrap {
 
   public BlindTrap() {
     super(
-      "blind",
+      "blind_trap",
       GameProperties.BLIND_COST,
-      ItemFactory.createGadget("blind", GameProperties.BLIND_MATERIAL, Message.BLIND_NAME.build(), Message.BLIND_LORE.build()),
+      ItemFactory.createGadget("blind_trap", GameProperties.BLIND_MATERIAL, Message.BLIND_NAME.build(), Message.BLIND_LORE.build()),
       Message.BLIND_ACTIVATE.build(),
       GameProperties.BLIND_COLOR
     );

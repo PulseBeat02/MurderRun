@@ -39,9 +39,9 @@ public final class StarTrap extends SurvivorTrap {
 
   public StarTrap() {
     super(
-      "star",
+      "star_trap",
       GameProperties.STAR_COST,
-      ItemFactory.createGadget("star", GameProperties.STAR_MATERIAL, Message.STAR_NAME.build(), Message.STAR_LORE.build()),
+      ItemFactory.createGadget("star_trap", GameProperties.STAR_MATERIAL, Message.STAR_NAME.build(), Message.STAR_LORE.build()),
       Message.STAR_ACTIVATE.build(),
       GameProperties.STAR_COLOR
     );

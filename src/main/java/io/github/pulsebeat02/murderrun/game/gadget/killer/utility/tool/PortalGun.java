@@ -34,11 +34,13 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.immutable.Holder;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.HashMap;
@@ -111,6 +113,15 @@ public final class PortalGun extends KillerGadget implements Listener {
       return;
     }
 
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.playSound(Sounds.PORTAL);
+
     final Boolean status = PDCUtils.getPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN);
     final String uuid = PDCUtils.getPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING);
     if (status == null || uuid == null) {
@@ -145,7 +156,6 @@ public final class PortalGun extends KillerGadget implements Listener {
     }
     PDCUtils.setPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, !status);
 
-    final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     final Pair<Holder<Location>, Holder<Location>> newPair = this.portals.get(uuid);
     final Location location = raw.add(0, 2, 0);

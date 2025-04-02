@@ -41,9 +41,9 @@ public final class BurrowTrap extends SurvivorTrap {
 
   public BurrowTrap() {
     super(
-      "burrow",
+      "burrow_trap",
       GameProperties.BURROW_COST,
-      ItemFactory.createGadget("burrow", GameProperties.BURROW_MATERIAL, Message.BURROW_NAME.build(), Message.BURROW_LORE.build()),
+      ItemFactory.createGadget("burrow_trap", GameProperties.BURROW_MATERIAL, Message.BURROW_NAME.build(), Message.BURROW_LORE.build()),
       Message.BURROW_ACTIVATE.build(),
       GameProperties.BURROW_COLOR
     );

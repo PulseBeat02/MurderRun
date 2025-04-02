@@ -42,9 +42,9 @@ public final class SpawnTrap extends SurvivorTrap {
 
   public SpawnTrap() {
     super(
-      "spawn",
+      "spawn_trap",
       GameProperties.SPAWN_COST,
-      ItemFactory.createGadget("spawn", GameProperties.SPAWN_MATERIAL, Message.SPAWN_NAME.build(), Message.SPAWN_LORE.build()),
+      ItemFactory.createGadget("spawn_trap", GameProperties.SPAWN_MATERIAL, Message.SPAWN_NAME.build(), Message.SPAWN_LORE.build()),
       Message.SPAWN_ACTIVATE.build(),
       GameProperties.SPAWN_COLOR
     );

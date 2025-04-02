@@ -53,10 +53,10 @@ public final class JumpScareTrap extends SurvivorTrap {
 
   public JumpScareTrap() {
     super(
-      "jump_scare",
+      "jump_scare_trap",
       GameProperties.JUMP_SCARE_COST,
       ItemFactory.createGadget(
-        "jump_scare",
+        "jump_scare_trap",
         GameProperties.JUMP_SCARE_MATERIAL,
         Message.JUMP_SCARE_NAME.build(),
         Message.JUMP_SCARE_LORE.build()

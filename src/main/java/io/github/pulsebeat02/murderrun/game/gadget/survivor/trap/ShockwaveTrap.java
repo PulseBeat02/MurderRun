@@ -43,10 +43,10 @@ public final class ShockwaveTrap extends SurvivorTrap {
 
   public ShockwaveTrap() {
     super(
-      "shockwave",
+      "shockwave_trap",
       GameProperties.SHOCKWAVE_COST,
       ItemFactory.createGadget(
-        "shockwave",
+        "shockwave_trap",
         GameProperties.SHOCKWAVE_MATERIAL,
         Message.SHOCKWAVE_NAME.build(),
         Message.SHOCKWAVE_LORE.build()

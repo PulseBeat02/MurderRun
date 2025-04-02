@@ -43,9 +43,9 @@ public final class HackTrap extends SurvivorTrap {
 
   public HackTrap() {
     super(
-      "hack",
+      "hack_trap",
       GameProperties.HACK_COST,
-      ItemFactory.createGadget("hack", GameProperties.HACK_MATERIAL, Message.HACK_NAME.build(), Message.HACK_LORE.build()),
+      ItemFactory.createGadget("hack_trap", GameProperties.HACK_MATERIAL, Message.HACK_NAME.build(), Message.HACK_LORE.build()),
       Message.HACK_ACTIVATE.build(),
       GameProperties.HACK_COLOR
     );

@@ -38,9 +38,9 @@ public final class BearTrap extends SurvivorTrap {
 
   public BearTrap() {
     super(
-      "bear",
+      "bear_trap",
       GameProperties.BEAR_COST,
-      ItemFactory.createGadget("bear", GameProperties.BEAR_MATERIAL, Message.BEAR_NAME.build(), Message.BEAR_LORE.build()),
+      ItemFactory.createGadget("bear_trap", GameProperties.BEAR_MATERIAL, Message.BEAR_NAME.build(), Message.BEAR_LORE.build()),
       Message.BEAR_ACTIVATE.build(),
       GameProperties.BEAR_COLOR
     );

@@ -42,9 +42,9 @@ public final class RandomTrap extends SurvivorGadget {
 
   public RandomTrap() {
     super(
-      "random",
+      "random_trap",
       GameProperties.RANDOM_TRAP_COST,
-      ItemFactory.createGadget("random", GameProperties.RANDOM_TRAP_MATERIAL, Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build())
+      ItemFactory.createGadget("random_trap", GameProperties.RANDOM_TRAP_MATERIAL, Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build())
     );
   }
 

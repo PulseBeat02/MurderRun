@@ -58,10 +58,10 @@ public final class EMPBlast extends KillerGadget {
 
   public EMPBlast() {
     super(
-      "emp_blast",
+      "emp_grenade",
       GameProperties.EMP_BLAST_COST,
       ItemFactory.createGadget(
-        "emp_blast",
+        "emp_grenade",
         GameProperties.EMP_BLAST_MATERIAL,
         Message.EMP_BLAST_NAME.build(),
         Message.EMP_BLAST_LORE.build()

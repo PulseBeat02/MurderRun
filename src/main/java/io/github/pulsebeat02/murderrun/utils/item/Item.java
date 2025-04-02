@@ -67,7 +67,7 @@ public interface Item {
 
     Builder useOneDurability();
 
-    Builder model(final int data);
+    Builder model(final String name);
 
     Builder dummyAttribute();
 

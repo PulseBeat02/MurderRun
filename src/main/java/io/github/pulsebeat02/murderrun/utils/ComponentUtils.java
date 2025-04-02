@@ -27,33 +27,28 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.DARK_RED;
 
 import com.google.common.io.BaseEncoding;
 import io.github.pulsebeat02.murderrun.locale.LocaleTools;
 import io.github.pulsebeat02.murderrun.locale.Sender;
 import java.net.URI;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.format.TextDecoration.State;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public final class ComponentUtils {
 
-  private static final LegacyComponentSerializer SERIALIZER = BukkitComponentSerializer.legacy();
+  private static final LegacyComponentSerializer LEGACY_SERIALIZER = BukkitComponentSerializer.legacy();
   private static final PlainTextComponentSerializer PLAIN_SERIALIZER = PlainTextComponentSerializer.plainText();
-  private static final TextComponent UNSUPPORTED = text("ERROR WRAPPING").color(DARK_RED);
-  private static final String COMPONENT_REGEX = "(?<=\\s)|(?=\\n)";
+  private static final Pattern PATTERN = Pattern.compile("(?i)§[0-9A-FK-OR]");
 
   private ComponentUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -74,7 +69,7 @@ public final class ComponentUtils {
   }
 
   public static String serializeComponentToLegacyString(final Component component) {
-    return SERIALIZER.serialize(component);
+    return LEGACY_SERIALIZER.serialize(component);
   }
 
   public static boolean sendPacksLegacy(final Player player, final ResourcePackRequest request) {
@@ -118,7 +113,7 @@ public final class ComponentUtils {
   }
 
   public static Component deserializeLegacyStringToComponent(final String legacy) {
-    return SERIALIZER.deserialize(legacy);
+    return LEGACY_SERIALIZER.deserialize(legacy);
   }
 
   public static List<String> serializeLoreToLegacyLore(final List<Component> lore) {
@@ -134,97 +129,59 @@ public final class ComponentUtils {
     return serializeLoreToLegacyLore(wrapped);
   }
 
-  public static List<Component> wrapLoreLines(final Component component, final int length) {
-    if (!(component instanceof final TextComponent text)) {
-      return Collections.singletonList(component);
+  public static List<Component> wrapLoreLines(final Component component, final int maxWidth) {
+    final String legacyString = LEGACY_SERIALIZER.serialize(component);
+    final List<String> wrappedStrings = wrapLegacyString(legacyString, maxWidth);
+    final List<Component> wrappedComponents = new ArrayList<>();
+    for (final String line : wrappedStrings) {
+      final Component loreComponent = LEGACY_SERIALIZER.deserialize(line);
+      wrappedComponents.add(loreComponent);
     }
-
-    final List<Component> wrapped = new ArrayList<>();
-    final List<TextComponent> parts = flattenTextComponents(text);
-
-    Component currentLine = empty();
-    final int[] lineLength = new int[] { 0 };
-
-    for (final TextComponent part : parts) {
-      final Style style = part.style();
-      final String content = part.content();
-      final String[] words = content.split(COMPONENT_REGEX);
-
-      for (final String word : words) {
-        if (word.isEmpty()) {
-          continue;
-        }
-
-        final int wordLength = word.length();
-        final int totalLength = lineLength[0] + wordLength;
-        if (totalLength > length || word.contains("\n")) {
-          wrapped.add(currentLine);
-          currentLine = empty().style(style);
-          lineLength[0] = 0;
-        }
-
-        if (!word.equals("\n")) {
-          currentLine = currentLine.append(text(word).style(style));
-          lineLength[0] += wordLength;
-        }
-      }
-    }
-
-    if (lineLength[0] > 0) {
-      wrapped.add(currentLine);
-    }
-
-    return wrapped;
+    return wrappedComponents;
   }
 
-  private static List<TextComponent> flattenTextComponents(final TextComponent component) {
-    final List<TextComponent> flattened = new ArrayList<>();
-    final Style style = component.style();
-    final Style enforcedState = enforceStyleStates(style);
-    final TextComponent first = component.style(enforcedState);
-
-    final Deque<TextComponent> toCheck = new ArrayDeque<>();
-    toCheck.add(first);
-
-    while (!toCheck.isEmpty()) {
-      final TextComponent parent = toCheck.pop();
-      final String content = parent.content();
-      if (!content.isEmpty()) {
-        flattened.add(parent);
-      }
-      addChildComponents(parent, toCheck);
-    }
-
-    return flattened;
-  }
-
-  private static void addChildComponents(final TextComponent parent, final Deque<TextComponent> toCheck) {
-    final List<Component> children = parent.children();
-    final List<Component> reversed = children.reversed();
-    for (final Component child : reversed) {
-      if (child instanceof final TextComponent text) {
-        final Style parentStyle = parent.style();
-        final Style textStyle = text.style();
-        final Style merge = parentStyle.merge(textStyle);
-        final TextComponent childComponent = text.style(merge);
-        toCheck.add(childComponent);
+  private static List<String> wrapLegacyString(final String legacyString, final int maxWidth) {
+    final List<String> lines = new ArrayList<>();
+    StringBuilder currentLine = new StringBuilder();
+    String currentFormat = "";
+    final String[] words = legacyString.split(" ");
+    for (final String word : words) {
+      final String candidate = currentLine.isEmpty() ? word : currentLine + " " + word;
+      if (getStrippedLength(candidate) > maxWidth) {
+        if (!currentLine.isEmpty()) {
+          lines.add(currentLine.toString());
+          currentFormat = getLastColors(currentLine.toString());
+        }
+        currentLine = new StringBuilder(currentFormat);
+        currentLine.append(word);
       } else {
-        toCheck.add(UNSUPPORTED);
+        if (!currentLine.isEmpty()) {
+          currentLine.append(" ");
+        }
+        currentLine.append(word);
       }
     }
+    if (!currentLine.isEmpty()) {
+      lines.add(currentLine.toString());
+    }
+    return lines;
   }
 
-  private static Style enforceStyleStates(final Style style) {
-    final Style.Builder builder = style.toBuilder();
-    final Map<TextDecoration, State> map = style.decorations();
-    final Set<Map.Entry<@KeyFor("map") TextDecoration, State>> entries = map.entrySet();
-    for (final Map.Entry<TextDecoration, State> entry : entries) {
-      final TextDecoration decoration = entry.getKey();
-      final State state = entry.getValue();
-      if (state == TextDecoration.State.NOT_SET) {
-        builder.decoration(decoration, false);
+  private static int getStrippedLength(final String text) {
+    return text.replaceAll("(?i)§[0-9A-FK-OR]", "").length();
+  }
+
+  private static String getLastColors(final String text) {
+    final StringBuilder lastColors = new StringBuilder();
+    final Matcher matcher = PATTERN.matcher(text);
+    while (matcher.find()) {
+      final String code = matcher.group();
+      if (code.equalsIgnoreCase("§r")) {
+        lastColors.setLength(0);
+      } else {
+        lastColors.append(code);
       }
     }
-    return builder.build();
+    return lastColors.toString();
   }
 }

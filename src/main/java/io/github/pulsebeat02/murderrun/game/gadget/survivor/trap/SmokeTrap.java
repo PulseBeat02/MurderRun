@@ -47,9 +47,9 @@ public final class SmokeTrap extends SurvivorTrap {
 
   public SmokeTrap() {
     super(
-      "smoke",
+      "smoke_trap",
       GameProperties.SMOKE_COST,
-      ItemFactory.createGadget("smoke", GameProperties.SMOKE_MATERIAL, Message.SMOKE_NAME.build(), Message.SMOKE_LORE.build()),
+      ItemFactory.createGadget("smoke_trap", GameProperties.SMOKE_MATERIAL, Message.SMOKE_NAME.build(), Message.SMOKE_LORE.build()),
       Message.SMOKE_ACTIVATE.build(),
       GameProperties.SMOKE_COLOR
     );

@@ -59,7 +59,6 @@ public final class ItemFactory {
       .name(Message.ITEM_ARENA_NAME.build())
       .lore(Message.ITEM_ARENA_LORE.build())
       .pdc(Keys.ITEM_WAND, PersistentDataType.BOOLEAN, true)
-      .model(1)
       .build();
   }
 
@@ -83,29 +82,21 @@ public final class ItemFactory {
   private static ItemStack createDefaultKillerBoots() {
     return Item.builder(Material.LEATHER_BOOTS)
       .name(Message.KILLER_BOOTS.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
       .dye(Color.RED)
       .enchantment(Enchantment.PROTECTION, 3)
-      .model(1)
       .build();
   }
 
   private static ItemStack createDefaultKillerLeggings() {
     return Item.builder(Material.LEATHER_LEGGINGS)
       .name(Message.KILLER_LEGGINGS.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
       .dye(Color.RED)
       .enchantment(Enchantment.PROTECTION, 3)
-      .model(1)
       .build();
   }
 
   private static ItemStack createDefaultKillerHelmet() {
-    return Item.builder(Material.PLAYER_HEAD)
-      .name(Message.KILLER_HELMET.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
-      .head(ITEM_SKULL_URL)
-      .build();
+    return Item.builder(Material.PLAYER_HEAD).name(Message.KILLER_HELMET.build()).head(ITEM_SKULL_URL).build();
   }
 
   private static ItemStack createDefaultKillerChestplate() {
@@ -114,7 +105,6 @@ public final class ItemFactory {
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .dye(Color.RED)
       .enchantment(Enchantment.PROTECTION, 3)
-      .model(1)
       .build();
   }
 
@@ -131,7 +121,7 @@ public final class ItemFactory {
   }
 
   public static Item.Builder createSmokeGrenade(final Item.Builder builder) {
-    return builder.pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true).model(2);
+    return builder.pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true);
   }
 
   public static Item.Builder createFlashlight(final Item.Builder builder) {
@@ -139,7 +129,7 @@ public final class ItemFactory {
   }
 
   public static Item.Builder createFlashBang(final Item.Builder builder) {
-    return builder.pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true).model(1);
+    return builder.pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true);
   }
 
   public static Item.Builder createSurvivorHelmet() {
@@ -185,23 +175,33 @@ public final class ItemFactory {
   public static Item.Builder createDefaultSurvivorHelmet() {
     return Item.builder(GameProperties.SURVIVOR_HELMET_MATERIAL)
       .name(Message.SURVIVOR_HELMET.build())
-      .enchantment(Enchantment.PROTECTION, 3);
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
+      .enchantment(Enchantment.PROTECTION, 3)
+      .hideAttributes();
   }
 
   public static Item.Builder createDefaultSurvivorChestplate() {
     return Item.builder(GameProperties.SURVIVOR_CHESTPLATE_MATERIAL)
       .name(Message.SURVIVOR_CHESTPLATE.build())
-      .enchantment(Enchantment.PROTECTION, 3);
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
+      .enchantment(Enchantment.PROTECTION, 3)
+      .hideAttributes();
   }
 
   public static Item.Builder createDefaultSurvivorLeggings() {
     return Item.builder(GameProperties.SURVIVOR_LEGGINGS_MATERIAL)
       .name(Message.SURVIVOR_LEGGINGS.build())
-      .enchantment(Enchantment.PROTECTION, 3);
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
+      .enchantment(Enchantment.PROTECTION, 3)
+      .hideAttributes();
   }
 
   public static Item.Builder createDefaultSurvivorBoots() {
-    return Item.builder(GameProperties.SURVIVOR_BOOTS_MATERIAL).name(Message.SURVIVOR_BOOTS.build()).enchantment(Enchantment.PROTECTION, 3);
+    return Item.builder(GameProperties.SURVIVOR_BOOTS_MATERIAL)
+      .name(Message.SURVIVOR_BOOTS.build())
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
+      .enchantment(Enchantment.PROTECTION, 3)
+      .hideAttributes();
   }
 
   public static Item.Builder createPortalGun(final Item.Builder builder) {
@@ -232,9 +232,11 @@ public final class ItemFactory {
     final Component itemName,
     final Component itemLore
   ) {
+    final String texture = pdcName.replace("_", "");
     return Item.builder(requireNonNull(material))
       .name(requireNonNull(itemName))
       .lore(requireNonNull(itemLore))
+      .model(texture)
       .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, requireNonNull(pdcName))
       .hideAttributes();
   }
@@ -266,7 +268,9 @@ public final class ItemFactory {
   }
 
   public static ItemStack createFakePart() {
-    return Item.builder(Material.DIAMOND).model(RandomUtils.generateInt(1, 6)).build();
+    final int random = RandomUtils.generateInt(1, 6);
+    final String name = "car_part_%s".formatted(random);
+    return Item.builder(Material.DIAMOND).model(name).build();
   }
 
   public static ItemStack createCursedNote() {
@@ -274,10 +278,12 @@ public final class ItemFactory {
   }
 
   public static ItemStack createCarPart(final String uuid) {
+    final int random = RandomUtils.generateInt(1, 6);
+    final String name = "car_part_%s".formatted(random);
     return Item.builder(Material.DIAMOND)
       .name(Message.CAR_PART_ITEM_NAME.build())
       .lore(Message.CAR_PART_ITEM_LORE.build())
-      .model(RandomUtils.generateInt(1, 6))
+      .model(name)
       .pdc(Keys.CAR_PART_UUID, PersistentDataType.STRING, uuid)
       .build();
   }
@@ -293,7 +299,7 @@ public final class ItemFactory {
   }
 
   public static ItemStack createDefaultCurrency(final int amount) {
-    return Item.builder(Material.NETHER_STAR).name(Message.MINEBUCKS.build()).amount(amount).model(1).build();
+    return Item.builder(Material.NETHER_STAR).name(Message.MINEBUCKS.build()).amount(amount).model("minebucks").build();
   }
 
   public static ItemStack createKillerArrow() {
@@ -328,7 +334,7 @@ public final class ItemFactory {
   private static ItemStack createDefaultKillerSword() {
     return Item.builder(Material.DIAMOND_SWORD)
       .name(Message.KILLER_SWORD.build())
-      .model(1)
+      .model("sword")
       .hideAttributes()
       .modifier(Attribute.ATTACK_DAMAGE, 8)
       .pdc(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true)

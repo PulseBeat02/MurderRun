@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "murderrun:item/firstaid"
+    "model": "murderrun:item/smokebomb"
   }
 }
