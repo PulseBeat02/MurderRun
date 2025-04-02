@@ -32,8 +32,7 @@ import java.lang.invoke.MethodType;
 
 public final class PacketToolsProvider {
 
-  private static final String CLASS_PATH = "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools";
-
+  private static final String CLASS_PATH;
   public static final PacketToolAPI PACKET_API;
 
   private PacketToolsProvider() {
@@ -41,6 +40,8 @@ public final class PacketToolsProvider {
   }
 
   static {
+    CLASS_PATH = "io.github.pulsebeat02.murderrun.reflect.%s.PacketTools";
+    Throwable exception = null;
     PacketToolAPI api;
     try {
       final String version = ServerEnvironment.getNMSRevision();
@@ -54,13 +55,15 @@ public final class PacketToolsProvider {
       try {
         api = new FallbackPacketTools();
       } catch (final Throwable ex) {
-        throw new UnsupportedOperationException(
-          "The current server version isn't supported by this plugin! Resorting to no-operation adapter",
-          e
-        );
+        api = new NoOpPacketTools();
+        exception = ex;
       }
     }
     PACKET_API = api;
+    if (exception != null) {
+      final String msg = "The current server version isn't supported by this plugin! Resorting to no-operation adapter";
+      throw new UnsupportedOperationException(msg, exception);
+    }
   }
 
   public static void init() {

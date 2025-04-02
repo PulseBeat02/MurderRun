@@ -80,7 +80,7 @@ public final class GadgetDataBundle {
       ) {
         final ResourceBundle bundle = new PropertyResourceBundle(fast);
         final PropertyFixerManager fixer = new PropertyFixerManager();
-        fixer.registerFixers();
+        fixer.registerGamePropertiesFixer();
         fixer.applyFixersUpTo(bundle);
         return bundle;
       }

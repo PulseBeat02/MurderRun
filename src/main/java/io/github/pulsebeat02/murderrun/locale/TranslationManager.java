@@ -30,6 +30,7 @@ import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.data.yaml.PluginDataConfigurationMapper;
+import io.github.pulsebeat02.murderrun.dfu.PropertyFixerManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.minimessage.PluginTranslator;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
@@ -72,10 +73,14 @@ public final class TranslationManager {
     return "locale/murderrun_%s.properties".formatted(lower);
   }
 
-  private PropertyResourceBundle getBundle(@UnderInitialization TranslationManager this, final String propertiesPath) {
+  private ResourceBundle getBundle(@UnderInitialization TranslationManager this, final String propertiesPath) {
     final Path resource = this.copyResourceToFolder(propertiesPath);
     try (final Reader reader = Files.newBufferedReader(resource)) {
-      return new PropertyResourceBundle(reader);
+      final ResourceBundle bundle = new PropertyResourceBundle(reader);
+      final PropertyFixerManager fixer = new PropertyFixerManager();
+      fixer.registerLocalePropertiesFixer();
+      fixer.applyFixersUpTo(bundle);
+      return bundle;
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

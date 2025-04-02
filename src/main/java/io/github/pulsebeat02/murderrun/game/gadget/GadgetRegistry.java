@@ -144,8 +144,6 @@ public final class GadgetRegistry {
   @SuppressWarnings("all") // checker
   private void load() {
     final ClassGraph graph = new ClassGraph().enableClassInfo();
-    Thread.getAllStackTraces().keySet().stream().map(Thread::getContextClassLoader).filter(Objects::nonNull).forEach(graph::addClassLoader);
-
     final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
     try (final ScanResult result = graph.scan(service, 64)) {
       final ClassInfoList list = result.getClassesImplementing(Gadget.class);

@@ -31,7 +31,6 @@ import java.util.function.Consumer;
 public final class PropertyFixerManager {
 
   private static final Consumer<ResourceBundle> DEFAULT_FIXER = properties -> {};
-  private static final PropertyVersion CURRENT_VERSION = PropertyVersion.v1_0_0;
 
   private final Map<PropertyVersion, Consumer<ResourceBundle>> fixers;
   private final Set<PropertyVersion> versionOrder;
@@ -41,7 +40,11 @@ public final class PropertyFixerManager {
     this.versionOrder = new TreeSet<>(PropertyVersion::compareTo);
   }
 
-  public void registerFixers() {
+  public void registerGamePropertiesFixer() {
+    this.registerFixer(PropertyVersion.v1_0_0, DEFAULT_FIXER);
+  }
+
+  public void registerLocalePropertiesFixer() {
     this.registerFixer(PropertyVersion.v1_0_0, DEFAULT_FIXER);
   }
 

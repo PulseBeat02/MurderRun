@@ -38,7 +38,8 @@ public enum Commands {
   SHOP(new ShopCommand()),
   DEBUG(new DebugCommand()),
   GUI(new GuiCommand()),
-  TRUCK(new TruckCommand());
+  TRUCK(new TruckCommand()),
+  DUMP(new DumpCommand());
 
   private static final List<AnnotationCommandFeature> FEATURES = getValues();
 

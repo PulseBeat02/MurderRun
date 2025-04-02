@@ -60,11 +60,9 @@ public final class ApiEventBus implements EventBus {
   }
 
   private static Set<Class<? extends MurderRunEvent>> scanClasses() {
-    final Class<MurderRunEvent> clazz = MurderRunEvent.class;
-    final String name = clazz.getName();
     try (final ScanResult scanResult = new ClassGraph().enableClassInfo().scan()) {
       return scanResult
-        .getClassesImplementing(name)
+        .getClassesImplementing(MurderRunEvent.class)
         .loadClasses(MurderRunEvent.class)
         .stream()
         .filter(Class::isInterface)

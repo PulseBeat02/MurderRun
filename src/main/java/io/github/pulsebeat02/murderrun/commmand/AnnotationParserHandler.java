@@ -25,8 +25,14 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.commmand;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.List;
+import java.util.Objects;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.incendo.cloud.CommandManager;
@@ -79,10 +85,23 @@ public final class AnnotationParserHandler {
   }
 
   public void registerCommands() {
-    final List<AnnotationCommandFeature> features = Commands.getFeatures();
-    for (final AnnotationCommandFeature feature : features) {
-      feature.registerFeature(this.plugin, this.parser);
-      this.parser.parse(feature);
+    try (
+      final ScanResult scanResult = new ClassGraph()
+        .enableClassInfo()
+        .addClassLoader(Objects.requireNonNull(this.getClass().getClassLoader()))
+        .scan()
+    ) {
+      final List<Class<?>> features = scanResult.getClassesImplementing(AnnotationCommandFeature.class).loadClasses();
+      final MethodHandles.Lookup lookup = MethodHandles.lookup();
+      final MethodType type = MethodType.methodType(void.class);
+      for (final Class<?> feature : features) {
+        final MethodHandle constructor = lookup.findConstructor(feature, type);
+        final AnnotationCommandFeature instance = (AnnotationCommandFeature) constructor.invoke();
+        instance.registerFeature(this.plugin, this.parser);
+        this.parser.parse(instance);
+      }
+    } catch (final Throwable e) {
+      throw new AssertionError(e);
     }
   }
 }

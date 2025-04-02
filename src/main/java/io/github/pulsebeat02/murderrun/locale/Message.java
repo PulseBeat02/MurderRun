@@ -30,6 +30,8 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  UniComponent<Sender, String> SEND_DUMP = direct("murderrun.command.dump.result", null);
+  NullComponent<Sender> LOAD_DUMP = direct("murderrun.command.dump.load");
   NullComponent<Sender> LOAD_API = direct("murderrun.load.api");
   NullComponent<Sender> LOAD_DATA = direct("murderrun.load.data");
   NullComponent<Sender> LOAD_LOOKUP = direct("murderrun.load.lookup");

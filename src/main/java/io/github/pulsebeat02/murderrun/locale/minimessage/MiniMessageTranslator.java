@@ -41,7 +41,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public abstract class MiniMessageTranslator implements Translator {
 
   private static final PlainTextComponentSerializer PLAIN_TEST_SERIALIZER = PlainTextComponentSerializer.plainText();
-  private static final Collection<String> SPECIAL_PLACEHOLDERS = List.of("$GAME_ID$", "$ARENA_ID$", "$LOBBY_ID$");
+  private static final Collection<String> SPECIAL_PLACEHOLDERS = List.of("$GAME_ID$", "$ARENA_ID$", "$LOBBY_ID$", "$URL$");
 
   private final MiniMessage miniMessage;
 
