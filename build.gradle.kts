@@ -11,7 +11,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.53"
     id("com.diffplug.spotless") version "7.0.0.BETA4"
-    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.2.1"
+    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.3.0"
     id("com.github.node-gradle.node") version "7.1.0"
 }
 

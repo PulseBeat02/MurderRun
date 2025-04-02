@@ -1,6 +1,6 @@
 [versions]
 adventure = "4.21.0"
-adventurePlatformBukkit = "4.3.4"
+adventurePlatformBukkit = "4.4.0"
 cloudAnnotations = "2.0.0"
 cloudPaper = "2.0.0-beta.10"
 cloudMinecraftExtras = "2.0.0-beta.10"
