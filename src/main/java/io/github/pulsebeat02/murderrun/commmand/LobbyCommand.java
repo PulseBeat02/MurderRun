@@ -139,7 +139,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
 
     final Location[] corners = { this.first, this.second };
     final LobbyManager manager = this.plugin.getLobbyManager();
-    final Location actual = MapUtils.getActualSpawnLocation(this.spawn);
+    final Location actual = MapUtils.getSafeSpawn(this.spawn);
     manager.addLobby(this.name, corners, actual);
 
     this.plugin.updatePluginData();

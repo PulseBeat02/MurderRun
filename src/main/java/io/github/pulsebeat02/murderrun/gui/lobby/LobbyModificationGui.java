@@ -257,7 +257,7 @@ public final class LobbyModificationGui extends ChestGui implements Listener {
 
     final Location[] corners = { this.first, this.second };
     final LobbyManager manager = this.plugin.getLobbyManager();
-    final Location actual = MapUtils.getActualSpawnLocation(this.spawn);
+    final Location actual = MapUtils.getSafeSpawn(this.spawn);
     manager.addLobby(this.lobbyName, corners, actual);
 
     if (!this.lobbyName.equals(this.originalName)) {

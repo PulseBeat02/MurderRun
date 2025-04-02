@@ -35,6 +35,8 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTool;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.LoosePlayerReference;
 import io.github.pulsebeat02.murderrun.game.statistics.PlayerStatistics;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -69,7 +71,9 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
-    deathManager.runDeathTasks();
+    final GameScheduler scheduler = game.getScheduler();
+    final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
+    scheduler.scheduleTask(deathManager::runDeathTasks, 20L, reference);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

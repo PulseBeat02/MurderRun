@@ -358,7 +358,7 @@ public abstract class AbstractPlayer implements Participant {
     final ItemStack[] items = inventory.getContents();
     for (final ItemStack item : items) {
       if (!PDCUtils.isAbility(item)) {
-        return;
+        continue;
       }
       final String abilityName = PDCUtils.getPersistentDataAttribute(item, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
       if (!ability.equals(abilityName)) {

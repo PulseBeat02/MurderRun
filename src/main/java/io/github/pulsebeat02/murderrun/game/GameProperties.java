@@ -135,7 +135,6 @@ public interface GameProperties {
   Material ICE_PATH_MATERIAL = mat("ice_path.material");
   Material HEAT_SEEKER_MATERIAL = mat("heat_seeker.material");
   Material HEALTH_CUT_MATERIAL = mat("health_cut.material");
-  Material GAMBLE_MATERIAL = mat("gamble.material");
   Material FRIGHT_MATERIAL = mat("fright.material");
   Material FOREWARN_MATERIAL = mat("forewarn.material");
   Material FLOOR_IS_LAVA_MATERIAL = mat("floor_is_lava.material");
@@ -354,7 +353,6 @@ public interface GameProperties {
   String FLOOR_IS_LAVA_SOUND = str("floor_is_lava.sound");
   String FOREWARN_SOUND = str("forewarn.sound");
   int FRIGHT_DURATION = num("fright.duration");
-  String GAMBLE_SOUND = str("gamble.sound");
   String HEALTH_CUT_SOUND = str("health_cut.sound");
   String HEAT_SEEKER_SOUND = str("heat_seeker.sound");
   double HEAT_SEEKER_RADIUS = dec("heat_seeker.radius");
@@ -400,7 +398,6 @@ public interface GameProperties {
   int FLOOR_IS_LAVA_COST = num("floor_is_lava.cost");
   int FOREWARN_COST = num("forewarn.cost");
   int FRIGHT_COST = num("fright.cost");
-  int GAMBLE_COST = num("gamble.cost");
   int HEALTH_CUT_COST = num("health_cut.cost");
   int HEAT_SEEKER_COST = num("heat_seeker.cost");
   int ICE_PATH_COST = num("ice_path.cost");

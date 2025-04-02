@@ -212,11 +212,12 @@ public final class ItemFactory {
       .pdc(Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true)
       .pdc(Keys.UUID, PersistentDataType.STRING, data)
       .enchantment(Enchantment.INFINITY, 1)
-      .unbreakable();
+      .unbreakable()
+      .hideAttributes();
   }
 
   public static Item.Builder createHook(final Item.Builder builder) {
-    return builder.pdc(Keys.HOOK, PersistentDataType.BOOLEAN, true).unbreakable();
+    return builder.pdc(Keys.HOOK, PersistentDataType.BOOLEAN, true).unbreakable().hideAttributes();
   }
 
   public static Item.Builder createSpeedPendant(final Item.Builder builder) {

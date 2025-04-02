@@ -86,9 +86,7 @@ public final class TrapVest extends SurvivorAbility {
     final GameSettings settings = game.getSettings();
     final Arena arena = requireNonNull(settings.getArena());
     final Location location = arena.getSpawn();
-    final Location clone = location.clone();
-    final Location ghostLocation = clone.add(0, 1, 0);
-    gamePlayer.setRespawnLocation(ghostLocation, true);
+    gamePlayer.setRespawnLocation(location, true);
   }
 
   private void handleTraps(final GamePlayer player) {

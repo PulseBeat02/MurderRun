@@ -82,6 +82,13 @@ public final class MapUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static Location getSafeSpawn(final Location location) {
+    final World world = requireNonNull(location.getWorld());
+    final Block block = world.getHighestBlockAt(location);
+    final Location blockLocation = block.getLocation();
+    return blockLocation.add(0, 1, 0);
+  }
+
   public static Triplet<Integer, Integer, Integer> toPosTriplet(final BlockFace face) {
     final int x = face.getModX();
     final int y = face.getModY();
@@ -92,12 +99,6 @@ public final class MapUtils {
   public static World getMainWorld() {
     final String name = SERVER_PROPERTIES.getProperty("level-name", "world");
     return requireNonNull(Bukkit.getWorld(name));
-  }
-
-  public static Location getActualSpawnLocation(final Location location) {
-    final Block block = location.getBlock();
-    final Block top = block.getRelative(BlockFace.UP);
-    return top.getLocation();
   }
 
   public static Location[] copyLocationArray(final Location... locations) {

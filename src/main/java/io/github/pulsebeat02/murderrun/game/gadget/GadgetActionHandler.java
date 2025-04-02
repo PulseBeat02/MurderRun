@@ -30,7 +30,6 @@ import static java.util.Objects.requireNonNull;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
 import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
-import io.github.pulsebeat02.murderrun.api.event.contract.gadget.GadgetUseEvent;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerDevice;
@@ -112,9 +111,9 @@ public final class GadgetActionHandler implements Listener {
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
     final Gadget tool = requireNonNull(gadgets.get(data));
-    if (this.bus.post(GadgetUseEvent.class, tool)) {
-      return;
-    }
+    //    if (this.bus.post(GadgetUseEvent.class, tool)) {
+    //      return;
+    //    }
 
     final boolean result = tool.onGadgetRightClick(packet);
     if (result) {
@@ -142,9 +141,9 @@ public final class GadgetActionHandler implements Listener {
     final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
     final Map<String, Gadget> gadgets = mechanism.getGameGadgets();
     final Gadget tool = requireNonNull(gadgets.get(data));
-    if (this.bus.post(GadgetUseEvent.class, tool)) {
-      return;
-    }
+    //    if (this.bus.post(GadgetUseEvent.class, tool)) {
+    //      return;
+    //    }
 
     final boolean result = tool.onGadgetDrop(packet);
     if (result) {

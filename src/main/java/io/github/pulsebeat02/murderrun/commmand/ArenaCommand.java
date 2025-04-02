@@ -218,7 +218,7 @@ public final class ArenaCommand implements AnnotationCommandFeature {
       future = CompletableFuture.completedFuture(locations);
     }
 
-    final Location actual = MapUtils.getActualSpawnLocation(this.spawn);
+    final Location actual = MapUtils.getSafeSpawn(this.spawn);
     future.thenAccept(items -> {
       final ArenaManager manager = this.plugin.getArenaManager();
       manager.addArena(this.name, corners, items, actual, this.truck);

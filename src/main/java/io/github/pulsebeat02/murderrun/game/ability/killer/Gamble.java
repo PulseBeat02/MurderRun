@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,54 +23,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.killer.utility;
+package io.github.pulsebeat02.murderrun.game.ability.killer;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
-import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.PlayerInventory;
 
-public final class Gamble extends KillerGadget {
+public final class Gamble extends KillerAbility {
 
-  public Gamble() {
-    super(
-      "gamble",
-      GameProperties.GAMBLE_COST,
-      ItemFactory.createGadget("gamble", GameProperties.GAMBLE_MATERIAL, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build())
-    );
+  public static final String GAMBLE_NAME = "gamble";
+
+  public Gamble(final Game game) {
+    super(game, GAMBLE_NAME, ItemFactory.createAbility(GAMBLE_NAME, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build(), 1));
   }
 
   @Override
-  public boolean onGadgetDrop(final GadgetDropPacket packet) {
-    final Game game = packet.getGame();
-    final GamePlayer player = packet.getPlayer();
-    final Item item = packet.getItem();
-    item.remove();
-
+  public void start() {
+    final Game game = this.getGame();
     final GamePlayerManager playerManager = game.getPlayerManager();
     final GadgetManager manager = game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
-    playerManager.applyToLivingSurvivors(survivor -> this.applyGamble(mechanism, survivor, player));
-
-    final PlayerAudience audience = player.getAudience();
-    final Component msg = Message.GAMBLE_ACTIVATE.build();
-    audience.sendMessage(msg);
-    audience.playSound(GameProperties.GAMBLE_SOUND);
-
-    return false;
+    playerManager.applyToLivingKillers(participant -> {
+      if (!participant.hasAbility(GAMBLE_NAME)) {
+        return;
+      }
+      playerManager.applyToLivingSurvivors(survivor -> this.applyGamble(mechanism, survivor, participant));
+    });
   }
 
   private void applyGamble(final GadgetLoadingMechanism mechanism, final GamePlayer survivor, final GamePlayer killer) {

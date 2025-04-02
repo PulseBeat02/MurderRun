@@ -340,7 +340,7 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       future = CompletableFuture.completedFuture(drops);
     }
 
-    final Location actual = MapUtils.getActualSpawnLocation(spawn);
+    final Location actual = MapUtils.getSafeSpawn(spawn);
     future.thenAccept(items -> {
       final ArenaManager manager = this.plugin.getArenaManager();
       manager.addArena(name, corners, items, actual, truck);

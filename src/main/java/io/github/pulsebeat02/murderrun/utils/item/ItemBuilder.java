@@ -167,9 +167,17 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder hideAttributes() {
-    this.dummyAttribute();
     final ItemMeta meta = this.meta();
-    meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ENCHANTS);
+    meta.addItemFlags(
+      ItemFlag.HIDE_ATTRIBUTES,
+      ItemFlag.HIDE_ADDITIONAL_TOOLTIP,
+      ItemFlag.HIDE_ENCHANTS,
+      ItemFlag.HIDE_ARMOR_TRIM,
+      ItemFlag.HIDE_UNBREAKABLE,
+      ItemFlag.HIDE_DESTROYS,
+      ItemFlag.HIDE_DYE,
+      ItemFlag.HIDE_PLACED_ON
+    );
     this.stack.setItemMeta(meta);
     return this;
   }

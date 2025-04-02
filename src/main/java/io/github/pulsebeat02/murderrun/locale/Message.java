@@ -368,7 +368,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> HEAT_SEEKER_NAME = direct("murderrun.game.gadget.heat_seeker.name");
   NullComponent<Sender> THE_FLOOR_IS_LAVA_NAME = direct("murderrun.game.gadget.the_floor_is_lava.name");
   NullComponent<Sender> EMP_BLAST_NAME = direct("murderrun.game.gadget.emp_blast.name");
-  NullComponent<Sender> GAMBLE_NAME = direct("murderrun.game.gadget.gamble.name");
+  NullComponent<Sender> GAMBLE_NAME = direct("murderrun.game.ability.gamble.name");
   NullComponent<Sender> QUICK_BOMB_NAME = direct("murderrun.game.gadget.quick_bomb.name");
   NullComponent<Sender> HEALTH_CUT_NAME = direct("murderrun.game.gadget.health_cut.name");
   NullComponent<Sender> POISON_SMOG_NAME = direct("murderrun.game.gadget.poison_smog.name");
@@ -402,7 +402,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> HEAT_SEEKER_LORE = direct("murderrun.game.gadget.heat_seeker.lore");
   NullComponent<Sender> THE_FLOOR_IS_LAVA_LORE = direct("murderrun.game.gadget.the_floor_is_lava.lore");
   NullComponent<Sender> EMP_BLAST_LORE = direct("murderrun.game.gadget.emp_blast.lore");
-  NullComponent<Sender> GAMBLE_LORE = direct("murderrun.game.gadget.gamble.lore");
+  NullComponent<Sender> GAMBLE_LORE = direct("murderrun.game.ability.gamble.lore");
   NullComponent<Sender> QUICK_BOMB_LORE = direct("murderrun.game.gadget.quick_bomb.lore");
   NullComponent<Sender> HEALTH_CUT_LORE = direct("murderrun.game.gadget.health_cut.lore");
   NullComponent<Sender> POISON_SMOG_LORE = direct("murderrun.game.gadget.poison_smog.lore");
@@ -428,7 +428,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> HEAT_SEEKER_ACTIVATE = direct("murderrun.game.gadget.heat_seeker.activate");
   NullComponent<Sender> THE_FLOOR_IS_LAVA_ACTIVATE = direct("murderrun.game.gadget.the_floor_is_lava.activate");
   NullComponent<Sender> EMP_BLAST_ACTIVATE = direct("murderrun.game.gadget.emp_blast.activate");
-  NullComponent<Sender> GAMBLE_ACTIVATE = direct("murderrun.game.gadget.gamble.activate");
   NullComponent<Sender> HEALTH_CUT_ACTIVATE = direct("murderrun.game.gadget.health_cut.activate");
   NullComponent<Sender> FAKE_PART_ACTIVATE = direct("murderrun.game.gadget.fake_part.activate");
   NullComponent<Sender> ENDER_SHADOWS_ACTIVATE = direct("murderrun.game.gadget.ender_shadows.activate");
