@@ -25,7 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.dependency;
 
-import io.github.pulsebeat02.murderrun.reflect.versioning.ServerEnvironment;
+import io.github.pulsebeat02.murderrun.utils.versioning.ServerEnvironment;
 import java.util.*;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -44,7 +44,13 @@ public final class DependencyListing {
     "https://ci.athion.net/job/FastAsyncWorldEdit/1089/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.13.1-SNAPSHOT-1089.jar"
   );
 
-  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, FAST_ASYNC_WORLD_EDIT);
+  private static final Dependency PACKETEVENTS = new UrlDependency(
+    "PacketEvents",
+    "packetevents-spigot-2.8.0-SNAPSHOT",
+    "https://ci.codemc.io/job/retrooper/job/packetevents/668/artifact/spigot/build/libs/packetevents-spigot-2.8.0-SNAPSHOT.jar"
+  );
+
+  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, FAST_ASYNC_WORLD_EDIT, PACKETEVENTS);
 
   private static DependencyListing create(final String revision, final Dependency... deps) {
     final Collection<Dependency> dependencies = List.of(deps);

@@ -226,7 +226,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> SIXTH_SENSE_NAME = direct("murderrun.game.gadget.sixth_sense.name");
   NullComponent<Sender> BLAST_OFF_NAME = direct("murderrun.game.gadget.blast_off.name");
   NullComponent<Sender> DRONE_NAME = direct("murderrun.game.gadget.drone.name");
-  NullComponent<Sender> PART_SNIFFER_NAME = direct("murderrun.game.gadget.part_sniffer.name");
+  NullComponent<Sender> PART_SNIFFER_NAME = direct("murderrun.game.ability.part_sniffer.name");
   NullComponent<Sender> CHIPPED_NAME = direct("murderrun.game.gadget.chipped.name");
   NullComponent<Sender> LIFE_INSURANCE_NAME = direct("murderrun.game.gadget.life_insurance.name");
   NullComponent<Sender> CRYO_FREEZE_NAME = direct("murderrun.game.gadget.cryo_freeze.name");
@@ -292,7 +292,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> SIXTH_SENSE_LORE = direct("murderrun.game.gadget.sixth_sense.lore");
   NullComponent<Sender> BLAST_OFF_LORE = direct("murderrun.game.gadget.blast_off.lore");
   NullComponent<Sender> DRONE_LORE = direct("murderrun.game.gadget.drone.lore");
-  NullComponent<Sender> PART_SNIFFER_LORE = direct("murderrun.game.gadget.part_sniffer.lore");
+  NullComponent<Sender> PART_SNIFFER_LORE = direct("murderrun.game.ability.part_sniffer.lore");
   NullComponent<Sender> CHIPPED_LORE = direct("murderrun.game.gadget.chipped.lore");
   NullComponent<Sender> LIFE_INSURANCE_LORE = direct("murderrun.game.gadget.life_insurance.lore");
   NullComponent<Sender> CRYO_FREEZE_LORE = direct("murderrun.game.gadget.cryo_freeze.lore");
@@ -329,11 +329,9 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> GHOST_ACTIVATE = direct("murderrun.game.gadget.ghost.activate");
   NullComponent<Sender> FIREWORK_ACTIVATE = direct("murderrun.game.gadget.firework.activate");
   NullComponent<Sender> FART_ACTIVATE = direct("murderrun.game.gadget.fart.activate");
-  NullComponent<Sender> TRAP_VEST_ACTIVATE = direct("murderrun.game.ability.trap_vest.activate");
   NullComponent<Sender> MAGNET_MODE_ACTIVATE = direct("murderrun.game.gadget.magnet_mode.activate");
   NullComponent<Sender> CLOAK_ACTIVATE = direct("murderrun.game.gadget.cloak.activate");
   NullComponent<Sender> SIXTH_SENSE_ACTIVATE = direct("murderrun.game.gadget.sixth_sense.activate");
-  NullComponent<Sender> PART_SNIFFER_ACTIVATE = direct("murderrun.game.gadget.part_sniffer.activate");
   NullComponent<Sender> JEB_ACTIVATE = direct("murderrun.game.gadget.jeb.activate");
   NullComponent<Sender> SHOCKWAVE_ACTIVATE = direct("murderrun.game.gadget.shockwave.activate");
   NullComponent<Sender> MED_BOT_DEACTIVATE = direct("murderrun.game.gadget.med_bot.deactivate");
@@ -478,13 +476,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> CREATE_LOBBY_GUI_TITLE = direct("murderrun.gui.lobby.create.title");
   UniComponent<Sender, String> CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY = direct("murderrun.gui.lobby.create.edit.name.name", null);
   NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_NAME_LORE = direct("murderrun.gui.lobby.create.edit.name.lore");
-  TriComponent<Sender, Integer, Integer, Integer> CREATE_LOBBY_GUI_EDIT_SPAWN_DISPLAY = direct(
-    "murderrun.gui.lobby.create.edit.spawn.name",
-    null,
-    null,
-    null
-  );
-  NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_SPAWN_LORE = direct("murderrun.gui.lobby.create.edit.spawn.lore");
   NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_NAME = direct("murderrun.gui.lobby.create.edit.message.name");
   NullComponent<Sender> CREATE_LOBBY_GUI_EDIT_SPAWN = direct("murderrun.gui.lobby.create.edit.message.spawn");
   NullComponent<Sender> CREATE_LOBBY_GUI_DELETE = direct("murderrun.gui.lobby.create.edit.delete.name");

@@ -81,7 +81,7 @@ public final class PlayerSelection {
       }
       return List.copyOf(currentList);
     } else {
-      return gadgetList.stream().map(Gadget::getId).toList();
+      return gadgetCollection.stream().map(Gadget::getId).toList();
     }
   }
 
@@ -108,7 +108,7 @@ public final class PlayerSelection {
       }
       return List.copyOf(currentList);
     } else {
-      return abilityList.stream().map(Ability::getId).toList();
+      return abilityCollection.stream().map(Ability::getId).toList();
     }
   }
 

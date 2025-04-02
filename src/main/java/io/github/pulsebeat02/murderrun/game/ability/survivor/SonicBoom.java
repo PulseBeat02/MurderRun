@@ -27,8 +27,10 @@ package io.github.pulsebeat02.murderrun.game.ability.survivor;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -82,7 +84,18 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
       return;
     }
 
+    final GameStatus status = game.getStatus();
+    final GameStatus.Status currentStatus = status.getStatus();
+    if (currentStatus == GameStatus.Status.NOT_STARTED) {
+      return;
+    }
+
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final boolean killer = gamePlayer instanceof Killer;
+    if (currentStatus == GameStatus.Status.SURVIVORS_RELEASED && killer) {
+      return;
+    }
+
     if (!gamePlayer.hasAbility(SONIC_BOOM_NAME)) {
       return;
     }

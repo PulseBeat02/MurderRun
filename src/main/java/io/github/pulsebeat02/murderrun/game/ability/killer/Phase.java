@@ -27,8 +27,10 @@ package io.github.pulsebeat02.murderrun.game.ability.killer;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -85,7 +87,7 @@ public final class Phase extends KillerAbility implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerRightClick(final PlayerInteractEvent event) {
     final Action action = event.getAction();
-    if (action != Action.RIGHT_CLICK_BLOCK) {
+    if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
 
@@ -97,7 +99,9 @@ public final class Phase extends KillerAbility implements Listener {
     }
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!gamePlayer.hasAbility(PHASE_NAME)) {
+    final GameStatus status = game.getStatus();
+    final GameStatus.Status currentStatus = status.getStatus();
+    if (currentStatus == GameStatus.Status.NOT_STARTED) {
       return;
     }
 
@@ -106,7 +110,18 @@ public final class Phase extends KillerAbility implements Listener {
       return;
     }
 
+    if (!gamePlayer.hasAbility(PHASE_NAME)) {
+      return;
+    }
+
     if (!PDCUtils.isAbility(item)) {
+      return;
+    }
+
+    final boolean killer = gamePlayer instanceof Killer;
+    if (currentStatus == GameStatus.Status.SURVIVORS_RELEASED && killer) {
+      player.setCooldown(item, 0);
+      event.setCancelled(true);
       return;
     }
 

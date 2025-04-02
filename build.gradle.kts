@@ -33,6 +33,7 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.alessiodp.com/releases/")
     maven("https://repo.nexomc.com/releases")
+    maven("https://repo.codemc.io/repository/maven-releases/")
 }
 
 val runtimeDeps = listOf(
@@ -60,11 +61,6 @@ dependencies {
     // Annotation Processors
     annotationProcessor(libs.cloudAnnotations)
 
-    // Project Dependencies
-    implementation(project(":nms-api"))
-    runtimeOnly(project(":v1_21_R3", "reobf"))
-    runtimeOnly(project(":v1_21_R4", "reobf"))
-
     // Provided Dependencies
     compileOnly(libs.spigotApi)
     compileOnly(libs.fastutil)
@@ -87,6 +83,7 @@ dependencies {
     compileOnly(libs.nexo)
     compileOnly(libs.adventureApi)
     compileOnly(libs.creativeSerializerMinecraft)
+    compileOnly(libs.packetEvents)
 
     // Testing Dependencies
     testImplementation(libs.nettyAll)
@@ -160,8 +157,6 @@ tasks {
     }
 
     assemble {
-        dependsOn(":v1_21_R3:reobfJar")
-        dependsOn(":v1_21_R4:reobfJar")
         dependsOn("shadowJar")
     }
 
@@ -212,14 +207,6 @@ tasks {
                     "printWidth" to 140))
                 .nodeExecutable(provider { setupNodeEnvironment() })
             licenseHeaderFile("HEADER")
-        }
-    }
-
-    shadowJar {
-        dependencies {
-            include(project(":v1_21_R3"))
-            include(project(":v1_21_R4"))
-            include(project(":nms-api"))
         }
     }
 

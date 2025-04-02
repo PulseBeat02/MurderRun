@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.PacketEventsAPI;
 import io.github.pulsebeat02.murderrun.api.event.ApiEventBus;
 import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
 import io.github.pulsebeat02.murderrun.api.event.EventBusTests;
@@ -54,13 +56,14 @@ import io.github.pulsebeat02.murderrun.gui.arena.ArenaCreationManager;
 import io.github.pulsebeat02.murderrun.gui.gadget.GadgetTestingGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.ClassGraphUtils;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -164,6 +167,13 @@ public final class MurderRun extends JavaPlugin {
   private void installDependencies() {
     final DependencyManager manager = new DependencyManager();
     manager.installDependencies();
+    this.setupPacketEvents();
+  }
+
+  private void setupPacketEvents() {
+    final PacketEventsAPI<Plugin> builder = SpigotPacketEventsBuilder.build(this);
+    PacketEvents.setAPI(builder);
+    builder.load();
   }
 
   private void unregisterExtensions() {
@@ -203,7 +213,6 @@ public final class MurderRun extends JavaPlugin {
     ClassGraphUtils.init();
     GadgetRegistry.init();
     AbilityRegistry.init();
-    PacketToolsProvider.init();
     GameProperties.init();
     GadgetTestingGui.init();
     AbilityTestingGui.init();

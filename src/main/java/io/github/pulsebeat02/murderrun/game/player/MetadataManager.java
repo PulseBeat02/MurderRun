@@ -31,7 +31,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
+import io.github.pulsebeat02.murderrun.utils.GlowUtils;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -122,7 +122,7 @@ public final class MetadataManager {
         for (final ChatColor key : keys) {
           final Collection<Entity> stillGlowing = this.glowEntities.get(key);
           for (final Entity entity : stillGlowing) {
-            PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+            GlowUtils.setEntityGlowing(player, entity, false);
           }
           final Team team = requireNonNull(this.glowTeams.get(key));
           team.unregister();
@@ -161,10 +161,10 @@ public final class MetadataManager {
           this.glowEntities.put(color, entity);
           team.addEntry(name);
           team.addEntry(watcher);
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, true);
+          GlowUtils.setEntityGlowing(player, entity, true);
         } else {
           this.glowEntities.remove(color, entity);
-          PacketToolsProvider.PACKET_API.setEntityGlowing(entity, player, false);
+          GlowUtils.setEntityGlowing(player, entity, false);
           team.removeEntry(name);
           team.removeEntry(watcher);
         }

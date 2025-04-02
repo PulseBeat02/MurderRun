@@ -3,6 +3,3 @@ plugins {
 }
 
 rootProject.name = "MurderRun"
-include("nms-api")
-include("v1_21_R3")
-include("v1_21_R4")

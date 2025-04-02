@@ -82,7 +82,6 @@ public interface GameProperties {
   Material RANDOM_TRAP_MATERIAL = mat("random_trap.material");
   Material RANDOM_TELEPORT_MATERIAL = mat("random_teleport.material");
   Material PORTAL_TRAP_MATERIAL = mat("portal_trap.material");
-  Material PART_SNIFFER_MATERIAL = mat("part_sniffer.material");
   Material PARSITE_MATERIAL = mat("parasite.material");
   Material MINITURIZER_MATERIAL = mat("minitaturizer.material");
   Material MIND_CONTROL_MATERIAL = mat("mind_control.material");
@@ -345,7 +344,6 @@ public interface GameProperties {
   String TRACKER_SOUND = str("tracker.sound");
   String TRANSLOCATOR_SOUND = str("translocator.sound");
   double PART_SNIFFER_RADIUS = dec("part_sniffer.radius");
-  String PART_SNIFFER_SOUND = str("part_sniffer.sound");
   String ALL_SEEING_EYE_SOUND = str("all_seeing_eye.sound");
   int ALL_SEEING_EYE_DURATION = num("all_seeing_eye.duration");
   String BLOOD_CURSE_SOUND = str("blood_curse.sound");
@@ -490,7 +488,6 @@ public interface GameProperties {
   int SUPPLY_DROP_COST = num("supply_drop.cost");
   int TRACKER_COST = num("tracker.cost");
   int TRANSLOCATOR_COST = num("translocator.cost");
-  int PART_SNIFFER_COST = num("part_sniffer.cost");
 
   private static Material mat(final String key) {
     final String material = str(key);

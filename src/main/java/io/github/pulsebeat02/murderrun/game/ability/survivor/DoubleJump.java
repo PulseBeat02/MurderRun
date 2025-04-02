@@ -27,8 +27,10 @@ package io.github.pulsebeat02.murderrun.game.ability.survivor;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameStatus;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.Killer;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.HashMap;
@@ -71,7 +73,18 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
       return;
     }
 
+    final GameStatus status = game.getStatus();
+    final GameStatus.Status currentStatus = status.getStatus();
+    if (currentStatus == GameStatus.Status.NOT_STARTED) {
+      return;
+    }
+
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final boolean killer = gamePlayer instanceof Killer;
+    if (currentStatus == GameStatus.Status.SURVIVORS_RELEASED && killer) {
+      return;
+    }
+
     if (!gamePlayer.hasAbility(DOUBLE_JUMP_NAME)) {
       return;
     }
@@ -122,7 +135,18 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
       return;
     }
 
+    final GameStatus status = game.getStatus();
+    final GameStatus.Status currentStatus = status.getStatus();
+    if (currentStatus == GameStatus.Status.NOT_STARTED || currentStatus == GameStatus.Status.FINISHED) {
+      return;
+    }
+
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final boolean killer = gamePlayer instanceof Killer;
+    if (currentStatus == GameStatus.Status.SURVIVORS_RELEASED && killer) {
+      return;
+    }
+
     if (!gamePlayer.hasAbility(DOUBLE_JUMP_NAME)) {
       return;
     }

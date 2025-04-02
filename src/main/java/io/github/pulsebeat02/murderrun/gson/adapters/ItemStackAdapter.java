@@ -27,10 +27,13 @@ package io.github.pulsebeat02.murderrun.gson.adapters;
 
 import com.google.gson.*;
 import io.github.pulsebeat02.murderrun.gson.GsonProvider;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public final class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
@@ -38,19 +41,40 @@ public final class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDe
   @Override
   public ItemStack deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
     throws JsonParseException {
-    final PacketToolAPI api = PacketToolsProvider.PACKET_API;
     final String data = json.getAsString();
     final byte[] bytes = Base64Coder.decode(data);
-    return api.fromByteArray(bytes);
+    return this.fromByteArray(bytes);
   }
 
   @Override
   public JsonElement serialize(final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
     final Gson gson = GsonProvider.getGson();
-    final PacketToolAPI api = PacketToolsProvider.PACKET_API;
-    final byte[] bytes = api.toByteArray(src);
+    final byte[] bytes = this.serialize(src);
     final char[] base64 = Base64Coder.encode(bytes);
     final String data = new String(base64);
     return gson.toJsonTree(data);
+  }
+
+  private ItemStack fromByteArray(final byte[] bytes) {
+    try (
+      final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+      final BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)
+    ) {
+      return (ItemStack) dataInput.readObject();
+    } catch (final IOException | ClassNotFoundException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  private byte[] serialize(final ItemStack src) {
+    try (
+      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      final BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)
+    ) {
+      dataOutput.writeObject(src);
+      return outputStream.toByteArray();
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
   }
 }

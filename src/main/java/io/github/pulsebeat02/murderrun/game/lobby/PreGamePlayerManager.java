@@ -126,6 +126,7 @@ public final class PreGamePlayerManager {
   public void setPlayerToMurderer(final Player murderer) {
     this.removeParticipantFromLobby(murderer);
     this.addParticipantToLobby(murderer, true);
+    this.selectionManager.removeSelection(murderer);
   }
 
   private void giveSpecialItems(final Player player) {
@@ -142,6 +143,7 @@ public final class PreGamePlayerManager {
   public void setPlayerToInnocent(final Player innocent) {
     this.removeParticipantFromLobby(innocent);
     this.addParticipantToLobby(innocent, false);
+    this.selectionManager.removeSelection(innocent);
   }
 
   public void removeParticipantFromLobby(final Player player) {

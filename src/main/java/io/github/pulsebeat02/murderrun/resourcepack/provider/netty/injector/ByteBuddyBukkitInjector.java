@@ -27,8 +27,6 @@ package io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.reflect.PacketToolAPI;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.http.HttpByteBuf;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.http.HttpInjector;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.netty.injector.http.HttpRequest;
@@ -64,8 +62,11 @@ public final class ByteBuddyBukkitInjector {
   }
 
   private Class<?> getConnectionClass(@UnderInitialization ByteBuddyBukkitInjector this) {
-    final PacketToolAPI api = PacketToolsProvider.PACKET_API;
-    return api.getMappedConnectionClass();
+    try {
+      return Class.forName("net.minecraft.network.NetworkManager");
+    } catch (final ClassNotFoundException e) {
+      throw new AssertionError(e);
+    }
   }
 
   public void injectAgentIntoServer() {

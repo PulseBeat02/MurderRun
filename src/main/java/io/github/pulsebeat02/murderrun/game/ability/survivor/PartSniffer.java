@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,65 +23,50 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
+package io.github.pulsebeat02.murderrun.game.ability.survivor;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.map.GameMap;
 import io.github.pulsebeat02.murderrun.game.map.part.CarPart;
 import io.github.pulsebeat02.murderrun.game.map.part.PartsManager;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
-import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
-public final class PartSniffer extends SurvivorGadget {
+public final class PartSniffer extends SurvivorAbility {
 
-  public PartSniffer() {
+  private static final String PART_SNIFFER_NAME = "part_sniffer";
+
+  public PartSniffer(final Game game) {
     super(
-      "part_sniffer",
-      GameProperties.PART_SNIFFER_COST,
-      ItemFactory.createGadget(
-        "part_sniffer",
-        GameProperties.PART_SNIFFER_MATERIAL,
-        Message.PART_SNIFFER_NAME.build(),
-        Message.PART_SNIFFER_LORE.build()
-      )
+      game,
+      PART_SNIFFER_NAME,
+      ItemFactory.createAbility(PART_SNIFFER_NAME, Message.PART_SNIFFER_NAME.build(), Message.PART_SNIFFER_LORE.build(), 1)
     );
   }
 
   @Override
-  public boolean onGadgetDrop(final GadgetDropPacket packet) {
-    final Game game = packet.getGame();
-    final GamePlayer player = packet.getPlayer();
-    final Item item = packet.getItem();
-
-    if (!(player instanceof final Survivor survivor)) {
-      return true;
-    }
-    item.remove();
-
-    final StrictPlayerReference reference = StrictPlayerReference.of(survivor);
-    final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, survivor), 0, 2 * 20L, reference);
-
-    final PlayerAudience audience = player.getAudience();
-    final Component message = Message.PART_SNIFFER_ACTIVATE.build();
-    audience.sendMessage(message);
-    audience.playSound(GameProperties.PART_SNIFFER_SOUND);
-
-    return false;
+  public void start() {
+    final Game game = this.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
+    manager.applyToLivingSurvivors(participant -> {
+      if (!participant.hasAbility(PART_SNIFFER_NAME)) {
+        return;
+      }
+      final Survivor survivor = (Survivor) participant;
+      final StrictPlayerReference reference = StrictPlayerReference.of(survivor);
+      final GameScheduler scheduler = game.getScheduler();
+      scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, survivor), 0, 2 * 20L, reference);
+    });
   }
 
   private void handleTrapSniffing(final Game game, final Survivor player) {
@@ -90,7 +75,7 @@ public final class PartSniffer extends SurvivorGadget {
     final PartsManager manager = map.getCarPartManager();
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();
-    final Collection<Item> set = player.getGlowingCarParts();
+    final Collection<org.bukkit.entity.Item> set = player.getGlowingCarParts();
     final double radius = GameProperties.PART_SNIFFER_RADIUS;
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();

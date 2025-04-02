@@ -26,7 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.gui.arena;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
+import io.github.pulsebeat02.murderrun.utils.GlowUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
 import java.util.function.BiConsumer;
@@ -87,9 +87,9 @@ public final class WandListener implements Listener {
 
   private void sendGlowingPackets(final Player player, final ItemStack item) {
     if (PDCUtils.isWand(item)) {
-      this.locations.forEach(loc -> PacketToolsProvider.PACKET_API.setBlockGlowing(player, loc, true));
+      this.locations.forEach(loc -> GlowUtils.setBlockGlowing(player, loc, true));
     } else {
-      this.locations.forEach(loc -> PacketToolsProvider.PACKET_API.setBlockGlowing(player, loc, false));
+      this.locations.forEach(loc -> GlowUtils.setBlockGlowing(player, loc, false));
     }
   }
 
@@ -122,7 +122,7 @@ public final class WandListener implements Listener {
     final Player player = event.getPlayer();
     final Location location = block.getLocation();
     if (this.locations.contains(location)) {
-      PacketToolsProvider.PACKET_API.setBlockGlowing(player, location, false);
+      GlowUtils.setBlockGlowing(player, location, false);
       this.remove.accept(player, location);
     } else {
       this.add.accept(player, location);
