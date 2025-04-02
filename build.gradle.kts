@@ -7,7 +7,7 @@ plugins {
     java
     `java-library`
     `maven-publish`
-    id("com.gradleup.shadow") version "8.3.6"
+    id("com.gradleup.shadow") version "8.3.8"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.55"
     id("com.diffplug.spotless") version "7.0.0.BETA4"
@@ -18,7 +18,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
-version = "1.21.6-v1.0.0"
+version = "1.21.7-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -71,7 +71,7 @@ dependencies {
     compileOnly(libs.spigotApi)
     compileOnly(libs.fastutil)
     compileOnly(libs.nettyAll)
-    runtimeDeps.forEach(::compileOnly)
+    runtimeDeps.forEach(::implementation)
 
     // Plugin Extensions
     compileOnly(libs.placeholderapi)
@@ -142,7 +142,6 @@ val zipDemo by tasks.registering(Zip::class) {
 tasks {
 
     bukkitPluginYaml {
-        val updatedLibraries = runtimeDeps.map { it.get().toString() }
         name = "MurderRun"
         version = "${project.version}"
         description = "Pulse's MurderRun Plugin"
@@ -157,7 +156,6 @@ tasks {
             "PlaceholderAPI",
             "Parties",
             "Nexo")
-        libraries = updatedLibraries
     }
 
     withType<JavaCompile>().configureEach {
@@ -181,12 +179,12 @@ tasks {
         downloadPlugins {
             url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
             url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
-            url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-208.jar")
+            url("https://ci.extendedclip.com/job/PlaceholderAPI/212/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-212.jar")
             url("https://cdn.modrinth.com/data/rHRYOOoq/versions/yBAIVDGP/Parties-3.2.9.jar")
         }
         systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("1.21.6")
+        minecraftVersion("1.21.7")
     }
 
     processResources {

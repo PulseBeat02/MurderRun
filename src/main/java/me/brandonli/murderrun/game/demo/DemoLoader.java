@@ -186,7 +186,7 @@ public final class DemoLoader {
 
   public void loadArenaWorld() {
     final FastChunkGenerator generator = new FastChunkGenerator();
-    final WorldCreator creator = new WorldCreator("arena");
+    final WorldCreator creator = new WorldCreator("demoarena");
     creator.keepSpawnInMemory(false);
     creator.generator(generator);
     Bukkit.createWorld(creator);
@@ -194,7 +194,7 @@ public final class DemoLoader {
 
   public void loadLobbyWorld() {
     final FastChunkGenerator generator = new FastChunkGenerator();
-    final WorldCreator creator = new WorldCreator("lobby");
+    final WorldCreator creator = new WorldCreator("demolobby");
     creator.keepSpawnInMemory(false);
     creator.generator(generator);
     Bukkit.createWorld(creator);

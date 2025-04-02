@@ -30,6 +30,7 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  String RANDOM_TELEPORT_BLACKLISTED_BLOCKS = str("random_teleport.blacklisted_blocks");
   double VAULT_REWARD = dec("vault.reward");
   double MOON_GRAVITY = dec("moon.gravity");
   int MOON_DURATION = num("moon.duration");

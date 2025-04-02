@@ -79,6 +79,8 @@ public enum ServerVersion {
   V_1_21_3,
   V_1_21_4,
   V_1_21_5,
+  V_1_21_6,
+  V_1_21_7,
   ERROR;
 
   private static final ServerVersion[] REVERSED;

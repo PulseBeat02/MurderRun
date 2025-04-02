@@ -146,8 +146,8 @@ public final class MurderRun extends JavaPlugin {
   private void startMiscListeners() {
     if (false) {
       this.versionChecker = new VersionChecker(this);
+      this.versionChecker.start();
     }
-    this.versionChecker.start();
     this.mapTeleportSkipListener = new MapTeleportSkipListener(this);
     this.mapTeleportSkipListener.start();
   }
