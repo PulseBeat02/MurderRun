@@ -28,11 +28,6 @@ import java.util.stream.Collectors;
 
 public final class StreamUtils {
 
-  private static final Collector<?, ?, ?> SHUFFLER = Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), list -> {
-    Collections.shuffle(list);
-    return list;
-  });
-
   private StreamUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
@@ -51,7 +46,10 @@ public final class StreamUtils {
 
   @SuppressWarnings("unchecked")
   public static <T> Collector<T, ?, List<T>> toShuffledList() {
-    return (Collector<T, ?, List<T>>) SHUFFLER;
+    return Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), list -> {
+      Collections.shuffle(list);
+      return list;
+    });
   }
 
   public static <T> Collector<T, ?, Set<T>> toSynchronizedSet() {

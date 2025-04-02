@@ -37,6 +37,7 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.alessiodp.com/releases/")
     maven("https://repo.nexomc.com/releases")
+    maven("https://repo.nexomc.com/snapshots")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://jitpack.io")
 }
