@@ -32,7 +32,9 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,7 +50,21 @@ import org.bukkit.util.Vector;
 
 public final class Phase extends KillerAbility implements Listener {
 
+  private static final Collection<Material> BLACKLISTED_BLOCKS;
   private static final String PHASE_NAME = "phase";
+
+  static {
+    BLACKLISTED_BLOCKS = new HashSet<>();
+    final String raw = GameProperties.PHASE_BLACKLISTED_BLOCKS;
+    final String[] individual = raw.split(",");
+    for (final String material : individual) {
+      final String upper = material.toUpperCase();
+      final Material target = Material.getMaterial(upper);
+      if (target != null) {
+        BLACKLISTED_BLOCKS.add(Material.valueOf(material));
+      }
+    }
+  }
 
   private final Map<GamePlayer, Long> cooldowns;
 
@@ -124,36 +140,51 @@ public final class Phase extends KillerAbility implements Listener {
     }
 
     if (targetLocation != null) {
-      final Location feetLocation = targetLocation.clone();
-      final Location feetLocation2 = feetLocation.clone();
-      final Location headLocation = feetLocation2.add(0, 1, 0);
-      final Location belowFeetLocation = feetLocation.clone().add(0, -1, 0);
-
-      final Block feetBlock = feetLocation.getBlock();
-      final Block headBlock = headLocation.getBlock();
-      final Block belowFeetBlock = belowFeetLocation.getBlock();
-
-      final Material feetType = feetBlock.getType();
-      final Material headType = headBlock.getType();
-      final Material belowFeetType = belowFeetBlock.getType();
-
-      if (!feetType.isSolid() && !headType.isSolid() && belowFeetType.isSolid()) {
-        player.teleport(targetLocation);
-
-        final int cooldown = (int) (GameProperties.PHASE_COOLDOWN * 1000);
-        if (this.cooldowns.containsKey(gamePlayer)) {
-          final long last = this.cooldowns.get(gamePlayer);
-          final long current = System.currentTimeMillis();
-          final long timeElapsed = current - last;
-          if (timeElapsed < cooldown) {
-            event.setCancelled(true);
-            return;
-          }
+      boolean isPathClear = true;
+      for (int i = 1; i <= maxDistance; i++) {
+        final Location clone = eyeLocation.clone();
+        final Vector cloneDirection = direction.clone();
+        final Vector multiply = cloneDirection.multiply(i);
+        final Location checkLocation = clone.add(multiply);
+        final Block checkBlock = checkLocation.getBlock();
+        final Material checkType = checkBlock.getType();
+        if (BLACKLISTED_BLOCKS.contains(checkType)) {
+          isPathClear = false;
+          break;
         }
+      }
 
-        final long current = System.currentTimeMillis();
-        this.cooldowns.put(gamePlayer, current);
-        gamePlayer.setAbilityCooldowns(PHASE_NAME, (int) (GameProperties.PHASE_COOLDOWN * 20));
+      if (isPathClear) {
+        final Location feetLocation = targetLocation.clone();
+        final Location headLocation = feetLocation.clone().add(0, 1, 0);
+        final Location belowFeetLocation = feetLocation.clone().add(0, -1, 0);
+
+        final Block feetBlock = feetLocation.getBlock();
+        final Block headBlock = headLocation.getBlock();
+        final Block belowFeetBlock = belowFeetLocation.getBlock();
+
+        final Material feetType = feetBlock.getType();
+        final Material headType = headBlock.getType();
+        final Material belowFeetType = belowFeetBlock.getType();
+
+        if (!feetType.isSolid() && !headType.isSolid() && belowFeetType.isSolid()) {
+          player.teleport(targetLocation);
+
+          final int cooldown = (int) (GameProperties.PHASE_COOLDOWN * 1000);
+          if (this.cooldowns.containsKey(gamePlayer)) {
+            final long last = this.cooldowns.get(gamePlayer);
+            final long current = System.currentTimeMillis();
+            final long timeElapsed = current - last;
+            if (timeElapsed < cooldown) {
+              event.setCancelled(true);
+              return;
+            }
+          }
+
+          final long current = System.currentTimeMillis();
+          this.cooldowns.put(gamePlayer, current);
+          gamePlayer.setAbilityCooldowns(PHASE_NAME, (int) (GameProperties.PHASE_COOLDOWN * 20));
+        }
       }
     }
   }

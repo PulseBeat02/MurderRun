@@ -37,6 +37,7 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  String PHASE_BLACKLISTED_BLOCKS = str("phase.blacklisted_blocks");
   double PHASE_DISTANCE = dec("phase.distance");
   double PHASE_COOLDOWN = dec("phase.cooldown");
   double KILLER_SPRINT_TIME = dec("killer.sprint_time");
