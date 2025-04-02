@@ -30,9 +30,17 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 
 public abstract class AbstractAbility implements Ability {
 
-  private final Runnable task;
+  protected final Game game;
+  protected final GamePlayer player;
+
+  private Runnable task;
 
   public AbstractAbility(final Game game, final GamePlayer player) {
+    this.game = game;
+    this.player = player;
+  }
+
+  public void start() {
     this.task = () -> {
       if (this.checkActivation()) {
         this.applyAbility(game, player);
