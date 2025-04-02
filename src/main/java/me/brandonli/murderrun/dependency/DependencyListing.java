@@ -38,8 +38,8 @@ public final class DependencyListing {
 
   private static final Dependency PACKET_EVENTS = new UrlDependency(
     "PacketEvents",
-    "packetevents-spigot-2.9.0-SNAPSHOT",
-    "https://ci.codemc.io/job/retrooper/job/packetevents/705/artifact/spigot/build/libs/packetevents-spigot-2.9.0-SNAPSHOT.jar"
+    "packetevents-spigot-2.9.2-SNAPSHOT",
+    "https://ci.codemc.io/job/retrooper/job/packetevents/731/artifact/build/libs/packetevents-spigot-2.9.2-SNAPSHOT.jar"
   );
 
   private static final DependencyListing V1_21_R5 = create("V1_21_R5", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
