@@ -1,8 +1,6 @@
 # Murder Run Documentation
 
 ![Banner](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_header.webp)
-[![Sponsor](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_promo2.webp)](https://bisecthosting.com/pulse)
-[![Discord](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_discord.webp)](https://discord.gg/cUMB6kCsh6)
 
 ```{note}
 Connect to the plugin testing server `pulse.mcserver.us` to try Murder Run with your friends! There is no cost, and

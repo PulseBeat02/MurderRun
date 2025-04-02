@@ -1,9 +1,12 @@
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.get
 import xyz.jpenilla.runtask.task.AbstractRun
 import java.io.ByteArrayOutputStream
 
 plugins {
     java
     `java-library`
+    `maven-publish`
     id("com.gradleup.shadow") version "8.3.6"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id("org.checkerframework") version "0.6.53"
@@ -253,6 +256,27 @@ tasks {
         manifest {
             attributes("Main-Class" to "me.brandonli.murderrun.secret.Main")
             attributes["Git-Commit"] = getCurrentGitCommit()
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "brandonli"
+            url = uri("https://repo.brandonli.me/snapshots")
+            credentials(PasswordCredentials::class)
+            authentication {
+                create<BasicAuthentication>("basic")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "me.brandonli"
+            artifactId = project.name
+            version = "${rootProject.version}"
+            from(components["java"])
         }
     }
 }
