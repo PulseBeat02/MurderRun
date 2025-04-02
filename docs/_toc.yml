@@ -1,0 +1,20 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+- caption: Basic Setup 🪄
+  chapters:
+    - file: setup.md
+    - file: configuration.md
+    - file: creation.md
+    - file: game.md
+    - file: faq.md
+- caption: Extensions 🧩
+  chapters:
+    - file: placeholderapi.md
+- caption: Developer API ⚙️
+  chapters:
+    - file: developer.md
+    - file: api.md

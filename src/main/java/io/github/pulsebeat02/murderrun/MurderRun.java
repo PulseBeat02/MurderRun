@@ -59,6 +59,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
 import io.github.pulsebeat02.murderrun.utils.ClassGraphUtils;
+import io.github.pulsebeat02.murderrun.utils.screen.ScreenUtils;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -156,6 +157,7 @@ public final class MurderRun extends JavaPlugin {
 
   private void unloadLookupMaps() {
     ClassGraphUtils.close();
+    ScreenUtils.close();
   }
 
   private void loadSchematics() {
@@ -217,6 +219,7 @@ public final class MurderRun extends JavaPlugin {
     GadgetTestingGui.init();
     AbilityTestingGui.init();
     TerrainDropAnalyzer.init();
+    ScreenUtils.init(this);
   }
 
   private void shutdownAudience() {
