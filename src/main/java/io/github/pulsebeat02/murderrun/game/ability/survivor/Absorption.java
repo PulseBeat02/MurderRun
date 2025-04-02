@@ -23,54 +23,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.ability;
+package io.github.pulsebeat02.murderrun.game.ability.survivor;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.utils.item.Item;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-public abstract class AbstractAbility implements Ability, Listener {
+public final class Absorption extends SurvivorAbility {
 
-  private final Item.Builder builder;
-  private final String name;
-  private final Game game;
-
-  public AbstractAbility(final Game game, final String name, final Item.Builder builder) {
-    this.game = game;
-    this.name = name;
-    this.builder = builder;
+  public Absorption(final Game game) {
+    super(game, "absorption", ItemFactory.createAbility("absorption", Message.ABSORPTION_NAME.build(), Message.ABSORPTION_LORE.build(), 1));
   }
 
   @Override
   public void start() {
-    final Server server = Bukkit.getServer();
-    final MurderRun plugin = this.game.getPlugin();
-    final PluginManager pluginManager = server.getPluginManager();
-    pluginManager.registerEvents(this, plugin);
-  }
-
-  @Override
-  public void shutdown() {
-    HandlerList.unregisterAll(this);
-  }
-
-  @Override
-  public Item.Builder getStackBuilder() {
-    return this.builder;
-  }
-
-  @Override
-  public String getId() {
-    return this.name;
-  }
-
-  @Override
-  public Game getGame() {
-    return this.game;
+    final Game game = this.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
+    final int level = GameProperties.ABSORPTION_LEVEL;
+    manager.applyToAllParticipants(participant -> {
+      final PlayerInventory inventory = participant.getInventory();
+      if (!participant.hasAbility("absorption")) {
+        return;
+      }
+      participant.addPotionEffects(PotionEffectType.ABSORPTION.createEffect(PotionEffect.INFINITE_DURATION, level));
+    });
   }
 }

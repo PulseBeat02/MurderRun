@@ -30,6 +30,12 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> SONIC_BOOM_NAME = direct("murderrun.game.ability.sonicboom.name");
+  NullComponent<Sender> SONIC_BOOM_LORE = direct("murderrun.game.ability.sonicboom.lore");
+  NullComponent<Sender> CANNON_NAME = direct("murderrun.game.ability.cannon.name");
+  NullComponent<Sender> CANNON_LORE = direct("murderrun.game.ability.cannon.lore");
+  NullComponent<Sender> ABSORPTION_NAME = direct("murderrun.game.ability.absorption.name");
+  NullComponent<Sender> ABSORPTION_LORE = direct("murderrun.game.ability.absorption.lore");
   NullComponent<Sender> SELECT_NPC_ERROR = direct("murderrun.npc.role.error2");
   NullComponent<Sender> SELECT_GUI_TITLE = direct("murderrun.gui.select.name");
   NullComponent<Sender> SELECT_GUI_CANCEL = direct("murderrun.gui.select.cancel");
@@ -48,7 +54,6 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> DOUBLE_JUMP_LORE = direct("murderrun.game.ability.doublejump.lore");
   UniComponent<Sender, String> SEND_DUMP = direct("murderrun.command.dump.result", null);
   NullComponent<Sender> LOAD_DUMP = direct("murderrun.command.dump.load");
-  NullComponent<Sender> LOAD_API = direct("murderrun.load.api");
   NullComponent<Sender> LOAD_DATA = direct("murderrun.load.data");
   NullComponent<Sender> LOAD_LOOKUP = direct("murderrun.load.lookup");
   NullComponent<Sender> LOAD_RESOURCEPACK = direct("murderrun.load.resourcepack");

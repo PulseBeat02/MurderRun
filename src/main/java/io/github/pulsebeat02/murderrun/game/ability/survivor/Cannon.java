@@ -35,44 +35,49 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-public final class DoubleJumpAbility extends SurvivorAbility {
+public final class Cannon extends SurvivorAbility {
 
-  private static final String DOUBLE_JUMP_NAME = "double_jump";
+  private static final String CANNON_NAME = "cannon";
 
-  private final Game game;
   private final Map<GamePlayer, Long> cooldowns;
 
-  public DoubleJumpAbility(final Game game) {
+  public Cannon(final Game game) {
     super(
       game,
-      DOUBLE_JUMP_NAME,
+      CANNON_NAME,
       ItemFactory.createAbility(
-        DOUBLE_JUMP_NAME,
-        Message.DOUBLE_JUMP_NAME.build(),
-        Message.DOUBLE_JUMP_LORE.build(),
-        (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20)
+        CANNON_NAME,
+        Message.CANNON_NAME.build(),
+        Message.CANNON_LORE.build(),
+        (int) (GameProperties.CANNON_COOLDOWN * 20)
       )
     );
-    this.game = game;
     this.cooldowns = new HashMap<>();
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onPlayerToggleFlight(final PlayerToggleFlightEvent event) {
-    final GamePlayerManager manager = this.game.getPlayerManager();
+  public void onPlayerRightClick(final PlayerInteractEvent event) {
+    final Action action = event.getAction();
+    if (action != Action.RIGHT_CLICK_AIR) {
+      return;
+    }
+
+    final Game game = this.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
     final Player player = event.getPlayer();
     if (!manager.checkPlayerExists(player)) {
       return;
     }
 
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!gamePlayer.hasAbility(DOUBLE_JUMP_NAME)) {
+    if (!gamePlayer.hasAbility(CANNON_NAME)) {
       return;
     }
 
@@ -87,42 +92,18 @@ public final class DoubleJumpAbility extends SurvivorAbility {
       }
     }
 
-    if (player.isFlying()) {
-      return;
-    }
-    event.setCancelled(true);
-    player.setAllowFlight(false);
-
     final long current = System.currentTimeMillis();
     this.cooldowns.put(gamePlayer, current);
+    gamePlayer.setAbilityCooldowns(CANNON_NAME, (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20));
 
-    final Location location = player.getLocation();
+    final double multiplier = GameProperties.CANNON_VELOCITY;
+    final int ticks = GameProperties.CANNON_FUSE;
+    final Location location = player.getEyeLocation();
     final Vector direction = location.getDirection();
-    final double jumpVelocity = GameProperties.DOUBLEJUMP_VELOCITY;
-    direction.setY(jumpVelocity);
-    player.setVelocity(direction);
-
-    gamePlayer.setAbilityCooldowns(DOUBLE_JUMP_NAME, (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20));
-  }
-
-  @EventHandler(priority = EventPriority.LOWEST)
-  @SuppressWarnings("deprecation")
-  public void onPlayerLand(final PlayerMoveEvent event) {
-    final Player player = event.getPlayer();
-    if (!player.isOnGround()) {
-      return;
-    }
-
-    final GamePlayerManager manager = this.game.getPlayerManager();
-    if (!manager.checkPlayerExists(player)) {
-      return;
-    }
-
-    final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!gamePlayer.hasAbility(DOUBLE_JUMP_NAME)) {
-      return;
-    }
-
-    player.setAllowFlight(true);
+    final Vector normalizedDirection = direction.normalize();
+    final Vector velocity = normalizedDirection.multiply(multiplier);
+    final TNTPrimed tnt = player.getWorld().spawn(location, TNTPrimed.class);
+    tnt.setVelocity(velocity);
+    tnt.setFuseTicks(ticks);
   }
 }

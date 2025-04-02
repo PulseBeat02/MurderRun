@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.ability;
 
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 
 public interface Ability {
@@ -32,4 +33,5 @@ public interface Ability {
   void start();
   Item.Builder getStackBuilder();
   String getId();
+  Game getGame();
 }

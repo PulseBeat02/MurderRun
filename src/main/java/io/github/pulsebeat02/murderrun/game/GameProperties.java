@@ -37,6 +37,13 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  double SONIC_BOOM_KNOCKBACK = dec("sonicboom.knockback");
+  double SONIC_BOOM_RADIUS = dec("sonicboom.radius");
+  double SONIC_BOOM_COOLDOWN = dec("sonicboom.cooldown");
+  double CANNON_VELOCITY = dec("cannon.velocity");
+  int CANNON_FUSE = num("cannon.fuse");
+  double CANNON_COOLDOWN = dec("cannon.cooldown");
+  int ABSORPTION_LEVEL = num("absorption.level");
   String ABILITY_GUI_SOUND = str("select.gui.sound");
   String DISABLED_ABILITIES = str("disabled_abilities");
   double DOUBLEJUMP_COOLDOWN = dec("doublejump.cooldown");
