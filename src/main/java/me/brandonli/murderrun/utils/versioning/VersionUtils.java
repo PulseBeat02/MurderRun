@@ -83,6 +83,8 @@ public final class VersionUtils {
       final String sha = getCommit(first);
       return sha.substring(0, 8);
     } catch (final IOException | InterruptedException e) {
+      final Thread current = Thread.currentThread();
+      current.interrupt();
       throw new AssertionError(e);
     }
   }
@@ -111,6 +113,8 @@ public final class VersionUtils {
       }
       return count;
     } catch (final IOException | InterruptedException e) {
+      final Thread current = Thread.currentThread();
+      current.interrupt();
       throw new AssertionError(e);
     }
   }

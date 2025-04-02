@@ -10,7 +10,6 @@ plugins {
     id("com.diffplug.spotless") version "7.0.0.BETA4"
     id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.2.0"
     id("com.github.node-gradle.node") version "7.1.0"
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.16"
 }
 
 apply(plugin = "org.checkerframework")
@@ -86,8 +85,6 @@ dependencies {
     compileOnly(libs.adventureApi)
     compileOnly(libs.creativeSerializerMinecraft)
     compileOnly(libs.packetEvents)
-
-    paperweight.paperDevBundle("1.21.5-no-moonrise-SNAPSHOT")
 
     // Testing Dependencies
     testImplementation(libs.nettyAll)
