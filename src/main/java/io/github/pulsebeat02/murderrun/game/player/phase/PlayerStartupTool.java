@@ -32,7 +32,7 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.tool.Flashlight;
+import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
@@ -105,7 +105,8 @@ public final class PlayerStartupTool {
   }
 
   private void giveFlashlight(final GamePlayer player) {
-    final Gadget flashlight = new Flashlight();
+    final GadgetRegistry registry = GadgetRegistry.getRegistry();
+    final Gadget flashlight = requireNonNull(registry.getGadget("flashlight"));
     final Item.Builder item = flashlight.getStackBuilder();
     final ItemStack stack = item.build();
     final PlayerInventory inventory = player.getInventory();

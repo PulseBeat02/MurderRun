@@ -197,4 +197,8 @@ public interface Participant {
     final double extra,
     final @Nullable T data
   );
+
+  int getCooldown(final ItemStack item);
+
+  void setCooldown(final ItemStack item, final int cooldown);
 }

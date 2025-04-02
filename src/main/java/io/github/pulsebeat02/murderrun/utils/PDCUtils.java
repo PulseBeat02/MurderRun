@@ -79,6 +79,10 @@ public final class PDCUtils {
     return attributeExists(stack, Keys.ITEM_WAND, PersistentDataType.BOOLEAN);
   }
 
+  public static boolean isFlashlight(final ItemStack stack) {
+    return attributeExists(stack, Keys.FLASHLIGHT, PersistentDataType.BOOLEAN);
+  }
+
   private static boolean attributeExists(final ItemStack stack, final NamespacedKey key, final PersistentDataType<?, ?> type) {
     if (stack == null) {
       return false;

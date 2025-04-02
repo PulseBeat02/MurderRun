@@ -338,4 +338,14 @@ public abstract class AbstractPlayer implements Participant {
   ) {
     this.apply(player -> player.spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, data));
   }
+
+  @Override
+  public int getCooldown(final ItemStack item) {
+    return this.applyFunction(player -> player.getCooldown(item));
+  }
+
+  @Override
+  public void setCooldown(final ItemStack item, final int cooldown) {
+    this.apply(player -> player.setCooldown(item, cooldown));
+  }
 }

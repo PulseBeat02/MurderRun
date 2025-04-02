@@ -73,7 +73,6 @@ public final class PlayerResetTool {
     gamePlayer.setExp(0);
     gamePlayer.setGlowing(false);
     gamePlayer.setFireTicks(0);
-    gamePlayer.stopAllSounds();
     gamePlayer.setInvulnerable(false);
     gamePlayer.resetAllAttributes();
   }

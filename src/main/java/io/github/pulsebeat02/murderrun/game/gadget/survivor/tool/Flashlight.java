@@ -25,6 +25,8 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
+import static java.util.Objects.requireNonNull;
+
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
@@ -38,20 +40,29 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.LoosePlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-public final class Flashlight extends SurvivorGadget {
+public final class Flashlight extends SurvivorGadget implements Listener {
 
-  public Flashlight() {
+  private final Game game;
+
+  public Flashlight(final Game game) {
     super(
       "flashlight",
       GameProperties.FLASHLIGHT_COST,
@@ -64,6 +75,30 @@ public final class Flashlight extends SurvivorGadget {
         )
       )
     );
+    this.game = game;
+  }
+
+  @EventHandler
+  public void onPlayerFish(final PlayerFishEvent event) {
+    final PlayerFishEvent.State state = event.getState();
+    if (state != PlayerFishEvent.State.FISHING) {
+      return;
+    }
+
+    final Player player = event.getPlayer();
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final PlayerInventory inventory = player.getInventory();
+    final EquipmentSlot hand = requireNonNull(event.getHand());
+    final ItemStack rod = requireNonNull(inventory.getItem(hand));
+    if (!PDCUtils.isFlashlight(rod)) {
+      return;
+    }
+
+    event.setCancelled(true);
   }
 
   @Override
@@ -78,11 +113,17 @@ public final class Flashlight extends SurvivorGadget {
       return true;
     }
 
-    Item.builder(stack).useOneDurability();
-
     final Game game = packet.getGame();
     final GamePlayer player = packet.getPlayer();
-    this.sprayParticlesInCone(game, player);
+    final int cooldown = player.getCooldown(stack);
+    if (cooldown > 0) {
+      return true;
+    }
+
+    Item.builder(stack).useOneDurability();
+
+    final int cooldownDuration = (int) (GameProperties.FLASHLIGHT_COOLDOWN * 20);
+    player.setCooldown(stack, cooldownDuration);
 
     final GameScheduler scheduler = game.getScheduler();
     if (player instanceof final Survivor survivor) {
@@ -94,6 +135,7 @@ public final class Flashlight extends SurvivorGadget {
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(Sounds.FLASHLIGHT);
+    this.sprayParticlesInCone(game, player);
 
     return false;
   }

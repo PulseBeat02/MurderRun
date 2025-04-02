@@ -57,6 +57,8 @@ public final class Keys {
   public static NamespacedKey ARENA_NAME = createNamespacedPluginKey("arena-name");
   public static NamespacedKey LOBBY_NAME = createNamespacedPluginKey("lobby-name");
   public static NamespacedKey KILLER_ROLE = createNamespacedPluginKey("killer-role");
+  public static NamespacedKey FLASHLIGHT_COOLDOWN = createNamespacedPluginKey("flashlight_cooldown");
+  public static NamespacedKey FLASHLIGHT = createNamespacedPluginKey("flashlight");
 
   private static NamespacedKey createNamespacedPluginKey(final String key) {
     return new NamespacedKey(NAMESPACE, key);

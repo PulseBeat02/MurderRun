@@ -75,6 +75,8 @@ public final class KillerLocationTracker {
     final World killerWorld = requireNonNull(murdererLocation.getWorld());
     final double radius = GameProperties.KILLER_PARTICLE_RADIUS;
     final double radiusSquared = radius * radius;
+    final double halfRadius = radius / 2;
+    final double halfRadiusSquared = halfRadius * halfRadius;
     for (final GamePlayer survivor : players) {
       final Survivor survivorPlayer = (Survivor) survivor;
       final Location location = survivorPlayer.getLocation();
@@ -83,7 +85,8 @@ public final class KillerLocationTracker {
         continue;
       }
       final PlayerAudience audience = survivorPlayer.getAudience();
-      if (location.distanceSquared(murdererLocation) > radiusSquared) {
+      final double distanceSquared = location.distanceSquared(murdererLocation);
+      if (distanceSquared > radiusSquared) {
         survivorPlayer.setHeardSound(false);
         audience.setActionBar(text(""));
         continue;
@@ -92,12 +95,23 @@ public final class KillerLocationTracker {
         audience.playSound("ambient.cave");
         survivorPlayer.setHeardSound(true);
       }
+
       audience.playSound(Sounds.HEARTBEAT);
 
       final StrictPlayerReference reference = StrictPlayerReference.of(survivorPlayer);
-      audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
-      scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 7L, reference);
-      scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 14L, reference);
+      if (distanceSquared < halfRadiusSquared) {
+        scheduler.scheduleTask(() -> audience.playSound(Sounds.HEARTBEAT), 9L, reference);
+        audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
+        scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 4L, reference);
+        scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 8L, reference);
+        scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION1.build()), 10L, reference);
+        scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 14L, reference);
+        scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 18L, reference);
+      } else {
+        audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
+        scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 7L, reference);
+        scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 14L, reference);
+      }
 
       final Location clone = location.clone().add(0, 1, 0);
       world.spawnParticle(Particle.DUST, clone, 15, 1, 1, 1, new DustOptions(Color.WHITE, 4));
