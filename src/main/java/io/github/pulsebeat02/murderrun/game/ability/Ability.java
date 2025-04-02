@@ -29,7 +29,6 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 
 public interface Ability {
-  void shutdown();
   void start();
   Item.Builder getStackBuilder();
   String getId();

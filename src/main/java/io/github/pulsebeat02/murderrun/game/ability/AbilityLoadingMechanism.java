@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
@@ -55,6 +57,16 @@ public final class AbilityLoadingMechanism {
     this.gameAbilities = instance.getUsedAbilities(manager, run);
     this.killerAbilities = this.getKillerAbilities(this.gameAbilities);
     this.survivorAbilities = this.getSurvivorAbilities(this.gameAbilities);
+  }
+
+  public void shutdown() {
+    final Collection<Ability> values = this.gameAbilities.values();
+    for (final Ability ability : values) {
+      if (!(ability instanceof final Listener listener)) {
+        continue;
+      }
+      HandlerList.unregisterAll(listener);
+    }
   }
 
   private Set<Ability> getKillerAbilities(@UnderInitialization AbilityLoadingMechanism this, final Map<String, Ability> gameAbilities) {

@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
@@ -57,13 +56,6 @@ public abstract class AbstractAbility implements Ability {
     final PluginManager pluginManager = server.getPluginManager();
     if (this instanceof final Listener listener) {
       pluginManager.registerEvents(listener, plugin);
-    }
-  }
-
-  @Override
-  public void shutdown() {
-    if (this instanceof final Listener listener) {
-      HandlerList.unregisterAll(listener);
     }
   }
 

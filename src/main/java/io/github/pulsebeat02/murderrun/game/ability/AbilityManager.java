@@ -50,6 +50,7 @@ public final class AbilityManager {
 
   public void shutdown() {
     this.actionHandler.shutdown();
+    this.mechanism.shutdown();
   }
 
   public MurderRun getPlugin() {

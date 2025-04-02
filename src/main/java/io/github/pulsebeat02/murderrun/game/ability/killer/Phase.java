@@ -183,8 +183,6 @@ public final class Phase extends KillerAbility implements Listener {
         final Material belowFeetType = belowFeetBlock.getType();
 
         if (!feetType.isSolid() && !headType.isSolid() && belowFeetType.isSolid()) {
-          player.teleport(targetLocation);
-
           final int cooldown = (int) (GameProperties.PHASE_COOLDOWN * 1000);
           if (this.cooldowns.containsKey(gamePlayer)) {
             final long last = this.cooldowns.get(gamePlayer);
@@ -195,6 +193,7 @@ public final class Phase extends KillerAbility implements Listener {
               return;
             }
           }
+          player.teleport(targetLocation);
 
           final long current = System.currentTimeMillis();
           this.cooldowns.put(gamePlayer, current);

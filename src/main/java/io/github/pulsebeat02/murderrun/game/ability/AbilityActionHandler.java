@@ -57,10 +57,10 @@ public final class AbilityActionHandler implements Listener {
   private final Map<String, Ability> abilities;
 
   public AbilityActionHandler(final AbilityManager manager) {
-    final AbilityRegistry registry = AbilityRegistry.getRegistry();
+    final AbilityLoadingMechanism mechanism = manager.getMechanism();
     final MurderRun plugin = manager.getPlugin();
     this.manager = manager;
-    this.abilities = registry.getUsedAbilities(this.manager, plugin);
+    this.abilities = mechanism.getGameAbilities();
   }
 
   public void start() {
@@ -75,10 +75,6 @@ public final class AbilityActionHandler implements Listener {
   }
 
   public void shutdown() {
-    final Collection<Ability> abilityList = this.abilities.values();
-    for (final Ability ability : abilityList) {
-      ability.shutdown();
-    }
     HandlerList.unregisterAll(this);
   }
 
