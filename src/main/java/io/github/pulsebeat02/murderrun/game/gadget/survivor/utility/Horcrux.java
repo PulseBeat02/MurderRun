@@ -44,9 +44,6 @@ import org.bukkit.util.Vector;
 
 public final class Horcrux extends SurvivorGadget {
 
-  private static final int COUNTDOWN_SECONDS = 5;
-  private static final long TICK_PER_SECOND = 20L;
-
   public Horcrux() {
     super("horcrux", Material.CHARCOAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build(), GameProperties.HORCRUX_COST);
   }
@@ -83,25 +80,19 @@ public final class Horcrux extends SurvivorGadget {
 
   private void startSpectatorRespawn(final GamePlayer player, final Location respawnPoint) {
     final StrictPlayerReference ref = StrictPlayerReference.of(player);
-    final PlayerAudience audience = player.getAudience();
     player.setGameMode(GameMode.SPECTATOR);
-
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(
-      () -> {
-        audience.sendMessage(Message.HORCRUX_ACTIVATE.build());
-        this.startCountdown(player, respawnPoint);
-      },
-      20L,
-      ref
+    scheduler.scheduleTask(() -> this.startCountdown(player, respawnPoint), 0L, ref
     );
   }
 
   private void startCountdown(final GamePlayer player, final Location respawnPoint) {
+    final PlayerAudience audience = player.getAudience();
+    audience.sendMessage(Message.HORCRUX_ACTIVATE.build());
     final GameScheduler scheduler = player.getGame().getScheduler();
     final StrictPlayerReference ref = StrictPlayerReference.of(player);
-    scheduler.scheduleTask(() -> this.executeFinalRespawn(player, respawnPoint), COUNTDOWN_SECONDS * TICK_PER_SECOND, ref);
+    scheduler.scheduleTask(() -> this.executeFinalRespawn(player, respawnPoint), 10L, ref);
   }
 
   private void executeFinalRespawn(final GamePlayer player, final Location point) {
