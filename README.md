@@ -12,7 +12,7 @@
 - **GitHub**: https://github.com/PulseBeat02/MurderRun
 - **Support**: https://discord.gg/cUMB6kCsh6
 - **Donate**: https://ko-fi.com/pulsebeat_02
-- **Testing Server**: `murderrun.mcserver.us`
+- **Testing Server**: `pulse.mcserver.us`
 
 ---
 
