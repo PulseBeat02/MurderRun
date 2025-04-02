@@ -279,6 +279,10 @@ public final class IOUtils {
         final String name = entry.getName();
         final Path path = dest.resolve(name);
         final Path resolvedPath = path.normalize();
+        if (!resolvedPath.startsWith(dest)) {
+          final String msg = "Invalid Entry %s".formatted(name);
+          throw new AssertionError(msg);
+        }
         if (entry.isDirectory()) {
           Files.createDirectories(resolvedPath);
         } else {
@@ -304,7 +308,7 @@ public final class IOUtils {
           src,
           new SimpleFileVisitor<>() {
             @Override
-            public @NotNull FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException {
+            public @NotNull FileVisitResult preVisitDirectory(final Path dir, final @NotNull BasicFileAttributes attrs) throws IOException {
               final Path rel = src.relativize(dir);
               final String relName = rel.toString();
               if (!relName.isEmpty()) {
@@ -318,7 +322,7 @@ public final class IOUtils {
             }
 
             @Override
-            public @NotNull FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+            public @NotNull FileVisitResult visitFile(final Path file, final @NotNull BasicFileAttributes attrs) throws IOException {
               final Path rel = src.relativize(file);
               final String relName = rel.toString();
               final String replaced = relName.replace("\\", "/");
