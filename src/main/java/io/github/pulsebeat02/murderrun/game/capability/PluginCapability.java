@@ -35,7 +35,7 @@ public final class PluginCapability extends Capability {
     super(() -> {
       final Server server = Bukkit.getServer();
       final PluginManager manager = server.getPluginManager();
-      return manager.isPluginEnabled("LibsDisguises");
+      return manager.isPluginEnabled(name);
     });
   }
 }
