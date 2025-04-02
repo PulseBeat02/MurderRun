@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "murderrun:item/shield"
+    "model": "murderrun:item/laser"
   }
 }

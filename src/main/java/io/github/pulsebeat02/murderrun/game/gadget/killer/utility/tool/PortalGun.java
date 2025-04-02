@@ -44,6 +44,7 @@ import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -142,9 +143,14 @@ public final class PortalGun extends KillerGadget implements Listener {
     final Portal holder = new Portal(teleportLocation);
     final Portal check = pair.first();
     if (status && check.isValidPortal()) {
+      final UUID random = UUID.randomUUID();
+      final String data = random.toString();
+      PDCUtils.setPersistentDataAttribute(stack, Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, false);
+      PDCUtils.setPersistentDataAttribute(stack, Keys.UUID, PersistentDataType.STRING, data);
       final Projectile projectile = event.getEntity();
       projectile.remove();
       event.setCancelled(true);
+      this.onProjectileHit(event);
       return;
     }
 

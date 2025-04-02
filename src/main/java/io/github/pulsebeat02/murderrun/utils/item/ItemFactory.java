@@ -272,8 +272,13 @@ public final class ItemFactory {
     return Item.builder(Material.SADDLE).build();
   }
 
-  public static Item.Builder createShield(final Item.Builder builder) {
-    return builder.durability(5);
+  public static Item.Builder createShield() {
+    return Item.builder(GameProperties.SHIELD_MATERIAL)
+      .name(Message.SHIELD_NAME.build())
+      .lore(Message.SHIELD_LORE.build())
+      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "shield")
+      .hideAttributes()
+      .durability(5);
   }
 
   public static Item.Builder createExcavator(final Item.Builder builder) {
@@ -344,6 +349,7 @@ public final class ItemFactory {
       .name(Message.ARROW_NAME.build())
       .lore(Message.ARROW_LORE.build())
       .enchantment(Enchantment.VANISHING_CURSE, 1)
+      .model("laser")
       .hideAttributes()
       .build();
   }
