@@ -55,18 +55,30 @@ public final class CreativeTest {
         @Subst("")
         final String name = fileName.toString();
         final String extension = name.substring(name.lastIndexOf('.') + 1);
-        @Subst("") final String nameWithoutExtension = name.substring(0, name.lastIndexOf('.'));
+        @Subst("")
+        final String nameWithoutExtension = name.substring(0, name.lastIndexOf('.'));
         if (extension.equals("png") && !name.startsWith("diamond_layer") && !name.startsWith("bow_pulling")) {
           final Texture texture = Texture.texture().key(Key.key("murderrun", "item/" + name)).data(Writable.path(file)).build();
-          final ModelTextures textures = ModelTextures.builder().layers(ModelTexture.ofKey(Key.key("murderrun", "item/" + nameWithoutExtension))).build();
-          final Model model = Model.model().parent(Model.ITEM_HANDHELD).key(Key.key("murderrun", "item/" + nameWithoutExtension)).textures(textures).build();
-          pack.unknownFile("assets/murderrun/items/" + nameWithoutExtension + ".json", Writable.stringUtf8("""
-                  {
-                    "model": {
-                      "type": "minecraft:model",
-                      "model": "murderrun:item/%s"
-                    }
-                  }""".formatted(nameWithoutExtension)));
+          final ModelTextures textures = ModelTextures.builder()
+            .layers(ModelTexture.ofKey(Key.key("murderrun", "item/" + nameWithoutExtension)))
+            .build();
+          final Model model = Model.model()
+            .parent(Model.ITEM_HANDHELD)
+            .key(Key.key("murderrun", "item/" + nameWithoutExtension))
+            .textures(textures)
+            .build();
+          pack.unknownFile(
+            "assets/murderrun/items/" + nameWithoutExtension + ".json",
+            Writable.stringUtf8(
+              """
+              {
+                "model": {
+                  "type": "minecraft:model",
+                  "model": "murderrun:item/%s"
+                }
+              }""".formatted(nameWithoutExtension)
+            )
+          );
           pack.model(model);
           pack.texture(texture);
         }
