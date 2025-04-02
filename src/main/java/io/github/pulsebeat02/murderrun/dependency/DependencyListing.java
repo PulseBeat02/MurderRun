@@ -40,8 +40,8 @@ public final class DependencyListing {
 
   private static final Dependency FAST_ASYNC_WORLD_EDIT = new UrlDependency(
     "WorldEdit",
-    "FastAsyncWorldEdit-Bukkit-2.13.1-SNAPSHOT-1072",
-    "https://ci.athion.net/job/FastAsyncWorldEdit/1072/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.13.1-SNAPSHOT-1072.jar"
+    "FastAsyncWorldEdit-Bukkit-2.13.1-SNAPSHOT-1075",
+    "https://ci.athion.net/job/FastAsyncWorldEdit/1075/artifact/artifacts/FastAsyncWorldEdit-Bukkit-2.13.1-SNAPSHOT-1075.jar"
   );
 
   private static final DependencyListing V1_21_R4 = create("V1_21_R4", CITIZENS, FAST_ASYNC_WORLD_EDIT);
