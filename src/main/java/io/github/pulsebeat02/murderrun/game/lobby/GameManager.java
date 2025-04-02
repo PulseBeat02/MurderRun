@@ -33,8 +33,13 @@ import io.github.pulsebeat02.murderrun.data.yaml.QuickJoinConfigurationMapper;
 import io.github.pulsebeat02.murderrun.game.*;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
+import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -97,7 +102,7 @@ public final class GameManager {
     return false;
   }
 
-  public PreGameManager createGame(
+  public CompletableFuture<Void> createGame(
     final CommandSender leader,
     final String id,
     final String arenaName,
@@ -107,13 +112,13 @@ public final class GameManager {
     final boolean quickJoinable
   ) {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
-    final PreGameManager manager = this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener);
-    this.addGameToRegistry(id, manager);
-    this.autoJoinIfLeaderPlayer(leader, id);
-    return manager;
+    return this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener)
+      .thenAccept(manager -> this.addGameToRegistry(id, manager))
+      .thenAccept(manager -> this.autoJoinIfLeaderPlayer(leader, id))
+      .thenApply(manager -> manager);
   }
 
-  private PreGameManager createClampedGame(
+  private CompletableFuture<PreGameManager> createClampedGame(
     final CommandSender leader,
     final String id,
     final String arenaName,
@@ -123,12 +128,19 @@ public final class GameManager {
     final boolean quickJoinable,
     final GameEventsListener listener
   ) {
+    this.sendGameCreationMessage(leader);
     final int finalMin = Math.clamp(min, 2, Integer.MAX_VALUE);
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
     final PreGameManager manager = new PreGameManager(this.plugin, this, id, listener);
     this.setSettings(manager, arenaName, lobbyName);
-    manager.initialize(leader, finalMin, finalMax, quickJoinable);
-    return manager;
+    return manager.initialize(leader, finalMin, finalMax, quickJoinable).thenApply(ignored -> manager);
+  }
+
+  private void sendGameCreationMessage(final CommandSender leader) {
+    final AudienceProvider provider = this.plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    final Audience audience = audiences.sender(leader);
+    audience.sendMessage(Message.GAME_CREATION_LOAD.build());
   }
 
   private void addGameToRegistry(final String id, final PreGameManager manager) {
@@ -189,10 +201,10 @@ public final class GameManager {
     }
   }
 
-  public boolean quickJoinGame(final Player player) {
+  public CompletableFuture<Boolean> quickJoinGame(final Player player) {
     final QuickJoinConfigurationMapper config = this.plugin.getQuickJoinConfiguration();
     if (!config.isEnabled()) {
-      return false;
+      return CompletableFuture.completedFuture(false);
     }
 
     final Collection<PreGameManager> values = this.games.values();
@@ -202,7 +214,7 @@ public final class GameManager {
       if (join) {
         final String id = manager.getId();
         this.joinGame(player, id);
-        return true;
+        return CompletableFuture.completedFuture(true);
       }
     }
 
@@ -214,9 +226,8 @@ public final class GameManager {
     final String lobby = rand[1];
     final int min = config.getMinPlayers();
     final int max = config.getMaxPlayers();
-    this.createGame(player, raw, arena, lobby, min, max, true);
 
-    return true;
+    return this.createGame(player, raw, arena, lobby, min, max, true).thenApply(manager -> true);
   }
 
   public MurderRun getPlugin() {

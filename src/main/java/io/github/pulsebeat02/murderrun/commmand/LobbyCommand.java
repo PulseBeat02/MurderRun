@@ -31,7 +31,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -29,8 +29,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.LocationConverter;
 import io.github.pulsebeat02.murderrun.game.map.Schematic;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
+import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;

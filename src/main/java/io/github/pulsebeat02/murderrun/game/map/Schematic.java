@@ -30,7 +30,7 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.math.BlockVector3;
 import io.github.pulsebeat02.murderrun.data.hibernate.converters.SerializableVectorConverter;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import java.io.IOException;

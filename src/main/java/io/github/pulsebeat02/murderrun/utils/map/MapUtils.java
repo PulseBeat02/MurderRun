@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.utils;
+package io.github.pulsebeat02.murderrun.utils.map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -39,15 +39,13 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.session.PasteBuilder;
 import com.sk89q.worldedit.util.SideEffect;
-import com.sk89q.worldedit.util.SideEffectSet;
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.extension.worldedit.WESpreader;
 import io.github.pulsebeat02.murderrun.game.map.Schematic;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
+import io.github.pulsebeat02.murderrun.utils.IOUtils;
+import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
 import java.io.*;
@@ -55,17 +53,19 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
+import org.jetbrains.annotations.NotNull;
 
 public final class MapUtils {
 
-  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(/*SideEffect.UPDATE, SideEffect.NEIGHBORS*/);
+  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
 
   private MapUtils() {
@@ -119,7 +119,7 @@ public final class MapUtils {
   public static boolean enableExtent() {
     final String property = System.getProperty(WE_SPREADER);
     final boolean enabled = Boolean.parseBoolean(property);
-    if (Capabilities.FASTASYNCWORLDEDIT.isDisabled() && !enabled) {
+    if (enabled) { // disabled always
       System.setProperty(WE_SPREADER, "true");
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class); // special case
       final WESpreader spreader = new WESpreader(plugin);
@@ -129,24 +129,56 @@ public final class MapUtils {
     return false;
   }
 
-  public static boolean performPaste(
-    final WorldEdit instance,
+  public static CompletableFuture<Void> performPaste(
     final com.sk89q.worldedit.world.World world,
     final Clipboard clipboard,
     final SerializableVector vector3
-  ) throws WorldEditException {
-    try (final EditSession session = instance.newEditSession(world)) {
-      final SideEffectSet set = session.getSideEffectApplier();
-      for (final SideEffect effect : DISABLED_SIDE_EFFECTS) {
-        set.with(effect, SideEffect.State.OFF);
+  ) {
+    final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+    final Collection<Operation> operations = splitClipboardOperation(world, clipboard, vector3);
+    final CompletableFuture<Void> future = new CompletableFuture<>();
+    final OperationRunnable runnable = new OperationRunnable(operations, future);
+    runnable.runTaskTimer(plugin, 1L, 1L);
+    return future;
+  }
+
+  private static @NotNull Collection<Operation> splitClipboardOperation(
+    final com.sk89q.worldedit.world.World world,
+    final Clipboard clipboard,
+    final SerializableVector vector3
+  ) {
+    final BlockVector3 dimensions = clipboard.getDimensions();
+    final int width = dimensions.x();
+    final int height = dimensions.y();
+    final int length = dimensions.z();
+    final int chunkSize = 16;
+    final int xChunks = (int) Math.ceil((double) width / chunkSize);
+    final int yChunks = (int) Math.ceil((double) height / chunkSize);
+    final int zChunks = (int) Math.ceil((double) length / chunkSize);
+    final Collection<Operation> operations = new ArrayList<>();
+    final BlockVector3 origin = clipboard.getOrigin();
+    final BlockVector3 destPos = vector3.getVector3();
+    for (int x = 0; x < xChunks; x++) {
+      for (int y = 0; y < yChunks; y++) {
+        for (int z = 0; z < zChunks; z++) {
+          final int startX = x * chunkSize;
+          final int startY = y * chunkSize;
+          final int startZ = z * chunkSize;
+          final int endX = Math.min(startX + chunkSize, width);
+          final int endY = Math.min(startY + chunkSize, height);
+          final int endZ = Math.min(startZ + chunkSize, length);
+          final BlockVector3 min = BlockVector3.at(startX, startY, startZ);
+          final BlockVector3 max = BlockVector3.at(endX - 1, endY - 1, endZ - 1);
+          final BlockVector3 first = origin.add(min);
+          final BlockVector3 second = origin.add(max);
+          final CuboidRegion region = new CuboidRegion(first, second);
+          final BlockVector3 offset = destPos.add(min);
+          final Operation op = new ForwardExtentCopy(clipboard, region, world, offset);
+          operations.add(op);
+        }
       }
-      final ClipboardHolder holder = new ClipboardHolder(clipboard);
-      final BlockVector3 internal = vector3.getVector3();
-      final PasteBuilder extent = holder.createPaste(session).to(internal).copyBiomes(false);
-      final Operation operation = extent.build();
-      Operations.complete(operation);
-      return true;
     }
+    return operations;
   }
 
   public static Clipboard loadSchematic(final Schematic schematic) throws IOException {

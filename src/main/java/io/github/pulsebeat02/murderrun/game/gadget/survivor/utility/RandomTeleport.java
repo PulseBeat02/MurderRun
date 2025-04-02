@@ -36,7 +36,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
+import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;

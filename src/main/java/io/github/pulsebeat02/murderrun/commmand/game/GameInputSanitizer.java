@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.extension.parties.PartiesManager;
 import io.github.pulsebeat02.murderrun.game.lobby.*;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -76,13 +77,16 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfNoQuickJoinableGame(final Player sender, final Audience audience, final GameManager manager) {
-    final boolean success = manager.quickJoinGame(sender);
-    if (!success) {
-      audience.sendMessage(Message.GAME_NONE.build());
-      return true;
-    }
-    return false;
+  public CompletableFuture<Boolean> checkIfNoQuickJoinableGame(final Player sender, final Audience audience, final GameManager manager) {
+    return manager
+      .quickJoinGame(sender)
+      .thenApply(success -> {
+        if (!success) {
+          audience.sendMessage(Message.GAME_NONE.build());
+          return true;
+        }
+        return false;
+      });
   }
 
   public boolean checkIfGameFull(final Player sender, final Audience audience, final GameManager manager, final PreGameManager game) {

@@ -27,8 +27,6 @@ package io.github.pulsebeat02.murderrun.game.map;
 
 import static java.util.Objects.requireNonNull;
 
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
@@ -36,12 +34,12 @@ import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.lobby.Lobby;
 import io.github.pulsebeat02.murderrun.immutable.SerializableVector;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
-import io.github.pulsebeat02.murderrun.utils.MapUtils;
-import java.io.IOException;
+import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
@@ -97,17 +95,14 @@ public final class MapSchematicIO {
     return world;
   }
 
-  public void pasteMap() {
-    MapUtils.enableExtent();
-    try {
-      this.copyCitizensNPCs();
-      this.createWorld();
-      this.pasteLobbySchematic();
-      this.pasteArenaSchematic();
-      this.pasteCitizensNPCs();
-    } catch (final WorldEditException | IOException e) {
-      throw new AssertionError(e);
-    }
+  public CompletableFuture<Void> pasteMap() {
+    return CompletableFuture.completedFuture(null)
+      .thenRun(MapUtils::enableExtent)
+      .thenRun(this::copyCitizensNPCs)
+      .thenRun(this::createWorld)
+      .thenCompose(v -> this.pasteLobbySchematic())
+      .thenCompose(v -> this.pasteArenaSchematic())
+      .thenRun(this::pasteCitizensNPCs);
   }
 
   private void removeCitizensNPCs() {
@@ -155,24 +150,23 @@ public final class MapSchematicIO {
     }
   }
 
-  private void pasteArenaSchematic() throws WorldEditException, IOException {
+  private CompletableFuture<Void> pasteArenaSchematic() {
     final Arena arena = requireNonNull(this.settings.getArena());
     final Schematic schematic = arena.getSchematic();
-    this.pasteSchematic(schematic);
+    return this.pasteSchematic(schematic);
   }
 
-  private void pasteLobbySchematic() throws WorldEditException, IOException {
+  private CompletableFuture<Void> pasteLobbySchematic() {
     final Lobby lobby = requireNonNull(this.settings.getLobby());
     final Schematic schematic = lobby.getSchematic();
-    this.pasteSchematic(schematic);
+    return this.pasteSchematic(schematic);
   }
 
-  private void pasteSchematic(final Schematic schematic) throws WorldEditException {
+  private CompletableFuture<Void> pasteSchematic(final Schematic schematic) {
     final SerializableVector vector3 = schematic.getOrigin();
     final Clipboard clipboard = schematic.getClipboard();
     final com.sk89q.worldedit.world.World world = this.getWorld();
-    final WorldEdit instance = WorldEdit.getInstance();
-    MapUtils.performPaste(instance, world, clipboard, vector3);
+    return MapUtils.performPaste(world, clipboard, vector3);
   }
 
   private com.sk89q.worldedit.world.World getWorld() {

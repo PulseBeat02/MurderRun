@@ -163,10 +163,9 @@ public final class GameCommand implements AnnotationCommandFeature {
     ) {
       return;
     }
-    this.manager.createGame(sender, id, arenaName, lobbyName, min, max, quickJoinable);
-
-    final Component message = Message.GAME_CREATED.build();
-    audience.sendMessage(message);
+    this.manager.createGame(sender, id, arenaName, lobbyName, min, max, quickJoinable).thenRun(() ->
+        audience.sendMessage(Message.GAME_CREATED.build())
+      );
   }
 
   @Permission("murderrun.command.game.cancel")
@@ -363,15 +362,20 @@ public final class GameCommand implements AnnotationCommandFeature {
   public void quickJoinGame(final Player sender) {
     final Audience audience = this.audiences.player(sender);
     final PreGameManager temp = this.manager.getGame(sender);
-    if (this.sanitizer.checkIfAlreadyInGame(audience, temp) || this.sanitizer.checkIfNoQuickJoinableGame(sender, audience, this.manager)) {
+    if (this.sanitizer.checkIfAlreadyInGame(audience, temp)) {
       return;
     }
 
-    final PreGameManager data = requireNonNull(this.manager.getGame(sender));
-    final PreGamePlayerManager playerManager = data.getPlayerManager();
-    final CommandSender leader = playerManager.getLeader();
-    this.invites.removeInvite(leader, sender);
-    this.sendJoinMessage(sender, (data));
+    this.sanitizer.checkIfNoQuickJoinableGame(sender, audience, this.manager).thenAccept(value -> {
+        if (value) {
+          return;
+        }
+        final PreGameManager data = requireNonNull(this.manager.getGame(sender));
+        final PreGamePlayerManager playerManager = data.getPlayerManager();
+        final CommandSender leader = playerManager.getLeader();
+        this.invites.removeInvite(leader, sender);
+        this.sendJoinMessage(sender, (data));
+      });
   }
 
   @Permission("murderrun.command.game.gui")

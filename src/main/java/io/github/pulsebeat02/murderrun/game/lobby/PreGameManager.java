@@ -31,6 +31,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.event.PreGameEvents;
 import io.github.pulsebeat02.murderrun.game.map.MapSchematicIO;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -58,13 +59,13 @@ public final class PreGameManager {
     this.uuid = UUID.randomUUID();
   }
 
-  public void initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
+  public CompletableFuture<Void> initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
     this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.events = new PreGameEvents(this);
     this.mapSchematicIO = new MapSchematicIO(this.settings, this.uuid);
     this.events.registerEvents();
     this.manager.initialize();
-    this.mapSchematicIO.pasteMap();
+    return this.mapSchematicIO.pasteMap();
   }
 
   public void startGame() {
