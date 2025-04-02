@@ -36,6 +36,7 @@ import me.brandonli.murderrun.game.map.TruckManager;
 import me.brandonli.murderrun.game.map.part.CarPart;
 import me.brandonli.murderrun.game.map.part.PartsManager;
 import me.brandonli.murderrun.game.player.*;
+import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.item.ItemFactory;

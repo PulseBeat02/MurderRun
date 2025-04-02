@@ -332,7 +332,11 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
+    if (
+      this.sanitizer.checkIfInNoGame(audience, data) ||
+      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
+      this.sanitizer.checkIfGameHasStarted(audience, data)
+    ) {
       return;
     }
 
@@ -351,7 +355,11 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
+    if (
+      this.sanitizer.checkIfInNoGame(audience, data) ||
+      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
+      this.sanitizer.checkIfGameHasStarted(audience, data)
+    ) {
       return;
     }
 

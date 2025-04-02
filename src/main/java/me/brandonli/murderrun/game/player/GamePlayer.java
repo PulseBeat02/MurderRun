@@ -30,6 +30,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.*;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.player.death.DeathManager;
+import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;

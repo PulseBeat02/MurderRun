@@ -29,9 +29,12 @@ import java.util.*;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.gui.gadget.GadgetTestingGui;
+import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.InventoryUtils;
 import me.brandonli.murderrun.utils.TradingUtils;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
@@ -46,11 +49,14 @@ import org.incendo.cloud.context.CommandContext;
 
 public final class GadgetCommand implements AnnotationCommandFeature {
 
+  private BukkitAudiences audiences;
   private MurderRun plugin;
 
   @Override
   public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+    final AudienceProvider audienceProvider = plugin.getAudience();
     this.plugin = plugin;
+    this.audiences = audienceProvider.retrieve();
   }
 
   @Command("murder gadget menu")
@@ -67,8 +73,9 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.gadget.retrieve.info")
   public void retrieveGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
     final List<MerchantRecipe> recipes = TradingUtils.parseGadgetRecipes(gadgetName);
+    final Audience audience = this.audiences.player(sender);
     if (recipes.isEmpty()) {
-      sender.sendMessage(Message.GADGET_RETRIEVE_ERROR.toString());
+      audience.sendMessage(Message.GADGET_RETRIEVE_ERROR.build());
       return;
     }
 

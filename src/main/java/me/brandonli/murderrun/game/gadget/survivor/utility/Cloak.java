@@ -35,6 +35,8 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Item;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public final class Cloak extends SurvivorGadget {
 
@@ -54,7 +56,9 @@ public final class Cloak extends SurvivorGadget {
     item.remove();
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.hideNameTagForAliveInnocents(GameProperties.CLOAK_DURATION);
+    manager.applyToLivingSurvivors(survivor ->
+      survivor.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, GameProperties.CLOAK_DURATION, 0))
+    );
 
     final Component message = Message.CLOAK_ACTIVATE.build();
     manager.sendMessageToAllLivingSurvivors(message);

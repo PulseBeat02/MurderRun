@@ -29,9 +29,12 @@ import java.util.List;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.gui.ability.AbilityTestingGui;
+import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.InventoryUtils;
 import me.brandonli.murderrun.utils.TradingUtils;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,11 +45,14 @@ import org.incendo.cloud.context.CommandContext;
 
 public final class AbilityCommand implements AnnotationCommandFeature {
 
+  private BukkitAudiences audiences;
   private MurderRun plugin;
 
   @Override
   public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+    final AudienceProvider audienceProvider = plugin.getAudience();
     this.plugin = plugin;
+    this.audiences = audienceProvider.retrieve();
   }
 
   @Command("murder ability menu")
@@ -63,8 +69,9 @@ public final class AbilityCommand implements AnnotationCommandFeature {
   @CommandDescription("murderrun.command.ability.retrieve.info")
   public void retrieveAbility(final Player sender, @Argument(suggestions = "ability-suggestions") @Quoted final String abilityName) {
     final List<ItemStack> recipes = TradingUtils.parseAbilityRecipes(abilityName);
+    final Audience audience = this.audiences.player(sender);
     if (recipes.isEmpty()) {
-      sender.sendMessage(Message.ABILITY_RETRIEVE_ERROR.toString());
+      audience.sendMessage(Message.ABILITY_RETRIEVE_ERROR.build());
       return;
     }
 

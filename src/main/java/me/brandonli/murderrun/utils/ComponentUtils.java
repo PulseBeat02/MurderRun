@@ -25,6 +25,7 @@ SOFTWARE.
 */
 package me.brandonli.murderrun.utils;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 
@@ -39,8 +40,10 @@ import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -49,9 +52,27 @@ public final class ComponentUtils {
   private static final LegacyComponentSerializer LEGACY_SERIALIZER = BukkitComponentSerializer.legacy();
   private static final PlainTextComponentSerializer PLAIN_SERIALIZER = PlainTextComponentSerializer.plainText();
   private static final Pattern PATTERN = Pattern.compile("(?i)§[0-9A-FK-OR]");
+  private static final Map<ChatColor, NamedTextColor> COLOR_MAP = new HashMap<>();
+
+  static {
+    final ChatColor[] chatColors = ChatColor.values();
+    for (final ChatColor chatColor : chatColors) {
+      if (!chatColor.isColor()) {
+        continue;
+      }
+      final String name = chatColor.name();
+      final String lower = name.toLowerCase(Locale.ROOT);
+      final NamedTextColor namedTextColor = requireNonNull(NamedTextColor.NAMES.value(lower));
+      COLOR_MAP.put(chatColor, namedTextColor);
+    }
+  }
 
   private ComponentUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static NamedTextColor getNamedTextColor(final ChatColor chatColor) {
+    return COLOR_MAP.getOrDefault(chatColor, NamedTextColor.WHITE);
   }
 
   public static Component createLocationComponent(

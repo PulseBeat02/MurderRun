@@ -27,8 +27,8 @@ package me.brandonli.murderrun.game.player.phase;
 
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
-import me.brandonli.murderrun.game.player.MetadataManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
+import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.map.MapUtils;
 import org.bukkit.GameMode;
@@ -57,7 +57,6 @@ public final class PlayerResetTool {
     final PersistentDataContainer container = gamePlayer.getPersistentDataContainer();
     container.remove(Keys.KILLER_ROLE);
     metadata.setWorldBorderEffect(false);
-    metadata.setNameTagStatus(false);
     metadata.shutdown();
     audience.removeAllBossBars();
     gamePlayer.removeAllPotionEffects();

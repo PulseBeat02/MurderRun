@@ -38,6 +38,7 @@ import me.brandonli.murderrun.game.extension.citizens.CitizensManager;
 import me.brandonli.murderrun.game.gadget.killer.KillerGadget;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.player.*;
+import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.MergedReference;
 import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;

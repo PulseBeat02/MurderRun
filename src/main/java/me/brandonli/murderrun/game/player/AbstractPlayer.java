@@ -27,6 +27,10 @@ package me.brandonli.murderrun.game.player;
 
 import static java.util.Objects.requireNonNull;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.github.retrooper.packetevents.manager.player.PlayerManager;
+import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -403,5 +407,17 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public @Nullable Block getTargetBlockExact(final int max) {
     return this.applyFunction(player -> player.getTargetBlockExact(max));
+  }
+
+  @Override
+  public void sendPacket(final PacketWrapper<?> wrapper) {
+    final PacketEventsAPI<?> packetEvents = PacketEvents.getAPI();
+    final PlayerManager manager = packetEvents.getPlayerManager();
+    this.apply(player -> manager.sendPacket(player, wrapper));
+  }
+
+  @Override
+  public boolean isValid() {
+    return this.applyFunction(Player::isValid);
   }
 }

@@ -25,12 +25,14 @@ SOFTWARE.
 */
 package me.brandonli.murderrun.game.player;
 
+import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.player.death.DeathManager;
+import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -211,4 +213,8 @@ public interface Participant {
 
   @Nullable
   Block getTargetBlockExact(final int max);
+
+  void sendPacket(final PacketWrapper<?> wrapper);
+
+  boolean isValid();
 }

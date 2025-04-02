@@ -100,6 +100,17 @@ public final class GameInputSanitizer {
     return false;
   }
 
+  public boolean checkIfGameHasStarted(final Audience audience, final PreGameManager data) {
+    final Game game = data.getGame();
+    final GameStatus status = game.getStatus();
+    final GameStatus.Status gameStatus = status.getStatus();
+    if (gameStatus != GameStatus.Status.NOT_STARTED) {
+      audience.sendMessage(Message.GAME_ERROR_STARTED.build());
+      return true;
+    }
+    return false;
+  }
+
   public boolean checkIfNotOwner(final CommandSender sender, final Audience audience, final PreGameManager data) {
     final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isLeader(sender)) {

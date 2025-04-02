@@ -33,6 +33,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.player.death.PlayerDeathTool;
+import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.resourcepack.sound.SoundResource;
@@ -234,15 +235,6 @@ public interface PlayerManagerHelper {
     this.applyToLivingSurvivors(innocent -> {
         final MetadataManager metadata = innocent.getMetadataManager();
         entity.apply(target -> metadata.setEntityGlowing(target, color, false));
-      });
-  }
-
-  default void hideNameTagForAliveInnocents(final long ticks) {
-    final Game game = this.getGame();
-    final GameScheduler scheduler = game.getScheduler();
-    this.applyToLivingSurvivors(innocent -> {
-        final MetadataManager metadata = innocent.getMetadataManager();
-        metadata.hideNameTag(scheduler, ticks);
       });
   }
 
