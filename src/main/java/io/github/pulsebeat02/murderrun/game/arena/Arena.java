@@ -91,6 +91,7 @@ public final class Arena implements Serializable {
     this.carPartLocations = carPartLocations;
     this.spawn = spawn;
     this.truck = truck;
+    this.schematic.loadSchematicIntoMemory();
   }
 
   public Arena(final Arena arena) {

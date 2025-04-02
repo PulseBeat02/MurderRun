@@ -112,6 +112,7 @@ public final class MapSchematicIO {
 
   private void removeCitizensNPCs() {
     for (final NPC npc : this.npcs) {
+      npc.despawn();
       npc.destroy();
     }
   }
@@ -138,6 +139,9 @@ public final class MapSchematicIO {
     final String realName = realWorld.getName();
     for (final NPC npc : registry) {
       final Location location = npc.getStoredLocation();
+      if (location == null) {
+        continue;
+      }
       final World world = requireNonNull(location.getWorld());
       final String name = world.getName();
       if (!realName.equals(name)) {

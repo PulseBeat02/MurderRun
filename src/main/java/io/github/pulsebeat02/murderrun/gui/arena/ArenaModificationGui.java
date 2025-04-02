@@ -38,6 +38,7 @@ import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -339,9 +340,10 @@ public final class ArenaModificationGui extends ChestGui implements Listener {
       future = CompletableFuture.completedFuture(drops);
     }
 
+    final Location actual = MapUtils.getActualSpawnLocation(spawn);
     future.thenAccept(items -> {
       final ArenaManager manager = this.plugin.getArenaManager();
-      manager.addArena(name, corners, items, spawn, truck);
+      manager.addArena(name, corners, items, actual, truck);
 
       if (!name.equals(this.originalName)) {
         manager.removeArena(this.originalName);

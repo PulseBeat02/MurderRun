@@ -34,6 +34,7 @@ import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -217,9 +218,10 @@ public final class ArenaCommand implements AnnotationCommandFeature {
       future = CompletableFuture.completedFuture(locations);
     }
 
+    final Location actual = MapUtils.getActualSpawnLocation(this.spawn);
     future.thenAccept(items -> {
       final ArenaManager manager = this.plugin.getArenaManager();
-      manager.addArena(this.name, corners, items, this.spawn, this.truck);
+      manager.addArena(this.name, corners, items, actual, this.truck);
       this.plugin.updatePluginData();
 
       final Component msg1 = Message.ARENA_BUILT.build();

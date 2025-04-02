@@ -57,6 +57,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
@@ -68,6 +70,12 @@ public final class MapUtils {
 
   private MapUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static Location getActualSpawnLocation(final Location location) {
+    final Block block = location.getBlock();
+    final Block top = block.getRelative(BlockFace.UP);
+    return top.getLocation();
   }
 
   public static Location[] copyLocationArray(final Location... locations) {

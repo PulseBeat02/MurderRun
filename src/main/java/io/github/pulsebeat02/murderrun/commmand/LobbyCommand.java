@@ -31,6 +31,7 @@ import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.ComponentUtils;
+import io.github.pulsebeat02.murderrun.utils.MapUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +139,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
 
     final Location[] corners = { this.first, this.second };
     final LobbyManager manager = this.plugin.getLobbyManager();
-    manager.addLobby(this.name, corners, this.spawn);
+    final Location actual = MapUtils.getActualSpawnLocation(this.spawn);
+    manager.addLobby(this.name, corners, actual);
 
     this.plugin.updatePluginData();
 

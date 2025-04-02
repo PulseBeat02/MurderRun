@@ -72,6 +72,7 @@ public final class Lobby implements Serializable {
     this.name = name;
     this.corners = corners;
     this.lobbySpawn = lobbySpawn;
+    this.schematic.loadSchematicIntoMemory();
   }
 
   public Lobby(final Lobby lobby) {
