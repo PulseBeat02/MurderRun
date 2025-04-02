@@ -37,6 +37,8 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  double KILLER_SPRINT_TIME = dec("killer.sprint_time");
+  double SURVIVOR_SPRINT_TIME = dec("survivor.sprint_time");
   double TRAP_VEST_VELOCITY = dec("trap_vest.velocity");
   double SONIC_BOOM_KNOCKBACK = dec("sonicboom.knockback");
   double SONIC_BOOM_RADIUS = dec("sonicboom.radius");

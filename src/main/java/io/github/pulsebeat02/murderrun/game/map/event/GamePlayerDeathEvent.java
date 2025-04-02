@@ -49,12 +49,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 public final class GamePlayerDeathEvent extends GameEvent {
 
   public GamePlayerDeathEvent(final Game game) {
     super(game);
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST)
+  public void onPlayerRespawn(final PlayerRespawnEvent event) {
+    final Player player = event.getPlayer();
+    if (!this.isGamePlayer(player)) {
+      return;
+    }
+
+    final Game game = this.getGame();
+    final GamePlayerManager manager = game.getPlayerManager();
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    final DeathManager deathManager = gamePlayer.getDeathManager();
+    deathManager.runDeathTasks();
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -69,7 +84,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
     final List<ItemStack> drops = event.getDrops();
-    gamePlayer.setDeathLoot(drops);
+    deathManager.setDeathLoot(drops);
 
     final boolean isLogging = gamePlayer.isLoggingOut();
     final Location current = player.getLocation();
@@ -77,10 +92,10 @@ public final class GamePlayerDeathEvent extends GameEvent {
     event.setDroppedExp(0);
     event.setDeathMessage(null);
     this.announcePlayerDeath(player);
+    drops.clear();
 
     if (deathManager.checkDeathCancellation() && !isLogging) {
       event.setKeepInventory(true);
-      drops.clear();
       return;
     }
 
@@ -91,7 +106,6 @@ public final class GamePlayerDeathEvent extends GameEvent {
     event.setKeepInventory(true);
     event.setDeathMessage(null);
     deathManager.runDeathTasks();
-    drops.clear();
     this.playDeathSoundEffect();
 
     final MurderRun plugin = game.getPlugin();

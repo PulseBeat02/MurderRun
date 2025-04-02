@@ -29,16 +29,18 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
+import io.github.pulsebeat02.murderrun.game.GameSettings;
+import io.github.pulsebeat02.murderrun.game.arena.Arena;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetLoadingMechanism;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
-import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.List;
@@ -68,35 +70,56 @@ public final class TrapVest extends SurvivorAbility {
       if (!participant.hasAbility(TRAP_VEST_NAME)) {
         return;
       }
-      final Survivor survivor = (Survivor) participant;
-      final Location location = survivor.getLocation();
-      final World world = requireNonNull(location.getWorld());
-      final GadgetManager gadgetManager = game.getGadgetManager();
-      final DeathManager deathManager = survivor.getDeathManager();
-      final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleTraps(gadgetManager, survivor, world), false);
+      final DeathManager deathManager = participant.getDeathManager();
+      final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleTrapVest(participant), false);
       deathManager.addDeathTask(task);
     });
   }
 
-  private void handleTraps(final GadgetManager manager, final GamePlayer player, final World world) {
+  private void handleTrapVest(final GamePlayer gamePlayer) {
+    this.teleport(gamePlayer);
+    this.handleTraps(gamePlayer);
+  }
+
+  private void teleport(final GamePlayer gamePlayer) {
+    final Game game = this.getGame();
+    final GameSettings settings = game.getSettings();
+    final Arena arena = requireNonNull(settings.getArena());
+    final Location location = arena.getSpawn();
+    final Location clone = location.clone();
+    final Location ghostLocation = clone.add(0, 1, 0);
+    gamePlayer.setRespawnLocation(ghostLocation, true);
+  }
+
+  private void handleTraps(final GamePlayer player) {
+    final Game game = this.getGame();
+    final GadgetManager manager = game.getGadgetManager();
     final Location location = requireNonNull(player.getDeathLocation());
-    final List<ItemStack> drops = player.getDeathLoot();
+    final DeathManager deathManager = player.getDeathManager();
+    final List<ItemStack> drops = deathManager.getDeathLoot();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
     final double multiplier = GameProperties.TRAP_VEST_VELOCITY;
+    final World world = requireNonNull(location.getWorld());
     for (final ItemStack slot : drops) {
       if (slot == null) {
-        return;
+        continue;
       }
-      final Item droppedItem = world.dropItem(location, slot);
-      final ItemStack stack = droppedItem.getItemStack();
-      final Gadget gadget = mechanism.getGadgetFromStack(stack);
-      if (gadget instanceof SurvivorTrap) {
-        final Vector velocity = new Vector(
-          (RandomUtils.generateDouble() - 0.5) * multiplier,
-          RandomUtils.generateDouble() * multiplier,
-          (RandomUtils.generateDouble() - 0.5) * multiplier
-        );
-        droppedItem.setVelocity(velocity);
+      if (PDCUtils.isAbility(slot)) {
+        continue;
+      }
+      final int count = slot.getAmount();
+      for (int i = 0; i < count; i++) {
+        final Item droppedItem = world.dropItem(location, slot);
+        final ItemStack stack = droppedItem.getItemStack();
+        final Gadget gadget = mechanism.getGadgetFromStack(stack);
+        if (gadget instanceof SurvivorTrap) {
+          final Vector velocity = new Vector(
+            (RandomUtils.generateDouble() - 0.5) * multiplier,
+            RandomUtils.generateDouble() * multiplier,
+            (RandomUtils.generateDouble() - 0.5) * multiplier
+          );
+          droppedItem.setVelocity(velocity);
+        }
       }
     }
   }

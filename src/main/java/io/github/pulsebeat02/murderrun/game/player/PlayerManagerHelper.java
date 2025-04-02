@@ -64,8 +64,14 @@ public interface PlayerManagerHelper {
 
   Stream<GamePlayer> getLivingInnocentPlayers();
 
+  Stream<GamePlayer> getLivingKillerPlayers();
+
   default void applyToKillers(final Consumer<GamePlayer> consumer) {
     this.getKillers().forEach(consumer);
+  }
+
+  default void applyToLivingKillers(final Consumer<GamePlayer> consumer) {
+    this.getLivingKillerPlayers().forEach(consumer);
   }
 
   Stream<GamePlayer> getKillers();

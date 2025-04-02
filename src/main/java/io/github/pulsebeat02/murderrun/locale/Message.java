@@ -30,6 +30,7 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> SPRINT_TIP = direct("murderrun.game.tip.sprint");
   NullComponent<Sender> EMPTY_ABILITY_NAME = direct("murderrun.game.ability.empty.name");
   NullComponent<Sender> EMPTY_ABILITY_LORE = direct("murderrun.game.ability.empty.lore");
   NullComponent<Sender> SONIC_BOOM_NAME = direct("murderrun.game.ability.sonicboom.name");

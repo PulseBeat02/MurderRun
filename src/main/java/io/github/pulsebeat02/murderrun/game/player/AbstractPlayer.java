@@ -383,4 +383,19 @@ public abstract class AbstractPlayer implements Participant {
     }
     return false;
   }
+
+  @Override
+  public boolean isSprinting() {
+    return this.applyFunction(Player::isSprinting);
+  }
+
+  @Override
+  public int getFoodLevel() {
+    return this.applyFunction(Player::getFoodLevel);
+  }
+
+  @Override
+  public boolean getInternalDeathState() {
+    return this.applyFunction(Player::isDead);
+  }
 }

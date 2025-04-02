@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.map.event;
+package io.github.pulsebeat02.murderrun.game.player.death;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public final class GamePlayerHungerEvent extends GameEvent {
+public final class WaitDeathTask extends BukkitRunnable {
 
-  public GamePlayerHungerEvent(final Game game) {
-    super(game);
+  private final PlayerDeathTask task;
+  private final GamePlayer player;
+
+  public WaitDeathTask(final PlayerDeathTask task, final GamePlayer player) {
+    this.task = task;
+    this.player = player;
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
-  private void onHungerDeplete(final FoodLevelChangeEvent event) {
-    final HumanEntity entity = event.getEntity();
-    if (!(entity instanceof final Player player)) {
-      return;
+  @Override
+  public void run() {
+    final boolean death = this.player.getInternalDeathState();
+    if (!death) {
+      this.task.run();
+      this.cancel();
     }
-
-    if (!this.isGamePlayer(player)) {
-      return;
-    }
-
-    event.setCancelled(true);
   }
 }
