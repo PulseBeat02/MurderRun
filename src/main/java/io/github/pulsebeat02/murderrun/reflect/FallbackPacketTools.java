@@ -25,19 +25,95 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.reflect;
 
+import io.github.pulsebeat02.murderrun.reflect.versioning.ServerEnvironment;
 import io.netty.channel.ChannelFuture;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.invoke.VarHandle;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
 public final class FallbackPacketTools implements PacketToolAPI {
+
+  private static final Class<?> MAPPED_CONNECTION_CLASS;
+  private static final List<ChannelFuture> CONNECTIONS;
+
+  static {
+    try {
+      MAPPED_CONNECTION_CLASS = Class.forName("net.minecraft.network.NetworkManager");
+      CONNECTIONS = getConnections();
+    } catch (final Throwable e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private static List<ChannelFuture> getConnections() throws Throwable {
+    final Object connection = getConnectionHandle();
+    final VarHandle handle = getConnectionsVarHandle();
+    return (List<ChannelFuture>) handle.get(connection);
+  }
+
+  private static VarHandle getConnectionsVarHandle() throws ClassNotFoundException, IllegalAccessException {
+    final Class<?> target = Class.forName("net.minecraft.server.network.ServerConnection");
+    final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(target, lookup);
+    try {
+      return privateLookup.findVarHandle(target, "channels", List.class);
+    } catch (final NoSuchFieldException | IllegalAccessException e) {
+      try {
+        return privateLookup.findVarHandle(target, "f", List.class);
+      } catch (final NoSuchFieldException | IllegalAccessException ex) {
+        throw new AssertionError(ex);
+      }
+    }
+  }
+
+  private static Object getConnectionHandle() throws Throwable {
+    final Server craftServer = Bukkit.getServer();
+    final MethodHandle getServerHandle = getServerHandle();
+    final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    final Object dedicatedServer = getServerHandle.invoke(craftServer);
+    final Class<?> dedicatedServerClass = dedicatedServer.getClass();
+    final String connectionName = "net.minecraft.server.network.ServerConnection";
+    final Class<?> connectionClass = Class.forName(connectionName);
+    final MethodType getConnectionType = MethodType.methodType(connectionClass);
+    final MethodHandle getConnectionHandle = lookup.findVirtual(dedicatedServerClass, "ah", getConnectionType);
+    return getConnectionHandle.invoke(dedicatedServer);
+  }
+
+  private static MethodHandle getServerHandle() throws NoSuchMethodException, IllegalAccessException, ClassNotFoundException {
+    final String rev = ServerEnvironment.getNMSRevision();
+    final String craftServerClass = "org.bukkit.craftbukkit.%s.CraftServer".formatted(rev);
+    final Class<?> craftServerType = Class.forName(craftServerClass);
+    final MethodHandles.Lookup lookup = MethodHandles.lookup();
+    final String dedicatedServerClass = "net.minecraft.server.dedicated.DedicatedServer";
+    final Class<?> dedicatedServerClassType = Class.forName(dedicatedServerClass);
+    final MethodType methodType = MethodType.methodType(dedicatedServerClassType);
+    return lookup.findVirtual(craftServerType, "getServer", methodType);
+  }
+
+  private final Map<Location, Slime> slimes;
+
+  public FallbackPacketTools() {
+    this.slimes = new HashMap<>();
+  }
 
   @Override
   public byte[] toByteArray(final ItemStack item) {
@@ -71,16 +147,41 @@ public final class FallbackPacketTools implements PacketToolAPI {
 
   @Override
   public void setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
-    throw new UnsupportedOperationException("Can't set block glowing! Use a different pack provider solution");
+    final Block block = target.getBlock(); // limited functionality
+    final World world = block.getWorld();
+    final Location blockLocation = block.getLocation();
+    final double centerX = blockLocation.getBlockX() + 0.5;
+    final double centerY = blockLocation.getBlockY();
+    final double centerZ = blockLocation.getBlockZ() + 0.5;
+    final Location spawnLocation = new Location(world, centerX, centerY, centerZ);
+    if (glowing) {
+      if (this.slimes.containsKey(target)) {
+        return;
+      }
+      final Slime spawned = world.spawn(spawnLocation, Slime.class, slime -> {
+        slime.setSize(2);
+        slime.setGlowing(true);
+        slime.setInvisible(true);
+        slime.setAI(false);
+        slime.setCollidable(false);
+        slime.setInvulnerable(true);
+      });
+      this.slimes.put(target, spawned);
+    } else {
+      final Slime slime = this.slimes.remove(target);
+      if (slime != null) {
+        slime.remove();
+      }
+    }
   }
 
   @Override
   public Class<?> getMappedConnectionClass() {
-    throw new UnsupportedOperationException("Unable to get mapped connection class!");
+    return MAPPED_CONNECTION_CLASS;
   }
 
   @Override
   public List<ChannelFuture> getServerChannels() {
-    throw new UnsupportedOperationException("Unable to get server channels!");
+    return CONNECTIONS;
   }
 }
