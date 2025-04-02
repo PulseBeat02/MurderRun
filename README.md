@@ -47,9 +47,9 @@ options that you can configure to your own heart's desire.
   - Integrates with LibsDisguises for Custom Gadgets
   - Integrates with Parties for Custom Games
   - Integrates with Nexo for Custom Items
-  - Integrates with WorldEdit for Automatic Arena Resets
+  - Integrates with WorldEdit for Automatic Arena Instances
   - Integrates with Citizens for Custom NPCs
-  - PlaceholderAPI, LibsDisguises, and Parties Not Required
+  - Integrates with Vault for Economy Support
 - No Dependencies / Setup Involved, Just Drop the JAR into Plugins Folder
 - Customisable Resource Pack
   - Customisable Item Textures, Sounds

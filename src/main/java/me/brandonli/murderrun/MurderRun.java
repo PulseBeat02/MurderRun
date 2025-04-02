@@ -41,6 +41,7 @@ import me.brandonli.murderrun.game.capability.Capabilities;
 import me.brandonli.murderrun.game.extension.nexo.NexoManager;
 import me.brandonli.murderrun.game.extension.papi.MurderRunExpansion;
 import me.brandonli.murderrun.game.extension.parties.PartiesManager;
+import me.brandonli.murderrun.game.extension.vault.VaultManager;
 import me.brandonli.murderrun.game.gadget.GadgetRegistry;
 import me.brandonli.murderrun.game.lobby.GameManager;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
@@ -89,6 +90,7 @@ public final class MurderRun extends JavaPlugin {
   private MurderRunExpansion expansion;
   private PartiesManager partiesManager;
   private NexoManager nexoManager;
+  private VaultManager vaultManager;
 
   private AtomicBoolean disabling;
   private VersionChecker versionChecker;
@@ -200,6 +202,9 @@ public final class MurderRun extends JavaPlugin {
     }
     if (Capabilities.NEXO.isEnabled()) {
       this.nexoManager = new NexoManager();
+    }
+    if (Capabilities.VAULT.isEnabled()) {
+      this.vaultManager = new VaultManager();
     }
   }
 
@@ -390,5 +395,9 @@ public final class MurderRun extends JavaPlugin {
 
   public VersionChecker getVersionChecker() {
     return this.versionChecker;
+  }
+
+  public VaultManager getVaultManager() {
+    return this.vaultManager;
   }
 }

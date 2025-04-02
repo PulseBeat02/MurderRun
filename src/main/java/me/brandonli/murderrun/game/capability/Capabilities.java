@@ -28,4 +28,5 @@ public final class Capabilities {
   public static Capability FASTASYNCWORLDEDIT = new PluginClassCapability("com.fastasyncworldedit.bukkit.FaweBukkit");
   public static Capability PARTIES = new PluginCapability("Parties");
   public static Capability NEXO = new PluginCapability("Nexo");
+  public static Capability VAULT = new PluginCapability("Vault");
 }

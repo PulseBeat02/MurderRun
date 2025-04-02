@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.*;
+import me.brandonli.murderrun.game.capability.Capabilities;
+import me.brandonli.murderrun.game.extension.vault.VaultManager;
 import me.brandonli.murderrun.game.lobby.Lobby;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
@@ -63,6 +65,7 @@ public final class GameCleanupTool {
     this.handleKillerWinStatistics();
     this.announceMurdererVictory();
     this.sprayFireworks();
+    this.giveMoney(false);
     this.executeCommands(false);
   }
 
@@ -71,6 +74,7 @@ public final class GameCleanupTool {
     this.announceInnocentVictory();
     this.invalidateTimer();
     this.sprayFireworks();
+    this.giveMoney(true);
     this.executeCommands(true);
   }
 
@@ -218,6 +222,24 @@ public final class GameCleanupTool {
       meta.setPower(2);
       firework.setFireworkMeta(meta);
     }
+  }
+
+  private void giveMoney(final boolean survivor) {
+    final double money = GameProperties.VAULT_REWARD;
+    if (Capabilities.VAULT.isDisabled()) {
+      return;
+    }
+
+    if (money <= 0) {
+      return;
+    }
+
+    final Game game = this.getGame();
+    final MurderRun plugin = game.getPlugin();
+    final VaultManager vaultManager = plugin.getVaultManager();
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    final Stream<GamePlayer> players = survivor ? manager.getSurvivors() : manager.getKillers();
+    players.forEach(player -> player.apply(raw -> vaultManager.depositMoney(raw, money)));
   }
 
   private void executeCommands(final boolean survivor) {

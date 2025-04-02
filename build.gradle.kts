@@ -35,6 +35,7 @@ repositories {
     maven("https://repo.alessiodp.com/releases/")
     maven("https://repo.nexomc.com/releases")
     maven("https://repo.codemc.io/repository/maven-releases/")
+    maven("https://jitpack.io")
 }
 
 val runtimeDeps = listOf(
@@ -85,6 +86,7 @@ dependencies {
     compileOnly(libs.adventureApi)
     compileOnly(libs.creativeSerializerMinecraft)
     compileOnly(libs.packetEvents)
+    compileOnly(libs.vaultApi)
 
     // Testing Dependencies
     testImplementation(libs.nettyAll)
@@ -173,6 +175,7 @@ tasks {
 
     runServer {
         downloadPlugins {
+            url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
             url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
             url("https://ci.extendedclip.com/job/PlaceholderAPI/lastSuccessfulBuild/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-206.jar")
             url("https://cdn.modrinth.com/data/rHRYOOoq/versions/yBAIVDGP/Parties-3.2.9.jar")

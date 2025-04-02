@@ -30,6 +30,7 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  double VAULT_REWARD = dec("vault.reward");
   double MOON_GRAVITY = dec("moon.gravity");
   int MOON_DURATION = num("moon.duration");
   String MOON_SOUND = str("moon.sound");
