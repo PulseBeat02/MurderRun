@@ -27,11 +27,11 @@ package io.github.pulsebeat02.murderrun;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.adventure.key.Key;
 import org.intellij.lang.annotations.Subst;
@@ -46,7 +46,7 @@ import team.unnamed.creative.texture.Texture;
 public final class CreativeTest {
 
   public static void main(final String[] args) {
-    final Path path = Path.of(System.getProperty("user.dir"), "resourcepack");
+    final Path path = Path.of("resources").toAbsolutePath();
     try (final Stream<Path> paths = Files.walk(path)) {
       final List<Path> files = paths.filter(Files::isRegularFile).toList();
       final ResourcePack pack = ResourcePack.resourcePack();
@@ -55,16 +55,23 @@ public final class CreativeTest {
         @Subst("")
         final String name = fileName.toString();
         final String extension = name.substring(name.lastIndexOf('.') + 1);
-        if (extension.equals("png")) {
-          final Key key = Key.key("murderrun", name);
-          final Texture texture = Texture.texture().key(key).data(Writable.path(path)).build();
-          final ModelTextures textures = ModelTextures.builder().layers(ModelTexture.ofKey(key)).build();
-          final Model model = Model.model().key(key).textures(textures).build();
+        @Subst("") final String nameWithoutExtension = name.substring(0, name.lastIndexOf('.'));
+        if (extension.equals("png") && !name.startsWith("diamond_layer") && !name.startsWith("bow_pulling")) {
+          final Texture texture = Texture.texture().key(Key.key("murderrun", "item/" + name)).data(Writable.path(file)).build();
+          final ModelTextures textures = ModelTextures.builder().layers(ModelTexture.ofKey(Key.key("murderrun", "item/" + nameWithoutExtension))).build();
+          final Model model = Model.model().parent(Model.ITEM_HANDHELD).key(Key.key("murderrun", "item/" + nameWithoutExtension)).textures(textures).build();
+          pack.unknownFile("assets/murderrun/items/" + nameWithoutExtension + ".json", Writable.stringUtf8("""
+                  {
+                    "model": {
+                      "type": "minecraft:model",
+                      "model": "murderrun:item/%s"
+                    }
+                  }""".formatted(nameWithoutExtension)));
           pack.model(model);
           pack.texture(texture);
-        } else if (extension.equals(".ogg")) {}
+        }
       }
-      MinecraftResourcePackWriter.minecraft().writeToZipFile(Path.of(System.getProperty("user.dir"), "murderrun.zip"), pack);
+      MinecraftResourcePackWriter.minecraft().writeToDirectory(new File("test-resources"), pack);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }
