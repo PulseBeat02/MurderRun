@@ -35,9 +35,13 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.MetadataManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.persistence.PersistentDataContainer;
+
+import java.util.List;
 
 public final class PlayerResetTool {
 
@@ -52,10 +56,9 @@ public final class PlayerResetTool {
   }
 
   public void handlePlayer(final GamePlayer gamePlayer) {
-    final Game game = this.manager.getGame();
-    final GameSettings configuration = game.getSettings();
-    final Lobby lobby = requireNonNull(configuration.getLobby());
-    final Location location = lobby.getLobbySpawn();
+    final List<World> worlds = Bukkit.getWorlds();
+    final World world = worlds.getFirst();
+    final Location location = world.getSpawnLocation();
     final MetadataManager metadata = gamePlayer.getMetadataManager();
     final PlayerAudience audience = gamePlayer.getAudience();
     final PersistentDataContainer container = gamePlayer.getPersistentDataContainer();

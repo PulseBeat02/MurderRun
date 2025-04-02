@@ -65,10 +65,10 @@ public final class DebugCommand implements AnnotationCommandFeature {
   @Command(value = "murder debug start", requiredSender = Player.class)
   public void startDebugGame(final Player sender) {
     final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
-    sender.performCommand("murder game create Arena Lobby game 2 5 true");
-    sender.performCommand("murder game set murderer PulseBeat_02");
-    other.performCommand("murder game join game");
-    sender.performCommand("murder game start");
+    sender.performCommand("party create Party");
+    sender.performCommand("party invite Player1");
+    other.performCommand("party accept");
+    sender.performCommand("murder game party Arena Lobby");
   }
 
   @Permission("murderrun.command.debug.start-multiple")
@@ -76,11 +76,12 @@ public final class DebugCommand implements AnnotationCommandFeature {
   public void startMultipleDebugGame(final Player sender) {
     final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
     final Player other1 = requireNonNull(Bukkit.getPlayer("Player2"));
-    sender.performCommand("murder game create Arena Lobby game 2 5 true");
-    sender.performCommand("murder game set murderer PulseBeat_02");
-    other.performCommand("murder game join game");
-    other1.performCommand("murder game join game");
-    sender.performCommand("murder game start");
+    sender.performCommand("party create Party");
+    sender.performCommand("party invite Player1");
+    sender.performCommand("party invite Player2");
+    other.performCommand("party accept");
+    other1.performCommand("party accept");
+    sender.performCommand("murder game party Arena Lobby");
   }
 
   @Permission("murderrun.command.debug.gadget")

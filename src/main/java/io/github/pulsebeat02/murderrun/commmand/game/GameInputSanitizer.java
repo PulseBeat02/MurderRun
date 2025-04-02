@@ -77,16 +77,8 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public CompletableFuture<Boolean> checkIfNoQuickJoinableGame(final Player sender, final Audience audience, final GameManager manager) {
-    return manager
-      .quickJoinGame(sender)
-      .thenApply(success -> {
-        if (!success) {
-          audience.sendMessage(Message.GAME_NONE.build());
-          return true;
-        }
-        return false;
-      });
+  public CompletableFuture<Boolean> checkIfNoQuickJoinableGame(final Player sender, final GameManager manager) {
+    return manager.quickJoinGame(sender);
   }
 
   public boolean checkIfGameFull(final Player sender, final Audience audience, final GameManager manager, final PreGameManager game) {

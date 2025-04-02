@@ -366,7 +366,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    this.sanitizer.checkIfNoQuickJoinableGame(sender, audience, this.manager).thenAccept(value -> {
+    this.sanitizer.checkIfNoQuickJoinableGame(sender, this.manager).thenAccept(value -> {
         if (value) {
           return;
         }

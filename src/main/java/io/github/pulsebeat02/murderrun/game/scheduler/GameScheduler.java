@@ -97,12 +97,6 @@ public final class GameScheduler {
     return this.scheduleTask(countdownTask, 0, 20);
   }
 
-  public BukkitTask scheduleTaskAfterOnGround(final Runnable runnable, final Entity item) {
-    final Reference<?> reference = EntityReference.of(item);
-    final Runnable task = () -> this.waitForFall(runnable, item);
-    return this.scheduleConditionalTask(task, 0, 20L, item::isOnGround, reference);
-  }
-
   public BukkitTask scheduleTaskUntilDeath(final Runnable runnable, final Entity entity) {
     final Reference<?> reference = EntityReference.of(entity);
     final Runnable task = () -> this.waitForDeath(runnable, entity);
@@ -112,8 +106,7 @@ public final class GameScheduler {
   public BukkitTask scheduleParticleTaskUntilDeath(final Item item, final Color color) {
     final World world = item.getWorld();
     final Runnable particleTask = () -> this.spawnParticles(item, color, world);
-    final Runnable task = () -> this.scheduleTaskAfterOnGround(particleTask, item);
-    return this.scheduleTaskUntilDeath(task, item);
+    return this.scheduleTaskUntilDeath(particleTask, item);
   }
 
   public BukkitTask scheduleAfterDeath(final Runnable runnable, final Entity item) {
@@ -135,7 +128,7 @@ public final class GameScheduler {
   }
 
   private void waitForDeath(final Runnable runnable, final Entity entity) {
-    if (entity.isDead()) {
+    if (!entity.isDead()) {
       runnable.run();
     }
   }

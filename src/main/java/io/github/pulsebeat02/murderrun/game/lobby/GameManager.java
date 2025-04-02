@@ -38,6 +38,8 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
@@ -48,10 +50,12 @@ public final class GameManager {
 
   private final MurderRun plugin;
   private final Map<String, PreGameManager> games;
+  private final AtomicBoolean creation;
 
   public GameManager(final MurderRun plugin) {
     this.games = new HashMap<>();
     this.plugin = plugin;
+    this.creation = new AtomicBoolean(false);
   }
 
   public @Nullable PreGameManager getGame(final String id) {
@@ -202,8 +206,13 @@ public final class GameManager {
   }
 
   public CompletableFuture<Boolean> quickJoinGame(final Player player) {
+
     final QuickJoinConfigurationMapper config = this.plugin.getQuickJoinConfiguration();
+    final AudienceProvider provider = this.plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    final Audience audience = audiences.sender(player);
     if (!config.isEnabled()) {
+      audience.sendMessage(Message.GAME_NONE.build());
       return CompletableFuture.completedFuture(false);
     }
 
@@ -218,6 +227,12 @@ public final class GameManager {
       }
     }
 
+    if (this.creation.get()) {
+      audience.sendMessage(Message.GAME_QUICKJOIN_CREATION_LOAD.build());
+      return CompletableFuture.completedFuture(false);
+    }
+    this.creation.set(true);
+
     final UUID random = UUID.randomUUID();
     final String raw = random.toString();
     final List<String[]> pairs = config.getLobbyArenaPairs();
@@ -227,7 +242,9 @@ public final class GameManager {
     final int min = config.getMinPlayers();
     final int max = config.getMaxPlayers();
 
-    return this.createGame(player, raw, arena, lobby, min, max, true).thenApply(manager -> true);
+    return this.createGame(player, raw, arena, lobby, min, max, true)
+            .thenRun(() -> this.creation.set(false))
+            .thenApply(manager -> true);
   }
 
   public MurderRun getPlugin() {
