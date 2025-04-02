@@ -178,6 +178,7 @@ public final class ItemFactory {
       .name(Message.SURVIVOR_HELMET.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
+      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_helmet")
       .hideAttributes();
   }
 
@@ -186,6 +187,7 @@ public final class ItemFactory {
       .name(Message.SURVIVOR_CHESTPLATE.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
+      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_chestplate")
       .hideAttributes();
   }
 
@@ -194,6 +196,7 @@ public final class ItemFactory {
       .name(Message.SURVIVOR_LEGGINGS.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
+      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_leggings")
       .hideAttributes();
   }
 
@@ -202,6 +205,7 @@ public final class ItemFactory {
       .name(Message.SURVIVOR_BOOTS.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
+      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_boots")
       .hideAttributes();
   }
 

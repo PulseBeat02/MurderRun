@@ -60,7 +60,6 @@ public final class FriendWarp extends SurvivorGadget {
     final Item item = packet.getItem();
 
     final GamePlayerManager manager = game.getPlayerManager();
-    final GamePlayer target = this.getRandomSurvivorNotSame(manager, player);
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final long size = survivors.count();
     if (size < 2) {
@@ -68,6 +67,7 @@ public final class FriendWarp extends SurvivorGadget {
     }
     item.remove();
 
+    final GamePlayer target = this.getRandomSurvivorNotSame(manager, player);
     final Location location = target.getLocation();
     player.teleport(location);
 
