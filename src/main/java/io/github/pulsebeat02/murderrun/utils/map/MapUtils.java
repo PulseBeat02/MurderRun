@@ -67,9 +67,23 @@ public final class MapUtils {
 
   private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
+  private static final Properties SERVER_PROPERTIES = new Properties();
+
+  static {
+    try {
+      SERVER_PROPERTIES.load(new FileInputStream("server.properties"));
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
+  }
 
   private MapUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
+  }
+
+  public static World getMainWorld() {
+    final String name = SERVER_PROPERTIES.getProperty("level-name", "world");
+    return requireNonNull(Bukkit.getWorld(name));
   }
 
   public static Location getActualSpawnLocation(final Location location) {

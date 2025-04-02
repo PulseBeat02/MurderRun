@@ -146,7 +146,7 @@ public final class QuickJoinConfigurationMapper {
     CompletableFuture.runAsync(this::internalSerialize, this.service);
   }
 
-  private synchronized void internalSerialize() {
+  private void internalSerialize() {
     this.writeLock.lock();
     final List<List<String>> back = this.lobbyArenaPairs.stream().map(List::of).toList();
     final FileConfiguration config = this.plugin.getConfig();

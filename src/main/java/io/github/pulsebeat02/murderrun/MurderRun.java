@@ -213,7 +213,6 @@ public final class MurderRun extends JavaPlugin {
       this.statisticsConfigurationMapper.serialize(this.statisticsManager);
       this.arenaCreationManagerConfigurationManager.serialize(this.arenaCreationManager);
       this.configuration.serialize();
-      this.quickJoinConfiguration.serialize();
     }
   }
 
