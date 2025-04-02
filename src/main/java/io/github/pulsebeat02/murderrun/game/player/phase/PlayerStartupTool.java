@@ -31,11 +31,21 @@ import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.GameSettings;
 import io.github.pulsebeat02.murderrun.game.arena.Arena;
+import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.tool.Flashlight;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
+import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
+import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.sound.SoundStop;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -56,6 +66,7 @@ public final class PlayerStartupTool {
     final Location spawn = this.getSpawnLocation();
     final PlayerAudience audience = gamePlayer.getAudience();
     final String sound = GameProperties.GAME_STARTING_SOUND;
+    final SoundStop soundStop = SoundStop.source(Sound.Source.MUSIC);
     gamePlayer.setGameMode(GameMode.SURVIVAL);
     gamePlayer.setWalkSpeed(0.2f);
     gamePlayer.setGravity(true);
@@ -63,6 +74,7 @@ public final class PlayerStartupTool {
     gamePlayer.setFoodLevel(20);
     gamePlayer.setSaturation(20);
     gamePlayer.setRespawnLocation(spawn, true);
+    audience.stopSound(soundStop);
     audience.playSound(sound);
   }
 
@@ -75,7 +87,29 @@ public final class PlayerStartupTool {
 
   public void handleInnocent(final GamePlayer gamePlayer) {
     this.handleAll(gamePlayer);
-    gamePlayer.apply(player -> player.setWalkSpeed(0.2f));
+    this.giveFlashlight(gamePlayer);
+    this.sendFlashlightTip(gamePlayer);
+    this.setAttributes(gamePlayer);
+  }
+
+  private void setAttributes(final GamePlayer gamePlayer) {
+    gamePlayer.apply(player -> player.setWalkSpeed(0.25f));
+  }
+
+  private void sendFlashlightTip(final GamePlayer player) {
+    final Game game = player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final PlayerAudience audience = player.getAudience();
+    scheduler.scheduleTask(() -> audience.sendMessage(Message.FLASHLIGHT_TIP.build()), 15 * 20L, reference);
+  }
+
+  private void giveFlashlight(final GamePlayer player) {
+    final Gadget flashlight = new Flashlight();
+    final Item.Builder item = flashlight.getStackBuilder();
+    final ItemStack stack = item.build();
+    final PlayerInventory inventory = player.getInventory();
+    inventory.addItem(stack);
   }
 
   public void handleMurderer(final GamePlayer gamePlayer) {
@@ -86,6 +120,6 @@ public final class PlayerStartupTool {
       new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4)
     );
     gamePlayer.setGameMode(GameMode.SURVIVAL);
-    gamePlayer.setWalkSpeed(0.3f);
+    gamePlayer.setWalkSpeed(0.4f);
   }
 }

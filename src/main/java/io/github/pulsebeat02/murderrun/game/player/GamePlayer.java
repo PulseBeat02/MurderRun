@@ -28,10 +28,9 @@ package io.github.pulsebeat02.murderrun.game.player;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.ability.Ability;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
@@ -44,6 +43,7 @@ public class GamePlayer extends AbstractPlayer {
   private final UUID uuid;
 
   private final Map<Attribute, Double> attributes;
+  private final List<Class<? extends Ability>> abilities;
 
   private MetadataManager metadata;
   private DeathManager deathManager;
@@ -61,6 +61,7 @@ public class GamePlayer extends AbstractPlayer {
     this.alive = true;
     this.canDismount = true;
     this.attributes = new HashMap<>();
+    this.abilities = new ArrayList<>();
   }
 
   public void start() {
@@ -160,5 +161,10 @@ public class GamePlayer extends AbstractPlayer {
   @Override
   public Map<Attribute, Double> getDefaultAttributes() {
     return this.attributes;
+  }
+
+  @Override
+  public List<Class<? extends Ability>> getAbilities() {
+    return this.abilities;
   }
 }

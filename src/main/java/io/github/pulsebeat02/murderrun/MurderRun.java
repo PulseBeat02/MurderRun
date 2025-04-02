@@ -110,8 +110,8 @@ public final class MurderRun extends JavaPlugin {
   public void onEnable() {
     this.disabling = new AtomicBoolean(false);
     this.registerAudienceHandler();
-    this.readPluginData();
     this.initializeEventBusApi();
+    this.readPluginData();
     this.registerLookUpMaps();
     this.handlePackHosting();
     this.registerCommands();
@@ -165,7 +165,6 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void initializeEventBusApi() {
-    this.audience.console(Message.LOAD_API.build());
     EventBusProvider.init();
   }
 

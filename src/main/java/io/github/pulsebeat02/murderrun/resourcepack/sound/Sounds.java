@@ -55,6 +55,7 @@ public final class Sounds {
   public static final SoundResource BACKGROUND = of("background");
   public static final SoundResource REWIND = of("rewind");
   public static final SoundResource PORTAL = of("portal");
+  public static final SoundResource HEARTBEAT = of("heartbeat");
 
   private static SoundResource of(final String name) {
     final Key key = key(Keys.NAMESPACE, name);

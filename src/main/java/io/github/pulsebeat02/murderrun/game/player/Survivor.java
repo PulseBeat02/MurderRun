@@ -37,6 +37,9 @@ public final class Survivor extends GamePlayer {
   private boolean canPickupCarPart;
   private boolean canPlaceBlocks;
   private boolean carPart;
+  private boolean canSee;
+  private boolean heardSound;
+
   private long rewindCooldown;
   private int carPartsRetrieved;
 
@@ -102,5 +105,21 @@ public final class Survivor extends GamePlayer {
 
   public Collection<BukkitTask> getLifeInsuranceTasks() {
     return this.lifeInsuranceTasks;
+  }
+
+  public boolean canSee() {
+    return canSee;
+  }
+
+  public void setCanSee(final boolean canSee) {
+    this.canSee = canSee;
+  }
+
+  public boolean getHeardSound() {
+    return heardSound;
+  }
+
+  public void setHeardSound(final boolean heardSound) {
+    this.heardSound = heardSound;
   }
 }

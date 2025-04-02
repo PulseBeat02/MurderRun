@@ -23,17 +23,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.character;
+package io.github.pulsebeat02.murderrun.game.ability;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.character.ability.AbstractAbility;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import java.util.Collection;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 
-public interface Character {
-  void scheduleTasks();
-  void preparePlayer(GamePlayer player);
-  Game getGame();
-  GamePlayer getPlayer();
-  Collection<AbstractAbility> getAbilities();
+public abstract class AbstractAbility implements Ability {
+
+  private final Item.Builder builder;
+  private final String name;
+
+  private Runnable task;
+
+  public AbstractAbility(final String name, final Item.Builder builder) {
+    this.name = name;
+    this.builder = builder;
+  }
+
+  @Override
+  public void start(final Game game, final GamePlayer player) {}
+
+  @Override
+  public void shutdown() {}
+
+  @Override
+  public Item.Builder getBuilder() {
+    return this.builder;
+  }
+
+  @Override
+  public String getName() {
+    return this.name;
+  }
 }

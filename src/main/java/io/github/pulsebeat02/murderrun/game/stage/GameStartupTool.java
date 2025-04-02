@@ -188,7 +188,7 @@ public final class GameStartupTool {
     final Consumer<GamePlayer> sound = gamePlayer -> {
       final Key key = Sounds.BACKGROUND.getKey();
       final PlayerAudience audience = gamePlayer.getAudience();
-      audience.playSound(key, Source.MUSIC, 0.1f, 1.0f);
+      audience.playSound(key, Source.MASTER, 0.01f, 1.0f);
     };
     final NullReference reference = NullReference.of();
     scheduler.scheduleTask(() -> manager.applyToAllParticipants(sound), 5 * 20L, reference);

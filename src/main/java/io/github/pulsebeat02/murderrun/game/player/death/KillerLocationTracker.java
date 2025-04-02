@@ -26,19 +26,23 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.player.death;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.text.Component.text;
 
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
+import io.github.pulsebeat02.murderrun.locale.Message;
+import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import java.util.Collection;
 import java.util.stream.Stream;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
-import org.bukkit.World;
 
 public final class KillerLocationTracker {
 
@@ -63,20 +67,38 @@ public final class KillerLocationTracker {
   }
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
+    final GameScheduler scheduler = this.game.getScheduler();
     final Location murdererLocation = murdererPlayer.getLocation();
     final GamePlayerManager manager = this.game.getPlayerManager();
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final Collection<GamePlayer> players = survivors.toList();
     final World killerWorld = requireNonNull(murdererLocation.getWorld());
+    final double radius = GameProperties.KILLER_PARTICLE_RADIUS;
+    final double radiusSquared = radius * radius;
     for (final GamePlayer survivor : players) {
-      final Location location = survivor.getLocation();
+      final Survivor survivorPlayer = (Survivor) survivor;
+      final Location location = survivorPlayer.getLocation();
       final World world = requireNonNull(location.getWorld());
       if (killerWorld != world) {
         continue;
       }
-      if (location.distanceSquared(murdererLocation) > 25) {
+      final PlayerAudience audience = survivorPlayer.getAudience();
+      if (location.distanceSquared(murdererLocation) > radiusSquared) {
+        survivorPlayer.setHeardSound(false);
+        audience.setActionBar(text(""));
         continue;
       }
+      if (!survivorPlayer.getHeardSound()) {
+        audience.playSound("ambient.cave");
+        survivorPlayer.setHeardSound(true);
+      }
+      audience.playSound(Sounds.HEARTBEAT);
+
+      final StrictPlayerReference reference = StrictPlayerReference.of(survivorPlayer);
+      audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
+      scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 7L, reference);
+      scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 14L, reference);
+
       final Location clone = location.clone().add(0, 1, 0);
       world.spawnParticle(Particle.DUST, clone, 15, 1, 1, 1, new DustOptions(Color.WHITE, 4));
     }

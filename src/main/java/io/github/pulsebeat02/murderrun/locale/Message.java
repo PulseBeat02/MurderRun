@@ -30,6 +30,12 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> HEARTBEAT_ACTION3 = direct("murderrun.game.near.actionbar3");
+  NullComponent<Sender> HEARTBEAT_ACTION2 = direct("murderrun.game.near.actionbar2");
+  NullComponent<Sender> HEARTBEAT_ACTION1 = direct("murderrun.game.near.actionbar1");
+  NullComponent<Sender> FLASHLIGHT_TIP = direct("murderrun.game.tip.flashlight");
+  NullComponent<Sender> DOUBLE_JUMP_NAME = direct("murderrun.game.ability.doublejump.name");
+  NullComponent<Sender> DOUBLE_JUMP_LORE = direct("murderrun.game.ability.doublejump.lore");
   UniComponent<Sender, String> SEND_DUMP = direct("murderrun.command.dump.result", null);
   NullComponent<Sender> LOAD_DUMP = direct("murderrun.command.dump.load");
   NullComponent<Sender> LOAD_API = direct("murderrun.load.api");

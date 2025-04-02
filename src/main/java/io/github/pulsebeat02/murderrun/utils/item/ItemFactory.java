@@ -25,8 +25,6 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.utils.item;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
@@ -226,6 +224,21 @@ public final class ItemFactory {
     return builder.potionColor(Color.RED).potion(PotionType.STRONG_HEALING);
   }
 
+  public static Item.Builder createAbility(
+    final String pdcName,
+    final Material material,
+    final Component itemName,
+    final Component itemLore
+  ) {
+    final String texture = pdcName.replace("_", "");
+    return Item.builder(material)
+      .name(itemName)
+      .lore(itemLore)
+      .model(texture)
+      .pdc(Keys.ABILITY_KEY_NAME, PersistentDataType.STRING, pdcName)
+      .hideAttributes();
+  }
+
   public static Item.Builder createGadget(
     final String pdcName,
     final Material material,
@@ -233,11 +246,11 @@ public final class ItemFactory {
     final Component itemLore
   ) {
     final String texture = pdcName.replace("_", "");
-    return Item.builder(requireNonNull(material))
-      .name(requireNonNull(itemName))
-      .lore(requireNonNull(itemLore))
+    return Item.builder(material)
+      .name(itemName)
+      .lore(itemLore)
       .model(texture)
-      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, requireNonNull(pdcName))
+      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName)
       .hideAttributes();
   }
 

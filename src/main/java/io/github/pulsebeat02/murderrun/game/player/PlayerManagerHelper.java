@@ -330,4 +330,6 @@ public interface PlayerManagerHelper {
   void promoteToKiller(GamePlayer player);
 
   MovementManager getMovementManager();
+
+  LightManager getLightManager();
 }

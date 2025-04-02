@@ -38,6 +38,7 @@ public final class Keys {
   public static NamespacedKey SPECIAL_SWORD = createNamespacedPluginKey("sword");
   public static NamespacedKey CAR_PART_UUID = createNamespacedPluginKey("car-part-uuid");
   public static NamespacedKey GADGET_KEY_NAME = createNamespacedPluginKey("gadget");
+  public static NamespacedKey ABILITY_KEY_NAME = createNamespacedPluginKey("ability");
   public static NamespacedKey CAN_BREAK_BLOCKS = createNamespacedPluginKey("can-break-blocks");
   public static NamespacedKey KILLER_TRACKER = createNamespacedPluginKey("killer-tracker");
   public static NamespacedKey FLASH_BANG = createNamespacedPluginKey("flash-bang");

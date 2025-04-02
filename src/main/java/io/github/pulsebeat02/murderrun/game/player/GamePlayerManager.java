@@ -45,6 +45,7 @@ public final class GamePlayerManager implements PlayerManagerHelper {
   private final PlayerDeathTool deathManager;
   private final KillerLocationTracker killerLocationTracker;
   private final MovementManager movementManager;
+  private final LightManager lightManager;
   private final Map<UUID, GamePlayer> lookupMap;
 
   public GamePlayerManager(final Game game) {
@@ -52,12 +53,14 @@ public final class GamePlayerManager implements PlayerManagerHelper {
     this.deathManager = new PlayerDeathTool(game);
     this.killerLocationTracker = new KillerLocationTracker(game);
     this.movementManager = new MovementManager(game);
+    this.lightManager = new LightManager(game);
     this.lookupMap = new WeakHashMap<>();
   }
 
   public void start(final Collection<Player> murderers, final Collection<Player> participants) {
     this.assignPlayerRoles(murderers, participants);
     this.setupAllPlayers();
+    this.lightManager.startLightChecks();
     this.movementManager.start();
     this.killerLocationTracker.spawnParticles();
     this.deathManager.spawnParticles();
@@ -172,5 +175,10 @@ public final class GamePlayerManager implements PlayerManagerHelper {
   @Override
   public MovementManager getMovementManager() {
     return this.movementManager;
+  }
+
+  @Override
+  public LightManager getLightManager() {
+    return this.lightManager;
   }
 }

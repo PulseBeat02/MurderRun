@@ -23,9 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.character.ability;
+package io.github.pulsebeat02.murderrun.game.ability;
 
-@FunctionalInterface
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
+
 public interface Ability {
-  Runnable getTask();
+  void shutdown();
+  void start(final Game game, final GamePlayer player);
+  Item.Builder getBuilder();
+  String getName();
 }

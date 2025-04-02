@@ -23,53 +23,48 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.character;
+package io.github.pulsebeat02.murderrun.game.player;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.character.ability.AbstractAbility;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
-import java.util.Collection;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
+import java.util.HashSet;
+import java.util.Set;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-public abstract class AbstractCharacter implements Character {
+public final class LightManager {
 
   private final Game game;
-  private final GamePlayer player;
-  private final Collection<AbstractAbility> abilities;
+  private final Set<GamePlayer> canSee;
 
-  public AbstractCharacter(final Game game, final GamePlayer player, final Collection<AbstractAbility> abilities) {
+  public LightManager(final Game game) {
     this.game = game;
-    this.player = player;
-    this.abilities = abilities;
+    this.canSee = new HashSet<>();
   }
 
-  @Override
-  public void scheduleTasks() {
+  public void startLightChecks() {
     final GameScheduler scheduler = this.game.getScheduler();
-    final GamePlayer player = this.getPlayer();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    for (final AbstractAbility ability : this.abilities) {
-      final Runnable task = ability.getTask();
-      scheduler.scheduleTask(task, 0L, reference);
-    }
+    final NullReference reference = NullReference.of();
+    scheduler.scheduleRepeatedTask(this::checkSurvivorLight, 0, 1, reference);
   }
 
-  @Override
-  public void preparePlayer(final GamePlayer player) {}
-
-  @Override
-  public Game getGame() {
-    return this.game;
-  }
-
-  @Override
-  public GamePlayer getPlayer() {
-    return this.player;
-  }
-
-  @Override
-  public Collection<AbstractAbility> getAbilities() {
-    return this.abilities;
+  private void checkSurvivorLight() {
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    manager.applyToSurvivors(player -> {
+      final Survivor survivor = (Survivor) player;
+      if (survivor.canSee()) {
+        if (!this.canSee.contains(survivor)) {
+          survivor.removePotionEffect(PotionEffectType.BLINDNESS);
+          this.canSee.add(survivor);
+        }
+      } else {
+        if (survivor.isAlive()) {
+          final PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 1);
+          survivor.addPotionEffects(effect);
+        }
+        this.canSee.remove(survivor);
+      }
+    });
   }
 }

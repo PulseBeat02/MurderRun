@@ -41,6 +41,7 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound.Source;
+import net.kyori.adventure.sound.SoundStop;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
@@ -59,6 +60,14 @@ public final class PlayerAudience {
     final AudienceProvider handler = plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
     return audiences.player(uuid);
+  }
+
+  public void stopSound(final SoundStop stop) {
+    this.audience.stopSound(stop);
+  }
+
+  public void setActionBar(final Component component) {
+    this.audience.sendActionBar(component);
   }
 
   public void playSound(final SoundResource key) {

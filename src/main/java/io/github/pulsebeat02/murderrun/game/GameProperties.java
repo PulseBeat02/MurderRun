@@ -38,6 +38,8 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  double KILLER_PARTICLE_RADIUS = dec("killer.particles.radius");
+  int FLASHLIGHT_DURATION = num("flashlight.duration");
   double FLASHLIGHT_COOLDOWN = dec("flashlight.cooldown");
   Material TRAP_VEST_MATERIAL = mat("trap_vest.material");
   Material TRANSLOCATOR_MATERIAL = mat("translocator.material");

@@ -25,8 +25,6 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
 
-import static java.util.Objects.requireNonNull;
-
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
@@ -35,6 +33,9 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
+import io.github.pulsebeat02.murderrun.game.player.Survivor;
+import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+import io.github.pulsebeat02.murderrun.game.scheduler.reference.LoosePlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
@@ -43,7 +44,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
-import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -84,6 +84,14 @@ public final class Flashlight extends SurvivorGadget {
     final GamePlayer player = packet.getPlayer();
     this.sprayParticlesInCone(game, player);
 
+    final GameScheduler scheduler = game.getScheduler();
+    if (player instanceof final Survivor survivor) {
+      survivor.setCanSee(true);
+      final LoosePlayerReference reference = LoosePlayerReference.of(player);
+      final int duration = GameProperties.FLASHLIGHT_DURATION;
+      scheduler.scheduleTask(() -> survivor.setCanSee(false), duration, reference);
+    }
+
     final PlayerAudience audience = player.getAudience();
     audience.playSound(Sounds.FLASHLIGHT);
 
@@ -93,14 +101,18 @@ public final class Flashlight extends SurvivorGadget {
   private void sprayParticlesInCone(final Game game, final GamePlayer player) {
     final GamePlayerManager manager = game.getPlayerManager();
     final Location handLocation = player.getEyeLocation();
-    final World world = requireNonNull(handLocation.getWorld());
     final Vector direction = handLocation.getDirection();
     final double increment = Math.toRadians(5);
     final double maxAngle = Math.toRadians(GameProperties.FLASHLIGHT_CONE_ANGLE);
     for (double t = 0; t < GameProperties.FLASHLIGHT_CONE_LENGTH; t += 0.5) {
       for (double angle = -maxAngle; angle <= maxAngle; angle += increment) {
         final Location particleLocation = this.getParticleLocation(direction, handLocation, t, angle);
-        world.spawnParticle(Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
+        manager.applyToAllParticipants(participant -> {
+          if (participant == player) {
+            return;
+          }
+          participant.spawnParticle(Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
+        });
         manager.applyToKillers(killer -> this.applyPotionEffects(killer, particleLocation));
       }
     }

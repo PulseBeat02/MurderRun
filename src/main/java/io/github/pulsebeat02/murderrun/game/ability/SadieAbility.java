@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.character.ability;
+package io.github.pulsebeat02.murderrun.game.ability;
 //
 //import io.github.pulsebeat02.murderrun.game.Game;
 //import io.github.pulsebeat02.murderrun.game.player.GamePlayer;

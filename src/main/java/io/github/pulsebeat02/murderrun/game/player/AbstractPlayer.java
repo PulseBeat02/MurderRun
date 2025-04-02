@@ -324,4 +324,18 @@ public abstract class AbstractPlayer implements Participant {
   public void sendEquipmentChange(final EquipmentSlot slot, final ItemStack item) {
     this.apply(player -> player.sendEquipmentChange(player, slot, item));
   }
+
+  @Override
+  public <T> void spawnParticle(
+    final Particle particle,
+    final Location location,
+    final int count,
+    final double offsetX,
+    final double offsetY,
+    final double offsetZ,
+    final double extra,
+    final @Nullable T data
+  ) {
+    this.apply(player -> player.spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, data));
+  }
 }
