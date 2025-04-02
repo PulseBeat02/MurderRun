@@ -35,7 +35,6 @@ import me.brandonli.murderrun.gui.arena.ArenaListGui;
 import me.brandonli.murderrun.gui.lobby.LobbyListGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import net.kyori.adventure.audience.Audience;
@@ -66,7 +65,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private static final List<String> CREATE_GAME_PATTERN = List.of("111111111", "123456781", "111111111", "111191111");
 
   private final MurderRun plugin;
-  private final HumanEntity watcher;
+  private final Player watcher;
   private final Audience audience;
 
   private volatile Lobby lobby;
@@ -82,8 +81,8 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private volatile boolean listenForMin;
   private volatile boolean listenForMax;
 
-  public GameCreationGui(final MurderRun plugin, final HumanEntity watcher) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_GAME_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public GameCreationGui(final MurderRun plugin, final Player watcher) {
+    super(Message.CREATE_GAME_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = watcher;
     this.audience = this.getAudience(plugin, watcher);
@@ -180,7 +179,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
     return false;
   }
 
-  private void showAsync(final HumanEntity player) {
+  private void showAsync(final Player player) {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.callSyncMethod(this.plugin, () -> {
       this.update();

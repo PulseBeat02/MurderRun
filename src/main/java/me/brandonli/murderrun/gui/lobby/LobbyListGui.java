@@ -33,12 +33,13 @@ import me.brandonli.murderrun.game.lobby.Lobby;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.ComponentUtils;
+import me.brandonli.murderrun.utils.ContainerUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -46,11 +47,11 @@ import org.bukkit.persistence.PersistentDataType;
 public final class LobbyListGui extends PaginatedGui {
 
   private final MurderRun plugin;
-  private final HumanEntity watcher;
+  private final Player watcher;
   private final Consumer<InventoryClickEvent> consumer;
 
-  public LobbyListGui(final MurderRun plugin, final HumanEntity watcher, final Consumer<InventoryClickEvent> consumer) {
-    super(6, 45, ComponentUtils.serializeComponentToLegacyString(Message.CHOOSE_LOBBY_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public LobbyListGui(final MurderRun plugin, final Player watcher, final Consumer<InventoryClickEvent> consumer) {
+    super(ContainerUtils.createChestContainer(Message.CHOOSE_LOBBY_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = watcher;
     this.consumer = consumer;

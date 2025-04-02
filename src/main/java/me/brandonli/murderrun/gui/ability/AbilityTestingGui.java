@@ -30,14 +30,12 @@ import java.util.List;
 import me.brandonli.murderrun.game.ability.Ability;
 import me.brandonli.murderrun.game.ability.AbilityRegistry;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
-import me.brandonli.murderrun.utils.InventoryUtils;
-import me.brandonli.murderrun.utils.PDCUtils;
-import me.brandonli.murderrun.utils.TradingUtils;
+import me.brandonli.murderrun.utils.*;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -52,10 +50,10 @@ public final class AbilityTestingGui extends PaginatedGui {
     // copy ItemStack fields
   }
 
-  private final HumanEntity viewer;
+  private final Player viewer;
 
-  public AbilityTestingGui(final HumanEntity viewer) {
-    super(6, 45, ComponentUtils.serializeComponentToLegacyString(Message.ABILITY_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public AbilityTestingGui(final Player viewer) {
+    super(ContainerUtils.createChestContainer(Message.ABILITY_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.viewer = viewer;
     this.createPaginatedPane();
     this.createNavigationPane();

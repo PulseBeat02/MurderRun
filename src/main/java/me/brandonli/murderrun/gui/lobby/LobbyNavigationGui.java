@@ -28,12 +28,11 @@ import me.brandonli.murderrun.game.lobby.Lobby;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
 import me.brandonli.murderrun.gui.PatternGui;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -45,10 +44,10 @@ public final class LobbyNavigationGui extends PatternGui {
   private static final List<String> NAVIGATION_LOBBY_PATTERN = List.of("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
-  private final HumanEntity watcher;
+  private final Player watcher;
 
-  public LobbyNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.MANAGE_LOBBY_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public LobbyNavigationGui(final MurderRun plugin, final Player clicker) {
+    super(Message.MANAGE_LOBBY_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = clicker;
   }

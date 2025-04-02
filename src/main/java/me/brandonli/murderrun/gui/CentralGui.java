@@ -27,10 +27,9 @@ import me.brandonli.murderrun.gui.arena.ArenaNavigationGui;
 import me.brandonli.murderrun.gui.game.GameCreationGui;
 import me.brandonli.murderrun.gui.lobby.LobbyNavigationGui;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.item.Item;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class CentralGui extends PatternGui {
@@ -38,10 +37,10 @@ public final class CentralGui extends PatternGui {
   private static final List<String> CENTRAL_GUI_PATTERN = List.of("111111111", "111345111", "111111111", "111121111");
 
   private final MurderRun plugin;
-  private final HumanEntity watcher;
+  private final Player watcher;
 
-  public CentralGui(final MurderRun plugin, final HumanEntity watcher) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public CentralGui(final MurderRun plugin, final Player watcher) {
+    super(Message.CENTRAL_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = watcher;
   }

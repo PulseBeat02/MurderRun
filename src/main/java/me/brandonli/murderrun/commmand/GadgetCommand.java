@@ -55,7 +55,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.gadget.menu")
   @CommandDescription("murderrun.command.gadget.menu.info")
   public void openMenu(final Player player) {
-    final GadgetTestingGui gui = new GadgetTestingGui(this.plugin, player);
+    final GadgetTestingGui gui = new GadgetTestingGui(player);
     gui.update();
     gui.open(player);
   }

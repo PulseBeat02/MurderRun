@@ -26,17 +26,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.lobby.GameManager;
 import me.brandonli.murderrun.game.lobby.PreGameManager;
 import me.brandonli.murderrun.game.lobby.PreGamePlayerManager;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
+import me.brandonli.murderrun.utils.ContainerUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -46,11 +44,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class PlayerListGui extends PaginatedGui {
 
-  private final HumanEntity watcher;
+  private final Player watcher;
   private final GameManager manager;
 
-  public PlayerListGui(final MurderRun plugin, final HumanEntity watcher, final GameManager manager) {
-    super(6, 45, ComponentUtils.serializeComponentToLegacyString(Message.PLAYER_LIST_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public PlayerListGui(final Player watcher, final GameManager manager) {
+    super(ContainerUtils.createChestContainer(Message.PLAYER_LIST_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.watcher = watcher;
     this.manager = manager;
     this.updatePane();

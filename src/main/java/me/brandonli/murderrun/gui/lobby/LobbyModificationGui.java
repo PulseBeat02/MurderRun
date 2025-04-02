@@ -59,7 +59,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   private static final List<String> CREATE_LOBBY_PATTERN = List.of("111111111", "123411151", "111111111", "111161111");
 
   private final MurderRun plugin;
-  private final HumanEntity watcher;
+  private final Player watcher;
   private final Audience audience;
   private final boolean editMode;
   private final String originalName;
@@ -72,20 +72,20 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   private volatile boolean listenForBreaks;
   private volatile boolean listenForName;
 
-  public LobbyModificationGui(final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
+  public LobbyModificationGui(final MurderRun plugin, final Player watcher, final boolean editMode) {
     this(plugin, watcher, "None", watcher.getLocation(), watcher.getLocation(), watcher.getLocation(), editMode);
   }
 
   public LobbyModificationGui(
     final MurderRun plugin,
-    final HumanEntity watcher,
+    final Player watcher,
     final String lobbyName,
     final Location first,
     final Location second,
     final Location spawn,
     final boolean editMode
   ) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_LOBBY_GUI_TITLE.build()), InteractionModifier.VALUES);
+    super(Message.CREATE_LOBBY_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.originalName = lobbyName;
     this.audience = this.getAudience(plugin, watcher);
     this.currentMode = new AtomicInteger(0);

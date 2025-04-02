@@ -26,13 +26,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import me.brandonli.murderrun.utils.ContainerUtils;
+import net.kyori.adventure.text.Component;
 
 public class PatternGui extends Gui {
 
   private final Map<Character, GuiItem> pattern;
 
-  public PatternGui(final int rows, final String title, final Set<InteractionModifier> interactionModifiers) {
-    super(rows, title, interactionModifiers);
+  public PatternGui(final Component title, final int rows, final Set<InteractionModifier> interactionModifiers) {
+    super(ContainerUtils.createChestContainer(title, rows), interactionModifiers);
     this.pattern = new HashMap<>();
   }
 

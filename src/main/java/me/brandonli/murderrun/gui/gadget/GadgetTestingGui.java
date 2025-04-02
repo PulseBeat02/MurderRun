@@ -27,18 +27,15 @@ import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import java.util.Collection;
 import java.util.List;
-import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.gadget.Gadget;
 import me.brandonli.murderrun.game.gadget.GadgetRegistry;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
-import me.brandonli.murderrun.utils.InventoryUtils;
-import me.brandonli.murderrun.utils.PDCUtils;
-import me.brandonli.murderrun.utils.TradingUtils;
+import me.brandonli.murderrun.utils.*;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -53,12 +50,10 @@ public final class GadgetTestingGui extends PaginatedGui {
     // copy ItemStack fields
   }
 
-  private final MurderRun plugin;
-  private final HumanEntity viewer;
+  private final Player viewer;
 
-  public GadgetTestingGui(final MurderRun plugin, final HumanEntity viewer) {
-    super(6, 45, ComponentUtils.serializeComponentToLegacyString(Message.GADGET_GUI_TITLE.build()), InteractionModifier.VALUES);
-    this.plugin = plugin;
+  public GadgetTestingGui(final Player viewer) {
+    super(ContainerUtils.createChestContainer(Message.GADGET_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.viewer = viewer;
     this.createPaginatedPane();
     this.createNavigationPane();

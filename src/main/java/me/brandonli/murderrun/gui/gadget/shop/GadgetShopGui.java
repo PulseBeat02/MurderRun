@@ -34,10 +34,7 @@ import me.brandonli.murderrun.game.gadget.Gadget;
 import me.brandonli.murderrun.game.gadget.GadgetRegistry;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
-import me.brandonli.murderrun.utils.InventoryUtils;
-import me.brandonli.murderrun.utils.PDCUtils;
-import me.brandonli.murderrun.utils.TradingUtils;
+import me.brandonli.murderrun.utils.*;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
@@ -49,6 +46,7 @@ import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -57,10 +55,10 @@ import org.bukkit.persistence.PersistentDataType;
 public final class GadgetShopGui extends PaginatedGui {
 
   private final MurderRun plugin;
-  private final HumanEntity viewer;
+  private final Player viewer;
 
-  public GadgetShopGui(final MurderRun plugin, final HumanEntity viewer, final List<String> gadgets) {
-    super(6, 45, ComponentUtils.serializeComponentToLegacyString(Message.SHOP_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public GadgetShopGui(final MurderRun plugin, final Player viewer, final List<String> gadgets) {
+    super(ContainerUtils.createChestContainer(Message.SHOP_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.viewer = viewer;
     this.createPaginatedPane(gadgets);

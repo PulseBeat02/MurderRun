@@ -31,12 +31,12 @@ import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.gui.PatternGui;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -48,10 +48,10 @@ public final class ArenaNavigationGui extends PatternGui {
   private static final List<String> NAVIGTATION_ARENA_PATTERN = List.of("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
-  private final HumanEntity watcher;
+  private final Player watcher;
 
-  public ArenaNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.MANAGE_ARENA_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public ArenaNavigationGui(final MurderRun plugin, final Player clicker) {
+    super(Message.MANAGE_ARENA_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = clicker;
   }
@@ -99,7 +99,11 @@ public final class ArenaNavigationGui extends PatternGui {
     final Collection<Location> locations = Arrays.asList(items);
     final Collection<Location> copy = new ArrayList<>(locations);
     final HumanEntity watcher = event.getWhoClicked();
-    final ArenaModificationGui gui = new ArenaModificationGui(this.plugin, watcher, name, spawn, truck, first, second, copy, true);
+    if (!(watcher instanceof Player player)) {
+      return;
+    }
+
+    final ArenaModificationGui gui = new ArenaModificationGui(this.plugin, player, name, spawn, truck, first, second, copy, true);
     gui.registerEvents();
     gui.update();
     gui.open(this.watcher);

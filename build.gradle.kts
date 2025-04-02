@@ -53,7 +53,8 @@ val runtimeDeps = listOf(
     libs.h2,
     libs.byteBuddy,
     libs.byteBuddyAgent,
-    libs.classGraph
+    libs.classGraph,
+    libs.triumphGui
 )
 
 dependencies {
@@ -66,7 +67,6 @@ dependencies {
     compileOnly(libs.fastutil)
     compileOnly(libs.nettyAll)
     runtimeDeps.forEach(::compileOnly)
-    implementation(libs.triumphGui)
 
     // Plugin Extensions
     compileOnly(libs.placeholderapi)

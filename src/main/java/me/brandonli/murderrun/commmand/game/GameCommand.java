@@ -391,7 +391,7 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game gui", requiredSender = Player.class)
   public void openGameGui(final Player sender) {
     final GameManager manager = this.plugin.getGameManager();
-    final PlayerListGui gui = new PlayerListGui(this.plugin, sender, manager);
+    final PlayerListGui gui = new PlayerListGui(sender, manager);
     gui.update();
     gui.open(sender);
   }

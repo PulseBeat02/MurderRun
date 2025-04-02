@@ -32,7 +32,7 @@ import me.brandonli.murderrun.game.ability.Ability;
 import me.brandonli.murderrun.game.ability.AbilityRegistry;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
+import me.brandonli.murderrun.utils.ContainerUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
@@ -42,6 +42,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -49,11 +50,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class AbilitySelectGui extends PaginatedGui {
 
-  private final HumanEntity viewer;
+  private final Player viewer;
   private final MurderRun plugin;
 
-  public AbilitySelectGui(final MurderRun plugin, final HumanEntity viewer, final List<String> abilities) {
-    super(6, 45, ComponentUtils.serializeComponentToLegacyString(Message.SELECT_GUI_TITLE.build()), InteractionModifier.VALUES);
+  public AbilitySelectGui(final MurderRun plugin, final Player viewer, final List<String> abilities) {
+    super(ContainerUtils.createChestContainer(Message.SELECT_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.viewer = viewer;
     this.addAbilityItems(abilities);

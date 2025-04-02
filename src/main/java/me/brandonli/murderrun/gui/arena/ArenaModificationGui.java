@@ -66,7 +66,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   private static final List<String> CREATE_ARENA_PATTERN = List.of("111111111", "123451161", "111111111", "111171111");
 
   private final MurderRun plugin;
-  private final HumanEntity watcher;
+  private final Player watcher;
   private final Audience audience;
   private final boolean editMode;
   private final AtomicInteger currentMode;
@@ -78,7 +78,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   private volatile boolean listenForName;
   private volatile boolean listenForItems;
 
-  public ArenaModificationGui(final MurderRun plugin, final HumanEntity watcher, final boolean editMode) {
+  public ArenaModificationGui(final MurderRun plugin, final Player watcher, final boolean editMode) {
     this(
       plugin,
       watcher,
@@ -94,7 +94,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
 
   public ArenaModificationGui(
     final MurderRun plugin,
-    final HumanEntity watcher,
+    final Player watcher,
     final String arenaName,
     final Location spawn,
     final Location truck,
@@ -103,7 +103,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
     final Collection<Location> itemLocations,
     final boolean editMode
   ) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CREATE_ARENA_GUI_TITLE.build()), InteractionModifier.VALUES);
+    super(Message.CREATE_ARENA_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     final UUID uuid = watcher.getUniqueId();
     this.originalName = arenaName;
     this.audience = this.getAudience(plugin, watcher);
