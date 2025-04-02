@@ -26,14 +26,14 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.38-b3806",
-    "https://ci.citizensnpcs.co/job/Citizens2/3806/artifact/dist/target/Citizens-2.0.38-b3806.jar"
+    "Citizens-2.0.38-b3808",
+    "https://ci.citizensnpcs.co/job/Citizens2/3808/artifact/dist/target/Citizens-2.0.38-b3808.jar"
   );
 
   private static final Dependency WORLD_EDIT = new UrlDependency(
     "WorldEdit",
-    "worldedit-bukkit-7.3.13.jar",
-    "https://cdn.modrinth.com/data/1u6JkXh5/versions/U0uDF7yg/worldedit-bukkit-7.3.13.jar"
+    "worldedit-bukkit-7.3.14.jar",
+    "https://cdn.modrinth.com/data/1u6JkXh5/versions/txgouwkE/worldedit-bukkit-7.3.14.jar"
   );
 
   private static final Dependency PACKET_EVENTS = new UrlDependency(
