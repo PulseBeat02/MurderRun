@@ -39,7 +39,6 @@ import io.github.pulsebeat02.murderrun.utils.RandomUtils;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
@@ -206,7 +205,6 @@ public final class GameManager {
   }
 
   public CompletableFuture<Boolean> quickJoinGame(final Player player) {
-
     final QuickJoinConfigurationMapper config = this.plugin.getQuickJoinConfiguration();
     final AudienceProvider provider = this.plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
@@ -242,9 +240,7 @@ public final class GameManager {
     final int min = config.getMinPlayers();
     final int max = config.getMaxPlayers();
 
-    return this.createGame(player, raw, arena, lobby, min, max, true)
-            .thenRun(() -> this.creation.set(false))
-            .thenApply(manager -> true);
+    return this.createGame(player, raw, arena, lobby, min, max, true).thenRun(() -> this.creation.set(false)).thenApply(manager -> true);
   }
 
   public MurderRun getPlugin() {
