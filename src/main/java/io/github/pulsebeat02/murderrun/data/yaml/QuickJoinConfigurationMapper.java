@@ -120,16 +120,7 @@ public final class QuickJoinConfigurationMapper {
     }
     @SuppressWarnings("unchecked")
     final List<List<String>> pairs = (List<List<String>>) config.getList(ARENA_LOBBY_PAIRS_FIELD, List.of());
-    final List<String[]> result = requireNonNull(pairs)
-      .stream()
-      .map(pair -> pair.toArray(new String[0]))
-      .filter(this::isValidParameters)
-      .toList();
-    if (this.enabled && result.isEmpty()) {
-      this.enabled = false;
-      throw new AssertionError("Please specify at least one arena-lobby pair in the quick-join.yml file.");
-    }
-    return result;
+    return requireNonNull(pairs).stream().map(pair -> pair.toArray(new String[0])).filter(this::isValidParameters).toList();
   }
 
   public boolean isValidParameters(final String[] pair) {

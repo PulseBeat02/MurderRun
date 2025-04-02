@@ -215,11 +215,17 @@ public final class GameManager {
       audience.sendMessage(Message.GAME_QUICKJOIN_CREATION_LOAD.build());
       return CompletableFuture.completedFuture(false);
     }
-    this.creation.set(true);
 
     final UUID random = UUID.randomUUID();
     final String raw = random.toString();
     final List<String[]> pairs = config.getLobbyArenaPairs();
+    if (pairs.isEmpty()) {
+      audience.sendMessage(Message.GAME_NONE.build());
+      return CompletableFuture.completedFuture(false);
+    }
+
+    this.creation.set(true);
+
     final String[] rand = RandomUtils.getRandomElement(pairs);
     final String arena = rand[0];
     final String lobby = rand[1];
