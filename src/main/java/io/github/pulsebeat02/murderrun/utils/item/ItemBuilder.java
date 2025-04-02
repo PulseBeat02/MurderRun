@@ -288,6 +288,7 @@ public final class ItemBuilder implements Builder {
     final UseCooldownComponent component = meta.getUseCooldown();
     component.setCooldownSeconds(cooldown);
     component.setCooldownGroup(group);
+    meta.setUseCooldown(component);
     this.stack.setItemMeta(meta);
     return this;
   }

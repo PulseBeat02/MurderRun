@@ -40,6 +40,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -100,8 +101,7 @@ public final class JumpScareTrap extends SurvivorTrap {
   private @Nullable ItemStack getHelmet(final GamePlayer player) {
     final ItemStack stack = Item.create(Material.CARVED_PUMPKIN);
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack before = inventory.getHelmet();
-    inventory.setHelmet(stack);
-    return before;
+    player.sendEquipmentChange(EquipmentSlot.HEAD, stack);
+    return inventory.getHelmet();
   }
 }

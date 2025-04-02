@@ -40,6 +40,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionEffect;
@@ -316,5 +318,10 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void kick(final String message) {
     this.apply(player -> player.kickPlayer(message));
+  }
+
+  @Override
+  public void sendEquipmentChange(final EquipmentSlot slot, final ItemStack item) {
+    this.apply(player -> player.sendEquipmentChange(player, slot, item));
   }
 }

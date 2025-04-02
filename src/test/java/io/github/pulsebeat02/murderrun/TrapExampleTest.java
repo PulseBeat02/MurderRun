@@ -38,7 +38,10 @@ public final class TrapExampleTest {
     MockBukkit.mock();
     try (final ScanResult scanResult = new ClassGraph().enableClassInfo().scan()) {
       final List<ClassInfo> traps = scanResult.getClassesImplementing(Gadget.class).filter(info -> !info.isAbstract());
-      traps.forEach(trap -> System.out.println(trap.getSimpleName()));
+      traps.forEach(trap -> {
+        final String spaced = trap.getSimpleName().replaceAll("(?=[A-Z])", " ");
+        System.out.println(spaced.substring(1));
+      });
     }
   }
 }

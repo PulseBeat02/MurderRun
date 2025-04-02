@@ -40,6 +40,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionEffect;
@@ -178,4 +180,6 @@ public interface Participant {
   void setWorldBorder(final WorldBorder border);
 
   void kick(final String message);
+
+  void sendEquipmentChange(final EquipmentSlot slot, final ItemStack item);
 }

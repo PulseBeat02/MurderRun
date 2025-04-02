@@ -37,6 +37,7 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -76,6 +77,8 @@ public final class Flashlight extends SurvivorGadget {
     if (stack == null) {
       return true;
     }
+
+    Item.builder(stack).useOneDurability();
 
     final Game game = packet.getGame();
     final GamePlayer player = packet.getPlayer();
