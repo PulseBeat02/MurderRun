@@ -46,7 +46,6 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
-import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -95,26 +94,7 @@ public final class MapSchematicIO {
     final World world = MapUtils.createVoidWorld(name, previousWorld);
     arena.relativizeLocations(this.uuid);
     lobby.relativizeLocations(this.uuid);
-    this.copyWorldAttributes(previousWorld, world);
     return world;
-  }
-
-  private void copyWorldAttributes(final World old, final World after) {
-    final GameRule<?>[] rules = GameRule.values();
-    for (final GameRule<?> rule : rules) {
-      this.copyRule(old, after, rule);
-    }
-    after.setDifficulty(old.getDifficulty());
-  }
-
-  @SuppressWarnings("all") // checker
-  private <T> void copyRule(final World old, final World after, final GameRule<T> rule) {
-    final String name = rule.getName();
-    if (!old.isGameRule(name)) {
-      return;
-    }
-    final T value = old.getGameRuleValue(rule);
-    after.setGameRule(rule, value);
   }
 
   public void pasteMap() {

@@ -25,8 +25,16 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.utils;
 
+import java.util.Random;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.jetbrains.annotations.NotNull;
 
 public final class VoidChunkGenerator extends ChunkGenerator {
-  // void chunk no logic
+
+  @Override
+  public Location getFixedSpawnLocation(final @NotNull World world, final @NotNull Random random) {
+    return new Location(world, 0, 0, 0);
+  }
 }

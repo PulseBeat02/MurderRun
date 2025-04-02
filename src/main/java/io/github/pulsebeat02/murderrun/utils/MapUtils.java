@@ -56,10 +56,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
@@ -86,8 +83,29 @@ public final class MapUtils {
 
   public static World createVoidWorld(final String name, final World copy) {
     final ChunkGenerator generator = new VoidChunkGenerator();
-    final World world = new WorldCreator(name).environment(copy.getEnvironment()).generator(generator).createWorld();
+    final World.Environment environment = copy.getEnvironment();
+    final World world = new WorldCreator(name).environment(environment).generator(generator).keepSpawnInMemory(false).createWorld();
+    requireNonNull(world);
+
+    final GameRule<?>[] rules = GameRule.values();
+    for (final GameRule<?> rule : rules) {
+      copyRule(copy, world, rule);
+    }
+
+    final Difficulty oldDifficulty = copy.getDifficulty();
+    world.setDifficulty(oldDifficulty);
+
     return requireNonNull(world);
+  }
+
+  @SuppressWarnings("all") // checker
+  private static <T> void copyRule(final World old, final World after, final GameRule<T> rule) {
+    final String name = rule.getName();
+    if (!old.isGameRule(name)) {
+      return;
+    }
+    final T value = old.getGameRuleValue(rule);
+    after.setGameRule(rule, value);
   }
 
   public static boolean enableExtent() {
