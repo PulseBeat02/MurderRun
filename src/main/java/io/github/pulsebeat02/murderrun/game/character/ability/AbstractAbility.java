@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,21 +27,22 @@ package io.github.pulsebeat02.murderrun.game.character.ability;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public abstract class AbstractAbility implements Ability {
 
   private final Runnable task;
 
   public AbstractAbility(final Game game, final GamePlayer player) {
-    this.task = () -> this.handleAbility(game, player);
+    this.task = () -> {
+      if (this.checkActivation()) {
+        this.applyAbility(game, player);
+      }
+    };
   }
 
-  private void handleAbility(@UnderInitialization AbstractAbility this, final Game game, final GamePlayer player) {
-    if (this.checkActivation()) {
-      this.applyAbility(game, player);
-    }
-  }
+  protected abstract boolean checkActivation();
+
+  protected abstract void applyAbility(Game game, GamePlayer player);
 
   @Override
   public Runnable getTask() {

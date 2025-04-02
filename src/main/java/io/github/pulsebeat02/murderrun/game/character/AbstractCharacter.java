@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,22 +45,18 @@ public abstract class AbstractCharacter implements Character {
   }
 
   @Override
-  public void scheduleTask() {
+  public void scheduleTasks() {
     final GameScheduler scheduler = this.game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(this.player);
-    scheduler.scheduleRepeatedTask(
-      () -> {
-        for (final AbstractAbility ability : this.abilities) {
-          final Runnable task = ability.getTask();
-          task.run();
-        }
-      },
-      0L,
-      5L,
-      reference
-    );
-    this.preparePlayer(this.player);
+    final GamePlayer player = this.getPlayer();
+    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    for (final AbstractAbility ability : this.abilities) {
+      final Runnable task = ability.getTask();
+      scheduler.scheduleTask(task, 0L, reference);
+    }
   }
+
+  @Override
+  public void preparePlayer(final GamePlayer player) {}
 
   @Override
   public Game getGame() {

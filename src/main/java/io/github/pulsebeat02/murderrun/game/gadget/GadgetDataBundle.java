@@ -27,6 +27,7 @@ package io.github.pulsebeat02.murderrun.game.gadget;
 
 import static java.util.Objects.requireNonNull;
 
+import io.github.pulsebeat02.murderrun.dfu.PropertyFixerManager;
 import io.github.pulsebeat02.murderrun.utils.IOUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import java.io.IOException;
@@ -77,7 +78,11 @@ public final class GadgetDataBundle {
         final InputStream in = Files.newInputStream(resourcePath);
         final FastBufferedInputStream fast = new FastBufferedInputStream(in)
       ) {
-        return new PropertyResourceBundle(fast);
+        final ResourceBundle bundle = new PropertyResourceBundle(fast);
+        final PropertyFixerManager fixer = new PropertyFixerManager();
+        fixer.registerFixers();
+        fixer.applyFixersUpTo(bundle);
+        return bundle;
       }
     } catch (final IOException e) {
       throw new AssertionError(e);

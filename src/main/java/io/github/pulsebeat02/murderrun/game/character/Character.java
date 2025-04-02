@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,13 +31,9 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import java.util.Collection;
 
 public interface Character {
-  void scheduleTask();
-
-  void preparePlayer(final GamePlayer player);
-
+  void scheduleTasks();
+  void preparePlayer(GamePlayer player);
   Game getGame();
-
   GamePlayer getPlayer();
-
   Collection<AbstractAbility> getAbilities();
 }

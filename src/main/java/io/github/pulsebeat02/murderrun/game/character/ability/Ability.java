@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,7 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.character.ability;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
-
+@FunctionalInterface
 public interface Ability {
-  boolean checkActivation(@UnderInitialization Ability this);
-
-  void applyAbility(@UnderInitialization Ability this, final Game game, final GamePlayer player);
-
   Runnable getTask();
 }

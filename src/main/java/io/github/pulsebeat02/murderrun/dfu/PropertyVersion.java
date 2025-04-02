@@ -25,9 +25,15 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.dfu;
 
-public final class BasicPropertiesFixer {
+import java.util.ResourceBundle;
 
-  private BasicPropertiesFixer() {
-    throw new UnsupportedOperationException(); // kekw
+public enum PropertyVersion {
+  v1_0_0;
+
+  public static PropertyVersion getVersion(final ResourceBundle properties) {
+    final String versionString = properties.getString("version");
+    final String replaced = versionString.replace('.', '_');
+    final String prepended = "v%s".formatted(replaced);
+    return PropertyVersion.valueOf(prepended);
   }
 }
