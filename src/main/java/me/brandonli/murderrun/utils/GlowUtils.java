@@ -53,8 +53,8 @@ public final class GlowUtils {
       (entity instanceof final LivingEntity livingEntity && livingEntity.isInvisible() ? 0x20 : 0) |
       (glowing ? 0x40 : 0) |
       (entity instanceof final LivingEntity livingEntity && livingEntity.isGliding() ? 0x80 : 0));
-    final EntityData entityData = new EntityData(0, EntityDataTypes.BYTE, flags);
-    final List<EntityData> metadata = new ArrayList<>();
+    final EntityData<?> entityData = new EntityData<>(0, EntityDataTypes.BYTE, flags);
+    final List<EntityData<?>> metadata = new ArrayList<>();
     metadata.add(entityData);
 
     final int id = entity.getEntityId();
