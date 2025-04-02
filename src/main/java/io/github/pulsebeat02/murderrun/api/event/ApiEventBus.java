@@ -30,9 +30,9 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.utils.ClassGraphUtils;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -60,15 +60,14 @@ public final class ApiEventBus implements EventBus {
   }
 
   private static Set<Class<? extends MurderRunEvent>> scanClasses() {
-    try (final ScanResult scanResult = new ClassGraph().enableClassInfo().scan()) {
-      return scanResult
-        .getClassesImplementing(MurderRunEvent.class)
-        .loadClasses(MurderRunEvent.class)
-        .stream()
-        .filter(Class::isInterface)
-        .map(clazz1 -> (Class<? extends MurderRunEvent>) clazz1)
-        .collect(Collectors.toSet());
-    }
+    final ScanResult result = ClassGraphUtils.getCachedScanResult();
+    return result
+      .getClassesImplementing(MurderRunEvent.class)
+      .loadClasses(MurderRunEvent.class)
+      .stream()
+      .filter(Class::isInterface)
+      .map(clazz1 -> (Class<? extends MurderRunEvent>) clazz1)
+      .collect(Collectors.toSet());
   }
 
   private static <T extends MurderRunEvent> MethodHandle getHandle(final Class<T> eventType) {

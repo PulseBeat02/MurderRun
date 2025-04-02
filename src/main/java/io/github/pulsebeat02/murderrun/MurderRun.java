@@ -53,6 +53,7 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
+import io.github.pulsebeat02.murderrun.utils.ClassGraphUtils;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -100,6 +101,7 @@ public final class MurderRun extends JavaPlugin {
     this.updatePluginData();
     this.shutdownPluginData();
     this.stopHostingDaemon();
+    this.unloadLookupMaps();
     this.shutdownMetrics();
     this.shutdownAudience();
   }
@@ -117,6 +119,10 @@ public final class MurderRun extends JavaPlugin {
     this.registerExtensions();
     this.loadSchematics();
     this.enableMetrics();
+  }
+
+  private void unloadLookupMaps() {
+    ClassGraphUtils.close();
   }
 
   private void loadSchematics() {
@@ -165,6 +171,7 @@ public final class MurderRun extends JavaPlugin {
 
   private void registerLookUpMaps() {
     this.audience.console(Message.LOAD_LOOKUP.build());
+    ClassGraphUtils.init();
     GadgetRegistry.init();
     PacketToolsProvider.init();
     GameProperties.init();

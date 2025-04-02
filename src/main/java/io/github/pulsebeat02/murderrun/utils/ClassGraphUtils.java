@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,42 +23,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.commmand;
+package io.github.pulsebeat02.murderrun.utils;
 
-import io.github.pulsebeat02.murderrun.commmand.game.GameCommand;
-import java.util.Arrays;
-import java.util.List;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
 
-public enum Commands {
-  ARENA(new ArenaCommand()),
-  LOBBY(new LobbyCommand()),
-  HELP(new HelpCommand()),
-  GAME(new GameCommand()),
-  GADGET(new GadgetCommand()),
-  SHOP(new ShopCommand()),
-  DEBUG(new DebugCommand()),
-  GUI(new GuiCommand()),
-  TRUCK(new TruckCommand()),
-  DUMP(new DumpCommand());
+public final class ClassGraphUtils {
 
-  private static final List<AnnotationCommandFeature> FEATURES = getValues();
+  private static final ScanResult SCAN_RESULT;
 
-  private final AnnotationCommandFeature feature;
-
-  Commands(final AnnotationCommandFeature feature) {
-    this.feature = feature;
+  static {
+    SCAN_RESULT = new ClassGraph().enableClassInfo().scan(4);
   }
 
-  public AnnotationCommandFeature getFeature() {
-    return this.feature;
+  public static void init() {
+    // init
   }
 
-  public static List<AnnotationCommandFeature> getValues() {
-    final Commands[] commands = values();
-    return Arrays.stream(commands).map(Commands::getFeature).toList();
+  private ClassGraphUtils() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static List<AnnotationCommandFeature> getFeatures() {
-    return FEATURES;
+  public static ScanResult getCachedScanResult() {
+    return SCAN_RESULT;
+  }
+
+  public static void close() {
+    SCAN_RESULT.close();
   }
 }

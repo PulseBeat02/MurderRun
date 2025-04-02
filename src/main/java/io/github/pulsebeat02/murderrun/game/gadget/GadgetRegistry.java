@@ -25,20 +25,17 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.gadget;
 
-import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.utils.ExecutorUtils;
+import io.github.pulsebeat02.murderrun.utils.ClassGraphUtils;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Server;
 import org.bukkit.event.Listener;
@@ -143,19 +140,14 @@ public final class GadgetRegistry {
 
   @SuppressWarnings("all") // checker
   private void load() {
-    final ClassGraph graph = new ClassGraph().enableClassInfo();
-    final ExecutorService service = Executors.newVirtualThreadPerTaskExecutor();
-    try (final ScanResult result = graph.scan(service, 64)) {
-      final ClassInfoList list = result.getClassesImplementing(Gadget.class);
-      final ClassInfoList implementations = list.getStandardClasses();
-      for (final ClassInfo info : implementations) {
-        if (!info.isAbstract()) {
-          final Class<?> loaded = info.loadClass();
-          this.handleGadgetClass(loaded);
-        }
+    final ScanResult result = ClassGraphUtils.getCachedScanResult();
+    final ClassInfoList list = result.getClassesImplementing(Gadget.class);
+    final ClassInfoList implementations = list.getStandardClasses();
+    for (final ClassInfo info : implementations) {
+      if (!info.isAbstract()) {
+        final Class<?> loaded = info.loadClass();
+        this.handleGadgetClass(loaded);
       }
-    } finally {
-      ExecutorUtils.shutdownExecutorGracefully(service);
     }
 
     final GadgetDisabler handler = new GadgetDisabler();
