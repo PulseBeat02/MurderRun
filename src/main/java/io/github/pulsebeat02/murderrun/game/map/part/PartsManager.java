@@ -118,6 +118,9 @@ public final class PartsManager {
   }
 
   public int getRemainingParts() {
-    return this.parts.size();
+    final int start = GameProperties.CAR_PARTS_COUNT;
+    final int taken = start - this.parts.size();
+    final int required = GameProperties.CAR_PARTS_REQUIRED;
+    return Math.abs(required - taken);
   }
 }
