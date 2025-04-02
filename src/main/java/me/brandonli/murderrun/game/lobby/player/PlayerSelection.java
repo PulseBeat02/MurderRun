@@ -58,8 +58,8 @@ public final class PlayerSelection {
   public PlayerSelection(final MurderRun plugin, final Player player, final boolean killer) {
     this.player = player;
     this.killer = killer;
-    this.gadgetShopGui = new GadgetShopGui(plugin, this.getRandomGadgets(killer));
-    this.abilitySelectGui = new AbilitySelectGui(plugin, this.getRandomAbilities(killer));
+    this.gadgetShopGui = new GadgetShopGui(plugin, player, this.getRandomGadgets(killer));
+    this.abilitySelectGui = new AbilitySelectGui(plugin, player, this.getRandomAbilities(killer));
   }
 
   private List<String> getRandomGadgets(@UnderInitialization PlayerSelection this, final boolean killer) {

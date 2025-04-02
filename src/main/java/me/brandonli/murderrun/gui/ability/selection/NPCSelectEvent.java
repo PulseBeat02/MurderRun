@@ -87,6 +87,6 @@ public final class NPCSelectEvent implements Listener {
     final PlayerSelectionManager selectionManager = playerManager.getSelectionManager();
     final PlayerSelection selection = selectionManager.getOrCreateSelection(clicker, isKiller);
     final AbilitySelectGui gui = selection.getAbilitySelectGui();
-    gui.showGUI(clicker);
+    gui.open(clicker);
   }
 }

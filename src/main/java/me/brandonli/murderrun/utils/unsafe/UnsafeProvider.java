@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package me.brandonli.murderrun.commmand;
+package me.brandonli.murderrun.utils.unsafe;
 
-import me.brandonli.murderrun.MurderRun;
-import me.brandonli.murderrun.gui.CentralGui;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.incendo.cloud.annotations.AnnotationParser;
-import org.incendo.cloud.annotations.Command;
-import org.incendo.cloud.annotations.CommandDescription;
-import org.incendo.cloud.annotations.Permission;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
+import java.lang.reflect.Field;
+import sun.misc.Unsafe;
 
-public final class GuiCommand implements AnnotationCommandFeature {
+public final class UnsafeProvider {
 
-  private MurderRun plugin;
+  private static final Unsafe UNSAFE;
 
-  @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
-    this.plugin = plugin;
+  static {
+    try {
+      final Field field = Unsafe.class.getDeclaredField("theUnsafe");
+      field.setAccessible(true);
+      final MethodHandles.Lookup lookup = MethodHandles.lookup();
+      final MethodHandles.Lookup handle = MethodHandles.privateLookupIn(Unsafe.class, lookup);
+      final VarHandle varHandle = handle.unreflectVarHandle(field);
+      UNSAFE = (Unsafe) varHandle.get();
+    } catch (final IllegalAccessException | NoSuchFieldException e) {
+      throw new AssertionError(e);
+    }
   }
 
-  @Permission("murderrun.command.gui")
-  @CommandDescription("murderrun.command.gui.info")
-  @Command(value = "murder gui", requiredSender = Player.class)
-  public void openGui(final Player sender) {
-    final CentralGui gui = new CentralGui(this.plugin, sender);
-    gui.update();
-    gui.open(sender);
+  private UnsafeProvider() {}
+
+  public static Unsafe getUnsafe() {
+    return UNSAFE;
   }
 }

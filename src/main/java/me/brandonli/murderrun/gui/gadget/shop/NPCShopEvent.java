@@ -87,6 +87,6 @@ public final class NPCShopEvent implements Listener {
     final PlayerSelectionManager selectionManager = playerManager.getSelectionManager();
     final PlayerSelection selection = selectionManager.getOrCreateSelection(clicker, isKiller);
     final GadgetShopGui gui = selection.getGadgetShopGui();
-    gui.showGUI(clicker);
+    gui.open(clicker);
   }
 }

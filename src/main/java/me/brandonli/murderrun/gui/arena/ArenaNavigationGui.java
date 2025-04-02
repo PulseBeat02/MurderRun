@@ -28,16 +28,16 @@ package me.brandonli.murderrun.gui.arena;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.PatternPane;
-import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
+import dev.triumphteam.gui.components.InteractionModifier;
+import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.arena.ArenaManager;
+import me.brandonli.murderrun.gui.PatternGui;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
@@ -51,15 +51,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public final class ArenaNavigationGui extends ChestGui {
+public final class ArenaNavigationGui extends PatternGui {
 
-  private static final Pattern NAVIGTATION_ARENA_PATTERN = new Pattern("111111111", "111314111", "111111111", "111121111");
+  private static final List<String> NAVIGTATION_ARENA_PATTERN = List.of("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
 
   public ArenaNavigationGui(final MurderRun plugin, final HumanEntity clicker) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.MANAGE_ARENA_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.MANAGE_ARENA_GUI_TITLE.build()), InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = clicker;
   }
@@ -67,31 +67,25 @@ public final class ArenaNavigationGui extends ChestGui {
   @Override
   public void update() {
     super.update();
-    this.addPane(this.createPane());
-    this.setOnGlobalClick(event -> event.setCancelled(true));
+    this.createPane();
+    this.popularize(NAVIGTATION_ARENA_PATTERN);
   }
 
-  private PatternPane createPane() {
-    final PatternPane pane = new PatternPane(0, 0, 9, 4, NAVIGTATION_ARENA_PATTERN);
-    pane.bindItem('1', this.createBorderStack());
-    pane.bindItem('2', this.createCloseStack());
-    pane.bindItem('3', this.createArenaStack());
-    pane.bindItem('4', this.createModifyStack());
-    return pane;
+  private void createPane() {
+    this.map('1', this.createBorderStack());
+    this.map('2', this.createCloseStack());
+    this.map('3', this.createArenaStack());
+    this.map('4', this.createModifyStack());
   }
 
   private GuiItem createModifyStack() {
-    return new GuiItem(
-      Item.builder(Material.YELLOW_BANNER).name(Message.MANAGE_ARENA_GUI_EDIT.build()).build(),
-      this::createListingsMenu,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.YELLOW_BANNER).name(Message.MANAGE_ARENA_GUI_EDIT.build()).build(), this::createListingsMenu);
   }
 
   private void createListingsMenu(final InventoryClickEvent event) {
-    final ChestGui gui = new ArenaListGui(this.plugin, this.watcher, this::handleArenaClickEvent);
+    final ArenaListGui gui = new ArenaListGui(this.plugin, this.watcher, this::handleArenaClickEvent);
     gui.update();
-    gui.show(this.watcher);
+    gui.open(this.watcher);
   }
 
   private void handleArenaClickEvent(final InventoryClickEvent event) {
@@ -116,33 +110,25 @@ public final class ArenaNavigationGui extends ChestGui {
     final ArenaModificationGui gui = new ArenaModificationGui(this.plugin, watcher, name, spawn, truck, first, second, copy, true);
     gui.registerEvents();
     gui.update();
-    gui.show(this.watcher);
+    gui.open(this.watcher);
   }
 
   private GuiItem createArenaStack() {
-    return new GuiItem(
-      Item.builder(Material.GREEN_BANNER).name(Message.MANAGE_ARENA_GUI_CREATE.build()).build(),
-      this::createArenaMenu,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.GREEN_BANNER).name(Message.MANAGE_ARENA_GUI_CREATE.build()).build(), this::createArenaMenu);
   }
 
   private void createArenaMenu(final InventoryClickEvent event) {
     final ArenaModificationGui gui = new ArenaModificationGui(this.plugin, this.watcher, false);
     gui.registerEvents();
     gui.update();
-    gui.show(this.watcher);
+    gui.open(this.watcher);
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(
-      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-      event -> this.watcher.closeInventory(),
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 }

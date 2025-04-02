@@ -27,6 +27,7 @@ package me.brandonli.murderrun;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
+import dev.triumphteam.gui.TriumphGui;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.api.event.ApiEventBus;
@@ -223,6 +224,7 @@ public final class MurderRun extends JavaPlugin {
 
   private void registerLookUpMaps() {
     this.audience.console(Message.LOAD_LOOKUP.build());
+    this.fixTriumphGui();
     ClassGraphUtils.init();
     GadgetRegistry.init();
     AbilityRegistry.init();
@@ -231,6 +233,10 @@ public final class MurderRun extends JavaPlugin {
     AbilityTestingGui.init();
     TerrainDropAnalyzer.init();
     ScreenUtils.init(this);
+  }
+
+  private void fixTriumphGui() {
+    TriumphGui.init(this);
   }
 
   private void shutdownAudience() {

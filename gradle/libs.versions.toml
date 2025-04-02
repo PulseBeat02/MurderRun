@@ -6,7 +6,7 @@ cloudPaper = "2.0.0-beta.10"
 cloudMinecraftExtras = "2.0.0-beta.10"
 commodore = "2.2"
 fastboard = "2.1.4"
-inventoryFramework = "0.10.19"
+triumphGui = "3.1.11"
 bstatsBukkit = "3.1.0"
 hibernateCore = "7.0.0.Beta1"
 h2 = "2.3.232"
@@ -41,7 +41,7 @@ cloudPaper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloud
 cloudMinecraftExtras = { group = "org.incendo", name = "cloud-minecraft-extras", version.ref = "cloudMinecraftExtras" }
 commodore = { group = "me.lucko", name = "commodore", version.ref = "commodore" }
 fastboard = { group = "fr.mrmicky", name = "fastboard", version.ref = "fastboard" }
-inventoryFramework = { group = "com.github.stefvanschie.inventoryframework", name = "IF", version.ref = "inventoryFramework" }
+triumphGui = { group = "dev.triumphteam", name = "triumph-gui", version.ref = "triumphGui" }
 bstatsBukkit = { group = "org.bstats", name = "bstats-bukkit", version.ref = "bstatsBukkit" }
 hibernateCore = { group = "org.hibernate.orm", name = "hibernate-core", version.ref = "hibernateCore" }
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }

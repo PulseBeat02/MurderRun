@@ -29,6 +29,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.awt.*;
 import org.bukkit.Material;
+import org.intellij.lang.annotations.Subst;
 
 public interface GameProperties {
   static void init() {
@@ -528,6 +529,7 @@ public interface GameProperties {
     return GAME_BUNDLE.getDouble(key);
   }
 
+  @Subst("")
   private static String str(final String key) {
     return GAME_BUNDLE.getString(key);
   }

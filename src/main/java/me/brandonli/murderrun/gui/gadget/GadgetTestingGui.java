@@ -27,14 +27,12 @@ package me.brandonli.murderrun.gui.gadget;
 
 import static net.kyori.adventure.text.Component.empty;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.github.stefvanschie.inventoryframework.pane.Pane;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import dev.triumphteam.gui.components.InteractionModifier;
+import dev.triumphteam.gui.components.util.GuiFiller;
+import dev.triumphteam.gui.guis.GuiItem;
+import dev.triumphteam.gui.guis.PaginatedGui;
 import java.util.Collection;
 import java.util.List;
 import me.brandonli.murderrun.MurderRun;
@@ -53,7 +51,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-public final class GadgetTestingGui extends ChestGui {
+public final class GadgetTestingGui extends PaginatedGui {
 
   private static final Collection<ItemStack> SORTED_SURVIVOR_ITEMS = TradingUtils.getGadgetShopItems(true);
   private static final Collection<ItemStack> SORTED_KILLER_ITEMS = TradingUtils.getGadgetShopItems(false);
@@ -64,48 +62,35 @@ public final class GadgetTestingGui extends ChestGui {
   }
 
   private final MurderRun plugin;
-  private final PaginatedPane pages;
+  private final HumanEntity viewer;
 
-  public GadgetTestingGui(final MurderRun plugin) {
-    super(6, ComponentUtils.serializeComponentToLegacyString(Message.GADGET_GUI_TITLE.build()), plugin);
+  public GadgetTestingGui(final MurderRun plugin, final HumanEntity viewer) {
+    super(6, 45, ComponentUtils.serializeComponentToLegacyString(Message.GADGET_GUI_TITLE.build()), InteractionModifier.VALUES);
     this.plugin = plugin;
-    this.pages = new PaginatedPane(0, 0, 9, 5);
-    this.addItems();
-    this.setOnGlobalClick(event -> event.setCancelled(true));
+    this.viewer = viewer;
+    this.createPaginatedPane();
+    this.createNavigationPane();
   }
 
-  private void addItems() {
-    this.addPane(this.createPaginatedPane());
-    this.addPane(this.createBackgroundPane());
-    this.addPane(this.createNavigationPane());
-  }
-
-  private PaginatedPane createPaginatedPane() {
+  private void createPaginatedPane() {
     final List<ItemStack> items = Lists.newArrayList(COMBINED_GADGETS);
-    this.pages.populateWithItemStacks(items, this.plugin);
-    this.pages.setOnClick(this::handleClick);
-    return this.pages;
+    items.stream().map(stack -> new GuiItem(stack, this::handleClick)).forEach(this::addItem);
   }
 
-  private OutlinePane createBackgroundPane() {
-    final OutlinePane background = new OutlinePane(0, 5, 9, 1);
-    final GuiItem borderCopy = this.createBorderStack();
-    background.addItem(borderCopy);
-    background.setRepeat(true);
-    background.setPriority(Pane.Priority.LOWEST);
-    return background;
-  }
-
-  private StaticPane createNavigationPane() {
-    final StaticPane navigation = new StaticPane(0, 5, 9, 1);
-    navigation.addItem(this.createBackStack(), 0, 0);
-    navigation.addItem(this.createForwardStack(), 8, 0);
-    navigation.addItem(this.createCloseStack(), 4, 0);
-    return navigation;
+  private void createNavigationPane() {
+    final GuiFiller filler = this.getFiller();
+    final GuiItem back = this.createBackStack();
+    final GuiItem next = this.createForwardStack();
+    final GuiItem close = this.createCloseStack();
+    final GuiItem border = this.createBorderStack();
+    filler.fillBottom(border);
+    this.setItem(6, 1, back);
+    this.setItem(6, 9, next);
+    this.setItem(6, 5, close);
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private void handleClick(final InventoryClickEvent event) {
@@ -127,48 +112,14 @@ public final class GadgetTestingGui extends ChestGui {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.GADGET_GUI_CANCEL.build()).build(), this::handleClose, this.plugin);
-  }
-
-  private void handleClose(final InventoryClickEvent event) {
-    final HumanEntity entity = event.getWhoClicked();
-    entity.closeInventory();
+    return new GuiItem(Item.builder(Material.BARRIER).name(Message.GADGET_GUI_CANCEL.build()).build(), event -> this.close(this.viewer));
   }
 
   private GuiItem createForwardStack() {
-    return new GuiItem(
-      Item.builder(Material.GREEN_WOOL).name(Message.GADGET_GUI_FORWARD.build()).build(),
-      this::handleForwardOption,
-      this.plugin
-    );
-  }
-
-  private void handleForwardOption(final InventoryClickEvent event) {
-    final int current = this.pages.getPage();
-    final int max = this.pages.getPages() - 1;
-    if (current < max) {
-      this.pages.setPage(current + 1);
-      this.update();
-    }
+    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.GADGET_GUI_FORWARD.build()).build(), event -> this.next());
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(
-      Item.builder(Material.RED_WOOL).name(Message.GADGET_GUI_BACK.build()).build(),
-      this::handleBackwardOption,
-      this.plugin
-    );
-  }
-
-  private void handleBackwardOption(final InventoryClickEvent event) {
-    final int current = this.pages.getPage();
-    if (current > 0) {
-      this.pages.setPage(current - 1);
-      this.update();
-    }
-  }
-
-  public void showGUI(final HumanEntity entity) {
-    this.show(entity);
+    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.GADGET_GUI_BACK.build()).build(), event -> this.previous());
   }
 }

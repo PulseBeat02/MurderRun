@@ -59,9 +59,9 @@ public final class AbilityCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.ability.menu")
   @CommandDescription("murderrun.command.ability.menu.info")
   public void openMenu(final Player player) {
-    final AbilityTestingGui gui = new AbilityTestingGui(this.plugin);
+    final AbilityTestingGui gui = new AbilityTestingGui(player);
     gui.update();
-    gui.showGUI(player);
+    gui.open(player);
   }
 
   @Command("murder ability retrieve <abilityName>")

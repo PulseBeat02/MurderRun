@@ -48,7 +48,6 @@ val runtimeDeps = listOf(
     libs.cloudMinecraftExtras,
     libs.commodore,
     libs.fastboard,
-    libs.inventoryFramework,
     libs.bstatsBukkit,
     libs.hibernateCore,
     libs.h2,
@@ -67,6 +66,7 @@ dependencies {
     compileOnly(libs.fastutil)
     compileOnly(libs.nettyAll)
     runtimeDeps.forEach(::compileOnly)
+    implementation(libs.triumphGui)
 
     // Plugin Extensions
     compileOnly(libs.placeholderapi)
@@ -179,7 +179,7 @@ tasks {
         }
         systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.5")
     }
 
     processResources {

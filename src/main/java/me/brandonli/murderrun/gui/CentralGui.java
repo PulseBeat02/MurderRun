@@ -27,10 +27,9 @@ package me.brandonli.murderrun.gui;
 
 import static net.kyori.adventure.text.Component.empty;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.PatternPane;
-import com.github.stefvanschie.inventoryframework.pane.util.Pattern;
+import dev.triumphteam.gui.components.InteractionModifier;
+import dev.triumphteam.gui.guis.GuiItem;
+import java.util.List;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.gui.arena.ArenaNavigationGui;
 import me.brandonli.murderrun.gui.game.GameCreationGui;
@@ -42,15 +41,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public final class CentralGui extends ChestGui {
+public final class CentralGui extends PatternGui {
 
-  private static final Pattern CENTRAL_GUI_PATTERN = new Pattern("111111111", "111345111", "111111111", "111121111");
+  private static final List<String> CENTRAL_GUI_PATTERN = List.of("111111111", "111345111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final HumanEntity watcher;
 
   public CentralGui(final MurderRun plugin, final HumanEntity watcher) {
-    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()), plugin);
+    super(4, ComponentUtils.serializeComponentToLegacyString(Message.CENTRAL_GUI_TITLE.build()), InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = watcher;
   }
@@ -58,72 +57,54 @@ public final class CentralGui extends ChestGui {
   @Override
   public void update() {
     super.update();
-    this.addPane(this.createPane());
-    this.setOnGlobalClick(event -> event.setCancelled(true));
+    this.createPane();
+    this.popularize(CENTRAL_GUI_PATTERN);
   }
 
-  private PatternPane createPane() {
-    final PatternPane pane = new PatternPane(0, 0, 9, 4, CENTRAL_GUI_PATTERN);
-    pane.bindItem('1', this.createBackground());
-    pane.bindItem('2', this.createCloseButton());
-    pane.bindItem('3', this.createLobbyButton());
-    pane.bindItem('4', this.createArenaButton());
-    pane.bindItem('5', this.createGameButton());
-    return pane;
+  private void createPane() {
+    this.map('1', this.createBackground());
+    this.map('2', this.createCloseButton());
+    this.map('3', this.createLobbyButton());
+    this.map('4', this.createArenaButton());
+    this.map('5', this.createGameButton());
   }
 
   private GuiItem createBackground() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build(), this.plugin);
+    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private GuiItem createCloseButton() {
-    return new GuiItem(
-      Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
-      event -> this.watcher.closeInventory(),
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
   }
 
   private GuiItem createGameButton() {
-    return new GuiItem(
-      Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(),
-      this::handleGameClick,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(), this::handleGameClick);
   }
 
   private GuiItem createArenaButton() {
-    return new GuiItem(
-      Item.builder(Material.YELLOW_BANNER).name(Message.CENTRAL_GUI_ARENA.build()).build(),
-      this::handleArenaClick,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.YELLOW_BANNER).name(Message.CENTRAL_GUI_ARENA.build()).build(), this::handleArenaClick);
   }
 
   private void handleGameClick(final InventoryClickEvent event) {
     final GameCreationGui gui = new GameCreationGui(this.plugin, this.watcher);
     gui.registerEvents();
     gui.update();
-    gui.show(this.watcher);
+    gui.open(this.watcher);
   }
 
   private void handleArenaClick(final InventoryClickEvent event) {
-    final ChestGui gui = new ArenaNavigationGui(this.plugin, this.watcher);
+    final ArenaNavigationGui gui = new ArenaNavigationGui(this.plugin, this.watcher);
     gui.update();
-    gui.show(this.watcher);
+    gui.open(this.watcher);
   }
 
   private GuiItem createLobbyButton() {
-    return new GuiItem(
-      Item.builder(Material.WHITE_BANNER).name(Message.CENTRAL_GUI_LOBBY.build()).build(),
-      this::handleLobbyClick,
-      this.plugin
-    );
+    return new GuiItem(Item.builder(Material.WHITE_BANNER).name(Message.CENTRAL_GUI_LOBBY.build()).build(), this::handleLobbyClick);
   }
 
   private void handleLobbyClick(final InventoryClickEvent event) {
-    final ChestGui gui = new LobbyNavigationGui(this.plugin, this.watcher);
+    final LobbyNavigationGui gui = new LobbyNavigationGui(this.plugin, this.watcher);
     gui.update();
-    gui.show(this.watcher);
+    gui.open(this.watcher);
   }
 }

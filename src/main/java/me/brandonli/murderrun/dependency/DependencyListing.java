@@ -34,8 +34,8 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.37-b3763",
-    "https://ci.citizensnpcs.co/job/Citizens2/3763/artifact/dist/target/Citizens-2.0.37-b3763.jar"
+    "Citizens-2.0.38-b3786",
+    "https://ci.citizensnpcs.co/job/Citizens2/3786/artifact/dist/target/Citizens-2.0.38-b3786.jar"
   );
 
   private static final Dependency WORLD_EDIT = new UrlDependency(
@@ -47,10 +47,10 @@ public final class DependencyListing {
   private static final Dependency PACKET_EVENTS = new UrlDependency(
     "PacketEvents",
     "packetevents-spigot-2.8.0-SNAPSHOT",
-    "https://ci.codemc.io/job/retrooper/job/packetevents/668/artifact/spigot/build/libs/packetevents-spigot-2.8.0-SNAPSHOT.jar"
+    "https://ci.codemc.io/job/retrooper/job/packetevents/678/artifact/spigot/build/libs/packetevents-spigot-2.8.0-SNAPSHOT.jar"
   );
 
-  private static final DependencyListing V1_21_R3 = create("V1_21_R3", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
+  private static final DependencyListing V1_21_R4 = create("V1_21_R4", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
 
   private static DependencyListing create(final String revision, final Dependency... deps) {
     final Collection<Dependency> dependencies = List.of(deps);

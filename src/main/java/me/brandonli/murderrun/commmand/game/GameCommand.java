@@ -401,7 +401,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final GameManager manager = this.plugin.getGameManager();
     final PlayerListGui gui = new PlayerListGui(this.plugin, sender, manager);
     gui.update();
-    gui.show(sender);
+    gui.open(sender);
   }
 
   @Suggestions("arena-suggestions")
