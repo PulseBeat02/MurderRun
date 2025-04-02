@@ -45,6 +45,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -121,7 +122,6 @@ public final class MapSchematicIO {
       .thenCompose(v -> this.pasteArenaSchematic())
       .thenRun(this::pasteCitizensNPCs)
       .exceptionally(e -> {
-        e.printStackTrace();
         throw new AssertionError(e);
       });
   }
@@ -140,7 +140,7 @@ public final class MapSchematicIO {
       final Location location = npc.getStoredLocation();
       final Location clone = location.clone();
       clone.setWorld(world);
-      clone.add(0, 5, 0);
+      clone.add(0, 3, 0);
       npc.teleport(clone, PlayerTeleportEvent.TeleportCause.PLUGIN);
     }
   }
@@ -166,6 +166,8 @@ public final class MapSchematicIO {
       }
       final Vector vector = location.toVector();
       if (boundingBox.contains(vector)) {
+        final Chunk chunk = location.getChunk();
+        chunk.load();
         final NPC copy = npc.clone();
         this.npcs.add(copy);
       }
