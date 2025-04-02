@@ -65,7 +65,7 @@ import org.bukkit.util.EulerAngle;
 
 public final class MapUtils {
 
-  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
+  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(/*SideEffect.UPDATE, SideEffect.NEIGHBORS*/);
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
 
   private MapUtils() {
