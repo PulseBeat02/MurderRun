@@ -27,14 +27,14 @@ package io.github.pulsebeat02.murderrun.game.scheduler.reference;
 
 import io.github.pulsebeat02.murderrun.game.player.Participant;
 
-public final class PlayerReference extends SchedulerReference<Participant> {
+public final class StrictPlayerReference extends SchedulerReference<Participant> {
 
-  private PlayerReference(final Participant player) {
+  private StrictPlayerReference(final Participant player) {
     super(player);
   }
 
-  public static PlayerReference of(final Participant player) {
-    return new PlayerReference(player);
+  public static StrictPlayerReference of(final Participant player) {
+    return new StrictPlayerReference(player);
   }
 
   @Override
