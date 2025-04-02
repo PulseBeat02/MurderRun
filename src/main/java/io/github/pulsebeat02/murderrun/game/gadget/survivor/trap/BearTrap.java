@@ -32,8 +32,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class BearTrap extends SurvivorTrap {
@@ -42,9 +40,9 @@ public final class BearTrap extends SurvivorTrap {
     super(
       "bear",
       GameProperties.BEAR_COST,
-      ItemFactory.createGadget("bear", Material.IRON_TRAPDOOR, Message.BEAR_NAME.build(), Message.BEAR_LORE.build()),
+      ItemFactory.createGadget("bear", GameProperties.BEAR_MATERIAL, Message.BEAR_NAME.build(), Message.BEAR_LORE.build()),
       Message.BEAR_ACTIVATE.build(),
-      new Color(35, 23, 9)
+      GameProperties.BEAR_COLOR
     );
   }
 

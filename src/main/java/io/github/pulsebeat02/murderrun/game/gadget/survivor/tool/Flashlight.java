@@ -42,7 +42,6 @@ import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -59,7 +58,12 @@ public final class Flashlight extends SurvivorGadget {
       "flashlight",
       GameProperties.FLASHLIGHT_COST,
       ItemFactory.createFlashlight(
-        ItemFactory.createGadget("flashlight", Material.GOLDEN_SHOVEL, Message.FLASHLIGHT_NAME.build(), Message.FLASHLIGHT_LORE.build())
+        ItemFactory.createGadget(
+          "flashlight",
+          GameProperties.FLASHLIGHT_MATERIAL,
+          Message.FLASHLIGHT_NAME.build(),
+          Message.FLASHLIGHT_LORE.build()
+        )
       )
     );
   }

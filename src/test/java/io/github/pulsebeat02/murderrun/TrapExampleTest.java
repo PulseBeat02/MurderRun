@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.survivor.tool;
+package io.github.pulsebeat02.murderrun;
 
-import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
+import be.seeseemelk.mockbukkit.MockBukkit;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
+import java.util.List;
 
-public final class Shield extends SurvivorGadget {
+public final class TrapExampleTest {
 
-  public Shield() {
-    super(
-      "shield",
-      GameProperties.SHIELD_COST,
-      ItemFactory.createShield(
-        ItemFactory.createGadget("shield", GameProperties.SHIELD_MATERIAL, Message.SHIELD_NAME.build(), Message.SHIELD_LORE.build())
-      )
-    );
-  }
-
-  @Override
-  public boolean onGadgetDrop(final GadgetDropPacket packet) {
-    return true;
+  public static void main(final String[] args) {
+    MockBukkit.mock();
+    try (
+      final ScanResult scanResult = new ClassGraph()
+        .acceptPackages("io.github.pulsebeat02.murderrun.game.gadget.survivor.trap")
+        .enableClassInfo()
+        .scan()
+    ) {
+      final List<ClassInfo> traps = scanResult.getSubclasses("io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap");
+      System.out.println("Survivor Traps:");
+      traps.forEach(trap -> System.out.println(trap.getSimpleName()));
+    }
   }
 }

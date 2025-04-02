@@ -51,7 +51,6 @@ import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -69,7 +68,7 @@ public final class EnderShadows extends KillerGadget {
       GameProperties.ENDER_SHADOWS_COST,
       ItemFactory.createGadget(
         "ender_shadows",
-        Material.BLACK_STAINED_GLASS,
+        GameProperties.ENDER_SHADOWS_MATERIAL,
         Message.ENDER_SHADOWS_NAME.build(),
         Message.ENDER_SHADOWS_LORE.build()
       )

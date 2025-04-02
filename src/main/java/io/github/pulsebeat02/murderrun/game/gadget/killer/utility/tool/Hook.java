@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,7 +53,9 @@ public final class Hook extends KillerGadget implements Listener {
     super(
       "hook",
       GameProperties.HOOK_COST,
-      ItemFactory.createHook(ItemFactory.createGadget("hook", Material.FISHING_ROD, Message.HOOK_NAME.build(), Message.HOOK_LORE.build()))
+      ItemFactory.createHook(
+        ItemFactory.createGadget("hook", GameProperties.HOOK_MATERIAL, Message.HOOK_NAME.build(), Message.HOOK_LORE.build())
+      )
     );
     this.game = game;
   }

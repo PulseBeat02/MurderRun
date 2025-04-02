@@ -40,7 +40,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class InfraredVision extends KillerGadget {
@@ -51,7 +50,7 @@ public final class InfraredVision extends KillerGadget {
       GameProperties.INFRARED_VISION_COST,
       ItemFactory.createGadget(
         "infrared_vision",
-        Material.REDSTONE_LAMP,
+        GameProperties.INFRARED_VISION_MATERIAL,
         Message.INFRARED_VISION_NAME.build(),
         Message.INFRARED_VISION_LORE.build()
       )

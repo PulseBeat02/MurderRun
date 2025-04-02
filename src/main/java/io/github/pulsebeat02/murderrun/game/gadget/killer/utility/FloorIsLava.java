@@ -43,7 +43,6 @@ import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class FloorIsLava extends KillerGadget {
@@ -54,7 +53,7 @@ public final class FloorIsLava extends KillerGadget {
       GameProperties.FLOOR_IS_LAVA_COST,
       ItemFactory.createGadget(
         "floor_is_lava",
-        Material.MAGMA_BLOCK,
+        GameProperties.FLOOR_IS_LAVA_MATERIAL,
         Message.THE_FLOOR_IS_LAVA_NAME.build(),
         Message.THE_FLOOR_IS_LAVA_LORE.build()
       )

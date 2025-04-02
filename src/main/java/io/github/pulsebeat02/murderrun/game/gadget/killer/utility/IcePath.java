@@ -52,7 +52,7 @@ public final class IcePath extends KillerGadget {
     super(
       "ice_path",
       GameProperties.ICE_PATH_COST,
-      ItemFactory.createGadget("ice_path", Material.ICE, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build())
+      ItemFactory.createGadget("ice_path", GameProperties.ICE_PATH_MATERIAL, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build())
     );
   }
 

@@ -40,7 +40,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
@@ -53,7 +52,7 @@ public final class BurnTheBody extends KillerGadget {
       GameProperties.BURN_THE_BODY_COST,
       ItemFactory.createGadget(
         "burn_the_body",
-        Material.RED_STAINED_GLASS,
+        GameProperties.BURN_THE_BODY_MATERIAL,
         Message.BURN_THE_BODY_NAME.build(),
         Message.BURN_THE_BODY_LORE.build()
       )

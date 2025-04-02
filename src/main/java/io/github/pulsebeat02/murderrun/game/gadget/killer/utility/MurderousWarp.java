@@ -36,7 +36,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class MurderousWarp extends KillerGadget {
@@ -47,7 +46,7 @@ public final class MurderousWarp extends KillerGadget {
       GameProperties.MURDEROUS_WARP_COST,
       ItemFactory.createGadget(
         "murderous_warp",
-        Material.REDSTONE_BLOCK,
+        GameProperties.MURDEROUS_WARP_MATERIAL,
         Message.MURDEROUS_WARP_NAME.build(),
         Message.MURDEROUS_WARP_LORE.build()
       )

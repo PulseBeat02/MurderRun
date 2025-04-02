@@ -69,7 +69,12 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
     super(
       "dormagogg",
       GameProperties.DORMAGOGG_COST,
-      ItemFactory.createGadget("dormagogg", Material.WITHER_SKELETON_SKULL, Message.DORMAGOGG_NAME.build(), Message.DORMAGOGG_LORE.build())
+      ItemFactory.createGadget(
+        "dormagogg",
+        GameProperties.DORMAGOGG_MATERIAL,
+        Message.DORMAGOGG_NAME.build(),
+        Message.DORMAGOGG_LORE.build()
+      )
     );
     this.game = game;
   }

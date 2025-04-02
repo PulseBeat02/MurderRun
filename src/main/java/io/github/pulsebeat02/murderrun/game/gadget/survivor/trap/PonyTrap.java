@@ -33,7 +33,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -51,7 +50,7 @@ public final class PonyTrap extends SurvivorTrap {
       GameProperties.PONY_COST,
       ItemFactory.createGadget("pony", Material.SADDLE, Message.PONY_NAME.build(), Message.PONY_LORE.build()),
       Message.PONY_ACTIVATE.build(),
-      new Color(177, 156, 217)
+      GameProperties.PONY_COLOR
     );
   }
 

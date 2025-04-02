@@ -51,7 +51,12 @@ public final class BloodCurse extends KillerGadget {
     super(
       "blood_curse",
       GameProperties.BLOOD_CURSE_COST,
-      ItemFactory.createGadget("blood_curse", Material.REDSTONE, Message.BLOOD_CURSE_NAME.build(), Message.BLOOD_CURSE_LORE.build())
+      ItemFactory.createGadget(
+        "blood_curse",
+        GameProperties.BLOOD_CURSE_MATERIAL,
+        Message.BLOOD_CURSE_NAME.build(),
+        Message.BLOOD_CURSE_LORE.build()
+      )
     );
   }
 

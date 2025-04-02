@@ -42,7 +42,6 @@ import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class HeatSeeker extends KillerGadget {
@@ -51,7 +50,12 @@ public final class HeatSeeker extends KillerGadget {
     super(
       "heat_seeker",
       GameProperties.HEAT_SEEKER_COST,
-      ItemFactory.createGadget("heat_seeker", Material.BLAZE_ROD, Message.HEAT_SEEKER_NAME.build(), Message.HEAT_SEEKER_LORE.build())
+      ItemFactory.createGadget(
+        "heat_seeker",
+        GameProperties.HEAT_SEEKER_MATERIAL,
+        Message.HEAT_SEEKER_NAME.build(),
+        Message.HEAT_SEEKER_LORE.build()
+      )
     );
   }
 

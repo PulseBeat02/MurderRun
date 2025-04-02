@@ -39,7 +39,6 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -51,7 +50,12 @@ public final class RedArrow extends KillerGadget {
     super(
       "red_arrow",
       GameProperties.RED_ARROW_COST,
-      ItemFactory.createGadget("red_arrow", Material.TIPPED_ARROW, Message.RED_ARROW_NAME.build(), Message.RED_ARROW_LORE.build())
+      ItemFactory.createGadget(
+        "red_arrow",
+        GameProperties.RED_ARROW_MATERIAL,
+        Message.RED_ARROW_NAME.build(),
+        Message.RED_ARROW_LORE.build()
+      )
     );
   }
 

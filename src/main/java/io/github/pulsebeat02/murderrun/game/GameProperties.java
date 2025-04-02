@@ -26,6 +26,8 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetDataBundle;
+import java.awt.*;
+import org.bukkit.Material;
 
 public interface GameProperties {
   static void init() {
@@ -34,6 +36,75 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  Material BURROW_MATERIAL = material("burrow.material");
+  Material BLIND_MATERIAL = material("blind.material");
+  Material BEAR_MATERIAL = material("bear.material");
+  Material SHIELD_MATERIAL = material("shield.material");
+  Material KILLER_TRACKER_MATERIAL = material("killer_tracker.material");
+  Material FLASHLIGHT_MATERIAL = material("flashlight.material");
+  Material EXCAVATOR_MATERIAL = material("excavator.material");
+  Material SURVIVOR_LEGGINGS_MATERIAL = material("survivor_leggings.material");
+  Material SURVIVOR_CHESTPLATE_MATERIAL = material("survivor_chestplate.material");
+  Material SURVIVOR_HELMET_MATERIAL = material("survivor_helmet.material");
+  Material SURVIVOR_BOOTS_MATERIAL = material("survivor_boots.material");
+  Material WARP_DISTORT_MATERIAL = material("warp_distort.material");
+  Material TRAP_WRECKER_MATERIAL = material("trap_wrecker.material");
+  Material TRAP_SEEKER_MATERIAL = material("trap_seeker.material");
+  Material RED_ARROW_MATERIAL = material("red_arrow.material");
+  Material QUICK_BOMB_MATERIAL = material("quick_bomb.material");
+  Material POSION_SMOG_MATERIAL = material("poison_smog.material");
+  Material PHANTOM_MATERIAL = material("phantom.material");
+  Material PART_WARP_MATERIAL = material("part_warp.material");
+  Material MURDEROUS_WARP_MATERIAL = material("murderous_warp.material");
+  Material MIMIC_MATERIAL = material("mimic.material");
+  Material INFRARED_VISION_MATERIAL = material("infrared_vision.material");
+  Material ICE_PATH_MATERIAL = material("ice_path.material");
+  Material HEAT_SEEKER_MATERIAL = material("heat_seeker.material");
+  Material HEALTH_CUT_MATERIAL = material("health_cut.material");
+  Material GAMBLE_MATERIAL = material("gamble.material");
+  Material FRIGHT_MATERIAL = material("fright.material");
+  Material FOREWARN_MATERIAL = material("forewarn.material");
+  Material FLOOR_IS_LAVA_MATERIAL = material("floor_is_lava.material");
+  Material FIRE_TRAIL_MATERIAL = material("fire_trail.material");
+  Material FAKE_PART_MATERIAL = material("fake_part.material");
+  Material EXPANDER_MATERIAL = material("expander.material");
+  Material ENDER_SHADOWS_MATERIAL = material("ender_shadows.material");
+  Material EMP_BLAST_MATERIAL = material("emp_blast.material");
+  Material EAGLE_EYE_MATERIAL = material("eagle_eye.material");
+  Material DORMAGOGG_MATERIAL = material("dormagogg.material");
+  Material DEATH_STEED_MATERIAL = material("death_steed.material");
+  Material DEATH_HOUND_MATERIAL = material("death_hound.material");
+  Material CURSED_NOTE_MATERIAL = material("cursed_note.material");
+  Material CORRUPTION_MATERIAL = material("corruption.material");
+  Material KILLER_CAMERA_MATERIAL = material("killer_camera.material");
+  Material BURN_THE_BODY_MATERIAL = material("burn_the_body.material");
+  Material BLOOD_CURSE_MATERIAL = material("blood_curse.material");
+  Material ALL_SEEING_EYE_MATERIAL = material("all_seeing_eye.material");
+  Material PORTAL_GUN_MATERIAL = material("portal_gun.material");
+  Material PLAYER_TRACKER_MATERIAL = material("player_tracker.material");
+  Material HOOK_MATERIAL = material("hook.material");
+  Color STAR_COLOR = color("star.color");
+  Color SPAWN_COLOR = color("spawn.color");
+  Color SPASM_COLOR = color("spasm.color");
+  Color SMOKE_COLOR = color("smoke.color");
+  Color SHOCKWAVE_COLOR = color("shockwave.color");
+  Color PONY_COLOR = color("pony.color");
+  Color NECK_SNAP_COLOR = color("neck_snap.color");
+  Color LEVITATION_COLOR = color("levitation.color");
+  Color JUMP_SCARE_COLOR = color("jump_scare.color");
+  Color JEB_COLOR = color("jeb.color");
+  Color HAUNT_COLOR = color("haunt.color");
+  Color HACK_COLOR = color("hack.color");
+  Color GLOW_COLOR = color("glow.color");
+  Color GHOST_COLOR = color("ghost.color");
+  Color FREEZE_COLOR = color("freeze.color");
+  Color FIREWORK_COLOR = color("firework.color");
+  Color FART_COLOR = color("fart.color");
+  Color DISTORT_COLOR = color("distort.color");
+  Color CAGE_COLOR = color("cage.color");
+  Color BURROW_COLOR = color("burrow.color");
+  Color BLIND_COLOR = color("blind.color");
+  Color BEAR_COLOR = color("bear.color");
   String NEXO_CURRENCY = str("nexo.currency");
   String NEXO_GHOST_BONE = str("nexo.ghost.bone");
   String NEXO_KILLER_ARROW = str("nexo.killer.arrow");
@@ -337,6 +408,23 @@ public interface GameProperties {
   int TRANSLOCATOR_COST = num("translocator.cost");
   int PART_SNIFFER_COST = num("part_sniffer.cost");
   int TRAP_VEST_COST = num("trap_vest.cost");
+
+  private static Material material(final String key) {
+    final String material = str(key);
+    return Material.getMaterial(material);
+  }
+
+  private static Color color(final String key) {
+    final String[] split = str(key).split(",");
+    if (split.length != 3) {
+      final String msg = "Invalid color format for key: %s".formatted(key);
+      throw new AssertionError(msg);
+    }
+    final int r = Integer.parseInt(split[0]);
+    final int g = Integer.parseInt(split[1]);
+    final int b = Integer.parseInt(split[2]);
+    return new Color(r, g, b);
+  }
 
   private static boolean bool(final String key) {
     return GADGET_DATA_BUNDLE.getBoolean(key);

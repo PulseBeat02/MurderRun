@@ -30,7 +30,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import org.bukkit.Material;
 
 public final class Excavator extends SurvivorGadget {
 
@@ -39,7 +38,12 @@ public final class Excavator extends SurvivorGadget {
       "excavator",
       GameProperties.EXCAVATOR_COST,
       ItemFactory.createExcavator(
-        ItemFactory.createGadget("excavator", Material.DIAMOND_PICKAXE, Message.EXCAVATOR_NAME.build(), Message.EXCAVATOR_LORE.build())
+        ItemFactory.createGadget(
+          "excavator",
+          GameProperties.EXCAVATOR_MATERIAL,
+          Message.EXCAVATOR_NAME.build(),
+          Message.EXCAVATOR_LORE.build()
+        )
       )
     );
   }

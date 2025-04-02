@@ -28,6 +28,7 @@ package io.github.pulsebeat02.murderrun.utils.item;
 import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
 import io.github.pulsebeat02.murderrun.game.extension.nexo.NexoManager;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -175,19 +176,25 @@ public final class ItemFactory {
   }
 
   public static Item.Builder createDefaultSurvivorHelmet() {
-    return Item.builder(Material.DIAMOND_HELMET).name(Message.SURVIVOR_HELMET.build()).enchantment(Enchantment.PROTECTION, 3);
+    return Item.builder(GameProperties.SURVIVOR_HELMET_MATERIAL)
+      .name(Message.SURVIVOR_HELMET.build())
+      .enchantment(Enchantment.PROTECTION, 3);
   }
 
   public static Item.Builder createDefaultSurvivorChestplate() {
-    return Item.builder(Material.DIAMOND_CHESTPLATE).name(Message.SURVIVOR_CHESTPLATE.build()).enchantment(Enchantment.PROTECTION, 3);
+    return Item.builder(GameProperties.SURVIVOR_CHESTPLATE_MATERIAL)
+      .name(Message.SURVIVOR_CHESTPLATE.build())
+      .enchantment(Enchantment.PROTECTION, 3);
   }
 
   public static Item.Builder createDefaultSurvivorLeggings() {
-    return Item.builder(Material.DIAMOND_LEGGINGS).name(Message.SURVIVOR_LEGGINGS.build()).enchantment(Enchantment.PROTECTION, 3);
+    return Item.builder(GameProperties.SURVIVOR_LEGGINGS_MATERIAL)
+      .name(Message.SURVIVOR_LEGGINGS.build())
+      .enchantment(Enchantment.PROTECTION, 3);
   }
 
   public static Item.Builder createDefaultSurvivorBoots() {
-    return Item.builder(Material.DIAMOND_BOOTS).name(Message.SURVIVOR_BOOTS.build()).enchantment(Enchantment.PROTECTION, 3);
+    return Item.builder(GameProperties.SURVIVOR_BOOTS_MATERIAL).name(Message.SURVIVOR_BOOTS.build()).enchantment(Enchantment.PROTECTION, 3);
   }
 
   public static Item.Builder createPortalGun(final Item.Builder builder) {

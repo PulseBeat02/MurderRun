@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
-import java.awt.Color;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,7 +60,7 @@ public final class CageTrap extends SurvivorTrap {
       GameProperties.CAGE_COST,
       ItemFactory.createGadget("cage", Material.IRON_BARS, Message.CAGE_NAME.build(), Message.CAGE_LORE.build()),
       Message.CAGE_ACTIVATE.build(),
-      Color.GRAY
+      GameProperties.CAGE_COLOR
     );
   }
 

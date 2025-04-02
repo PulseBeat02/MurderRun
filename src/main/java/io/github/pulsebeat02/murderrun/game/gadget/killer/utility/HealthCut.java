@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerRefe
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class HealthCut extends KillerGadget {
@@ -46,7 +45,12 @@ public final class HealthCut extends KillerGadget {
     super(
       "health_cut",
       GameProperties.HEALTH_CUT_COST,
-      ItemFactory.createGadget("health_cut", Material.GOLDEN_SWORD, Message.HEALTH_CUT_NAME.build(), Message.HEALTH_CUT_LORE.build())
+      ItemFactory.createGadget(
+        "health_cut",
+        GameProperties.HEALTH_CUT_MATERIAL,
+        Message.HEALTH_CUT_NAME.build(),
+        Message.HEALTH_CUT_LORE.build()
+      )
     );
   }
 

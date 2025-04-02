@@ -41,7 +41,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class PartWarp extends KillerGadget {
@@ -50,7 +49,12 @@ public final class PartWarp extends KillerGadget {
     super(
       "part_warp",
       GameProperties.PART_WARP_COST,
-      ItemFactory.createGadget("part_warp", Material.REPEATER, Message.PART_WARP_NAME.build(), Message.PART_WARP_LORE.build())
+      ItemFactory.createGadget(
+        "part_warp",
+        GameProperties.PART_WARP_MATERIAL,
+        Message.PART_WARP_NAME.build(),
+        Message.PART_WARP_LORE.build()
+      )
     );
   }
 

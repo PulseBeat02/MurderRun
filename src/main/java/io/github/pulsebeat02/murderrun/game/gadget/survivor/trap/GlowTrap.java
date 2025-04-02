@@ -31,7 +31,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -44,7 +43,7 @@ public final class GlowTrap extends SurvivorTrap {
       GameProperties.GLOW_COST,
       ItemFactory.createGadget("glow", Material.GLOWSTONE, Message.GLOW_NAME.build(), Message.GLOW_LORE.build()),
       Message.GLOW_ACTIVATE.build(),
-      Color.YELLOW
+      GameProperties.GLOW_COLOR
     );
   }
 

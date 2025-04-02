@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -53,7 +52,7 @@ public final class LevitationTrap extends SurvivorTrap {
       GameProperties.LEVITATION_COST,
       ItemFactory.createGadget("levitation", Material.SHULKER_SHELL, Message.LEVITATION_NAME.build(), Message.LEVITATION_LORE.build()),
       Message.LEVITATION_ACTIVATE.build(),
-      new Color(177, 156, 217)
+      GameProperties.LEVITATION_COLOR
     );
   }
 

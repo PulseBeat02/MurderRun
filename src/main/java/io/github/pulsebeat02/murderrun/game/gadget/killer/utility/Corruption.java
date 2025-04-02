@@ -46,7 +46,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -62,7 +61,12 @@ public final class Corruption extends KillerGadget {
     super(
       "corruption",
       GameProperties.CORRUPTION_COST,
-      ItemFactory.createGadget("corruption", Material.ZOMBIE_HEAD, Message.CORRUPTION_NAME.build(), Message.CORRUPTION_LORE.build())
+      ItemFactory.createGadget(
+        "corruption",
+        GameProperties.CORRUPTION_MATERIAL,
+        Message.CORRUPTION_NAME.build(),
+        Message.CORRUPTION_LORE.build()
+      )
     );
   }
 

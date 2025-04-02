@@ -43,7 +43,6 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Set;
 import java.util.UUID;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -66,7 +65,12 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     super(
       "death_hound",
       GameProperties.DEATH_HOUND_COST,
-      ItemFactory.createGadget("death_hound", Material.BONE, Message.DEATH_HOUND_NAME.build(), Message.DEATH_HOUND_LORE.build())
+      ItemFactory.createGadget(
+        "death_hound",
+        GameProperties.DEATH_HOUND_MATERIAL,
+        Message.DEATH_HOUND_NAME.build(),
+        Message.DEATH_HOUND_LORE.build()
+      )
     );
     this.game = game;
   }

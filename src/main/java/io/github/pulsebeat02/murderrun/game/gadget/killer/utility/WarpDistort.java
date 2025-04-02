@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class WarpDistort extends KillerGadget {
@@ -46,7 +45,12 @@ public final class WarpDistort extends KillerGadget {
     super(
       "warp_distort",
       GameProperties.WARP_DISTORT_COST,
-      ItemFactory.createGadget("warp_distort", Material.CHORUS_FRUIT, Message.WARP_DISTORT_NAME.build(), Message.WARP_DISTORT_LORE.build())
+      ItemFactory.createGadget(
+        "warp_distort",
+        GameProperties.WARP_DISTORT_MATERIAL,
+        Message.WARP_DISTORT_NAME.build(),
+        Message.WARP_DISTORT_LORE.build()
+      )
     );
   }
 

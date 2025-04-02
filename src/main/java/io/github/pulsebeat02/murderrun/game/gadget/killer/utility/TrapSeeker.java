@@ -48,7 +48,6 @@ import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -60,7 +59,12 @@ public final class TrapSeeker extends KillerGadget {
     super(
       "trap_seeker",
       GameProperties.TRAP_SEEKER_COST,
-      ItemFactory.createGadget("trap_seeker", Material.CLOCK, Message.TRAP_SEEKER_NAME.build(), Message.TRAP_SEEKER_LORE.build())
+      ItemFactory.createGadget(
+        "trap_seeker",
+        GameProperties.TRAP_SEEKER_MATERIAL,
+        Message.TRAP_SEEKER_NAME.build(),
+        Message.TRAP_SEEKER_LORE.build()
+      )
     );
   }
 

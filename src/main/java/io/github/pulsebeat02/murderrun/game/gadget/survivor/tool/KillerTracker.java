@@ -44,7 +44,6 @@ import java.util.Collection;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -59,7 +58,7 @@ public final class KillerTracker extends SurvivorGadget {
       ItemFactory.createKillerTracker(
         ItemFactory.createGadget(
           "killer_tracker",
-          Material.COMPASS,
+          GameProperties.KILLER_TRACKER_MATERIAL,
           Message.KILLER_TRACKER_NAME.build(),
           Message.KILLER_TRACKER_LORE.build()
         )

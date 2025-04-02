@@ -39,7 +39,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.EntityReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Horse;
@@ -54,7 +53,12 @@ public final class DeathSteed extends KillerGadget {
     super(
       "death_steed",
       GameProperties.DEATH_STEED_COST,
-      ItemFactory.createGadget("death_steed", Material.SADDLE, Message.DEATH_STEED_NAME.build(), Message.DEATH_STEED_LORE.build())
+      ItemFactory.createGadget(
+        "death_steed",
+        GameProperties.DEATH_STEED_MATERIAL,
+        Message.DEATH_STEED_NAME.build(),
+        Message.DEATH_STEED_LORE.build()
+      )
     );
   }
 

@@ -48,7 +48,12 @@ public final class FireTrail extends KillerGadget {
     super(
       "fire_trail",
       GameProperties.FIRE_TRAIL_COST,
-      ItemFactory.createGadget("fire_trail", Material.MAGMA_CREAM, Message.FIRE_TRAIL_NAME.build(), Message.FIRE_TRAIL_LORE.build())
+      ItemFactory.createGadget(
+        "fire_trail",
+        GameProperties.FIRE_TRAIL_MATERIAL,
+        Message.FIRE_TRAIL_NAME.build(),
+        Message.FIRE_TRAIL_LORE.build()
+      )
     );
   }
 

@@ -31,8 +31,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -43,9 +41,9 @@ public final class BlindTrap extends SurvivorTrap {
     super(
       "blind",
       GameProperties.BLIND_COST,
-      ItemFactory.createGadget("blind", Material.BLACK_STAINED_GLASS, Message.BLIND_NAME.build(), Message.BLIND_LORE.build()),
+      ItemFactory.createGadget("blind", GameProperties.BLIND_MATERIAL, Message.BLIND_NAME.build(), Message.BLIND_LORE.build()),
       Message.BLIND_ACTIVATE.build(),
-      Color.BLACK
+      GameProperties.BLIND_COLOR
     );
   }
 

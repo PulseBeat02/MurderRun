@@ -50,7 +50,6 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -63,7 +62,12 @@ public final class CursedNote extends KillerGadget {
     super(
       "cursed_note",
       GameProperties.CURSED_NOTE_COST,
-      ItemFactory.createGadget("cursed_note", Material.PAPER, Message.CURSED_NOTE_NAME.build(), Message.CURSED_NOTE_LORE.build())
+      ItemFactory.createGadget(
+        "cursed_note",
+        GameProperties.CURSED_NOTE_MATERIAL,
+        Message.CURSED_NOTE_NAME.build(),
+        Message.CURSED_NOTE_LORE.build()
+      )
     );
   }
 

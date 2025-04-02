@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -48,7 +47,7 @@ public final class SpawnTrap extends SurvivorTrap {
       GameProperties.SPAWN_COST,
       ItemFactory.createGadget("spawn", Material.AMETHYST_SHARD, Message.SPAWN_NAME.build(), Message.SPAWN_LORE.build()),
       Message.SPAWN_ACTIVATE.build(),
-      Color.GRAY
+      GameProperties.SPAWN_COLOR
     );
   }
 

@@ -38,7 +38,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class AllSeeingEye extends KillerGadget {
@@ -49,7 +48,7 @@ public final class AllSeeingEye extends KillerGadget {
       GameProperties.ALL_SEEING_EYE_COST,
       ItemFactory.createGadget(
         "all_seeing_eye",
-        Material.ENDER_EYE,
+        GameProperties.ALL_SEEING_EYE_MATERIAL,
         Message.ALL_SEEING_EYE_NAME.build(),
         Message.ALL_SEEING_EYE_LORE.build()
       )

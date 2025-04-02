@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -73,7 +72,12 @@ public final class PortalGun extends KillerGadget implements Listener {
       "portal_gun",
       GameProperties.PORTAL_GUN_COST,
       ItemFactory.createPortalGun(
-        ItemFactory.createGadget("portal_gun", Material.BOW, Message.PORTAL_GUN_NAME.build(), Message.PORTAL_GUN_LORE.build())
+        ItemFactory.createGadget(
+          "portal_gun",
+          GameProperties.PORTAL_GUN_MATERIAL,
+          Message.PORTAL_GUN_NAME.build(),
+          Message.PORTAL_GUN_LORE.build()
+        )
       )
     );
     this.portals = new HashMap<>();

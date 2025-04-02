@@ -34,9 +34,7 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class BurrowTrap extends SurvivorTrap {
@@ -45,9 +43,9 @@ public final class BurrowTrap extends SurvivorTrap {
     super(
       "burrow",
       GameProperties.BURROW_COST,
-      ItemFactory.createGadget("burrow", Material.DIRT, Message.BURROW_NAME.build(), Message.BURROW_LORE.build()),
+      ItemFactory.createGadget("burrow", GameProperties.BURROW_MATERIAL, Message.BURROW_NAME.build(), Message.BURROW_LORE.build()),
       Message.BURROW_ACTIVATE.build(),
-      new Color(49, 42, 41)
+      GameProperties.BURROW_COLOR
     );
   }
 

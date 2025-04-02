@@ -40,7 +40,6 @@ import io.github.pulsebeat02.murderrun.game.player.death.PlayerDeathTask;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -50,7 +49,7 @@ public final class Gamble extends KillerGadget {
     super(
       "gamble",
       GameProperties.GAMBLE_COST,
-      ItemFactory.createGadget("gamble", Material.END_PORTAL_FRAME, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build())
+      ItemFactory.createGadget("gamble", GameProperties.GAMBLE_MATERIAL, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build())
     );
   }
 

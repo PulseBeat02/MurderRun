@@ -42,7 +42,6 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Forewarn extends KillerGadget {
@@ -51,7 +50,7 @@ public final class Forewarn extends KillerGadget {
     super(
       "forewarn",
       GameProperties.FOREWARN_COST,
-      ItemFactory.createGadget("forewarn", Material.GLOWSTONE_DUST, Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
+      ItemFactory.createGadget("forewarn", GameProperties.FOREWARN_MATERIAL, Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
     );
   }
 

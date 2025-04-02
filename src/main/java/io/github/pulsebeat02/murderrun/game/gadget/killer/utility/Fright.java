@@ -54,7 +54,7 @@ public final class Fright extends KillerGadget {
     super(
       "fright",
       GameProperties.FRIGHT_COST,
-      ItemFactory.createGadget("fright", Material.BLACK_CONCRETE, Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build())
+      ItemFactory.createGadget("fright", GameProperties.FRIGHT_MATERIAL, Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build())
     );
     this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
   }

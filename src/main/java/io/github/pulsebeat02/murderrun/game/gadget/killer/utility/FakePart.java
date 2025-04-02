@@ -53,7 +53,12 @@ public final class FakePart extends KillerGadget {
     super(
       "fake_part",
       GameProperties.FAKE_PART_COST,
-      ItemFactory.createGadget("fake_part", Material.COMPARATOR, Message.FAKE_PART_NAME.build(), Message.FAKE_PART_LORE.build())
+      ItemFactory.createGadget(
+        "fake_part",
+        GameProperties.FAKE_PART_MATERIAL,
+        Message.FAKE_PART_NAME.build(),
+        Message.FAKE_PART_LORE.build()
+      )
     );
   }
 

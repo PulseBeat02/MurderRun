@@ -32,7 +32,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import java.awt.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
@@ -44,7 +43,7 @@ public final class FreezeTrap extends SurvivorTrap {
       GameProperties.FREEZE_COST,
       ItemFactory.createGadget("freeze", Material.PACKED_ICE, Message.FREEZE_NAME.build(), Message.FREEZE_LORE.build()),
       Message.FREEZE_ACTIVATE.build(),
-      Color.BLUE
+      GameProperties.FREEZE_COLOR
     );
   }
 
