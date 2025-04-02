@@ -36,7 +36,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerRefe
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -50,7 +49,7 @@ public final class SmokeTrap extends SurvivorTrap {
     super(
       "smoke",
       GameProperties.SMOKE_COST,
-      ItemFactory.createGadget("smoke", Material.GUNPOWDER, Message.SMOKE_NAME.build(), Message.SMOKE_LORE.build()),
+      ItemFactory.createGadget("smoke", GameProperties.SMOKE_MATERIAL, Message.SMOKE_NAME.build(), Message.SMOKE_LORE.build()),
       Message.SMOKE_ACTIVATE.build(),
       GameProperties.SMOKE_COLOR
     );

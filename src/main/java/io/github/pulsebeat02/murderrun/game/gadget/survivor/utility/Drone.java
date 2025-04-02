@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Drone extends SurvivorGadget {
@@ -46,7 +45,7 @@ public final class Drone extends SurvivorGadget {
     super(
       "drone",
       GameProperties.DRONE_COST,
-      ItemFactory.createGadget("drone", Material.PHANTOM_MEMBRANE, Message.DRONE_NAME.build(), Message.DRONE_LORE.build())
+      ItemFactory.createGadget("drone", GameProperties.DRONE_MATERIAL, Message.DRONE_NAME.build(), Message.DRONE_LORE.build())
     );
   }
 

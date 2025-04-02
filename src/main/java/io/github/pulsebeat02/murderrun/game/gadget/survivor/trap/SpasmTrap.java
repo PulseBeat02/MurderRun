@@ -38,7 +38,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
 
@@ -53,7 +52,7 @@ public final class SpasmTrap extends SurvivorTrap {
     super(
       "spasm",
       GameProperties.SPASM_COST,
-      ItemFactory.createGadget("spasm", Material.SEA_LANTERN, Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
+      ItemFactory.createGadget("spasm", GameProperties.SPASM_MATERIAL, Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
       Message.SPASM_ACTIVATE.build(),
       GameProperties.SPASM_COLOR
     );

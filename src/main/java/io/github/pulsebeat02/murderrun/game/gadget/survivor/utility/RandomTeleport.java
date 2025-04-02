@@ -39,7 +39,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import io.github.pulsebeat02.murderrun.utils.map.MapUtils;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 
@@ -51,7 +50,7 @@ public final class RandomTeleport extends SurvivorGadget {
       GameProperties.RANDOM_TELEPORT_COST,
       ItemFactory.createGadget(
         "random_teleport",
-        Material.GOLDEN_CARROT,
+        GameProperties.RANDOM_TELEPORT_MATERIAL,
         Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
         Message.TP_ME_AWAY_FROM_HERE_LORE.build()
       )

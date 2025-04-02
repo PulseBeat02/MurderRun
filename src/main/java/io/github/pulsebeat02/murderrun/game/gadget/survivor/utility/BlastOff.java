@@ -40,7 +40,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerRefe
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
@@ -52,7 +51,12 @@ public final class BlastOff extends SurvivorGadget {
     super(
       "blast_off",
       GameProperties.BLAST_OFF_COST,
-      ItemFactory.createGadget("blast_off", Material.FIREWORK_ROCKET, Message.BLAST_OFF_NAME.build(), Message.BLAST_OFF_LORE.build())
+      ItemFactory.createGadget(
+        "blast_off",
+        GameProperties.BLAST_OFF_MATERIAL,
+        Message.BLAST_OFF_NAME.build(),
+        Message.BLAST_OFF_LORE.build()
+      )
     );
   }
 

@@ -41,7 +41,6 @@ import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -64,7 +63,12 @@ public final class FlashBang extends SurvivorGadget implements Listener {
       "flash_bang",
       GameProperties.FLASHBANG_COST,
       ItemFactory.createFlashBang(
-        ItemFactory.createGadget("flash_bang", Material.SNOWBALL, Message.FLASHBANG_NAME.build(), Message.FLASHBANG_LORE.build())
+        ItemFactory.createGadget(
+          "flash_bang",
+          GameProperties.FLASHBANG_MATERIAL,
+          Message.FLASHBANG_NAME.build(),
+          Message.FLASHBANG_LORE.build()
+        )
       )
     );
     this.game = game;

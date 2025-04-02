@@ -67,7 +67,12 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
     super(
       "ice_spirit",
       GameProperties.ICE_SPIRIT_COST,
-      ItemFactory.createGadget("ice_spirit", Material.ZOMBIE_HEAD, Message.ICE_SPIRIT_NAME.build(), Message.ICE_SPIRIT_LORE.build())
+      ItemFactory.createGadget(
+        "ice_spirit",
+        GameProperties.ICE_SPIRIT_MATERIAL,
+        Message.ICE_SPIRIT_NAME.build(),
+        Message.ICE_SPIRIT_LORE.build()
+      )
     );
     this.game = game;
   }

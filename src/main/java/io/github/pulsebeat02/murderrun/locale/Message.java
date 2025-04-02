@@ -30,6 +30,19 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> LOAD_API = direct("murderrun.load.api");
+  NullComponent<Sender> LOAD_DATA = direct("murderrun.load.data");
+  NullComponent<Sender> LOAD_LOOKUP = direct("murderrun.load.lookup");
+  NullComponent<Sender> LOAD_RESOURCEPACK = direct("murderrun.load.resourcepack");
+  NullComponent<Sender> LOAD_COMMANDS = direct("murderrun.load.commands");
+  NullComponent<Sender> LOAD_EXTENSIONS = direct("murderrun.load.extensions");
+  NullComponent<Sender> LOAD_SCHEMATICS = direct("murderrun.load.schematics");
+  NullComponent<Sender> LOAD_METRICS = direct("murderrun.load.metrics");
+  NullComponent<Sender> UNLOAD_GAMES = direct("murderrun.unload.games");
+  NullComponent<Sender> UNLOAD_EXTENSIONS = direct("murderrun.unload.extensions");
+  NullComponent<Sender> UNLOAD_DATA = direct("murderrun.unload.data");
+  NullComponent<Sender> UNLOAD_RESOURCEPACK = direct("murderrun.unload.resourcepack");
+  NullComponent<Sender> UNLOAD_METRICS = direct("murderrun.unload.metrics");
   NullComponent<Sender> KILLER_BOOTS = direct("murderrun.game.killer.boots");
   NullComponent<Sender> KILLER_LEGGINGS = direct("murderrun.game.killer.leggings");
   NullComponent<Sender> KILLER_CHESTPLATE = direct("murderrun.game.killer.chestplate");

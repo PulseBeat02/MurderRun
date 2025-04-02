@@ -55,7 +55,7 @@ public final class Translocator extends SurvivorGadget {
       ItemFactory.createTranslocator(
         ItemFactory.createGadget(
           "translocator",
-          Material.POPPED_CHORUS_FRUIT,
+          GameProperties.TRANSLOCATOR_MATERIAL,
           Message.TRANSLOCATOR_NAME.build(),
           Message.TRANSLOCATOR_LORE.build()
         )

@@ -57,6 +57,12 @@ public final class Schematic implements Serializable {
     this.origin = origin;
   }
 
+  public Schematic(final Schematic schematic) {
+    this.schematicPath = schematic.schematicPath;
+    this.origin = new SerializableVector(schematic.origin);
+    this.clipboard = schematic.clipboard;
+  }
+
   public static Schematic copyAndCreateSchematic(final String name, final Location[] corners, final boolean arena) {
     try {
       final Clipboard clipboard = MapUtils.performForwardExtentCopy(corners);

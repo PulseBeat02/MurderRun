@@ -49,7 +49,7 @@ public final class Horcrux extends SurvivorGadget {
     super(
       "horcrux",
       GameProperties.HORCRUX_COST,
-      ItemFactory.createGadget("horcrux", Material.CHARCOAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build())
+      ItemFactory.createGadget("horcrux", GameProperties.HORCRUX_MATERIAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build())
     );
   }
 

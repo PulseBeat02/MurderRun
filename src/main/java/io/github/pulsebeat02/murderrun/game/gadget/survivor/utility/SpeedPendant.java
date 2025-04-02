@@ -31,7 +31,6 @@ import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import org.bukkit.Material;
 
 public final class SpeedPendant extends SurvivorGadget {
 
@@ -40,7 +39,7 @@ public final class SpeedPendant extends SurvivorGadget {
       "speed_pendant",
       GameProperties.SPEED_PENDANT_COST,
       ItemFactory.createSpeedPendant(
-        ItemFactory.createGadget("speed_pendant", Material.FEATHER, Message.SPEED_PENDANT_NAME.build(), empty())
+        ItemFactory.createGadget("speed_pendant", GameProperties.SPEED_PENDANT_MATERIAL, Message.SPEED_PENDANT_NAME.build(), empty())
       )
     );
   }

@@ -44,7 +44,6 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
@@ -56,7 +55,7 @@ public final class FireworkTrap extends SurvivorTrap {
     super(
       "firework",
       GameProperties.FIREWORK_COST,
-      ItemFactory.createGadget("firework", Material.FIREWORK_ROCKET, Message.FIREWORK_NAME.build(), Message.FIREWORK_LORE.build()),
+      ItemFactory.createGadget("firework", GameProperties.FIREWORK_MATERIAL, Message.FIREWORK_NAME.build(), Message.FIREWORK_LORE.build()),
       Message.FIREWORK_ACTIVATE.build(),
       GameProperties.FIREWORK_COLOR
     );

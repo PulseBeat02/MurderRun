@@ -312,4 +312,9 @@ public abstract class AbstractPlayer implements Participant {
   public void setWorldBorder(final @Nullable WorldBorder border) {
     this.apply(player -> player.setWorldBorder(border));
   }
+
+  @Override
+  public void kick(final String message) {
+    this.apply(player -> player.kickPlayer(message));
+  }
 }

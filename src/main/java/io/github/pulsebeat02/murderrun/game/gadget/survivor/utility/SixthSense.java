@@ -42,7 +42,6 @@ import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class SixthSense extends SurvivorGadget {
@@ -51,7 +50,12 @@ public final class SixthSense extends SurvivorGadget {
     super(
       "sixth_sense",
       GameProperties.SIXTH_SENSE_COST,
-      ItemFactory.createGadget("sixth_sense", Material.GOLDEN_CARROT, Message.SIXTH_SENSE_NAME.build(), Message.SIXTH_SENSE_LORE.build())
+      ItemFactory.createGadget(
+        "sixth_sense",
+        GameProperties.SIXTH_SENSE_MATERIAL,
+        Message.SIXTH_SENSE_NAME.build(),
+        Message.SIXTH_SENSE_LORE.build()
+      )
     );
   }
 

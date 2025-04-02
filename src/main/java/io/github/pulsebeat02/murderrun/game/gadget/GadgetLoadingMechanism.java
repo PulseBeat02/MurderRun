@@ -26,8 +26,8 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.gadget;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerDevice;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorDevice;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.StreamUtils;
@@ -61,12 +61,12 @@ public final class GadgetLoadingMechanism {
 
   private Set<Gadget> getKillerGadgets(@UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
     final Collection<Gadget> gadgets = gameGadgets.values();
-    return gadgets.stream().filter(StreamUtils.isInstanceOf(KillerApparatus.class)).collect(Collectors.toSet());
+    return gadgets.stream().filter(StreamUtils.isInstanceOf(KillerDevice.class)).collect(Collectors.toSet());
   }
 
   private Set<Gadget> getSurvivorGadgets(@UnderInitialization GadgetLoadingMechanism this, final Map<String, Gadget> gameGadgets) {
     final Collection<Gadget> gadgets = gameGadgets.values();
-    return gadgets.stream().filter(StreamUtils.isInstanceOf(SurvivorApparatus.class)).collect(Collectors.toSet());
+    return gadgets.stream().filter(StreamUtils.isInstanceOf(SurvivorDevice.class)).collect(Collectors.toSet());
   }
 
   public void shutdown() {

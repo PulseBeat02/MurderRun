@@ -108,8 +108,8 @@ public final class MapSchematicIO {
     final Location previous = arena.getSpawn();
     final World previousWorld = requireNonNull(previous.getWorld());
     final World world = MapUtils.createVoidWorld(name, previousWorld);
-    arena.relativizeLocations(this.uuid);
-    lobby.relativizeLocations(this.uuid);
+    this.settings.setArena(arena.relativizeLocations(this.uuid));
+    this.settings.setLobby(lobby.relativizeLocations(this.uuid));
     return world;
   }
 

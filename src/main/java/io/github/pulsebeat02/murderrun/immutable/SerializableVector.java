@@ -44,6 +44,12 @@ public final class SerializableVector implements Serializable {
     this.z = vector3.z();
   }
 
+  public SerializableVector(final SerializableVector other) {
+    this.x = other.x;
+    this.y = other.y;
+    this.z = other.z;
+  }
+
   public BlockVector3 getVector3() {
     return BlockVector3.at(this.x, this.y, this.z);
   }

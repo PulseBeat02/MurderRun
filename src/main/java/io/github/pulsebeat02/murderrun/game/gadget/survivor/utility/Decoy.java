@@ -53,7 +53,7 @@ public final class Decoy extends SurvivorGadget {
     super(
       "decoy",
       GameProperties.DECOY_COST,
-      ItemFactory.createGadget("decoy", Material.PLAYER_HEAD, Message.DECOY_NAME.build(), Message.DECOY_LORE.build())
+      ItemFactory.createGadget("decoy", GameProperties.DECOY_MATERIAL, Message.DECOY_NAME.build(), Message.DECOY_LORE.build())
     );
   }
 

@@ -37,7 +37,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Tracker extends SurvivorGadget {
@@ -46,7 +45,7 @@ public final class Tracker extends SurvivorGadget {
     super(
       "tracker",
       GameProperties.TRACKER_COST,
-      ItemFactory.createGadget("tracker", Material.COMPASS, Message.TRACKER_NAME.build(), Message.TRACKER_LORE.build())
+      ItemFactory.createGadget("tracker", GameProperties.TRACKER_MATERIAL, Message.TRACKER_NAME.build(), Message.TRACKER_LORE.build())
     );
   }
 

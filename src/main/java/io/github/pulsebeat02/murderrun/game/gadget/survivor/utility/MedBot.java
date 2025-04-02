@@ -62,7 +62,7 @@ public final class MedBot extends SurvivorGadget {
     super(
       "med_bot",
       GameProperties.MED_BOT_COST,
-      ItemFactory.createGadget("med_bot", Material.DISPENSER, Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build())
+      ItemFactory.createGadget("med_bot", GameProperties.MED_BOT_MATERIAL, Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build())
     );
   }
 

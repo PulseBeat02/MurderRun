@@ -40,7 +40,6 @@ import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -53,7 +52,7 @@ public final class Parasite extends SurvivorGadget {
     super(
       "parasite",
       GameProperties.PARASITE_COST,
-      ItemFactory.createGadget("parasite", Material.VINE, Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build())
+      ItemFactory.createGadget("parasite", GameProperties.PARSITE_MATERIAL, Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build())
     );
     this.removed = new HashSet<>();
   }

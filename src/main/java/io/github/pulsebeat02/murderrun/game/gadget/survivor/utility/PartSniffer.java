@@ -44,7 +44,6 @@ import java.util.Collection;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class PartSniffer extends SurvivorGadget {
@@ -53,7 +52,12 @@ public final class PartSniffer extends SurvivorGadget {
     super(
       "part_sniffer",
       GameProperties.PART_SNIFFER_COST,
-      ItemFactory.createGadget("part_sniffer", Material.TRIPWIRE_HOOK, Message.PART_SNIFFER_NAME.build(), Message.PART_SNIFFER_LORE.build())
+      ItemFactory.createGadget(
+        "part_sniffer",
+        GameProperties.PART_SNIFFER_MATERIAL,
+        Message.PART_SNIFFER_NAME.build(),
+        Message.PART_SNIFFER_LORE.build()
+      )
     );
   }
 

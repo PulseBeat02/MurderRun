@@ -29,8 +29,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerDevice;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorDevice;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
@@ -126,8 +126,7 @@ public final class TradingUtils {
     final Collection<Gadget> gadgets = registry.getGadgets();
     final Set<ItemStack> items = new TreeSet<>(ITEM_STACK_COMPARATOR);
     for (final Gadget gadget : gadgets) {
-      final boolean add =
-        (isSurvivorGadgets && gadget instanceof SurvivorApparatus) || (!isSurvivorGadgets && gadget instanceof KillerApparatus);
+      final boolean add = (isSurvivorGadgets && gadget instanceof SurvivorDevice) || (!isSurvivorGadgets && gadget instanceof KillerDevice);
       if (add) {
         final ItemStack stack = getModifiedLoreWithCost(gadget);
         items.add(stack);

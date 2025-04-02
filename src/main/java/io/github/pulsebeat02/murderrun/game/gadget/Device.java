@@ -23,28 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.survivor.utility;
+package io.github.pulsebeat02.murderrun.game.gadget;
 
-import io.github.pulsebeat02.murderrun.game.GameProperties;
-import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
-import io.github.pulsebeat02.murderrun.locale.Message;
-import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-
-public final class MedKit extends SurvivorGadget {
-
-  public MedKit() {
-    super(
-      "med_kit",
-      GameProperties.MED_KIT_COST,
-      ItemFactory.createMedKit(
-        ItemFactory.createGadget("med_kit", GameProperties.MED_KIT_MATERIAL, Message.MED_KIT_NAME.build(), Message.MED_KIT_LORE.build())
-      )
-    );
-  }
-
-  @Override
-  public boolean onGadgetDrop(final GadgetDropPacket packet) {
-    return false;
-  }
-}
+public interface Device {}

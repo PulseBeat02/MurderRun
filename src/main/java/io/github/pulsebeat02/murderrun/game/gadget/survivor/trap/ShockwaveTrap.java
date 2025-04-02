@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.player.Participant;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
@@ -46,7 +45,12 @@ public final class ShockwaveTrap extends SurvivorTrap {
     super(
       "shockwave",
       GameProperties.SHOCKWAVE_COST,
-      ItemFactory.createGadget("shockwave", Material.TNT, Message.SHOCKWAVE_NAME.build(), Message.SHOCKWAVE_LORE.build()),
+      ItemFactory.createGadget(
+        "shockwave",
+        GameProperties.SHOCKWAVE_MATERIAL,
+        Message.SHOCKWAVE_NAME.build(),
+        Message.SHOCKWAVE_LORE.build()
+      ),
       Message.SHOCKWAVE_ACTIVATE.build(),
       GameProperties.SHOCKWAVE_COLOR
     );

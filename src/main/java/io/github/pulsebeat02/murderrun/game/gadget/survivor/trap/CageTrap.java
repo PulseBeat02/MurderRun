@@ -58,7 +58,7 @@ public final class CageTrap extends SurvivorTrap {
     super(
       "cage",
       GameProperties.CAGE_COST,
-      ItemFactory.createGadget("cage", Material.IRON_BARS, Message.CAGE_NAME.build(), Message.CAGE_LORE.build()),
+      ItemFactory.createGadget("cage", GameProperties.CAGE_MATERIAL, Message.CAGE_NAME.build(), Message.CAGE_LORE.build()),
       Message.CAGE_ACTIVATE.build(),
       GameProperties.CAGE_COLOR
     );

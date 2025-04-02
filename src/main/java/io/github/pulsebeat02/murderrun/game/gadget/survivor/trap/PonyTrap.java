@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -48,7 +47,7 @@ public final class PonyTrap extends SurvivorTrap {
     super(
       "pony",
       GameProperties.PONY_COST,
-      ItemFactory.createGadget("pony", Material.SADDLE, Message.PONY_NAME.build(), Message.PONY_LORE.build()),
+      ItemFactory.createGadget("pony", GameProperties.PONY_MATERIAL, Message.PONY_NAME.build(), Message.PONY_LORE.build()),
       Message.PONY_ACTIVATE.build(),
       GameProperties.PONY_COLOR
     );

@@ -176,4 +176,6 @@ public interface Participant {
   Scoreboard getScoreboard();
 
   void setWorldBorder(final WorldBorder border);
+
+  void kick(final String message);
 }

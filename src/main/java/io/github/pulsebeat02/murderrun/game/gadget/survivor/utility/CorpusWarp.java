@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class CorpusWarp extends SurvivorGadget {
@@ -46,7 +45,7 @@ public final class CorpusWarp extends SurvivorGadget {
       GameProperties.CORPUS_WARP_COST,
       ItemFactory.createGadget(
         "corpus_warp",
-        Material.PURPLE_STAINED_GLASS,
+        GameProperties.CORPUS_WARP_MATERIAL,
         Message.CORPUS_WARP_NAME.build(),
         Message.CORPUS_WARP_LORE.build()
       )

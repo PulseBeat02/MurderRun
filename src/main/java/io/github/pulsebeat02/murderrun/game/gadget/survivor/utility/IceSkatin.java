@@ -51,7 +51,12 @@ public final class IceSkatin extends SurvivorGadget {
     super(
       "ice_skatin",
       GameProperties.ICE_SKATIN_COST,
-      ItemFactory.createGadget("ice_skatin", Material.OAK_BOAT, Message.ICE_SKATIN_NAME.build(), Message.ICE_SKATIN_LORE.build())
+      ItemFactory.createGadget(
+        "ice_skatin",
+        GameProperties.ICE_SKATIN_MATERIAL,
+        Message.ICE_SKATIN_NAME.build(),
+        Message.ICE_SKATIN_LORE.build()
+      )
     );
   }
 

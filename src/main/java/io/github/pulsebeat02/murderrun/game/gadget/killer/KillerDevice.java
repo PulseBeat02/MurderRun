@@ -23,8 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.survivor;
+package io.github.pulsebeat02.murderrun.game.gadget.killer;
 
-import io.github.pulsebeat02.murderrun.game.Apparatus;
+import io.github.pulsebeat02.murderrun.game.gadget.Device;
 
-public interface SurvivorApparatus extends Apparatus {}
+public interface KillerDevice extends Device {}

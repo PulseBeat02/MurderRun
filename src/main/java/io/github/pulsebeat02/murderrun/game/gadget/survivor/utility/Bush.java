@@ -52,7 +52,7 @@ public final class Bush extends SurvivorGadget {
     super(
       "bush",
       GameProperties.BUSH_COST,
-      ItemFactory.createGadget("bush", Material.OAK_LEAVES, Message.BUSH_NAME.build(), Message.BUSH_LORE.build())
+      ItemFactory.createGadget("bush", GameProperties.BUSH_MATERIAL, Message.BUSH_NAME.build(), Message.BUSH_LORE.build())
     );
   }
 

@@ -35,7 +35,6 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -45,7 +44,7 @@ public final class RandomTrap extends SurvivorGadget {
     super(
       "random",
       GameProperties.RANDOM_TRAP_COST,
-      ItemFactory.createGadget("random", Material.END_PORTAL_FRAME, Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build())
+      ItemFactory.createGadget("random", GameProperties.RANDOM_TRAP_MATERIAL, Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build())
     );
   }
 

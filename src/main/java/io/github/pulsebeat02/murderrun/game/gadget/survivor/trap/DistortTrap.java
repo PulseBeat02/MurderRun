@@ -33,7 +33,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Item;
 
@@ -43,7 +42,7 @@ public final class DistortTrap extends SurvivorTrap {
     super(
       "distort",
       GameProperties.DISTORT_COST,
-      ItemFactory.createGadget("distort", Material.PRISMARINE_SHARD, Message.DISTORT_NAME.build(), Message.DISTORT_LORE.build()),
+      ItemFactory.createGadget("distort", GameProperties.DISTORT_MATERIAL, Message.DISTORT_NAME.build(), Message.DISTORT_LORE.build()),
       Message.DISTORT_ACTIVATE.build(),
       GameProperties.DISTORT_COLOR
     );

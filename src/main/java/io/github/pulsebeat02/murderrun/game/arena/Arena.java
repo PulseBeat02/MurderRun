@@ -95,7 +95,7 @@ public final class Arena implements Serializable {
   }
 
   public Arena(final Arena arena) {
-    this.schematic = arena.schematic;
+    this.schematic = new Schematic(arena.schematic);
     this.name = arena.name;
     this.id = arena.id;
     this.corners = MapUtils.copyLocationArray(arena.corners);
@@ -145,24 +145,27 @@ public final class Arena implements Serializable {
     if (length == 0) {
       return this.spawn;
     }
-
     final int index = RandomUtils.generateInt(length);
     final Location location = this.carPartLocations[index];
     final Location drop = location.clone();
     drop.add(0, 1.5, 0);
-
     return drop;
   }
 
-  public void relativizeLocations(final UUID uuid) {
+  public Arena relativizeLocations(final UUID uuid) {
     final String name = uuid.toString();
     final World world = requireNonNull(Bukkit.getWorld(name));
-    this.corners[0].setWorld(world);
-    this.corners[1].setWorld(world);
-    this.spawn.setWorld(world);
-    this.truck.setWorld(world);
-    for (final Location carPartLocation : this.carPartLocations) {
+    final Location[] newCorners = MapUtils.copyLocationArray(this.corners);
+    final Location[] newCarPartLocations = MapUtils.copyLocationArray(this.carPartLocations);
+    final Location newSpawn = this.spawn.clone();
+    final Location newTruck = this.truck.clone();
+    newCorners[0].setWorld(world);
+    newCorners[1].setWorld(world);
+    newSpawn.setWorld(world);
+    newTruck.setWorld(world);
+    for (final Location carPartLocation : newCarPartLocations) {
       carPartLocation.setWorld(world);
     }
+    return new Arena(this.schematic, this.name, newCorners, newCarPartLocations, newSpawn, newTruck);
   }
 }

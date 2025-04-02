@@ -46,7 +46,6 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -60,7 +59,7 @@ public final class ResurrectionStone extends SurvivorGadget {
       GameProperties.RESURRECTION_STONE_COST,
       ItemFactory.createGadget(
         "resurrection_stone",
-        Material.BEACON,
+        GameProperties.RESURRECTION_STONE_MATERIAL,
         Message.RESURRECTION_STONE_NAME.build(),
         Message.RESURRECTION_STONE_LORE.build()
       )

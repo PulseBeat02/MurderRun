@@ -42,7 +42,6 @@ import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
@@ -65,7 +64,12 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
       "smoke_grenade",
       GameProperties.SMOKE_GRENADE_COST,
       ItemFactory.createSmokeGrenade(
-        ItemFactory.createGadget("smoke_grenade", Material.SNOWBALL, Message.SMOKE_BOMB_NAME.build(), Message.SMOKE_BOMB_LORE.build())
+        ItemFactory.createGadget(
+          "smoke_grenade",
+          GameProperties.SMOKE_GRENADE_MATERIAL,
+          Message.SMOKE_BOMB_NAME.build(),
+          Message.SMOKE_BOMB_LORE.build()
+        )
       )
     );
     this.game = game;

@@ -49,7 +49,12 @@ public final class CryoFreeze extends SurvivorGadget {
     super(
       "cryo_freeze",
       GameProperties.CRYO_FREEZE_COST,
-      ItemFactory.createGadget("cryo_freeze", Material.ICE, Message.CRYO_FREEZE_NAME.build(), Message.CRYO_FREEZE_LORE.build())
+      ItemFactory.createGadget(
+        "cryo_freeze",
+        GameProperties.CRYO_FREEZE_MATERIAL,
+        Message.CRYO_FREEZE_NAME.build(),
+        Message.CRYO_FREEZE_LORE.build()
+      )
     );
   }
 

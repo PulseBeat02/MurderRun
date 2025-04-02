@@ -38,7 +38,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -49,7 +48,12 @@ public final class Retaliation extends SurvivorGadget {
     super(
       "retaliation",
       GameProperties.RETALIATION_COST,
-      ItemFactory.createGadget("retaliation", Material.GOLD_BLOCK, Message.RETALIATION_NAME.build(), Message.RETALIATION_LORE.build())
+      ItemFactory.createGadget(
+        "retaliation",
+        GameProperties.RETALIATION_MATERIAL,
+        Message.RETALIATION_NAME.build(),
+        Message.RETALIATION_LORE.build()
+      )
     );
   }
 

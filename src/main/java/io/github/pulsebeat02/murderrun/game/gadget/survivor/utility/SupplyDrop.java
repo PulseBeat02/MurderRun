@@ -73,7 +73,12 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     super(
       "supply_drop",
       GameProperties.SUPPLY_DROP_COST,
-      ItemFactory.createGadget("supply_drop", Material.CHEST, Message.SUPPLY_DROP_NAME.build(), Message.SUPPLY_DROP_LORE.build())
+      ItemFactory.createGadget(
+        "supply_drop",
+        GameProperties.SUPPLY_DROP_MATERIAL,
+        Message.SUPPLY_DROP_NAME.build(),
+        Message.SUPPLY_DROP_LORE.build()
+      )
     );
     this.game = game;
   }

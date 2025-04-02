@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerRefe
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -46,7 +45,7 @@ public final class HackTrap extends SurvivorTrap {
     super(
       "hack",
       GameProperties.HACK_COST,
-      ItemFactory.createGadget("hack", Material.EMERALD_BLOCK, Message.HACK_NAME.build(), Message.HACK_LORE.build()),
+      ItemFactory.createGadget("hack", GameProperties.HACK_MATERIAL, Message.HACK_NAME.build(), Message.HACK_LORE.build()),
       Message.HACK_ACTIVATE.build(),
       GameProperties.HACK_COLOR
     );

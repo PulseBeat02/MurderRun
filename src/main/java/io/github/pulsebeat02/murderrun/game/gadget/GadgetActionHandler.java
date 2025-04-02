@@ -33,11 +33,11 @@ import io.github.pulsebeat02.murderrun.api.event.EventBusProvider;
 import io.github.pulsebeat02.murderrun.api.event.contract.gadget.GadgetUseEvent;
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.GameStatus;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerDevice;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetNearbyPacket;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetRightClickPacket;
-import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorApparatus;
+import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorDevice;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.Killer;
@@ -225,7 +225,7 @@ public final class GadgetActionHandler implements Listener {
       final ItemStack stack = item.getItemStack();
       final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
       final Gadget gadget = mechanism.getGadgetFromStack(stack);
-      final boolean activate = isSurvivor ? gadget instanceof KillerApparatus : gadget instanceof SurvivorApparatus;
+      final boolean activate = isSurvivor ? gadget instanceof KillerDevice : gadget instanceof SurvivorDevice;
       if (!activate) {
         continue;
       }

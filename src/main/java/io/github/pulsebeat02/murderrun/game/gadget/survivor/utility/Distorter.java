@@ -40,7 +40,6 @@ import java.util.Set;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Item;
 
@@ -52,7 +51,12 @@ public final class Distorter extends SurvivorGadget {
     super(
       "distorter",
       GameProperties.DISTORTER_COST,
-      ItemFactory.createGadget("distorter", Material.CHORUS_FLOWER, Message.DISTORTER_NAME.build(), Message.DISTORTER_LORE.build())
+      ItemFactory.createGadget(
+        "distorter",
+        GameProperties.DISTORTER_MATERIAL,
+        Message.DISTORTER_NAME.build(),
+        Message.DISTORTER_LORE.build()
+      )
     );
     this.removed = new HashSet<>();
   }

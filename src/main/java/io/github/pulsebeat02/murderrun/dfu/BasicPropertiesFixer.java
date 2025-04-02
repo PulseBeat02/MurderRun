@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget.killer;
+package io.github.pulsebeat02.murderrun.dfu;
 
-import io.github.pulsebeat02.murderrun.game.Apparatus;
+public final class BasicPropertiesFixer {
 
-public interface KillerApparatus extends Apparatus {}
+  private BasicPropertiesFixer() {
+    throw new UnsupportedOperationException(); // kekw
+  }
+}

@@ -47,7 +47,6 @@ import java.util.Iterator;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
@@ -58,7 +57,12 @@ public final class LifeInsurance extends SurvivorGadget {
     super(
       "life_insurance",
       GameProperties.LIFE_INSURANCE_COST,
-      ItemFactory.createGadget("life_insurance", Material.RED_DYE, Message.LIFE_INSURANCE_NAME.build(), Message.LIFE_INSURANCE_LORE.build())
+      ItemFactory.createGadget(
+        "life_insurance",
+        GameProperties.LIFE_INSURANCE_MATERIAL,
+        Message.LIFE_INSURANCE_NAME.build(),
+        Message.LIFE_INSURANCE_LORE.build()
+      )
     );
   }
 

@@ -39,7 +39,6 @@ import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class KillerRewind extends SurvivorGadget {
@@ -50,7 +49,7 @@ public final class KillerRewind extends SurvivorGadget {
       GameProperties.KILLER_REWIND_COST,
       ItemFactory.createGadget(
         "killer_rewind",
-        Material.LAPIS_BLOCK,
+        GameProperties.KILLER_REWIND_MATERIAL,
         Message.MURDERER_REWIND_NAME.build(),
         Message.MURDERER_REWIND_LORE.build()
       )

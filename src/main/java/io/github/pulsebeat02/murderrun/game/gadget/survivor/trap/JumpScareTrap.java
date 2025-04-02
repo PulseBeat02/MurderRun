@@ -54,7 +54,12 @@ public final class JumpScareTrap extends SurvivorTrap {
     super(
       "jump_scare",
       GameProperties.JUMP_SCARE_COST,
-      ItemFactory.createGadget("jump_scare", Material.BLACK_CONCRETE, Message.JUMP_SCARE_NAME.build(), Message.JUMP_SCARE_LORE.build()),
+      ItemFactory.createGadget(
+        "jump_scare",
+        GameProperties.JUMP_SCARE_MATERIAL,
+        Message.JUMP_SCARE_NAME.build(),
+        Message.JUMP_SCARE_LORE.build()
+      ),
       Message.JUMP_SCARE_ACTIVATE.build(),
       GameProperties.JUMP_SCARE_COLOR
     );

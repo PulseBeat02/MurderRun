@@ -28,7 +28,7 @@ package io.github.pulsebeat02.murderrun.game.gadget.killer;
 import io.github.pulsebeat02.murderrun.game.gadget.AbstractGadget;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 
-public abstract class KillerGadget extends AbstractGadget implements KillerApparatus {
+public abstract class KillerGadget extends AbstractGadget implements KillerDevice {
 
   public KillerGadget(final String name, final int cost, final Item.Builder builder) {
     super(name, cost, builder);

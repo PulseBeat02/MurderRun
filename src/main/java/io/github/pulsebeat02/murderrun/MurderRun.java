@@ -49,6 +49,7 @@ import io.github.pulsebeat02.murderrun.gui.arena.ArenaCreationManager;
 import io.github.pulsebeat02.murderrun.gui.gadget.GadgetTestingGui;
 import io.github.pulsebeat02.murderrun.gui.shop.GadgetShopGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
+import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.PackProviderMethod;
 import io.github.pulsebeat02.murderrun.resourcepack.provider.ResourcePackProvider;
@@ -107,8 +108,8 @@ public final class MurderRun extends JavaPlugin {
   public void onEnable() {
     this.disabling = new AtomicBoolean(false);
     this.registerAudienceHandler();
-    this.initializeEventBusApi();
     this.readPluginData();
+    this.initializeEventBusApi();
     this.registerLookUpMaps();
     this.handlePackHosting();
     this.registerCommands();
@@ -119,6 +120,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void loadSchematics() {
+    this.audience.console(Message.LOAD_SCHEMATICS.build());
     final SchematicLoader loader = new SchematicLoader(this);
     loader.loadSchematics();
   }
@@ -129,12 +131,14 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void unregisterExtensions() {
+    this.audience.console(Message.UNLOAD_EXTENSIONS.build());
     if (Capabilities.PLACEHOLDERAPI.isEnabled() && this.expansion != null) {
       this.expansion.unregister();
     }
   }
 
   private void registerExtensions() {
+    this.audience.console(Message.LOAD_EXTENSIONS.build());
     if (Capabilities.PLACEHOLDERAPI.isEnabled()) {
       this.expansion = new MurderRunExpansion(this);
       this.expansion.register();
@@ -148,16 +152,19 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void shutdownGames() {
+    this.audience.console(Message.UNLOAD_GAMES.build());
     if (this.gameShutdownManager != null) {
       this.gameShutdownManager.forceShutdown();
     }
   }
 
   private void initializeEventBusApi() {
+    this.audience.console(Message.LOAD_API.build());
     EventBusProvider.init();
   }
 
   private void registerLookUpMaps() {
+    this.audience.console(Message.LOAD_LOOKUP.build());
     GadgetRegistry.init();
     PacketToolsProvider.init();
     GameProperties.init();
@@ -175,6 +182,7 @@ public final class MurderRun extends JavaPlugin {
   private void readPluginData() {
     this.configuration = new PluginDataConfigurationMapper(this);
     this.configuration.deserialize();
+    this.audience.console(Message.LOAD_DATA.build());
     this.handleRelationalDataManagement();
     this.quickJoinConfiguration = new QuickJoinConfigurationMapper(this);
     this.quickJoinConfiguration.deserialize();
@@ -193,12 +201,14 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void handlePackHosting() {
+    this.audience.console(Message.LOAD_RESOURCEPACK.build());
     final PackProviderMethod packProviderMethod = new PackProviderMethod(this);
     this.provider = packProviderMethod.getProvider();
     this.provider.start();
   }
 
   private void registerCommands() {
+    this.audience.console(Message.LOAD_COMMANDS.build());
     final AnnotationParserHandler commandHandler = new AnnotationParserHandler(this);
     commandHandler.registerCommands();
   }
@@ -214,6 +224,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void enableMetrics() {
+    this.audience.console(Message.LOAD_METRICS.build());
     System.setProperty("bstats.relocatecheck", "false");
     this.metrics = new Metrics(this, BSTATS_SERVER_ID);
   }
@@ -229,6 +240,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   public void shutdownPluginData() {
+    this.audience.console(Message.UNLOAD_DATA.build());
     if (this.arenaDataConfigurationMapper != null) {
       this.arenaDataConfigurationMapper.shutdown();
       this.lobbyDataConfigurationMapper.shutdown();
@@ -240,12 +252,14 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void stopHostingDaemon() {
+    this.audience.console(Message.UNLOAD_RESOURCEPACK.build());
     if (this.provider != null) {
       this.provider.shutdown();
     }
   }
 
   private void shutdownMetrics() {
+    this.audience.console(Message.UNLOAD_METRICS.build());
     if (this.metrics != null) {
       this.metrics.shutdown();
     }

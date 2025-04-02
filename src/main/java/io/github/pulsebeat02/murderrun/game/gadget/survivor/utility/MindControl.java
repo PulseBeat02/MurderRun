@@ -41,7 +41,6 @@ import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -55,7 +54,7 @@ public final class MindControl extends SurvivorGadget {
       GameProperties.MIND_CONTROL_COST,
       ItemFactory.createGadget(
         "mind_control",
-        Material.STRUCTURE_VOID,
+        GameProperties.MIND_CONTROL_MATERIAL,
         Message.MIND_CONTROL_NAME.build(),
         Message.MIND_CONTROL_LORE.build()
       )

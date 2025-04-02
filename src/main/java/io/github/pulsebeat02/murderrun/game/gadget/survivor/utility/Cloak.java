@@ -34,7 +34,6 @@ import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 
 public final class Cloak extends SurvivorGadget {
@@ -43,7 +42,7 @@ public final class Cloak extends SurvivorGadget {
     super(
       "cloak",
       GameProperties.CLOAK_COST,
-      ItemFactory.createGadget("cloak", Material.WHITE_BANNER, Message.CLOAK_NAME.build(), Message.CLOAK_LORE.build())
+      ItemFactory.createGadget("cloak", GameProperties.CLOAK_MATERIAL, Message.CLOAK_NAME.build(), Message.CLOAK_LORE.build())
     );
   }
 

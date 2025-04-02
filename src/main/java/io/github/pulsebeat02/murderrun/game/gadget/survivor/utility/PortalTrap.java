@@ -40,7 +40,6 @@ import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -53,7 +52,7 @@ public final class PortalTrap extends SurvivorGadget {
     super(
       "portal",
       GameProperties.PORTAL_TRAP_COST,
-      ItemFactory.createGadget("portal", Material.PURPLE_WOOL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
+      ItemFactory.createGadget("portal", GameProperties.PORTAL_TRAP_MATERIAL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
     );
   }
 

@@ -77,7 +77,7 @@ public final class Lobby implements Serializable {
 
   public Lobby(final Lobby lobby) {
     this.id = lobby.id;
-    this.schematic = lobby.schematic;
+    this.schematic = new Schematic(lobby.schematic);
     this.name = lobby.name;
     this.corners = MapUtils.copyLocationArray(lobby.corners);
     this.lobbySpawn = lobby.lobbySpawn.clone();
@@ -99,11 +99,14 @@ public final class Lobby implements Serializable {
     return this.corners;
   }
 
-  public void relativizeLocations(final UUID uuid) {
+  public Lobby relativizeLocations(final UUID uuid) {
     final String name = uuid.toString();
     final World world = requireNonNull(Bukkit.getWorld(name));
-    this.corners[0].setWorld(world);
-    this.corners[1].setWorld(world);
-    this.lobbySpawn.setWorld(world);
+    final Location[] newCorners = MapUtils.copyLocationArray(this.corners);
+    final Location newLobbySpawn = this.lobbySpawn.clone();
+    newCorners[0].setWorld(world);
+    newCorners[1].setWorld(world);
+    newLobbySpawn.setWorld(world);
+    return new Lobby(this.schematic, this.name, newCorners, newLobbySpawn);
   }
 }

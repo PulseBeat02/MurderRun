@@ -83,6 +83,7 @@ public final class ItemFactory {
   private static ItemStack createDefaultKillerBoots() {
     return Item.builder(Material.LEATHER_BOOTS)
       .name(Message.KILLER_BOOTS.build())
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
       .dye(Color.RED)
       .enchantment(Enchantment.PROTECTION, 3)
       .model(1)
@@ -92,6 +93,7 @@ public final class ItemFactory {
   private static ItemStack createDefaultKillerLeggings() {
     return Item.builder(Material.LEATHER_LEGGINGS)
       .name(Message.KILLER_LEGGINGS.build())
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
       .dye(Color.RED)
       .enchantment(Enchantment.PROTECTION, 3)
       .model(1)
@@ -99,12 +101,17 @@ public final class ItemFactory {
   }
 
   private static ItemStack createDefaultKillerHelmet() {
-    return Item.builder(Material.PLAYER_HEAD).name(Message.KILLER_HELMET.build()).head(ITEM_SKULL_URL).build();
+    return Item.builder(Material.PLAYER_HEAD)
+      .name(Message.KILLER_HELMET.build())
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
+      .head(ITEM_SKULL_URL)
+      .build();
   }
 
   private static ItemStack createDefaultKillerChestplate() {
     return Item.builder(Material.LEATHER_CHESTPLATE)
       .name(Message.KILLER_CHESTPLATE.build())
+      .lore(Message.SURVIVOR_GEAR_LORE.build())
       .dye(Color.RED)
       .enchantment(Enchantment.PROTECTION, 3)
       .model(1)

@@ -29,14 +29,14 @@ import static net.kyori.adventure.text.Component.empty;
 
 import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.gadget.Trap;
-import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerApparatus;
+import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerDevice;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetNearbyPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 import java.awt.Color;
 import net.kyori.adventure.text.Component;
 
-public abstract class KillerTrap extends Trap implements KillerApparatus {
+public abstract class KillerTrap extends Trap implements KillerDevice {
 
   public KillerTrap(final String name, final int cost, final Item.Builder item, final Component announcement, final Color color) {
     super(name, cost, item, announcement, color);

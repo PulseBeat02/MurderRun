@@ -57,7 +57,7 @@ public final class Ghosting extends SurvivorGadget {
     super(
       "ghosting",
       GameProperties.GHOSTING_COST,
-      ItemFactory.createGadget("ghosting", Material.WHITE_WOOL, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build())
+      ItemFactory.createGadget("ghosting", GameProperties.GHOSTING_MATERIAL, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build())
     );
   }
 
