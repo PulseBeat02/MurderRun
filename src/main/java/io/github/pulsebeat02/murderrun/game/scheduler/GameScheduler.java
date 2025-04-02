@@ -59,6 +59,23 @@ public final class GameScheduler {
     this.tasks.clear();
   }
 
+  public void cancelTask(final BukkitTask task) {
+    if (task != null) {
+      task.cancel();
+      this.tasks.remove(task);
+    }
+  }
+
+  public void cancelTask(final int taskId) {
+    for (final BukkitTask task : this.tasks) {
+      if (task.getTaskId() == taskId) {
+        task.cancel();
+        this.tasks.remove(task);
+        break;
+      }
+    }
+  }
+
   public BukkitTask scheduleConditionalTask(
     final Runnable runnable,
     final long delay,

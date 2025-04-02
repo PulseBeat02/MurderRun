@@ -425,7 +425,8 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> TRAP_WRECKER_ACTIVATE = direct("murderrun.game.gadget.trap_wrecker.activate");
   NullComponent<Sender> TRAP_SEEKER_ACTIVATE = direct("murderrun.game.gadget.trap_seeker.activate");
   NullComponent<Sender> INFRARED_VISION_ACTIVATE = direct("murderrun.game.gadget.infrared_vision.activate");
-  NullComponent<Sender> BLOOD_CURSE_ACTIVATE = direct("murderrun.game.gadget.blood_curse.activate");
+  NullComponent<Sender> BLOOD_CURSE_ACTIVATE_KILLER = direct("murderrun.game.gadget.blood_curse.activate.killer");
+  NullComponent<Sender> BLOOD_CURSE_ACTIVATE = direct("murderrun.game.gadget.blood_curse.activate.survivor");
   NullComponent<Sender> CORRUPTION_ACTIVATE = direct("murderrun.game.gadget.corruption.activate");
   NullComponent<Sender> HEAT_SEEKER_ACTIVATE = direct("murderrun.game.gadget.heat_seeker.activate");
   NullComponent<Sender> THE_FLOOR_IS_LAVA_ACTIVATE = direct("murderrun.game.gadget.the_floor_is_lava.activate");

@@ -111,7 +111,7 @@ public final class Game {
       this.forceShutdown(code);
     } else {
       final BukkitScheduler scheduler = Bukkit.getScheduler();
-      scheduler.runTaskLater(this.plugin, () -> this.forceShutdown(code), 10L);
+      scheduler.runTaskLater(this.plugin, () -> this.forceShutdown(code), 20L);
     }
   }
 

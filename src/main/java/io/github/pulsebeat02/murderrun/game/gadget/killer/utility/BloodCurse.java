@@ -31,6 +31,7 @@ import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerGadget;
 import io.github.pulsebeat02.murderrun.game.gadget.packet.GadgetDropPacket;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.NullReference;
 import io.github.pulsebeat02.murderrun.locale.Message;
@@ -74,6 +75,10 @@ public final class BloodCurse extends KillerGadget {
 
     final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
     manager.sendMessageToAllLivingSurvivors(msg);
+
+    final GamePlayer player = packet.getPlayer();
+    final PlayerAudience audience = player.getAudience();
+    audience.sendMessage(Message.BLOOD_CURSE_ACTIVATE_KILLER.build());
 
     return false;
   }
