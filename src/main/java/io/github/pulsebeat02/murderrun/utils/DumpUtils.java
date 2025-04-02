@@ -61,6 +61,8 @@ public class DumpUtils {
       final String id = file.getAsString();
       return "%s%s".formatted(FILE_UPLOAD_WEBSITE, id);
     } catch (final IOException | InterruptedException e) {
+      final Thread current = Thread.currentThread();
+      current.interrupt();
       throw new AssertionError(e);
     }
   }
