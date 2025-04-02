@@ -85,7 +85,7 @@ public final class LifeInsurance extends SurvivorGadget {
     final Consumer<GamePlayer> consumer = killer -> this.checkKillerDistance(killer, survivor, world, first, second);
     final Runnable internalTask = () -> manager.applyToKillers(consumer);
     final NullReference reference = NullReference.of();
-    final BukkitTask task = scheduler.scheduleRepeatedTask(internalTask, 0, 20L, reference);
+    final BukkitTask task = scheduler.scheduleRepeatedTask(internalTask, 0, 10L, reference);
     final Collection<BukkitTask> tasks = survivor.getLifeInsuranceTasks();
     tasks.add(task);
 

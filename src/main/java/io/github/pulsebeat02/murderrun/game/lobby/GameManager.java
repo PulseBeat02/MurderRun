@@ -97,7 +97,7 @@ public final class GameManager {
     final PreGameManager manager = this.games.get(id);
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
-      if (!playerManager.isGameFull()) {
+      if (!playerManager.isGameFull() && !playerManager.isLocked()) {
         playerManager.addParticipantToLobby(player, false);
         return true;
       }
@@ -217,7 +217,7 @@ public final class GameManager {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
       final PreGamePlayerManager preGamePlayerManager = manager.getPlayerManager();
-      final boolean join = preGamePlayerManager.isQuickJoinable() && !preGamePlayerManager.isGameFull();
+      final boolean join = preGamePlayerManager.isQuickJoinable() && !preGamePlayerManager.isGameFull() && !preGamePlayerManager.isLocked();
       if (join) {
         final String id = manager.getId();
         this.joinGame(player, id);

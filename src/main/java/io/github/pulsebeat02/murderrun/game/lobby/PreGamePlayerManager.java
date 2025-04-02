@@ -63,13 +63,14 @@ public final class PreGamePlayerManager {
   private final CommandSender leader;
   private final int min;
   private final int max;
+  private final boolean quickJoinable;
 
   private @Nullable LobbyTimeManager lobbyTimeManager;
   private @Nullable PreGameExpirationTimer expirationTimer;
 
   private LobbyScoreboard scoreboard;
   private LobbyBossbar bossbar;
-  private boolean quickJoinable;
+  private boolean locked;
 
   public PreGamePlayerManager(
     final PreGameManager manager,
@@ -85,6 +86,7 @@ public final class PreGamePlayerManager {
     this.min = min;
     this.max = max;
     this.quickJoinable = quickJoinable;
+    this.locked = false;
   }
 
   public boolean isLeader(final CommandSender sender) {
@@ -113,7 +115,7 @@ public final class PreGamePlayerManager {
     }
     this.scoreboard.shutdown();
     this.bossbar.shutdown();
-    this.quickJoinable = false;
+    this.locked = false;
   }
 
   public void setPlayerToMurderer(final Player murderer) {
@@ -321,5 +323,9 @@ public final class PreGamePlayerManager {
 
   public PreGameManager getManager() {
     return this.manager;
+  }
+
+  public boolean isLocked() {
+    return this.locked;
   }
 }
