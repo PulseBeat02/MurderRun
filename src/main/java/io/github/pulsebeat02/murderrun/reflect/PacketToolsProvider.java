@@ -51,11 +51,14 @@ public final class PacketToolsProvider {
       final MethodHandle handle = lookup.findConstructor(clazz, type);
       api = (PacketToolAPI) handle.invoke();
     } catch (final Throwable e) {
-      api = new FallbackPacketTools();
-      throw new UnsupportedOperationException(
-        "The current server version isn't supported by this plugin! Resorting to fallback adapter",
-        e
-      );
+      try {
+        api = new FallbackPacketTools();
+      } catch (final Throwable ex) {
+        throw new UnsupportedOperationException(
+          "The current server version isn't supported by this plugin! Resorting to no-operation adapter",
+          e
+        );
+      }
     }
     PACKET_API = api;
   }
