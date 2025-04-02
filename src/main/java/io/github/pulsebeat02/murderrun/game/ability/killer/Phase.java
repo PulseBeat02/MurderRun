@@ -134,34 +134,14 @@ public final class Phase extends KillerAbility implements Listener {
     final Vector eyeDirection = eyeLocation.getDirection();
     final Vector direction = eyeDirection.normalize();
     final double maxDistance = GameProperties.PHASE_DISTANCE;
-
-    final Location targetLocation = getLocation(maxDistance, eyeLocation, direction);
-
+    final Location targetLocation = this.getLocation(maxDistance, eyeLocation, direction);
     if (targetLocation != null) {
-      final boolean isPathClear = isIsPathClear(maxDistance, eyeLocation, direction);
+      final boolean isPathClear = this.isIsPathClear(maxDistance, eyeLocation, direction);
       if (isPathClear) {
-        final Location feetLocation = targetLocation.clone();
-        final Location headLocation = feetLocation.clone().add(0, 1, 0);
-        final Location belowFeetLocation = feetLocation.clone().add(0, -1, 0);
-
-        final Block feetBlock = feetLocation.getBlock();
-        final Block headBlock = headLocation.getBlock();
-        final Block belowFeetBlock = belowFeetLocation.getBlock();
-
-        final Material feetType = feetBlock.getType();
-        final Material headType = headBlock.getType();
-        final Material belowFeetType = belowFeetBlock.getType();
-
-        if (!feetType.isSolid() && !headType.isSolid() && belowFeetType.isSolid()) {
-          final int cooldown = (int) (GameProperties.PHASE_COOLDOWN * 1000);
-          if (this.cooldowns.containsKey(gamePlayer)) {
-            final long last = this.cooldowns.get(gamePlayer);
-            final long current = System.currentTimeMillis();
-            final long timeElapsed = current - last;
-            if (timeElapsed < cooldown) {
-              event.setCancelled(true);
-              return;
-            }
+        final boolean canPhase = this.isCanPhase(targetLocation);
+        if (canPhase) {
+          if (this.setCooldown(event, gamePlayer)) {
+            return;
           }
           player.teleport(targetLocation);
 
@@ -173,7 +153,36 @@ public final class Phase extends KillerAbility implements Listener {
     }
   }
 
-  private static boolean isIsPathClear(final double maxDistance, final Location eyeLocation, final Vector direction) {
+  private boolean setCooldown(final PlayerInteractEvent event, final GamePlayer gamePlayer) {
+    final int cooldown = (int) (GameProperties.PHASE_COOLDOWN * 1000);
+    if (this.cooldowns.containsKey(gamePlayer)) {
+      final long last = this.cooldowns.get(gamePlayer);
+      final long current = System.currentTimeMillis();
+      final long timeElapsed = current - last;
+      if (timeElapsed < cooldown) {
+        event.setCancelled(true);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isCanPhase(final Location targetLocation) {
+    final Location feetLocation = targetLocation.clone();
+    final Location headLocation = feetLocation.clone().add(0, 1, 0);
+    final Location belowFeetLocation = feetLocation.clone().add(0, -1, 0);
+
+    final Block feetBlock = feetLocation.getBlock();
+    final Block headBlock = headLocation.getBlock();
+    final Block belowFeetBlock = belowFeetLocation.getBlock();
+
+    final Material feetType = feetBlock.getType();
+    final Material headType = headBlock.getType();
+    final Material belowFeetType = belowFeetBlock.getType();
+    return !feetType.isSolid() && !headType.isSolid() && belowFeetType.isSolid();
+  }
+
+  private boolean isIsPathClear(final double maxDistance, final Location eyeLocation, final Vector direction) {
     boolean isPathClear = true;
     for (int i = 1; i <= maxDistance; i++) {
       final Location clone = eyeLocation.clone();
@@ -190,7 +199,7 @@ public final class Phase extends KillerAbility implements Listener {
     return isPathClear;
   }
 
-  private static @Nullable Location getLocation(final double maxDistance, final Location eyeLocation, final Vector direction) {
+  private @Nullable Location getLocation(final double maxDistance, final Location eyeLocation, final Vector direction) {
     Location targetLocation = null;
     for (int i = 1; i <= maxDistance; i++) {
       final Location clone = eyeLocation.clone();
