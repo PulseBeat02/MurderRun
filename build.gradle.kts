@@ -15,7 +15,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
-version = "1.21.4-v1.0.0"
+version = "1.21.5-v1.0.0"
 description = "MurderRun"
 
 repositories {

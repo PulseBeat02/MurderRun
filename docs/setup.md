@@ -1,9 +1,9 @@
 # Setting up a Server
 
 ```{warning}
-Murder Run only supports **Minecraft 1.21.4** as of right now. If you choose any other version, the plugin will **not**
-start-up, and it will break. Make sure to choose **Paper 1.21.4** for now. 1.21.5 support will be added as soon as
-possible.
+Murder Run only supports **Minecraft 1.21.5** as of right now. If you choose any other version, the plugin will **not**
+start-up, and it will break. Make sure to choose **Paper 1.21.5** for now. Support for future versions will be added as
+fast as possible.
 ```
 
 To set up Murder Run, you will need two things:
@@ -26,7 +26,7 @@ and how to add plugins
 ## Getting Murder Run
 Murder Run is like any other plugin, where you just drag and drop the JAR file into the plugins folder. There isn't any
 set up required, and Murder Run will download the necessary dependencies for you. You can find bleeding-edge releases
-on the GitHub [here](https://github.com/PulseBeat02/MurderRun/releases/download/latest/MurderRun-1.21.4-v1.0.0-all.jar),
+on the GitHub [here](https://github.com/PulseBeat02/MurderRun/releases/download/latest/MurderRun-1.21.5-v1.0.0-all.jar),
 which are created pretty frequently. You should always use the latest Murder Run JAR, as it contains many more bug fixes 
 and version compatability than the previous.
 
