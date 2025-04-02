@@ -135,7 +135,7 @@ public final class ItemFactory {
   }
 
   public static Item.Builder createFlashlight(final Item.Builder builder) {
-    return builder.pdc(Keys.FLASHLIGHT_USE, PersistentDataType.LONG, 0L);
+    return builder.cooldown((float) GameProperties.FLASHLIGHT_COOLDOWN, null);
   }
 
   public static Item.Builder createFlashBang(final Item.Builder builder) {

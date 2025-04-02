@@ -55,6 +55,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.components.UseCooldownComponent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.profile.PlayerProfile;
@@ -278,6 +279,16 @@ public final class ItemBuilder implements Builder {
         throw new AssertionError(e);
       }
     }
+    return this;
+  }
+
+  @Override
+  public Builder cooldown(final float cooldown, final @Nullable NamespacedKey group) {
+    final ItemMeta meta = this.meta();
+    final UseCooldownComponent component = meta.getUseCooldown();
+    component.setCooldownSeconds(cooldown);
+    component.setCooldownGroup(group);
+    this.stack.setItemMeta(meta);
     return this;
   }
 

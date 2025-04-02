@@ -95,6 +95,8 @@ public interface Item {
 
     Builder head(final String url);
 
+    Builder cooldown(final float cooldown, final @Nullable NamespacedKey group);
+
     ItemStack build();
   }
 }

@@ -38,6 +38,7 @@ public interface GameProperties {
 
   GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
 
+  double FLASHLIGHT_COOLDOWN = dec("flashlight.cooldown");
   Material TRAP_VEST_MATERIAL = mat("trap_vest.material");
   Material TRANSLOCATOR_MATERIAL = mat("translocator.material");
   Material TRACKER_MATERIAL = mat("tracker.material");

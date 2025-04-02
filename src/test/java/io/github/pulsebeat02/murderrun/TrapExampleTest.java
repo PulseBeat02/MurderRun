@@ -29,20 +29,15 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
+import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import java.util.List;
 
 public final class TrapExampleTest {
 
   public static void main(final String[] args) {
     MockBukkit.mock();
-    try (
-      final ScanResult scanResult = new ClassGraph()
-        .acceptPackages("io.github.pulsebeat02.murderrun.game.gadget.survivor.trap")
-        .enableClassInfo()
-        .scan()
-    ) {
-      final List<ClassInfo> traps = scanResult.getSubclasses("io.github.pulsebeat02.murderrun.game.gadget.survivor.trap.SurvivorTrap");
-      System.out.println("Survivor Traps:");
+    try (final ScanResult scanResult = new ClassGraph().enableClassInfo().scan()) {
+      final List<ClassInfo> traps = scanResult.getClassesImplementing(Gadget.class).filter(info -> !info.isAbstract());
       traps.forEach(trap -> System.out.println(trap.getSimpleName()));
     }
   }

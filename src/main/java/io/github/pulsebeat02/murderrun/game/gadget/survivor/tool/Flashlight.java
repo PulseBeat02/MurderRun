@@ -35,10 +35,8 @@ import io.github.pulsebeat02.murderrun.game.gadget.survivor.SurvivorGadget;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.game.player.PlayerAudience;
-import io.github.pulsebeat02.murderrun.immutable.Keys;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.resourcepack.sound.Sounds;
-import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -46,7 +44,6 @@ import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -79,19 +76,6 @@ public final class Flashlight extends SurvivorGadget {
     if (stack == null) {
       return true;
     }
-
-    final Long last = PDCUtils.getPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG);
-    if (last == null) {
-      return true;
-    }
-
-    final long current = System.currentTimeMillis();
-    final long difference = current - last;
-    if (difference < 5000) {
-      return true;
-    }
-
-    PDCUtils.setPersistentDataAttribute(stack, Keys.FLASHLIGHT_USE, PersistentDataType.LONG, current);
 
     final Game game = packet.getGame();
     final GamePlayer player = packet.getPlayer();

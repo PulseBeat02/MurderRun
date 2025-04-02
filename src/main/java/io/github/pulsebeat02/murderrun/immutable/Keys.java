@@ -42,7 +42,6 @@ public final class Keys {
   public static NamespacedKey KILLER_TRACKER = createNamespacedPluginKey("killer-tracker");
   public static NamespacedKey FLASH_BANG = createNamespacedPluginKey("flash-bang");
   public static NamespacedKey SMOKE_GRENADE = createNamespacedPluginKey("smoke-grenade");
-  public static NamespacedKey FLASHLIGHT_USE = createNamespacedPluginKey("flashlight-use");
   public static NamespacedKey TRANSLOCATOR = createNamespacedPluginKey("translocator");
   public static NamespacedKey PLAYER_TRACKER = createNamespacedPluginKey("player-tracker");
   public static NamespacedKey HOOK = createNamespacedPluginKey("hook");
