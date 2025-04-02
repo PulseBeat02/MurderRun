@@ -25,35 +25,80 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.ability;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-import io.github.pulsebeat02.murderrun.utils.item.Item;
+import static java.util.Objects.requireNonNull;
 
-public abstract class AbstractAbility implements Ability {
+import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
+import io.github.pulsebeat02.murderrun.utils.item.Item;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.PluginManager;
+
+public abstract class AbstractAbility implements Ability, Listener {
 
   private final Item.Builder builder;
   private final String name;
+  private final Game game;
 
-  private Runnable task;
-
-  public AbstractAbility(final String name, final Item.Builder builder) {
+  public AbstractAbility(final Game game, final String name, final Item.Builder builder) {
+    this.game = game;
     this.name = name;
     this.builder = builder;
   }
 
   @Override
-  public void start(final Game game, final GamePlayer player) {}
+  public void start() {
+    final Server server = Bukkit.getServer();
+    final MurderRun plugin = this.game.getPlugin();
+    final PluginManager pluginManager = server.getPluginManager();
+    pluginManager.registerEvents(this, plugin);
+  }
+
+  @EventHandler
+  public void onPlayerFish(final PlayerFishEvent event) {
+    final PlayerFishEvent.State state = event.getState();
+    if (state != PlayerFishEvent.State.FISHING) {
+      return;
+    }
+
+    final Player player = event.getPlayer();
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final PlayerInventory inventory = player.getInventory();
+    final EquipmentSlot hand = requireNonNull(event.getHand());
+    final ItemStack rod = requireNonNull(inventory.getItem(hand));
+    if (!PDCUtils.isAbility(rod)) {
+      return;
+    }
+
+    event.setCancelled(true);
+  }
 
   @Override
-  public void shutdown() {}
+  public void shutdown() {
+    HandlerList.unregisterAll(this);
+  }
 
   @Override
-  public Item.Builder getBuilder() {
+  public Item.Builder getStackBuilder() {
     return this.builder;
   }
 
   @Override
-  public String getName() {
+  public String getId() {
     return this.name;
   }
 }

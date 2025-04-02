@@ -25,84 +25,103 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.ability.survivor;
 
-import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
+import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+import io.github.pulsebeat02.murderrun.game.player.GamePlayerManager;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.item.ItemFactory;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Server;
+import java.util.HashMap;
+import java.util.Map;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.util.Vector;
 
-public final class DoubleJumpAbility extends SurvivorAbility implements Listener {
+public final class DoubleJumpAbility extends SurvivorAbility {
 
-  private Game game;
-  private GamePlayer player;
+  private static final String DOUBLE_JUMP_NAME = "double_jump";
 
-  public DoubleJumpAbility() {
+  private final Game game;
+  private final Map<GamePlayer, Long> cooldowns;
+
+  public DoubleJumpAbility(final Game game) {
     super(
-      "double_jump",
-      ItemFactory.createAbility("double_jump", Material.RABBIT_FOOT, Message.DOUBLE_JUMP_NAME.build(), Message.DOUBLE_JUMP_LORE.build())
+      game,
+      DOUBLE_JUMP_NAME,
+      ItemFactory.createAbility(
+        DOUBLE_JUMP_NAME,
+        Message.DOUBLE_JUMP_NAME.build(),
+        Message.DOUBLE_JUMP_LORE.build(),
+        (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20)
+      )
     );
-  }
-
-  @Override
-  public void start(final Game game, final GamePlayer player) {
     this.game = game;
-    this.player = player;
-    final MurderRun plugin = game.getPlugin();
-    final Server server = Bukkit.getServer();
-    final PluginManager pluginManager = server.getPluginManager();
-    pluginManager.registerEvents(this, plugin);
+    this.cooldowns = new HashMap<>();
   }
-
-  @Override
-  public void shutdown() {}
 
   @EventHandler
   public void onPlayerToggleFlight(final PlayerToggleFlightEvent event) {
+    final GamePlayerManager manager = this.game.getPlayerManager();
     final Player player = event.getPlayer();
-    //    if (lastJumpTime.containsKey(player.getUniqueId())) {
-    //      final long timeElapsed = System.currentTimeMillis() - lastJumpTime.get(player.getUniqueId());
-    //      if (timeElapsed < cooldown) {
-    //        event.setCancelled(true);
-    //        return;
-    //      }
-    //    }
-    //
-    //    // Check if player is allowed to double-jump
-    //    if (!player.isFlying()) {
-    //      // Cancel flight toggle
-    //      event.setCancelled(true);
-    //
-    //      // Set player to not be allowed to fly again until they land
-    //      player.setAllowFlight(false);
-    //
-    //      // Update last jump time
-    //      lastJumpTime.put(player.getUniqueId(), System.currentTimeMillis());
-    //
-    //      // Give upward velocity
-    //      player.setVelocity(player.getLocation().getDirection().setY(jumpVelocity));
-    //
-    //      // Add particle effect
-    //      player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation(), 30, 0.5, 0.1, 0.5, 0.1);
-    //
-    //      // Add sound effect
-    //      player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 1.0f, 1.0f);
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!gamePlayer.hasAbility(DOUBLE_JUMP_NAME)) {
+      return;
+    }
+
+    final int cooldown = (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 1000);
+    if (this.cooldowns.containsKey(gamePlayer)) {
+      final long last = this.cooldowns.get(gamePlayer);
+      final long current = System.currentTimeMillis();
+      final long timeElapsed = current - last;
+      if (timeElapsed < cooldown) {
+        event.setCancelled(true);
+        return;
+      }
+    }
+
+    if (player.isFlying()) {
+      return;
+    }
+    event.setCancelled(true);
+    player.setAllowFlight(false);
+
+    final long current = System.currentTimeMillis();
+    this.cooldowns.put(gamePlayer, current);
+
+    final Location location = player.getLocation();
+    final Vector direction = location.getDirection();
+    final double jumpVelocity = GameProperties.DOUBLEJUMP_VELOCITY;
+    direction.setY(jumpVelocity);
+    player.setVelocity(direction);
+
+    gamePlayer.setAbilityCooldowns(DOUBLE_JUMP_NAME, (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20));
   }
 
   @EventHandler
   @SuppressWarnings("deprecation")
   public void onPlayerLand(final PlayerMoveEvent event) {
     final Player player = event.getPlayer();
-    if (player.isOnGround()) {
-      player.setAllowFlight(true);
+    if (!player.isOnGround()) {
+      return;
     }
+
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    if (!manager.checkPlayerExists(player)) {
+      return;
+    }
+
+    final GamePlayer gamePlayer = manager.getGamePlayer(player);
+    if (!gamePlayer.hasAbility(DOUBLE_JUMP_NAME)) {
+      return;
+    }
+
+    player.setAllowFlight(true);
   }
 }

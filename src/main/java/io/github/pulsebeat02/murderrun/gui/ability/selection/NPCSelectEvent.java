@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.gui.shop;
+package io.github.pulsebeat02.murderrun.gui.ability.selection;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.immutable.Keys;
@@ -41,12 +41,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.persistence.PersistentDataContainer;
 
-public final class NPCShopEvent implements Listener {
+public final class NPCSelectEvent implements Listener {
 
   private final BukkitAudiences audiences;
   private final MurderRun plugin;
 
-  public NPCShopEvent(final MurderRun plugin) {
+  public NPCSelectEvent(final MurderRun plugin) {
     final AudienceProvider provider = plugin.getAudience();
     this.plugin = plugin;
     this.audiences = provider.retrieve();
@@ -56,22 +56,22 @@ public final class NPCShopEvent implements Listener {
   public void onNPCRightClick(final NPCRightClickEvent event) {
     final NPC npc = event.getNPC();
     final MetadataStore store = npc.data();
-    if (!store.has("murderrun-gui")) {
+    if (!store.has("murderrun-select")) {
       return;
     }
 
-    final boolean value = store.get("murderrun-gui");
+    final boolean value = store.get("murderrun-select");
     final Player clicker = event.getClicker();
     final PersistentDataContainer container = clicker.getPersistentDataContainer();
     final boolean isKiller = container.has(Keys.KILLER_ROLE);
     if (isKiller == value) {
-      final Component msg = Message.SHOP_NPC_ERROR.build();
+      final Component msg = Message.SELECT_NPC_ERROR.build();
       final Audience audience = this.audiences.player(clicker);
       audience.sendMessage(msg);
       return;
     }
 
-    final GadgetShopGui gui = new GadgetShopGui(this.plugin, value);
+    final AbilitySelectGui gui = new AbilitySelectGui(this.plugin, value);
     gui.showGUI(clicker);
   }
 }

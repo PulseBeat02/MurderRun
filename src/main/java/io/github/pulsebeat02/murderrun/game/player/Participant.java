@@ -26,10 +26,8 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game.player;
 
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.ability.Ability;
 import io.github.pulsebeat02.murderrun.game.player.death.DeathManager;
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -185,8 +183,6 @@ public interface Participant {
 
   void sendEquipmentChange(final EquipmentSlot slot, final ItemStack item);
 
-  Collection<Class<? extends Ability>> getAbilities();
-
   <T> void spawnParticle(
     final Particle particle,
     final Location location,
@@ -201,4 +197,8 @@ public interface Participant {
   int getCooldown(final ItemStack item);
 
   void setCooldown(final ItemStack item, final int cooldown);
+
+  void setAbilityCooldowns(final String cooldown, final int seconds);
+
+  boolean hasAbility(final String ability);
 }

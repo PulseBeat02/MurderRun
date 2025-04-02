@@ -35,6 +35,7 @@ import io.github.pulsebeat02.murderrun.data.yaml.QuickJoinConfigurationMapper;
 import io.github.pulsebeat02.murderrun.dependency.DependencyManager;
 import io.github.pulsebeat02.murderrun.game.GameProperties;
 import io.github.pulsebeat02.murderrun.game.PlayerResourcePackChecker;
+import io.github.pulsebeat02.murderrun.game.ability.AbilityRegistry;
 import io.github.pulsebeat02.murderrun.game.arena.ArenaManager;
 import io.github.pulsebeat02.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import io.github.pulsebeat02.murderrun.game.capability.Capabilities;
@@ -45,9 +46,11 @@ import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.lobby.LobbyManager;
 import io.github.pulsebeat02.murderrun.game.map.SchematicLoader;
 import io.github.pulsebeat02.murderrun.game.statistics.StatisticsManager;
+import io.github.pulsebeat02.murderrun.gui.ability.AbilityTestingGui;
+import io.github.pulsebeat02.murderrun.gui.ability.selection.AbilitySelectGui;
 import io.github.pulsebeat02.murderrun.gui.arena.ArenaCreationManager;
 import io.github.pulsebeat02.murderrun.gui.gadget.GadgetTestingGui;
-import io.github.pulsebeat02.murderrun.gui.shop.GadgetShopGui;
+import io.github.pulsebeat02.murderrun.gui.gadget.shop.GadgetShopGui;
 import io.github.pulsebeat02.murderrun.locale.AudienceProvider;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.reflect.PacketToolsProvider;
@@ -172,10 +175,13 @@ public final class MurderRun extends JavaPlugin {
     this.audience.console(Message.LOAD_LOOKUP.build());
     ClassGraphUtils.init();
     GadgetRegistry.init();
+    AbilityRegistry.init();
     PacketToolsProvider.init();
     GameProperties.init();
     GadgetShopGui.init();
+    AbilitySelectGui.init();
     GadgetTestingGui.init();
+    AbilityTestingGui.init();
     TerrainDropAnalyzer.init();
   }
 

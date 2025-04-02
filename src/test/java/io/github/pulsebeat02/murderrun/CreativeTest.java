@@ -46,7 +46,7 @@ import team.unnamed.creative.texture.Texture;
 public final class CreativeTest {
 
   public static void main(final String[] args) {
-    final Path path = Path.of("resources").toAbsolutePath();
+    final Path path = Path.of("resource").toAbsolutePath();
     try (final Stream<Path> paths = Files.walk(path)) {
       final List<Path> files = paths.filter(Files::isRegularFile).toList();
       final ResourcePack pack = ResourcePack.resourcePack();

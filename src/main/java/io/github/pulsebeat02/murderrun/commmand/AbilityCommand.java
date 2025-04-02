@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2024 Brandon Li
+Copyright (c) 2025 Brandon Li
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,25 +26,21 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.commmand;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
-import io.github.pulsebeat02.murderrun.gui.gadget.GadgetTestingGui;
+import io.github.pulsebeat02.murderrun.gui.ability.AbilityTestingGui;
 import io.github.pulsebeat02.murderrun.locale.Message;
 import io.github.pulsebeat02.murderrun.utils.InventoryUtils;
 import io.github.pulsebeat02.murderrun.utils.TradingUtils;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Stream;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.ItemStack;
 import org.incendo.cloud.annotation.specifier.Quoted;
-import org.incendo.cloud.annotations.AnnotationParser;
-import org.incendo.cloud.annotations.Argument;
-import org.incendo.cloud.annotations.Command;
-import org.incendo.cloud.annotations.CommandDescription;
-import org.incendo.cloud.annotations.Permission;
+import org.incendo.cloud.annotations.*;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
-public final class GadgetCommand implements AnnotationCommandFeature {
+public final class AbilityCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
 
@@ -53,41 +49,40 @@ public final class GadgetCommand implements AnnotationCommandFeature {
     this.plugin = plugin;
   }
 
-  @Command("murder gadget menu")
-  @Permission("murderrun.command.gadget.menu")
-  @CommandDescription("murderrun.command.gadget.menu.info")
+  @Command("murder ability menu")
+  @Permission("murderrun.command.ability.menu")
+  @CommandDescription("murderrun.command.ability.menu.info")
   public void openMenu(final Player player) {
-    final GadgetTestingGui gui = new GadgetTestingGui(this.plugin);
+    final AbilityTestingGui gui = new AbilityTestingGui(this.plugin);
     gui.update();
     gui.showGUI(player);
   }
 
-  @Command("murder gadget retrieve <gadgetName>")
-  @Permission("murderrun.command.gadget.retrieve")
-  @CommandDescription("murderrun.command.gadget.retrieve.info")
-  public void retrieveGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
-    final List<MerchantRecipe> recipes = TradingUtils.parseGadgetRecipes(gadgetName);
+  @Command("murder ability retrieve <abilityName>")
+  @Permission("murderrun.command.ability.retrieve")
+  @CommandDescription("murderrun.command.ability.retrieve.info")
+  public void retrieveAbility(final Player sender, @Argument(suggestions = "ability-suggestions") @Quoted final String abilityName) {
+    final List<ItemStack> recipes = TradingUtils.parseAbilityRecipes(abilityName);
     if (recipes.isEmpty()) {
-      sender.sendMessage(Message.GADGET_RETRIEVE_ERROR.toString());
+      sender.sendMessage(Message.ABILITY_RETRIEVE_ERROR.toString());
       return;
     }
 
-    for (final MerchantRecipe recipe : recipes) {
-      final ItemStack original = recipe.getResult();
-      final ItemStack clone = original.clone();
+    for (final ItemStack stack : recipes) {
+      final ItemStack clone = stack.clone();
       InventoryUtils.addItem(sender, clone);
     }
   }
 
-  @Command("murder gadget retrieve-all")
-  @Permission("murderrun.command.gadget.retrieve-all")
-  @CommandDescription("murderrun.command.gadget.retrieve.all.info")
-  public void retrieveAllGadgets(final Player sender) {
-    TradingUtils.getAllGadgetRecipes().stream().map(MerchantRecipe::getResult).forEach(item -> InventoryUtils.addItem(sender, item));
+  @Command("murder ability retrieve-all")
+  @Permission("murderrun.command.ability.retrieve-all")
+  @CommandDescription("murderrun.command.ability.retrieve.all.info")
+  public void retrieveAllAbilities(final Player sender) {
+    TradingUtils.getAllAbilityRecipes().forEach(item -> InventoryUtils.addItem(sender, item));
   }
 
-  @Suggestions("gadget-suggestions")
+  @Suggestions("ability-suggestions")
   public Stream<String> suggestGadgets(final CommandContext<CommandSender> ctx, final String input) {
-    return TradingUtils.getGadgetTradeSuggestions();
+    return TradingUtils.getAbilityTradeSuggestions();
   }
 }

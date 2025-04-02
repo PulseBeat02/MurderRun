@@ -83,6 +83,10 @@ public final class PDCUtils {
     return attributeExists(stack, Keys.FLASHLIGHT, PersistentDataType.BOOLEAN);
   }
 
+  public static boolean isAbility(final ItemStack stack) {
+    return attributeExists(stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+  }
+
   private static boolean attributeExists(final ItemStack stack, final NamespacedKey key, final PersistentDataType<?, ?> type) {
     if (stack == null) {
       return false;

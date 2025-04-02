@@ -90,7 +90,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
   @Command(value = "murder debug gadget <gadgetName>", requiredSender = Player.class)
   public void debugGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
     final Audience audience = this.audiences.player(sender);
-    final List<MerchantRecipe> allGadgets = TradingUtils.parseRecipes(gadgetName);
+    final List<MerchantRecipe> allGadgets = TradingUtils.parseGadgetRecipes(gadgetName);
     if (this.checkIfInvalidGadget(audience, allGadgets)) {
       return;
     }
@@ -113,6 +113,6 @@ public final class DebugCommand implements AnnotationCommandFeature {
 
   @Suggestions("gadget-suggestions")
   public Stream<String> suggestTrades(final CommandContext<CommandSender> context, final String input) {
-    return TradingUtils.getTradeSuggestions();
+    return TradingUtils.getGadgetTradeSuggestions();
   }
 }

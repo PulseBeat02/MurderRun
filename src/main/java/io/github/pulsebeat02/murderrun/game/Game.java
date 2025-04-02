@@ -26,6 +26,7 @@ SOFTWARE.
 package io.github.pulsebeat02.murderrun.game;
 
 import io.github.pulsebeat02.murderrun.MurderRun;
+import io.github.pulsebeat02.murderrun.game.ability.AbilityManager;
 import io.github.pulsebeat02.murderrun.game.extension.GameExtensionManager;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetManager;
 import io.github.pulsebeat02.murderrun.game.map.GameMap;
@@ -51,6 +52,7 @@ public final class Game {
   private GameTimer murderGameTimer;
   private GameScheduler scheduler;
   private GadgetManager gadgetManager;
+  private AbilityManager abilityManager;
   private GameExecutor executor;
   private GamePhaseInvoker phaseInvoker;
   private GameExtensionManager extensionManager;
@@ -81,10 +83,12 @@ public final class Game {
     this.playerManager = new GamePlayerManager(this);
     this.murderGameTimer = new GameTimer();
     this.gadgetManager = new GadgetManager(this);
+    this.abilityManager = new AbilityManager(this);
     this.extensionManager = new GameExtensionManager(this);
     this.phaseInvoker = new GamePhaseInvoker(this);
     this.map.start();
     this.gadgetManager.start();
+    this.abilityManager.start();
     this.playerManager.start(murderers, participants);
     this.extensionManager.registerExtensions();
     this.phaseInvoker.invokeStartup();
@@ -112,6 +116,7 @@ public final class Game {
 
   private void forceShutdown(final GameResult code) {
     this.gadgetManager.shutdown();
+    this.abilityManager.shutdown();
     this.scheduler.cancelAllTasks();
     this.phaseInvoker.invokeCleanup(code);
     this.executor.shutdown();
@@ -164,5 +169,9 @@ public final class Game {
 
   public MapSchematicIO getMapSchematicIO() {
     return this.mapSchematicIO;
+  }
+
+  public AbilityManager getAbilityManager() {
+    return this.abilityManager;
   }
 }

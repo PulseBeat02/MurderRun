@@ -27,7 +27,6 @@ package io.github.pulsebeat02.murderrun.game;
 
 import static java.util.Objects.requireNonNull;
 
-import io.github.pulsebeat02.murderrun.game.gadget.GadgetDataBundle;
 import java.awt.*;
 import org.bukkit.Material;
 
@@ -36,8 +35,12 @@ public interface GameProperties {
     // init bundle
   }
 
-  GadgetDataBundle GADGET_DATA_BUNDLE = new GadgetDataBundle();
+  GameBundle GAME_BUNDLE = new GameBundle();
 
+  String ABILITY_GUI_SOUND = str("select.gui.sound");
+  String DISABLED_ABILITIES = str("disabled_abilities");
+  double DOUBLEJUMP_COOLDOWN = dec("doublejump.cooldown");
+  double DOUBLEJUMP_VELOCITY = dec("doublejump.velocity");
   double KILLER_PARTICLE_RADIUS = dec("killer.particles.radius");
   int FLASHLIGHT_DURATION = num("flashlight.duration");
   double FLASHLIGHT_COOLDOWN = dec("flashlight.cooldown");
@@ -492,18 +495,18 @@ public interface GameProperties {
   }
 
   private static boolean bool(final String key) {
-    return GADGET_DATA_BUNDLE.getBoolean(key);
+    return GAME_BUNDLE.getBoolean(key);
   }
 
   private static int num(final String key) {
-    return GADGET_DATA_BUNDLE.getInt(key);
+    return GAME_BUNDLE.getInt(key);
   }
 
   private static double dec(final String key) {
-    return GADGET_DATA_BUNDLE.getDouble(key);
+    return GAME_BUNDLE.getDouble(key);
   }
 
   private static String str(final String key) {
-    return GADGET_DATA_BUNDLE.getString(key);
+    return GAME_BUNDLE.getString(key);
   }
 }

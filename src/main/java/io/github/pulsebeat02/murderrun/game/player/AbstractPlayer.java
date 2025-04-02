@@ -29,6 +29,8 @@ import static java.util.Objects.requireNonNull;
 
 import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
 import io.github.pulsebeat02.murderrun.game.scheduler.reference.StrictPlayerReference;
+import io.github.pulsebeat02.murderrun.immutable.Keys;
+import io.github.pulsebeat02.murderrun.utils.PDCUtils;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +46,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -347,5 +350,37 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void setCooldown(final ItemStack item, final int cooldown) {
     this.apply(player -> player.setCooldown(item, cooldown));
+  }
+
+  @Override
+  public void setAbilityCooldowns(final String ability, final int seconds) {
+    final PlayerInventory inventory = this.getInventory();
+    final ItemStack[] items = inventory.getContents();
+    for (final ItemStack item : items) {
+      if (!PDCUtils.isAbility(item)) {
+        return;
+      }
+      final String abilityName = PDCUtils.getPersistentDataAttribute(item, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+      if (!ability.equals(abilityName)) {
+        return;
+      }
+      this.setCooldown(item, seconds);
+    }
+  }
+
+  @Override
+  public boolean hasAbility(final String ability) {
+    final PlayerInventory inventory = this.getInventory();
+    final ItemStack[] items = inventory.getContents();
+    for (final ItemStack item : items) {
+      if (!PDCUtils.isAbility(item)) {
+        continue;
+      }
+      final String abilityName = PDCUtils.getPersistentDataAttribute(item, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+      if (ability.equals(abilityName)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

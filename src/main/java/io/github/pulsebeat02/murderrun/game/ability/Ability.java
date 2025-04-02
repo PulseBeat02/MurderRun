@@ -25,13 +25,11 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.ability;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 
 public interface Ability {
   void shutdown();
-  void start(final Game game, final GamePlayer player);
-  Item.Builder getBuilder();
-  String getName();
+  void start();
+  Item.Builder getStackBuilder();
+  String getId();
 }

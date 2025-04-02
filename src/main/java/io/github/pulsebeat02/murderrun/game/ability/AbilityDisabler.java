@@ -23,15 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.ability.killer;
+package io.github.pulsebeat02.murderrun.game.ability;
 
-import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.ability.AbstractAbility;
-import io.github.pulsebeat02.murderrun.utils.item.Item;
+public final class AbilityDisabler {
 
-public abstract class KillerAbility extends AbstractAbility {
+  public void disableAbilities(final AbilityRegistry instance) {
+    instance.unfreeze();
+    // disable whatever gadgets
+    instance.freeze();
+  }
 
-  public KillerAbility(final Game game, final String name, final Item.Builder builder) {
-    super(game, name, builder);
+  public void removeIfExists(final AbilityRegistry registry, final String gadget) {
+    if (registry.getAbility(gadget) != null) {
+      registry.removeAbility(gadget);
+    }
   }
 }

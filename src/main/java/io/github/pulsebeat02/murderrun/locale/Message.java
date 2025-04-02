@@ -30,6 +30,16 @@ import static io.github.pulsebeat02.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> SELECT_NPC_ERROR = direct("murderrun.npc.role.error2");
+  NullComponent<Sender> SELECT_GUI_TITLE = direct("murderrun.gui.select.name");
+  NullComponent<Sender> SELECT_GUI_CANCEL = direct("murderrun.gui.select.cancel");
+  NullComponent<Sender> SELECT_GUI_FORWARD = direct("murderrun.gui.select.forward");
+  NullComponent<Sender> SELECT_GUI_BACK = direct("murderrun.gui.select.back");
+  NullComponent<Sender> ABILITY_GUI_TITLE = direct("murderrun.ability.gui.title");
+  NullComponent<Sender> ABILITY_GUI_CANCEL = direct("murderrun.ability.gui.cancel");
+  NullComponent<Sender> ABILITY_GUI_FORWARD = direct("murderrun.ability.gui.forward");
+  NullComponent<Sender> ABILITY_GUI_BACK = direct("murderrun.ability.gui.back");
+  NullComponent<Sender> ABILITY_RETRIEVE_ERROR = direct("murderrun.command.ability.retrieve.error");
   NullComponent<Sender> HEARTBEAT_ACTION3 = direct("murderrun.game.near.actionbar3");
   NullComponent<Sender> HEARTBEAT_ACTION2 = direct("murderrun.game.near.actionbar2");
   NullComponent<Sender> HEARTBEAT_ACTION1 = direct("murderrun.game.near.actionbar1");

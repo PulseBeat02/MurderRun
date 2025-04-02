@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.gadget;
+package io.github.pulsebeat02.murderrun.game;
 
 import static java.util.Objects.requireNonNull;
 
@@ -39,14 +39,14 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
-public final class GadgetDataBundle {
+public final class GameBundle {
 
   private static final String GADGETS_PROPERTIES = "game.properties";
 
   private final Path resourcePath;
   private final ResourceBundle bundle;
 
-  public GadgetDataBundle() {
+  public GameBundle() {
     final Path pluginDataFolder = IOUtils.getPluginDataFolderPath();
     this.resourcePath = pluginDataFolder.resolve(GADGETS_PROPERTIES);
     this.bundle = this.loadGadgetProperties(this.resourcePath);
@@ -71,7 +71,7 @@ public final class GadgetDataBundle {
     return Double.parseDouble(raw);
   }
 
-  private ResourceBundle loadGadgetProperties(@UnderInitialization GadgetDataBundle this, final Path resourcePath) {
+  private ResourceBundle loadGadgetProperties(@UnderInitialization GameBundle this, final Path resourcePath) {
     try {
       this.checkExistence(resourcePath);
       try (
@@ -89,7 +89,7 @@ public final class GadgetDataBundle {
     }
   }
 
-  private void checkExistence(@UnderInitialization GadgetDataBundle this, final Path resourcePath) throws IOException {
+  private void checkExistence(@UnderInitialization GameBundle this, final Path resourcePath) throws IOException {
     if (IOUtils.createFile(resourcePath)) {
       try (final InputStream in = IOUtils.getResourceAsStream(GADGETS_PROPERTIES)) {
         Files.copy(in, resourcePath, StandardCopyOption.REPLACE_EXISTING);

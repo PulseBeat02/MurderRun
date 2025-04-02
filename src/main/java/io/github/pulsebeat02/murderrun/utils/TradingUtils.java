@@ -27,6 +27,10 @@ package io.github.pulsebeat02.murderrun.utils;
 
 import static java.util.Objects.requireNonNull;
 
+import io.github.pulsebeat02.murderrun.game.ability.Ability;
+import io.github.pulsebeat02.murderrun.game.ability.AbilityRegistry;
+import io.github.pulsebeat02.murderrun.game.ability.killer.KillerAbility;
+import io.github.pulsebeat02.murderrun.game.ability.survivor.SurvivorAbility;
 import io.github.pulsebeat02.murderrun.game.gadget.Gadget;
 import io.github.pulsebeat02.murderrun.game.gadget.GadgetRegistry;
 import io.github.pulsebeat02.murderrun.game.gadget.killer.KillerDevice;
@@ -50,7 +54,56 @@ public final class TradingUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static MerchantRecipe createRecipe(final Gadget gadget) {
+  public static Stream<String> getAbilityTradeSuggestions() {
+    final AbilityRegistry registry = AbilityRegistry.getRegistry();
+    final Collection<Ability> gadgets = registry.getAbilities();
+    return gadgets.stream().map(Ability::getId);
+  }
+
+  public static List<ItemStack> getAllAbilityRecipes() {
+    final AbilityRegistry registry = AbilityRegistry.getRegistry();
+    final Collection<Ability> gadgets = registry.getAbilities();
+    final List<ItemStack> recipes = new ArrayList<>();
+    for (final Ability ability : gadgets) {
+      final Item.Builder stack = requireNonNull(ability.getStackBuilder());
+      final ItemStack itemStack = stack.build();
+      recipes.add(itemStack);
+    }
+    return recipes;
+  }
+
+  public static List<ItemStack> parseAbilityRecipes(final String... args) {
+    final AbilityRegistry registry = AbilityRegistry.getRegistry();
+    final List<ItemStack> recipes = new ArrayList<>();
+    for (final String arg : args) {
+      final Ability ability = registry.getAbility(arg);
+      if (ability == null) {
+        continue;
+      }
+      final Item.Builder stack = requireNonNull(ability.getStackBuilder());
+      final ItemStack itemStack = stack.build();
+      recipes.add(itemStack);
+    }
+    return recipes;
+  }
+
+  public static Collection<ItemStack> getAbilityShopItems(final boolean isSurvivorAbilities) {
+    final AbilityRegistry registry = AbilityRegistry.getRegistry();
+    final Collection<Ability> abilities = registry.getAbilities();
+    final Set<ItemStack> items = new TreeSet<>(ITEM_STACK_COMPARATOR);
+    for (final Ability ability : abilities) {
+      final boolean add =
+        (isSurvivorAbilities && ability instanceof SurvivorAbility) || (!isSurvivorAbilities && ability instanceof KillerAbility);
+      if (add) {
+        final Item.Builder builder = requireNonNull(ability.getStackBuilder());
+        final ItemStack stack = builder.build();
+        items.add(stack);
+      }
+    }
+    return items;
+  }
+
+  public static MerchantRecipe createGadgetRecipe(final Gadget gadget) {
     final int cost = gadget.getPrice();
     final Item.Builder stack = requireNonNull(gadget.getStackBuilder());
     final ItemStack itemStack = stack.build();
@@ -66,7 +119,7 @@ public final class TradingUtils {
     final Collection<Gadget> gadgets = registry.getGadgets();
     MerchantRecipe target = null;
     for (final Gadget gadget : gadgets) {
-      final MerchantRecipe recipe = createRecipe(gadget);
+      final MerchantRecipe recipe = createGadgetRecipe(gadget);
       if (matchesResult(recipe, item)) {
         target = recipe;
         break;
@@ -90,24 +143,24 @@ public final class TradingUtils {
     return requireNonNull(ChatColor.stripColor(display));
   }
 
-  public static Stream<String> getTradeSuggestions() {
+  public static Stream<String> getGadgetTradeSuggestions() {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     return gadgets.stream().map(Gadget::getId);
   }
 
-  public static List<MerchantRecipe> getAllRecipes() {
+  public static List<MerchantRecipe> getAllGadgetRecipes() {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final Gadget gadget : gadgets) {
-      final MerchantRecipe recipe = createRecipe(gadget);
+      final MerchantRecipe recipe = createGadgetRecipe(gadget);
       recipes.add(recipe);
     }
     return recipes;
   }
 
-  public static List<MerchantRecipe> parseRecipes(final String... args) {
+  public static List<MerchantRecipe> parseGadgetRecipes(final String... args) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String arg : args) {
@@ -115,13 +168,13 @@ public final class TradingUtils {
       if (gadget == null) {
         continue;
       }
-      final MerchantRecipe recipe = createRecipe(gadget);
+      final MerchantRecipe recipe = createGadgetRecipe(gadget);
       recipes.add(recipe);
     }
     return recipes;
   }
 
-  public static Collection<ItemStack> getShopItems(final boolean isSurvivorGadgets) {
+  public static Collection<ItemStack> getGadgetShopItems(final boolean isSurvivorGadgets) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     final Set<ItemStack> items = new TreeSet<>(ITEM_STACK_COMPARATOR);

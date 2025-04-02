@@ -23,15 +23,48 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-package io.github.pulsebeat02.murderrun.game.ability.killer;
+package io.github.pulsebeat02.murderrun.game.ability;
 
+import io.github.pulsebeat02.murderrun.MurderRun;
 import io.github.pulsebeat02.murderrun.game.Game;
-import io.github.pulsebeat02.murderrun.game.ability.AbstractAbility;
-import io.github.pulsebeat02.murderrun.utils.item.Item;
 
-public abstract class KillerAbility extends AbstractAbility {
+public final class AbilityManager {
 
-  public KillerAbility(final Game game, final String name, final Item.Builder builder) {
-    super(game, name, builder);
+  private final MurderRun plugin;
+  private final Game game;
+
+  private AbilityLoadingMechanism mechanism;
+  private AbilityActionHandler actionHandler;
+
+  public AbilityManager(final Game game) {
+    final MurderRun plugin = game.getPlugin();
+    this.game = game;
+    this.plugin = plugin;
+  }
+
+  public void start() {
+    this.mechanism = new AbilityLoadingMechanism(this);
+    this.actionHandler = new AbilityActionHandler(this);
+    this.actionHandler.start();
+  }
+
+  public void shutdown() {
+    this.actionHandler.shutdown();
+  }
+
+  public MurderRun getPlugin() {
+    return this.plugin;
+  }
+
+  public Game getGame() {
+    return this.game;
+  }
+
+  public AbilityLoadingMechanism getMechanism() {
+    return this.mechanism;
+  }
+
+  public AbilityActionHandler getActionHandler() {
+    return this.actionHandler;
   }
 }

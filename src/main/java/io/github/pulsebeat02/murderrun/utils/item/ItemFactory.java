@@ -36,6 +36,7 @@ import java.util.UUID;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -226,18 +227,15 @@ public final class ItemFactory {
     return builder.potionColor(Color.RED).potion(PotionType.STRONG_HEALING);
   }
 
-  public static Item.Builder createAbility(
-    final String pdcName,
-    final Material material,
-    final Component itemName,
-    final Component itemLore
-  ) {
+  public static Item.Builder createAbility(final String pdcName, final Component itemName, final Component itemLore, final int cooldown) {
     final String texture = pdcName.replace("_", "");
-    return Item.builder(material)
+    final NamespacedKey key = new NamespacedKey("murderrun", pdcName);
+    return Item.builder(Material.FISHING_ROD)
       .name(itemName)
       .lore(itemLore)
       .model(texture)
       .pdc(Keys.ABILITY_KEY_NAME, PersistentDataType.STRING, pdcName)
+      .cooldown(cooldown, key)
       .hideAttributes();
   }
 

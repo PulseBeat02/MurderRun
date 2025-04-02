@@ -25,12 +25,13 @@ SOFTWARE.
 */
 package io.github.pulsebeat02.murderrun.game.ability.survivor;
 
+import io.github.pulsebeat02.murderrun.game.Game;
 import io.github.pulsebeat02.murderrun.game.ability.AbstractAbility;
 import io.github.pulsebeat02.murderrun.utils.item.Item;
 
 public abstract class SurvivorAbility extends AbstractAbility {
 
-  public SurvivorAbility(final String name, final Item.Builder builder) {
-    super(name, builder);
+  public SurvivorAbility(final Game game, final String name, final Item.Builder builder) {
+    super(game, name, builder);
   }
 }
