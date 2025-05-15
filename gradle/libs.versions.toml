@@ -28,7 +28,7 @@ partiesApi = "3.2.16"
 mockBukkit = "3.133.2"
 nexo = "1.5.0"
 creativeApi = "1.7.3"
-packetEvents = "2.7.0"
+packetEvents = "2.8.0"
 vaultApi = "1.7"
 
 [libraries]
