@@ -104,7 +104,7 @@ public final class WandListener implements Listener {
           if (slime == null) {
             return;
           }
-          slime.setSize(1);
+          slime.setSize(2);
         });
     } else {
       this.locations.forEach(loc -> GlowUtils.setBlockGlowing(player, loc, false));

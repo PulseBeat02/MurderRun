@@ -31,7 +31,9 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import me.brandonli.murderrun.utils.map.MapUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
 public final class RandomTeleport extends SurvivorGadget {
@@ -60,15 +62,51 @@ public final class RandomTeleport extends SurvivorGadget {
     final Arena arena = requireNonNull(settings.getArena());
     final Location first = arena.getFirstCorner();
     final Location second = arena.getSecondCorner();
-    final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
-    final World world = requireNonNull(first.getWorld());
-    final Location temp = new Location(world, coords[0], 0, coords[1]);
-    final Location teleport = MapUtils.getHighestSpawnLocation(temp);
-    player.teleport(teleport);
 
-    final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.RANDOM_TELEPORT_SOUND);
+    Location teleport = null;
+    int maxAttempts = 100; // 最大尝试次数，避免无限循环
+    int attempts = 0;
+
+    while (teleport == null && attempts < maxAttempts) {
+      final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
+      final World world = requireNonNull(first.getWorld());
+      final Location temp = new Location(world, coords[0], 0, coords[1]);
+      final Location potentialTeleport = MapUtils.getHighestSpawnLocation(temp);
+
+      if (isSafeLocation(potentialTeleport)) {
+        teleport = potentialTeleport;
+      }
+      attempts++;
+    }
+
+    if (teleport != null) {
+      player.teleport(teleport);
+
+      final PlayerAudience audience = player.getAudience();
+      audience.playSound(GameProperties.RANDOM_TELEPORT_SOUND);
+    }
 
     return false;
+  }
+
+  private boolean isSafeLocation(Location location) {
+    if (location == null) {
+      return false;
+    }
+    World world = location.getWorld();
+    if (world == null) {
+      return false;
+    }
+    Block block = world.getBlockAt(location);
+    // 检查是否为屏障方块
+    if (block.getType() == Material.BARRIER) {
+      return false;
+    }
+    // 检查是否在虚空
+    if (location.getY() <= 0) {
+      return false;
+    }
+    // 可以添加更多安全检查逻辑，例如检查方块是否可站立等
+    return true;
   }
 }
