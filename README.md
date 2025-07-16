@@ -26,7 +26,8 @@ the timer runs out.
 
 Similar to Dead by Daylight's character system, Murder Run includes many gadgets and abilities. Currently, there are
 over 100+ gadgets and abilities combined that the player can choose from. Each gadget and ability has many configuration
-options that you can configure to your own heart's desire.
+options that you can configure to your own heart's desire. There are a ton of features in this plugin, and some of them
+are listed below.
 
 - 100% Free and Open Source
 - Over 100+ Killer/Survivor Gadgets
