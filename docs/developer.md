@@ -17,7 +17,7 @@ Then, add the plugin dependency to your project:
 **build.gradle.kts**
 ```kotlin
 dependencies { 
-  implementation("me.brandonli:MurderRun:1.21.7-v1.0.0")
+  implementation("me.brandonli:MurderRun:1.21.8-v1.0.0")
 }
 ```
 
