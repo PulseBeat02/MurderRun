@@ -13,7 +13,6 @@
 - **CI**: https://ci.brandonli.me/project/MurderRun
 - **Support**: https://discord.gg/cUMB6kCsh6
 - **Donate**: https://ko-fi.com/pulsebeat_02
-- **Testing Server**: `pulse.mcserver.us`
 
 ---
 
