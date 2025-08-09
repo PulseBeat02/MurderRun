@@ -158,6 +158,10 @@ tasks {
             "Nexo")
     }
 
+    withType<Test> {
+        failOnNoDiscoveredTests = false
+    }
+
     withType<JavaCompile>().configureEach {
         val set = setOf("-parameters", "-Xlint:deprecation", "-Xlint:unchecked")
         options.compilerArgs.addAll(set)
@@ -241,20 +245,20 @@ tasks {
         workDir = file("build/nodejs")
     }
 
-    fun getCurrentGitCommit(): String {
-        val stdout = ByteArrayOutputStream()
-        project.exec {
-            executable = "git"
-            args = listOf("rev-parse", "--short", "HEAD")
-            standardOutput = stdout
-        }
-        return stdout.toString().trim()
-    }
+//    fun getCurrentGitCommit(): String {
+//        val stdout = ByteArrayOutputStream()
+//        project.exec {
+//            executable = "git"
+//            args = listOf("rev-parse", "--short", "HEAD")
+//            standardOutput = stdout
+//        }
+//        return stdout.toString().trim()
+//    }
 
     jar {
         manifest {
             attributes("Main-Class" to "me.brandonli.murderrun.secret.Main")
-            attributes["Git-Commit"] = getCurrentGitCommit()
+//            attributes["Git-Commit"] = getCurrentGitCommit()
         }
     }
 }
