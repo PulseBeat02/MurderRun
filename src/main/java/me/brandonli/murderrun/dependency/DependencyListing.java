@@ -26,8 +26,8 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.39-3853",
-    "https://ci.citizensnpcs.co/job/citizens2/3853/artifact/dist/target/Citizens-2.0.39-b3853.jar"
+    "Citizens-2.0.39-3899",
+    "https://ci.citizensnpcs.co/job/citizens2/3899/artifact/dist/target/Citizens-2.0.39-b3899.jar"
   );
 
   private static final Dependency WORLD_EDIT = new UrlDependency(
@@ -38,8 +38,8 @@ public final class DependencyListing {
 
   private static final Dependency PACKET_EVENTS = new UrlDependency(
     "PacketEvents",
-    "packetevents-spigot-2.9.5-SNAPSHOT",
-    "https://ci.codemc.io/job/retrooper/job/packetevents/747/artifact/build/libs/packetevents-spigot-2.9.5-SNAPSHOT.jar"
+    "packetevents-spigot-2.9.6-SNAPSHOT",
+    "https://ci.codemc.io/job/retrooper/job/packetevents/756/artifact/build/libs/packetevents-spigot-2.9.6-SNAPSHOT.jar"
   );
 
   private static final DependencyListing V1_21_R5 = create("V1_21_R5", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
