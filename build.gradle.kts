@@ -9,14 +9,13 @@ plugins {
     `maven-publish`
     id("com.gradleup.shadow") version "9.1.0"
     id("xyz.jpenilla.run-paper") version "2.3.1"
-//    id("org.checkerframework") version "0.6.57"
+    id("org.checkerframework") version "0.6.57"
     id("com.diffplug.spotless") version "7.0.0.BETA4"
     id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.3.0"
     id("com.github.node-gradle.node") version "7.1.0"
 }
 
-// fix checker... they have an issue with module exports
-//apply(plugin = "org.checkerframework")
+apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
 version = "1.21.8-v1.0.0"
@@ -232,13 +231,14 @@ tasks {
         }
     }
 
-//    checkerFramework {
-//        checkers = listOf("org.checkerframework.checker.nullness.NullnessChecker")
-//        extraJavacArgs = listOf(
-//            "-AsuppressWarnings=uninitialized",
-//            "-Astubs=${project.file("checker-framework")}"
-//        )
-//    }
+    checkerFramework {
+        // fix checker... they have an issue with module exports
+        checkers = listOf(/*"org.checkerframework.checker.nullness.NullnessChecker"*/)
+        extraJavacArgs = listOf(
+            "-AsuppressWarnings=uninitialized",
+            "-Astubs=${project.file("checker-framework")}"
+        )
+    }
 
     node {
         download = true
