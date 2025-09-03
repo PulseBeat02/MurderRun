@@ -234,6 +234,7 @@ tasks {
     checkerFramework {
         checkers = listOf("org.checkerframework.checker.nullness.NullnessChecker")
         extraJavacArgs = listOf(
+            "--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
             "-AsuppressWarnings=uninitialized",
             "-Astubs=${project.file("checker-framework")}"
         )
