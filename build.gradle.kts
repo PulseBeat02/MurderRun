@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
 import xyz.jpenilla.runtask.task.AbstractRun
@@ -169,6 +170,12 @@ tasks {
         options.release.set(targetJavaVersion)
         options.isFork = true
         options.forkOptions.memoryMaximumSize = "4g"
+        options.forkOptions.jvmArgs = (options.forkOptions.jvmArgs ?: mutableListOf()).apply {
+            // Checker Framework Gradle Plugin forgot to include this argument for latest Checker Framework versions
+            // See https://github.com/typetools/checker-framework/issues/7241
+            // See https://github.com/kelloggm/checkerframework-gradle-plugin/blob/fe79a94a8399d097cf3e2e3e2ab0626e46bfbd4f/src/main/groovy/org/checkerframework/gradle/plugin/CheckerFrameworkPlugin.groovy#L384
+            add("--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED")
+        }
     }
 
     assemble {
@@ -232,8 +239,7 @@ tasks {
     }
 
     checkerFramework {
-        // fix checker... they have an issue with module exports
-        checkers = listOf(/*"org.checkerframework.checker.nullness.NullnessChecker"*/)
+        checkers = listOf("org.checkerframework.checker.nullness.NullnessChecker")
         extraJavacArgs = listOf(
             "-AsuppressWarnings=uninitialized",
             "-Astubs=${project.file("checker-framework")}"

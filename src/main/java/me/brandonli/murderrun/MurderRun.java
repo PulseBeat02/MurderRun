@@ -144,7 +144,7 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void startMiscListeners() {
-    if (false) {
+    if (false) { // we use TeamCity now, not GitHub releases
       this.versionChecker = new VersionChecker(this);
       this.versionChecker.start();
     }
