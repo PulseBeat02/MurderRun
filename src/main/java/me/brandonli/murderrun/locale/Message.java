@@ -22,6 +22,7 @@ import static me.brandonli.murderrun.locale.LocaleTools.direct;
 import java.util.List;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> RESOURCE_PACK_ACTIVATE = direct("murderrun.game.resources");
   NullComponent<Sender> MOON_ACTIVATE = direct("murderrun.game.gadget.moon.activate");
   NullComponent<Sender> MOON_LORE = direct("murderrun.game.gadget.moon.lore");
   NullComponent<Sender> MOON_NAME = direct("murderrun.game.gadget.moon.name");

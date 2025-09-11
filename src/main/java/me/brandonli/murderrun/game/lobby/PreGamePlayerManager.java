@@ -29,6 +29,7 @@ import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.PlayerResourcePackChecker;
 import me.brandonli.murderrun.game.lobby.player.PlayerSelectionManager;
+import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.provider.ResourcePackProvider;
 import me.brandonli.murderrun.utils.ComponentUtils;
@@ -36,6 +37,8 @@ import me.brandonli.murderrun.utils.RandomUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -47,6 +50,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PreGamePlayerManager {
@@ -180,11 +184,22 @@ public final class PreGamePlayerManager {
   }
 
   public void loadResourcePack(final Player player) {
+    final BukkitScheduler scheduler = Bukkit.getScheduler();
     final MurderRun plugin = this.manager.getPlugin();
-    final PlayerResourcePackChecker checker = plugin.getPlayerResourcePackChecker();
-    if (!checker.isLoaded(player)) {
-      this.setResourcePack(player);
-    }
+    final AudienceProvider provider = plugin.getAudience();
+    final BukkitAudiences audiences = provider.retrieve();
+    final Audience audience = audiences.player(player);
+    scheduler.runTaskLater(
+      plugin,
+      () -> {
+        final PlayerResourcePackChecker checker = plugin.getPlayerResourcePackChecker();
+        if (!checker.isLoaded(player)) {
+          this.setResourcePack(player);
+        }
+        audience.sendMessage(Message.RESOURCE_PACK_ACTIVATE.build());
+      },
+      2 * 20L
+    );
   }
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
@@ -193,9 +208,9 @@ public final class PreGamePlayerManager {
     this.scoreboard.addPlayer(player);
     this.scoreboard.updateScoreboard();
     this.clearInventory(player);
-    this.loadResourcePack(player);
     this.teleportPlayerToLobby(player);
     this.giveItems(player, killer);
+    this.loadResourcePack(player);
     this.checkIfEnoughPlayers();
     if (this.lobbyTimeManager != null) {
       this.lobbyTimeManager.resetTime();
