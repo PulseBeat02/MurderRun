@@ -35,6 +35,9 @@ to recognize them!
 # In-Game Commands
 After setting up a new game for you and your friends, there are more commands that you may find useful.
 
+## Getting the Resource Pack
+If you didn't get the resourcepack for some reason, use the `/murder resources` command to get the resourcepack.
+
 ## Inviting Another Player
 To invite another player, use the `/murder game invite <player>` command, replacing <player> with the name of the player
 that you want to invite. The player will receive an invitation, and must either click on the accept message or run the
