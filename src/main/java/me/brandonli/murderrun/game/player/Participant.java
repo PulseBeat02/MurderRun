@@ -34,6 +34,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -214,4 +215,12 @@ public interface Participant {
   boolean isValid();
 
   void resetAttribute(final Attribute attribute);
+
+  void sendPotionEffectChange(final LivingEntity entity, final PotionEffect effect);
+
+  void sendPotionEffectChangeRemove(final LivingEntity entity, final PotionEffectType type);
+
+  void sendPotionEffectChange(final PotionEffect effect);
+
+  void sendPotionEffectChangeRemove(final PotionEffectType type);
 }

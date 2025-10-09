@@ -38,6 +38,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -423,5 +424,25 @@ public abstract class AbstractPlayer implements Participant {
   public @Nullable Double getDefaultAttribute(final Attribute attribute) {
     final Map<Attribute, Double> attributes = this.getDefaultAttributes();
     return attributes.get(attribute);
+  }
+
+  @Override
+  public void sendPotionEffectChange(final LivingEntity entity, final PotionEffect effect) {
+    this.apply(player -> player.sendPotionEffectChange(entity, effect));
+  }
+
+  @Override
+  public void sendPotionEffectChangeRemove(final LivingEntity entity, final PotionEffectType type) {
+    this.apply(player -> player.sendPotionEffectChangeRemove(entity, type));
+  }
+
+  @Override
+  public void sendPotionEffectChange(final PotionEffect effect) {
+    this.apply(player -> player.sendPotionEffectChange(player, effect));
+  }
+
+  @Override
+  public void sendPotionEffectChangeRemove(final PotionEffectType type) {
+    this.apply(player -> player.sendPotionEffectChangeRemove(player, type));
   }
 }

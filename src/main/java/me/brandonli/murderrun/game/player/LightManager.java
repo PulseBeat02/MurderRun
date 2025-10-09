@@ -27,6 +27,8 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class LightManager {
 
+  private static final PotionEffect DARKNESS = new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 1);
+
   private final Game game;
   private final Set<GamePlayer> canSee;
 
@@ -47,13 +49,12 @@ public final class LightManager {
       final Survivor survivor = (Survivor) player;
       if (survivor.canSee()) {
         if (!this.canSee.contains(survivor)) {
-          survivor.removePotionEffect(PotionEffectType.BLINDNESS);
+          survivor.sendPotionEffectChangeRemove(PotionEffectType.BLINDNESS);
           this.canSee.add(survivor);
         }
       } else {
         if (survivor.isAlive()) {
-          final PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 1);
-          survivor.addPotionEffects(effect);
+          survivor.sendPotionEffectChange(DARKNESS);
         }
         this.canSee.remove(survivor);
       }

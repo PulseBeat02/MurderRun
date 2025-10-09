@@ -26,23 +26,23 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.39-b3922",
-    "https://ci.citizensnpcs.co/job/Citizens2/3922/artifact/dist/target/Citizens-2.0.39-b3922.jar"
+    "Citizens-2.0.40-b3964",
+    "https://ci.citizensnpcs.co/job/Citizens2/3964/artifact/dist/target/Citizens-2.0.40-b3964.jar"
   );
 
   private static final Dependency WORLD_EDIT = new UrlDependency(
     "WorldEdit",
-    "worldedit-bukkit-7.3.16",
-    "https://cdn.modrinth.com/data/1u6JkXh5/versions/Jk1z2u7n/worldedit-bukkit-7.3.16.jar"
+    "worldedit-bukkit-7.3.17-beta-01",
+    "https://cdn.modrinth.com/data/1u6JkXh5/versions/xuV6tYbh/worldedit-bukkit-7.3.17-beta-01.jar"
   );
 
   private static final Dependency PACKET_EVENTS = new UrlDependency(
     "PacketEvents",
-    "packetevents-spigot-2.9.6-SNAPSHOT",
-    "https://ci.codemc.io/job/retrooper/job/packetevents/757/artifact/build/libs/packetevents-spigot-2.9.6-SNAPSHOT.jar"
+    "packetevents-spigot-2.10.0-SNAPSHOT",
+    "https://ci.codemc.io/job/retrooper/job/packetevents/770/artifact/build/libs/packetevents-spigot-2.10.0-SNAPSHOT.jar"
   );
 
-  private static final DependencyListing V1_21_R5 = create("V1_21_R5", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
+  private static final DependencyListing V1_21_R6 = create("V1_21_R6", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
 
   private static DependencyListing create(final String revision, final Dependency... deps) {
     final Collection<Dependency> dependencies = List.of(deps);
