@@ -33,13 +33,23 @@ import org.bukkit.Server;
 public final class ReflectBukkitInjector {
 
   private static final String INJECTOR_SYSTEM_PROPERTY = "murderrun.resourcepack";
+  private static final Class<?> SERVER_CONNECTION_CLASS;
   private static final List<ChannelFuture> CONNECTIONS;
 
   static {
     try {
+      SERVER_CONNECTION_CLASS = getServerConnectionClass();
       CONNECTIONS = getConnections();
     } catch (final Throwable e) {
       throw new AssertionError(e);
+    }
+  }
+
+  private static Class<?> getServerConnectionClass() throws ClassNotFoundException {
+    try {
+      return Class.forName("net.minecraft.server.network.ServerConnection");
+    } catch (final ClassNotFoundException e) {
+      return Class.forName("net.minecraft.server.network.ServerConnectionListener");
     }
   }
 
@@ -50,18 +60,13 @@ public final class ReflectBukkitInjector {
     return (List<ChannelFuture>) handle.get(connection);
   }
 
-  private static VarHandle getConnectionsVarHandle() throws ClassNotFoundException, IllegalAccessException {
-    final Class<?> target = Class.forName("net.minecraft.server.network.ServerConnection");
+  private static VarHandle getConnectionsVarHandle() throws IllegalAccessException, NoSuchFieldException {
     final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(target, lookup);
+    final MethodHandles.Lookup privateLookup = MethodHandles.privateLookupIn(SERVER_CONNECTION_CLASS, lookup);
     try {
-      return privateLookup.findVarHandle(target, "channels", List.class);
+      return privateLookup.findVarHandle(SERVER_CONNECTION_CLASS, "channels", List.class);
     } catch (final NoSuchFieldException | IllegalAccessException e) {
-      try {
-        return privateLookup.findVarHandle(target, "f", List.class);
-      } catch (final NoSuchFieldException | IllegalAccessException ex) {
-        throw new AssertionError(ex);
-      }
+      return privateLookup.findVarHandle(SERVER_CONNECTION_CLASS, "f", List.class);
     }
   }
 
@@ -71,10 +76,8 @@ public final class ReflectBukkitInjector {
     final MethodHandles.Lookup lookup = MethodHandles.lookup();
     final Object dedicatedServer = getServerHandle.invoke(craftServer);
     final Class<?> dedicatedServerClass = dedicatedServer.getClass();
-    final String connectionName = "net.minecraft.server.network.ServerConnection";
-    final Class<?> connectionClass = Class.forName(connectionName);
-    final MethodType getConnectionType = MethodType.methodType(connectionClass);
-    final MethodHandle getConnectionHandle = lookup.findVirtual(dedicatedServerClass, "ah", getConnectionType);
+    final MethodType getConnectionType = MethodType.methodType(SERVER_CONNECTION_CLASS);
+    final MethodHandle getConnectionHandle = lookup.findVirtual(dedicatedServerClass, "an", getConnectionType);
     return getConnectionHandle.invoke(dedicatedServer);
   }
 
@@ -83,7 +86,7 @@ public final class ReflectBukkitInjector {
     final String craftServerClass = "org.bukkit.craftbukkit.%s.CraftServer".formatted(rev);
     final Class<?> craftServerType = Class.forName(craftServerClass);
     final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    final String dedicatedServerClass = "net.minecraft.server.dedicated.DedicatedServer";
+    final String dedicatedServerClass = "net.minecraft.server.dedicated.DedicatedServer"; // both Spigot and Mojang use this
     final Class<?> dedicatedServerClassType = Class.forName(dedicatedServerClass);
     final MethodType methodType = MethodType.methodType(dedicatedServerClassType);
     return lookup.findVirtual(craftServerType, "getServer", methodType);
