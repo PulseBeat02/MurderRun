@@ -41,6 +41,7 @@ repositories {
     maven("https://repo.nexomc.com/snapshots")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://jitpack.io")
+    maven("https://mvn.lib.co.nz/public")
 }
 
 val runtimeDeps = listOf(

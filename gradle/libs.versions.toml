@@ -17,7 +17,7 @@ fastutil = "5.0.9"
 nettyAll = "4.1.97.Final"
 placeholderapi = "2.11.7"
 protocolLib = "5.3.0"
-libsDisguises = "10.0.44"
+libsDisguises = "11.0.0"
 worldeditCore = "7.3.17"
 worldeditBukkit = "7.3.17"
 citizensMain = "2.0.35-SNAPSHOT"
@@ -53,7 +53,7 @@ fastutil = { group = "fastutil", name = "fastutil", version.ref = "fastutil" }
 nettyAll = { group = "io.netty", name = "netty-all", version.ref = "nettyAll" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
 protocolLib = { group = "com.comphenix.protocol", name = "ProtocolLib", version.ref = "protocolLib" }
-libsDisguises = { group = "LibsDisguises", name = "LibsDisguises", version.ref = "libsDisguises" }
+libsDisguises = { group = "me.libraryaddict.disguises", name = "libsdisguises", version.ref = "libsDisguises" }
 worldeditCore = { group = "com.sk89q.worldedit", name = "worldedit-core", version.ref = "worldeditCore" }
 worldeditBukkit = { group = "com.sk89q.worldedit", name = "worldedit-bukkit", version.ref = "worldeditBukkit" }
 citizensMain = { group = "net.citizensnpcs", name = "citizens-main", version.ref = "citizensMain" }
