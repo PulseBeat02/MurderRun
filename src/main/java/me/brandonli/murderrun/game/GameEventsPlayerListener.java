@@ -22,7 +22,6 @@ import static java.util.Objects.requireNonNull;
 import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.api.interfaces.Party;
-import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
@@ -40,7 +39,6 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public final class GameEventsPlayerListener implements GameEventsListener {
 
@@ -56,17 +54,22 @@ public final class GameEventsPlayerListener implements GameEventsListener {
     final GameShutdownManager manager = plugin.getGameShutdownManager();
 
     final Map<String, PreGameManager> games = this.manager.getGames();
-    final Collection<Map.Entry<@KeyFor("games") String, PreGameManager>> entries = games.entrySet();
-    for (final Map.Entry<String, PreGameManager> entry : entries) {
+    String idToRemove = null;
+    PreGameManager preToRemove = null;
+    for (final Map.Entry<String, PreGameManager> entry : games.entrySet()) {
       final PreGameManager pre = entry.getValue();
       final Game game1 = pre.getGame();
       if (game == game1) {
-        manager.removeGame(pre);
-        final String id = entry.getKey();
-        games.remove(id);
-        this.sendRequeueMessage(pre);
+        idToRemove = entry.getKey();
+        preToRemove = pre;
         break;
       }
+    }
+
+    if (idToRemove != null && preToRemove != null) { // checker
+      manager.removeGame(preToRemove);
+      games.remove(idToRemove);
+      this.sendRequeueMessage(preToRemove);
     }
   }
 

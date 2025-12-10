@@ -31,8 +31,7 @@ public final class InviteManager {
   }
 
   public void invitePlayer(final CommandSender sender, final Player receiver) {
-    this.invites.putIfAbsent(receiver, new PlayerInviteManager());
-    final PlayerInviteManager manager = this.invites.get(receiver);
+    final PlayerInviteManager manager = this.invites.computeIfAbsent(receiver, k -> new PlayerInviteManager());
     manager.addInvite(sender);
   }
 

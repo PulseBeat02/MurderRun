@@ -43,13 +43,6 @@ public final class PlayerTeamManager {
   }
 
   public void destroyAllTeams() {
-    final Set<Entity> keys = this.entityTeams.keySet();
-    //        for (final Entity entity : keys) {
-    //          if (!entity.isValid()) {
-    //            continue;
-    //          }
-    //          this.removeEntityGlow(entity);
-    //        }
     this.entityTeams.clear();
     this.states.clear();
   }

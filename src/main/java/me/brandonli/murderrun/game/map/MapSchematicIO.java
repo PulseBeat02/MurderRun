@@ -63,6 +63,7 @@ public final class MapSchematicIO {
   }
 
   // special reset for shutdown
+  // shutdown hooks are best-effort and may not run in all scenarios (e.g., crash, kill -9)
   public void resetMapShutdown() {
     this.removeCitizensNPCs();
     this.addShutdownHook();

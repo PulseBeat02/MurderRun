@@ -102,11 +102,13 @@ public final class PreGamePlayerManager {
   }
 
   public void forceShutdown() {
-    for (final Player player : this.participants) {
-      this.clearInventory(player);
-      this.removePersistentData(player);
-      this.teleportToMainWorld(player);
-      player.setLevel(0);
+    synchronized (this.participants) {
+      for (final Player player : this.participants) {
+        this.clearInventory(player);
+        this.removePersistentData(player);
+        this.teleportToMainWorld(player);
+        player.setLevel(0);
+      }
     }
   }
 
@@ -295,13 +297,18 @@ public final class PreGamePlayerManager {
 
   public void assignKiller() {
     if (this.murderers.isEmpty()) {
-      final int size = this.participants.size();
-      final int index = RandomUtils.generateInt(size);
-      final Player random = Iterables.get(this.participants, index);
-      final Component msg = Message.KILLER_ASSIGN.build();
-      final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
-      this.setPlayerToMurderer(random);
-      random.sendMessage(raw);
+      synchronized (this.participants) {
+        final int size = this.participants.size();
+        if (size == 0) {
+          return;
+        }
+        final int index = RandomUtils.generateInt(size);
+        final Player random = Iterables.get(this.participants, index);
+        final Component msg = Message.KILLER_ASSIGN.build();
+        final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
+        this.setPlayerToMurderer(random);
+        random.sendMessage(raw);
+      }
     }
   }
 

@@ -32,6 +32,9 @@ public final class RandomUtils {
 
   public static <T> T getRandomElement(final Collection<T> from) {
     final int size = from.size();
+    if (size == 0) {
+      throw new IllegalArgumentException("Cannot get random element from empty collection");
+    }
     final int i = generateInt(size);
     return Iterables.get(from, i);
   }

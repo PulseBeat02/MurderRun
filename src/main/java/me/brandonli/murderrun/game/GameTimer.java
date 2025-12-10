@@ -49,7 +49,8 @@ public final class GameTimer {
 
   public long getTimeLeft() {
     final long current = System.currentTimeMillis();
-    return this.totalTime - (current - this.startTime);
+    final long timeLeft = this.totalTime - (current - this.startTime);
+    return Math.max(0, timeLeft);
   }
 
   public long getStartTime() {

@@ -101,11 +101,17 @@ public final class Arena implements Serializable {
   }
 
   public Location getFirstCorner() {
-    return this.corners[0];
+    if (this.corners == null || this.corners.length < 1) {
+      throw new IllegalStateException("Arena corners are not properly initialized");
+    }
+    return requireNonNull(this.corners[0]);
   }
 
   public Location getSecondCorner() {
-    return this.corners[1];
+    if (this.corners == null || this.corners.length < 2) {
+      throw new IllegalStateException("Arena corners are not properly initialized");
+    }
+    return requireNonNull(this.corners[1]);
   }
 
   public Location getSpawn() {
@@ -125,7 +131,10 @@ public final class Arena implements Serializable {
   }
 
   public BoundingBox createBox() {
-    return BoundingBox.of(this.corners[0], this.corners[1]);
+    if (this.corners == null || this.corners.length < 2) {
+      throw new IllegalStateException("Arena corners are not properly initialized");
+    }
+    return BoundingBox.of(requireNonNull(this.corners[0]), requireNonNull(this.corners[1]));
   }
 
   public Location[] getCarPartLocations() {
@@ -133,12 +142,15 @@ public final class Arena implements Serializable {
   }
 
   public Location getRandomItemLocation() {
-    final int length = this.carPartLocations.length;
-    if (length == 0) {
+    if (this.carPartLocations == null || this.carPartLocations.length == 0) {
       return this.spawn;
     }
+    final int length = this.carPartLocations.length;
     final int index = RandomUtils.generateInt(length);
     final Location location = this.carPartLocations[index];
+    if (location == null) {
+      return this.spawn;
+    }
     final Location drop = location.clone();
     drop.add(0, 1.5, 0);
     return drop;
@@ -151,12 +163,18 @@ public final class Arena implements Serializable {
     final Location[] newCarPartLocations = MapUtils.copyLocationArray(this.carPartLocations);
     final Location newSpawn = this.spawn.clone();
     final Location newTruck = this.truck.clone();
-    newCorners[0].setWorld(world);
-    newCorners[1].setWorld(world);
+    if (newCorners != null && newCorners.length >= 2) {
+      requireNonNull(newCorners[0], "First corner is null").setWorld(world);
+      requireNonNull(newCorners[1], "Second corner is null").setWorld(world);
+    }
     newSpawn.setWorld(world);
     newTruck.setWorld(world);
-    for (final Location carPartLocation : newCarPartLocations) {
-      carPartLocation.setWorld(world);
+    if (newCarPartLocations != null) {
+      for (final Location carPartLocation : newCarPartLocations) {
+        if (carPartLocation != null) {
+          carPartLocation.setWorld(world);
+        }
+      }
     }
     return new Arena(this.schematic, this.name, newCorners, newCarPartLocations, newSpawn, newTruck);
   }

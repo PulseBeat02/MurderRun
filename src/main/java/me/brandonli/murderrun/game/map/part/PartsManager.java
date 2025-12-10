@@ -87,8 +87,9 @@ public final class PartsManager {
   private void spawnParticleOnPart(final CarPart stack) {
     final Location location = stack.getLocation();
     final World world = requireNonNull(location.getWorld());
-    location.add(0, 1, 0);
-    world.spawnParticle(Particle.DUST, location, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 2));
+    final Location clone = location.clone();
+    final Location particleLocation = clone.add(0, 1, 0);
+    world.spawnParticle(Particle.DUST, particleLocation, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 2));
   }
 
   public GameMap getMap() {
@@ -113,6 +114,6 @@ public final class PartsManager {
     final int start = GameProperties.CAR_PARTS_COUNT;
     final int taken = start - this.parts.size();
     final int required = GameProperties.CAR_PARTS_REQUIRED;
-    return Math.abs(required - taken);
+    return Math.max(0, required - taken);
   }
 }

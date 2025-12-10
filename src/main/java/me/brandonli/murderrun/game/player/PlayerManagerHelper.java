@@ -199,6 +199,9 @@ public interface PlayerManagerHelper {
 
   default GamePlayer getRandomAliveInnocentPlayer() {
     final List<GamePlayer> list = this.getSurvivors().filter(GamePlayer::isAlive).collect(StreamUtils.toShuffledList());
+    if (list.isEmpty()) {
+      throw new IllegalStateException("No alive innocent players available");
+    }
     return list.getFirst();
   }
 

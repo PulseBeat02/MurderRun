@@ -29,11 +29,8 @@ import com.sk89q.worldedit.world.registry.BlockMaterial;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameProperties;
-import me.brandonli.murderrun.utils.ExecutorUtils;
 import me.brandonli.murderrun.utils.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -109,7 +106,6 @@ public final class TerrainDropAnalyzer {
 
     final CompletableFuture<List<BlockVector3>> future = new CompletableFuture<>();
     final int count = GameProperties.BLOCKS_PER_TICK;
-    final ExecutorService virtual = Executors.newVirtualThreadPerTaskExecutor();
     final BukkitRunnable runnable = new BukkitRunnable() {
       @Override
       public void run() {
@@ -135,10 +131,7 @@ public final class TerrainDropAnalyzer {
       }
     };
     runnable.runTaskTimer(this.plugin, 1L, 1L);
-    return future.thenApply(unused -> {
-      ExecutorUtils.shutdownExecutorGracefully(virtual);
-      return valid;
-    });
+    return future;
   }
 
   private boolean checkValidNeighbor(

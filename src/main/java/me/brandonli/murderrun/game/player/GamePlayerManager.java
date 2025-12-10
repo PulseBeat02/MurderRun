@@ -48,7 +48,7 @@ public final class GamePlayerManager implements PlayerManagerHelper {
     this.movementManager = new MovementManager(game);
     this.sprintManager = new SprintManager(game);
     this.lightManager = new LightManager(game);
-    this.lookupMap = new WeakHashMap<>();
+    this.lookupMap = new HashMap<>();
   }
 
   public void start(final Collection<Player> murderers, final Collection<Player> participants) {

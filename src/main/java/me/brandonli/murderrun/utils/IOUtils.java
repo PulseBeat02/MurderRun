@@ -311,7 +311,7 @@ public final class IOUtils {
 
   public static void zip(final Path src, final Path dest) throws IOException {
     try (
-      final OutputStream fis = Files.newOutputStream(src);
+      final OutputStream fis = Files.newOutputStream(dest);
       final FastBufferedOutputStream fast = new FastBufferedOutputStream(fis);
       final ZipOutputStream zip = new ZipOutputStream(fast)
     ) {

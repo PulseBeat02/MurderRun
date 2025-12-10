@@ -171,6 +171,9 @@ public final class DemoLoader {
     final Path src = this.demoZipContents.getArenaFolder();
     final String fileName = IOUtils.getName(src);
     final Path dest = server.resolve(fileName);
+    if (Files.exists(dest)) {
+      IOUtils.deleteExistingDirectory(dest);
+    }
     Files.move(src, dest, StandardCopyOption.REPLACE_EXISTING);
   }
 
@@ -181,13 +184,15 @@ public final class DemoLoader {
     final Path src = this.demoZipContents.getLobbyFolder();
     final String fileName = IOUtils.getName(src);
     final Path dest = server.resolve(fileName);
+    if (Files.exists(dest)) {
+      IOUtils.deleteExistingDirectory(dest);
+    }
     Files.move(src, dest, StandardCopyOption.REPLACE_EXISTING);
   }
 
   public void loadArenaWorld() {
     final FastChunkGenerator generator = new FastChunkGenerator();
     final WorldCreator creator = new WorldCreator("demoarena");
-    creator.keepSpawnInMemory(false);
     creator.generator(generator);
     Bukkit.createWorld(creator);
   }
@@ -195,7 +200,6 @@ public final class DemoLoader {
   public void loadLobbyWorld() {
     final FastChunkGenerator generator = new FastChunkGenerator();
     final WorldCreator creator = new WorldCreator("demolobby");
-    creator.keepSpawnInMemory(false);
     creator.generator(generator);
     Bukkit.createWorld(creator);
   }
