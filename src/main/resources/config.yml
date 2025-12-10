@@ -10,15 +10,19 @@ language: EN_US
 # Default is ON_SERVER
 
 # ON_SERVER hosts the resource-pack without any setup required as it hosts it on the same port.
-# as the server. This is the recommended option as it requires no setup at all.
+# as the server. This is the recommended option as it requires no setup at all. Please note however
+# that if you are using ON_SERVER, you must either be port-forwarding your server port (for public
+# servers), or setting the server-ip property in server.properties to your device ip (for LAN servers).
+# This is because Murder Run will fetch your public ip by default if the server-ip property is missing,
+# which won't work for LAN servers.
 
 # LOCALLY_HOSTED_DAEMON will start a local daemon that will host the pack using the below options.
-# This option requires port-forwarding to work properly.
+# This option requires you to port-forward an additional port (besides your current server port).
 
 # MC_PACK_HOSTING will upload the pack on https://mc-packs.net/ and cache the pack link
 # This option doesn't require port-forwarding, but may be limited by web requests. There has
 # been issues with this option in the past, so it is not recommended.
-pack-provider: ON_SERVER
+pack-provider: MC_PACK_HOSTING
 
 # If using LOCALLY_HOSTED_DAEMON, the below options will be used
 server:

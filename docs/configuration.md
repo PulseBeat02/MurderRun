@@ -11,7 +11,7 @@ Each command has their own permission node, which is marked by the `.info` comma
 
 ## Plugin Configuration
 The plugin configuration file is stored as `plugin.yml` under the Murder Run data folder. There are comments in the
-configuration file that specify what each option does. For example, you can set the plugin language to be ZH_CN or
+configuration file that specify what each option does. For example, you can set the plugin language to be Traditional Chinese or
 Simplified Chinese through this file. Or the way you want to serve the resource-pack to your users.
 
 ## Locale
