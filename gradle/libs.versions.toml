@@ -1,5 +1,5 @@
 [versions]
-adventure = "4.25.0"
+adventure = "4.26.1"
 adventurePlatformBukkit = "4.4.1"
 cloudAnnotations = "2.0.0"
 cloudPaper = "2.0.0-beta.14"
