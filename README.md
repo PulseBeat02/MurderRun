@@ -1,5 +1,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/pulsebeat02/murderrun/badge)](https://www.codefactor.io/repository/github/pulsebeat02/murderrun)
-[![TeamCity Full Build Status](https://img.shields.io/teamcity/build/e/murderrun?server=https%3A%2F%2Fci.brandonli.me)](https://ci.brandonli.me/project/MurderRun)
+[![TeamCity Full Build Status](https://img.shields.io/teamcity/build/s/murderrun_Build?server=https%3A%2F%2Fci.brandonli.me
+)](https://ci.brandonli.me/project/MurderRun)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=PulseBeat02_MurderRun&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=PulseBeat02_MurderRun)
 
 ![Banner](https://www.bisecthosting.com/images/CF/Murder_Run/BH_Murder_Run_header.webp)
