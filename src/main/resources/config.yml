@@ -1,7 +1,7 @@
 # MurderRun Configuration File
 
 # Sets the language for the plugin
-# Valid options are: EN_US, ZH_CN, ZH_HK
+# Valid options are: EN_US, ZH_CN, ZH_HK, ES_ES
 # Default is EN_US
 language: EN_US
 

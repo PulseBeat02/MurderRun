@@ -20,6 +20,7 @@ package me.brandonli;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,18 +29,16 @@ public final class PropertiesTest {
 
   public static void main(final String[] args) throws IOException {
     final Properties enUs = loadProperties("src/main/resources/locale/murderrun_en_us.properties");
-    final Properties zhCn = loadProperties("src/main/resources/locale/murderrun_zh_cn.properties");
-    final Properties zhHk = loadProperties("src/main/resources/locale/murderrun_zh_hk.properties");
-
     final Set<String> enUsKeys = enUs.stringPropertyNames();
-    final Set<String> zhCnKeys = zhCn.stringPropertyNames();
-    final Set<String> zhHkKeys = zhHk.stringPropertyNames();
-
-    final Set<String> missingZhCn = enUsKeys.stream().filter(key -> !zhCnKeys.contains(key)).collect(Collectors.toSet());
-    final Set<String> missingZhHk = enUsKeys.stream().filter(key -> !zhHkKeys.contains(key)).collect(Collectors.toSet());
-
-    System.out.println("Missing keys in murderrun_zh_cn.properties: " + missingZhCn);
-    System.out.println("Missing keys in murderrun_zh_hk.properties: " + missingZhHk);
+    final String pattern = "src/main/resources/locale/%s";
+    final List<String> files = List.of("murderrun_zh_cn.properties", "murderrun_zh_hk.properties", "murderrun_es_es.properties");
+    final List<String> set = files.stream().map(file -> String.format(pattern, file)).toList();
+    for (final String path : set) {
+      final Properties properties = loadProperties(path);
+      final Set<String> keys = properties.stringPropertyNames();
+      final Set<String> missingKeys = enUsKeys.stream().filter(key -> !keys.contains(key)).collect(Collectors.toSet());
+      System.out.println("Missing keys in " + path + ": " + missingKeys);
+    }
   }
 
   private static Properties loadProperties(final String path) throws IOException {

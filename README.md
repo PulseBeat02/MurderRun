@@ -63,6 +63,7 @@ are listed below.
   - Uses MiniMessage for Easy Formatting
 - Support for Multiple Languages
   - Thank you **GTedd__** for Simplified and Traditional Chinese Locale Translations!
+  - Thank you **Pumpking** for Spanish Translations!
 - Customisable Gadget Properties
   - Ability to Disable Gadgets
   - Ability to Modify Gadget Cooldowns, Sounds, and Potion Effects
