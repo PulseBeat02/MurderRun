@@ -30,6 +30,18 @@ public interface GameProperties {
 
   GameBundle GAME_BUNDLE = new GameBundle();
 
+  String CRAFTENGINE_CURRENCY = str("craftengine.currency");
+  String CRAFTENGINE_GHOST_BONE = str("craftengine.ghost.bone");
+  String CRAFTENGINE_KILLER_ARROW = str("craftengine.killer.arrow");
+  String CRAFTENGINE_KILLER_SWORD = str("craftengine.killer.sword");
+  String CRAFTENGINE_KILLER_HELMET = str("craftengine.killer.helmet");
+  String CRAFTENGINE_KILLER_CHESTPLATE = str("craftengine.killer.chestplate");
+  String CRAFTENGINE_KILLER_LEGGINGS = str("craftengine.killer.leggings");
+  String CRAFTENGINE_KILLER_BOOTS = str("craftengine.killer.boots");
+  String CRAFTENGINE_SURVIVOR_HELMET = str("craftengine.survivor.helmet");
+  String CRAFTENGINE_SURVIVOR_CHESTPLATE = str("craftengine.survivor.chestplate");
+  String CRAFTENGINE_SURVIVOR_LEGGINGS = str("craftengine.survivor.leggings");
+  String CRAFTENGINE_SURVIVOR_BOOTS = str("craftengine.survivor.boots");
   String RANDOM_TELEPORT_BLACKLISTED_BLOCKS = str("random_teleport.blacklisted_blocks");
   double VAULT_REWARD = dec("vault.reward");
   double MOON_GRAVITY = dec("moon.gravity");

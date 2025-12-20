@@ -17,10 +17,12 @@
  */
 package me.brandonli.murderrun.utils.item;
 
+import java.util.Optional;
 import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.capability.Capabilities;
+import me.brandonli.murderrun.game.extension.craftengine.CraftEngineManager;
 import me.brandonli.murderrun.game.extension.nexo.NexoManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.RandomUtils;
@@ -60,11 +62,34 @@ public final class ItemFactory {
     final ItemStack defaultKillerBoots = createDefaultKillerBoots();
     if (Capabilities.NEXO.isEnabled()) {
       final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
-      final NexoManager manager = plugin.getNexoManager();
-      final ItemStack helmet = manager.getKillerHelmet().map(Item.Builder::build).orElse(defaultKillerHelmet);
-      final ItemStack chestplate = manager.getKillerChestplate().map(Item.Builder::build).orElse(defaultKillerChestplate);
-      final ItemStack leggings = manager.getKillerLeggings().map(Item.Builder::build).orElse(defaultKillerLeggings);
-      final ItemStack boots = manager.getKillerBoots().map(Item.Builder::build).orElse(defaultKillerBoots);
+      final NexoManager nexoManager = plugin.getNexoManager();
+      final CraftEngineManager craftEngineManager = plugin.getCraftEngineManager();
+
+      Optional<Item.Builder> helmetBuilder = nexoManager.getKillerHelmet();
+      if (helmetBuilder.isEmpty()) {
+        helmetBuilder = craftEngineManager.getKillerHelmet();
+      }
+
+      Optional<Item.Builder> chestplateBuilder = nexoManager.getKillerChestplate();
+      if (chestplateBuilder.isEmpty()) {
+        chestplateBuilder = craftEngineManager.getKillerChestplate();
+      }
+
+      Optional<Item.Builder> leggingsBuilder = nexoManager.getKillerLeggings();
+      if (leggingsBuilder.isEmpty()) {
+        leggingsBuilder = craftEngineManager.getKillerLeggings();
+      }
+
+      Optional<Item.Builder> bootsBuilder = nexoManager.getKillerBoots();
+      if (bootsBuilder.isEmpty()) {
+        bootsBuilder = craftEngineManager.getKillerBoots();
+      }
+
+      final ItemStack helmet = helmetBuilder.map(Item.Builder::build).orElse(defaultKillerHelmet);
+      final ItemStack chestplate = chestplateBuilder.map(Item.Builder::build).orElse(defaultKillerChestplate);
+      final ItemStack leggings = leggingsBuilder.map(Item.Builder::build).orElse(defaultKillerLeggings);
+      final ItemStack boots = bootsBuilder.map(Item.Builder::build).orElse(defaultKillerBoots);
+
       return new ItemStack[] { boots, leggings, chestplate, helmet };
     }
     return new ItemStack[] { defaultKillerBoots, defaultKillerLeggings, defaultKillerChestplate, defaultKillerHelmet };

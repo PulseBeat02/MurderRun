@@ -39,6 +39,7 @@ import me.brandonli.murderrun.game.ability.AbilityRegistry;
 import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import me.brandonli.murderrun.game.capability.Capabilities;
+import me.brandonli.murderrun.game.extension.craftengine.CraftEngineManager;
 import me.brandonli.murderrun.game.extension.nexo.NexoManager;
 import me.brandonli.murderrun.game.extension.papi.MurderRunExpansion;
 import me.brandonli.murderrun.game.extension.parties.PartiesManager;
@@ -89,6 +90,7 @@ public final class MurderRun extends JavaPlugin {
   private AudienceProvider audience;
   private MurderRunExpansion expansion;
   private PartiesManager partiesManager;
+  private CraftEngineManager craftEngineManager;
   private NexoManager nexoManager;
   private VaultManager vaultManager;
 
@@ -221,6 +223,9 @@ public final class MurderRun extends JavaPlugin {
     }
     if (Capabilities.NEXO.isEnabled()) {
       this.nexoManager = new NexoManager();
+    }
+    if (Capabilities.CRAFTENGINE.isEnabled()) {
+      this.craftEngineManager = new CraftEngineManager();
     }
     if (Capabilities.VAULT.isEnabled()) {
       this.vaultManager = new VaultManager();
@@ -408,6 +413,10 @@ public final class MurderRun extends JavaPlugin {
 
   public NexoManager getNexoManager() {
     return this.nexoManager;
+  }
+
+  public CraftEngineManager getCraftEngineManager() {
+    return this.craftEngineManager;
   }
 
   public static boolean isDevelopmentToolsEnabled() {

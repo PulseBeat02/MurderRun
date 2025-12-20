@@ -42,6 +42,7 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://jitpack.io")
     maven("https://mvn.lib.co.nz/public")
+    maven("https://repo.momirealms.net/releases/")
 }
 
 val runtimeDeps = listOf(
@@ -89,6 +90,8 @@ dependencies {
         )
     }
     compileOnly(libs.nexo)
+    compileOnly(libs.craftEngineCore)
+    compileOnly(libs.craftEngineBukkit)
     compileOnly(libs.adventureApi)
     compileOnly(libs.creativeSerializerMinecraft)
     compileOnly(libs.packetEvents)
@@ -157,7 +160,8 @@ tasks {
             "LibsDisguises",
             "PlaceholderAPI",
             "Parties",
-            "Nexo")
+            "Nexo",
+            "CraftEngine")
     }
 
     withType<Test> {
