@@ -31,6 +31,7 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.SideEffect;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
@@ -42,6 +43,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.capability.Capabilities;
 import me.brandonli.murderrun.game.extension.worldedit.WESpreader;
 import me.brandonli.murderrun.game.map.Schematic;
 import me.brandonli.murderrun.utils.IOUtils;
@@ -160,6 +162,20 @@ public final class MapUtils {
     final SerializableVector vector3
   ) {
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+    if (Capabilities.FASTASYNCWORLDEDIT.isEnabled()) { // use normal paste
+      final Region region = clipboard.getRegion();
+      final BlockVector3 vec = vector3.getVector3();
+      final ForwardExtentCopy op = new ForwardExtentCopy(clipboard, region, world, vec);
+      op.setCopyingEntities(true);
+      try {
+        Operations.complete(op);
+        return CompletableFuture.completedFuture(null);
+      } catch (final WorldEditException e) {
+        final CompletableFuture<Void> failed = new CompletableFuture<>();
+        failed.completeExceptionally(e);
+        return failed;
+      }
+    }
     final Collection<Operation> operations = splitClipboardOperation(world, clipboard, vector3);
     final Iterator<Operation> iterator = operations.iterator();
     final CompletableFuture<Void> future = new CompletableFuture<>();
