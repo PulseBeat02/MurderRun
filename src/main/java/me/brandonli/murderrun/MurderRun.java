@@ -125,11 +125,11 @@ public final class MurderRun extends JavaPlugin {
     this.registerAudienceHandler();
     this.initializeEventBusApi();
     this.readPluginData();
+    this.registerExtensions();
     this.registerLookUpMaps();
     this.handlePackHosting();
     this.registerCommands();
     this.registerGameUtilities();
-    this.registerExtensions();
     this.loadSchematics();
     this.enableMetrics();
     this.startMiscListeners();

@@ -109,8 +109,11 @@ public final class CraftEngineManager {
 
   private Optional<Item.Builder> getCraftEngineItem(final String property) {
     if (this.hasCraftEngineItem(property)) {
+      final String[] split = property.split(":");
+      final String namespace = split[0];
+      final String path = split[1];
       final BukkitItemManager manager = BukkitItemManager.instance();
-      final Key key = Key.of(property);
+      final Key key = Key.of(namespace, path);
       final Optional<CustomItem<ItemStack>> optional = manager.getCustomItem(key);
       if (optional.isEmpty()) {
         return Optional.empty();
