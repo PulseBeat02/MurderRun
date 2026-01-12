@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.commmand.AnnotationCommandFeature;
+import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.game.extension.parties.PartiesManager;
 import me.brandonli.murderrun.game.lobby.GameManager;
@@ -139,6 +140,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
     @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName,
     @Quoted final String id,
+    final GameMode mode,
     final int min,
     final int max,
     final boolean quickJoinable
@@ -156,7 +158,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
     manager
-      .createGame(sender, id, arenaName, lobbyName, min, max, quickJoinable)
+      .createGame(sender, id, mode, arenaName, lobbyName, min, max, quickJoinable)
       .thenRun(() -> audience.sendMessage(Message.GAME_CREATED.build()));
   }
 

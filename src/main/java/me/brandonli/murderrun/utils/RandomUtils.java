@@ -30,6 +30,15 @@ public final class RandomUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static <T> T getRandomElement(final T[] from) {
+    final int size = from.length;
+    if (size == 0) {
+      throw new IllegalArgumentException("Cannot get random element from empty array");
+    }
+    final int i = generateInt(size);
+    return from[i];
+  }
+
   public static <T> T getRandomElement(final Collection<T> from) {
     final int size = from.size();
     if (size == 0) {

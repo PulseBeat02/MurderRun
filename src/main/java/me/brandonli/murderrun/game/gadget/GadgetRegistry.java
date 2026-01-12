@@ -48,14 +48,15 @@ public final class GadgetRegistry {
   private final Collection<String> disabled;
   private final AtomicBoolean frozen;
 
-  private GadgetRegistry(final GameProperties properties) {
+  private GadgetRegistry() {
     this.gadgetRegistry = new HashMap<>();
     this.frozen = new AtomicBoolean(true);
-    this.disabled = this.getDisabledGadgets(properties); // FIXME
+    this.disabled = this.getDisabledGadgets();
     this.load();
   }
 
-  private Collection<String> getDisabledGadgets(@UnderInitialization GadgetRegistry this, final GameProperties properties) {
+  private Collection<String> getDisabledGadgets(@UnderInitialization GadgetRegistry this) {
+    final GameProperties properties = GameProperties.COMMON;
     final String raw = properties.getDisabledGadgets();
     final String[] split = raw.split(",");
     if (split[0].equals("none")) {

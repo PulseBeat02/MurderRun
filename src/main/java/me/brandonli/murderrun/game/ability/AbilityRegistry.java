@@ -56,7 +56,8 @@ public final class AbilityRegistry {
   }
 
   private Collection<String> getDisabledAbilities(@UnderInitialization AbilityRegistry this) {
-    final String raw = GameProperties.DISABLED_ABILITIES;
+    final GameProperties properties = GameProperties.COMMON;
+    final String raw = properties.getDisabledAbilities();
     final String[] split = raw.split(",");
     if (split[0].equals("none")) {
       return List.of();

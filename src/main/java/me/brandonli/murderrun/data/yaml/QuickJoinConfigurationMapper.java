@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
 import me.brandonli.murderrun.utils.ExecutorUtils;
@@ -43,6 +44,7 @@ public final class QuickJoinConfigurationMapper {
   private static final String MIN_PLAYERS_FIELD = "min-players";
   private static final String MAX_PLAYERS_FIELD = "max-players";
   private static final String ARENA_LOBBY_PAIRS_FIELD = "arena-lobby-pairs";
+  private static final String GAME_MODES = "game-modes";
   private static final String CONFIGURATION_YAML = "quick-join.yml";
 
   private final ExecutorService service;
@@ -54,6 +56,7 @@ public final class QuickJoinConfigurationMapper {
   private int minPlayers;
   private int maxPlayers;
   private List<String[]> lobbyArenaPairs;
+  private GameMode[] gameModes;
 
   public QuickJoinConfigurationMapper(final MurderRun plugin) {
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
@@ -91,7 +94,13 @@ public final class QuickJoinConfigurationMapper {
     this.minPlayers = this.getMinPlayers(config);
     this.maxPlayers = this.getMaxPlayers(config);
     this.lobbyArenaPairs = this.getLobbyArenaPairs(config);
+    this.gameModes = this.getGameModes(config);
     this.readLock.unlock();
+  }
+
+  public GameMode[] getGameModes(final FileConfiguration config) {
+    final List<String> modes = config.getStringList(GAME_MODES);
+    return modes.stream().map(GameMode::valueOf).toArray(GameMode[]::new);
   }
 
   private boolean getEnabled(final FileConfiguration config) {
@@ -138,6 +147,7 @@ public final class QuickJoinConfigurationMapper {
     config.set(MIN_PLAYERS_FIELD, this.minPlayers);
     config.set(MAX_PLAYERS_FIELD, this.maxPlayers);
     config.set(ARENA_LOBBY_PAIRS_FIELD, back);
+    config.set(GAME_MODES, this.gameModes);
     this.plugin.saveConfig();
     this.writeLock.unlock();
   }
@@ -156,5 +166,9 @@ public final class QuickJoinConfigurationMapper {
 
   public synchronized List<String[]> getLobbyArenaPairs() {
     return this.lobbyArenaPairs;
+  }
+
+  public synchronized GameMode[] getGameModes() {
+    return this.gameModes;
   }
 }

@@ -107,6 +107,7 @@ public final class GameManager {
   public CompletableFuture<Void> createGame(
     final CommandSender leader,
     final String id,
+    final GameMode mode,
     final String arenaName,
     final String lobbyName,
     final int min,
@@ -114,7 +115,7 @@ public final class GameManager {
     final boolean quickJoinable
   ) {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
-    return this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener)
+    return this.createClampedGame(leader, id, mode, arenaName, lobbyName, min, max, quickJoinable, listener)
       .thenAccept(manager -> this.addGameToRegistry(id, manager))
       .thenAccept(manager -> this.autoJoinIfLeaderPlayer(leader, id))
       .thenApply(manager -> manager);
@@ -123,6 +124,7 @@ public final class GameManager {
   private CompletableFuture<PreGameManager> createClampedGame(
     final CommandSender leader,
     final String id,
+    final GameMode mode,
     final String arenaName,
     final String lobbyName,
     final int min,
@@ -135,7 +137,7 @@ public final class GameManager {
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
     final PreGameManager manager = new PreGameManager(this.plugin, this, id, listener);
     this.setSettings(manager, arenaName, lobbyName);
-    return manager.initialize(leader, finalMin, finalMax, quickJoinable).thenApply(ignored -> manager);
+    return manager.initialize(leader, mode, finalMin, finalMax, quickJoinable).thenApply(ignored -> manager);
   }
 
   private void sendGameCreationMessage(final CommandSender leader) {
@@ -224,7 +226,9 @@ public final class GameManager {
     final int min = config.getMinPlayers();
     final int max = config.getMaxPlayers();
 
-    return this.createGame(player, raw, arena, lobby, min, max, true)
+    final GameMode[] modes = config.getGameModes();
+    final GameMode mode = RandomUtils.getRandomElement(modes);
+    return this.createGame(player, raw, mode, arena, lobby, min, max, true)
       .thenRun(() -> this.creation.set(false))
       .thenApply(manager -> true)
       .exceptionally(e -> {

@@ -1,5 +1,2 @@
-- Document usage of Java 25, and new game modes (One Bounce and Freeze Tag, Common)
-- Document configurations (game.properties)
-- Document how game mode works
 - Switch to interfaces for custom item (plugins)
 - Update to v1.21.11

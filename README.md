@@ -32,6 +32,7 @@ are listed below.
 - 100% Free and Open Source
 - Over 100+ Killer/Survivor Gadgets
 - Free Demo Lobby + Map
+- 3 Different Game Modes (One Bounce, Freeze Tag, Normal)
 - Easy Lobby / Arena Creation and Customization
   - Either use GUI's or Commands to Create and Modify Arenas / Lobbies
 - Resets Arenas Automatically using WorldEdit

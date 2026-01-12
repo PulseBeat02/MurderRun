@@ -21,7 +21,7 @@ PaperMC Team
 
 To set up a Paper server, refer to the [Getting Started Guide](https://docs.papermc.io/paper/getting-started) that Paper
 has posted on their website. It includes a very detailed step-by-step guide to set up the server onto your computer,
-and how to add plugins
+and how to add plugins. Please make sure that you use Java 25, as it is required by this plugin!
 
 ## Getting Murder Run
 Murder Run is like any other plugin, where you just drag and drop the JAR file into the plugins folder. There isn't any

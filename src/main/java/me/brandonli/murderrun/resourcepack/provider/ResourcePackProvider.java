@@ -69,7 +69,8 @@ public abstract class ResourcePackProvider implements PackProvider {
     final List<ResourcePackInfo> infos = Stream.concat(customPacks, existing).toList();
     final Component message = Message.RESOURCEPACK_PROMPT.build();
     final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
-    final boolean required = GameProperties.FORCE_RESOURCEPACK;
+    final GameProperties properties = GameProperties.COMMON;
+    final boolean required = properties.getForceResourcepack();
     this.cached = builder.required(required).packs(infos).prompt(message).asResourcePackRequest();
   }
 
@@ -115,7 +116,8 @@ public abstract class ResourcePackProvider implements PackProvider {
   }
 
   private @Nullable ResourcePackInfo getResourceInfo() {
-    final String url = GameProperties.BUILT_IN_RESOURCES;
+    final GameProperties properties = GameProperties.COMMON;
+    final String url = properties.getBuiltInResources();
     if (url.equalsIgnoreCase("none")) {
       return null;
     }

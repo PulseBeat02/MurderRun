@@ -27,6 +27,9 @@ many settings to all in-game specific options. For example, disabling or enablin
 this configuration file. There are comments in the `__.game.properties` file which specify what each configuration option
 does, and how to configure it. Each "__" represents the game properties for that specific game mode.
 
+The `common.game.properties` have properties fields that shared across all three gamemodes. The other properties file
+have properties specific to that gamemode, and aren't shared at all.
+
 ## Resource Pack
 The resource pack is stored as `pack.zip` under the Murder Run data folder. The `pack.zip` file is a zipped pack of all 
 the resources that will be sent to users when the game starts. If you want to edit the resource-pack, unzip the 
