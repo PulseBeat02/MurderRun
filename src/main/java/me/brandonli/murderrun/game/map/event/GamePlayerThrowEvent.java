@@ -59,13 +59,14 @@ public final class GamePlayerThrowEvent extends GameEvent {
 
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    final ItemStack sword = ItemFactory.createKillerSword();
+    final GameProperties properties = game.getProperties();
+    final ItemStack sword = ItemFactory.createKillerSword(properties);
     if (stack.isSimilar(sword)) {
       event.setCancelled(true);
       return;
     }
 
-    final ItemStack arrow = ItemFactory.createKillerArrow();
+    final ItemStack arrow = ItemFactory.createKillerArrow(properties);
     if (stack.isSimilar(arrow)) {
       event.setCancelled(true);
       return;
@@ -86,7 +87,8 @@ public final class GamePlayerThrowEvent extends GameEvent {
     final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
     final double distSquared = itemLocation.distanceSquared(truckLocation);
-    final double radius = GameProperties.CAR_PART_TRUCK_RADIUS;
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getCarPartTruckRadius();
     final double squared = radius * radius;
     if (distSquared > squared) {
       event.setCancelled(true);

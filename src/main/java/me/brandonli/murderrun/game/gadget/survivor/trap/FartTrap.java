@@ -38,19 +38,21 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FartTrap extends SurvivorTrap {
 
-  public FartTrap() {
+  public FartTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "fart_trap",
-      GameProperties.FART_COST,
-      ItemFactory.createGadget("fart_trap", GameProperties.FART_MATERIAL, Message.FART_NAME.build(), Message.FART_LORE.build()),
+      properties.getFartCost(),
+      ItemFactory.createGadget("fart_trap", properties.getFartMaterial(), Message.FART_NAME.build(), Message.FART_LORE.build()),
       Message.FART_ACTIVATE.build(),
-      GameProperties.FART_COLOR
+      properties.getFartColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final int duration = GameProperties.FART_EFFECT_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getFartEffectDuration();
     murderer.addPotionEffects(
       new PotionEffect(PotionEffectType.SLOWNESS, duration, 4),
       new PotionEffect(PotionEffectType.NAUSEA, duration, 1)
@@ -59,7 +61,7 @@ public final class FartTrap extends SurvivorTrap {
     final GameScheduler scheduler = game.getScheduler();
     final Location location = murderer.getLocation();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, GameProperties.FART_DURATION, reference);
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, properties.getFartDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.FART);

@@ -59,52 +59,52 @@ public final class CraftEngineManager {
     return infos;
   }
 
-  public Optional<Item.Builder> getCurrency() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_CURRENCY);
+  public Optional<Item.Builder> getCurrency(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineCurrency());
   }
 
-  public Optional<Item.Builder> getGhostBone() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_GHOST_BONE);
+  public Optional<Item.Builder> getGhostBone(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineGhostBone());
   }
 
-  public Optional<Item.Builder> getKillerArrow() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_KILLER_ARROW);
+  public Optional<Item.Builder> getKillerArrow(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineKillerArrow());
   }
 
-  public Optional<Item.Builder> getKillerSword() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_KILLER_SWORD);
+  public Optional<Item.Builder> getKillerSword(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineKillerSword());
   }
 
-  public Optional<Item.Builder> getKillerHelmet() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_KILLER_HELMET);
+  public Optional<Item.Builder> getKillerHelmet(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineKillerHelmet());
   }
 
-  public Optional<Item.Builder> getKillerChestplate() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_KILLER_CHESTPLATE);
+  public Optional<Item.Builder> getKillerChestplate(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineKillerChestplate());
   }
 
-  public Optional<Item.Builder> getKillerLeggings() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_KILLER_LEGGINGS);
+  public Optional<Item.Builder> getKillerLeggings(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineKillerLeggings());
   }
 
-  public Optional<Item.Builder> getKillerBoots() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_KILLER_BOOTS);
+  public Optional<Item.Builder> getKillerBoots(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineKillerBoots());
   }
 
-  public Optional<Item.Builder> getSurvivorHelmet() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_SURVIVOR_HELMET);
+  public Optional<Item.Builder> getSurvivorHelmet(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineSurvivorHelmet());
   }
 
-  public Optional<Item.Builder> getSurvivorChestplate() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_SURVIVOR_CHESTPLATE);
+  public Optional<Item.Builder> getSurvivorChestplate(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineSurvivorChestplate());
   }
 
-  public Optional<Item.Builder> getSurvivorLeggings() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_SURVIVOR_LEGGINGS);
+  public Optional<Item.Builder> getSurvivorLeggings(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineSurvivorLeggings());
   }
 
-  public Optional<Item.Builder> getSurvivorBoots() {
-    return this.getCraftEngineItem(GameProperties.CRAFTENGINE_SURVIVOR_BOOTS);
+  public Optional<Item.Builder> getSurvivorBoots(final GameProperties properties) {
+    return this.getCraftEngineItem(properties.getCraftEngineSurvivorBoots());
   }
 
   private Optional<Item.Builder> getCraftEngineItem(final String property) {

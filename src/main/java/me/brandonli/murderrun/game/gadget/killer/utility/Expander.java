@@ -34,11 +34,12 @@ import org.bukkit.entity.Item;
 
 public final class Expander extends KillerGadget {
 
-  public Expander() {
+  public Expander(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "expander",
-      GameProperties.EXPANDER_COST,
-      ItemFactory.createGadget("expander", GameProperties.EXPANDER_MATERIAL, Message.EXPANDER_NAME.build(), Message.EXPANDER_LORE.build())
+      properties.getExpanderCost(),
+      ItemFactory.createGadget("expander", properties.getExpanderMaterial(), Message.EXPANDER_NAME.build(), Message.EXPANDER_LORE.build())
     );
   }
 
@@ -48,8 +49,9 @@ public final class Expander extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
-    final double scale = GameProperties.EXPANDER_SCALE;
-    final int duration = GameProperties.EXPANDER_DURATION;
+    final GameProperties properties = game.getProperties();
+    final double scale = properties.getExpanderScale();
+    final int duration = properties.getExpanderDuration();
     final StrictPlayerReference ref = StrictPlayerReference.of(player);
     final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);

@@ -33,11 +33,12 @@ import org.bukkit.entity.Item;
 
 public final class Chipped extends SurvivorGadget {
 
-  public Chipped() {
+  public Chipped(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "chipped",
-      GameProperties.CHIPPED_COST,
-      ItemFactory.createGadget("chipped", GameProperties.CHIPPED_MATERIAL, Message.CHIPPED_NAME.build(), Message.CHIPPED_LORE.build())
+      properties.getChippedCost(),
+      ItemFactory.createGadget("chipped", properties.getChippedMaterial(), Message.CHIPPED_NAME.build(), Message.CHIPPED_LORE.build())
     );
   }
 
@@ -53,15 +54,18 @@ public final class Chipped extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     this.setOtherSurvivorsGlowing(manager, metadata, scheduler);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.CHIPPED_SOUND);
+    audience.playSound(properties.getChippedSound());
 
     return false;
   }
 
   private void setOtherSurvivorsGlowing(final GamePlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
+    final Game game = manager.getGame();
+    final GameProperties properties = game.getProperties();
     manager.applyToLivingSurvivors(innocent ->
-      metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, GameProperties.CHIPPED_DURATION)
+      metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, properties.getChippedDuration())
     );
   }
 }

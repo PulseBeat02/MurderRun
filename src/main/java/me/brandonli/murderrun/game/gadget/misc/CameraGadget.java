@@ -81,7 +81,8 @@ public class CameraGadget {
     scheduler.scheduleRepeatedTask(task, 0, 20L, reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.CAMERA_SOUND);
+    final GameProperties properties = game.getProperties();
+    audience.playSound(properties.getCameraSound());
 
     return false;
   }

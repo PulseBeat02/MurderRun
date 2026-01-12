@@ -37,13 +37,14 @@ import org.bukkit.entity.Sheep;
 
 public final class JebTrap extends SurvivorTrap {
 
-  public JebTrap() {
+  public JebTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "jeb_trap",
-      GameProperties.JEB_COST,
-      ItemFactory.createGadget("jeb_trap", GameProperties.JEB_MATERIAL, Message.JEB_NAME.build(), Message.JEB_LORE.build()),
+      properties.getJebCost(),
+      ItemFactory.createGadget("jeb_trap", properties.getJebMaterial(), Message.JEB_NAME.build(), Message.JEB_LORE.build()),
       Message.JEB_ACTIVATE.build(),
-      GameProperties.JEB_COLOR
+      properties.getJebColor()
     );
   }
 
@@ -51,16 +52,17 @@ public final class JebTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
-    for (int i = 0; i < GameProperties.JEB_SHEEP_COUNT; i++) {
+    final GameProperties properties = game.getProperties();
+    for (int i = 0; i < properties.getJebSheepCount(); i++) {
       world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
     }
 
     final NullReference reference = NullReference.of();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnRainbowParticles(location), 0, 5, GameProperties.JEB_DURATION, reference);
+    scheduler.scheduleRepeatedTask(() -> this.spawnRainbowParticles(location), 0, 5, properties.getJebDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.JEB_SOUND);
+    manager.playSoundForAllParticipants(properties.getJebSound());
   }
 
   private void spawnRainbowParticles(final Location location) {

@@ -48,13 +48,14 @@ import org.bukkit.util.BoundingBox;
 
 public final class EMPBlast extends KillerGadget {
 
-  public EMPBlast() {
+  public EMPBlast(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "emp_grenade",
-      GameProperties.EMP_BLAST_COST,
+      properties.getEmpBlastCost(),
       ItemFactory.createGadget(
         "emp_grenade",
-        GameProperties.EMP_BLAST_MATERIAL,
+        properties.getEmpBlastMaterial(),
         Message.EMP_BLAST_NAME.build(),
         Message.EMP_BLAST_LORE.build()
       )
@@ -91,7 +92,9 @@ public final class EMPBlast extends KillerGadget {
   private void stunSurvivors(final GameScheduler scheduler, final GamePlayer survivor) {
     final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.EMP_BLAST_ACTIVATE.build();
-    final int duration = GameProperties.EMP_BLAST_DURATION;
+    final Game game = survivor.getGame();
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getEmpBlastDuration();
     survivor.disableJump(scheduler, duration);
     survivor.disableWalkWithFOVEffects(duration);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 1));

@@ -87,11 +87,13 @@ public final class LobbyScoreboard {
   }
 
   private int getCurrentTime(final @Nullable LobbyTimeManager timer) {
+    final GameProperties properties = this.manager.getProperties();
+    final int time = properties.getLobbyStartingTime();
     if (timer == null) {
-      return GameProperties.LOBBY_STARTING_TIME;
+      return time;
     } else {
       final LobbyTimer lobbyTimer = timer.getTimer();
-      return lobbyTimer == null ? GameProperties.LOBBY_STARTING_TIME : lobbyTimer.getTime();
+      return lobbyTimer == null ? time : lobbyTimer.getTime();
     }
   }
 

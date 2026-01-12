@@ -24,8 +24,9 @@ public final class GameTimer {
   private long elapsedTime;
   private long totalTime;
 
-  public void startTimer() {
-    final int seconds = GameProperties.GAME_TIME_LIMIT;
+  public void startTimer(final Game game) {
+    final GameProperties properties = game.getProperties();
+    final int seconds = properties.getGameTimeLimit();
     this.startTime = System.currentTimeMillis();
     this.totalTime = seconds * 1000L;
   }

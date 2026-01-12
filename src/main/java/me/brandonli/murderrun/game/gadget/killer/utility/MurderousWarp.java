@@ -32,13 +32,14 @@ import org.bukkit.entity.Item;
 
 public final class MurderousWarp extends KillerGadget {
 
-  public MurderousWarp() {
+  public MurderousWarp(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "murderous_warp",
-      GameProperties.MURDEROUS_WARP_COST,
+      properties.getMurderousWarpCost(),
       ItemFactory.createGadget(
         "murderous_warp",
-        GameProperties.MURDEROUS_WARP_MATERIAL,
+        properties.getMurderousWarpMaterial(),
         Message.MURDEROUS_WARP_NAME.build(),
         Message.MURDEROUS_WARP_LORE.build()
       )
@@ -59,8 +60,9 @@ public final class MurderousWarp extends KillerGadget {
     random.teleport(second);
     player.teleport(first);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audienceRand = random.getAudience();
-    audienceRand.playSound(GameProperties.MURDEROUS_WARP_SOUND);
+    audienceRand.playSound(properties.getMurderousWarpSound());
 
     final Component msg = Message.WARP_DISTORT_ACTIVATE.build();
     audienceRand.sendMessage(msg);

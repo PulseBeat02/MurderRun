@@ -36,13 +36,14 @@ import org.bukkit.entity.Item;
 
 public final class InfraredVision extends KillerGadget {
 
-  public InfraredVision() {
+  public InfraredVision(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "infrared_vision",
-      GameProperties.INFRARED_VISION_COST,
+      properties.getInfraredVisionCost(),
       ItemFactory.createGadget(
         "infrared_vision",
-        GameProperties.INFRARED_VISION_MATERIAL,
+        properties.getInfraredVisionMaterial(),
         Message.INFRARED_VISION_NAME.build(),
         Message.INFRARED_VISION_LORE.build()
       )
@@ -58,8 +59,9 @@ public final class InfraredVision extends KillerGadget {
 
     final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
+    final GameProperties properties = game.getProperties();
     manager.applyToLivingSurvivors(innocent -> this.setSurvivorGlow(scheduler, innocent, player));
-    manager.playSoundForAllParticipants(GameProperties.INFRARED_VISION_SOUND);
+    manager.playSoundForAllParticipants(properties.getInfraredVisionSound());
 
     return false;
   }
@@ -69,7 +71,9 @@ public final class InfraredVision extends KillerGadget {
     final Component msg = Message.INFRARED_VISION_ACTIVATE.build();
     final Component title = Message.INFRARED_VISION_ACTIVATE_TITLE.build();
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, GameProperties.INFRARED_VISION_DURATION);
+    final Game game = killer.getGame();
+    final GameProperties properties = game.getProperties();
+    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, properties.getInfraredVisionDuration());
     audience.sendMessage(msg);
     audience.showTitle(empty(), title);
   }

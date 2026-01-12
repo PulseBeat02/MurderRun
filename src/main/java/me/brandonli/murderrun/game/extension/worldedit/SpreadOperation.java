@@ -43,7 +43,8 @@ public final class SpreadOperation implements Operation {
     final BiFunction<BlockVector3, BaseBlock, Void> placeFunction,
     final Iterator<Map.Entry<BlockVector3, BaseBlock>> it
   ) {
-    this.blocksPerTick = GameProperties.BLOCKS_PER_TICK;
+    final GameProperties properties = GameProperties.COMMON;
+    this.blocksPerTick = properties.getBlocksPerTick();
     this.plugin = plugin;
     this.placeFunction = placeFunction;
     this.it = it;

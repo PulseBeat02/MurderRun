@@ -60,6 +60,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
   private final Map<GamePlayer, Location> targetBlock;
 
   public Etherwarp(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       game,
       ETHERWARP_NAME,
@@ -67,7 +68,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
         ETHERWARP_NAME,
         Message.ETHERWARP_NAME.build(),
         Message.ETHERWARP_LORE.build(),
-        (int) (GameProperties.ETHERWARP_COOLDOWN * 20)
+        (int) (properties.getEtherwarpCooldown() * 20)
       )
     );
     this.cooldowns = new HashMap<>();
@@ -132,7 +133,8 @@ public final class Etherwarp extends KillerAbility implements Listener {
       return;
     }
 
-    final int cooldown = (int) (GameProperties.ETHERWARP_COOLDOWN * 1000);
+    final GameProperties properties = game.getProperties();
+    final int cooldown = (int) (properties.getEtherwarpCooldown() * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);
       final long current = System.currentTimeMillis();
@@ -147,7 +149,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
 
     final long current = System.currentTimeMillis();
     this.cooldowns.put(gamePlayer, current);
-    gamePlayer.setAbilityCooldowns(ETHERWARP_NAME, (int) (GameProperties.ETHERWARP_COOLDOWN * 20));
+    gamePlayer.setAbilityCooldowns(ETHERWARP_NAME, (int) (properties.getEtherwarpCooldown() * 20));
   }
 
   private void applyTeleport(final GamePlayer gamePlayer, final Game game, final Player player) {
@@ -224,7 +226,8 @@ public final class Etherwarp extends KillerAbility implements Listener {
       return;
     }
 
-    final int cooldown = (int) (GameProperties.ETHERWARP_COOLDOWN * 1000);
+    final GameProperties properties = game.getProperties();
+    final int cooldown = (int) (properties.getEtherwarpCooldown() * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);
       final long current = System.currentTimeMillis();
@@ -261,7 +264,9 @@ public final class Etherwarp extends KillerAbility implements Listener {
 
     @Override
     public void run() {
-      final int max = GameProperties.ETHERWARP_MAX_DISTANCE;
+      final Game game = Etherwarp.this.getGame();
+      final GameProperties properties = game.getProperties();
+      final int max = properties.getEtherwarpMaxDistance();
       final PlayerAudience audience = this.player.getAudience();
       final Block block = this.player.getTargetBlockExact(max);
       final Block current = this.reference.get();

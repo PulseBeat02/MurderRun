@@ -43,6 +43,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.capability.Capabilities;
 import me.brandonli.murderrun.game.extension.worldedit.WESpreader;
 import me.brandonli.murderrun.game.map.Schematic;
@@ -157,6 +158,7 @@ public final class MapUtils {
   }
 
   public static CompletableFuture<Void> performPaste(
+    final GameProperties properties,
     final com.sk89q.worldedit.world.World world,
     final Clipboard clipboard,
     final SerializableVector vector3
@@ -179,7 +181,7 @@ public final class MapUtils {
     final Collection<Operation> operations = splitClipboardOperation(world, clipboard, vector3);
     final Iterator<Operation> iterator = operations.iterator();
     final CompletableFuture<Void> future = new CompletableFuture<>();
-    final OperationRunnable runnable = new OperationRunnable(iterator, future);
+    final OperationRunnable runnable = new OperationRunnable(properties, iterator, future);
     runnable.runTaskTimer(plugin, 1L, 1L);
     return future;
   }

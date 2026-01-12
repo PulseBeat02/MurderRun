@@ -40,11 +40,12 @@ public final class Parasite extends SurvivorGadget {
 
   private final Set<Integer> removed;
 
-  public Parasite() {
+  public Parasite(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "parasite",
-      GameProperties.PARASITE_COST,
-      ItemFactory.createGadget("parasite", GameProperties.PARSITE_MATERIAL, Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build())
+      properties.getParasiteCost(),
+      ItemFactory.createGadget("parasite", properties.getParsiteMaterial(), Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build())
     );
     this.removed = new HashSet<>();
   }
@@ -59,8 +60,9 @@ public final class Parasite extends SurvivorGadget {
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
     scheduler.scheduleParticleTaskUntilDeath(item, Color.GREEN);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.PARASITE_SOUND);
+    audience.playSound(properties.getParasiteSound());
 
     return false;
   }
@@ -73,8 +75,10 @@ public final class Parasite extends SurvivorGadget {
     final Location origin = item.getLocation();
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
-    final double destroyRadius = GameProperties.PARASITE_DESTROY_RADIUS;
-    final double radius = GameProperties.PARASITE_RADIUS;
+    final Game game = manager.getGame();
+    final GameProperties properties = game.getProperties();
+    final double destroyRadius = properties.getParasiteDestroyRadius();
+    final double radius = properties.getParasiteRadius();
     final int id = item.getEntityId();
     if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.PARASITE_DEACTIVATE.build();

@@ -33,11 +33,12 @@ import org.bukkit.entity.Item;
 
 public final class Tracker extends SurvivorGadget {
 
-  public Tracker() {
+  public Tracker(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "tracker",
-      GameProperties.TRACKER_COST,
-      ItemFactory.createGadget("tracker", GameProperties.TRACKER_MATERIAL, Message.TRACKER_NAME.build(), Message.TRACKER_LORE.build())
+      properties.getTrackerCost(),
+      ItemFactory.createGadget("tracker", properties.getTrackerMaterial(), Message.TRACKER_NAME.build(), Message.TRACKER_LORE.build())
     );
   }
 
@@ -51,8 +52,9 @@ public final class Tracker extends SurvivorGadget {
     final GamePlayerManager manager = game.getPlayerManager();
     manager.applyToKillers(killer -> this.handleGlowing(killer, player));
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.TRACKER_SOUND);
+    audience.playSound(properties.getTrackerSound());
 
     return false;
   }
@@ -63,7 +65,9 @@ public final class Tracker extends SurvivorGadget {
     final double distance = origin.distanceSquared(killerLocation);
     final MetadataManager metadata = player.getMetadataManager();
     final PlayerAudience audience = player.getAudience();
-    final double radius = GameProperties.TRACKER_RADIUS;
+    final Game game = player.getGame();
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getTrackerRadius();
     if (distance < radius * radius) {
       metadata.setEntityGlowing(killer, ChatColor.DARK_PURPLE, true);
       audience.sendMessage(Message.TRACKER_ACTIVATE.build());

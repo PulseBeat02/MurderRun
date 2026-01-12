@@ -15,23 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package me.brandonli.murderrun.game.gadget.survivor.armor;
+package me.brandonli.murderrun.game;
 
-import me.brandonli.murderrun.game.Game;
-import me.brandonli.murderrun.game.GameProperties;
-import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
-import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
-import me.brandonli.murderrun.utils.item.Item;
+public enum GameMode {
+  DEFAULT("default", GameProperties.DEFAULT),
+  ONE_BOUNCE("one_bounce", GameProperties.ONE_BOUNCE),
+  FREEZE_TAG("freeze_tag", GameProperties.FREEZE_TAG);
 
-public abstract class SurvivorGear extends SurvivorGadget {
+  private final String modeName;
+  private final GameProperties properties;
 
-  public SurvivorGear(final Game game, final String name, final Item.Builder builder) {
-    final GameProperties properties = game.getProperties();
-    super(name, properties.getSurvivorGearCost(), builder);
+  GameMode(final String modeName, final GameProperties properties) {
+    this.modeName = modeName;
+    this.properties = properties;
   }
 
-  @Override
-  public boolean onGadgetDrop(final GadgetDropPacket packet) {
-    return true;
+  public String getModeName() {
+    return this.modeName;
+  }
+
+  public GameProperties getProperties() {
+    return this.properties;
   }
 }

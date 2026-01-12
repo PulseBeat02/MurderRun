@@ -94,7 +94,9 @@ public final class PreGamePlayerManager {
 
   public void initialize() {
     final MurderRun plugin = this.manager.getPlugin();
-    this.selectionManager = new PlayerSelectionManager(plugin);
+    final PreGameManager preGameManager = this.getManager();
+    final GameProperties properties = preGameManager.getProperties();
+    this.selectionManager = new PlayerSelectionManager(plugin, properties);
     this.bossbar = new LobbyBossbar(this);
     this.scoreboard = new LobbyScoreboard(this.manager);
     this.scoreboard.updateScoreboard();
@@ -128,9 +130,11 @@ public final class PreGamePlayerManager {
   }
 
   private void giveSpecialItems(final Player player) {
-    final ItemStack sword = ItemFactory.createKillerSword();
-    final ItemStack arrow = ItemFactory.createKillerArrow();
-    final ItemStack[] gear = ItemFactory.createKillerGear();
+    final PreGameManager gameManager = this.getManager();
+    final GameProperties properties = gameManager.getProperties();
+    final ItemStack sword = ItemFactory.createKillerSword(properties);
+    final ItemStack arrow = ItemFactory.createKillerArrow(properties);
+    final ItemStack[] gear = ItemFactory.createKillerGear(properties);
     final PlayerInventory inventory = player.getInventory();
     final PersistentDataContainer container = player.getPersistentDataContainer();
     inventory.addItem(sword, arrow);
@@ -273,9 +277,11 @@ public final class PreGamePlayerManager {
   }
 
   private void addCurrency(final Player player, final boolean killer) {
-    final int count = killer ? GameProperties.KILLER_STARTING_CURRENCY : GameProperties.SURVIVOR_STARTING_CURRENCY;
+    final PreGameManager gameManager = this.getManager();
+    final GameProperties properties = gameManager.getProperties();
+    final int count = killer ? properties.getKillerStartingCurrency() : properties.getSurvivorStartingCurrency();
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = ItemFactory.createCurrency(1);
+    final ItemStack stack = ItemFactory.createCurrency(properties, 1);
     for (int i = 0; i < count; i++) {
       inventory.addItem(stack);
     }

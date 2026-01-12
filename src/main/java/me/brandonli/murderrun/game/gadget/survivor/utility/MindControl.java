@@ -40,13 +40,14 @@ import org.bukkit.util.Vector;
 
 public final class MindControl extends SurvivorGadget {
 
-  public MindControl() {
+  public MindControl(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "mind_control",
-      GameProperties.MIND_CONTROL_COST,
+      properties.getMindControlCost(),
       ItemFactory.createGadget(
         "mind_control",
-        GameProperties.MIND_CONTROL_MATERIAL,
+        properties.getMindControlMaterial(),
         Message.MIND_CONTROL_NAME.build(),
         Message.MIND_CONTROL_LORE.build()
       )
@@ -74,7 +75,8 @@ public final class MindControl extends SurvivorGadget {
 
     final Location location = nearest.getLocation();
     final Location origin = player.getLocation();
-    final int duration = GameProperties.MIND_CONTROL_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getMindControlDuration();
     player.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1));
     player.setInvulnerable(true);
     player.teleport(location);
@@ -88,7 +90,7 @@ public final class MindControl extends SurvivorGadget {
     final Component targetMsg = Message.MIND_CONTROL_ACTIVATE_SURVIVOR.build(targetName);
     final PlayerAudience audience1 = player.getAudience();
     audience1.showTitle(empty(), targetMsg);
-    audience1.playSound(GameProperties.MIND_CONTROL_SOUND);
+    audience1.playSound(properties.getMindControlSound());
 
     final String name = player.getDisplayName();
     final Component msg = Message.MIND_CONTROL_ACTIVATE_KILLER.build(name);

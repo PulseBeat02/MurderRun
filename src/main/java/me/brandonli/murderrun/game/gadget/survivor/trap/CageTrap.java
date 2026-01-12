@@ -38,21 +38,22 @@ import org.incendo.cloud.type.tuple.Triplet;
 
 public final class CageTrap extends SurvivorTrap {
 
-  private static final Set<BlockFace> faces = Set.of(BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH);
+  private static final Set<BlockFace> FACES = Set.of(BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH);
   private static final List<Triplet<Integer, Integer, Integer>> CAGE_TRAP_VECTORS;
 
   static {
-    CAGE_TRAP_VECTORS = faces.stream().map(MapUtils::toPosTriplet).collect(Collectors.toList());
+    CAGE_TRAP_VECTORS = FACES.stream().map(MapUtils::toPosTriplet).collect(Collectors.toList());
     CAGE_TRAP_VECTORS.add(Triplet.of(0, 2, 0));
   }
 
-  public CageTrap() {
+  public CageTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "cage_trap",
-      GameProperties.CAGE_COST,
-      ItemFactory.createGadget("cage_trap", GameProperties.CAGE_MATERIAL, Message.CAGE_NAME.build(), Message.CAGE_LORE.build()),
+      properties.getCageCost(),
+      ItemFactory.createGadget("cage_trap", properties.getCageMaterial(), Message.CAGE_NAME.build(), Message.CAGE_LORE.build()),
       Message.CAGE_ACTIVATE.build(),
-      GameProperties.CAGE_COLOR
+      properties.getCageColor()
     );
   }
 
@@ -66,10 +67,11 @@ public final class CageTrap extends SurvivorTrap {
     final NullReference reference = NullReference.of();
     final GameScheduler scheduler = game.getScheduler();
     final Runnable task = () -> this.resetBlocks(history, blocks);
-    scheduler.scheduleTask(task, GameProperties.CAGE_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleTask(task, properties.getCageDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.CAGE_SOUND);
+    manager.playSoundForAllParticipants(properties.getCageSound());
   }
 
   private Block[] getBlocksInOrder(final Block origin) {

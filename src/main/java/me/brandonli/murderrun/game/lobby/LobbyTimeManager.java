@@ -50,7 +50,8 @@ public final class LobbyTimeManager {
 
   public void startTimer() {
     final MurderRun plugin = this.manager.getPlugin();
-    final int time = GameProperties.LOBBY_STARTING_TIME;
+    final GameProperties properties = this.manager.getProperties();
+    final int time = properties.getLobbyStartingTime();
     this.timer = new LobbyTimer(time, this::handleTimer);
     this.timer.runTaskTimer(plugin, 0L, 20L);
   }
@@ -110,7 +111,8 @@ public final class LobbyTimeManager {
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     final Component message = Message.LOBBY_TIMER.build(seconds);
-    final String raw = GameProperties.LOBBY_TIMER_SOUND;
+    final GameProperties properties = this.manager.getProperties();
+    final String raw = properties.getLobbyTimerSound();
     final Key key = key(raw);
     final Sound sound = sound(key, Sound.Source.MASTER, 1f, 2f);
     for (final Player player : players) {
@@ -151,7 +153,8 @@ public final class LobbyTimeManager {
   }
 
   private boolean checkAllSlots(final ItemStack[] contents) {
-    final ItemStack sample = ItemFactory.createCurrency(1);
+    final GameProperties properties = this.manager.getProperties();
+    final ItemStack sample = ItemFactory.createCurrency(properties, 1);
     for (final ItemStack stack : contents) {
       if (stack != null && stack.isSimilar(sample)) {
         return true;

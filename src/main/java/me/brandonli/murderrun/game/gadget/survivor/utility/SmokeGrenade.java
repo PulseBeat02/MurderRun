@@ -52,13 +52,14 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
   private final Game game;
 
   public SmokeGrenade(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "smoke_bomb",
-      GameProperties.SMOKE_GRENADE_COST,
+      properties.getSmokeGrenadeCost(),
       ItemFactory.createSmokeGrenade(
         ItemFactory.createGadget(
           "smoke_bomb",
-          GameProperties.SMOKE_GRENADE_MATERIAL,
+          properties.getSmokeGrenadeMaterial(),
           Message.SMOKE_BOMB_NAME.build(),
           Message.SMOKE_BOMB_LORE.build()
         )
@@ -93,7 +94,8 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
 
     final World world = requireNonNull(location.getWorld());
     final GameScheduler scheduler = this.game.getScheduler();
-    final int duration = GameProperties.SMOKE_GRENADE_DURATION;
+    final GameProperties properties = this.game.getProperties();
+    final int duration = properties.getSmokeGrenadeDuration();
     final NullReference reference = NullReference.of();
     final Runnable task = () -> world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
     scheduler.scheduleRepeatedTask(task, 0, 1, duration, reference);
@@ -102,7 +104,7 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     manager.applyToKillers(player -> {
       final Location playerLocation = player.getLocation();
       final double distance = playerLocation.distanceSquared(location);
-      final double radius = GameProperties.SMOKE_GRENADE_RADIUS;
+      final double radius = properties.getSmokeGrenadeRadius();
       if (distance < radius * radius) {
         player.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, Integer.MAX_VALUE));
       }

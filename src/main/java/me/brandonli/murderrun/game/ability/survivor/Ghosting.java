@@ -95,12 +95,15 @@ public final class Ghosting extends SurvivorAbility {
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
     final LoosePlayerReference reference = LoosePlayerReference.of(player);
-    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 1L, GameProperties.GHOSTING_WOOL_DELAY, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 1L, properties.getGhostingWoolDelay(), reference);
   }
 
   private void giveWhiteBone(final GamePlayer player) {
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = ItemFactory.createKnockBackBone();
+    final Game game = this.getGame();
+    final GameProperties properties = game.getProperties();
+    final ItemStack stack = ItemFactory.createKnockBackBone(properties);
     inventory.addItem(stack);
   }
 }

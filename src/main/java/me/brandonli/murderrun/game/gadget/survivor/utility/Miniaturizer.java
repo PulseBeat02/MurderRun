@@ -34,13 +34,14 @@ import org.bukkit.entity.Item;
 
 public final class Miniaturizer extends SurvivorGadget {
 
-  public Miniaturizer() {
+  public Miniaturizer(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "miniaturizer",
-      GameProperties.MINIATURIZER_COST,
+      properties.getMiniaturizerCost(),
       ItemFactory.createGadget(
         "miniaturizer",
-        GameProperties.MINITURIZER_MATERIAL,
+        properties.getMiniturizerMaterial(),
         Message.MINIATURIZER_NAME.build(),
         Message.MINIATURIZER_LORE.build()
       )
@@ -53,9 +54,10 @@ public final class Miniaturizer extends SurvivorGadget {
     final GameScheduler scheduler = game.getScheduler();
     final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
-    final int duration = GameProperties.MINIATURIZER_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getMiniaturizerDuration();
     final StrictPlayerReference ref = StrictPlayerReference.of(player);
-    final double scale = GameProperties.MINIATURIZER_SCALE;
+    final double scale = properties.getMiniaturizerScale();
     final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);
     scheduler.scheduleTask(() -> player.resetAttribute(Attribute.SCALE), duration, ref);

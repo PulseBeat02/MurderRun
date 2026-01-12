@@ -117,7 +117,8 @@ public final class GameStartupTool {
   }
 
   private void runFutureTask() {
-    final int seconds = GameProperties.BEGINNING_STARTING_TIME;
+    final GameProperties properties = this.game.getProperties();
+    final int seconds = properties.getBeginningStartingTime();
     final GameScheduler scheduler = this.game.getScheduler();
     final NullReference reference = NullReference.of();
     scheduler.scheduleCountdownTask(this::handleCountdownSeconds, seconds, reference);
@@ -215,7 +216,7 @@ public final class GameStartupTool {
   private void startTimer() {
     final GameTimer manager = this.game.getTimeManager();
     final GameTimerUpdater updater = new GameTimerUpdater(this.game);
-    manager.startTimer();
+    manager.startTimer(this.game);
     updater.start();
   }
 

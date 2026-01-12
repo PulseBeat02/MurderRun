@@ -33,15 +33,15 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GameBundle {
 
-  private static final String GADGETS_PROPERTIES = "game.properties";
+  private static final String GADGETS_PROPERTIES = "%s.game.properties";
 
-  private final Path resourcePath;
   private final ResourceBundle bundle;
 
-  public GameBundle() {
+  public GameBundle(final String name) {
+    final String file = GADGETS_PROPERTIES.formatted(name);
     final Path pluginDataFolder = IOUtils.getPluginDataFolderPath();
-    this.resourcePath = pluginDataFolder.resolve(GADGETS_PROPERTIES);
-    this.bundle = this.loadGadgetProperties(this.resourcePath);
+    final Path resourcePath = pluginDataFolder.resolve(file);
+    this.bundle = this.loadGadgetProperties(resourcePath);
   }
 
   public String getString(final String key) {

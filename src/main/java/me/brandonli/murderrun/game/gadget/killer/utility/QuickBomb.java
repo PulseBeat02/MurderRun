@@ -35,13 +35,14 @@ import org.bukkit.entity.TNTPrimed;
 
 public final class QuickBomb extends KillerGadget {
 
-  public QuickBomb() {
+  public QuickBomb(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "quick_bomb",
-      GameProperties.QUICK_BOMB_COST,
+      properties.getQuickBombCost(),
       ItemFactory.createGadget(
         "quick_bomb",
-        GameProperties.QUICK_BOMB_MATERIAL,
+        properties.getQuickBombMaterial(),
         Message.QUICK_BOMB_NAME.build(),
         Message.QUICK_BOMB_LORE.build()
       )
@@ -58,17 +59,20 @@ public final class QuickBomb extends KillerGadget {
     final GamePlayerManager manager = game.getPlayerManager();
     manager.applyToLivingSurvivors(this::spawnPrimedTnt);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.QUICK_BOMB_SOUND);
+    audience.playSound(properties.getQuickBombSound());
 
     return false;
   }
 
   private void spawnPrimedTnt(final GamePlayer survivor) {
+    final Game game = survivor.getGame();
+    final GameProperties properties = game.getProperties();
     final Location location = survivor.getLocation();
     final World world = requireNonNull(location.getWorld());
-    final int bombTicks = GameProperties.QUICK_BOMB_TICKS;
-    final double bombDamage = GameProperties.QUICK_BOMB_DAMAGE;
+    final int bombTicks = properties.getQuickBombTicks();
+    final double bombDamage = properties.getQuickBombDamage();
     world.spawn(location, TNTPrimed.class, tnt -> {
       tnt.setFuseTicks(bombTicks);
       tnt.setYield((float) bombDamage);

@@ -39,13 +39,14 @@ import org.bukkit.entity.Item;
 
 public final class FloorIsLava extends KillerGadget {
 
-  public FloorIsLava() {
+  public FloorIsLava(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "floor_is_lava",
-      GameProperties.FLOOR_IS_LAVA_COST,
+      properties.getFloorIsLavaCost(),
       ItemFactory.createGadget(
         "floor_is_lava",
-        GameProperties.FLOOR_IS_LAVA_MATERIAL,
+        properties.getFloorIsLavaMaterial(),
         Message.THE_FLOOR_IS_LAVA_NAME.build(),
         Message.THE_FLOOR_IS_LAVA_LORE.build()
       )
@@ -68,8 +69,9 @@ public final class FloorIsLava extends KillerGadget {
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L, reference);
 
+    final GameProperties properties = game.getProperties();
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
-    manager.playSoundForAllParticipants(GameProperties.FLOOR_IS_LAVA_SOUND);
+    manager.playSoundForAllParticipants(properties.getFloorIsLavaSound());
 
     return false;
   }

@@ -38,13 +38,14 @@ import org.bukkit.entity.Item;
 
 public final class BurnTheBody extends KillerGadget {
 
-  public BurnTheBody() {
+  public BurnTheBody(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "burn_the_body",
-      GameProperties.BURN_THE_BODY_COST,
+      properties.getBurnTheBodyCost(),
       ItemFactory.createGadget(
         "burn_the_body",
-        GameProperties.BURN_THE_BODY_MATERIAL,
+        properties.getBurnTheBodyMaterial(),
         Message.BURN_THE_BODY_NAME.build(),
         Message.BURN_THE_BODY_LORE.build()
       )
@@ -65,7 +66,8 @@ public final class BurnTheBody extends KillerGadget {
 
     final Location deathLocation = requireNonNull(closest.getDeathLocation());
     final double distance = location.distanceSquared(deathLocation);
-    final double radius = GameProperties.BURN_THE_BODY_RADIUS;
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getBurnTheBodyRadius();
     if (distance > radius * radius) {
       return true;
     }
@@ -73,7 +75,7 @@ public final class BurnTheBody extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     this.destroyBody(scheduler, closest, deathLocation);
-    manager.playSoundForAllParticipants(GameProperties.BURN_THE_BODY_SOUND);
+    manager.playSoundForAllParticipants(properties.getBurnTheBodySound());
 
     return false;
   }

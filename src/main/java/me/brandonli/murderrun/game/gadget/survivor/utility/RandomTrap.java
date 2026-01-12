@@ -32,11 +32,12 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class RandomTrap extends SurvivorGadget {
 
-  public RandomTrap() {
+  public RandomTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "random_trap",
-      GameProperties.RANDOM_TRAP_COST,
-      ItemFactory.createGadget("random_trap", GameProperties.RANDOM_TRAP_MATERIAL, Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build())
+      properties.getRandomTrapCost(),
+      ItemFactory.createGadget("random_trap", properties.getRandomTrapMaterial(), Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build())
     );
   }
 

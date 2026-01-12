@@ -106,7 +106,7 @@ dependencies {
     runtimeDeps.forEach(::testImplementation)
 }
 
-val targetJavaVersion = 21
+val targetJavaVersion = 25
 java {
     val javaVersion = JavaVersion.toVersion(targetJavaVersion)
     val language = JavaLanguageVersion.of(targetJavaVersion)
@@ -175,6 +175,7 @@ tasks {
         options.release.set(targetJavaVersion)
         options.isFork = true
         options.forkOptions.memoryMaximumSize = "4g"
+        options.compilerArgs.addAll(listOf("-Xmaxerrs", "1000"))
         options.forkOptions.jvmArgs = (options.forkOptions.jvmArgs ?: mutableListOf()).apply {
             // Checker Framework Gradle Plugin forgot to include this argument for latest Checker Framework versions
             // See https://github.com/typetools/checker-framework/issues/7241

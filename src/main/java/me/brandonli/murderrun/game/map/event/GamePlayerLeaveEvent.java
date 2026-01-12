@@ -55,7 +55,8 @@ public final class GamePlayerLeaveEvent extends GameEvent {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     gamePlayer.setLoggingOut(true);
 
-    final String commands = GameProperties.PLAYER_LEAVE_COMMANDS_AFTER;
+    final GameProperties properties = game.getProperties();
+    final String commands = properties.getPlayerLeaveCommandsAfter();
     if (!commands.equals("none")) {
       final String[] split = commands.split(",");
       final Server server = Bukkit.getServer();

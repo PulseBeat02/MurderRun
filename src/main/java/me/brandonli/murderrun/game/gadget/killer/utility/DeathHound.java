@@ -54,12 +54,13 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   private final Game game;
 
   public DeathHound(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "death_hound",
-      GameProperties.DEATH_HOUND_COST,
+      properties.getDeathHoundCost(),
       ItemFactory.createGadget(
         "death_hound",
-        GameProperties.DEATH_HOUND_MATERIAL,
+        properties.getDeathHoundMaterial(),
         Message.DEATH_HOUND_NAME.build(),
         Message.DEATH_HOUND_LORE.build()
       )
@@ -100,10 +101,11 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     final GameScheduler scheduler = game.getScheduler();
     final Wolf wolf = this.spawnWolf(location, player, nearest);
     final EntityReference reference = EntityReference.of(wolf);
-    scheduler.scheduleTask(wolf::remove, GameProperties.DEATH_HOUND_DESPAWN, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleTask(wolf::remove, properties.getDeathHoundDespawn(), reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.DEATH_HOUND_SOUND);
+    audience.playSound(properties.getDeathHoundSound());
 
     return false;
   }

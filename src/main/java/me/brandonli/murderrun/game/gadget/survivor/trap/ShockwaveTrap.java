@@ -33,18 +33,19 @@ import org.bukkit.util.Vector;
 
 public final class ShockwaveTrap extends SurvivorTrap {
 
-  public ShockwaveTrap() {
+  public ShockwaveTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "shockwave_trap",
-      GameProperties.SHOCKWAVE_COST,
+      properties.getShockwaveCost(),
       ItemFactory.createGadget(
         "shockwave_trap",
-        GameProperties.SHOCKWAVE_MATERIAL,
+        properties.getShockwaveMaterial(),
         Message.SHOCKWAVE_NAME.build(),
         Message.SHOCKWAVE_LORE.build()
       ),
       Message.SHOCKWAVE_ACTIVATE.build(),
-      GameProperties.SHOCKWAVE_COLOR
+      properties.getShockwaveColor()
     );
   }
 
@@ -54,21 +55,24 @@ public final class ShockwaveTrap extends SurvivorTrap {
     final World world = requireNonNull(origin.getWorld());
     world.createExplosion(origin, 0, false, false);
 
+    final GameProperties properties = game.getProperties();
     final GamePlayerManager manager = game.getPlayerManager();
     manager.applyToAllParticipants(participant -> this.applyShockwave(participant, origin));
-    manager.playSoundForAllParticipants(GameProperties.SHOCKWAVE_SOUND);
+    manager.playSoundForAllParticipants(properties.getShockwaveSound());
   }
 
   private void applyShockwave(final Participant participant, final Location origin) {
     final Location location = participant.getLocation();
     final double distance = location.distanceSquared(origin);
-    final double radius = GameProperties.SHOCKWAVE_EXPLOSION_RADIUS;
+    final Game game = participant.getGame();
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getShockwaveExplosionRadius();
     if (distance < radius * radius) {
       final Vector playerVector = location.toVector();
       final Vector blockVector = origin.toVector();
       final Vector vector = playerVector.subtract(blockVector);
       vector.normalize();
-      vector.multiply(GameProperties.SHOCKWAVE_EXPLOSION_POWER);
+      vector.multiply(properties.getShockwaveExplosionPower());
       participant.setVelocity(vector);
     }
   }

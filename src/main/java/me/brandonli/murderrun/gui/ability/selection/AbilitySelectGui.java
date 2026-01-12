@@ -52,11 +52,13 @@ public final class AbilitySelectGui extends PaginatedGui {
 
   private final Player viewer;
   private final MurderRun plugin;
+  private final GameProperties properties;
 
-  public AbilitySelectGui(final MurderRun plugin, final Player viewer, final List<String> abilities) {
+  public AbilitySelectGui(final MurderRun plugin, final GameProperties properties, final Player viewer, final List<String> abilities) {
     super(ContainerUtils.createChestContainer(Message.SELECT_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.viewer = viewer;
+    this.properties = properties;
     this.addAbilityItems(abilities);
     this.createNavigationPane();
   }
@@ -133,7 +135,7 @@ public final class AbilitySelectGui extends PaginatedGui {
   }
 
   private void playSound(final HumanEntity entity) {
-    final String raw = GameProperties.ABILITY_GUI_SOUND;
+    final String raw = this.properties.getAbilityGuiSound();
     final Key key = key(raw);
     final Sound.Source source = Sound.Source.MASTER;
     final Sound sound = sound(key, source, 1.0f, 1.0f);

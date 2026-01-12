@@ -33,13 +33,14 @@ import org.bukkit.entity.Item;
 
 public final class WarpDistort extends KillerGadget {
 
-  public WarpDistort() {
+  public WarpDistort(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "warp_distort",
-      GameProperties.WARP_DISTORT_COST,
+      properties.getWarpDistortCost(),
       ItemFactory.createGadget(
         "warp_distort",
-        GameProperties.WARP_DISTORT_MATERIAL,
+        properties.getWarpDistortMaterial(),
         Message.WARP_DISTORT_NAME.build(),
         Message.WARP_DISTORT_LORE.build()
       )
@@ -68,7 +69,8 @@ public final class WarpDistort extends KillerGadget {
     random.teleport(second);
     random2.teleport(first);
 
-    final String sound = GameProperties.WARP_DISTORT_SOUND;
+    final GameProperties properties = game.getProperties();
+    final String sound = properties.getWarpDistortSound();
     final PlayerAudience randomAudience = random.getAudience();
     final PlayerAudience random2Audience = random2.getAudience();
     randomAudience.playSound(sound);

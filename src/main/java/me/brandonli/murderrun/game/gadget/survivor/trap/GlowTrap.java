@@ -28,20 +28,22 @@ import org.bukkit.entity.Item;
 
 public final class GlowTrap extends SurvivorTrap {
 
-  public GlowTrap() {
+  public GlowTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "glow_trap",
-      GameProperties.GLOW_COST,
-      ItemFactory.createGadget("glow_trap", GameProperties.GLOW_MATERIAL, Message.GLOW_NAME.build(), Message.GLOW_LORE.build()),
+      properties.getGlowCost(),
+      ItemFactory.createGadget("glow_trap", properties.getGlowMaterial(), Message.GLOW_NAME.build(), Message.GLOW_LORE.build()),
       Message.GLOW_ACTIVATE.build(),
-      GameProperties.GLOW_COLOR
+      properties.getGlowColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, GameProperties.GLOW_DURATION);
-    manager.playSoundForAllParticipants(GameProperties.GLOW_SOUND);
+    final GameProperties properties = game.getProperties();
+    manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, properties.getGlowDuration());
+    manager.playSoundForAllParticipants(properties.getGlowSound());
   }
 }

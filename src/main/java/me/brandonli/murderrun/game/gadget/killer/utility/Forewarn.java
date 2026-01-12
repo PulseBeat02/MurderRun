@@ -38,11 +38,12 @@ import org.bukkit.entity.Item;
 
 public final class Forewarn extends KillerGadget {
 
-  public Forewarn() {
+  public Forewarn(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "forewarn",
-      GameProperties.FOREWARN_COST,
-      ItemFactory.createGadget("forewarn", GameProperties.FOREWARN_MATERIAL, Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
+      properties.getForewarnCost(),
+      ItemFactory.createGadget("forewarn", properties.getForewarnMaterial(), Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
     );
   }
 
@@ -62,10 +63,11 @@ public final class Forewarn extends KillerGadget {
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleRepeatedTask(() -> this.handleInnocents(manager, killer), 0, 20L, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.FOREWARN_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(GameProperties.FOREWARN_SOUND);
+    audience.playSound(properties.getForewarnSound());
 
     return false;
   }

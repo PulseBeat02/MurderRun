@@ -35,11 +35,12 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class Mimic extends KillerGadget {
 
-  public Mimic() {
+  public Mimic(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "mimic",
-      GameProperties.MIMIC_COST,
-      ItemFactory.createGadget("mimic", GameProperties.MIMIC_MATERIAL, Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build())
+      properties.getMimicCost(),
+      ItemFactory.createGadget("mimic", properties.getMimicMaterial(), Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build())
     );
   }
 

@@ -91,7 +91,8 @@ public final class TrapVest extends SurvivorAbility {
     final DeathManager deathManager = player.getDeathManager();
     final List<ItemStack> drops = deathManager.getDeathLoot();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();
-    final double multiplier = GameProperties.TRAP_VEST_VELOCITY;
+    final GameProperties properties = game.getProperties();
+    final double multiplier = properties.getTrapVestVelocity();
     final World world = requireNonNull(location.getWorld());
     for (final ItemStack slot : drops) {
       if (slot == null) {

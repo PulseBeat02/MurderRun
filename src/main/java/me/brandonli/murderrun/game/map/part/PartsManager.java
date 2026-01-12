@@ -58,7 +58,8 @@ public final class PartsManager {
     final Game game = this.map.getGame();
     final GameSettings configuration = game.getSettings();
     final Arena arena = requireNonNull(configuration.getArena());
-    final int parts = GameProperties.CAR_PARTS_COUNT;
+    final GameProperties properties = game.getProperties();
+    final int parts = properties.getCarPartsCount();
     for (int i = 0; i < parts; i++) {
       final Location location = arena.getRandomItemLocation();
       final CarPart part = new CarPart(location);
@@ -111,9 +112,11 @@ public final class PartsManager {
   }
 
   public int getRemainingParts() {
-    final int start = GameProperties.CAR_PARTS_COUNT;
+    final Game game = this.map.getGame();
+    final GameProperties properties = game.getProperties();
+    final int start = properties.getCarPartsCount();
     final int taken = start - this.parts.size();
-    final int required = GameProperties.CAR_PARTS_REQUIRED;
+    final int required = properties.getCarPartsRequired();
     return Math.max(0, required - taken);
   }
 }

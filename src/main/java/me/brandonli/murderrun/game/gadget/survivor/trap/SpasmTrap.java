@@ -40,13 +40,14 @@ public final class SpasmTrap extends SurvivorTrap {
 
   private final Map<GamePlayer, AtomicBoolean> states;
 
-  public SpasmTrap() {
+  public SpasmTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "spasm_trap",
-      GameProperties.SPASM_COST,
-      ItemFactory.createGadget("spasm_trap", GameProperties.SPASM_MATERIAL, Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
+      properties.getSpasmCost(),
+      ItemFactory.createGadget("spasm_trap", properties.getSpasmMaterial(), Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
       Message.SPASM_ACTIVATE.build(),
-      GameProperties.SPASM_COLOR
+      properties.getSpasmColor()
     );
     this.states = new HashMap<>();
   }
@@ -55,10 +56,11 @@ public final class SpasmTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
-    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 5, GameProperties.SPASM_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 5, properties.getSpasmDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.SPASM_SOUND);
+    manager.playSoundForAllParticipants(properties.getSpasmSound());
   }
 
   private void alternateHead(final GamePlayer murderer) {

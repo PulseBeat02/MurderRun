@@ -39,13 +39,14 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public final class BlastOff extends SurvivorGadget {
 
-  public BlastOff() {
+  public BlastOff(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "blast_off",
-      GameProperties.BLAST_OFF_COST,
+      properties.getBlastOffCost(),
       ItemFactory.createGadget(
         "blast_off",
-        GameProperties.BLAST_OFF_MATERIAL,
+        properties.getBlastOffMaterial(),
         Message.BLAST_OFF_NAME.build(),
         Message.BLAST_OFF_LORE.build()
       )
@@ -80,8 +81,9 @@ public final class BlastOff extends SurvivorGadget {
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleTask(() -> player.setInvulnerable(false), 4 * 20L, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.BLASTOFF_SOUND);
+    audience.playSound(properties.getBlastoffSound());
 
     return false;
   }

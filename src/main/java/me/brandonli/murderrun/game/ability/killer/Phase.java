@@ -45,25 +45,13 @@ import org.jetbrains.annotations.Nullable;
 
 public final class Phase extends KillerAbility implements Listener {
 
-  private static final Collection<Material> BLACKLISTED_BLOCKS;
   private static final String PHASE_NAME = "phase";
 
-  static {
-    BLACKLISTED_BLOCKS = new HashSet<>();
-    final String raw = GameProperties.PHASE_BLACKLISTED_BLOCKS;
-    final String[] individual = raw.split(",");
-    for (final String material : individual) {
-      final String upper = material.toUpperCase();
-      final Material target = Material.getMaterial(upper);
-      if (target != null) {
-        BLACKLISTED_BLOCKS.add(Material.valueOf(material));
-      }
-    }
-  }
-
+  private final Collection<Material> blacklisted;
   private final Map<GamePlayer, Long> cooldowns;
 
   public Phase(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       game,
       PHASE_NAME,
@@ -71,9 +59,19 @@ public final class Phase extends KillerAbility implements Listener {
         PHASE_NAME,
         Message.PHASE_NAME.build(),
         Message.PHASE_LORE.build(),
-        (int) (GameProperties.PHASE_COOLDOWN * 20)
+        (int) (properties.getPhaseCooldown() * 20)
       )
     );
+    this.blacklisted = new HashSet<>();
+    final String raw = properties.getPhaseBlacklistedBlocks();
+    final String[] individual = raw.split(",");
+    for (final String material : individual) {
+      final String upper = material.toUpperCase();
+      final Material target = Material.getMaterial(upper);
+      if (target != null) {
+        this.blacklisted.add(Material.valueOf(material));
+      }
+    }
     this.cooldowns = new HashMap<>();
   }
 
@@ -125,7 +123,8 @@ public final class Phase extends KillerAbility implements Listener {
     final Location eyeLocation = player.getEyeLocation();
     final Vector eyeDirection = eyeLocation.getDirection();
     final Vector direction = eyeDirection.normalize();
-    final double maxDistance = GameProperties.PHASE_DISTANCE;
+    final GameProperties properties = game.getProperties();
+    final double maxDistance = properties.getPhaseDistance();
     final Location targetLocation = this.getLocation(maxDistance, eyeLocation, direction);
     if (targetLocation != null) {
       final boolean isPathClear = this.isIsPathClear(maxDistance, eyeLocation, direction);
@@ -139,14 +138,16 @@ public final class Phase extends KillerAbility implements Listener {
 
           final long current = System.currentTimeMillis();
           this.cooldowns.put(gamePlayer, current);
-          gamePlayer.setAbilityCooldowns(PHASE_NAME, (int) (GameProperties.PHASE_COOLDOWN * 20));
+          gamePlayer.setAbilityCooldowns(PHASE_NAME, (int) (properties.getPhaseCooldown() * 20));
         }
       }
     }
   }
 
   private boolean setCooldown(final PlayerInteractEvent event, final GamePlayer gamePlayer) {
-    final int cooldown = (int) (GameProperties.PHASE_COOLDOWN * 1000);
+    final Game game = this.getGame();
+    final GameProperties properties = game.getProperties();
+    final int cooldown = (int) (properties.getPhaseCooldown() * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);
       final long current = System.currentTimeMillis();
@@ -183,7 +184,7 @@ public final class Phase extends KillerAbility implements Listener {
       final Location checkLocation = clone.add(multiply);
       final Block checkBlock = checkLocation.getBlock();
       final Material checkType = checkBlock.getType();
-      if (BLACKLISTED_BLOCKS.contains(checkType)) {
+      if (this.blacklisted.contains(checkType)) {
         isPathClear = false;
         break;
       }

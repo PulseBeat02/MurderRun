@@ -31,11 +31,12 @@ public final class Camera extends SurvivorGadget {
 
   private CameraGadget gadget;
 
-  public Camera() {
+  public Camera(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "camera",
-      GameProperties.CAMERA_COST,
-      ItemFactory.createGadget("camera", GameProperties.CAMERA_MATERIAL, Message.CAMERA_NAME.build(), Message.CAMERA_LORE.build())
+      properties.getCameraCost(),
+      ItemFactory.createGadget("camera", properties.getCameraMaterial(), Message.CAMERA_NAME.build(), Message.CAMERA_LORE.build())
     );
   }
 

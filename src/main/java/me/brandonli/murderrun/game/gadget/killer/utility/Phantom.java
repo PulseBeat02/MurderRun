@@ -33,11 +33,12 @@ import org.bukkit.entity.Item;
 
 public final class Phantom extends KillerGadget {
 
-  public Phantom() {
+  public Phantom(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "phantom",
-      GameProperties.PHANTOM_COST,
-      ItemFactory.createGadget("phantom", GameProperties.PHANTOM_MATERIAL, Message.PHANTOM_NAME.build(), Message.PHANTOM_LORE.build())
+      properties.getPhantomCost(),
+      ItemFactory.createGadget("phantom", properties.getPhantomMaterial(), Message.PHANTOM_NAME.build(), Message.PHANTOM_LORE.build())
     );
   }
 
@@ -54,10 +55,11 @@ public final class Phantom extends KillerGadget {
     final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    scheduler.scheduleTask(() -> this.setDefault(player, old), GameProperties.PHANTOM_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleTask(() -> this.setDefault(player, old), properties.getPhantomDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.PHANTOM_SOUND);
+    audience.playSound(properties.getPhantomSound());
 
     return false;
   }

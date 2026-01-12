@@ -38,13 +38,14 @@ import org.bukkit.entity.Item;
 
 public final class HeatSeeker extends KillerGadget {
 
-  public HeatSeeker() {
+  public HeatSeeker(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "heat_seeker",
-      GameProperties.HEAT_SEEKER_COST,
+      properties.getHeatSeekerCost(),
       ItemFactory.createGadget(
         "heat_seeker",
-        GameProperties.HEAT_SEEKER_MATERIAL,
+        properties.getHeatSeekerMaterial(),
         Message.HEAT_SEEKER_NAME.build(),
         Message.HEAT_SEEKER_LORE.build()
       )
@@ -67,10 +68,11 @@ public final class HeatSeeker extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.scheduleTasks(manager, killer), 0, 2 * 20L, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.HEAT_SEEKER_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GameProperties.HEAT_SEEKER_SOUND);
+    audience.playSound(properties.getHeatSeekerSound());
 
     return false;
   }
@@ -85,7 +87,9 @@ public final class HeatSeeker extends KillerGadget {
     final Collection<GamePlayer> visible = owner.getHeatSeekerGlowing();
     final double distance = location.distanceSquared(other);
     final MetadataManager metadata = owner.getMetadataManager();
-    final double radius = GameProperties.HEAT_SEEKER_RADIUS;
+    final Game game = owner.getGame();
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getHeatSeekerRadius();
     if (distance < radius * radius) {
       visible.add(innocent);
       metadata.setEntityGlowing(innocent, ChatColor.RED, true);

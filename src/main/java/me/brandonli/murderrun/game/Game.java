@@ -50,6 +50,7 @@ public final class Game {
   private GameExtensionManager extensionManager;
   private MapSchematicIO mapSchematicIO;
   private GameEventsListener callback;
+  private GameProperties properties;
 
   @SuppressWarnings("all") // checker
   public Game(final MurderRun plugin) {
@@ -58,6 +59,7 @@ public final class Game {
   }
 
   public void startGame(
+    final GameProperties properties,
     final GameSettings settings,
     final Collection<Player> murderers,
     final Collection<Player> participants,
@@ -70,6 +72,7 @@ public final class Game {
     this.configuration = settings;
     this.callback = callback;
     this.mapSchematicIO = mapSchematicIO;
+    this.properties = properties;
     this.executor = new GameExecutor();
     this.scheduler = new GameScheduler(this);
     this.map = new GameMap(this);
@@ -166,5 +169,9 @@ public final class Game {
 
   public AbilityManager getAbilityManager() {
     return this.abilityManager;
+  }
+
+  public GameProperties getProperties() {
+    return this.properties;
   }
 }

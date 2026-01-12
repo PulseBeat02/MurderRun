@@ -39,13 +39,14 @@ public final class Distorter extends SurvivorGadget {
 
   private final Set<Integer> removed;
 
-  public Distorter() {
+  public Distorter(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "distorter",
-      GameProperties.DISTORTER_COST,
+      properties.getDistorterCost(),
       ItemFactory.createGadget(
         "distorter",
-        GameProperties.DISTORTER_MATERIAL,
+        properties.getDistorterMaterial(),
         Message.DISTORTER_NAME.build(),
         Message.DISTORTER_LORE.build()
       )
@@ -63,8 +64,9 @@ public final class Distorter extends SurvivorGadget {
     scheduler.scheduleTaskUntilDeath(() -> this.handleKillers(manager, item), item);
     scheduler.scheduleParticleTaskUntilDeath(item, Color.PURPLE);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.DISTORTER_SOUND);
+    audience.playSound(properties.getDistorterSound());
 
     return false;
   }
@@ -77,8 +79,10 @@ public final class Distorter extends SurvivorGadget {
     final Location location = killer.getLocation();
     final Location origin = item.getLocation();
     final double distance = location.distanceSquared(origin);
-    final double destroyRadius = GameProperties.DISTORTER_DESTROY_RADIUS;
-    final double effectRadius = GameProperties.DISTORTER_EFFECT_RADIUS;
+    final Game game = manager.getGame();
+    final GameProperties properties = game.getProperties();
+    final double destroyRadius = properties.getDistorterDestroyRadius();
+    final double effectRadius = properties.getDistorterEffectRadius();
     final int id = item.getEntityId();
     if (distance < destroyRadius * destroyRadius && !this.removed.contains(id)) {
       final Component message = Message.DISTORTER_DEACTIVATE.build();

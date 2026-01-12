@@ -50,13 +50,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class CursedNote extends KillerGadget {
 
-  public CursedNote() {
+  public CursedNote(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "cursed_note",
-      GameProperties.CURSED_NOTE_COST,
+      properties.getCursedNoteCost(),
       ItemFactory.createGadget(
         "cursed_note",
-        GameProperties.CURSED_NOTE_MATERIAL,
+        properties.getCursedNoteMaterial(),
         Message.CURSED_NOTE_NAME.build(),
         Message.CURSED_NOTE_LORE.build()
       )
@@ -85,8 +86,9 @@ public final class CursedNote extends KillerGadget {
     }
     scheduler.scheduleAfterDeath(() -> this.resetAllParts(closeParts), cursed);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.CURSED_NOTE_SOUND);
+    audience.playSound(properties.getCursedNoteSound());
 
     final Component msg = Message.CURSED_NOTE_DROP.build();
     audience.sendMessage(msg);
@@ -122,11 +124,12 @@ public final class CursedNote extends KillerGadget {
 
   private void handleSurvivorCurse(final Game game, final CarPart part) {
     final GamePlayerManager manager = game.getPlayerManager();
+    final GameProperties properties = game.getProperties();
     manager.applyToLivingSurvivors(survivor -> {
       final Location partLocation = part.getLocation();
       final Location survivorLocation = survivor.getLocation();
       final double distance = partLocation.distanceSquared(survivorLocation);
-      final double radius = GameProperties.CURSED_NOTE_EFFECT_RADIUS;
+      final double radius = properties.getCursedNoteEffectRadius();
       if (distance <= radius * radius) {
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
         survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 5, 1));
@@ -142,10 +145,12 @@ public final class CursedNote extends KillerGadget {
     final Map<String, CarPart> mapping = manager.getParts();
     final Collection<CarPart> parts = mapping.values();
     final Set<CarPart> closeParts = new HashSet<>();
+    final Game game = map.getGame();
+    final GameProperties properties = game.getProperties();
     for (final CarPart part : parts) {
       final Location location = part.getLocation();
       final double distance = origin.distanceSquared(location);
-      final double radius = GameProperties.CURSED_NOTE_RADIUS;
+      final double radius = properties.getCursedNoteRadius();
       if (distance < radius * radius) {
         closeParts.add(part);
       }

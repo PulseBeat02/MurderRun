@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.HashMap;
 import java.util.Map;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameProperties;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -29,14 +30,16 @@ public final class PlayerSelectionManager {
 
   private final MurderRun plugin;
   private final Map<Player, PlayerSelection> selections;
+  private final GameProperties properties;
 
-  public PlayerSelectionManager(final MurderRun plugin) {
+  public PlayerSelectionManager(final MurderRun plugin, final GameProperties properties) {
     this.plugin = plugin;
     this.selections = new HashMap<>();
+    this.properties = properties;
   }
 
   public void addSelection(final Player player, final boolean killer) {
-    final PlayerSelection selection = new PlayerSelection(this.plugin, player, killer);
+    final PlayerSelection selection = new PlayerSelection(this.plugin, this.properties, player, killer);
     this.selections.put(player, selection);
   }
 

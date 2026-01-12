@@ -33,13 +33,14 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class HackTrap extends SurvivorTrap {
 
-  public HackTrap() {
+  public HackTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "hack_trap",
-      GameProperties.HACK_COST,
-      ItemFactory.createGadget("hack_trap", GameProperties.HACK_MATERIAL, Message.HACK_NAME.build(), Message.HACK_LORE.build()),
+      properties.getHackCost(),
+      ItemFactory.createGadget("hack_trap", properties.getHackMaterial(), Message.HACK_NAME.build(), Message.HACK_LORE.build()),
       Message.HACK_ACTIVATE.build(),
-      GameProperties.HACK_COLOR
+      properties.getHackColor()
     );
   }
 
@@ -53,10 +54,11 @@ public final class HackTrap extends SurvivorTrap {
 
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleTask(() -> inventory.addItem(stack), GameProperties.HACK_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleTask(() -> inventory.addItem(stack), properties.getHackDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.HACK_SOUND);
+    manager.playSoundForAllParticipants(properties.getHackSound());
   }
 
   private @Nullable ItemStack getSword(final PlayerInventory inventory) {

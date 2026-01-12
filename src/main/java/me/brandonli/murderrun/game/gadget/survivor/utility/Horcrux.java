@@ -37,11 +37,12 @@ import org.bukkit.util.Vector;
 
 public final class Horcrux extends SurvivorGadget {
 
-  public Horcrux() {
+  public Horcrux(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "horcrux",
-      GameProperties.HORCRUX_COST,
-      ItemFactory.createGadget("horcrux", GameProperties.HORCRUX_MATERIAL, Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build())
+      properties.getHorcruxCost(),
+      ItemFactory.createGadget("horcrux", properties.getHorcruxMaterial(), Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build())
     );
   }
 

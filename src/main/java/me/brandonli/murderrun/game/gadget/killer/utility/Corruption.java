@@ -49,13 +49,14 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class Corruption extends KillerGadget {
 
-  public Corruption() {
+  public Corruption(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "corruption",
-      GameProperties.CORRUPTION_COST,
+      properties.getCorruptionCost(),
       ItemFactory.createGadget(
         "corruption",
-        GameProperties.CORRUPTION_MATERIAL,
+        properties.getCorruptionMaterial(),
         Message.CORRUPTION_NAME.build(),
         Message.CORRUPTION_LORE.build()
       )
@@ -109,8 +110,9 @@ public final class Corruption extends KillerGadget {
     final Location death = requireNonNull(closest.getDeathLocation());
     closest.teleport(death);
 
-    final ItemStack stack = ItemFactory.createKillerSword();
-    final ItemStack[] gear = ItemFactory.createKillerGear();
+    final GameProperties properties = game.getProperties();
+    final ItemStack stack = ItemFactory.createKillerSword(properties);
+    final ItemStack[] gear = ItemFactory.createKillerGear(properties);
     final PlayerInventory inventory = closest.getInventory();
     inventory.addItem(stack);
     inventory.setArmorContents(gear);

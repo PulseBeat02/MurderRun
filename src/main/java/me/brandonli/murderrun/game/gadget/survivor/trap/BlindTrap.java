@@ -29,22 +29,24 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class BlindTrap extends SurvivorTrap {
 
-  public BlindTrap() {
+  public BlindTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "blind_trap",
-      GameProperties.BLIND_COST,
-      ItemFactory.createGadget("blind_trap", GameProperties.BLIND_MATERIAL, Message.BLIND_NAME.build(), Message.BLIND_LORE.build()),
+      properties.getBlindCost(),
+      ItemFactory.createGadget("blind_trap", properties.getBlindMaterial(), Message.BLIND_NAME.build(), Message.BLIND_LORE.build()),
       Message.BLIND_ACTIVATE.build(),
-      GameProperties.BLIND_COLOR
+      properties.getBlindColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final int duration = GameProperties.BLIND_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getBlindDuration();
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 0));
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.BLIND_SOUND);
+    manager.playSoundForAllParticipants(properties.getBlindSound());
   }
 }

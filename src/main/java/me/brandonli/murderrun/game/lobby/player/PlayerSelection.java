@@ -47,22 +47,22 @@ public final class PlayerSelection {
   private final GadgetShopGui gadgetShopGui;
   private final AbilitySelectGui abilitySelectGui;
 
-  public PlayerSelection(final MurderRun plugin, final Player player, final boolean killer) {
+  public PlayerSelection(final MurderRun plugin, final GameProperties properties, final Player player, final boolean killer) {
     this.player = player;
     this.killer = killer;
-    this.gadgetShopGui = new GadgetShopGui(plugin, player, this.getRandomGadgets(killer));
-    this.abilitySelectGui = new AbilitySelectGui(plugin, player, this.getRandomAbilities(killer));
+    this.gadgetShopGui = new GadgetShopGui(plugin, properties, player, this.getRandomGadgets(properties, killer));
+    this.abilitySelectGui = new AbilitySelectGui(plugin, properties, player, this.getRandomAbilities(properties, killer));
   }
 
-  private List<String> getRandomGadgets(@UnderInitialization PlayerSelection this, final boolean killer) {
-    final boolean random = GameProperties.GAME_UTILITIES_RANDOM;
+  private List<String> getRandomGadgets(@UnderInitialization PlayerSelection this, final GameProperties properties, final boolean killer) {
+    final boolean random = properties.getGameUtilitiesRandom();
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgetList = registry.getGadgets();
     final Stream<Gadget> stream = gadgetList.stream().filter(this.getGadgetPredicate(killer));
     final Collection<Gadget> gadgetCollection = stream.toList();
     if (random) {
       final Set<String> currentList = new HashSet<>();
-      final int count = killer ? GameProperties.GAME_UTILITIES_KILLER_GADGETS : GameProperties.GAME_UTILITIES_SURVIVOR_GADGETS;
+      final int count = killer ? properties.getGameUtilitiesKillerGadgets() : properties.getGameUtilitiesSurvivorGadgets();
       while (currentList.size() < count) {
         final Gadget randomGadget = RandomUtils.getRandomElement(gadgetCollection);
         final String name = randomGadget.getId();
@@ -81,15 +81,19 @@ public final class PlayerSelection {
     return gadget -> killer ? gadget instanceof KillerDevice : gadget instanceof SurvivorDevice;
   }
 
-  private List<String> getRandomAbilities(@UnderInitialization PlayerSelection this, final boolean killer) {
-    final boolean random = GameProperties.GAME_UTILITIES_RANDOM;
+  private List<String> getRandomAbilities(
+    @UnderInitialization PlayerSelection this,
+    final GameProperties properties,
+    final boolean killer
+  ) {
+    final boolean random = properties.getGameUtilitiesRandom();
     final AbilityRegistry registry = AbilityRegistry.getRegistry();
     final Collection<Ability> abilityList = registry.getAbilities();
     final Stream<Ability> stream = abilityList.stream().filter(this.getAbilityPredicate(killer));
     final Collection<Ability> abilityCollection = stream.toList();
     if (random) {
       final Set<String> currentList = new HashSet<>();
-      final int count = killer ? GameProperties.GAME_UTILITIES_KILLER_ABILITIES : GameProperties.GAME_UTILITIES_SURVIVOR_ABILITIES;
+      final int count = killer ? properties.getGameUtilitiesKillerAbilities() : properties.getGameUtilitiesSurvivorAbilities();
       while (currentList.size() < count) {
         final Ability randomAbility = RandomUtils.getRandomElement(abilityCollection);
         final String name = randomAbility.getId();

@@ -56,12 +56,13 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
   private final Game game;
 
   public IceSpirit(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "ice_spirit",
-      GameProperties.ICE_SPIRIT_COST,
+      properties.getIceSpiritCost(),
       ItemFactory.createGadget(
         "ice_spirit",
-        GameProperties.ICE_SPIRIT_MATERIAL,
+        properties.getIceSpiritMaterial(),
         Message.ICE_SPIRIT_NAME.build(),
         Message.ICE_SPIRIT_LORE.build()
       )
@@ -112,7 +113,9 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
     final GamePlayer nearest = manager.getGamePlayer(player);
     final GameScheduler scheduler = this.game.getScheduler();
-    final int duration = GameProperties.ICE_SPIRIT_DURATION;
+    final Game game = this.getGame();
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getIceSpiritDuration();
     nearest.disableJump(scheduler, duration);
     nearest.setFreezeTicks(duration);
     nearest.disableWalkWithFOVEffects(duration);
@@ -136,8 +139,9 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
       this.setEquipment(zombie);
     });
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.ICE_SPIRIT_SOUND);
+    audience.playSound(properties.getIceSpiritSound());
 
     return false;
   }

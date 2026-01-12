@@ -68,7 +68,8 @@ public final class PartSniffer extends SurvivorAbility {
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();
     final Collection<org.bukkit.entity.Item> set = player.getGlowingCarParts();
-    final double radius = GameProperties.PART_SNIFFER_RADIUS;
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getPartSnifferRadius();
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();

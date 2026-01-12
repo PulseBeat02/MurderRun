@@ -40,11 +40,12 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PortalTrap extends SurvivorGadget {
 
-  public PortalTrap() {
+  public PortalTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "portal_trap",
-      GameProperties.PORTAL_TRAP_COST,
-      ItemFactory.createGadget("portal_trap", GameProperties.PORTAL_TRAP_MATERIAL, Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
+      properties.getPortalTrapCost(),
+      ItemFactory.createGadget("portal_trap", properties.getPortalTrapMaterial(), Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
     );
   }
 

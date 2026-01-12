@@ -17,11 +17,14 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.armor;
 
+import me.brandonli.murderrun.game.Game;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 
 public final class SurvivorChestplate extends SurvivorGear {
 
-  public SurvivorChestplate() {
-    super("survivor_chestplate", ItemFactory.createSurvivorChestplate());
+  public SurvivorChestplate(final Game game) {
+    final GameProperties properties = game.getProperties();
+    super(game, "survivor_chestplate", ItemFactory.createSurvivorChestplate(properties));
   }
 }

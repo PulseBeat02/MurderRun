@@ -19,6 +19,7 @@ package me.brandonli.murderrun.game.gadget.survivor.utility;
 
 import static net.kyori.adventure.text.Component.empty;
 
+import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
 import me.brandonli.murderrun.locale.Message;
@@ -26,12 +27,13 @@ import me.brandonli.murderrun.utils.item.ItemFactory;
 
 public final class SpeedPendant extends SurvivorGadget {
 
-  public SpeedPendant() {
+  public SpeedPendant(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "speed_pendant",
-      GameProperties.SPEED_PENDANT_COST,
+      properties.getSpeedPendantCost(),
       ItemFactory.createSpeedPendant(
-        ItemFactory.createGadget("speed_pendant", GameProperties.SPEED_PENDANT_MATERIAL, Message.SPEED_PENDANT_NAME.build(), empty())
+        ItemFactory.createGadget("speed_pendant", properties.getSpeedPendantMaterial(), Message.SPEED_PENDANT_NAME.build(), empty())
       )
     );
   }

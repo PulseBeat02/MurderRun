@@ -65,7 +65,8 @@ public final class KillerLocationTracker {
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final Collection<GamePlayer> players = survivors.toList();
     final World killerWorld = requireNonNull(murdererLocation.getWorld());
-    final double radius = GameProperties.KILLER_PARTICLE_RADIUS;
+    final GameProperties properties = this.game.getProperties();
+    final double radius = properties.getKillerParticleRadius();
     final double radiusSquared = radius * radius;
     final double halfRadius = radius / 2;
     final double halfRadiusSquared = halfRadius * halfRadius;

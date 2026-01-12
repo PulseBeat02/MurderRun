@@ -33,19 +33,21 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class HauntTrap extends SurvivorTrap {
 
-  public HauntTrap() {
+  public HauntTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "haunt_trap",
-      GameProperties.HAUNT_COST,
-      ItemFactory.createGadget("haunt_trap", GameProperties.HAUNT_MATERIAL, Message.HAUNT_NAME.build(), Message.HAUNT_LORE.build()),
+      properties.getHauntCost(),
+      ItemFactory.createGadget("haunt_trap", properties.getHauntMaterial(), Message.HAUNT_NAME.build(), Message.HAUNT_LORE.build()),
       Message.HAUNT_ACTIVATE.build(),
-      GameProperties.HAUNT_COLOR
+      properties.getHauntColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final int duration = GameProperties.HAUNT_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getHauntDuration();
     murderer.addPotionEffects(
       new PotionEffect(PotionEffectType.NAUSEA, duration, 10),
       new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
@@ -57,7 +59,7 @@ public final class HauntTrap extends SurvivorTrap {
     scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.HAUNT_SOUND);
+    manager.playSoundForAllParticipants(properties.getHauntSound());
   }
 
   private void spook(final Game game, final GamePlayer gamePlayer) {

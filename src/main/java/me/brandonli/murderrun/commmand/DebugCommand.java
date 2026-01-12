@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.TradingUtils;
@@ -105,7 +106,7 @@ public final class DebugCommand implements AnnotationCommandFeature {
       return;
     }
     final Audience audience = this.audiences.player(sender);
-    final List<MerchantRecipe> allGadgets = TradingUtils.parseGadgetRecipes(gadgetName);
+    final List<MerchantRecipe> allGadgets = TradingUtils.parseGadgetRecipes(GameProperties.DEFAULT, gadgetName);
     if (this.checkIfInvalidGadget(audience, allGadgets)) {
       return;
     }

@@ -36,13 +36,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FireTrail extends KillerGadget {
 
-  public FireTrail() {
+  public FireTrail(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "fire_trail",
-      GameProperties.FIRE_TRAIL_COST,
+      properties.getFireTrailCost(),
       ItemFactory.createGadget(
         "fire_trail",
-        GameProperties.FIRE_TRAIL_MATERIAL,
+        properties.getFireTrailMaterial(),
         Message.FIRE_TRAIL_NAME.build(),
         Message.FIRE_TRAIL_LORE.build()
       )
@@ -62,8 +63,9 @@ public final class FireTrail extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnFire(player), 0, 4, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.FIRE_TRAIL_SOUND);
+    audience.playSound(properties.getFireTrailSound());
 
     return false;
   }

@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.utility;
 
+import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -25,12 +26,13 @@ import me.brandonli.murderrun.utils.item.ItemFactory;
 
 public final class MedKit extends SurvivorGadget {
 
-  public MedKit() {
+  public MedKit(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "med_kit",
-      GameProperties.MED_KIT_COST,
+      properties.getMedKitCost(),
       ItemFactory.createMedKit(
-        ItemFactory.createGadget("med_kit", GameProperties.MED_KIT_MATERIAL, Message.MED_KIT_NAME.build(), Message.MED_KIT_LORE.build())
+        ItemFactory.createGadget("med_kit", properties.getMedKitMaterial(), Message.MED_KIT_NAME.build(), Message.MED_KIT_LORE.build())
       )
     );
   }

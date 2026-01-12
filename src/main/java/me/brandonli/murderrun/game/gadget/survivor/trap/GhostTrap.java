@@ -29,26 +29,28 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class GhostTrap extends SurvivorTrap {
 
-  public GhostTrap() {
+  public GhostTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "ghost_trap",
-      GameProperties.GHOST_COST,
-      ItemFactory.createGadget("ghost_trap", GameProperties.GHOST_MATERIAL, Message.GHOST_NAME.build(), Message.GHOST_LORE.build()),
+      properties.getGhostCost(),
+      ItemFactory.createGadget("ghost_trap", properties.getGhostMaterial(), Message.GHOST_NAME.build(), Message.GHOST_LORE.build()),
       Message.GHOST_ACTIVATE.build(),
-      GameProperties.GHOST_COLOR
+      properties.getGhostColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GamePlayerManager manager = game.getPlayerManager();
-    final int duration = GameProperties.GHOST_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getGhostDuration();
     manager.applyToLivingSurvivors(player ->
       player.addPotionEffects(
         new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1),
         new PotionEffect(PotionEffectType.SPEED, duration, 1)
       )
     );
-    manager.playSoundForAllParticipants(GameProperties.GHOST_SOUND);
+    manager.playSoundForAllParticipants(properties.getGhostSound());
   }
 }

@@ -40,11 +40,12 @@ import org.checkerframework.checker.nullness.qual.KeyFor;
 
 public final class IcePath extends KillerGadget {
 
-  public IcePath() {
+  public IcePath(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "ice_path",
-      GameProperties.ICE_PATH_COST,
-      ItemFactory.createGadget("ice_path", GameProperties.ICE_PATH_MATERIAL, Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build())
+      properties.getIcePathCost(),
+      ItemFactory.createGadget("ice_path", properties.getIcePathMaterial(), Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build())
     );
   }
 
@@ -59,8 +60,9 @@ public final class IcePath extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(game, player), 0, 4, 20 * 60L, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.ICE_PATH_SOUND);
+    audience.playSound(properties.getIcePathSound());
 
     return false;
   }

@@ -43,14 +43,15 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class PlayerTracker extends KillerGadget {
 
-  public PlayerTracker() {
+  public PlayerTracker(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "player_tracker",
-      GameProperties.PLAYER_TRACKER_COST,
+      properties.getPlayerTrackerCost(),
       ItemFactory.createPlayerTracker(
         ItemFactory.createGadget(
           "player_tracker",
-          GameProperties.PLAYER_TRACKER_MATERIAL,
+          properties.getPlayerTrackerMaterial(),
           Message.PLAYER_TRACKER_NAME.build(),
           Message.PLAYER_TRACKER_LORE.build()
         )
@@ -72,7 +73,8 @@ public final class PlayerTracker extends KillerGadget {
     final int distance = (int) Math.round(this.getNearestSurvivorDistance(manager, location));
     final ItemStack stack = packet.getItemStack();
     final int count = this.increaseAndGetSurvivorCount(stack);
-    final boolean destroy = count >= GameProperties.PLAYER_TRACKER_USES;
+    final GameProperties properties = game.getProperties();
+    final boolean destroy = count >= properties.getPlayerTrackerUses();
     if (destroy) {
       this.resetTrackerCount(stack);
       final PlayerInventory inventory = player.getInventory();
@@ -82,7 +84,7 @@ public final class PlayerTracker extends KillerGadget {
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.PLAYER_TRACKER_ACTIVATE.build(distance);
     audience.sendMessage(message);
-    audience.playSound(GameProperties.PLAYER_TRACKER_SOUND);
+    audience.playSound(properties.getPlayerTrackerSound());
 
     return false;
   }

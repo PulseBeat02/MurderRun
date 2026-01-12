@@ -62,12 +62,13 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
   private final Game game;
 
   public SupplyDrop(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "supply_drop",
-      GameProperties.SUPPLY_DROP_COST,
+      properties.getSupplyDropCost(),
       ItemFactory.createGadget(
         "supply_drop",
-        GameProperties.SUPPLY_DROP_MATERIAL,
+        properties.getSupplyDropMaterial(),
         Message.SUPPLY_DROP_NAME.build(),
         Message.SUPPLY_DROP_LORE.build()
       )
@@ -167,7 +168,8 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
 
   private ItemStack[] generateSupplyDropItems() {
     final int index = RandomUtils.generateInt(3);
-    final String all = GameProperties.SUPPLY_DROP_MASKS;
+    final GameProperties properties = this.game.getProperties();
+    final String all = properties.getSupplyDropMasks();
     final String[] masks = all.split(",");
     final String mask = masks[index];
     final ItemStack[] items = new ItemStack[mask.length()];

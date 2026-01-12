@@ -57,7 +57,9 @@ public final class PlayerStartupTool {
   private void handleAll(final GamePlayer gamePlayer) {
     final Location spawn = this.getSpawnLocation();
     final PlayerAudience audience = gamePlayer.getAudience();
-    final String sound = GameProperties.GAME_STARTING_SOUND;
+    final Game game = gamePlayer.getGame();
+    final GameProperties properties = game.getProperties();
+    final String sound = properties.getGameStartingSound();
     final SoundStop soundStop = SoundStop.source(Sound.Source.MUSIC);
     gamePlayer.setGameMode(GameMode.SURVIVAL);
     gamePlayer.setWalkSpeed(0.2f);
