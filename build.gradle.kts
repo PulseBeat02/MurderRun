@@ -19,7 +19,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
-version = "1.21.10-v1.0.0"
+version = "1.21.11-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -202,7 +202,7 @@ tasks {
         }
         systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11")
     }
 
     processResources {

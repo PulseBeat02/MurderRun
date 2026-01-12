@@ -38,6 +38,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
+/**
+ * Maintainer note: The reason why I didn't use an interface for CraftEngineManager and NexoManager because
+ * I wanted to allow servers to have both plugins and support both. And also they are subject to lots of change
+ * in the future, so having them as separate classes makes it easier to manage.
+ */
 public final class ItemFactory {
 
   private static final String ITEM_SKULL_URL =
