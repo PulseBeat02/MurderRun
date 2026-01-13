@@ -51,7 +51,7 @@ public final class SpreadOperation implements Operation {
   }
 
   @Override
-  @SuppressWarnings("all") // checker
+  @SuppressWarnings("nullness")
   public Operation resume(final RunContext run) {
     if (this.task == null && this.it.hasNext()) {
       final BukkitScheduler scheduler = Bukkit.getScheduler();

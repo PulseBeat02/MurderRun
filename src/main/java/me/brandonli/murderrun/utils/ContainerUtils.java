@@ -19,7 +19,6 @@ package me.brandonli.murderrun.utils;
 
 import dev.triumphteam.gui.components.GuiContainer;
 import dev.triumphteam.gui.components.InventoryProvider;
-import dev.triumphteam.gui.components.util.Legacy;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 
@@ -29,8 +28,7 @@ public final class ContainerUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  private static final InventoryProvider.Chest INVENTORY_PROVIDER = (title, owner, rows) ->
-    Bukkit.createInventory(owner, rows, Legacy.SERIALIZER.serialize(title));
+  private static final InventoryProvider.Chest INVENTORY_PROVIDER = (title, owner, rows) -> Bukkit.createInventory(owner, rows, title);
 
   public static GuiContainer.Chest createChestContainer(final Component title, final int rows) {
     return new GuiContainer.Chest(title, INVENTORY_PROVIDER, rows);

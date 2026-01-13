@@ -56,8 +56,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.type.tuple.Triplet;
-import org.jetbrains.annotations.NotNull;
 
 public final class MapUtils {
 
@@ -115,7 +115,7 @@ public final class MapUtils {
     final World world = new WorldCreator(name).environment(environment).generator(generator).createWorld();
     requireNonNull(world);
 
-    final Registry<@NotNull GameRule<?>> gameRuleRegistry = Registry.GAME_RULE;
+    final Registry<@NonNull GameRule<?>> gameRuleRegistry = Registry.GAME_RULE;
     for (final GameRule<?> gameRule : gameRuleRegistry) {
       copyRule(copy, world, gameRule);
     }
@@ -187,7 +187,7 @@ public final class MapUtils {
     return future;
   }
 
-  private static @NotNull Collection<Operation> splitClipboardOperation(
+  private static Collection<Operation> splitClipboardOperation(
     final com.sk89q.worldedit.world.World world,
     final Clipboard clipboard,
     final SerializableVector vector3

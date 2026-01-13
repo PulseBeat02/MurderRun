@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.function.Function;
 import me.brandonli.murderrun.game.statistics.PlayerStatistics;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PAPIPlaceholderParser {
 

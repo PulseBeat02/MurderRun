@@ -60,6 +60,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ArenaModificationGui extends PatternGui implements Listener {
 
@@ -346,9 +347,12 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   private void clearWands() {
     final Player player = (Player) this.watcher;
     final PlayerInventory inv = player.getInventory();
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] contents = inv.getContents();
     for (final ItemStack item : contents) {
+      if (item == null) {
+        continue;
+      }
       if (PDCUtils.isWand(item)) {
         inv.remove(item);
       }

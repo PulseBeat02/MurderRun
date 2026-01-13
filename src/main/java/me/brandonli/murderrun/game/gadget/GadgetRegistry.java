@@ -132,7 +132,6 @@ public final class GadgetRegistry {
     return gadgets;
   }
 
-  @SuppressWarnings("all") // checker
   private void load() {
     final ScanResult result = ClassGraphUtils.getCachedScanResult();
     final ClassInfoList list = result.getClassesImplementing(Gadget.class);
@@ -177,12 +176,11 @@ public final class GadgetRegistry {
     }
   }
 
-  @SuppressWarnings("all") // checker
-  private Gadget invokeGadgetConstructor(final MethodHandle handle, final @Nullable Game game) {
+  private Gadget invokeGadgetConstructor(final MethodHandle handle, final Game game) {
     try {
       final MethodType type = handle.type();
       final int count = type.parameterCount();
-      return (Gadget) (count == 0 ? handle.invoke() : handle.invoke(game));
+      return (Gadget) (count == 0 ? handle.invoke() : handle.invoke(new Object[] { game }));
     } catch (final Throwable e) {
       throw new AssertionError(e);
     }

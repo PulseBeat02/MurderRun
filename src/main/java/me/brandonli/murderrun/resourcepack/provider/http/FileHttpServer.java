@@ -27,7 +27,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.brandonli.murderrun.utils.ExecutorUtils;
-import org.jetbrains.annotations.NotNull;
 
 public final class FileHttpServer {
 
@@ -74,14 +73,14 @@ public final class FileHttpServer {
     }
   }
 
-  private @NotNull ChannelFuture addServerListener(final ServerBootstrap b, final CountDownLatch latch) {
+  private ChannelFuture addServerListener(final ServerBootstrap b, final CountDownLatch latch) {
     final ChannelFuture before = b.bind(this.port);
     final ChannelFutureListener listener = getChannelFutureListener(latch);
     before.addListener(listener);
     return before;
   }
 
-  private @NotNull ServerBootstrap initializeServerBootstrap() {
+  private ServerBootstrap initializeServerBootstrap() {
     final FileHttpChannelInitializer initializer = new FileHttpChannelInitializer(this);
     final ServerBootstrap b = new ServerBootstrap();
     this.bossGroup = new NioEventLoopGroup();
@@ -90,7 +89,7 @@ public final class FileHttpServer {
     return b;
   }
 
-  private static @NotNull ChannelFutureListener getChannelFutureListener(final CountDownLatch latch) {
+  private static ChannelFutureListener getChannelFutureListener(final CountDownLatch latch) {
     return future -> {
       if (future.isSuccess()) {
         latch.countDown();

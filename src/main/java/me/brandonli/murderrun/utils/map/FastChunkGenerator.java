@@ -21,12 +21,12 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class FastChunkGenerator extends ChunkGenerator {
 
   @Override
-  public Location getFixedSpawnLocation(final @NotNull World world, final @NotNull Random random) {
+  public Location getFixedSpawnLocation(final @NonNull World world, final @NonNull Random random) {
     return new Location(world, 0, 0, 0);
   }
 }

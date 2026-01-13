@@ -28,6 +28,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class InventoryUtils {
 
@@ -57,7 +58,7 @@ public final class InventoryUtils {
 
   public static ItemStack[] getAllSlotsOnScreen(final Player player) {
     final PlayerInventory inventory = player.getInventory();
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] contents = inventory.getContents();
     final ItemStack cursor = player.getItemOnCursor();
     final ItemStack[] slots = new ItemStack[contents.length + 1];
@@ -67,7 +68,7 @@ public final class InventoryUtils {
   }
 
   public static boolean consumeStack(final PlayerInventory inventory, final ItemStack stack) {
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] contents = inventory.getContents();
     for (int i = 0; i < contents.length; i++) {
       final ItemStack item = contents[i];

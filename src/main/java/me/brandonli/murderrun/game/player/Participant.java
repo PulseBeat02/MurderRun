@@ -223,4 +223,6 @@ public interface Participant {
   void sendPotionEffectChange(final PotionEffect effect);
 
   void sendPotionEffectChangeRemove(final PotionEffectType type);
+
+  boolean isSneaking();
 }

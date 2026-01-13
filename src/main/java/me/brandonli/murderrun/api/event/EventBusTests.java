@@ -17,6 +17,8 @@
  */
 package me.brandonli.murderrun.api.event;
 
+import static java.util.Objects.requireNonNull;
+
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.api.event.contract.GameStatusEvent;
 import me.brandonli.murderrun.api.event.contract.ability.AbilityUseEvent;
@@ -42,19 +44,35 @@ public final class EventBusTests {
     this.plugin = plugin;
   }
 
-  @SuppressWarnings("all") // checker
+  @SuppressWarnings("nullness")
   public void runTestUnits() {
     final ApiEventBus eventBus = EventBusProvider.getBus();
-    eventBus.subscribe(plugin, MurderRunEvent.class, event -> {
+    eventBus.subscribe(this.plugin, MurderRunEvent.class, event -> {
       System.out.println("Hello from %s".format(event.getEventType().toGenericString()));
     });
-    eventBus.post(AbilityUseEvent.class, AbilityRegistry.getRegistry().getAbility("teleport"), new GamePlayer(null, null));
-    eventBus.post(ArenaEvent.class, plugin.getArenaManager().getArenas().values().iterator().next(), ArenaModificationType.CREATION);
-    eventBus.post(ArenaEvent.class, plugin.getArenaManager().getArenas().values().iterator().next(), ArenaModificationType.DELETION);
-    eventBus.post(GadgetUseEvent.class, GadgetRegistry.getRegistry().getGadget("crash"), new GamePlayer(null, null));
-    eventBus.post(TrapActivateEvent.class, GadgetRegistry.getRegistry().getGadget("crash"), new GamePlayer(null, null));
-    eventBus.post(LobbyEvent.class, plugin.getLobbyManager().getLobbies().values().iterator().next(), LobbyModificationType.CREATION);
-    eventBus.post(LobbyEvent.class, plugin.getLobbyManager().getLobbies().values().iterator().next(), LobbyModificationType.DELETION);
+    eventBus.post(AbilityUseEvent.class, requireNonNull(AbilityRegistry.getRegistry().getAbility("teleport")), new GamePlayer(null, null));
+    eventBus.post(
+      ArenaEvent.class,
+      requireNonNull(this.plugin.getArenaManager().getArenas().values().iterator().next()),
+      ArenaModificationType.CREATION
+    );
+    eventBus.post(
+      ArenaEvent.class,
+      requireNonNull(this.plugin.getArenaManager().getArenas().values().iterator().next()),
+      ArenaModificationType.DELETION
+    );
+    eventBus.post(GadgetUseEvent.class, requireNonNull(GadgetRegistry.getRegistry().getGadget("crash")), new GamePlayer(null, null));
+    eventBus.post(TrapActivateEvent.class, requireNonNull(GadgetRegistry.getRegistry().getGadget("crash")), new GamePlayer(null, null));
+    eventBus.post(
+      LobbyEvent.class,
+      requireNonNull(this.plugin.getLobbyManager().getLobbies().values().iterator().next()),
+      LobbyModificationType.CREATION
+    );
+    eventBus.post(
+      LobbyEvent.class,
+      requireNonNull(this.plugin.getLobbyManager().getLobbies().values().iterator().next()),
+      LobbyModificationType.DELETION
+    );
     eventBus.post(StatisticsEvent.class, StatisticsType.FASTEST_KILLER_WIN, 1);
     eventBus.post(StatisticsEvent.class, StatisticsType.FASTEST_SURVIVOR_WIN, 1);
     eventBus.post(StatisticsEvent.class, StatisticsType.TOTAL_DEATHS, 1);

@@ -39,12 +39,12 @@ import net.bytebuddy.implementation.FieldAccessor;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.implementation.MethodCall;
 
-@SuppressWarnings("all") // checker
 public final class GeneratedEventClass {
 
   private final MethodHandle constructor;
   private final MethodHandle[] setters;
 
+  @SuppressWarnings("all") // checker
   public GeneratedEventClass(final Class<? extends MurderRunEvent> eventClass) {
     try {
       final TypeDescription eventType = new TypeDescription.ForLoadedType(eventClass);
@@ -59,6 +59,7 @@ public final class GeneratedEventClass {
     }
   }
 
+  @SuppressWarnings("all") // checker
   private void createSetters(final Method[] methods, final Class<? extends SimpleMurderRunEvent> implClass) throws Throwable {
     final Object object = this.constructor.invoke((Object) null);
     final SimpleMurderRunEvent event = (SimpleMurderRunEvent) object;
@@ -152,6 +153,7 @@ public final class GeneratedEventClass {
     return builder;
   }
 
+  @SuppressWarnings("all") // checker
   private Method[] getInterfaceMethods(final Class<? extends MurderRunEvent> eventClass) {
     return Arrays.stream(eventClass.getMethods())
       .filter(m -> m.isAnnotationPresent(Param.class))

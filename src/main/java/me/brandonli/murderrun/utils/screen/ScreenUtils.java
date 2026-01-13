@@ -41,6 +41,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ScreenUtils {
 
@@ -65,9 +67,9 @@ public final class ScreenUtils {
     TRACKED_PLAYERS.add(player);
     final PlayerInventory inv = player.getInventory();
     final GameMode gm = player.getGameMode();
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] invIs1 = inv.getContents();
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] invIs2 = inv.getArmorContents();
     final double invHealth = player.getHealthScale();
     final int invFood = player.getFoodLevel();
@@ -77,7 +79,7 @@ public final class ScreenUtils {
     final float invExp = player.getExp();
     final Vector invVelocity = player.getVelocity();
     final Map<Attribute, Double> attributes = new HashMap<>();
-    final Registry<Attribute> registry = Registry.ATTRIBUTE;
+    final Registry<@NonNull Attribute> registry = Registry.ATTRIBUTE;
     for (final Attribute attribute : registry) {
       final AttributeInstance instance = player.getAttribute(attribute);
       if (instance != null) {

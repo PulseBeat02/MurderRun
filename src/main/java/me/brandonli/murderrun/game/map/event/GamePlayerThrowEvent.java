@@ -41,6 +41,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GamePlayerThrowEvent extends GameEvent {
 
@@ -151,9 +152,12 @@ public final class GamePlayerThrowEvent extends GameEvent {
 
   private boolean checkIfPlayerStillHasCarPart(final Player thrower) {
     final PlayerInventory inventory = thrower.getInventory();
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] contents = inventory.getContents();
     for (final ItemStack slot : contents) {
+      if (slot == null) {
+        continue;
+      }
       if (PDCUtils.isCarPart(slot)) {
         return true;
       }

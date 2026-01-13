@@ -117,10 +117,11 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  @SuppressWarnings("deprecation")
   public void onPlayerLand(final PlayerMoveEvent event) {
     final Player player = event.getPlayer();
-    if (!player.isOnGround()) {
+    @SuppressWarnings("deprecation")
+    final boolean isOnGround = player.isOnGround();
+    if (!isOnGround) {
       return;
     }
 

@@ -22,8 +22,8 @@ import me.brandonli.murderrun.game.statistics.PlayerStatistics;
 import me.brandonli.murderrun.game.statistics.StatisticsManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class MurderRunExpansion extends PlaceholderExpansion {
 
@@ -40,17 +40,17 @@ public final class MurderRunExpansion extends PlaceholderExpansion {
   }
 
   @Override
-  public @NotNull String getIdentifier() {
+  public @NonNull String getIdentifier() {
     return MURDER_RUN_IDENTIFIER;
   }
 
   @Override
-  public @NotNull String getAuthor() {
+  public @NonNull String getAuthor() {
     return AUTHORS;
   }
 
   @Override
-  public @NotNull String getVersion() {
+  public @NonNull String getVersion() {
     return VERSION;
   }
 
@@ -60,7 +60,7 @@ public final class MurderRunExpansion extends PlaceholderExpansion {
   }
 
   @Override
-  public @Nullable String onRequest(final OfflinePlayer player, final @NotNull String params) {
+  public @Nullable String onRequest(final OfflinePlayer player, final @NonNull String params) {
     final StatisticsManager manager = this.plugin.getStatisticsManager();
     final PlayerStatistics statistics = manager.getOrCreatePlayerStatistic(player);
     return this.handler.getPlaceholder(statistics, params);

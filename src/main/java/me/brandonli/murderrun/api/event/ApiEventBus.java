@@ -31,7 +31,7 @@ import me.brandonli.murderrun.api.event.generated.GeneratedEventClass;
 import me.brandonli.murderrun.api.event.generated.NonInvokable;
 import me.brandonli.murderrun.utils.ClassGraphUtils;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 public final class ApiEventBus implements EventBus {
@@ -93,7 +93,7 @@ public final class ApiEventBus implements EventBus {
     return subscription;
   }
 
-  private <T extends MurderRunEvent> @NotNull Set<Class<? extends MurderRunEvent>> getAllApplicableEvents(final Class<T> eventType) {
+  private <T extends MurderRunEvent> @NonNull Set<Class<? extends MurderRunEvent>> getAllApplicableEvents(final Class<T> eventType) {
     final Set<Class<? extends MurderRunEvent>> parentEventTypes = this.findParentEventTypes(eventType);
     parentEventTypes.remove(eventType);
     return parentEventTypes;

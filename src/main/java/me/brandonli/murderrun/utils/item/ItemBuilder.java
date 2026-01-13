@@ -149,7 +149,6 @@ public final class ItemBuilder implements Builder {
   @Override
   public Builder dummyAttribute() {
     final Attribute attribute = Attribute.OXYGEN_BONUS;
-    @SuppressWarnings("deprecation")
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
@@ -181,7 +180,6 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder modifier(final Attribute attribute, final double amount) {
-    @SuppressWarnings("deprecation")
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
@@ -268,7 +266,6 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  @SuppressWarnings("deprecation")
   public Builder head(final String url) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final SkullMeta skullMeta) {
@@ -280,7 +277,7 @@ public final class ItemBuilder implements Builder {
         final URL urlObject = uri.toURL();
         textures.setSkin(urlObject);
         profile.setTextures(textures);
-        skullMeta.setOwnerProfile(profile);
+        skullMeta.setPlayerProfile(profile);
         this.stack.setItemMeta(skullMeta);
       } catch (final MalformedURLException e) {
         throw new AssertionError(e);

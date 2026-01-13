@@ -49,6 +49,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PlayerDeathTool {
 
@@ -106,9 +107,12 @@ public final class PlayerDeathTool {
 
   private void summonCarParts(final Player player) {
     final PlayerInventory inventory = player.getInventory();
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] slots = inventory.getContents();
     for (final ItemStack slot : slots) {
+      if (slot == null) {
+        continue;
+      }
       if (!PDCUtils.isCarPart(slot)) {
         continue;
       }

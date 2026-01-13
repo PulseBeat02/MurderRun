@@ -37,6 +37,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Bush extends SurvivorGadget {
 
@@ -66,7 +67,7 @@ public final class Bush extends SurvivorGadget {
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
     scheduler.scheduleRepeatedTask(() -> this.createFacingLocation(player, location), 0, 5, duration, reference);
 
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] before = inventory.getArmorContents();
     final ItemStack[] empty = new ItemStack[4];
     inventory.setArmorContents(empty);

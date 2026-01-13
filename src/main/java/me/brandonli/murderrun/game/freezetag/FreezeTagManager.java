@@ -19,6 +19,8 @@ package me.brandonli.murderrun.game.freezetag;
 
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
+import static net.kyori.adventure.text.Component.text;
+import static net.kyori.adventure.text.format.TextColor.color;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +38,12 @@ import me.brandonli.murderrun.game.scheduler.reference.NullReference;
 import me.brandonli.murderrun.locale.Message;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.scheduler.BukkitTask;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
@@ -66,19 +68,18 @@ public final class FreezeTagManager {
   private void startReviveUpdateTask(@UnderInitialization FreezeTagManager this, final Game game) {
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
+    final GamePlayerManager manager = game.getPlayerManager();
     this.reviveUpdateTask = scheduler.scheduleRepeatedTask(
-      () -> {
-        final GamePlayerManager manager = game.getPlayerManager();
+      () ->
         manager
           .getSurvivors()
           .filter(GamePlayer::isAlive)
           .map(p -> (Survivor) p)
           .filter(Survivor::isFrozen)
           .filter(s -> s.getRevivingPlayer() != null)
-          .forEach(this::updateRevive);
-      },
+          .forEach(this::updateRevive),
       0L,
-      10L,
+      20L,
       reference
     );
   }
@@ -191,6 +192,8 @@ public final class FreezeTagManager {
     final TextDisplay display = world.spawn(spawn, TextDisplay.class);
     display.setAlignment(TextDisplay.TextAlignment.CENTER);
     display.setBillboard(Display.Billboard.CENTER);
+    display.setSeeThrough(false);
+    display.setBackgroundColor(Color.fromRGB(0xc0c0c0));
     this.holograms.put(uuid, display);
 
     final GameScheduler scheduler = this.game.getScheduler();
@@ -304,9 +307,10 @@ public final class FreezeTagManager {
     }
 
     final GamePlayer reviverPlayer = manager.getGamePlayer(reviverId);
-    final Player player = reviverPlayer.getInternalPlayer();
-
-    if (!player.isSneaking() || !this.isNearCorpse(player.getLocation(), frozen)) {
+    final Location location = reviverPlayer.getLocation();
+    final boolean nearCorpse = this.isNearCorpse(location, frozen);
+    final boolean isSneaking = reviverPlayer.isSneaking();
+    if (!isSneaking || !nearCorpse) {
       this.stopRevive(frozen);
       return;
     }
@@ -317,7 +321,6 @@ public final class FreezeTagManager {
     final long reviveStart = frozen.getReviveStartTime();
     final long currentTime = System.currentTimeMillis();
     final long elapsed = (currentTime - reviveStart) / 1000;
-
     if (elapsed >= revivalTimeSeconds) {
       this.unfreezeSurvivor(frozen);
       return;
@@ -327,11 +330,34 @@ public final class FreezeTagManager {
     final String raw = String.valueOf(remaining);
     final Component progressText = Message.FREEZE_TAG_REVIVING_PROGRESS.build(raw);
 
+    final Component bar = createProgressBar((double) elapsed, revivalTimeSeconds);
     final PlayerAudience frozenAudience = frozen.getAudience();
-    frozenAudience.showTitle(empty(), progressText);
-
     final PlayerAudience reviverAudience = reviverPlayer.getAudience();
-    reviverAudience.showTitle(empty(), progressText);
+    frozenAudience.showTitle(bar, progressText);
+    reviverAudience.showTitle(bar, progressText);
+  }
+
+  private static final int TOTAL_BARS = 10;
+  private static final int GRAY_COLOR = 0x444444;
+
+  private static Component createProgressBar(final double elapsed, final double revivalTimeSeconds) {
+    final double fraction = Math.min(1.0, Math.max(0.0, elapsed / revivalTimeSeconds));
+    final int filledBlocks = (int) Math.round(fraction * TOTAL_BARS);
+    Component bar = empty();
+    final int startR = 0xFF, startG = 0x00, startB = 0x00;
+    final int endR = 0x00, endG = 0xFF, endB = 0x00;
+    for (int i = 0; i < TOTAL_BARS; i++) {
+      if (i < filledBlocks) {
+        final double t = (double) i / (double) (TOTAL_BARS - 1);
+        final int r = (int) Math.round(startR + (endR - startR) * t);
+        final int g = (int) Math.round(startG + (endG - startG) * t);
+        final int b = (int) Math.round(startB + (endB - startB) * t);
+        bar = bar.append(text("█").color(color(r, g, b)));
+      } else {
+        bar = bar.append(text("█").color(color(GRAY_COLOR)));
+      }
+    }
+    return bar;
   }
 
   public boolean isNearCorpse(final Location playerLoc, final Survivor frozen) {

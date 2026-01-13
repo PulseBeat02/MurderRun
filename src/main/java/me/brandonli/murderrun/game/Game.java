@@ -61,7 +61,6 @@ public final class Game {
     this.status = new GameStatus(this);
   }
 
-  @SuppressWarnings("all") // checker
   public Game(final MurderRun plugin, final GameProperties properties) {
     this.properties = properties;
     this(plugin);
@@ -121,7 +120,7 @@ public final class Game {
       this.forceShutdown(code);
     } else {
       final BukkitScheduler scheduler = Bukkit.getScheduler();
-      scheduler.runTaskLater(this.plugin, () -> this.forceShutdown(code), 2 * 20L);
+      scheduler.runTaskLater(this.plugin, () -> this.forceShutdown(code), 10L);
     }
   }
 

@@ -47,6 +47,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class AbilitySelectGui extends PaginatedGui {
 
@@ -107,9 +108,12 @@ public final class AbilitySelectGui extends PaginatedGui {
 
     final HumanEntity entity = event.getWhoClicked();
     final PlayerInventory inventory = entity.getInventory();
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] contents = inventory.getContents();
     for (final ItemStack content : contents) {
+      if (content == null) {
+        continue;
+      }
       if (!PDCUtils.isAbility(content)) {
         continue;
       }

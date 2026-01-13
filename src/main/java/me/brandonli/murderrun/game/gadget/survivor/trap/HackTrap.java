@@ -62,10 +62,13 @@ public final class HackTrap extends SurvivorTrap {
   }
 
   private @Nullable ItemStack getSword(final PlayerInventory inventory) {
-    @SuppressWarnings("all") // checker
+    @Nullable
     final ItemStack[] slots = inventory.getContents();
     ItemStack find = null;
     for (final ItemStack stack : slots) {
+      if (stack == null) {
+        continue;
+      }
       if (PDCUtils.isSword(stack)) {
         find = stack;
         inventory.remove(find);

@@ -132,7 +132,6 @@ public final class AbilityRegistry {
     return abilities;
   }
 
-  @SuppressWarnings("all") // checker
   private void load() {
     final ScanResult result = ClassGraphUtils.getCachedScanResult();
     final ClassInfoList list = result.getClassesImplementing(Ability.class);
@@ -177,11 +176,9 @@ public final class AbilityRegistry {
     }
   }
 
-  @SuppressWarnings("all") // checker
-  private Ability invokeAbilityConstructor(final MethodHandle handle, final @Nullable Game game) {
+  private Ability invokeAbilityConstructor(final MethodHandle handle, final Game game) {
     try {
-      final MethodType type = handle.type();
-      return (Ability) handle.invoke(game);
+      return (Ability) handle.invoke(new Object[] { game });
     } catch (final Throwable e) {
       throw new AssertionError(e);
     }
