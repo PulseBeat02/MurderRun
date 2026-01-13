@@ -17,10 +17,14 @@
  */
 package me.brandonli.murderrun.game.map.event;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
+import me.brandonli.murderrun.game.GameMode;
+import me.brandonli.murderrun.game.freezetag.FreezeTagManager;
+import me.brandonli.murderrun.game.freezetag.FreezeTagReviveEvent;
 import me.brandonli.murderrun.game.map.GameMap;
 import org.bukkit.Server;
 import org.bukkit.event.HandlerList;
@@ -33,24 +37,31 @@ public final class GameEventManager {
 
   public GameEventManager(final GameMap map) {
     this.game = map.getGame();
-    this.events = Set.of(
-      new GamePlayerDeathEvent(this.game),
-      new GamePlayerPickupEvent(this.game),
-      new GamePlayerThrowEvent(this.game),
-      new GamePlayerLeaveEvent(this.game),
-      new GamePlayerHungerEvent(this.game),
-      new GamePlayerRegenEvent(this.game),
-      new GamePlayerBlockEvent(this.game),
-      new GameMobSpawnEvent(this.game),
-      new GamePlayerDismountEvent(this.game),
-      new GamePlayerTeleportEvent(this.game),
-      new GamePlayerChatEvent(this.game),
-      new GamePlayerBlockBlackList(this.game),
-      new GameBlockBreakEvent(this.game),
-      new GameEntityDeathEvent(this.game),
-      new GamePlayerArmorEvent(this.game),
-      new GamePlayerClickEvent(this.game)
-    );
+    final List<GameEvent> eventList = new ArrayList<>();
+    final FreezeTagManager manager = this.game.getFreezeTagManager();
+    eventList.add(new GamePlayerDeathEvent(this.game, manager));
+    eventList.add(new GamePlayerPickupEvent(this.game));
+    eventList.add(new GamePlayerThrowEvent(this.game));
+    eventList.add(new GamePlayerLeaveEvent(this.game));
+    eventList.add(new GamePlayerHungerEvent(this.game));
+    eventList.add(new GamePlayerRegenEvent(this.game));
+    eventList.add(new GamePlayerBlockEvent(this.game));
+    eventList.add(new GameMobSpawnEvent(this.game));
+    eventList.add(new GamePlayerDismountEvent(this.game));
+    eventList.add(new GamePlayerTeleportEvent(this.game));
+    eventList.add(new GamePlayerChatEvent(this.game));
+    eventList.add(new GamePlayerBlockBlackList(this.game));
+    eventList.add(new GameBlockBreakEvent(this.game));
+    eventList.add(new GameEntityDeathEvent(this.game));
+    eventList.add(new GamePlayerArmorEvent(this.game));
+    eventList.add(new GamePlayerClickEvent(this.game));
+
+    final GameMode mode = this.game.getMode();
+    if (mode == GameMode.FREEZE_TAG) {
+      eventList.add(new FreezeTagReviveEvent(this.game));
+    }
+
+    this.events = eventList;
   }
 
   public Game getGame() {

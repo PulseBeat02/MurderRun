@@ -23,10 +23,14 @@ import java.util.List;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
+import me.brandonli.murderrun.game.GameMode;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameResult;
+import me.brandonli.murderrun.game.freezetag.FreezeTagManager;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.Killer;
+import me.brandonli.murderrun.game.player.Survivor;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.death.PlayerDeathTool;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
@@ -48,8 +52,11 @@ import org.bukkit.inventory.ItemStack;
 
 public final class GamePlayerDeathEvent extends GameEvent {
 
-  public GamePlayerDeathEvent(final Game game) {
+  private final FreezeTagManager freezeTagManager;
+
+  public GamePlayerDeathEvent(final Game game, final FreezeTagManager manager) {
     super(game);
+    this.freezeTagManager = manager;
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -87,7 +94,6 @@ public final class GamePlayerDeathEvent extends GameEvent {
     player.setLastDeathLocation(current);
     event.setDroppedExp(0);
     event.setDeathMessage(null);
-    this.announcePlayerDeath(player);
     drops.clear();
 
     if (deathManager.checkDeathCancellation() && !isLogging) {
@@ -95,6 +101,14 @@ public final class GamePlayerDeathEvent extends GameEvent {
       return;
     }
 
+    final GameMode mode = game.getMode();
+    if (mode == GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor) {
+      if (this.handleFreezeTagDeath(event, survivor, game, manager)) {
+        return;
+      }
+    }
+
+    this.announcePlayerDeath(player);
     final PlayerDeathTool death = manager.getDeathManager();
     gamePlayer.setAlive(false);
     death.initiateDeathSequence(gamePlayer);
@@ -132,6 +146,44 @@ public final class GamePlayerDeathEvent extends GameEvent {
     if (this.allKillersDead()) {
       game.finishGame(GameResult.INNOCENTS);
     }
+  }
+
+  private boolean handleFreezeTagDeath(
+    final PlayerDeathEvent event,
+    final Survivor survivor,
+    final Game game,
+    final GamePlayerManager manager
+  ) {
+    final GameProperties properties = game.getProperties();
+    final int maxLives = properties.getFreezeTagSurvivorLives();
+    final int lives = survivor.getFreezeTagLives();
+    if (lives == 0) {
+      survivor.setFreezeTagLives(maxLives);
+    }
+
+    final int currentLives = survivor.getFreezeTagLives();
+    survivor.setFreezeTagLives(currentLives - 1);
+    if (survivor.getFreezeTagLives() > 0) {
+      event.setKeepInventory(true);
+      event.setDeathMessage(null);
+
+      final PlayerDeathTool death = manager.getDeathManager();
+      final Player player = survivor.getInternalPlayer();
+      final DeathManager deathManager = survivor.getDeathManager();
+      deathManager.setCorpse(death.spawnDeadNPC(player));
+
+      if (this.freezeTagManager != null) {
+        this.freezeTagManager.freezeSurvivor(survivor);
+        if (this.freezeTagManager.checkAllSurvivorsFrozen()) {
+          final Component message = Message.FREEZE_TAG_ALL_FROZEN.build();
+          manager.sendMessageToAllParticipants(message);
+          game.finishGame(GameResult.MURDERERS);
+        }
+      }
+      return true;
+    }
+
+    return false;
   }
 
   private void announcePlayerDeath(final Player dead) {

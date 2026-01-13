@@ -609,4 +609,13 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> EXPANDER_LORE = direct("murderrun.game.gadget.expander.lore");
   NullComponent<Sender> PLAYER_LIST_GUI_TITLE = direct("murderrun.gui.player.title");
   UniComponent<Sender, String> LOBBY_SCOREBOARD_MODE = direct("murderrun.lobby.scoreboard.mode", null);
+  NullComponent<Sender> FREEZE_TAG_FROZEN = direct("murderrun.game.freezetag.frozen");
+  NullComponent<Sender> FREEZE_TAG_REVIVED = direct("murderrun.game.freezetag.revived");
+  NullComponent<Sender> FREEZE_TAG_DIED = direct("murderrun.game.freezetag.died");
+  UniComponent<Sender, String> FREEZE_TAG_HOLOGRAM = direct("murderrun.game.freezetag.hologram", null);
+  UniComponent<Sender, String> FREEZE_TAG_WAITING = direct("murderrun.game.freezetag.waiting", null);
+  NullComponent<Sender> FREEZE_TAG_REVIVING_START = direct("murderrun.game.freezetag.reviving.start");
+  NullComponent<Sender> FREEZE_TAG_REVIVING_STOPPED = direct("murderrun.game.freezetag.reviving.stopped");
+  UniComponent<Sender, String> FREEZE_TAG_REVIVING_PROGRESS = direct("murderrun.game.freezetag.reviving.progress", null);
+  NullComponent<Sender> FREEZE_TAG_ALL_FROZEN = direct("murderrun.game.freezetag.all.frozen");
 }

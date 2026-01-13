@@ -69,7 +69,7 @@ public final class PlayerDeathTool {
     });
   }
 
-  private NPC spawnDeadNPC(final Player player) {
+  public NPC spawnDeadNPC(final Player player) {
     final GameExtensionManager extensionManager = this.game.getExtensionManager();
     final CitizensManager manager = extensionManager.getNPCManager();
     final NPCRegistry registry = manager.getRegistry();

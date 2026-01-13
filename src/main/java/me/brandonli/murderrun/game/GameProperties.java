@@ -45,8 +45,16 @@ public final class GameProperties {
     this.bundle = new GameBundle(name);
   }
 
+  public int getFreezeTagReviveRadius() {
+    return this.num("freeze_tag.revive.radius");
+  }
+
+  public int getFreezeTagReviveTimer() {
+    return this.num("freeze_tag.revive.timer");
+  }
+
   public int getFreezeTagSurvivorLives() {
-    return this.num("freeze_tag.revive.time");
+    return this.num("freeze_tag.lives");
   }
 
   public int getFreezeTagRevivalTime() {
