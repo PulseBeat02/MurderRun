@@ -97,7 +97,10 @@ public final class GameManager {
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
       if (!playerManager.isGameFull() && !playerManager.isLocked()) {
-        playerManager.addParticipantToLobby(player, false);
+        final PreGameManager preGameManager = playerManager.getManager();
+        final GameMode mode = preGameManager.getMode();
+        final boolean defaultAsKiller = mode == GameMode.ONE_BOUNCE;
+        playerManager.addParticipantToLobby(player, defaultAsKiller);
         return true;
       }
     }
@@ -135,9 +138,9 @@ public final class GameManager {
     this.sendGameCreationMessage(leader);
     final int finalMin = Math.clamp(min, 2, Integer.MAX_VALUE);
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
-    final PreGameManager manager = new PreGameManager(this.plugin, this, id, listener);
+    final PreGameManager manager = new PreGameManager(this.plugin, this, id, mode, listener);
     this.setSettings(manager, arenaName, lobbyName);
-    return manager.initialize(leader, mode, finalMin, finalMax, quickJoinable).thenApply(ignored -> manager);
+    return manager.initialize(leader, finalMin, finalMax, quickJoinable).thenApply(ignored -> manager);
   }
 
   private void sendGameCreationMessage(final CommandSender leader) {

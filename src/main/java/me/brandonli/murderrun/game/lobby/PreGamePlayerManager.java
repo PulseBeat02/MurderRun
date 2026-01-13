@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.PlayerResourcePackChecker;
@@ -56,6 +57,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class PreGamePlayerManager {
 
   private final PreGameManager manager;
+  private final Collection<Player> survivors;
   private final Collection<Player> murderers;
   private final Collection<Player> participants;
   private final CommandSender leader;
@@ -79,6 +81,7 @@ public final class PreGamePlayerManager {
     final boolean quickJoinable
   ) {
     this.manager = manager;
+    this.survivors = Collections.synchronizedSet(new HashSet<>());
     this.murderers = Collections.synchronizedSet(new HashSet<>());
     this.participants = Collections.synchronizedSet(new HashSet<>());
     this.leader = leader;
@@ -149,6 +152,7 @@ public final class PreGamePlayerManager {
   }
 
   public void removeParticipantFromLobby(final Player player) {
+    this.survivors.remove(player);
     this.murderers.remove(player);
     this.participants.remove(player);
     this.scoreboard.updateScoreboard();
@@ -160,6 +164,7 @@ public final class PreGamePlayerManager {
   }
 
   public void removeParticipantFromGameInternal(final Player player) {
+    this.survivors.remove(player);
     this.murderers.remove(player);
     this.participants.remove(player);
     this.clearInventory(player);
@@ -252,6 +257,8 @@ public final class PreGamePlayerManager {
     if (killer) {
       this.murderers.add(player);
       this.giveSpecialItems(player);
+    } else {
+      this.survivors.add(player);
     }
     this.addCurrency(player, killer);
     this.giveEmptyAbility(player);
@@ -301,19 +308,37 @@ public final class PreGamePlayerManager {
     return this.isLeader(player);
   }
 
-  public void assignKiller() {
-    if (this.murderers.isEmpty()) {
-      synchronized (this.participants) {
-        final int size = this.participants.size();
-        if (size == 0) {
-          return;
+  public void assignRoles() {
+    final GameMode mode = this.manager.getMode();
+    if (mode == GameMode.DEFAULT) {
+      if (this.murderers.isEmpty()) {
+        synchronized (this.participants) {
+          final int size = this.participants.size();
+          if (size == 0) {
+            return;
+          }
+          final int index = RandomUtils.generateInt(size);
+          final Player random = Iterables.get(this.participants, index);
+          final Component msg = Message.KILLER_ASSIGN.build();
+          final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
+          this.setPlayerToMurderer(random);
+          random.sendMessage(raw);
         }
-        final int index = RandomUtils.generateInt(size);
-        final Player random = Iterables.get(this.participants, index);
-        final Component msg = Message.KILLER_ASSIGN.build();
-        final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
-        this.setPlayerToMurderer(random);
-        random.sendMessage(raw);
+      }
+    } else if (mode == GameMode.ONE_BOUNCE) {
+      if (this.survivors.isEmpty()) {
+        synchronized (this.participants) {
+          final int size = this.participants.size();
+          if (size == 0) {
+            return;
+          }
+          final int index = RandomUtils.generateInt(size);
+          final Player random = Iterables.get(this.participants, index);
+          final Component msg = Message.SURVIVOR_ASSIGN.build();
+          final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
+          this.setPlayerToInnocent(random);
+          random.sendMessage(raw);
+        }
       }
     }
   }
@@ -321,6 +346,10 @@ public final class PreGamePlayerManager {
   public boolean isEnoughPlayers() {
     final int current = this.getCurrentPlayerCount();
     return current >= 2;
+  }
+
+  public Collection<Player> getSurvivors() {
+    return this.survivors;
   }
 
   public Collection<Player> getMurderers() {

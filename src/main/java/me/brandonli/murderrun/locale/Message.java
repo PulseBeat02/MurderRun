@@ -575,7 +575,8 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> SCOREBOARD_OBJECTIVE_SURVIVOR = direct("murderrun.game.scoreboard.objective.survivor");
   NullComponent<Sender> SCOREBOARD_OBJECTIVE_KILLER = direct("murderrun.game.scoreboard.objective.killer");
   UniComponent<Sender, Integer> SCOREBOARD_PARTS = direct("murderrun.game.scoreboard.parts", null);
-  NullComponent<Sender> KILLER_ASSIGN = direct("murderrun.game.role.assign");
+  NullComponent<Sender> SURVIVOR_ASSIGN = direct("murderrun.game.role.assign.survivor");
+  NullComponent<Sender> KILLER_ASSIGN = direct("murderrun.game.role.assign.killer");
   NullComponent<Sender> LOBBY_TIMER_CANCEL = direct("murderrun.lobby.timer.cancel");
   NullComponent<Sender> LOBBY_SCOREBOARD_TITLE = direct("murdderun.lobby.scoreboard.title");
   UniComponent<Sender, String> LOBBY_SCOREBOARD_ARENA = direct("murderrun.lobby.scoreboard.arena", null);
@@ -607,4 +608,5 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> EXPANDER_NAME = direct("murderrun.game.gadget.expander.name");
   NullComponent<Sender> EXPANDER_LORE = direct("murderrun.game.gadget.expander.lore");
   NullComponent<Sender> PLAYER_LIST_GUI_TITLE = direct("murderrun.gui.player.title");
+  UniComponent<Sender, String> LOBBY_SCOREBOARD_MODE = direct("murderrun.lobby.scoreboard.mode", null);
 }
