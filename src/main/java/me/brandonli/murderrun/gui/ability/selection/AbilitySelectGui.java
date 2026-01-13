@@ -107,6 +107,7 @@ public final class AbilitySelectGui extends PaginatedGui {
 
     final HumanEntity entity = event.getWhoClicked();
     final PlayerInventory inventory = entity.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] contents = inventory.getContents();
     for (final ItemStack content : contents) {
       if (!PDCUtils.isAbility(content)) {

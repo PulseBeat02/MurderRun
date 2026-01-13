@@ -359,6 +359,7 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void setAbilityCooldowns(final String ability, final int seconds) {
     final PlayerInventory inventory = this.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] items = inventory.getContents();
     for (final ItemStack item : items) {
       if (!PDCUtils.isAbility(item)) {
@@ -375,6 +376,7 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public boolean hasAbility(final String ability) {
     final PlayerInventory inventory = this.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] items = inventory.getContents();
     for (final ItemStack item : items) {
       if (!PDCUtils.isAbility(item)) {

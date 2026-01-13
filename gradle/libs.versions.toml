@@ -12,7 +12,7 @@ hibernateCore = "7.0.0.Beta1"
 h2 = "2.4.240"
 byteBuddy = "1.18.3"
 byteBuddyAgent = "1.18.3"
-spigotApi = "1.21.11-R0.1-SNAPSHOT"
+paperApi = "1.21.11-R0.1-SNAPSHOT"
 fastutil = "5.0.9"
 nettyAll = "4.1.97.Final"
 placeholderapi = "2.11.7"
@@ -49,7 +49,7 @@ hibernateCore = { group = "org.hibernate.orm", name = "hibernate-core", version.
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 byteBuddy = { group = "net.bytebuddy", name = "byte-buddy", version.ref = "byteBuddy" }
 byteBuddyAgent = { group = "net.bytebuddy", name = "byte-buddy-agent", version.ref = "byteBuddyAgent" }
-spigotApi = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigotApi" }
+paperApi = { group = "io.papermc.paper", name = "paper-api", version.ref = "paperApi" }
 fastutil = { group = "fastutil", name = "fastutil", version.ref = "fastutil" }
 nettyAll = { group = "io.netty", name = "netty-all", version.ref = "nettyAll" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }

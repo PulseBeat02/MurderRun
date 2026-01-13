@@ -345,6 +345,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   private void clearWands() {
     final Player player = (Player) this.watcher;
     final PlayerInventory inv = player.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] contents = inv.getContents();
     for (final ItemStack item : contents) {
       if (PDCUtils.isWand(item)) {

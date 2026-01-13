@@ -65,7 +65,9 @@ public final class ScreenUtils {
     TRACKED_PLAYERS.add(player);
     final PlayerInventory inv = player.getInventory();
     final GameMode gm = player.getGameMode();
+    @SuppressWarnings("all") // checker
     final ItemStack[] invIs1 = inv.getContents();
+    @SuppressWarnings("all") // checker
     final ItemStack[] invIs2 = inv.getArmorContents();
     final double invHealth = player.getHealthScale();
     final int invFood = player.getFoodLevel();

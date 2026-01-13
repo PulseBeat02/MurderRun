@@ -99,8 +99,7 @@ public final class GameManager {
       if (!playerManager.isGameFull() && !playerManager.isLocked()) {
         final PreGameManager preGameManager = playerManager.getManager();
         final GameMode mode = preGameManager.getMode();
-        final boolean defaultAsKiller = mode == GameMode.ONE_BOUNCE;
-        playerManager.addParticipantToLobby(player, defaultAsKiller);
+        playerManager.addParticipantToLobby(player, false);
         return true;
       }
     }
@@ -120,8 +119,7 @@ public final class GameManager {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
     return this.createClampedGame(leader, id, mode, arenaName, lobbyName, min, max, quickJoinable, listener)
       .thenAccept(manager -> this.addGameToRegistry(id, manager))
-      .thenAccept(manager -> this.autoJoinIfLeaderPlayer(leader, id))
-      .thenApply(manager -> manager);
+      .thenRun(() -> this.autoJoinIfLeaderPlayer(leader, id));
   }
 
   private CompletableFuture<PreGameManager> createClampedGame(

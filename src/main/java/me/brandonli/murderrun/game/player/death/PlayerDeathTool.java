@@ -103,6 +103,7 @@ public final class PlayerDeathTool {
 
   private void summonCarParts(final Player player) {
     final PlayerInventory inventory = player.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] slots = inventory.getContents();
     for (final ItemStack slot : slots) {
       if (!PDCUtils.isCarPart(slot)) {

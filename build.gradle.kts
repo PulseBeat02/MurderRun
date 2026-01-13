@@ -71,7 +71,7 @@ dependencies {
     annotationProcessor(libs.cloudAnnotations)
 
     // Provided Dependencies
-    compileOnly(libs.spigotApi)
+    compileOnly(libs.paperApi)
     compileOnly(libs.fastutil)
     compileOnly(libs.nettyAll)
     runtimeDeps.forEach(::implementation)

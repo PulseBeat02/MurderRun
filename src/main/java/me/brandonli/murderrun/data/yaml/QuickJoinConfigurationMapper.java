@@ -101,7 +101,6 @@ public final class QuickJoinConfigurationMapper {
 
   public GameMode[] getGameModes(final FileConfiguration config) {
     final List<String> modes = config.getStringList(GAME_MODES);
-    System.out.println(modes);
     return modes.stream().map(GameMode::fromString).filter(Optional::isPresent).map(Optional::get).toArray(GameMode[]::new);
   }
 

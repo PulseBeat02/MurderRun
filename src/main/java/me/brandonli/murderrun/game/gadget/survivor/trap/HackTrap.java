@@ -62,6 +62,7 @@ public final class HackTrap extends SurvivorTrap {
   }
 
   private @Nullable ItemStack getSword(final PlayerInventory inventory) {
+    @SuppressWarnings("all") // checker
     final ItemStack[] slots = inventory.getContents();
     ItemStack find = null;
     for (final ItemStack stack : slots) {

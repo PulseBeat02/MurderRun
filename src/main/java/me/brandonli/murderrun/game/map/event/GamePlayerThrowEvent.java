@@ -151,6 +151,7 @@ public final class GamePlayerThrowEvent extends GameEvent {
 
   private boolean checkIfPlayerStillHasCarPart(final Player thrower) {
     final PlayerInventory inventory = thrower.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] contents = inventory.getContents();
     for (final ItemStack slot : contents) {
       if (PDCUtils.isCarPart(slot)) {

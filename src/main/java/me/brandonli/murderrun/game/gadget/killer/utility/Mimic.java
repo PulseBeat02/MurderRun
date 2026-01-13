@@ -58,6 +58,7 @@ public final class Mimic extends KillerGadget {
     disguiseManager.disguisePlayerAsOtherPlayer(player, survivor);
 
     final PlayerInventory otherInventory = survivor.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] armor = otherInventory.getArmorContents();
 
     final PlayerInventory thisInventory = player.getInventory();

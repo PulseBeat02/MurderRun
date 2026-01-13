@@ -115,8 +115,8 @@ public final class MapUtils {
     final World world = new WorldCreator(name).environment(environment).generator(generator).createWorld();
     requireNonNull(world);
 
-    final Registry<GameRule> gameRuleRegistry = Registry.GAME_RULE;
-    for (final GameRule gameRule : gameRuleRegistry) {
+    final Registry<@NotNull GameRule<?>> gameRuleRegistry = Registry.GAME_RULE;
+    for (final GameRule<?> gameRule : gameRuleRegistry) {
       copyRule(copy, world, gameRule);
     }
 
@@ -133,17 +133,9 @@ public final class MapUtils {
   }
 
   private static <T> void copyRule(final World old, final World after, final GameRule<T> rule) {
-    final NamespacedKey key = rule.getKeyOrThrow();
-    final Registry<GameRule> gameRuleRegistry = Registry.GAME_RULE;
-    boolean found = false;
-    for (final GameRule<?> gameRule : gameRuleRegistry) {
-      final NamespacedKey otherKey = gameRule.getKeyOrThrow();
-      if (key.equals(otherKey)) {
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
+    final NamespacedKey key = rule.getKey();
+    final String name = key.getKey();
+    if (!old.isGameRule(name)) {
       return;
     }
     final T value = old.getGameRuleValue(rule);
@@ -350,7 +342,7 @@ public final class MapUtils {
     buffer.get(worldBytes);
 
     final String worldName = new String(worldBytes, StandardCharsets.UTF_8);
-    final World world = Bukkit.getWorld(worldName);
+    final World world = requireNonNull(Bukkit.getWorld(worldName));
     final double x = buffer.getDouble();
     final double y = buffer.getDouble();
     final double z = buffer.getDouble();

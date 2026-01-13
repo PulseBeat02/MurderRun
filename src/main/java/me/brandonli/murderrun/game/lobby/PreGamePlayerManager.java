@@ -20,10 +20,7 @@ package me.brandonli.murderrun.game.lobby;
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.Iterables;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
@@ -310,7 +307,7 @@ public final class PreGamePlayerManager {
 
   public void assignRoles() {
     final GameMode mode = this.manager.getMode();
-    if (mode == GameMode.DEFAULT) {
+    if (mode == GameMode.DEFAULT || mode == GameMode.FREEZE_TAG) {
       if (this.murderers.isEmpty()) {
         synchronized (this.participants) {
           final int size = this.participants.size();
@@ -326,7 +323,7 @@ public final class PreGamePlayerManager {
         }
       }
     } else if (mode == GameMode.ONE_BOUNCE) {
-      if (this.survivors.isEmpty()) {
+      if (this.murderers.isEmpty()) { // assign roles by default
         synchronized (this.participants) {
           final int size = this.participants.size();
           if (size == 0) {
@@ -336,8 +333,14 @@ public final class PreGamePlayerManager {
           final Player random = Iterables.get(this.participants, index);
           final Component msg = Message.SURVIVOR_ASSIGN.build();
           final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
-          this.setPlayerToInnocent(random);
           random.sendMessage(raw);
+          final List<Player> snapshot = new ArrayList<>(this.participants);
+          for (final Player player : snapshot) {
+            if (player == random) {
+              continue;
+            }
+            this.setPlayerToMurderer(player);
+          }
         }
       }
     }

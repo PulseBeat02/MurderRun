@@ -43,10 +43,7 @@ import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
-import org.bukkit.GameRule;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
 
@@ -73,10 +70,10 @@ public final class GameStartupTool {
     final World world = requireNonNull(spawnLocation.getWorld());
     world.setTime(13000);
 
-    world.setGameRule(GameRule.ADVANCE_TIME, false);
-    world.setGameRule(GameRule.IMMEDIATE_RESPAWN, true);
-    world.setGameRule(GameRule.SPAWN_PHANTOMS, false);
-    world.setGameRule(GameRule.SHOW_ADVANCEMENT_MESSAGES, false);
+    world.setGameRule(GameRules.ADVANCE_TIME, false);
+    world.setGameRule(GameRules.IMMEDIATE_RESPAWN, true);
+    world.setGameRule(GameRules.SPAWN_PHANTOMS, false);
+    world.setGameRule(GameRules.SHOW_ADVANCEMENT_MESSAGES, false);
   }
 
   private void teleportInnocentPlayers() {

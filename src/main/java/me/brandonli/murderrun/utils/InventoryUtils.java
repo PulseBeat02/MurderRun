@@ -57,6 +57,7 @@ public final class InventoryUtils {
 
   public static ItemStack[] getAllSlotsOnScreen(final Player player) {
     final PlayerInventory inventory = player.getInventory();
+    @SuppressWarnings("all") // checker
     final ItemStack[] contents = inventory.getContents();
     final ItemStack cursor = player.getItemOnCursor();
     final ItemStack[] slots = new ItemStack[contents.length + 1];
@@ -66,6 +67,7 @@ public final class InventoryUtils {
   }
 
   public static boolean consumeStack(final PlayerInventory inventory, final ItemStack stack) {
+    @SuppressWarnings("all") // checker
     final ItemStack[] contents = inventory.getContents();
     for (int i = 0; i < contents.length; i++) {
       final ItemStack item = contents[i];
