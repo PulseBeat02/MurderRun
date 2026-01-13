@@ -91,15 +91,16 @@ public final class KillerLocationTracker {
       }
 
       if (!survivorPlayer.getHeardSound()) {
-        audience.playSound("ambient.cave");
+        audience.playSound(properties.getKillerNearSound());
         survivorPlayer.setHeardSound(true);
+        continue;
       }
 
       final StrictPlayerReference reference = StrictPlayerReference.of(survivorPlayer);
       audience.playSound(Sounds.HEARTBEAT);
       if (distanceSquared < halfRadiusSquared) {
         final Location clone = location.clone().add(0, 1, 0);
-        world.spawnParticle(Particle.DUST, clone, 15, 1, 1, 1, new DustOptions(Color.WHITE, 4));
+        world.spawnParticle(Particle.DUST, clone, 15, 1, 1, 1, new DustOptions(Color.WHITE, 3));
         this.sendVeryCloseEffects(scheduler, audience, reference);
       } else {
         this.sendCloseEffects(audience, scheduler, reference);

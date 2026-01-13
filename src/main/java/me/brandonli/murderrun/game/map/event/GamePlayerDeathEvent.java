@@ -41,6 +41,7 @@ import me.brandonli.murderrun.game.statistics.StatisticsManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import me.brandonli.murderrun.utils.ComponentUtils;
+import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.damage.DamageSource;
@@ -75,27 +76,14 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final GameScheduler scheduler = game.getScheduler();
     final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
 
-    // Handle freeze tag respawn
-    final me.brandonli.murderrun.game.GameMode mode = game.getMode();
-    if (mode == me.brandonli.murderrun.game.GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor && survivor.isFrozen()) {
-      // Teleport player to their corpse location
-      final net.citizensnpcs.api.npc.NPC corpse = deathManager.getCorpse();
+    final GameMode mode = game.getMode();
+    if (mode == GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor && survivor.isFrozen()) {
+      final NPC corpse = deathManager.getCorpse();
       if (corpse != null && corpse.getEntity() != null) {
-        final Location corpseLocation = corpse.getEntity().getLocation();
+        final Entity entity = corpse.getEntity();
+        final Location corpseLocation = entity.getLocation();
         event.setRespawnLocation(corpseLocation);
-
-        // Keep them frozen at the corpse
-        scheduler.scheduleTask(
-          () -> {
-            player.teleport(corpseLocation);
-            player.setGameMode(org.bukkit.GameMode.ADVENTURE);
-            player.setWalkSpeed(0f);
-            player.setFlySpeed(0f);
-            player.setAllowFlight(false);
-          },
-          1L,
-          reference
-        );
+        scheduler.scheduleTask(() -> player.teleport(corpseLocation), 5L, reference);
       }
     }
 
@@ -189,15 +177,18 @@ public final class GamePlayerDeathEvent extends GameEvent {
     }
 
     final int currentLives = survivor.getFreezeTagLives();
-    survivor.setFreezeTagLives(currentLives - 1);
-    if (survivor.getFreezeTagLives() > 0) {
+    final int remaining = currentLives - 1;
+    survivor.setFreezeTagLives(remaining);
+
+    if (remaining > 0) {
       event.setKeepInventory(true);
       event.deathMessage(null);
 
       final PlayerDeathTool death = manager.getDeathManager();
       final Player player = survivor.getInternalPlayer();
       final DeathManager deathManager = survivor.getDeathManager();
-      deathManager.setCorpse(death.spawnDeadNPC(player));
+      final NPC npc = death.spawnDeadNPC(player);
+      deathManager.setCorpse(npc);
 
       if (this.freezeTagManager != null) {
         final GameScheduler scheduler = game.getScheduler();

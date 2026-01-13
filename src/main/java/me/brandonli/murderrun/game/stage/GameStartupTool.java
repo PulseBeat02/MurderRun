@@ -177,7 +177,7 @@ public final class GameStartupTool {
     final GameScheduler scheduler = this.game.getScheduler();
     final GamePlayerManager manager = this.game.getPlayerManager();
     final Consumer<GamePlayer> sound = gamePlayer -> {
-      final Key key = Sounds.BACKGROUND.getKey();
+      final Key key = Sounds.AMBIENCE.getKey();
       final PlayerAudience audience = gamePlayer.getAudience();
       audience.playSound(key, Source.MASTER, 0.01f, 1.0f);
     };
