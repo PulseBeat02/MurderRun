@@ -77,25 +77,26 @@ public final class FreezeTagReviveEvent extends GameEvent {
 
     final boolean isSneaking = event.isSneaking();
     final Location playerLoc = player.getLocation();
-    final Survivor nearbyFrozen = this.findNearbyFrozenSurvivor(playerLoc);
-    if (nearbyFrozen == null) {
+    final Optional<Survivor> nearbyFrozen = this.findNearbyFrozenSurvivor(playerLoc);
+    if (nearbyFrozen.isEmpty()) {
       if (!isSneaking && survivor.getRevivingPlayer() != null) {
         this.findRevivingTarget(survivor).ifPresent(this.freezeTagManager::stopRevive);
       }
       return;
     }
 
-    final UUID reviving = nearbyFrozen.getRevivingPlayer();
+    final Survivor nearbyFrozenSurvivor = nearbyFrozen.get();
+    final UUID reviving = nearbyFrozenSurvivor.getRevivingPlayer();
     if (isSneaking) {
       if (reviving == null) {
-        this.freezeTagManager.startRevive(nearbyFrozen, survivor);
+        this.freezeTagManager.startRevive(nearbyFrozenSurvivor, survivor);
       }
       final GameScheduler scheduler = game.getScheduler();
       final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
       scheduler.scheduleTask(
         () -> {
-          if (player.isSneaking() && this.isNearCorpse(player.getLocation(), nearbyFrozen)) {
-            this.freezeTagManager.updateRevive(nearbyFrozen);
+          if (player.isSneaking() && this.isNearCorpse(player.getLocation(), nearbyFrozenSurvivor)) {
+            this.freezeTagManager.updateRevive(nearbyFrozenSurvivor);
           }
         },
         10L,
@@ -104,7 +105,7 @@ public final class FreezeTagReviveEvent extends GameEvent {
     } else {
       final UUID survivorUUID = survivor.getUUID();
       if (reviving != null && reviving.equals(survivorUUID)) {
-        this.freezeTagManager.stopRevive(nearbyFrozen);
+        this.freezeTagManager.stopRevive(nearbyFrozenSurvivor);
       }
     }
   }
@@ -121,7 +122,7 @@ public final class FreezeTagReviveEvent extends GameEvent {
       .findFirst();
   }
 
-  private Survivor findNearbyFrozenSurvivor(final Location location) {
+  private Optional<Survivor> findNearbyFrozenSurvivor(final Location location) {
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
     return manager
@@ -130,8 +131,7 @@ public final class FreezeTagReviveEvent extends GameEvent {
       .map(s -> (Survivor) s)
       .filter(Survivor::isFrozen)
       .filter(s -> this.isNearCorpse(location, s))
-      .findFirst()
-      .orElse(null);
+      .findFirst();
   }
 
   private boolean isNearCorpse(final Location playerLoc, final Survivor frozen) {

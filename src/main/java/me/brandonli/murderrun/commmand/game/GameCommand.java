@@ -134,7 +134,10 @@ public final class GameCommand implements AnnotationCommandFeature {
 
   @Permission("murderrun.command.game.create")
   @CommandDescription("murderrun.command.game.create.info")
-  @Command(value = "murder game create <arenaName> <lobbyName> <id> <min> <max> <quickJoinable>", requiredSender = CommandSender.class)
+  @Command(
+    value = "murder game create <arenaName> <lobbyName> <id> <mode> <min> <max> <quickJoinable>",
+    requiredSender = CommandSender.class
+  )
   public void createGame(
     final CommandSender sender,
     @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,

@@ -35,12 +35,13 @@ public final class GameBundle {
 
   private static final String GADGETS_PROPERTIES = "%s.game.properties";
 
+  private final String file;
   private final ResourceBundle bundle;
 
   public GameBundle(final String name) {
-    final String file = GADGETS_PROPERTIES.formatted(name);
+    this.file = GADGETS_PROPERTIES.formatted(name);
     final Path pluginDataFolder = IOUtils.getPluginDataFolderPath();
-    final Path resourcePath = pluginDataFolder.resolve(file);
+    final Path resourcePath = pluginDataFolder.resolve(this.file);
     this.bundle = this.loadGadgetProperties(resourcePath);
   }
 
@@ -83,7 +84,8 @@ public final class GameBundle {
 
   private void checkExistence(@UnderInitialization GameBundle this, final Path resourcePath) throws IOException {
     if (IOUtils.createFile(resourcePath)) {
-      try (final InputStream in = IOUtils.getResourceAsStream(GADGETS_PROPERTIES)) {
+      final String file = requireNonNull(this.file);
+      try (final InputStream in = IOUtils.getResourceAsStream(file)) {
         Files.copy(in, resourcePath, StandardCopyOption.REPLACE_EXISTING);
       }
     }

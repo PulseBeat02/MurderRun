@@ -23,6 +23,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -100,7 +101,8 @@ public final class QuickJoinConfigurationMapper {
 
   public GameMode[] getGameModes(final FileConfiguration config) {
     final List<String> modes = config.getStringList(GAME_MODES);
-    return modes.stream().map(GameMode::valueOf).toArray(GameMode[]::new);
+    System.out.println(modes);
+    return modes.stream().map(GameMode::fromString).filter(Optional::isPresent).map(Optional::get).toArray(GameMode[]::new);
   }
 
   private boolean getEnabled(final FileConfiguration config) {

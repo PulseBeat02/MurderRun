@@ -189,7 +189,8 @@ public final class FreezeTagManager {
       return;
     }
 
-    if (frozen.getRevivingPlayer() != null) {
+    final UUID reviving = frozen.getRevivingPlayer();
+    if (reviving != null) {
       return;
     }
 

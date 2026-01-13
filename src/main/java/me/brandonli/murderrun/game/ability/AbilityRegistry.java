@@ -32,6 +32,7 @@ import me.brandonli.murderrun.utils.ClassGraphUtils;
 import org.bukkit.Server;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
@@ -150,7 +151,9 @@ public final class AbilityRegistry {
   private void handleAbilityClass(final Class<?> clazz) {
     try {
       final MethodHandle handle = this.getMethodHandleClass(clazz);
-      final Ability ability = this.invokeAbilityConstructor(handle, null);
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+      final Game dummy = new Game(plugin, GameProperties.DEFAULT); // dummy for init only
+      final Ability ability = this.invokeAbilityConstructor(handle, dummy);
       final String name = ability.getId();
       if (this.disabled.contains(name)) {
         return;

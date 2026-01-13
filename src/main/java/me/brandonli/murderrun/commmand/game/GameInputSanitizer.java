@@ -17,9 +17,11 @@
  */
 package me.brandonli.murderrun.commmand.game;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
+import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameStatus;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.arena.ArenaManager;
@@ -126,6 +128,15 @@ public final class GameInputSanitizer {
     final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isEnoughPlayers()) {
       audience.sendMessage(Message.GAME_LOW_PLAYER_COUNT_ERROR.build());
+      return true;
+    }
+    return false;
+  }
+
+  public boolean checkIfGameModeExists(final Audience audience, final String modeName) {
+    final Optional<GameMode> mode = GameMode.fromString(modeName);
+    if (mode.isEmpty()) {
+      audience.sendMessage(Message.GAME_MODE_ERROR.build());
       return true;
     }
     return false;

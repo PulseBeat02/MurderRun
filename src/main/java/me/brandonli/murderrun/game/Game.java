@@ -61,6 +61,12 @@ public final class Game {
     this.status = new GameStatus(this);
   }
 
+  @SuppressWarnings("all") // checker
+  public Game(final MurderRun plugin, final GameProperties properties) {
+    this.properties = properties;
+    this(plugin);
+  }
+
   public void startGame(
     final GameProperties properties,
     final GameMode mode,
@@ -192,6 +198,6 @@ public final class Game {
   }
 
   public GameMode getMode() {
-    return mode;
+    return this.mode;
   }
 }

@@ -62,7 +62,7 @@ public final class PreGameManager {
   }
 
   public CompletableFuture<Void> initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
-    this.properties = mode.getProperties();
+    this.properties = this.mode.getProperties();
     this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.events = new PreGameEvents(this);
     this.mapSchematicIO = new MapSchematicIO(this, this.settings, this.uuid);
@@ -75,7 +75,7 @@ public final class PreGameManager {
     final Collection<Player> players = this.manager.getParticipants();
     final Collection<Player> killers = this.manager.getMurderers();
     this.manager.assignRoles();
-    this.game.startGame(this.properties, this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
+    this.game.startGame(this.properties, this.mode, this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
     this.shutdown(false);
   }
 

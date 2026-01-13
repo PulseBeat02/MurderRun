@@ -25,6 +25,7 @@ import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Survivor extends GamePlayer {
 
@@ -42,7 +43,7 @@ public final class Survivor extends GamePlayer {
   private int carPartsRetrieved;
   private int freezeTagLives;
 
-  private UUID revivingPlayer;
+  private @Nullable UUID revivingPlayer;
 
   private final Collection<Item> glowingCarParts;
   private final Collection<GamePlayer> glowingKillers;
@@ -153,11 +154,11 @@ public final class Survivor extends GamePlayer {
     this.frozenTime = time;
   }
 
-  public UUID getRevivingPlayer() {
+  public @Nullable UUID getRevivingPlayer() {
     return this.revivingPlayer;
   }
 
-  public void setRevivingPlayer(final UUID uuid) {
+  public void setRevivingPlayer(final @Nullable UUID uuid) {
     this.revivingPlayer = uuid;
   }
 

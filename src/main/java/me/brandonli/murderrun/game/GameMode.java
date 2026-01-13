@@ -17,17 +17,31 @@
  */
 package me.brandonli.murderrun.game;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Map;
+import java.util.Optional;
+
 public enum GameMode {
-  DEFAULT("default", GameProperties.DEFAULT),
-  ONE_BOUNCE("one_bounce", GameProperties.ONE_BOUNCE),
-  FREEZE_TAG("freeze_tag", GameProperties.FREEZE_TAG);
+  DEFAULT("default"),
+  ONE_BOUNCE("one_bounce"),
+  FREEZE_TAG("freeze_tag");
+
+  private static final Map<String, GameMode> KEY_LOOKUP = Map.of(
+    DEFAULT.modeName,
+    DEFAULT,
+    ONE_BOUNCE.modeName,
+    ONE_BOUNCE,
+    FREEZE_TAG.modeName,
+    FREEZE_TAG
+  );
+
+  private static Map<GameMode, GameProperties> PROPERTIES_LOOKUP;
 
   private final String modeName;
-  private final GameProperties properties;
 
-  GameMode(final String modeName, final GameProperties properties) {
+  GameMode(final String modeName) {
     this.modeName = modeName;
-    this.properties = properties;
   }
 
   public String getModeName() {
@@ -35,6 +49,22 @@ public enum GameMode {
   }
 
   public GameProperties getProperties() {
-    return this.properties;
+    if (PROPERTIES_LOOKUP == null) { // lazily load the properties
+      PROPERTIES_LOOKUP = Map.of(
+        DEFAULT,
+        new GameProperties(DEFAULT),
+        ONE_BOUNCE,
+        new GameProperties(ONE_BOUNCE),
+        FREEZE_TAG,
+        new GameProperties(FREEZE_TAG)
+      );
+    }
+    return requireNonNull(PROPERTIES_LOOKUP.get(this));
+  }
+
+  public static Optional<GameMode> fromString(final String modeName) {
+    final String lower = modeName.toLowerCase();
+    final GameMode mode = KEY_LOOKUP.get(lower);
+    return Optional.ofNullable(mode);
   }
 }

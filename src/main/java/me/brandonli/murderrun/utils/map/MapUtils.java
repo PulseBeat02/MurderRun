@@ -115,9 +115,9 @@ public final class MapUtils {
     final World world = new WorldCreator(name).environment(environment).generator(generator).createWorld();
     requireNonNull(world);
 
-    final GameRule<?>[] rules = GameRule.values();
-    for (final GameRule<?> rule : rules) {
-      copyRule(copy, world, rule);
+    final Registry<GameRule> gameRuleRegistry = Registry.GAME_RULE;
+    for (final GameRule gameRule : gameRuleRegistry) {
+      copyRule(copy, world, gameRule);
     }
 
     Difficulty oldDifficulty = copy.getDifficulty();
@@ -133,8 +133,17 @@ public final class MapUtils {
   }
 
   private static <T> void copyRule(final World old, final World after, final GameRule<T> rule) {
-    final String name = rule.getName();
-    if (!old.isGameRule(name)) {
+    final NamespacedKey key = rule.getKeyOrThrow();
+    final Registry<GameRule> gameRuleRegistry = Registry.GAME_RULE;
+    boolean found = false;
+    for (final GameRule<?> gameRule : gameRuleRegistry) {
+      final NamespacedKey otherKey = gameRule.getKeyOrThrow();
+      if (key.equals(otherKey)) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
       return;
     }
     final T value = old.getGameRuleValue(rule);

@@ -618,4 +618,5 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> FREEZE_TAG_REVIVING_STOPPED = direct("murderrun.game.freezetag.reviving.stopped");
   UniComponent<Sender, String> FREEZE_TAG_REVIVING_PROGRESS = direct("murderrun.game.freezetag.reviving.progress", null);
   NullComponent<Sender> FREEZE_TAG_ALL_FROZEN = direct("murderrun.game.freezetag.all.frozen");
+  NullComponent<Sender> GAME_MODE_ERROR = direct("murderrun.command.game.mode.error");
 }

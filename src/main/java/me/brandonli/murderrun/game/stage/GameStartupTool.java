@@ -72,10 +72,11 @@ public final class GameStartupTool {
     final Location spawnLocation = arena.getSpawn();
     final World world = requireNonNull(spawnLocation.getWorld());
     world.setTime(13000);
-    world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-    world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-    world.setGameRule(GameRule.DO_INSOMNIA, false);
-    world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+
+    world.setGameRule(GameRule.ADVANCE_TIME, false);
+    world.setGameRule(GameRule.IMMEDIATE_RESPAWN, true);
+    world.setGameRule(GameRule.SPAWN_PHANTOMS, false);
+    world.setGameRule(GameRule.SHOW_ADVANCEMENT_MESSAGES, false);
   }
 
   private void teleportInnocentPlayers() {
