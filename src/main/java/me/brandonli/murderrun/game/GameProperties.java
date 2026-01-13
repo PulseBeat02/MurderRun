@@ -57,6 +57,10 @@ public final class GameProperties {
     return this.num("freeze_tag.lives");
   }
 
+  public String getKillerNearSound() {
+    return this.str("killer.near_sound");
+  }
+
   public int getFreezeTagRevivalTime() {
     return this.num("freeze_tag.revive.time");
   }
