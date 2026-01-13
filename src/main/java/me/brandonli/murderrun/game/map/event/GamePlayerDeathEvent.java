@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.game.map.event;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import java.util.List;
@@ -72,6 +73,31 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final DeathManager deathManager = gamePlayer.getDeathManager();
     final GameScheduler scheduler = game.getScheduler();
     final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
+
+    // Handle freeze tag respawn
+    final me.brandonli.murderrun.game.GameMode mode = game.getMode();
+    if (mode == me.brandonli.murderrun.game.GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor && survivor.isFrozen()) {
+      // Teleport player to their corpse location
+      final net.citizensnpcs.api.npc.NPC corpse = deathManager.getCorpse();
+      if (corpse != null && corpse.getEntity() != null) {
+        final Location corpseLocation = corpse.getEntity().getLocation();
+        event.setRespawnLocation(corpseLocation);
+
+        // Keep them frozen at the corpse
+        scheduler.scheduleTask(
+          () -> {
+            player.teleport(corpseLocation);
+            player.setGameMode(org.bukkit.GameMode.ADVENTURE);
+            player.setWalkSpeed(0f);
+            player.setFlySpeed(0f);
+            player.setAllowFlight(false);
+          },
+          1L,
+          reference
+        );
+      }
+    }
+
     scheduler.scheduleTask(deathManager::runDeathTasks, 20L, reference);
   }
 
@@ -102,7 +128,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     }
 
     final GameMode mode = game.getMode();
-    if (mode == GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor) {
+    if (gamePlayer.isAlive() && mode == GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor) {
       if (this.handleFreezeTagDeath(event, survivor, game, manager)) {
         return;
       }
@@ -165,7 +191,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     survivor.setFreezeTagLives(currentLives - 1);
     if (survivor.getFreezeTagLives() > 0) {
       event.setKeepInventory(true);
-      event.setDeathMessage(null);
+      event.deathMessage(null);
 
       final PlayerDeathTool death = manager.getDeathManager();
       final Player player = survivor.getInternalPlayer();
@@ -173,12 +199,21 @@ public final class GamePlayerDeathEvent extends GameEvent {
       deathManager.setCorpse(death.spawnDeadNPC(player));
 
       if (this.freezeTagManager != null) {
-        this.freezeTagManager.freezeSurvivor(survivor);
-        if (this.freezeTagManager.checkAllSurvivorsFrozen()) {
-          final Component message = Message.FREEZE_TAG_ALL_FROZEN.build();
-          manager.sendMessageToAllParticipants(message);
-          game.finishGame(GameResult.MURDERERS);
-        }
+        final GameScheduler scheduler = game.getScheduler();
+        final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
+        scheduler.scheduleTask(
+          () -> {
+            this.freezeTagManager.freezeSurvivor(survivor);
+            if (this.freezeTagManager.checkAllSurvivorsFrozen()) {
+              final Component message = Message.FREEZE_TAG_ALL_FROZEN.build();
+              manager.sendMessageToAllParticipants(message);
+              game.finishGame(GameResult.MURDERERS);
+            }
+            survivor.teleport(requireNonNull(survivor.getDeathLocation()));
+          },
+          10L,
+          reference
+        );
       }
       return true;
     }

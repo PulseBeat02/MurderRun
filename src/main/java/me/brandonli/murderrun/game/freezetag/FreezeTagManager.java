@@ -26,23 +26,54 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.Survivor;
+import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.NullReference;
 import me.brandonli.murderrun.locale.Message;
+import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class FreezeTagManager {
 
   private final Game game;
   private final Map<UUID, BukkitTask> revivalTimers;
   private final Map<UUID, BukkitTask> hologramTasks;
+  private BukkitTask reviveUpdateTask;
 
   public FreezeTagManager(final Game game) {
     this.game = game;
     this.revivalTimers = new HashMap<>();
     this.hologramTasks = new HashMap<>();
+    this.startReviveUpdateTask(game);
+  }
+
+  @SuppressWarnings("all") // checker
+  private void startReviveUpdateTask(@UnderInitialization FreezeTagManager this, final Game game) {
+    final GameScheduler scheduler = game.getScheduler();
+    final NullReference reference = NullReference.of();
+    this.reviveUpdateTask = scheduler.scheduleRepeatedTask(
+      () -> {
+        final GamePlayerManager manager = game.getPlayerManager();
+        manager
+          .getSurvivors()
+          .filter(GamePlayer::isAlive)
+          .map(p -> (Survivor) p)
+          .filter(Survivor::isFrozen)
+          .filter(s -> s.getRevivingPlayer() != null)
+          .forEach(this::updateRevive);
+      },
+      0L,
+      10L,
+      reference
+    );
   }
 
   public void freezeSurvivor(final Survivor survivor) {
@@ -54,8 +85,11 @@ public final class FreezeTagManager {
     survivor.setFrozenTime(System.currentTimeMillis());
 
     final Player player = survivor.getInternalPlayer();
+    player.setGameMode(GameMode.SPECTATOR);
     player.setWalkSpeed(0f);
     player.setFlySpeed(0f);
+    player.setAllowFlight(true);
+    player.setGravity(false);
 
     final Component message = Message.FREEZE_TAG_FROZEN.build();
     survivor.getAudience().sendMessage(message);
@@ -73,12 +107,20 @@ public final class FreezeTagManager {
     survivor.setReviveStartTime(0);
 
     final Player player = survivor.getInternalPlayer();
+    player.setGameMode(GameMode.SURVIVAL);
     player.setWalkSpeed(0.2f);
     player.setFlySpeed(0.1f);
 
     final UUID uuid = survivor.getUUID();
     this.cancelRevivalTimer(uuid);
     this.cancelHologramTask(uuid);
+
+    final DeathManager deathManager = survivor.getDeathManager();
+    final NPC corpse = deathManager.getCorpse();
+    if (corpse != null) {
+      corpse.destroy();
+      deathManager.setCorpse(null);
+    }
 
     final Component message = Message.FREEZE_TAG_REVIVED.build();
     survivor.getAudience().sendMessage(message);
@@ -109,13 +151,13 @@ public final class FreezeTagManager {
   private void killFrozenSurvivor(final Survivor survivor) {
     survivor.setFrozen(false);
     survivor.setAlive(false);
-
-    final GamePlayerManager manager = this.game.getPlayerManager();
-    final me.brandonli.murderrun.game.player.death.PlayerDeathTool death = manager.getDeathManager();
-    death.initiateDeathSequence(survivor);
+    survivor.setWalkSpeed(0.2f);
+    survivor.setFlySpeed(0.1f);
+    survivor.setHealth(0.0);
 
     final Component message = Message.FREEZE_TAG_DIED.build();
-    survivor.getAudience().sendMessage(message);
+    final PlayerAudience audience = survivor.getAudience();
+    audience.sendMessage(message);
 
     final UUID uuid = survivor.getUUID();
     this.cancelRevivalTimer(uuid);
@@ -135,14 +177,7 @@ public final class FreezeTagManager {
 
     final GameScheduler scheduler = this.game.getScheduler();
     final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
-    final BukkitTask task = scheduler.scheduleRepeatedTask(
-      () -> {
-        this.updateHologram(survivor);
-      },
-      0L,
-      10L,
-      reference
-    );
+    final BukkitTask task = scheduler.scheduleRepeatedTask(() -> this.updateHologram(survivor), 0L, 10L, reference);
     this.hologramTasks.put(uuid, task);
   }
 
@@ -152,11 +187,12 @@ public final class FreezeTagManager {
     }
 
     final GameProperties properties = this.game.getProperties();
-    final int reviveTimer = properties.getFreezeTagReviveTimer();
+    final int reviveTimerTicks = properties.getFreezeTagReviveTimer();
+    final int reviveTimerSeconds = reviveTimerTicks / 20;
     final long frozenTime = survivor.getFrozenTime();
     final long currentTime = System.currentTimeMillis();
     final long elapsed = (currentTime - frozenTime) / 1000;
-    final long remaining = reviveTimer - elapsed;
+    final long remaining = reviveTimerSeconds - elapsed;
 
     if (remaining <= 0) {
       return;
@@ -241,30 +277,66 @@ public final class FreezeTagManager {
       return;
     }
 
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    if (!manager.checkPlayerExists(reviverId)) {
+      this.stopRevive(frozen);
+      return;
+    }
+
+    final GamePlayer reviverPlayer = manager.getGamePlayer(reviverId);
+    final Player player = reviverPlayer.getInternalPlayer();
+
+    if (!player.isSneaking() || !this.isNearCorpse(player.getLocation(), frozen)) {
+      this.stopRevive(frozen);
+      return;
+    }
+
     final GameProperties properties = this.game.getProperties();
-    final int revivalTime = properties.getFreezeTagRevivalTime();
+    final int revivalTimeTicks = properties.getFreezeTagRevivalTime();
+    final int revivalTimeSeconds = revivalTimeTicks / 20;
     final long reviveStart = frozen.getReviveStartTime();
     final long currentTime = System.currentTimeMillis();
     final long elapsed = (currentTime - reviveStart) / 1000;
 
-    if (elapsed >= revivalTime) {
+    if (elapsed >= revivalTimeSeconds) {
       this.unfreezeSurvivor(frozen);
       return;
     }
 
-    final long remaining = revivalTime - elapsed;
+    final long remaining = revivalTimeSeconds - elapsed;
     final String raw = String.valueOf(remaining);
     final Component progressText = Message.FREEZE_TAG_REVIVING_PROGRESS.build(raw);
 
     final PlayerAudience frozenAudience = frozen.getAudience();
     frozenAudience.setActionBar(progressText);
 
-    final GamePlayerManager manager = this.game.getPlayerManager();
-    if (manager.checkPlayerExists(reviverId)) {
-      final GamePlayer reviver = manager.getGamePlayer(reviverId);
-      final PlayerAudience reviverAudience = reviver.getAudience();
-      reviverAudience.setActionBar(progressText);
+    final PlayerAudience reviverAudience = reviverPlayer.getAudience();
+    reviverAudience.setActionBar(progressText);
+  }
+
+  public boolean isNearCorpse(final Location playerLoc, final Survivor frozen) {
+    final DeathManager deathManager = frozen.getDeathManager();
+    final NPC corpse = deathManager.getCorpse();
+    if (corpse == null) {
+      return false;
     }
+
+    final Entity entity = corpse.getEntity();
+    if (entity == null || entity.isDead()) {
+      return false;
+    }
+
+    final Location corpseLoc = entity.getLocation();
+    final World playerWorld = playerLoc.getWorld();
+    final World corpseWorld = corpseLoc.getWorld();
+    if (playerWorld == null || !playerWorld.equals(corpseWorld)) {
+      return false;
+    }
+
+    final GameProperties properties = this.game.getProperties();
+    final double reviveDistance = properties.getFreezeTagReviveRadius();
+    final double reviveDistanceSquared = reviveDistance * reviveDistance;
+    return playerLoc.distanceSquared(corpseLoc) <= reviveDistanceSquared;
   }
 
   public boolean checkAllSurvivorsFrozen() {
@@ -277,6 +349,9 @@ public final class FreezeTagManager {
     this.revivalTimers.clear();
     this.hologramTasks.values().forEach(BukkitTask::cancel);
     this.hologramTasks.clear();
+    if (this.reviveUpdateTask != null) {
+      this.reviveUpdateTask.cancel();
+    }
   }
 
   public Game getGame() {

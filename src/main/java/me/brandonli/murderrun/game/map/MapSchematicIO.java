@@ -150,7 +150,6 @@ public final class MapSchematicIO {
       .thenCompose(v -> this.pasteArenaSchematic())
       .thenRun(this::pasteCitizensNPCs)
       .exceptionally(e -> {
-        e.printStackTrace();
         throw new AssertionError(e);
       });
   }

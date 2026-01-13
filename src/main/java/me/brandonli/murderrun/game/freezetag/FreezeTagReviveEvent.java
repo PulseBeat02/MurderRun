@@ -17,24 +17,15 @@
  */
 package me.brandonli.murderrun.game.freezetag;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Optional;
 import java.util.UUID;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameMode;
-import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.map.event.GameEvent;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.Survivor;
-import me.brandonli.murderrun.game.player.death.DeathManager;
-import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
-import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -87,23 +78,13 @@ public final class FreezeTagReviveEvent extends GameEvent {
 
     final Survivor nearbyFrozenSurvivor = nearbyFrozen.get();
     final UUID reviving = nearbyFrozenSurvivor.getRevivingPlayer();
+    final UUID survivorUUID = survivor.getUUID();
+
     if (isSneaking) {
       if (reviving == null) {
         this.freezeTagManager.startRevive(nearbyFrozenSurvivor, survivor);
       }
-      final GameScheduler scheduler = game.getScheduler();
-      final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
-      scheduler.scheduleTask(
-        () -> {
-          if (player.isSneaking() && this.isNearCorpse(player.getLocation(), nearbyFrozenSurvivor)) {
-            this.freezeTagManager.updateRevive(nearbyFrozenSurvivor);
-          }
-        },
-        10L,
-        reference
-      );
     } else {
-      final UUID survivorUUID = survivor.getUUID();
       if (reviving != null && reviving.equals(survivorUUID)) {
         this.freezeTagManager.stopRevive(nearbyFrozenSurvivor);
       }
@@ -130,33 +111,7 @@ public final class FreezeTagReviveEvent extends GameEvent {
       .filter(s -> s instanceof Survivor)
       .map(s -> (Survivor) s)
       .filter(Survivor::isFrozen)
-      .filter(s -> this.isNearCorpse(location, s))
+      .filter(s -> this.freezeTagManager.isNearCorpse(location, s))
       .findFirst();
-  }
-
-  private boolean isNearCorpse(final Location playerLoc, final Survivor frozen) {
-    final DeathManager deathManager = frozen.getDeathManager();
-    final NPC corpse = deathManager.getCorpse();
-    if (corpse == null) {
-      return false;
-    }
-
-    final Entity entity = corpse.getEntity();
-    if (entity == null || entity.isDead()) {
-      return false;
-    }
-
-    final Location corpseLoc = entity.getLocation();
-    final World playerWorld = requireNonNull(playerLoc.getWorld());
-    final World corpseWorld = corpseLoc.getWorld();
-    if (!playerWorld.equals(corpseWorld)) {
-      return false;
-    }
-
-    final Game game = this.freezeTagManager.getGame();
-    final GameProperties properties = game.getProperties();
-    final double reviveDistance = properties.getFreezeTagReviveRadius();
-    final double reviveDistanceSquared = reviveDistance * reviveDistance;
-    return playerLoc.distanceSquared(corpseLoc) <= reviveDistanceSquared;
   }
 }

@@ -78,6 +78,10 @@ public final class KillerLocationTracker {
         continue;
       }
 
+      if (survivorPlayer.isFrozen()) {
+        continue;
+      }
+
       final PlayerAudience audience = survivorPlayer.getAudience();
       final double distanceSquared = location.distanceSquared(murdererLocation);
       if (distanceSquared > radiusSquared) {
