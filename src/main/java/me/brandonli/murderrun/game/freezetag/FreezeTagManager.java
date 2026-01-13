@@ -17,6 +17,9 @@
  */
 package me.brandonli.murderrun.game.freezetag;
 
+import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.text.Component.empty;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -36,8 +39,10 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.scheduler.BukkitTask;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
@@ -46,12 +51,14 @@ public final class FreezeTagManager {
   private final Game game;
   private final Map<UUID, BukkitTask> revivalTimers;
   private final Map<UUID, BukkitTask> hologramTasks;
+  private final Map<UUID, TextDisplay> holograms;
   private BukkitTask reviveUpdateTask;
 
   public FreezeTagManager(final Game game) {
     this.game = game;
     this.revivalTimers = new HashMap<>();
     this.hologramTasks = new HashMap<>();
+    this.holograms = new HashMap<>();
     this.startReviveUpdateTask(game);
   }
 
@@ -90,9 +97,12 @@ public final class FreezeTagManager {
     player.setFlySpeed(0f);
     player.setAllowFlight(true);
     player.setGravity(false);
+    player.setFreezeTicks(Integer.MAX_VALUE);
 
     final Component message = Message.FREEZE_TAG_FROZEN.build();
-    survivor.getAudience().sendMessage(message);
+    final PlayerAudience provider = survivor.getAudience();
+    provider.showTitle(empty(), message);
+
     this.startRevivalTimer(survivor);
     this.startHologramTask(survivor);
   }
@@ -110,6 +120,9 @@ public final class FreezeTagManager {
     player.setGameMode(GameMode.SURVIVAL);
     player.setWalkSpeed(0.2f);
     player.setFlySpeed(0.1f);
+    player.setGravity(true);
+    player.setAllowFlight(false);
+    player.setFreezeTicks(0);
 
     final UUID uuid = survivor.getUUID();
     this.cancelRevivalTimer(uuid);
@@ -154,6 +167,7 @@ public final class FreezeTagManager {
     survivor.setWalkSpeed(0.2f);
     survivor.setFlySpeed(0.1f);
     survivor.setHealth(0.0);
+    survivor.setFreezeTicks(0);
 
     final Component message = Message.FREEZE_TAG_DIED.build();
     final PlayerAudience audience = survivor.getAudience();
@@ -175,6 +189,14 @@ public final class FreezeTagManager {
     final UUID uuid = survivor.getUUID();
     this.cancelHologramTask(uuid);
 
+    final Location location = requireNonNull(survivor.getDeathLocation());
+    final World world = location.getWorld();
+    final Location spawn = location.add(0, 2, 0);
+    final TextDisplay display = world.spawn(spawn, TextDisplay.class);
+    display.setAlignment(TextDisplay.TextAlignment.CENTER);
+    display.setBillboard(Display.Billboard.CENTER);
+    this.holograms.put(uuid, display);
+
     final GameScheduler scheduler = this.game.getScheduler();
     final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
     final BukkitTask task = scheduler.scheduleRepeatedTask(() -> this.updateHologram(survivor), 0L, 10L, reference);
@@ -193,20 +215,18 @@ public final class FreezeTagManager {
     final long currentTime = System.currentTimeMillis();
     final long elapsed = (currentTime - frozenTime) / 1000;
     final long remaining = reviveTimerSeconds - elapsed;
-
     if (remaining <= 0) {
       return;
     }
 
     final String raw = String.valueOf(remaining);
     final Component hologramText = Message.FREEZE_TAG_HOLOGRAM.build(raw);
-    final GamePlayerManager manager = this.game.getPlayerManager();
-    manager
-      .getSurvivors()
-      .filter(GamePlayer::isAlive)
-      .filter(p -> !p.equals(survivor))
-      .map(GamePlayer::getAudience)
-      .forEach(audience -> audience.setActionBar(hologramText));
+    final UUID uuid = survivor.getUUID();
+    final TextDisplay display = this.holograms.get(uuid);
+    if (display == null) {
+      return;
+    }
+    display.text(hologramText);
 
     final Component timerText = Message.FREEZE_TAG_WAITING.build(raw);
     final PlayerAudience audience = survivor.getAudience();
@@ -217,6 +237,10 @@ public final class FreezeTagManager {
     final BukkitTask task = this.hologramTasks.remove(uuid);
     if (task != null) {
       task.cancel();
+    }
+    final TextDisplay display = this.holograms.get(uuid);
+    if (display != null) {
+      display.remove();
     }
   }
 
@@ -308,10 +332,10 @@ public final class FreezeTagManager {
     final Component progressText = Message.FREEZE_TAG_REVIVING_PROGRESS.build(raw);
 
     final PlayerAudience frozenAudience = frozen.getAudience();
-    frozenAudience.setActionBar(progressText);
+    frozenAudience.showTitle(empty(), progressText);
 
     final PlayerAudience reviverAudience = reviverPlayer.getAudience();
-    reviverAudience.setActionBar(progressText);
+    reviverAudience.showTitle(empty(), progressText);
   }
 
   public boolean isNearCorpse(final Location playerLoc, final Survivor frozen) {

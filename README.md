@@ -17,6 +17,9 @@
 
 ---
 
+> [!NOTE]
+> Murder Run requires Java 25 and Paper in order to run!
+
 If you are familiar with the game Dead by Daylight (DBD), you will be familiar with Murder Run. Murder Run is based off
 the concept in DBD, an advanced game-mode revolving around two groups: killers and survivors. In a desolate map, survivors
 must find all vehicle parts scattered everywhere and throw them back on the truck before the killers murder everyone or

@@ -7,11 +7,11 @@ fast as possible.
 ```
 
 To set up Murder Run, you will need two things:
-1) A Minecraft Bukkit-Based Server
+1) A Minecraft Paper-Based Server
 2) A Murder Run Plugin JAR
 
-## Setting up a Bukkit-Based Server
-In order to get a Minecraft Bukkit-based Server, you need to download either Spigot, Paper, or any other Bukkit-fork
+## Setting up a Paper-Based Server
+In order to get a Minecraft Paper-based Server, you need to download either Paper, or any other Paper-fork
 software. I recommend downloading [Paper](https://papermc.io/) -- it's also the software I develop against actively
 for Murder Run.
 

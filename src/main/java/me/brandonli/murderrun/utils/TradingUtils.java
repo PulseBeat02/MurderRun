@@ -18,6 +18,7 @@
 package me.brandonli.murderrun.utils;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.text.Component.empty;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -34,7 +35,6 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -132,8 +132,9 @@ public final class TradingUtils {
 
   private static String compareStackName(final ItemStack stack) {
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    final String display = requireNonNull(meta.getDisplayName());
-    return requireNonNull(ChatColor.stripColor(display));
+    final Component component = requireNonNull(meta.displayName());
+    final String display = ComponentUtils.serializeComponentToPlain(component);
+    return requireNonNull(display);
   }
 
   public static Stream<String> getGadgetTradeSuggestions() {
@@ -186,24 +187,19 @@ public final class TradingUtils {
     final ItemStack itemStack = stack.build();
     final ItemStack clone = itemStack.clone();
     final ItemMeta meta = requireNonNull(clone.getItemMeta());
-    List<String> lore = meta.getLore();
-    if (lore == null) {
-      lore = new ArrayList<>();
+    List<Component> components = meta.lore();
+    if (components == null) {
+      components = new ArrayList<>();
     }
 
-    final List<String> copy = new ArrayList<>(lore);
-    final String raw = getLegacyComponent(gadget);
-    copy.addFirst("");
-    copy.addFirst(raw);
-    meta.setLore(copy);
+    final List<Component> copy = new ArrayList<>(components);
+    final int cost = gadget.getPrice();
+    final Component component = Message.SHOP_GUI_COST_LORE.build(cost);
+    copy.addFirst(empty());
+    copy.addFirst(component);
+    meta.lore(copy);
     clone.setItemMeta(meta);
 
     return clone;
-  }
-
-  private static String getLegacyComponent(final Gadget gadget) {
-    final int cost = gadget.getPrice();
-    final Component full = Message.SHOP_GUI_COST_LORE.build(cost);
-    return ComponentUtils.serializeComponentToLegacyString(full);
   }
 }
