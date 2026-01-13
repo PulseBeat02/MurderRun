@@ -192,7 +192,6 @@ public final class FreezeTagManager {
     final TextDisplay display = world.spawn(spawn, TextDisplay.class);
     display.setAlignment(TextDisplay.TextAlignment.CENTER);
     display.setBillboard(Display.Billboard.CENTER);
-    display.setSeeThrough(false);
     display.setBackgroundColor(Color.fromRGB(0xc0c0c0));
     this.holograms.put(uuid, display);
 

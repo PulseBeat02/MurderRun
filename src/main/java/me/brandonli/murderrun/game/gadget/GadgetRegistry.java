@@ -176,11 +176,12 @@ public final class GadgetRegistry {
     }
   }
 
+  @SuppressWarnings("all") // checker
   private Gadget invokeGadgetConstructor(final MethodHandle handle, final Game game) {
     try {
       final MethodType type = handle.type();
       final int count = type.parameterCount();
-      return (Gadget) (count == 0 ? handle.invoke() : handle.invoke(new Object[] { game }));
+      return (Gadget) (count == 0 ? handle.invoke() : handle.invoke(game));
     } catch (final Throwable e) {
       throw new AssertionError(e);
     }

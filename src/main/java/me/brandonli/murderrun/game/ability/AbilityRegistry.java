@@ -176,9 +176,10 @@ public final class AbilityRegistry {
     }
   }
 
+  @SuppressWarnings("all") // checker
   private Ability invokeAbilityConstructor(final MethodHandle handle, final Game game) {
     try {
-      return (Ability) handle.invoke(new Object[] { game });
+      return (Ability) handle.invoke(game);
     } catch (final Throwable e) {
       throw new AssertionError(e);
     }
