@@ -17,32 +17,26 @@
  */
 package me.brandonli.murderrun.game.extension.papi;
 
-import java.util.List;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.statistics.PlayerStatistics;
 import me.brandonli.murderrun.game.statistics.StatisticsManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class MurderRunExpansion extends PlaceholderExpansion {
 
+  private static final String AUTHORS = "PulseBeat_02";
+  private static final String VERSION = "v1.0.0";
   private static final String MURDER_RUN_IDENTIFIER = "murderrun";
 
   private final PAPIPlaceholderParser handler;
   private final MurderRun plugin;
-  private final String authors;
-  private final String version;
 
   public MurderRunExpansion(final MurderRun plugin) {
-    final PluginDescriptionFile description = plugin.getDescription();
-    final List<String> authors = description.getAuthors();
     this.handler = new PAPIPlaceholderParser();
     this.plugin = plugin;
-    this.authors = String.join(", ", authors);
-    this.version = description.getVersion();
   }
 
   @Override
@@ -52,12 +46,12 @@ public final class MurderRunExpansion extends PlaceholderExpansion {
 
   @Override
   public @NotNull String getAuthor() {
-    return this.authors;
+    return AUTHORS;
   }
 
   @Override
   public @NotNull String getVersion() {
-    return this.version;
+    return VERSION;
   }
 
   @Override

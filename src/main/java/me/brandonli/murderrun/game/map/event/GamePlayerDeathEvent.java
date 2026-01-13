@@ -40,6 +40,7 @@ import me.brandonli.murderrun.game.statistics.PlayerStatistics;
 import me.brandonli.murderrun.game.statistics.StatisticsManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
+import me.brandonli.murderrun.utils.ComponentUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.damage.DamageSource;
@@ -119,7 +120,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final Location current = player.getLocation();
     player.setLastDeathLocation(current);
     event.setDroppedExp(0);
-    event.setDeathMessage(null);
+    event.deathMessage(null);
     drops.clear();
 
     if (deathManager.checkDeathCancellation() && !isLogging) {
@@ -140,7 +141,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     death.initiateDeathSequence(gamePlayer);
 
     event.setKeepInventory(true);
-    event.setDeathMessage(null);
+    event.deathMessage(null);
     deathManager.runDeathTasks();
     this.playDeathSoundEffect();
 
@@ -223,7 +224,8 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
   private void announcePlayerDeath(final Player dead) {
     final Game game = this.getGame();
-    final String name = dead.getDisplayName();
+    final Component component = dead.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final Component title = Message.PLAYER_DEATH.build(name);
     final GamePlayerManager manager = game.getPlayerManager();
     manager.sendMessageToAllParticipants(title);

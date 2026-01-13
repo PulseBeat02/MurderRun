@@ -31,7 +31,7 @@ import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Item;
 
 public final class InfraredVision extends KillerGadget {
@@ -73,7 +73,7 @@ public final class InfraredVision extends KillerGadget {
     final MetadataManager metadata = killer.getMetadataManager();
     final Game game = killer.getGame();
     final GameProperties properties = game.getProperties();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, properties.getInfraredVisionDuration());
+    metadata.setEntityGlowing(scheduler, survivor, NamedTextColor.RED, properties.getInfraredVisionDuration());
     audience.sendMessage(msg);
     audience.showTitle(empty(), title);
   }

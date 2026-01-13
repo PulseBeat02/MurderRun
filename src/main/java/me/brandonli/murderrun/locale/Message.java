@@ -20,6 +20,7 @@ package me.brandonli.murderrun.locale;
 import static me.brandonli.murderrun.locale.LocaleTools.direct;
 
 import java.util.List;
+import net.kyori.adventure.text.Component;
 
 public interface Message extends LocaleTools {
   NullComponent<Sender> RESOURCE_PACK_ACTIVATE = direct("murderrun.game.resources");
@@ -568,7 +569,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MIMIC_NAME = direct("murderrun.game.gadget.mimic.name");
   NullComponent<Sender> MIMIC_LORE = direct("murderrun.game.gadget.mimic.lore");
   NullComponent<Sender> MIMIC_ACTIVATE = direct("murderrun.game.gadget.mimic.activate");
-  UniComponent<Sender, String> DEAD_CHAT_PREFIX = direct("murderrun.chat.dead.prefix", null);
+  UniComponent<Sender, Component> DEAD_CHAT_PREFIX = direct("murderrun.chat.dead.prefix", null);
   NullComponent<Sender> SCOREBOARD_TITLE = direct("murderrun.game.scoreboard.title");
   NullComponent<Sender> SCOREBOARD_ROLE_SURVIVOR = direct("murderrun.game.scoreboard.role.survivor");
   NullComponent<Sender> SCOREBOARD_ROLE_KILLER = direct("murderrun.game.scoreboard.role.killer");

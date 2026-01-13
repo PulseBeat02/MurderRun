@@ -23,7 +23,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Item;
 
 public final class GlowTrap extends SurvivorTrap {
@@ -43,7 +43,7 @@ public final class GlowTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GamePlayerManager manager = game.getPlayerManager();
     final GameProperties properties = game.getProperties();
-    manager.setEntityGlowingForAliveInnocents(murderer, ChatColor.RED, properties.getGlowDuration());
+    manager.setEntityGlowingForAliveInnocents(murderer, NamedTextColor.RED, properties.getGlowDuration());
     manager.playSoundForAllParticipants(properties.getGlowSound());
   }
 }

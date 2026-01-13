@@ -18,6 +18,7 @@
 package me.brandonli.murderrun.game.gadget.survivor.trap;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.text.Component.text;
 
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
@@ -28,6 +29,7 @@ import me.brandonli.murderrun.game.scheduler.reference.NullReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.RandomUtils;
 import me.brandonli.murderrun.utils.item.ItemFactory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Particle.DustOptions;
@@ -53,8 +55,9 @@ public final class JebTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     final World world = requireNonNull(location.getWorld());
     final GameProperties properties = game.getProperties();
+    final Component component = text("jeb_");
     for (int i = 0; i < properties.getJebSheepCount(); i++) {
-      world.spawn(location, Sheep.class, sheep -> sheep.setCustomName("jeb_"));
+      world.spawn(location, Sheep.class, sheep -> sheep.customName(component));
     }
 
     final NullReference reference = NullReference.of();

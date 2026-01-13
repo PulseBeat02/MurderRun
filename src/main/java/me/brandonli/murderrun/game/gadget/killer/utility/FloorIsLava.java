@@ -33,7 +33,7 @@ import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
@@ -92,10 +92,10 @@ public final class FloorIsLava extends KillerGadget {
     final MetadataManager metadata = killer.getMetadataManager();
     if (this.checkLocationSame(previous, newLocation)) {
       glowing.add(player);
-      metadata.setEntityGlowing(player, ChatColor.RED, true);
+      metadata.setEntityGlowing(player, NamedTextColor.RED, true);
     } else if (glowing.contains(player)) {
       glowing.remove(player);
-      metadata.setEntityGlowing(player, ChatColor.RED, false);
+      metadata.setEntityGlowing(player, NamedTextColor.RED, false);
     }
   }
 

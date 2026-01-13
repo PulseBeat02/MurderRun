@@ -34,7 +34,7 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -128,7 +128,7 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
     nearest.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 1));
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, nearest, ChatColor.RED, duration);
+    metadata.setEntityGlowing(scheduler, nearest, NamedTextColor.RED, duration);
   }
 
   @Override

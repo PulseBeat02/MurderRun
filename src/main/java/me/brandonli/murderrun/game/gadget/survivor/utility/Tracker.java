@@ -27,7 +27,7 @@ import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
@@ -69,7 +69,7 @@ public final class Tracker extends SurvivorGadget {
     final GameProperties properties = game.getProperties();
     final double radius = properties.getTrackerRadius();
     if (distance < radius * radius) {
-      metadata.setEntityGlowing(killer, ChatColor.DARK_PURPLE, true);
+      metadata.setEntityGlowing(killer, NamedTextColor.DARK_PURPLE, true);
       audience.sendMessage(Message.TRACKER_ACTIVATE.build());
     } else {
       audience.sendMessage(Message.TRACKER_DEACTIVATE.build());

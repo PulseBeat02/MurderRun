@@ -34,7 +34,7 @@ import me.brandonli.murderrun.utils.StreamUtils;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
@@ -211,7 +211,7 @@ public interface PlayerManagerHelper {
     return list.isEmpty() ? null : list.getFirst();
   }
 
-  default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color, final long duration) {
+  default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final NamedTextColor color, final long duration) {
     final Game game = this.getGame();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(entity);
@@ -219,14 +219,14 @@ public interface PlayerManagerHelper {
     scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity, color), duration, reference);
   }
 
-  default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
+  default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final NamedTextColor color) {
     this.applyToLivingSurvivors(innocent -> {
         final MetadataManager metadata = innocent.getMetadataManager();
         entity.apply(target -> metadata.setEntityGlowing(target, color, true));
       });
   }
 
-  default void removeEntityGlowingForAliveInnocents(final GamePlayer entity, final ChatColor color) {
+  default void removeEntityGlowingForAliveInnocents(final GamePlayer entity, final NamedTextColor color) {
     this.applyToLivingSurvivors(innocent -> {
         final MetadataManager metadata = innocent.getMetadataManager();
         entity.apply(target -> metadata.setEntityGlowing(target, color, false));

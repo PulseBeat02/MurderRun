@@ -21,6 +21,7 @@ import static net.kyori.adventure.text.Component.empty;
 
 import dev.triumphteam.gui.components.InteractionModifier;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,7 +50,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
@@ -137,7 +137,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onPlayerChat(final AsyncPlayerChatEvent event) {
+  public void onPlayerChat(final AsyncChatEvent event) {
     final Player player = event.getPlayer();
     if (player != this.watcher) {
       return;
@@ -148,7 +148,8 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
     }
     event.setCancelled(true);
 
-    final String msg = event.getMessage();
+    final Component component = event.message();
+    final String msg = ComponentUtils.serializeComponentToPlain(component);
     if (this.listenForBreaks) {
       final String upper = msg.toUpperCase();
       final Location location = player.getLocation();
@@ -158,7 +159,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
       }
     }
 
-    this.lobbyName = event.getMessage();
+    this.lobbyName = msg;
     this.listenForName = false;
     this.showAsync();
   }

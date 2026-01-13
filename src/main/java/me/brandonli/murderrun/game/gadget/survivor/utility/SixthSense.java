@@ -32,7 +32,7 @@ import me.brandonli.murderrun.game.scheduler.reference.NullReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
@@ -92,10 +92,10 @@ public final class SixthSense extends SurvivorGadget {
     final double radius = properties.getSixthSenseRadius();
     if (distance < radius * radius) {
       visible.add(killer);
-      metadata.setEntityGlowing(killer, ChatColor.BLUE, true);
+      metadata.setEntityGlowing(killer, NamedTextColor.BLUE, true);
     } else if (visible.contains(killer)) {
       visible.remove(killer);
-      metadata.setEntityGlowing(killer, ChatColor.BLUE, false);
+      metadata.setEntityGlowing(killer, NamedTextColor.BLUE, false);
     }
   }
 }

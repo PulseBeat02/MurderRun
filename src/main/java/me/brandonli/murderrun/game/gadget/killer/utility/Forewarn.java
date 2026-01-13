@@ -33,7 +33,7 @@ import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Item;
 
 public final class Forewarn extends KillerGadget {
@@ -85,10 +85,10 @@ public final class Forewarn extends KillerGadget {
     final MetadataManager metadata = player.getMetadataManager();
     if (survivor.hasCarPart()) {
       set.add(survivor);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, true);
     } else if (set.contains(survivor)) {
       set.remove(player);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, false);
     }
   }
 }

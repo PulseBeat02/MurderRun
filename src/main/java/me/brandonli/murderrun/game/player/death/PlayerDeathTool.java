@@ -29,6 +29,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
+import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
 import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
@@ -36,6 +37,7 @@ import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.MirrorTrait;
 import net.citizensnpcs.trait.SleepTrait;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -74,7 +76,8 @@ public final class PlayerDeathTool {
     final CitizensManager manager = extensionManager.getNPCManager();
     final NPCRegistry registry = manager.getRegistry();
     final Location location = player.getLocation();
-    final String name = player.getDisplayName();
+    final Component component = player.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final NPC npc = registry.createNPC(EntityType.PLAYER, name);
     npc.setAlwaysUseNameHologram(false);
 

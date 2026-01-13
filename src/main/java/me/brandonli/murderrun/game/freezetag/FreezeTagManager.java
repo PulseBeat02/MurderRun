@@ -90,14 +90,12 @@ public final class FreezeTagManager {
 
     survivor.setFrozen(true);
     survivor.setFrozenTime(System.currentTimeMillis());
-
-    final Player player = survivor.getInternalPlayer();
-    player.setGameMode(GameMode.SPECTATOR);
-    player.setWalkSpeed(0f);
-    player.setFlySpeed(0f);
-    player.setAllowFlight(true);
-    player.setGravity(false);
-    player.setFreezeTicks(Integer.MAX_VALUE);
+    survivor.setGameMode(GameMode.SPECTATOR);
+    survivor.setWalkSpeed(0f);
+    survivor.setFlySpeed(0f);
+    survivor.setAllowFlight(true);
+    survivor.setGravity(false);
+    survivor.setFreezeTicks(Integer.MAX_VALUE);
 
     final Component message = Message.FREEZE_TAG_FROZEN.build();
     final PlayerAudience provider = survivor.getAudience();
@@ -115,14 +113,12 @@ public final class FreezeTagManager {
     survivor.setFrozen(false);
     survivor.setRevivingPlayer(null);
     survivor.setReviveStartTime(0);
-
-    final Player player = survivor.getInternalPlayer();
-    player.setGameMode(GameMode.SURVIVAL);
-    player.setWalkSpeed(0.2f);
-    player.setFlySpeed(0.1f);
-    player.setGravity(true);
-    player.setAllowFlight(false);
-    player.setFreezeTicks(0);
+    survivor.setGameMode(GameMode.SURVIVAL);
+    survivor.setWalkSpeed(0.2f);
+    survivor.setFlySpeed(0.1f);
+    survivor.setGravity(true);
+    survivor.setAllowFlight(false);
+    survivor.setFreezeTicks(0);
 
     final UUID uuid = survivor.getUUID();
     this.cancelRevivalTimer(uuid);

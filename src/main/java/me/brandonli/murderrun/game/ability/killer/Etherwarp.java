@@ -33,7 +33,7 @@ import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -162,7 +162,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
     final Block currentBlock = reference.get();
     if (currentBlock != null) {
       final MetadataManager metadata = gamePlayer.getMetadataManager();
-      metadata.setBlockGlowing(currentBlock, ChatColor.WHITE, false);
+      metadata.setBlockGlowing(currentBlock, NamedTextColor.WHITE, false);
     }
 
     final Location targetLocation = requireNonNull(this.targetBlock.remove(gamePlayer));
@@ -202,7 +202,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
         final Block current = reference.get();
         if (current != null) {
           final MetadataManager metadata = gamePlayer.getMetadataManager();
-          metadata.setBlockGlowing(current, ChatColor.WHITE, false);
+          metadata.setBlockGlowing(current, NamedTextColor.WHITE, false);
         }
       }
       audience.setActionBar(empty());
@@ -274,23 +274,23 @@ public final class Etherwarp extends KillerAbility implements Listener {
       if (block == null) {
         Etherwarp.this.targetBlock.remove(this.player);
         if (current != null) {
-          metadata.setBlockGlowing(current, ChatColor.RED, false);
-          metadata.setBlockGlowing(current, ChatColor.GREEN, false);
+          metadata.setBlockGlowing(current, NamedTextColor.RED, false);
+          metadata.setBlockGlowing(current, NamedTextColor.GREEN, false);
         }
         audience.setActionBar(Message.EITHERWARP_FAR.build());
         return;
       }
       if (current != block) {
         if (current != null) {
-          metadata.setBlockGlowing(current, ChatColor.RED, false);
-          metadata.setBlockGlowing(current, ChatColor.GREEN, false);
+          metadata.setBlockGlowing(current, NamedTextColor.RED, false);
+          metadata.setBlockGlowing(current, NamedTextColor.GREEN, false);
         }
         this.reference.set(block);
       }
       final Material blockType = block.getType();
       if (!blockType.isSolid()) {
         Etherwarp.this.targetBlock.remove(this.player);
-        metadata.setBlockGlowing(block, ChatColor.RED, true);
+        metadata.setBlockGlowing(block, NamedTextColor.RED, true);
         audience.setActionBar(Message.EITHERWARP_INVALID.build());
         return;
       }
@@ -302,12 +302,12 @@ public final class Etherwarp extends KillerAbility implements Listener {
       final Material aboveTargetBlockType = aboveTargetBlock.getType();
       if (targetBlockType.isSolid() || aboveTargetBlockType.isSolid()) {
         Etherwarp.this.targetBlock.remove(this.player);
-        metadata.setBlockGlowing(block, ChatColor.RED, true);
+        metadata.setBlockGlowing(block, NamedTextColor.RED, true);
         audience.setActionBar(Message.EITHERWARP_INVALID2.build());
         return;
       }
       audience.setActionBar(empty());
-      metadata.setBlockGlowing(block, ChatColor.GREEN, true);
+      metadata.setBlockGlowing(block, NamedTextColor.GREEN, true);
       final Location safeLocation = blockLocation.add(0, 1, 0);
       Etherwarp.this.targetBlock.put(this.player, safeLocation);
     }

@@ -32,6 +32,7 @@ import me.brandonli.murderrun.game.scheduler.reference.EntityReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.entity.Item;
@@ -110,7 +111,7 @@ public final class FakePart extends KillerGadget {
     item.remove();
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, duration);
+    metadata.setEntityGlowing(scheduler, survivor, NamedTextColor.RED, duration);
   }
 
   private Item spawnItem(final Location location) {

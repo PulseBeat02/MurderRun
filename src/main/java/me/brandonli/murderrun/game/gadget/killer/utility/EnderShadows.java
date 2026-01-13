@@ -42,7 +42,7 @@ import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -131,10 +131,10 @@ public final class EnderShadows extends KillerGadget {
       players.add(survivor);
       final PlayerAudience audience = survivor.getAudience();
       audience.showTitle(empty(), msg);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, true);
     } else if (players.contains(survivor)) {
       players.remove(survivor);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, false);
     }
   }
 

@@ -23,6 +23,7 @@ import static net.kyori.adventure.text.Component.empty;
 import com.google.common.primitives.Ints;
 import dev.triumphteam.gui.components.InteractionModifier;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.List;
 import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
@@ -35,6 +36,7 @@ import me.brandonli.murderrun.gui.arena.ArenaListGui;
 import me.brandonli.murderrun.gui.lobby.LobbyListGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import net.kyori.adventure.audience.Audience;
@@ -51,7 +53,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -107,7 +108,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
       return;
     }
 
-    final HandlerList list = AsyncPlayerChatEvent.getHandlerList();
+    final HandlerList list = AsyncChatEvent.getHandlerList();
     list.unregister(this);
   }
 
@@ -132,7 +133,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onPlayerChat(final AsyncPlayerChatEvent event) {
+  public void onPlayerChat(final AsyncChatEvent event) {
     final Player player = event.getPlayer();
     if (player != this.watcher) {
       return;
@@ -143,7 +144,8 @@ public final class GameCreationGui extends PatternGui implements Listener {
     }
     event.setCancelled(true);
 
-    final String msg = event.getMessage();
+    final Component component = event.message();
+    final String msg = ComponentUtils.serializeComponentToPlain(component);
     if (this.listenForId) {
       this.id = msg;
       this.listenForId = false;
@@ -203,7 +205,8 @@ public final class GameCreationGui extends PatternGui implements Listener {
     this.quickJoin = !this.quickJoin;
     final ItemStack stack = requireNonNull(event.getCurrentItem());
     final Material type = this.getQuickJoinMaterial();
-    stack.setType(type);
+    final ItemStack dupe = stack.withType(type);
+    event.setCurrentItem(dupe);
   }
 
   private Material getQuickJoinMaterial() {

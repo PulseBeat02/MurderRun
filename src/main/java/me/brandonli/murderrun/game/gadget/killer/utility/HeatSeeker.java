@@ -32,7 +32,7 @@ import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
@@ -92,10 +92,10 @@ public final class HeatSeeker extends KillerGadget {
     final double radius = properties.getHeatSeekerRadius();
     if (distance < radius * radius) {
       visible.add(innocent);
-      metadata.setEntityGlowing(innocent, ChatColor.RED, true);
+      metadata.setEntityGlowing(innocent, NamedTextColor.RED, true);
     } else if (visible.contains(innocent)) {
       visible.remove(innocent);
-      metadata.setEntityGlowing(innocent, ChatColor.RED, false);
+      metadata.setEntityGlowing(innocent, NamedTextColor.RED, false);
     }
   }
 }

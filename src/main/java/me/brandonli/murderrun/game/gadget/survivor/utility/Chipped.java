@@ -28,7 +28,7 @@ import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Item;
 
 public final class Chipped extends SurvivorGadget {
@@ -65,7 +65,7 @@ public final class Chipped extends SurvivorGadget {
     final Game game = manager.getGame();
     final GameProperties properties = game.getProperties();
     manager.applyToLivingSurvivors(innocent ->
-      metadata.setEntityGlowing(scheduler, innocent, ChatColor.GREEN, properties.getChippedDuration())
+      metadata.setEntityGlowing(scheduler, innocent, NamedTextColor.GREEN, properties.getChippedDuration())
     );
   }
 }

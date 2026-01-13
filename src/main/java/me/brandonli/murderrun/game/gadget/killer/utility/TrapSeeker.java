@@ -38,7 +38,7 @@ import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -118,14 +118,14 @@ public final class TrapSeeker extends KillerGadget {
     for (final Item item : gadgets) {
       if (!set.contains(item)) {
         set.add(item);
-        metadata.setEntityGlowing(item, ChatColor.YELLOW, true);
+        metadata.setEntityGlowing(item, NamedTextColor.YELLOW, true);
       }
     }
 
     for (final Item entity : set) {
       if (!gadgets.contains(entity)) {
         set.remove(entity);
-        metadata.setEntityGlowing(entity, ChatColor.YELLOW, false);
+        metadata.setEntityGlowing(entity, NamedTextColor.YELLOW, false);
       }
     }
   }

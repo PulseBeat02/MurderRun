@@ -30,7 +30,7 @@ import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
@@ -77,10 +77,10 @@ public final class PartSniffer extends SurvivorAbility {
       final MetadataManager metadata = player.getMetadataManager();
       if (distance < radius * radius) {
         set.add(entity);
-        metadata.setEntityGlowing(entity, ChatColor.RED, true);
+        metadata.setEntityGlowing(entity, NamedTextColor.RED, true);
       } else if (set.contains(entity)) {
         set.remove(entity);
-        metadata.setEntityGlowing(entity, ChatColor.RED, false);
+        metadata.setEntityGlowing(entity, NamedTextColor.RED, false);
       }
     }
   }
