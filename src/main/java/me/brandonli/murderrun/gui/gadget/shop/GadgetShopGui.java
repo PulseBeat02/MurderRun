@@ -56,11 +56,13 @@ public final class GadgetShopGui extends PaginatedGui {
 
   private final MurderRun plugin;
   private final Player viewer;
+  private final GameProperties properties;
 
-  public GadgetShopGui(final MurderRun plugin, final Player viewer, final List<String> gadgets) {
+  public GadgetShopGui(final MurderRun plugin, final GameProperties properties, final Player viewer, final List<String> gadgets) {
     super(ContainerUtils.createChestContainer(Message.SHOP_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.viewer = viewer;
+    this.properties = properties;
     this.createPaginatedPane(gadgets);
     this.createNavigationPane();
   }
@@ -109,7 +111,7 @@ public final class GadgetShopGui extends PaginatedGui {
     final HumanEntity entity = event.getWhoClicked();
     final PlayerInventory inventory = entity.getInventory();
     final int cost = gadget.getPrice();
-    final ItemStack currency = ItemFactory.createCurrency(cost);
+    final ItemStack currency = ItemFactory.createCurrency(this.properties, cost);
     if (!inventory.containsAtLeast(currency, cost)) {
       final UUID uuid = entity.getUniqueId();
       final Component message = Message.SHOP_GUI_ERROR.build();
@@ -141,7 +143,7 @@ public final class GadgetShopGui extends PaginatedGui {
   }
 
   private void playSound(final HumanEntity entity) {
-    final String raw = GameProperties.SHOP_GUI_SOUND;
+    final String raw = this.properties.getShopGuiSound();
     final Key key = key(raw);
     final Source source = Source.MASTER;
     final Sound sound = sound(key, source, 1.0f, 1.0f);

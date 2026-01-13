@@ -27,9 +27,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.lobby.Lobby;
+import me.brandonli.murderrun.game.lobby.PreGameManager;
 import me.brandonli.murderrun.utils.IOUtils;
 import me.brandonli.murderrun.utils.immutable.SerializableVector;
 import me.brandonli.murderrun.utils.map.MapUtils;
@@ -49,8 +51,10 @@ public final class MapSchematicIO {
   private final GameSettings settings;
   private final UUID uuid;
   private final Collection<NPC> npcs;
+  private final PreGameManager manager;
 
-  public MapSchematicIO(final GameSettings settings, final UUID uuid) {
+  public MapSchematicIO(final PreGameManager manager, final GameSettings settings, final UUID uuid) {
+    this.manager = manager;
     this.settings = settings;
     this.uuid = uuid;
     this.npcs = new HashSet<>();
@@ -214,7 +218,8 @@ public final class MapSchematicIO {
     final SerializableVector vector3 = schematic.getOrigin();
     final Clipboard clipboard = schematic.getClipboard();
     final com.sk89q.worldedit.world.World world = this.getWorld();
-    return MapUtils.performPaste(world, clipboard, vector3);
+    final GameProperties properties = this.manager.getProperties();
+    return MapUtils.performPaste(properties, world, clipboard, vector3);
   }
 
   private com.sk89q.worldedit.world.World getWorld() {

@@ -34,13 +34,14 @@ import org.bukkit.entity.Item;
 
 public final class TrapWrecker extends KillerGadget {
 
-  public TrapWrecker() {
+  public TrapWrecker(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "trap_wrecker",
-      GameProperties.TRAP_WRECKER_COST,
+      properties.getTrapWreckerCost(),
       ItemFactory.createGadget(
         "trap_wrecker",
-        GameProperties.TRAP_WRECKER_MATERIAL,
+        properties.getTrapWreckerMaterial(),
         Message.TRAP_WRECKER_NAME.build(),
         Message.TRAP_WRECKER_LORE.build()
       )
@@ -67,13 +68,15 @@ public final class TrapWrecker extends KillerGadget {
       }
       killer.setLevel(time);
     };
+
+    final GameProperties properties = game.getProperties();
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
-    scheduler.scheduleCountdownTask(consumer, GameProperties.TRAP_WRECKER_DURATION, reference);
+    scheduler.scheduleCountdownTask(consumer, properties.getTrapWreckerDuration(), reference);
 
     final PlayerAudience audience = killer.getAudience();
     final Component msg = Message.TRAP_WRECKER_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(GameProperties.TRAP_WRECKER_SOUND);
+    audience.playSound(properties.getTrapWreckerSound());
 
     return false;
   }

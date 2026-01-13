@@ -31,13 +31,14 @@ import org.bukkit.entity.Item;
 
 public final class CorpusWarp extends SurvivorGadget {
 
-  public CorpusWarp() {
+  public CorpusWarp(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "corpus_warp",
-      GameProperties.CORPUS_WARP_COST,
+      properties.getCorpusWarpCost(),
       ItemFactory.createGadget(
         "corpus_warp",
-        GameProperties.CORPUS_WARP_MATERIAL,
+        properties.getCorpusWarpMaterial(),
         Message.CORPUS_WARP_NAME.build(),
         Message.CORPUS_WARP_LORE.build()
       )
@@ -63,8 +64,9 @@ public final class CorpusWarp extends SurvivorGadget {
     player.teleport(location);
     item.remove();
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.CORPUS_WARP_SOUND);
+    audience.playSound(properties.getCorpusWarpSound());
 
     return false;
   }

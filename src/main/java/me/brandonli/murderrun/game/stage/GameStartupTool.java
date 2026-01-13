@@ -43,10 +43,7 @@ import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
-import org.bukkit.GameRule;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
 
@@ -72,10 +69,11 @@ public final class GameStartupTool {
     final Location spawnLocation = arena.getSpawn();
     final World world = requireNonNull(spawnLocation.getWorld());
     world.setTime(13000);
-    world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-    world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-    world.setGameRule(GameRule.DO_INSOMNIA, false);
-    world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+
+    world.setGameRule(GameRules.ADVANCE_TIME, false);
+    world.setGameRule(GameRules.IMMEDIATE_RESPAWN, true);
+    world.setGameRule(GameRules.SPAWN_PHANTOMS, false);
+    world.setGameRule(GameRules.SHOW_ADVANCEMENT_MESSAGES, false);
   }
 
   private void teleportInnocentPlayers() {
@@ -117,7 +115,8 @@ public final class GameStartupTool {
   }
 
   private void runFutureTask() {
-    final int seconds = GameProperties.BEGINNING_STARTING_TIME;
+    final GameProperties properties = this.game.getProperties();
+    final int seconds = properties.getBeginningStartingTime();
     final GameScheduler scheduler = this.game.getScheduler();
     final NullReference reference = NullReference.of();
     scheduler.scheduleCountdownTask(this::handleCountdownSeconds, seconds, reference);
@@ -215,7 +214,7 @@ public final class GameStartupTool {
   private void startTimer() {
     final GameTimer manager = this.game.getTimeManager();
     final GameTimerUpdater updater = new GameTimerUpdater(this.game);
-    manager.startTimer();
+    manager.startTimer(this.game);
     updater.start();
   }
 

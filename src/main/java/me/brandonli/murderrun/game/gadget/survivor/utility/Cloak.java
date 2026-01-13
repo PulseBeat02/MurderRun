@@ -32,11 +32,12 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Cloak extends SurvivorGadget {
 
-  public Cloak() {
+  public Cloak(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "cloak",
-      GameProperties.CLOAK_COST,
-      ItemFactory.createGadget("cloak", GameProperties.CLOAK_MATERIAL, Message.CLOAK_NAME.build(), Message.CLOAK_LORE.build())
+      properties.getCloakCost(),
+      ItemFactory.createGadget("cloak", properties.getCloakMaterial(), Message.CLOAK_NAME.build(), Message.CLOAK_LORE.build())
     );
   }
 
@@ -47,14 +48,15 @@ public final class Cloak extends SurvivorGadget {
     final Item item = packet.getItem();
     item.remove();
 
+    final GameProperties properties = game.getProperties();
     final GamePlayerManager manager = game.getPlayerManager();
     manager.applyToLivingSurvivors(survivor ->
-      survivor.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, GameProperties.CLOAK_DURATION, 0))
+      survivor.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, properties.getCloakDuration(), 0))
     );
 
     final Component message = Message.CLOAK_ACTIVATE.build();
     manager.sendMessageToAllLivingSurvivors(message);
-    manager.playSoundForAllParticipants(GameProperties.CLOAK_SOUND);
+    manager.playSoundForAllParticipants(properties.getCloakSound());
 
     return false;
   }

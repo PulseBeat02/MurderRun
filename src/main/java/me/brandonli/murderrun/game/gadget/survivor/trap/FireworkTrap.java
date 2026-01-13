@@ -43,18 +43,19 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public final class FireworkTrap extends SurvivorTrap {
 
-  public FireworkTrap() {
+  public FireworkTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "firework_trap",
-      GameProperties.FIREWORK_COST,
+      properties.getFireworkCost(),
       ItemFactory.createGadget(
         "firework_trap",
-        GameProperties.FIREWORK_MATERIAL,
+        properties.getFireworkMaterial(),
         Message.FIREWORK_NAME.build(),
         Message.FIREWORK_LORE.build()
       ),
       Message.FIREWORK_ACTIVATE.build(),
-      GameProperties.FIREWORK_COLOR
+      properties.getFireworkColor()
     );
   }
 
@@ -68,10 +69,11 @@ public final class FireworkTrap extends SurvivorTrap {
     final Location location = murderer.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location), 0, 5, GameProperties.FIREWORK_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location), 0, 5, properties.getFireworkDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.FIREWORK_SOUND);
+    manager.playSoundForAllParticipants(properties.getFireworkSound());
   }
 
   private void spawnFirework(final Location location) {

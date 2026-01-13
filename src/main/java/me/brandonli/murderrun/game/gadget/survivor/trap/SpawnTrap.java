@@ -32,13 +32,14 @@ import org.bukkit.entity.Item;
 
 public final class SpawnTrap extends SurvivorTrap {
 
-  public SpawnTrap() {
+  public SpawnTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "spawn_trap",
-      GameProperties.SPAWN_COST,
-      ItemFactory.createGadget("spawn_trap", GameProperties.SPAWN_MATERIAL, Message.SPAWN_NAME.build(), Message.SPAWN_LORE.build()),
+      properties.getSpawnCost(),
+      ItemFactory.createGadget("spawn_trap", properties.getSpawnMaterial(), Message.SPAWN_NAME.build(), Message.SPAWN_LORE.build()),
       Message.SPAWN_ACTIVATE.build(),
-      GameProperties.SPAWN_COLOR
+      properties.getSpawnColor()
     );
   }
 
@@ -49,7 +50,8 @@ public final class SpawnTrap extends SurvivorTrap {
     final Location spawn = arena.getSpawn();
     murderer.teleport(spawn);
 
+    final GameProperties properties = game.getProperties();
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.SPAWN_SOUND);
+    manager.playSoundForAllParticipants(properties.getSpawnSound());
   }
 }

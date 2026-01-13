@@ -28,24 +28,26 @@ import org.bukkit.entity.Item;
 
 public final class BearTrap extends SurvivorTrap {
 
-  public BearTrap() {
+  public BearTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "bear_trap",
-      GameProperties.BEAR_COST,
-      ItemFactory.createGadget("bear_trap", GameProperties.BEAR_MATERIAL, Message.BEAR_NAME.build(), Message.BEAR_LORE.build()),
+      properties.getBearCost(),
+      ItemFactory.createGadget("bear_trap", properties.getBearMaterial(), Message.BEAR_NAME.build(), Message.BEAR_LORE.build()),
       Message.BEAR_ACTIVATE.build(),
-      GameProperties.BEAR_COLOR
+      properties.getBearColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
+    final GameProperties properties = game.getProperties();
     final GameScheduler scheduler = game.getScheduler();
-    final int duration = GameProperties.BEAR_DURATION;
+    final int duration = properties.getBearDuration();
     murderer.disableJump(scheduler, duration);
     murderer.disableWalkWithFOVEffects(duration);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.BEAR_SOUND);
+    manager.playSoundForAllParticipants(properties.getBearSound());
   }
 }

@@ -225,7 +225,8 @@ public final class GameCleanupTool {
   }
 
   private void giveMoney(final boolean survivor) {
-    final double money = GameProperties.VAULT_REWARD;
+    final GameProperties properties = this.game.getProperties();
+    final double money = properties.getVaultReward();
     if (Capabilities.VAULT.isDisabled()) {
       return;
     }
@@ -243,7 +244,8 @@ public final class GameCleanupTool {
   }
 
   private void executeCommands(final boolean survivor) {
-    final String chain = survivor ? GameProperties.SURVIVOR_WIN_COMMANDS_AFTER : GameProperties.KILLER_WIN_COMMANDS_AFTER;
+    final GameProperties properties = this.game.getProperties();
+    final String chain = survivor ? properties.getSurvivorWinCommandsAfter() : properties.getKillerWinCommandsAfter();
     if (chain.equalsIgnoreCase("none")) {
       return;
     }

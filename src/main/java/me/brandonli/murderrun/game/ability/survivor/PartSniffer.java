@@ -30,7 +30,7 @@ import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
@@ -68,7 +68,8 @@ public final class PartSniffer extends SurvivorAbility {
     final java.util.Map<String, CarPart> parts = manager.getParts();
     final Collection<CarPart> stacks = parts.values();
     final Collection<org.bukkit.entity.Item> set = player.getGlowingCarParts();
-    final double radius = GameProperties.PART_SNIFFER_RADIUS;
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getPartSnifferRadius();
     for (final CarPart stack : stacks) {
       final Location location = stack.getLocation();
       final Item entity = stack.getItem();
@@ -76,10 +77,10 @@ public final class PartSniffer extends SurvivorAbility {
       final MetadataManager metadata = player.getMetadataManager();
       if (distance < radius * radius) {
         set.add(entity);
-        metadata.setEntityGlowing(entity, ChatColor.RED, true);
+        metadata.setEntityGlowing(entity, NamedTextColor.RED, true);
       } else if (set.contains(entity)) {
         set.remove(entity);
-        metadata.setEntityGlowing(entity, ChatColor.RED, false);
+        metadata.setEntityGlowing(entity, NamedTextColor.RED, false);
       }
     }
   }

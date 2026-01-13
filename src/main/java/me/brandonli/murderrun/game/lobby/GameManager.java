@@ -97,6 +97,8 @@ public final class GameManager {
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
       if (!playerManager.isGameFull() && !playerManager.isLocked()) {
+        final PreGameManager preGameManager = playerManager.getManager();
+        final GameMode mode = preGameManager.getMode();
         playerManager.addParticipantToLobby(player, false);
         return true;
       }
@@ -107,6 +109,7 @@ public final class GameManager {
   public CompletableFuture<Void> createGame(
     final CommandSender leader,
     final String id,
+    final GameMode mode,
     final String arenaName,
     final String lobbyName,
     final int min,
@@ -114,15 +117,15 @@ public final class GameManager {
     final boolean quickJoinable
   ) {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
-    return this.createClampedGame(leader, id, arenaName, lobbyName, min, max, quickJoinable, listener)
+    return this.createClampedGame(leader, id, mode, arenaName, lobbyName, min, max, quickJoinable, listener)
       .thenAccept(manager -> this.addGameToRegistry(id, manager))
-      .thenAccept(manager -> this.autoJoinIfLeaderPlayer(leader, id))
-      .thenApply(manager -> manager);
+      .thenRun(() -> this.autoJoinIfLeaderPlayer(leader, id));
   }
 
   private CompletableFuture<PreGameManager> createClampedGame(
     final CommandSender leader,
     final String id,
+    final GameMode mode,
     final String arenaName,
     final String lobbyName,
     final int min,
@@ -133,7 +136,7 @@ public final class GameManager {
     this.sendGameCreationMessage(leader);
     final int finalMin = Math.clamp(min, 2, Integer.MAX_VALUE);
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
-    final PreGameManager manager = new PreGameManager(this.plugin, this, id, listener);
+    final PreGameManager manager = new PreGameManager(this.plugin, this, id, mode, listener);
     this.setSettings(manager, arenaName, lobbyName);
     return manager.initialize(leader, finalMin, finalMax, quickJoinable).thenApply(ignored -> manager);
   }
@@ -224,7 +227,9 @@ public final class GameManager {
     final int min = config.getMinPlayers();
     final int max = config.getMaxPlayers();
 
-    return this.createGame(player, raw, arena, lobby, min, max, true)
+    final GameMode[] modes = config.getGameModes();
+    final GameMode mode = RandomUtils.getRandomElement(modes);
+    return this.createGame(player, raw, mode, arena, lobby, min, max, true)
       .thenRun(() -> this.creation.set(false))
       .thenApply(manager -> true)
       .exceptionally(e -> {

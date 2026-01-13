@@ -22,6 +22,7 @@ import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.ability.AbilityManager;
 import me.brandonli.murderrun.game.extension.GameExtensionManager;
+import me.brandonli.murderrun.game.freezetag.FreezeTagManager;
 import me.brandonli.murderrun.game.gadget.GadgetManager;
 import me.brandonli.murderrun.game.map.GameMap;
 import me.brandonli.murderrun.game.map.MapSchematicIO;
@@ -38,6 +39,7 @@ public final class Game {
   private final GameStatus status;
 
   private UUID gameID;
+  private GameMode mode;
   private GameMap map;
   private GameSettings configuration;
   private GamePlayerManager playerManager;
@@ -50,6 +52,8 @@ public final class Game {
   private GameExtensionManager extensionManager;
   private MapSchematicIO mapSchematicIO;
   private GameEventsListener callback;
+  private GameProperties properties;
+  private FreezeTagManager freezeTagManager;
 
   @SuppressWarnings("all") // checker
   public Game(final MurderRun plugin) {
@@ -57,7 +61,14 @@ public final class Game {
     this.status = new GameStatus(this);
   }
 
+  public Game(final MurderRun plugin, final GameProperties properties) {
+    this.properties = properties;
+    this(plugin);
+  }
+
   public void startGame(
+    final GameProperties properties,
+    final GameMode mode,
     final GameSettings settings,
     final Collection<Player> murderers,
     final Collection<Player> participants,
@@ -66,10 +77,12 @@ public final class Game {
     final UUID uuid
   ) {
     this.gameID = uuid;
+    this.mode = mode;
     this.status.setStatus(GameStatus.Status.SURVIVORS_RELEASED);
     this.configuration = settings;
     this.callback = callback;
     this.mapSchematicIO = mapSchematicIO;
+    this.properties = properties;
     this.executor = new GameExecutor();
     this.scheduler = new GameScheduler(this);
     this.map = new GameMap(this);
@@ -79,6 +92,10 @@ public final class Game {
     this.abilityManager = new AbilityManager(this);
     this.extensionManager = new GameExtensionManager(this);
     this.phaseInvoker = new GamePhaseInvoker(this);
+    if (mode == GameMode.FREEZE_TAG) {
+      this.freezeTagManager = new FreezeTagManager(this);
+    }
+
     this.map.start();
     this.playerManager.start(murderers, participants);
     this.extensionManager.registerExtensions();
@@ -103,7 +120,7 @@ public final class Game {
       this.forceShutdown(code);
     } else {
       final BukkitScheduler scheduler = Bukkit.getScheduler();
-      scheduler.runTaskLater(this.plugin, () -> this.forceShutdown(code), 2 * 20L);
+      scheduler.runTaskLater(this.plugin, () -> this.forceShutdown(code), 10L);
     }
   }
 
@@ -114,6 +131,9 @@ public final class Game {
     this.phaseInvoker.invokeCleanup(code);
     this.executor.shutdown();
     this.extensionManager.disableExtensions();
+    if (this.freezeTagManager != null) {
+      this.freezeTagManager.shutdown();
+    }
     this.playerManager.resetAllPlayers();
     this.map.shutdown();
     this.mapSchematicIO.resetMap();
@@ -166,5 +186,17 @@ public final class Game {
 
   public AbilityManager getAbilityManager() {
     return this.abilityManager;
+  }
+
+  public GameProperties getProperties() {
+    return this.properties;
+  }
+
+  public FreezeTagManager getFreezeTagManager() {
+    return this.freezeTagManager;
+  }
+
+  public GameMode getMode() {
+    return this.mode;
   }
 }

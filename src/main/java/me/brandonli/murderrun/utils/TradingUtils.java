@@ -18,9 +18,11 @@
 package me.brandonli.murderrun.utils;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.text.Component.empty;
 
 import java.util.*;
 import java.util.stream.Stream;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.ability.Ability;
 import me.brandonli.murderrun.game.ability.AbilityRegistry;
 import me.brandonli.murderrun.game.ability.killer.KillerAbility;
@@ -33,7 +35,6 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -95,23 +96,23 @@ public final class TradingUtils {
     return items;
   }
 
-  public static MerchantRecipe createGadgetRecipe(final Gadget gadget) {
+  public static MerchantRecipe createGadgetRecipe(final GameProperties properties, final Gadget gadget) {
     final int cost = gadget.getPrice();
     final Item.Builder stack = requireNonNull(gadget.getStackBuilder());
     final ItemStack itemStack = stack.build();
-    final ItemStack ingredient = ItemFactory.createCurrency(cost);
+    final ItemStack ingredient = ItemFactory.createCurrency(properties, cost);
     final int uses = Integer.MAX_VALUE;
     final MerchantRecipe recipe = new MerchantRecipe(itemStack, uses);
     recipe.addIngredient(ingredient);
     return recipe;
   }
 
-  public static Optional<MerchantRecipe> getRecipeByResult(final ItemStack item) {
+  public static Optional<MerchantRecipe> getRecipeByResult(final GameProperties properties, final ItemStack item) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     MerchantRecipe target = null;
     for (final Gadget gadget : gadgets) {
-      final MerchantRecipe recipe = createGadgetRecipe(gadget);
+      final MerchantRecipe recipe = createGadgetRecipe(properties, gadget);
       if (matchesResult(recipe, item)) {
         target = recipe;
         break;
@@ -131,8 +132,9 @@ public final class TradingUtils {
 
   private static String compareStackName(final ItemStack stack) {
     final ItemMeta meta = requireNonNull(stack.getItemMeta());
-    final String display = requireNonNull(meta.getDisplayName());
-    return requireNonNull(ChatColor.stripColor(display));
+    final Component component = requireNonNull(meta.displayName());
+    final String display = ComponentUtils.serializeComponentToPlain(component);
+    return requireNonNull(display);
   }
 
   public static Stream<String> getGadgetTradeSuggestions() {
@@ -141,18 +143,18 @@ public final class TradingUtils {
     return gadgets.stream().map(Gadget::getId);
   }
 
-  public static List<MerchantRecipe> getAllGadgetRecipes() {
+  public static List<MerchantRecipe> getAllGadgetRecipes(final GameProperties properties) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final Gadget gadget : gadgets) {
-      final MerchantRecipe recipe = createGadgetRecipe(gadget);
+      final MerchantRecipe recipe = createGadgetRecipe(properties, gadget);
       recipes.add(recipe);
     }
     return recipes;
   }
 
-  public static List<MerchantRecipe> parseGadgetRecipes(final String... args) {
+  public static List<MerchantRecipe> parseGadgetRecipes(final GameProperties properties, final String... args) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String arg : args) {
@@ -160,7 +162,7 @@ public final class TradingUtils {
       if (gadget == null) {
         continue;
       }
-      final MerchantRecipe recipe = createGadgetRecipe(gadget);
+      final MerchantRecipe recipe = createGadgetRecipe(properties, gadget);
       recipes.add(recipe);
     }
     return recipes;
@@ -185,24 +187,19 @@ public final class TradingUtils {
     final ItemStack itemStack = stack.build();
     final ItemStack clone = itemStack.clone();
     final ItemMeta meta = requireNonNull(clone.getItemMeta());
-    List<String> lore = meta.getLore();
-    if (lore == null) {
-      lore = new ArrayList<>();
+    List<Component> components = meta.lore();
+    if (components == null) {
+      components = new ArrayList<>();
     }
 
-    final List<String> copy = new ArrayList<>(lore);
-    final String raw = getLegacyComponent(gadget);
-    copy.addFirst("");
-    copy.addFirst(raw);
-    meta.setLore(copy);
+    final List<Component> copy = new ArrayList<>(components);
+    final int cost = gadget.getPrice();
+    final Component component = Message.SHOP_GUI_COST_LORE.build(cost);
+    copy.addFirst(empty());
+    copy.addFirst(component);
+    meta.lore(copy);
     clone.setItemMeta(meta);
 
     return clone;
-  }
-
-  private static String getLegacyComponent(final Gadget gadget) {
-    final int cost = gadget.getPrice();
-    final Component full = Message.SHOP_GUI_COST_LORE.build(cost);
-    return ComponentUtils.serializeComponentToLegacyString(full);
   }
 }

@@ -20,6 +20,7 @@ package me.brandonli.murderrun.locale;
 import static me.brandonli.murderrun.locale.LocaleTools.direct;
 
 import java.util.List;
+import net.kyori.adventure.text.Component;
 
 public interface Message extends LocaleTools {
   NullComponent<Sender> RESOURCE_PACK_ACTIVATE = direct("murderrun.game.resources");
@@ -568,14 +569,15 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> MIMIC_NAME = direct("murderrun.game.gadget.mimic.name");
   NullComponent<Sender> MIMIC_LORE = direct("murderrun.game.gadget.mimic.lore");
   NullComponent<Sender> MIMIC_ACTIVATE = direct("murderrun.game.gadget.mimic.activate");
-  UniComponent<Sender, String> DEAD_CHAT_PREFIX = direct("murderrun.chat.dead.prefix", null);
+  UniComponent<Sender, Component> DEAD_CHAT_PREFIX = direct("murderrun.chat.dead.prefix", null);
   NullComponent<Sender> SCOREBOARD_TITLE = direct("murderrun.game.scoreboard.title");
   NullComponent<Sender> SCOREBOARD_ROLE_SURVIVOR = direct("murderrun.game.scoreboard.role.survivor");
   NullComponent<Sender> SCOREBOARD_ROLE_KILLER = direct("murderrun.game.scoreboard.role.killer");
   NullComponent<Sender> SCOREBOARD_OBJECTIVE_SURVIVOR = direct("murderrun.game.scoreboard.objective.survivor");
   NullComponent<Sender> SCOREBOARD_OBJECTIVE_KILLER = direct("murderrun.game.scoreboard.objective.killer");
   UniComponent<Sender, Integer> SCOREBOARD_PARTS = direct("murderrun.game.scoreboard.parts", null);
-  NullComponent<Sender> KILLER_ASSIGN = direct("murderrun.game.role.assign");
+  NullComponent<Sender> SURVIVOR_ASSIGN = direct("murderrun.game.role.assign.survivor");
+  NullComponent<Sender> KILLER_ASSIGN = direct("murderrun.game.role.assign.killer");
   NullComponent<Sender> LOBBY_TIMER_CANCEL = direct("murderrun.lobby.timer.cancel");
   NullComponent<Sender> LOBBY_SCOREBOARD_TITLE = direct("murdderun.lobby.scoreboard.title");
   UniComponent<Sender, String> LOBBY_SCOREBOARD_ARENA = direct("murderrun.lobby.scoreboard.arena", null);
@@ -607,4 +609,15 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> EXPANDER_NAME = direct("murderrun.game.gadget.expander.name");
   NullComponent<Sender> EXPANDER_LORE = direct("murderrun.game.gadget.expander.lore");
   NullComponent<Sender> PLAYER_LIST_GUI_TITLE = direct("murderrun.gui.player.title");
+  UniComponent<Sender, String> LOBBY_SCOREBOARD_MODE = direct("murderrun.lobby.scoreboard.mode", null);
+  NullComponent<Sender> FREEZE_TAG_FROZEN = direct("murderrun.game.freezetag.frozen");
+  NullComponent<Sender> FREEZE_TAG_REVIVED = direct("murderrun.game.freezetag.revived");
+  NullComponent<Sender> FREEZE_TAG_DIED = direct("murderrun.game.freezetag.died");
+  UniComponent<Sender, String> FREEZE_TAG_HOLOGRAM = direct("murderrun.game.freezetag.hologram", null);
+  UniComponent<Sender, String> FREEZE_TAG_WAITING = direct("murderrun.game.freezetag.waiting", null);
+  NullComponent<Sender> FREEZE_TAG_REVIVING_START = direct("murderrun.game.freezetag.reviving.start");
+  NullComponent<Sender> FREEZE_TAG_REVIVING_STOPPED = direct("murderrun.game.freezetag.reviving.stopped");
+  UniComponent<Sender, String> FREEZE_TAG_REVIVING_PROGRESS = direct("murderrun.game.freezetag.reviving.progress", null);
+  NullComponent<Sender> FREEZE_TAG_ALL_FROZEN = direct("murderrun.game.freezetag.all.frozen");
+  NullComponent<Sender> GAME_MODE_ERROR = direct("murderrun.command.game.mode.error");
 }

@@ -41,13 +41,14 @@ import org.bukkit.inventory.HorseInventory;
 
 public final class DeathSteed extends KillerGadget {
 
-  public DeathSteed() {
+  public DeathSteed(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "death_steed",
-      GameProperties.DEATH_STEED_COST,
+      properties.getDeathSteedCost(),
       ItemFactory.createGadget(
         "death_steed",
-        GameProperties.DEATH_STEED_MATERIAL,
+        properties.getDeathSteedMaterial(),
         Message.DEATH_STEED_NAME.build(),
         Message.DEATH_STEED_LORE.build()
       )
@@ -69,8 +70,9 @@ public final class DeathSteed extends KillerGadget {
     final EntityReference reference = EntityReference.of(horse);
     scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager, horse), 0, 5L, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.DEATH_STEED_SOUND);
+    audience.playSound(properties.getDeathSteedSound());
 
     return false;
   }

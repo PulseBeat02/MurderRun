@@ -17,6 +17,9 @@
 
 ---
 
+> [!NOTE]
+> Murder Run requires Java 25 and Paper in order to run!
+
 If you are familiar with the game Dead by Daylight (DBD), you will be familiar with Murder Run. Murder Run is based off
 the concept in DBD, an advanced game-mode revolving around two groups: killers and survivors. In a desolate map, survivors
 must find all vehicle parts scattered everywhere and throw them back on the truck before the killers murder everyone or
@@ -32,6 +35,7 @@ are listed below.
 - 100% Free and Open Source
 - Over 100+ Killer/Survivor Gadgets
 - Free Demo Lobby + Map
+- 3 Different Game Modes (One Bounce, Freeze Tag, Normal)
 - Easy Lobby / Arena Creation and Customization
   - Either use GUI's or Commands to Create and Modify Arenas / Lobbies
 - Resets Arenas Automatically using WorldEdit

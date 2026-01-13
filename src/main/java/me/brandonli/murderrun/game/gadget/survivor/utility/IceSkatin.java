@@ -39,13 +39,14 @@ import org.bukkit.entity.Item;
 
 public final class IceSkatin extends SurvivorGadget {
 
-  public IceSkatin() {
+  public IceSkatin(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "ice_skatin",
-      GameProperties.ICE_SKATIN_COST,
+      properties.getIceSkatinCost(),
       ItemFactory.createGadget(
         "ice_skatin",
-        GameProperties.ICE_SKATIN_MATERIAL,
+        properties.getIceSkatinMaterial(),
         Message.ICE_SKATIN_NAME.build(),
         Message.ICE_SKATIN_LORE.build()
       )
@@ -63,12 +64,13 @@ public final class IceSkatin extends SurvivorGadget {
     final World world = requireNonNull(location.getWorld());
     final Boat boat = (Boat) world.spawnEntity(location, EntityType.OAK_BOAT);
     final GameScheduler scheduler = game.getScheduler();
+    final GameProperties properties = game.getProperties();
     final EntityReference reference = EntityReference.of(boat);
     scheduler.scheduleRepeatedTask(() -> this.spawnIceUnderBoat(boat), 0L, 2L, reference);
-    scheduler.scheduleTask(boat::remove, GameProperties.ICE_SKATIN_DURATION, reference);
+    scheduler.scheduleTask(boat::remove, properties.getIceSkatinDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.ICE_SKATIN_SOUND);
+    audience.playSound(properties.getIceSkatinSound());
 
     return false;
   }

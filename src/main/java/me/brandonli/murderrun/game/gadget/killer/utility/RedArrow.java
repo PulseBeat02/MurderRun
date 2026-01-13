@@ -38,13 +38,14 @@ import org.bukkit.entity.Item;
 
 public final class RedArrow extends KillerGadget {
 
-  public RedArrow() {
+  public RedArrow(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "red_arrow",
-      GameProperties.RED_ARROW_COST,
+      properties.getRedArrowCost(),
       ItemFactory.createGadget(
         "red_arrow",
-        GameProperties.RED_ARROW_MATERIAL,
+        properties.getRedArrowMaterial(),
         Message.RED_ARROW_NAME.build(),
         Message.RED_ARROW_LORE.build()
       )
@@ -61,12 +62,13 @@ public final class RedArrow extends KillerGadget {
     final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, GameProperties.RED_ARROW_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, properties.getRedArrowDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.RED_ARROW_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GameProperties.RED_ARROW_SOUND);
+    audience.playSound(properties.getRedArrowSound());
 
     return false;
   }

@@ -23,7 +23,7 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import java.lang.reflect.Type;
 import me.brandonli.murderrun.utils.gson.GsonProvider;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @Converter(autoApply = true) // add annotation all subclasses
 public abstract class AbstractJSONConverter<T> implements AttributeConverter<T, String> {

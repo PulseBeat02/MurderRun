@@ -42,11 +42,12 @@ public final class Hook extends KillerGadget implements Listener {
   private final Game game;
 
   public Hook(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "hook",
-      GameProperties.HOOK_COST,
+      properties.getHookCost(),
       ItemFactory.createHook(
-        ItemFactory.createGadget("hook", GameProperties.HOOK_MATERIAL, Message.HOOK_NAME.build(), Message.HOOK_LORE.build())
+        ItemFactory.createGadget("hook", properties.getHookMaterial(), Message.HOOK_NAME.build(), Message.HOOK_LORE.build())
       )
     );
     this.game = game;

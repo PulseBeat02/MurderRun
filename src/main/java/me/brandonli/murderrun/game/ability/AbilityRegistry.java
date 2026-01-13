@@ -32,6 +32,7 @@ import me.brandonli.murderrun.utils.ClassGraphUtils;
 import org.bukkit.Server;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
@@ -56,7 +57,8 @@ public final class AbilityRegistry {
   }
 
   private Collection<String> getDisabledAbilities(@UnderInitialization AbilityRegistry this) {
-    final String raw = GameProperties.DISABLED_ABILITIES;
+    final GameProperties properties = GameProperties.COMMON;
+    final String raw = properties.getDisabledAbilities();
     final String[] split = raw.split(",");
     if (split[0].equals("none")) {
       return List.of();
@@ -130,7 +132,6 @@ public final class AbilityRegistry {
     return abilities;
   }
 
-  @SuppressWarnings("all") // checker
   private void load() {
     final ScanResult result = ClassGraphUtils.getCachedScanResult();
     final ClassInfoList list = result.getClassesImplementing(Ability.class);
@@ -149,7 +150,9 @@ public final class AbilityRegistry {
   private void handleAbilityClass(final Class<?> clazz) {
     try {
       final MethodHandle handle = this.getMethodHandleClass(clazz);
-      final Ability ability = this.invokeAbilityConstructor(handle, null);
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+      final Game dummy = new Game(plugin, GameProperties.DEFAULT); // dummy for init only
+      final Ability ability = this.invokeAbilityConstructor(handle, dummy);
       final String name = ability.getId();
       if (this.disabled.contains(name)) {
         return;
@@ -174,9 +177,8 @@ public final class AbilityRegistry {
   }
 
   @SuppressWarnings("all") // checker
-  private Ability invokeAbilityConstructor(final MethodHandle handle, final @Nullable Game game) {
+  private Ability invokeAbilityConstructor(final MethodHandle handle, final Game game) {
     try {
-      final MethodType type = handle.type();
       return (Ability) handle.invoke(game);
     } catch (final Throwable e) {
       throw new AssertionError(e);

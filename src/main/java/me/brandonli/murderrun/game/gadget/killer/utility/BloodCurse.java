@@ -40,13 +40,14 @@ public final class BloodCurse extends KillerGadget {
 
   private static final Set<Material> BLACKLISTED_MATERIALS = Set.of(Material.AIR, Material.CHEST);
 
-  public BloodCurse() {
+  public BloodCurse(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "blood_curse",
-      GameProperties.BLOOD_CURSE_COST,
+      properties.getBloodCurseCost(),
       ItemFactory.createGadget(
         "blood_curse",
-        GameProperties.BLOOD_CURSE_MATERIAL,
+        properties.getBloodCurseMaterial(),
         Message.BLOOD_CURSE_NAME.build(),
         Message.BLOOD_CURSE_LORE.build()
       )
@@ -63,7 +64,9 @@ public final class BloodCurse extends KillerGadget {
     final GamePlayerManager manager = game.getPlayerManager();
     final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> manager.applyToLivingSurvivors(this::setBloodBlock), 0, 7L, reference);
-    manager.playSoundForAllParticipants(GameProperties.BLOOD_CURSE_SOUND);
+
+    final GameProperties properties = game.getProperties();
+    manager.playSoundForAllParticipants(properties.getBloodCurseSound());
 
     final Component msg = Message.BLOOD_CURSE_ACTIVATE.build();
     manager.sendMessageToAllLivingSurvivors(msg);

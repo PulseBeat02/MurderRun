@@ -34,7 +34,7 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -58,12 +58,13 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   private final Game game;
 
   public Dormagogg(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "dormagogg",
-      GameProperties.DORMAGOGG_COST,
+      properties.getDormagoggCost(),
       ItemFactory.createGadget(
         "dormagogg",
-        GameProperties.DORMAGOGG_MATERIAL,
+        properties.getDormagoggMaterial(),
         Message.DORMAGOGG_NAME.build(),
         Message.DORMAGOGG_LORE.build()
       )
@@ -119,14 +120,15 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
     final GamePlayer nearest = manager.getGamePlayer(player);
     final GamePlayer killer = manager.getGamePlayer(ownerUuid);
     final GameScheduler scheduler = this.game.getScheduler();
-    final int duration = GameProperties.DORMAGOGG_DURATION;
-    final int effect = GameProperties.DORMAGOGG_EFFECT_DURATION;
+    final GameProperties properties = this.game.getProperties();
+    final int duration = properties.getDormagoggDuration();
+    final int effect = properties.getDormagoggEffectDuration();
     nearest.disableJump(scheduler, duration);
     nearest.disableWalkWithFOVEffects(effect);
     nearest.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, 1));
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, nearest, ChatColor.RED, duration);
+    metadata.setEntityGlowing(scheduler, nearest, NamedTextColor.RED, duration);
   }
 
   @Override
@@ -139,8 +141,9 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
     final World world = requireNonNull(location.getWorld());
     this.spawnDormagogg(world, location, player);
 
+    final GameProperties properties = this.game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.DORMAGOGG_SOUND);
+    audience.playSound(properties.getDormagoggSound());
 
     return false;
   }

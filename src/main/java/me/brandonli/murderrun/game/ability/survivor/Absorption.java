@@ -36,7 +36,8 @@ public final class Absorption extends SurvivorAbility {
   public void start() {
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
-    final int level = GameProperties.ABSORPTION_LEVEL;
+    final GameProperties properties = game.getProperties();
+    final int level = properties.getAbsorptionLevel();
     manager.applyToAllParticipants(participant -> {
       final PlayerInventory inventory = participant.getInventory();
       if (!participant.hasAbility("absorption")) {

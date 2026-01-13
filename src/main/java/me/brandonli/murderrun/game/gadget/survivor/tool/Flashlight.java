@@ -55,13 +55,15 @@ public final class Flashlight extends SurvivorGadget implements Listener {
   private final Game game;
 
   public Flashlight(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "flashlight",
-      GameProperties.FLASHLIGHT_COST,
+      properties.getFlashlightCost(),
       ItemFactory.createFlashlight(
+        properties,
         ItemFactory.createGadget(
           "flashlight",
-          GameProperties.FLASHLIGHT_MATERIAL,
+          properties.getFlashlightMaterial(),
           Message.FLASHLIGHT_NAME.build(),
           Message.FLASHLIGHT_LORE.build()
         )
@@ -114,14 +116,15 @@ public final class Flashlight extends SurvivorGadget implements Listener {
 
     Item.builder(stack).useOneDurability();
 
-    final int cooldownDuration = (int) (GameProperties.FLASHLIGHT_COOLDOWN * 20);
+    final GameProperties properties = game.getProperties();
+    final int cooldownDuration = (int) (properties.getFlashlightCooldown() * 20);
     player.setCooldown(stack, cooldownDuration);
 
     final GameScheduler scheduler = game.getScheduler();
     if (player instanceof final Survivor survivor) {
       survivor.setCanSee(true);
       final LoosePlayerReference reference = LoosePlayerReference.of(player);
-      final int duration = GameProperties.FLASHLIGHT_DURATION;
+      final int duration = properties.getFlashlightDuration();
       scheduler.scheduleTask(() -> survivor.setCanSee(false), duration, reference);
     }
 
@@ -137,8 +140,9 @@ public final class Flashlight extends SurvivorGadget implements Listener {
     final Location handLocation = player.getEyeLocation();
     final Vector direction = handLocation.getDirection();
     final double increment = Math.toRadians(5);
-    final double maxAngle = Math.toRadians(GameProperties.FLASHLIGHT_CONE_ANGLE);
-    for (double t = 0; t < GameProperties.FLASHLIGHT_CONE_LENGTH; t += 0.5) {
+    final GameProperties properties = game.getProperties();
+    final double maxAngle = Math.toRadians(properties.getFlashlightConeAngle());
+    for (double t = 0; t < properties.getFlashlightConeLength(); t += 0.5) {
       for (double angle = -maxAngle; angle <= maxAngle; angle += increment) {
         final Location particleLocation = this.getParticleLocation(direction, handLocation, t, angle);
         manager.applyToAllParticipants(participant -> {
@@ -164,7 +168,8 @@ public final class Flashlight extends SurvivorGadget implements Listener {
   private void applyPotionEffects(final GamePlayer killer, final Location particleLocation) {
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(particleLocation);
-    final double radius = GameProperties.FLASHLIGHT_RADIUS;
+    final GameProperties properties = this.game.getProperties();
+    final double radius = properties.getFlashlightRadius();
     if (distance < radius * radius) {
       killer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));
     }

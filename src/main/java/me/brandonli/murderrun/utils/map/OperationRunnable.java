@@ -31,10 +31,10 @@ public final class OperationRunnable extends BukkitRunnable {
   private final CompletableFuture<Void> future;
   private final int max;
 
-  public OperationRunnable(final Iterator<Operation> iterator, final CompletableFuture<Void> future) {
+  public OperationRunnable(final GameProperties properties, final Iterator<Operation> iterator, final CompletableFuture<Void> future) {
     this.iterator = iterator;
     this.future = future;
-    this.max = GameProperties.WORLDEDIT_MAX_CHUNKS_PER_TICK - 1;
+    this.max = properties.getWorldeditMaxChunksPerTick() - 1;
   }
 
   @Override

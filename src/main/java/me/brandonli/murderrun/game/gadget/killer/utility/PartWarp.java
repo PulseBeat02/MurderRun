@@ -37,13 +37,14 @@ import org.bukkit.entity.Item;
 
 public final class PartWarp extends KillerGadget {
 
-  public PartWarp() {
+  public PartWarp(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "part_warp",
-      GameProperties.PART_WARP_COST,
+      properties.getPartWarpCost(),
       ItemFactory.createGadget(
         "part_warp",
-        GameProperties.PART_WARP_MATERIAL,
+        properties.getPartWarpMaterial(),
         Message.PART_WARP_NAME.build(),
         Message.PART_WARP_LORE.build()
       )
@@ -68,8 +69,9 @@ public final class PartWarp extends KillerGadget {
     final Location location = player.getLocation();
     carPartItem.teleport(location);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.PART_WARP_SOUND);
+    audience.playSound(properties.getPartWarpSound());
 
     return false;
   }

@@ -5,9 +5,10 @@ There are currently three ways to create a game. You can create a game using
 3) Quick-join commands
 
 ## Built-in Commands
-To create a new game, run the `/murder game create <arena> <lobby> <id> <min> <max> <quick-joinable>` command.
+To create a new game, run the `/murder game create <arena> <lobby> <id> <mode> <min> <max> <quick-joinable>` command.
 - The <arena> and <lobby> tags are your arena and lobby names respectively
 - The <id> is your game id, which can be set to any text
+- The <mode> specifies the game mode to choose
 - The <min> and <max> specify the minimum and maximum players in your game. You can't specify <min> to be less than 2
   players because there needs to be at least 2 players
 - The <quick-joinable> tag specifies whether or not other players
@@ -15,6 +16,13 @@ To create a new game, run the `/murder game create <arena> <lobby> <id> <min> <m
 ```{figure} game.png
 Example of creating a game using built-in commands
 ```
+
+## About Game Modes
+There are currently three game modes in Murder Run. There is your standard, default mode that is similar to Dead By
+Daylight. There is also a One Bounce game mode, where there is only 1 survivor (and everyone else is a killer). Finally,
+there is a Freeze Tag game mode, where survivors have a limited number of lives, and being killed results in you being
+frozen until a fellow teammate revives you. Settings for each of these features can be tweaked in the game configuration
+file.
 
 ## Parties Integration
 You're able to use the [Parties](https://alessiodp.com/parties) plugin by AlessioDP Dev to create new games as well.

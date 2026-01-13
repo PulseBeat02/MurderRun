@@ -32,6 +32,7 @@ import me.brandonli.murderrun.utils.ClassGraphUtils;
 import org.bukkit.Server;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.incendo.cloud.type.tuple.Pair;
@@ -56,7 +57,8 @@ public final class GadgetRegistry {
   }
 
   private Collection<String> getDisabledGadgets(@UnderInitialization GadgetRegistry this) {
-    final String raw = GameProperties.DISABLED_GADGETS;
+    final GameProperties properties = GameProperties.COMMON;
+    final String raw = properties.getDisabledGadgets();
     final String[] split = raw.split(",");
     if (split[0].equals("none")) {
       return List.of();
@@ -130,7 +132,6 @@ public final class GadgetRegistry {
     return gadgets;
   }
 
-  @SuppressWarnings("all") // checker
   private void load() {
     final ScanResult result = ClassGraphUtils.getCachedScanResult();
     final ClassInfoList list = result.getClassesImplementing(Gadget.class);
@@ -149,7 +150,9 @@ public final class GadgetRegistry {
   private void handleGadgetClass(final Class<?> clazz) {
     try {
       final MethodHandle handle = this.getMethodHandleClass(clazz);
-      final Gadget gadget = this.invokeGadgetConstructor(handle, null);
+      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
+      final Game dummy = new Game(plugin, GameProperties.DEFAULT); // dummy for init only
+      final Gadget gadget = this.invokeGadgetConstructor(handle, dummy);
       final String name = gadget.getId();
       if (this.disabled.contains(name)) {
         return;
@@ -174,7 +177,7 @@ public final class GadgetRegistry {
   }
 
   @SuppressWarnings("all") // checker
-  private Gadget invokeGadgetConstructor(final MethodHandle handle, final @Nullable Game game) {
+  private Gadget invokeGadgetConstructor(final MethodHandle handle, final Game game) {
     try {
       final MethodType type = handle.type();
       final int count = type.parameterCount();

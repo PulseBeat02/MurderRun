@@ -29,25 +29,29 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class StarTrap extends SurvivorTrap {
 
-  public StarTrap() {
+  public StarTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "star_trap",
-      GameProperties.STAR_COST,
-      ItemFactory.createGadget("star_trap", GameProperties.STAR_MATERIAL, Message.STAR_NAME.build(), Message.STAR_LORE.build()),
+      properties.getStarCost(),
+      ItemFactory.createGadget("star_trap", properties.getStarMaterial(), Message.STAR_NAME.build(), Message.STAR_LORE.build()),
       Message.STAR_ACTIVATE.build(),
-      GameProperties.STAR_COLOR
+      properties.getStarColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GamePlayerManager manager = game.getPlayerManager();
+    final GameProperties properties = game.getProperties();
     manager.applyToLivingSurvivors(this::addPotionEffect);
-    manager.playSoundForAllParticipants(GameProperties.STAR_SOUND);
+    manager.playSoundForAllParticipants(properties.getStarSound());
   }
 
   private void addPotionEffect(final GamePlayer player) {
-    final int duration = GameProperties.STAR_DURATION;
+    final Game game = player.getGame();
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getStarDuration();
     player.addPotionEffects(
       new PotionEffect(PotionEffectType.SPEED, duration, 2),
       new PotionEffect(PotionEffectType.RESISTANCE, duration, 2),

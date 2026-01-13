@@ -21,6 +21,7 @@ import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import java.util.Collection;
+import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.arena.Arena;
@@ -62,6 +63,7 @@ public final class LobbyScoreboard {
     this.boards.updateTitle(this.generateTitleComponent());
     this.boards.updateLines(
         empty(),
+        this.generateModeComponent(),
         this.generateArenaComponent(),
         this.generatePlayerComponent(),
         empty(),
@@ -69,6 +71,12 @@ public final class LobbyScoreboard {
         empty(),
         this.generateFooterComponent()
       );
+  }
+
+  private Component generateModeComponent() {
+    final GameMode mode = this.manager.getMode();
+    final String name = mode.getModeName();
+    return Message.LOBBY_SCOREBOARD_MODE.build(name);
   }
 
   private Component generateTitleComponent() {
@@ -87,11 +95,13 @@ public final class LobbyScoreboard {
   }
 
   private int getCurrentTime(final @Nullable LobbyTimeManager timer) {
+    final GameProperties properties = this.manager.getProperties();
+    final int time = properties.getLobbyStartingTime();
     if (timer == null) {
-      return GameProperties.LOBBY_STARTING_TIME;
+      return time;
     } else {
       final LobbyTimer lobbyTimer = timer.getTimer();
-      return lobbyTimer == null ? GameProperties.LOBBY_STARTING_TIME : lobbyTimer.getTime();
+      return lobbyTimer == null ? time : lobbyTimer.getTime();
     }
   }
 

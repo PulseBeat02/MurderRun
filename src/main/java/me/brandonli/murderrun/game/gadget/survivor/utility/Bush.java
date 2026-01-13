@@ -37,14 +37,16 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Bush extends SurvivorGadget {
 
-  public Bush() {
+  public Bush(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "bush",
-      GameProperties.BUSH_COST,
-      ItemFactory.createGadget("bush", GameProperties.BUSH_MATERIAL, Message.BUSH_NAME.build(), Message.BUSH_LORE.build())
+      properties.getBushCost(),
+      ItemFactory.createGadget("bush", properties.getBushMaterial(), Message.BUSH_NAME.build(), Message.BUSH_LORE.build())
     );
   }
 
@@ -55,7 +57,8 @@ public final class Bush extends SurvivorGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final int duration = GameProperties.BUSH_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getBushDuration();
     player.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1));
 
     final PlayerInventory inventory = player.getInventory();
@@ -64,6 +67,7 @@ public final class Bush extends SurvivorGadget {
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
     scheduler.scheduleRepeatedTask(() -> this.createFacingLocation(player, location), 0, 5, duration, reference);
 
+    @Nullable
     final ItemStack[] before = inventory.getArmorContents();
     final ItemStack[] empty = new ItemStack[4];
     inventory.setArmorContents(empty);
@@ -75,7 +79,7 @@ public final class Bush extends SurvivorGadget {
     scheduler.scheduleTask(() -> block.setType(Material.AIR), duration, emptyRef);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.BUSH_SOUND);
+    audience.playSound(properties.getBushSound());
 
     return false;
   }

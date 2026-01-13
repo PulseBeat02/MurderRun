@@ -32,13 +32,14 @@ import org.bukkit.entity.Item;
 
 public final class FriendWarp extends SurvivorGadget {
 
-  public FriendWarp() {
+  public FriendWarp(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "friend_warp",
-      GameProperties.FRIEND_WARP_COST,
+      properties.getFriendWarpCost(),
       ItemFactory.createGadget(
         "friend_warp",
-        GameProperties.FRIEND_WARP_MATERIAL,
+        properties.getFriendWarpMaterial(),
         Message.FRIEND_WARP_NAME.build(),
         Message.FRIEND_WARP_LORE.build()
       )
@@ -63,7 +64,8 @@ public final class FriendWarp extends SurvivorGadget {
     final Location location = target.getLocation();
     player.teleport(location);
 
-    final String sound = GameProperties.FRIEND_WARP_SOUND;
+    final GameProperties properties = game.getProperties();
+    final String sound = properties.getFriendWarpSound();
     final PlayerAudience audience = player.getAudience();
     audience.playSound(sound);
 

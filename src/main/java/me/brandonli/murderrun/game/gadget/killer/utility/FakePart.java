@@ -32,6 +32,7 @@ import me.brandonli.murderrun.game.scheduler.reference.EntityReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.Particle.DustOptions;
 import org.bukkit.entity.Item;
@@ -41,13 +42,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class FakePart extends KillerGadget {
 
-  public FakePart() {
+  public FakePart(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "fake_part",
-      GameProperties.FAKE_PART_COST,
+      properties.getFakePartCost(),
       ItemFactory.createGadget(
         "fake_part",
-        GameProperties.FAKE_PART_MATERIAL,
+        properties.getFakePartMaterial(),
         Message.FAKE_PART_NAME.build(),
         Message.FAKE_PART_LORE.build()
       )
@@ -72,8 +74,9 @@ public final class FakePart extends KillerGadget {
     final Runnable task = () -> this.handlePlayers(scheduler, manager, player, fakeItem);
     scheduler.scheduleRepeatedTask(task, 0, 20L, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.FAKE_PART_SOUND);
+    audience.playSound(properties.getFakePartSound());
 
     return false;
   }
@@ -86,25 +89,29 @@ public final class FakePart extends KillerGadget {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
-    final double radius = GameProperties.FAKE_PART_RADIUS;
+    final Game game = survivor.getGame();
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getFakePartRadius();
     if (distance < radius * radius) {
       this.handleDebuff(scheduler, survivor, killer, item);
       final PlayerAudience audience = survivor.getAudience();
       final Component msg = Message.FAKE_PART_ACTIVATE.build();
       audience.sendMessage(msg);
-      audience.playSound(GameProperties.FAKE_PART_EFFECT_SOUND);
+      audience.playSound(properties.getFakePartEffectSound());
     }
   }
 
   private void handleDebuff(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer, final Item item) {
-    final int duration = GameProperties.FAKE_PART_DURATION;
+    final Game game = survivor.getGame();
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getFakePartDuration();
     survivor.disableJump(scheduler, duration);
     survivor.disableWalkWithFOVEffects(duration);
     survivor.addPotionEffects(new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
     item.remove();
 
     final MetadataManager metadata = killer.getMetadataManager();
-    metadata.setEntityGlowing(scheduler, survivor, ChatColor.RED, duration);
+    metadata.setEntityGlowing(scheduler, survivor, NamedTextColor.RED, duration);
   }
 
   private Item spawnItem(final Location location) {

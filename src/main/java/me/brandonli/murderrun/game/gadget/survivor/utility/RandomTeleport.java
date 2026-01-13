@@ -40,32 +40,30 @@ import org.bukkit.entity.Item;
 
 public final class RandomTeleport extends SurvivorGadget {
 
-  private static final Set<Material> BLACKLISTED_BLOCKS;
+  private final Set<Material> blacklisted;
 
-  static {
-    BLACKLISTED_BLOCKS = new HashSet<>();
-    final String raw = GameProperties.RANDOM_TELEPORT_BLACKLISTED_BLOCKS;
+  public RandomTeleport(final Game game) {
+    final GameProperties properties = game.getProperties();
+    super(
+      "random_teleport",
+      properties.getRandomTeleportCost(),
+      ItemFactory.createGadget(
+        "random_teleport",
+        properties.getRandomTeleportMaterial(),
+        Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
+        Message.TP_ME_AWAY_FROM_HERE_LORE.build()
+      )
+    );
+    this.blacklisted = new HashSet<>();
+    final String raw = properties.getRandomTeleportBlacklistedBlocks();
     final String[] individual = raw.split(",");
     for (final String material : individual) {
       final String upper = material.toUpperCase();
       final Material target = Material.getMaterial(upper);
       if (target != null) {
-        BLACKLISTED_BLOCKS.add(Material.valueOf(material));
+        this.blacklisted.add(Material.valueOf(material));
       }
     }
-  }
-
-  public RandomTeleport() {
-    super(
-      "random_teleport",
-      GameProperties.RANDOM_TELEPORT_COST,
-      ItemFactory.createGadget(
-        "random_teleport",
-        GameProperties.RANDOM_TELEPORT_MATERIAL,
-        Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
-        Message.TP_ME_AWAY_FROM_HERE_LORE.build()
-      )
-    );
   }
 
   @Override
@@ -97,8 +95,9 @@ public final class RandomTeleport extends SurvivorGadget {
 
     if (teleport != null) {
       player.teleport(teleport);
+      final GameProperties properties = game.getProperties();
       final PlayerAudience audience = player.getAudience();
-      audience.playSound(GameProperties.RANDOM_TELEPORT_SOUND);
+      audience.playSound(properties.getRandomTeleportSound());
     }
 
     return false;
@@ -116,7 +115,7 @@ public final class RandomTeleport extends SurvivorGadget {
 
     final Block block = world.getBlockAt(location);
     final Material type = block.getType();
-    if (BLACKLISTED_BLOCKS.contains(type)) {
+    if (this.blacklisted.contains(type)) {
       return false;
     }
 

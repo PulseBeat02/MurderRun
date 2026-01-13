@@ -46,6 +46,7 @@ public final class Cannon extends SurvivorAbility implements Listener {
   private final Map<GamePlayer, Long> cooldowns;
 
   public Cannon(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       game,
       CANNON_NAME,
@@ -53,7 +54,7 @@ public final class Cannon extends SurvivorAbility implements Listener {
         CANNON_NAME,
         Message.CANNON_NAME.build(),
         Message.CANNON_LORE.build(),
-        (int) (GameProperties.CANNON_COOLDOWN * 20)
+        (int) (properties.getCannonCooldown() * 20)
       )
     );
     this.cooldowns = new HashMap<>();
@@ -102,7 +103,9 @@ public final class Cannon extends SurvivorAbility implements Listener {
       return;
     }
 
-    final int cooldown = (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 1000);
+    final GameProperties properties = game.getProperties();
+    final double raw = properties.getCannonCooldown();
+    final int cooldown = (int) (raw * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);
       final long current = System.currentTimeMillis();
@@ -115,10 +118,10 @@ public final class Cannon extends SurvivorAbility implements Listener {
 
     final long current = System.currentTimeMillis();
     this.cooldowns.put(gamePlayer, current);
-    gamePlayer.setAbilityCooldowns(CANNON_NAME, (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20));
+    gamePlayer.setAbilityCooldowns(CANNON_NAME, (int) (raw * 20));
 
-    final double multiplier = GameProperties.CANNON_VELOCITY;
-    final int ticks = GameProperties.CANNON_FUSE;
+    final double multiplier = properties.getCannonVelocity();
+    final int ticks = properties.getCannonFuse();
     final Location location = player.getEyeLocation();
     final Vector direction = location.getDirection();
     final Vector normalizedDirection = direction.normalize();

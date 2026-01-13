@@ -35,13 +35,14 @@ import org.bukkit.entity.Item;
 
 public final class KillerRewind extends SurvivorGadget {
 
-  public KillerRewind() {
+  public KillerRewind(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "killer_rewind",
-      GameProperties.KILLER_REWIND_COST,
+      properties.getKillerRewindCost(),
       ItemFactory.createGadget(
         "killer_rewind",
-        GameProperties.KILLER_REWIND_MATERIAL,
+        properties.getKillerRewindMaterial(),
         Message.MURDERER_REWIND_NAME.build(),
         Message.MURDERER_REWIND_LORE.build()
       )
@@ -69,7 +70,8 @@ public final class KillerRewind extends SurvivorGadget {
     final long current = System.currentTimeMillis();
     final long last = killer.getKillerRewindCooldown();
     final long difference = current - last;
-    if (difference < GameProperties.KILLER_REWIND_COOLDOWN) {
+    final GameProperties properties = game.getProperties();
+    if (difference < properties.getKillerRewindCooldown()) {
       return true;
     }
 

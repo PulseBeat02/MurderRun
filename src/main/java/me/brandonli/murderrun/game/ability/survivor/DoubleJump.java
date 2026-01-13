@@ -43,6 +43,7 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
   private final Map<GamePlayer, Long> cooldowns;
 
   public DoubleJump(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       game,
       DOUBLE_JUMP_NAME,
@@ -50,7 +51,7 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
         DOUBLE_JUMP_NAME,
         Message.DOUBLE_JUMP_NAME.build(),
         Message.DOUBLE_JUMP_LORE.build(),
-        (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20)
+        (int) (properties.getDoubleJumpCooldown() * 20)
       )
     );
     this.cooldowns = new HashMap<>();
@@ -85,7 +86,9 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
       return;
     }
 
-    final int cooldown = (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 1000);
+    final GameProperties properties = game.getProperties();
+    final double raw = properties.getDoubleJumpCooldown();
+    final int cooldown = (int) (raw * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);
       final long current = System.currentTimeMillis();
@@ -104,20 +107,21 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
 
     final long current = System.currentTimeMillis();
     this.cooldowns.put(gamePlayer, current);
-    gamePlayer.setAbilityCooldowns(DOUBLE_JUMP_NAME, (int) (GameProperties.DOUBLEJUMP_COOLDOWN * 20));
+    gamePlayer.setAbilityCooldowns(DOUBLE_JUMP_NAME, (int) (raw * 20));
 
     final Location location = player.getLocation();
     final Vector direction = location.getDirection();
-    final double jumpVelocity = GameProperties.DOUBLEJUMP_VELOCITY;
+    final double jumpVelocity = properties.getDoubleJumpVelocity();
     direction.setY(jumpVelocity);
     player.setVelocity(direction);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  @SuppressWarnings("deprecation")
   public void onPlayerLand(final PlayerMoveEvent event) {
     final Player player = event.getPlayer();
-    if (!player.isOnGround()) {
+    @SuppressWarnings("deprecation")
+    final boolean isOnGround = player.isOnGround();
+    if (!isOnGround) {
       return;
     }
 

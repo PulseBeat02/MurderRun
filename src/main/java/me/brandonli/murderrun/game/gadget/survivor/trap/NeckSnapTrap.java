@@ -33,18 +33,19 @@ public final class NeckSnapTrap extends SurvivorTrap {
 
   private static final Vector UP = new Vector(0, 1, 0);
 
-  public NeckSnapTrap() {
+  public NeckSnapTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "neck_snap_trap",
-      GameProperties.NECK_SNAP_COST,
+      properties.getNeckSnapCost(),
       ItemFactory.createGadget(
         "neck_snap_trap",
-        GameProperties.NECK_SNAP_MATERIAL,
+        properties.getNeckSnapMaterial(),
         Message.NECK_SNAP_NAME.build(),
         Message.NECK_SNAP_LORE.build()
       ),
       Message.NECK_SNAP_ACTIVATE.build(),
-      GameProperties.NECK_SNAP_COLOR
+      properties.getNeckSnapColor()
     );
   }
 
@@ -53,8 +54,9 @@ public final class NeckSnapTrap extends SurvivorTrap {
     final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
-    scheduler.scheduleRepeatedTask(() -> this.setLookDirection(murderer), 0, 5, GameProperties.NECK_SNAP_DURATION, reference);
-    manager.playSoundForAllParticipants(GameProperties.NECK_SNAP_SOUND);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleRepeatedTask(() -> this.setLookDirection(murderer), 0, 5, properties.getNeckSnapDuration(), reference);
+    manager.playSoundForAllParticipants(properties.getNeckSnapSound());
   }
 
   private void setLookDirection(final GamePlayer player) {

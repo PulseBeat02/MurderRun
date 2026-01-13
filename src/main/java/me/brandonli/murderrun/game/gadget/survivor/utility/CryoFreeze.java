@@ -37,13 +37,14 @@ import org.bukkit.entity.Item;
 
 public final class CryoFreeze extends SurvivorGadget {
 
-  public CryoFreeze() {
+  public CryoFreeze(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "cryo_freeze",
-      GameProperties.CRYO_FREEZE_COST,
+      properties.getCryoFreezeCost(),
       ItemFactory.createGadget(
         "cryo_freeze",
-        GameProperties.CRYO_FREEZE_MATERIAL,
+        properties.getCryoFreezeMaterial(),
         Message.CRYO_FREEZE_NAME.build(),
         Message.CRYO_FREEZE_LORE.build()
       )
@@ -65,7 +66,8 @@ public final class CryoFreeze extends SurvivorGadget {
     final int cy = location.getBlockY();
     final int cz = location.getBlockZ();
 
-    final int radius = GameProperties.CRYO_FREEZE_RADIUS;
+    final GameProperties properties = game.getProperties();
+    final int radius = properties.getCryoFreezeRadius();
     for (int x = -radius; x <= radius; x++) {
       for (int y = 0; y <= radius; y++) {
         for (int z = -radius; z <= radius; z++) {
@@ -80,7 +82,7 @@ public final class CryoFreeze extends SurvivorGadget {
     }
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.CRYO_FREEZE_SOUND);
+    audience.playSound(properties.getCryoFreezeSound());
 
     return false;
   }

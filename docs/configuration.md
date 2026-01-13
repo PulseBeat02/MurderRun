@@ -22,10 +22,13 @@ format. You can use an easy text converter [here](https://webui.advntr.dev/), wh
 components. 
 
 ## Game Properties
-The game properties file is stored as `game.properties` under the Murder Run data folder. This properties file contains
+The game properties file is stored as `__.game.properties` under the Murder Run data folder. This properties file contains
 many settings to all in-game specific options. For example, disabling or enabling certain gadgets can be done through
-this configuration file. There are comments in the `game.properties` file which specify what each configuration option
-does, and how to configure it.
+this configuration file. There are comments in the `__.game.properties` file which specify what each configuration option
+does, and how to configure it. Each "__" represents the game properties for that specific game mode.
+
+The `common.game.properties` have properties fields that shared across all three gamemodes. The other properties file
+have properties specific to that gamemode, and aren't shared at all.
 
 ## Resource Pack
 The resource pack is stored as `pack.zip` under the Murder Run data folder. The `pack.zip` file is a zipped pack of all 

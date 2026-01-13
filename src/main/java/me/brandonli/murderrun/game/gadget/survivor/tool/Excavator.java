@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.tool;
 
+import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -25,14 +26,15 @@ import me.brandonli.murderrun.utils.item.ItemFactory;
 
 public final class Excavator extends SurvivorGadget {
 
-  public Excavator() {
+  public Excavator(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "excavator",
-      GameProperties.EXCAVATOR_COST,
+      properties.getExcavatorCost(),
       ItemFactory.createExcavator(
         ItemFactory.createGadget(
           "excavator",
-          GameProperties.EXCAVATOR_MATERIAL,
+          properties.getExcavatorMaterial(),
           Message.EXCAVATOR_NAME.build(),
           Message.EXCAVATOR_LORE.build()
         )

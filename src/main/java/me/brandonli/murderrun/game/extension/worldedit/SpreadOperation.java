@@ -43,14 +43,15 @@ public final class SpreadOperation implements Operation {
     final BiFunction<BlockVector3, BaseBlock, Void> placeFunction,
     final Iterator<Map.Entry<BlockVector3, BaseBlock>> it
   ) {
-    this.blocksPerTick = GameProperties.BLOCKS_PER_TICK;
+    final GameProperties properties = GameProperties.COMMON;
+    this.blocksPerTick = properties.getBlocksPerTick();
     this.plugin = plugin;
     this.placeFunction = placeFunction;
     this.it = it;
   }
 
   @Override
-  @SuppressWarnings("all") // checker
+  @SuppressWarnings("nullness")
   public Operation resume(final RunContext run) {
     if (this.task == null && this.it.hasNext()) {
       final BukkitScheduler scheduler = Bukkit.getScheduler();

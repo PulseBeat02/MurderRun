@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.MurderRun;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class SchedulingExtent extends AbstractBufferingExtent {
 

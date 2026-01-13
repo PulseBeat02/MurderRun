@@ -41,6 +41,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GamePlayerThrowEvent extends GameEvent {
 
@@ -59,13 +60,14 @@ public final class GamePlayerThrowEvent extends GameEvent {
 
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    final ItemStack sword = ItemFactory.createKillerSword();
+    final GameProperties properties = game.getProperties();
+    final ItemStack sword = ItemFactory.createKillerSword(properties);
     if (stack.isSimilar(sword)) {
       event.setCancelled(true);
       return;
     }
 
-    final ItemStack arrow = ItemFactory.createKillerArrow();
+    final ItemStack arrow = ItemFactory.createKillerArrow(properties);
     if (stack.isSimilar(arrow)) {
       event.setCancelled(true);
       return;
@@ -86,7 +88,8 @@ public final class GamePlayerThrowEvent extends GameEvent {
     final Location truckLocation = arena.getTruck();
     final Location itemLocation = item.getLocation();
     final double distSquared = itemLocation.distanceSquared(truckLocation);
-    final double radius = GameProperties.CAR_PART_TRUCK_RADIUS;
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getCarPartTruckRadius();
     final double squared = radius * radius;
     if (distSquared > squared) {
       event.setCancelled(true);
@@ -149,8 +152,12 @@ public final class GamePlayerThrowEvent extends GameEvent {
 
   private boolean checkIfPlayerStillHasCarPart(final Player thrower) {
     final PlayerInventory inventory = thrower.getInventory();
+    @Nullable
     final ItemStack[] contents = inventory.getContents();
     for (final ItemStack slot : contents) {
+      if (slot == null) {
+        continue;
+      }
       if (PDCUtils.isCarPart(slot)) {
         return true;
       }

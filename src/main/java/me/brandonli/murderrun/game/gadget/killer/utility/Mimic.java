@@ -32,14 +32,16 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Mimic extends KillerGadget {
 
-  public Mimic() {
+  public Mimic(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "mimic",
-      GameProperties.MIMIC_COST,
-      ItemFactory.createGadget("mimic", GameProperties.MIMIC_MATERIAL, Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build())
+      properties.getMimicCost(),
+      ItemFactory.createGadget("mimic", properties.getMimicMaterial(), Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build())
     );
   }
 
@@ -57,8 +59,8 @@ public final class Mimic extends KillerGadget {
     disguiseManager.disguisePlayerAsOtherPlayer(player, survivor);
 
     final PlayerInventory otherInventory = survivor.getInventory();
+    @Nullable
     final ItemStack[] armor = otherInventory.getArmorContents();
-
     final PlayerInventory thisInventory = player.getInventory();
     thisInventory.setArmorContents(armor);
 

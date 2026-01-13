@@ -33,16 +33,17 @@ import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Item;
 
 public final class Forewarn extends KillerGadget {
 
-  public Forewarn() {
+  public Forewarn(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "forewarn",
-      GameProperties.FOREWARN_COST,
-      ItemFactory.createGadget("forewarn", GameProperties.FOREWARN_MATERIAL, Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
+      properties.getForewarnCost(),
+      ItemFactory.createGadget("forewarn", properties.getForewarnMaterial(), Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
     );
   }
 
@@ -62,10 +63,11 @@ public final class Forewarn extends KillerGadget {
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     scheduler.scheduleRepeatedTask(() -> this.handleInnocents(manager, killer), 0, 20L, reference);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
     final Component msg = Message.FOREWARN_ACTIVATE.build();
     audience.sendMessage(msg);
-    audience.playSound(GameProperties.FOREWARN_SOUND);
+    audience.playSound(properties.getForewarnSound());
 
     return false;
   }
@@ -83,10 +85,10 @@ public final class Forewarn extends KillerGadget {
     final MetadataManager metadata = player.getMetadataManager();
     if (survivor.hasCarPart()) {
       set.add(survivor);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, true);
     } else if (set.contains(survivor)) {
       set.remove(player);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, false);
     }
   }
 }

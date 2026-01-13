@@ -21,8 +21,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 import me.brandonli.murderrun.game.Game;
+import me.brandonli.murderrun.game.GameMode;
+import me.brandonli.murderrun.game.GameProperties;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitTask;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Survivor extends GamePlayer {
 
@@ -31,9 +34,16 @@ public final class Survivor extends GamePlayer {
   private boolean carPart;
   private boolean canSee;
   private boolean heardSound;
+  private boolean frozen;
 
   private long rewindCooldown;
+  private long frozenTime;
+  private long reviveStartTime;
+
   private int carPartsRetrieved;
+  private int freezeTagLives;
+
+  private @Nullable UUID revivingPlayer;
 
   private final Collection<Item> glowingCarParts;
   private final Collection<GamePlayer> glowingKillers;
@@ -45,6 +55,11 @@ public final class Survivor extends GamePlayer {
     this.glowingCarParts = new HashSet<>();
     this.glowingKillers = new HashSet<>();
     this.lifeInsuranceTasks = new HashSet<>();
+    final GameMode mode = game.getMode();
+    if (mode == GameMode.FREEZE_TAG) {
+      final GameProperties properties = game.getProperties();
+      this.freezeTagLives = properties.getFreezeTagSurvivorLives();
+    }
   }
 
   public int getCarPartsRetrieved() {
@@ -100,7 +115,7 @@ public final class Survivor extends GamePlayer {
   }
 
   public boolean canSee() {
-    return canSee;
+    return this.canSee;
   }
 
   public void setCanSee(final boolean canSee) {
@@ -108,10 +123,50 @@ public final class Survivor extends GamePlayer {
   }
 
   public boolean getHeardSound() {
-    return heardSound;
+    return this.heardSound;
   }
 
   public void setHeardSound(final boolean heardSound) {
     this.heardSound = heardSound;
+  }
+
+  public int getFreezeTagLives() {
+    return this.freezeTagLives;
+  }
+
+  public void setFreezeTagLives(final int lives) {
+    this.freezeTagLives = lives;
+  }
+
+  public boolean isFrozen() {
+    return this.frozen;
+  }
+
+  public void setFrozen(final boolean frozen) {
+    this.frozen = frozen;
+  }
+
+  public long getFrozenTime() {
+    return this.frozenTime;
+  }
+
+  public void setFrozenTime(final long time) {
+    this.frozenTime = time;
+  }
+
+  public @Nullable UUID getRevivingPlayer() {
+    return this.revivingPlayer;
+  }
+
+  public void setRevivingPlayer(final @Nullable UUID uuid) {
+    this.revivingPlayer = uuid;
+  }
+
+  public long getReviveStartTime() {
+    return this.reviveStartTime;
+  }
+
+  public void setReviveStartTime(final long time) {
+    this.reviveStartTime = time;
   }
 }

@@ -51,7 +51,7 @@ import me.brandonli.murderrun.MurderRun;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class IOUtils {
 
@@ -320,7 +320,8 @@ public final class IOUtils {
           src,
           new SimpleFileVisitor<>() {
             @Override
-            public @NotNull FileVisitResult preVisitDirectory(final Path dir, final @NotNull BasicFileAttributes attrs) throws IOException {
+            public @NonNull FileVisitResult preVisitDirectory(final @NonNull Path dir, final @NonNull BasicFileAttributes attrs)
+              throws IOException {
               final Path rel = src.relativize(dir);
               final String relName = rel.toString();
               if (!relName.isEmpty()) {
@@ -334,7 +335,8 @@ public final class IOUtils {
             }
 
             @Override
-            public @NotNull FileVisitResult visitFile(final Path file, final @NotNull BasicFileAttributes attrs) throws IOException {
+            public @NonNull FileVisitResult visitFile(final @NonNull Path file, final @NonNull BasicFileAttributes attrs)
+              throws IOException {
               final Path rel = src.relativize(file);
               final String relName = rel.toString();
               final String replaced = relName.replace("\\", "/");

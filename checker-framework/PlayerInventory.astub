@@ -1,0 +1,8 @@
+package org.bukkit.inventory;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+public interface PlayerInventory {
+  public @Nullable ItemStack @NonNull [] getArmorContents();
+}

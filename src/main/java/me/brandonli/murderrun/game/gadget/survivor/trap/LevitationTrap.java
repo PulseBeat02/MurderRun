@@ -37,18 +37,19 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class LevitationTrap extends SurvivorTrap {
 
-  public LevitationTrap() {
+  public LevitationTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "levitation_trap",
-      GameProperties.LEVITATION_COST,
+      properties.getLevitationCost(),
       ItemFactory.createGadget(
         "levitation_trap",
-        GameProperties.LEVITATION_MATERIAL,
+        properties.getLevitationMaterial(),
         Message.LEVITATION_NAME.build(),
         Message.LEVITATION_LORE.build()
       ),
       Message.LEVITATION_ACTIVATE.build(),
-      GameProperties.LEVITATION_COLOR
+      properties.getLevitationColor()
     );
   }
 
@@ -58,7 +59,8 @@ public final class LevitationTrap extends SurvivorTrap {
     final Location clone = location.clone();
     clone.add(0, 10, 0);
 
-    final int duration = GameProperties.LEVITATION_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getLevitationDuration();
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, duration, 1));
     murderer.teleport(clone);
 
@@ -68,7 +70,7 @@ public final class LevitationTrap extends SurvivorTrap {
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(murderer), 0, 5, duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.LEVITATION_SOUND);
+    manager.playSoundForAllParticipants(properties.getLevitationSound());
   }
 
   private void spawnParticles(final GamePlayer player) {

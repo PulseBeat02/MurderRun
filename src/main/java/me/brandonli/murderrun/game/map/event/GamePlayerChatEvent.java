@@ -17,16 +17,18 @@
  */
 package me.brandonli.murderrun.game.map.event;
 
+import io.papermc.paper.chat.ChatRenderer;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.locale.Message;
-import me.brandonli.murderrun.utils.ComponentUtils;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public final class GamePlayerChatEvent extends GameEvent {
 
@@ -35,7 +37,7 @@ public final class GamePlayerChatEvent extends GameEvent {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onPlayerChat(final AsyncPlayerChatEvent event) {
+  public void onPlayerChat(final AsyncChatEvent event) {
     final Player player = event.getPlayer();
     if (!this.isGamePlayer(player)) {
       return;
@@ -45,17 +47,17 @@ public final class GamePlayerChatEvent extends GameEvent {
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final String raw = event.getMessage();
-    final String format = event.getFormat();
-    final String display = player.getDisplayName();
-    final String formatted = String.format(format, display, raw);
+    final Component component = event.message();
+    final ChatRenderer renderer = event.renderer();
+    final Component displayComponent = player.displayName();
+    final Server server = Bukkit.getServer();
+    final Component msg = renderer.render(player, displayComponent, component, server);
     if (gamePlayer.isAlive()) {
-      final Component msg = ComponentUtils.deserializeLegacyStringToComponent(formatted);
       manager.sendMessageToAllParticipants(msg);
       return;
     }
 
-    final Component msg = Message.DEAD_CHAT_PREFIX.build(formatted);
-    manager.sendMessageToAllDeceased(msg);
+    final Component deadMsg = Message.DEAD_CHAT_PREFIX.build(msg);
+    manager.sendMessageToAllDeceased(deadMsg);
   }
 }

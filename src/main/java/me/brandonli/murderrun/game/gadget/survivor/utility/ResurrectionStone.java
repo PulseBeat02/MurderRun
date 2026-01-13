@@ -45,13 +45,14 @@ import org.bukkit.entity.Item;
 
 public final class ResurrectionStone extends SurvivorGadget {
 
-  public ResurrectionStone() {
+  public ResurrectionStone(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "resurrection_stone",
-      GameProperties.RESURRECTION_STONE_COST,
+      properties.getResurrectionStoneCost(),
       ItemFactory.createGadget(
         "resurrection_stone",
-        GameProperties.RESURRECTION_STONE_MATERIAL,
+        properties.getResurrectionStoneMaterial(),
         Message.RESURRECTION_STONE_NAME.build(),
         Message.RESURRECTION_STONE_LORE.build()
       )
@@ -87,8 +88,9 @@ public final class ResurrectionStone extends SurvivorGadget {
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L, reference);
     item.remove();
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.RESURRECTION_STONE_SOUND);
+    audience.playSound(properties.getResurrectionStoneSound());
 
     return false;
   }

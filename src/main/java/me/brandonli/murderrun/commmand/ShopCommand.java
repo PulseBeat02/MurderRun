@@ -75,10 +75,11 @@ public final class ShopCommand implements AnnotationCommandFeature {
     final NPCRegistry registry = CitizensAPI.getNPCRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, raw);
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
+    final GameProperties properties = GameProperties.COMMON;
     if (survivor) {
-      trait.setSkinPersistent("Angel Spirit", GameProperties.ANGEL_SPIRIT_TEXTURE_SIGNATURE, GameProperties.ANGEL_SPIRIT_TEXTURE_DATA);
+      trait.setSkinPersistent("Angel Spirit", properties.getAngelSpiritTextureSignature(), properties.getAngelSpiritTextureData());
     } else {
-      trait.setSkinPersistent("Weeping Angel", GameProperties.WEEPING_ANGEL_TEXTURE_SIGNATURE, GameProperties.WEEPING_ANGEL_TEXTURE_DATA);
+      trait.setSkinPersistent("Weeping Angel", properties.getWeepingAngelTextureSignature(), properties.getWeepingAngelTextureData());
     }
     npc.spawn(location);
 
@@ -110,14 +111,11 @@ public final class ShopCommand implements AnnotationCommandFeature {
     final NPCRegistry registry = CitizensAPI.getNPCRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, raw);
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
+    final GameProperties properties = GameProperties.COMMON;
     if (survivor) {
-      trait.setSkinPersistent(
-        "Guardian Angel",
-        GameProperties.GUARDIAN_ANGEL_TEXTURE_SIGNATURE,
-        GameProperties.GUARDIAN_ANGEL_TEXTURE_DATA
-      );
+      trait.setSkinPersistent("Guardian Angel", properties.getGuardianAngelTextureSignature(), properties.getGuardianAngelTextureData());
     } else {
-      trait.setSkinPersistent("Grim Reaper", GameProperties.GRIM_REAPER_TEXTURE_SIGNATURE, GameProperties.GRIM_REAPER_TEXTURE_DATA);
+      trait.setSkinPersistent("Grim Reaper", properties.getGrimReaperTextureSignature(), properties.getGrimReaperTextureData());
     }
     npc.spawn(location);
 

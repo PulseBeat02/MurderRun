@@ -39,7 +39,8 @@ public final class Reach extends KillerAbility {
   public void start() {
     final Game game = this.getGame();
     final GamePlayerManager playerManager = game.getPlayerManager();
-    final double reach = GameProperties.REACH_DISTANCE;
+    final GameProperties properties = game.getProperties();
+    final double reach = properties.getReachDistance();
     playerManager.applyToLivingKillers(participant -> {
       if (!participant.hasAbility(REACH_NAME)) {
         return;

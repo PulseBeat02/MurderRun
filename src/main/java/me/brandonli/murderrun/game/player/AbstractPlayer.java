@@ -31,8 +31,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -144,7 +146,8 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public String getDisplayName() {
-    return this.applyFunction(Player::getDisplayName);
+    final Component displayName = this.applyFunction(Player::displayName);
+    return ComponentUtils.serializeComponentToLegacyString(displayName);
   }
 
   @Override
@@ -324,7 +327,8 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void kick(final String message) {
-    this.apply(player -> player.kickPlayer(message));
+    final Component component = ComponentUtils.deserializeLegacyStringToComponent(message);
+    this.apply(player -> player.kick(component));
   }
 
   @Override
@@ -359,8 +363,12 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void setAbilityCooldowns(final String ability, final int seconds) {
     final PlayerInventory inventory = this.getInventory();
+    @Nullable
     final ItemStack[] items = inventory.getContents();
     for (final ItemStack item : items) {
+      if (item == null) {
+        continue;
+      }
       if (!PDCUtils.isAbility(item)) {
         continue;
       }
@@ -375,8 +383,12 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public boolean hasAbility(final String ability) {
     final PlayerInventory inventory = this.getInventory();
+    @Nullable
     final ItemStack[] items = inventory.getContents();
     for (final ItemStack item : items) {
+      if (item == null) {
+        continue;
+      }
       if (!PDCUtils.isAbility(item)) {
         continue;
       }
@@ -429,6 +441,11 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void sendPotionEffectChange(final LivingEntity entity, final PotionEffect effect) {
     this.apply(player -> player.sendPotionEffectChange(entity, effect));
+  }
+
+  @Override
+  public boolean isSneaking() {
+    return this.applyFunction(Player::isSneaking);
   }
 
   @Override

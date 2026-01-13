@@ -56,8 +56,15 @@ public interface LocaleTools {
   }
 
   static <T> Component createFinalText(final T argument, final @Nullable Function<T, String> function) {
-    final String text = argument == null ? "" : argument.toString();
-    return text(function == null ? text : function.apply(argument));
+    if (argument == null) {
+      return text("");
+    }
+    if (argument instanceof final Component c) {
+      return c;
+    }
+    final String raw = argument.toString();
+    final String out = (function == null) ? raw : function.apply(argument);
+    return text(out);
   }
 
   @FunctionalInterface

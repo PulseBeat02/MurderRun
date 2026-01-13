@@ -19,6 +19,7 @@ package me.brandonli.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
+import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.gadget.packet.GadgetRightClickPacket;
@@ -40,14 +41,15 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class Translocator extends SurvivorGadget {
 
-  public Translocator() {
+  public Translocator(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "translocator",
-      GameProperties.TRANSLOCATOR_COST,
+      properties.getTranslocatorCost(),
       ItemFactory.createTranslocator(
         ItemFactory.createGadget(
           "translocator",
-          GameProperties.TRANSLOCATOR_MATERIAL,
+          properties.getTranslocatorMaterial(),
           Message.TRANSLOCATOR_NAME.build(),
           Message.TRANSLOCATOR_LORE.build()
         )
@@ -75,8 +77,10 @@ public final class Translocator extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     InventoryUtils.consumeStack(inventory, stack);
 
+    final Game game = player.getGame();
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.TRANSLOCATOR_SOUND);
+    audience.playSound(properties.getTranslocatorSound());
 
     return false;
   }

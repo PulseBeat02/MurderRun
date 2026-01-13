@@ -51,13 +51,14 @@ public final class FlashBang extends SurvivorGadget implements Listener {
   private final Game game;
 
   public FlashBang(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "flash_bang",
-      GameProperties.FLASHBANG_COST,
+      properties.getFlashbangCost(),
       ItemFactory.createFlashBang(
         ItemFactory.createGadget(
           "flash_bang",
-          GameProperties.FLASHBANG_MATERIAL,
+          properties.getFlashbangMaterial(),
           Message.FLASHBANG_NAME.build(),
           Message.FLASHBANG_LORE.build()
         )
@@ -98,13 +99,14 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     final World world = requireNonNull(location.getWorld());
     world.spawnParticle(Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
+    final GameProperties properties = this.game.getProperties();
     final GamePlayerManager manager = this.game.getPlayerManager();
     manager.applyToKillers(killer -> {
       final Location killerLocation = killer.getLocation();
       final double distance = killerLocation.distanceSquared(location);
-      final double radius = GameProperties.FLASHBANG_RADIUS;
+      final double radius = properties.getFlashbangRadius();
       if (distance < radius * radius) {
-        final int duration = GameProperties.FLASHBANG_DURATION;
+        final int duration = properties.getFlashbangDuration();
         killer.addPotionEffects(
           new PotionEffect(PotionEffectType.BLINDNESS, duration, 0),
           new PotionEffect(PotionEffectType.SLOWNESS, duration, 4)

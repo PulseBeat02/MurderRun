@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.tool;
 
+import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -24,8 +25,9 @@ import me.brandonli.murderrun.utils.item.ItemFactory;
 
 public final class Shield extends SurvivorGadget {
 
-  public Shield() {
-    super("shield", GameProperties.SHIELD_COST, ItemFactory.createShield());
+  public Shield(final Game game) {
+    final GameProperties properties = game.getProperties();
+    super("shield", properties.getShieldCost(), ItemFactory.createShield(properties));
   }
 
   @Override

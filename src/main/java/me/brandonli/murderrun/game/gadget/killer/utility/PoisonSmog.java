@@ -41,13 +41,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class PoisonSmog extends KillerGadget {
 
-  public PoisonSmog() {
+  public PoisonSmog(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "poison_smog",
-      GameProperties.POISON_SMOG_COST,
+      properties.getPoisonSmogCost(),
       ItemFactory.createGadget(
         "poison_smog",
-        GameProperties.POSION_SMOG_MATERIAL,
+        properties.getPosionSmogMaterial(),
         Message.POISON_SMOG_NAME.build(),
         Message.POISON_SMOG_LORE.build()
       )
@@ -66,16 +67,17 @@ public final class PoisonSmog extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final GamePlayerManager manager = game.getPlayerManager();
     final NullReference reference = NullReference.of();
+    final GameProperties properties = game.getProperties();
     scheduler.scheduleRepeatedTask(
       () -> this.handleSmog(world, location, manager),
       0,
       2 * 20L,
-      GameProperties.POISON_SMOG_DURATION,
+      properties.getPoisonSmogDuration(),
       reference
     );
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.POISON_SMOG_SOUND);
+    audience.playSound(properties.getPoisonSmogSound());
 
     return false;
   }
@@ -92,7 +94,9 @@ public final class PoisonSmog extends KillerGadget {
   private void handleDebuffs(final GamePlayer survivor, final Location origin) {
     final Location location = survivor.getLocation();
     final double distance = location.distanceSquared(origin);
-    final double radius = GameProperties.POISON_SMOG_RADIUS;
+    final Game game = survivor.getGame();
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getTrapSeekerRadius();
     if (distance < radius * radius) {
       survivor.addPotionEffects(new PotionEffect(PotionEffectType.POISON, 3 * 20, 0));
     }

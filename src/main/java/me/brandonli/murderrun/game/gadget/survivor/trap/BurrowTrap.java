@@ -31,13 +31,14 @@ import org.bukkit.entity.Item;
 
 public final class BurrowTrap extends SurvivorTrap {
 
-  public BurrowTrap() {
+  public BurrowTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "burrow_trap",
-      GameProperties.BURROW_COST,
-      ItemFactory.createGadget("burrow_trap", GameProperties.BURROW_MATERIAL, Message.BURROW_NAME.build(), Message.BURROW_LORE.build()),
+      properties.getBurrowCost(),
+      ItemFactory.createGadget("burrow_trap", properties.getBurrowMaterial(), Message.BURROW_NAME.build(), Message.BURROW_LORE.build()),
       Message.BURROW_ACTIVATE.build(),
-      GameProperties.BURROW_COLOR
+      properties.getBurrowColor()
     );
   }
 
@@ -52,8 +53,9 @@ public final class BurrowTrap extends SurvivorTrap {
       return;
     }
 
+    final GameProperties properties = game.getProperties();
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
-    final int duration = GameProperties.BURROW_DURATION;
+    final int duration = properties.getBurrowDuration();
     killer.disableJump(scheduler, duration);
     killer.disableWalkNoFOVEffects(scheduler, duration);
     killer.setForceMineBlocks(false);
@@ -62,7 +64,7 @@ public final class BurrowTrap extends SurvivorTrap {
     scheduler.scheduleTask(() -> this.resetState(killer, location), duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.BURROW_SOUND);
+    manager.playSoundForAllParticipants(properties.getBurrowSound());
   }
 
   private void resetState(final Killer killer, final Location location) {

@@ -39,13 +39,14 @@ import org.bukkit.entity.Item;
 
 public final class EagleEye extends KillerGadget {
 
-  public EagleEye() {
+  public EagleEye(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "eagle_eye",
-      GameProperties.EAGLE_EYE_COST,
+      properties.getEagleEyeCost(),
       ItemFactory.createGadget(
         "eagle_eye",
-        GameProperties.EAGLE_EYE_MATERIAL,
+        properties.getEagleEyeMaterial(),
         Message.EAGLE_EYE_NAME.build(),
         Message.EAGLE_EYE_LORE.build()
       )
@@ -79,10 +80,11 @@ public final class EagleEye extends KillerGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    scheduler.scheduleTask(() -> this.resetState(player, previous, before), GameProperties.EAGLE_EYE_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleTask(() -> this.resetState(player, previous, before), properties.getEagleEyeDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.EAGLE_EYE_SOUND);
+    audience.playSound(properties.getEagleEyeSound());
 
     return false;
   }

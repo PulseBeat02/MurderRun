@@ -27,6 +27,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.potion.PotionEffectType;
 
 public final class PlayerResetTool {
 
@@ -65,6 +66,7 @@ public final class PlayerResetTool {
     gamePlayer.setFireTicks(0);
     gamePlayer.setInvulnerable(false);
     gamePlayer.setAllowFlight(false);
+    gamePlayer.sendPotionEffectChangeRemove(PotionEffectType.BLINDNESS);
     gamePlayer.resetAllAttributes();
   }
 }

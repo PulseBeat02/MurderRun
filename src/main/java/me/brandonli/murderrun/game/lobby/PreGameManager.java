@@ -22,9 +22,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
-import me.brandonli.murderrun.game.Game;
-import me.brandonli.murderrun.game.GameEventsListener;
-import me.brandonli.murderrun.game.GameSettings;
+import me.brandonli.murderrun.game.*;
 import me.brandonli.murderrun.game.lobby.event.PreGameEvents;
 import me.brandonli.murderrun.game.map.MapSchematicIO;
 import org.bukkit.command.CommandSender;
@@ -39,25 +37,35 @@ public final class PreGameManager {
   private final GameEventsListener callback;
   private final GameManager gameManager;
   private final UUID uuid;
+  private final GameMode mode;
 
+  private GameProperties properties;
   private MapSchematicIO mapSchematicIO;
   private PreGamePlayerManager manager;
   private PreGameEvents events;
 
-  public PreGameManager(final MurderRun plugin, final GameManager manager, final String id, final GameEventsListener callback) {
+  public PreGameManager(
+    final MurderRun plugin,
+    final GameManager manager,
+    final String id,
+    final GameMode mode,
+    final GameEventsListener callback
+  ) {
     this.plugin = plugin;
     this.gameManager = manager;
     this.callback = callback;
     this.id = id;
+    this.mode = mode;
     this.game = new Game(plugin);
     this.settings = new GameSettings();
     this.uuid = UUID.randomUUID();
   }
 
   public CompletableFuture<Void> initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
+    this.properties = this.mode.getProperties();
     this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.events = new PreGameEvents(this);
-    this.mapSchematicIO = new MapSchematicIO(this.settings, this.uuid);
+    this.mapSchematicIO = new MapSchematicIO(this, this.settings, this.uuid);
     this.events.registerEvents();
     this.manager.initialize();
     return this.mapSchematicIO.pasteMap();
@@ -66,8 +74,8 @@ public final class PreGameManager {
   public void startGame() {
     final Collection<Player> players = this.manager.getParticipants();
     final Collection<Player> killers = this.manager.getMurderers();
-    this.manager.assignKiller();
-    this.game.startGame(this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
+    this.manager.assignRoles();
+    this.game.startGame(this.properties, this.mode, this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
     this.shutdown(false);
   }
 
@@ -80,6 +88,10 @@ public final class PreGameManager {
     } else if (forced) {
       this.mapSchematicIO.resetMap();
     }
+  }
+
+  public GameMode getMode() {
+    return this.mode;
   }
 
   public MurderRun getPlugin() {
@@ -120,5 +132,9 @@ public final class PreGameManager {
 
   public UUID getUuid() {
     return this.uuid;
+  }
+
+  public GameProperties getProperties() {
+    return this.properties;
   }
 }

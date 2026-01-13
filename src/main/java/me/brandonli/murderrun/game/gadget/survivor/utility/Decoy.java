@@ -41,11 +41,12 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class Decoy extends SurvivorGadget {
 
-  public Decoy() {
+  public Decoy(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "decoy",
-      GameProperties.DECOY_COST,
-      ItemFactory.createGadget("decoy", GameProperties.DECOY_MATERIAL, Message.DECOY_NAME.build(), Message.DECOY_LORE.build())
+      properties.getDecoyCost(),
+      ItemFactory.createGadget("decoy", properties.getDecoyMaterial(), Message.DECOY_NAME.build(), Message.DECOY_LORE.build())
     );
   }
 
@@ -63,8 +64,9 @@ public final class Decoy extends SurvivorGadget {
     final Location location = player.getLocation();
     npc.spawn(location);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.DECOY_SOUND);
+    audience.playSound(properties.getDecoySound());
 
     return false;
   }

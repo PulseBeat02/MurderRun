@@ -1,17 +1,17 @@
 # Setting up a Server
 
 ```{warning}
-Murder Run only supports **Minecraft 1.21.10** as of right now. If you choose any other version, the plugin will **not**
-start-up, and it will break. Make sure to choose **Paper 1.21.10** for now. Support for future versions will be added as
+Murder Run only supports **Minecraft 1.21.11** as of right now. If you choose any other version, the plugin will **not**
+start-up, and it will break. Make sure to choose **Paper 1.21.11** for now. Support for future versions will be added as
 fast as possible.
 ```
 
 To set up Murder Run, you will need two things:
-1) A Minecraft Bukkit-Based Server
+1) A Minecraft Paper-Based Server
 2) A Murder Run Plugin JAR
 
-## Setting up a Bukkit-Based Server
-In order to get a Minecraft Bukkit-based Server, you need to download either Spigot, Paper, or any other Bukkit-fork
+## Setting up a Paper-Based Server
+In order to get a Minecraft Paper-based Server, you need to download either Paper, or any other Paper-fork
 software. I recommend downloading [Paper](https://papermc.io/) -- it's also the software I develop against actively
 for Murder Run.
 
@@ -21,12 +21,12 @@ PaperMC Team
 
 To set up a Paper server, refer to the [Getting Started Guide](https://docs.papermc.io/paper/getting-started) that Paper
 has posted on their website. It includes a very detailed step-by-step guide to set up the server onto your computer,
-and how to add plugins
+and how to add plugins. Please make sure that you use Java 25, as it is required by this plugin!
 
 ## Getting Murder Run
 Murder Run is like any other plugin, where you just drag and drop the JAR file into the plugins folder. There isn't any
 set up required, and Murder Run will download the necessary dependencies for you. You can find bleeding-edge releases
-on the TeamCity CI [here](https://ci.brandonli.me/repository/download/murderrun/.lastFinished/MurderRun-1.21.10-v1.0.0-all.jar),
+on the TeamCity CI [here](https://ci.brandonli.me/repository/download/murderrun/.lastFinished/MurderRun-1.21.11-v1.0.0-all.jar),
 which are created pretty frequently. You should always use the latest Murder Run JAR, as it contains many more bug fixes 
 and version compatability than the previous.
 

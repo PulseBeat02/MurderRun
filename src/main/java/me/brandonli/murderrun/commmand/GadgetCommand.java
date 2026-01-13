@@ -20,6 +20,7 @@ package me.brandonli.murderrun.commmand;
 import java.util.*;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.gui.gadget.GadgetTestingGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
@@ -64,7 +65,7 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.gadget.retrieve")
   @CommandDescription("murderrun.command.gadget.retrieve.info")
   public void retrieveGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
-    final List<MerchantRecipe> recipes = TradingUtils.parseGadgetRecipes(gadgetName);
+    final List<MerchantRecipe> recipes = TradingUtils.parseGadgetRecipes(GameProperties.DEFAULT, gadgetName);
     final Audience audience = this.audiences.player(sender);
     if (recipes.isEmpty()) {
       audience.sendMessage(Message.GADGET_RETRIEVE_ERROR.build());
@@ -82,7 +83,10 @@ public final class GadgetCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.gadget.retrieve-all")
   @CommandDescription("murderrun.command.gadget.retrieve.all.info")
   public void retrieveAllGadgets(final Player sender) {
-    TradingUtils.getAllGadgetRecipes().stream().map(MerchantRecipe::getResult).forEach(item -> InventoryUtils.addItem(sender, item));
+    TradingUtils.getAllGadgetRecipes(GameProperties.DEFAULT)
+      .stream()
+      .map(MerchantRecipe::getResult)
+      .forEach(item -> InventoryUtils.addItem(sender, item));
   }
 
   @Suggestions("gadget-suggestions")

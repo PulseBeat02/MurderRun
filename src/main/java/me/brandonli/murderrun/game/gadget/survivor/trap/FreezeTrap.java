@@ -28,26 +28,28 @@ import org.bukkit.entity.Item;
 
 public final class FreezeTrap extends SurvivorTrap {
 
-  public FreezeTrap() {
+  public FreezeTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "freeze_trap",
-      GameProperties.FREEZE_COST,
-      ItemFactory.createGadget("freeze_trap", GameProperties.FREEZE_MATERIAL, Message.FREEZE_NAME.build(), Message.FREEZE_LORE.build()),
+      properties.getFreezeCost(),
+      ItemFactory.createGadget("freeze_trap", properties.getFreezeMaterial(), Message.FREEZE_NAME.build(), Message.FREEZE_LORE.build()),
       Message.FREEZE_ACTIVATE.build(),
-      GameProperties.FREEZE_COLOR
+      properties.getFreezeColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GameScheduler scheduler = game.getScheduler();
-    final int duration = GameProperties.FREEZE_EFFECT_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getFreezeEffectDuration();
     murderer.setFreezeTicks(duration);
     murderer.disableJump(scheduler, duration);
     murderer.setFreezeTicks(0);
-    murderer.disableWalkWithFOVEffects(GameProperties.FREEZE_DURATION);
+    murderer.disableWalkWithFOVEffects(properties.getFreezeDuration());
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.FREEZE_SOUND);
+    manager.playSoundForAllParticipants(properties.getFreezeSound());
   }
 }

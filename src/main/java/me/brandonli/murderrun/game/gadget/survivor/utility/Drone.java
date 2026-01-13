@@ -33,11 +33,12 @@ import org.bukkit.entity.Item;
 
 public final class Drone extends SurvivorGadget {
 
-  public Drone() {
+  public Drone(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "drone",
-      GameProperties.DRONE_COST,
-      ItemFactory.createGadget("drone", GameProperties.DRONE_MATERIAL, Message.DRONE_NAME.build(), Message.DRONE_LORE.build())
+      properties.getDroneCost(),
+      ItemFactory.createGadget("drone", properties.getDroneMaterial(), Message.DRONE_NAME.build(), Message.DRONE_LORE.build())
     );
   }
 
@@ -55,12 +56,13 @@ public final class Drone extends SurvivorGadget {
     player.setGameMode(GameMode.SPECTATOR);
     player.teleport(clone);
 
+    final GameProperties properties = game.getProperties();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    scheduler.scheduleTask(() -> this.resetPlayer(player, origin), GameProperties.DRONE_DURATION, reference);
+    scheduler.scheduleTask(() -> this.resetPlayer(player, origin), properties.getDroneDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.DRONE_SOUND);
+    audience.playSound(properties.getDroneSound());
 
     return false;
   }

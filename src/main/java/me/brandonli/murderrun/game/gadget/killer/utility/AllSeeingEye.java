@@ -34,13 +34,14 @@ import org.bukkit.entity.Item;
 
 public final class AllSeeingEye extends KillerGadget {
 
-  public AllSeeingEye() {
+  public AllSeeingEye(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "all_seeing_eye",
-      GameProperties.ALL_SEEING_EYE_COST,
+      properties.getAllSeeingEyeCost(),
       ItemFactory.createGadget(
         "all_seeing_eye",
-        GameProperties.ALL_SEEING_EYE_MATERIAL,
+        properties.getAllSeeingEyeMaterial(),
         Message.ALL_SEEING_EYE_NAME.build(),
         Message.ALL_SEEING_EYE_LORE.build()
       )
@@ -59,14 +60,15 @@ public final class AllSeeingEye extends KillerGadget {
     final Location before = player.getLocation();
     this.setPlayerState(player, random);
 
-    final int duration = GameProperties.ALL_SEEING_EYE_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getAllSeeingEyeDuration();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(random);
     random.apply(target -> scheduler.scheduleRepeatedTask(() -> player.setSpectatorTarget(target), 0, 10, duration, reference));
     scheduler.scheduleTask(() -> this.resetPlayerState(player, before), duration, reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.ALL_SEEING_EYE_SOUND);
+    audience.playSound(properties.getAllSeeingEyeSound());
 
     return false;
   }

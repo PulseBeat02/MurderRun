@@ -36,13 +36,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Retaliation extends SurvivorGadget {
 
-  public Retaliation() {
+  public Retaliation(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "retaliation",
-      GameProperties.RETALIATION_COST,
+      properties.getRetaliationCost(),
       ItemFactory.createGadget(
         "retaliation",
-        GameProperties.RETALIATION_MATERIAL,
+        properties.getRetaliationMaterial(),
         Message.RETALIATION_NAME.build(),
         Message.RETALIATION_LORE.build()
       )
@@ -61,10 +62,11 @@ public final class Retaliation extends SurvivorGadget {
     final NullReference reference = NullReference.of();
     scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L, reference);
 
+    final GameProperties properties = game.getProperties();
     final Component message = Message.RETALIATION_ACTIVATE.build();
     final PlayerAudience audience = player.getAudience();
     audience.sendMessage(message);
-    audience.playSound(GameProperties.RETALIATION_SOUND);
+    audience.playSound(properties.getRetaliationSound());
 
     return false;
   }
@@ -77,7 +79,9 @@ public final class Retaliation extends SurvivorGadget {
     }
 
     final int level = (int) (dead - 1);
-    final int effectLevel = Math.min(level, GameProperties.RETALIATION_MAX_AMPLIFIER);
+    final Game game = manager.getGame();
+    final GameProperties properties = game.getProperties();
+    final int effectLevel = Math.min(level, properties.getRetaliationMaxAmplifier());
     player.addPotionEffects(
       new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
       new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),

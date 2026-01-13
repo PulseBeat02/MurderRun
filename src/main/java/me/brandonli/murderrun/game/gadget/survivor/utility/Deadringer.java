@@ -35,13 +35,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class Deadringer extends SurvivorGadget {
 
-  public Deadringer() {
+  public Deadringer(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "deadringer",
-      GameProperties.DEADRINGER_COST,
+      properties.getDeadringerCost(),
       ItemFactory.createGadget(
         "deadringer",
-        GameProperties.DEADRINGER_MATERIAL,
+        properties.getDeadringerMaterial(),
         Message.DEADRINGER_NAME.build(),
         Message.DEADRINGER_LORE.build()
       )
@@ -55,7 +56,8 @@ public final class Deadringer extends SurvivorGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final int duration = GameProperties.DEADRINGER_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getDeadringerDuration();
     player.setInvulnerable(true);
     player.addPotionEffects(
       new PotionEffect(PotionEffectType.SPEED, duration, 1, true, false),
@@ -72,7 +74,7 @@ public final class Deadringer extends SurvivorGadget {
     manager.sendMessageToAllParticipants(message);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.DEADRINGER_SOUND);
+    audience.playSound(properties.getDeadringerSound());
 
     return false;
   }

@@ -37,19 +37,21 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class SmokeTrap extends SurvivorTrap {
 
-  public SmokeTrap() {
+  public SmokeTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "smoke_trap",
-      GameProperties.SMOKE_COST,
-      ItemFactory.createGadget("smoke_trap", GameProperties.SMOKE_MATERIAL, Message.SMOKE_NAME.build(), Message.SMOKE_LORE.build()),
+      properties.getSmokeCost(),
+      ItemFactory.createGadget("smoke_trap", properties.getSmokeMaterial(), Message.SMOKE_NAME.build(), Message.SMOKE_LORE.build()),
       Message.SMOKE_ACTIVATE.build(),
-      GameProperties.SMOKE_COLOR
+      properties.getSmokeColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
-    final int duration = GameProperties.SMOKE_DURATION;
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getSmokeDuration();
     murderer.addPotionEffects(
       new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
       new PotionEffect(PotionEffectType.SLOWNESS, duration, 2)
@@ -60,7 +62,7 @@ public final class SmokeTrap extends SurvivorTrap {
     scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 1, duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.SMOKE_SOUND);
+    manager.playSoundForAllParticipants(properties.getSmokeSound());
   }
 
   private void spawnSmoke(final GamePlayer murderer) {

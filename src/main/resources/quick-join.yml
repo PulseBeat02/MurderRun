@@ -9,6 +9,12 @@ min-players: 2
 # Sets the default maximum players for a newly created quick-join game
 max-players: 16
 
+# Sets the allowed game modes for quick-join games. Valid options are "ONE_BOUNCE", "DEFAULT", and "FREEZE_TAG"
+game-modes:
+  - "ONE_BOUNCE"
+  - "DEFAULT"
+  - "FREEZE_TAG"
+
 # Sets the default arena and lobby pairs for a newly created quick-join game
 # One of these pairs are randomly selected when a new quick-join game is created.
 # Must be in the format ["ArenaName", "LobbyName"] with ONLY 2 ELEMENTS

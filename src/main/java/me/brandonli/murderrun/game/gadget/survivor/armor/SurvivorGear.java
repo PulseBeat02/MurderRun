@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.armor;
 
+import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
@@ -24,8 +25,9 @@ import me.brandonli.murderrun.utils.item.Item;
 
 public abstract class SurvivorGear extends SurvivorGadget {
 
-  public SurvivorGear(final String name, final Item.Builder builder) {
-    super(name, GameProperties.SURVIVOR_GEAR_COST, builder);
+  public SurvivorGear(final Game game, final String name, final Item.Builder builder) {
+    final GameProperties properties = game.getProperties();
+    super(name, properties.getSurvivorGearCost(), builder);
   }
 
   @Override

@@ -37,7 +37,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -81,7 +81,8 @@ public class CameraGadget {
     scheduler.scheduleRepeatedTask(task, 0, 20L, reference);
 
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.CAMERA_SOUND);
+    final GameProperties properties = game.getProperties();
+    audience.playSound(properties.getCameraSound());
 
     return false;
   }
@@ -94,10 +95,10 @@ public class CameraGadget {
       if (detected) {
         glow.add(opponent);
         this.setLookDirection(opponent, npc);
-        metadata.setEntityGlowing(opponent, ChatColor.RED, true);
+        metadata.setEntityGlowing(opponent, NamedTextColor.RED, true);
       } else if (glow.contains(opponent)) {
         glow.remove(opponent);
-        metadata.setEntityGlowing(opponent, ChatColor.RED, false);
+        metadata.setEntityGlowing(opponent, NamedTextColor.RED, false);
       }
     });
   }

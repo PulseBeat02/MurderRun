@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.commmand.AnnotationCommandFeature;
+import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.game.extension.parties.PartiesManager;
 import me.brandonli.murderrun.game.lobby.GameManager;
@@ -32,6 +33,7 @@ import me.brandonli.murderrun.game.lobby.PreGamePlayerManager;
 import me.brandonli.murderrun.gui.game.PlayerListGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.StreamUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -133,12 +135,16 @@ public final class GameCommand implements AnnotationCommandFeature {
 
   @Permission("murderrun.command.game.create")
   @CommandDescription("murderrun.command.game.create.info")
-  @Command(value = "murder game create <arenaName> <lobbyName> <id> <min> <max> <quickJoinable>", requiredSender = CommandSender.class)
+  @Command(
+    value = "murder game create <arenaName> <lobbyName> <id> <mode> <min> <max> <quickJoinable>",
+    requiredSender = CommandSender.class
+  )
   public void createGame(
     final CommandSender sender,
     @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
     @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName,
     @Quoted final String id,
+    final GameMode mode,
     final int min,
     final int max,
     final boolean quickJoinable
@@ -156,7 +162,7 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
     manager
-      .createGame(sender, id, arenaName, lobbyName, min, max, quickJoinable)
+      .createGame(sender, id, mode, arenaName, lobbyName, min, max, quickJoinable)
       .thenRun(() -> audience.sendMessage(Message.GAME_CREATED.build()));
   }
 
@@ -204,7 +210,8 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final PreGameManager target = requireNonNull(manager.getGame(sender));
     final String id = target.getId();
-    final String inviteDisplayName = invite.getDisplayName();
+    final Component component = invite.displayName();
+    final String inviteDisplayName = ComponentUtils.serializeComponentToLegacyString(component);
     final Component owner = Message.GAME_OWNER_INVITE.build(inviteDisplayName);
     final Component player = Message.GAME_PLAYER_INVITE.build(id);
     final Audience invited = this.audiences.player(invite);
@@ -237,7 +244,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   private void sendJoinMessage(final Player sender, final PreGameManager data) {
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     final Collection<Player> participants = playerManager.getParticipants();
-    final String name = sender.getDisplayName();
+    final Component component = sender.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final Component message = Message.GAME_JOIN.build(name);
     for (final Player player : participants) {
       final Audience member = this.audiences.player(player);
@@ -267,7 +275,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Collection<Player> murderers = playerManager.getMurderers();
     final List<String> names = new ArrayList<>();
     for (final Player player : participants) {
-      String name = player.getDisplayName();
+      final Component component = player.displayName();
+      String name = ComponentUtils.serializeComponentToLegacyString(component);
       name += murderers.contains(player) ? " (Killer)" : "";
       names.add(name);
     }
@@ -291,7 +300,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     manager.leaveGame(kick);
     this.invites.removeInvite(sender, kick);
 
-    final String name = kick.getDisplayName();
+    final Component component = kick.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final Audience player = this.audiences.player(kick);
     final Component ownerMessage = Message.GAME_OWNER_KICK.build(name);
     final Component kickedMessage = Message.GAME_PLAYER_KICK.build();
@@ -332,7 +342,8 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    final String name = murderer.getDisplayName();
+    final Component component = murderer.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     playerManager.setPlayerToMurderer(murderer);
 
@@ -355,7 +366,8 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    final String name = innocent.getDisplayName();
+    final Component component = innocent.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     playerManager.setPlayerToInnocent(innocent);
 

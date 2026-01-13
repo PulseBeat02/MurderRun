@@ -25,7 +25,6 @@ import me.brandonli.murderrun.game.player.Participant;
 import me.brandonli.murderrun.game.player.PlayerScoreboard;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
-import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.GlowUtils;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
@@ -64,7 +63,7 @@ public final class MetadataManager {
     fakeBorder.setDamageBuffer(worldBorder.getDamageBuffer());
     fakeBorder.setSize(worldBorder.getSize());
     fakeBorder.setWarningDistance(Integer.MAX_VALUE);
-    fakeBorder.setWarningTime(worldBorder.getWarningTime());
+    fakeBorder.setWarningTimeTicks(worldBorder.getWarningTimeTicks());
     return fakeBorder;
   }
 
@@ -77,7 +76,7 @@ public final class MetadataManager {
     this.sidebar.shutdown();
   }
 
-  public void setBlockGlowing(final Block block, final ChatColor color, final boolean glowing) {
+  public void setBlockGlowing(final Block block, final NamedTextColor color, final boolean glowing) {
     final Location location = block.getLocation();
     if (!this.gamePlayer.isAlive()) {
       return;
@@ -85,14 +84,13 @@ public final class MetadataManager {
     this.gamePlayer.apply(player -> this.spawnSlime(color, glowing, player, location));
   }
 
-  private void spawnSlime(final ChatColor color, final boolean glowing, final Player player, final Location location) {
+  private void spawnSlime(final NamedTextColor color, final boolean glowing, final Player player, final Location location) {
     if (glowing) {
       final Slime slime = GlowUtils.setBlockGlowing(player, location, true);
       if (slime == null) {
         return;
       }
-      final NamedTextColor namedColor = ComponentUtils.getNamedTextColor(color);
-      this.manager.setEntityGlow(slime, namedColor);
+      this.manager.setEntityGlow(slime, color);
     } else {
       final Slime slime = GlowUtils.setBlockGlowing(player, location, false);
       if (slime == null) {
@@ -102,23 +100,22 @@ public final class MetadataManager {
     }
   }
 
-  public void setEntityGlowing(final GameScheduler scheduler, final GamePlayer participant, final ChatColor color, final long time) {
+  public void setEntityGlowing(final GameScheduler scheduler, final GamePlayer participant, final NamedTextColor color, final long time) {
     final StrictPlayerReference reference = StrictPlayerReference.of(participant);
     this.setEntityGlowing(participant, color, true);
     scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time, reference);
   }
 
-  public void setEntityGlowing(final GamePlayer participant, final ChatColor color, final boolean glowing) {
+  public void setEntityGlowing(final GamePlayer participant, final NamedTextColor color, final boolean glowing) {
     participant.apply(player -> this.setEntityGlowing(player, color, glowing));
   }
 
-  public void setEntityGlowing(final Entity entity, final ChatColor color, final boolean glowing) {
+  public void setEntityGlowing(final Entity entity, final NamedTextColor color, final boolean glowing) {
     if (!this.gamePlayer.isAlive()) {
       return;
     }
-    final NamedTextColor namedColor = ComponentUtils.getNamedTextColor(color);
     if (glowing) {
-      this.manager.setEntityGlow(entity, namedColor);
+      this.manager.setEntityGlow(entity, color);
     } else {
       this.manager.removeEntityGlow(entity);
     }

@@ -45,13 +45,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 public final class LifeInsurance extends SurvivorGadget {
 
-  public LifeInsurance() {
+  public LifeInsurance(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "life_insurance",
-      GameProperties.LIFE_INSURANCE_COST,
+      properties.getLifeInsuranceCost(),
       ItemFactory.createGadget(
         "life_insurance",
-        GameProperties.LIFE_INSURANCE_MATERIAL,
+        properties.getLifeInsuranceMaterial(),
         Message.LIFE_INSURANCE_NAME.build(),
         Message.LIFE_INSURANCE_LORE.build()
       )
@@ -85,9 +86,10 @@ public final class LifeInsurance extends SurvivorGadget {
     tasks.add(task);
 
     final PlayerAudience audience = player.getAudience();
+    final GameProperties properties = game.getProperties();
     final Component message = Message.LIFE_INSURANCE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GameProperties.LIFE_INSURANCE_SOUND);
+    audience.playSound(properties.getLifeInsuranceSound());
 
     return false;
   }
@@ -102,7 +104,9 @@ public final class LifeInsurance extends SurvivorGadget {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);
-    final double radius = GameProperties.LIFE_INSURANCE_RADIUS;
+    final Game game = player.getGame();
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getLifeInsuranceRadius();
     if (distance < radius * radius) {
       final double[] coords = MapUtils.generateFriendlyRandomXZ(first, second);
       final Location temp = new Location(world, coords[0], 0, coords[1]);

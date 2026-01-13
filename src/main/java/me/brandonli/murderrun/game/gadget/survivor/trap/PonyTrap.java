@@ -35,43 +35,46 @@ import org.bukkit.inventory.HorseInventory;
 
 public final class PonyTrap extends SurvivorTrap {
 
-  public PonyTrap() {
+  public PonyTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "pony_trap",
-      GameProperties.PONY_COST,
-      ItemFactory.createGadget("pony_trap", GameProperties.PONY_MATERIAL, Message.PONY_NAME.build(), Message.PONY_LORE.build()),
+      properties.getPonyCost(),
+      ItemFactory.createGadget("pony_trap", properties.getPonyMaterial(), Message.PONY_NAME.build(), Message.PONY_LORE.build()),
       Message.PONY_ACTIVATE.build(),
-      GameProperties.PONY_COLOR
+      properties.getPonyColor()
     );
   }
 
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final Location location = murderer.getLocation();
-    this.spawnHorse(location);
+    this.spawnHorse(game, location);
 
+    final GameProperties properties = game.getProperties();
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.PONY_SOUND);
+    manager.playSoundForAllParticipants(properties.getPonySound());
   }
 
-  private void spawnHorse(final Location location) {
+  private void spawnHorse(final Game game, final Location location) {
     final World world = requireNonNull(location.getWorld());
     world.spawn(location, Horse.class, horse -> {
-      this.customizeProperties(horse);
+      this.customizeProperties(game, horse);
       this.setSaddle(horse);
     });
   }
 
-  private void customizeProperties(final Horse horse) {
+  private void customizeProperties(final Game game, final Horse horse) {
     horse.setTamed(true);
     horse.setJumpStrength(2);
     horse.setAdult();
-    this.setSpeed(horse);
+    this.setSpeed(game, horse);
   }
 
-  private void setSpeed(final Horse horse) {
+  private void setSpeed(final Game game, final Horse horse) {
+    final GameProperties properties = game.getProperties();
     final AttributeInstance attribute = requireNonNull(horse.getAttribute(Attribute.MOVEMENT_SPEED));
-    attribute.setBaseValue(GameProperties.PONY_HORSE_SPEED);
+    attribute.setBaseValue(properties.getPonyHorseSpeed());
   }
 
   private void setSaddle(final Horse horse) {

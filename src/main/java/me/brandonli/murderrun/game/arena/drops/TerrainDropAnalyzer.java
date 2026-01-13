@@ -105,7 +105,8 @@ public final class TerrainDropAnalyzer {
     visited.add(start);
 
     final CompletableFuture<List<BlockVector3>> future = new CompletableFuture<>();
-    final int count = GameProperties.BLOCKS_PER_TICK;
+    final GameProperties properties = GameProperties.COMMON;
+    final int count = properties.getBlocksPerTick();
     final BukkitRunnable runnable = new BukkitRunnable() {
       @Override
       public void run() {

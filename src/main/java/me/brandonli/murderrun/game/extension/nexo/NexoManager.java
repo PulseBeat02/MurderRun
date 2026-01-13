@@ -37,52 +37,52 @@ public final class NexoManager {
     return requireNonNull(server.packInfo());
   }
 
-  public Optional<Item.Builder> getCurrency() {
-    return this.getNexoItem(GameProperties.NEXO_CURRENCY);
+  public Optional<Item.Builder> getCurrency(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoCurrency());
   }
 
-  public Optional<Item.Builder> getGhostBone() {
-    return this.getNexoItem(GameProperties.NEXO_GHOST_BONE);
+  public Optional<Item.Builder> getGhostBone(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoGhostBone());
   }
 
-  public Optional<Item.Builder> getKillerArrow() {
-    return this.getNexoItem(GameProperties.NEXO_KILLER_ARROW);
+  public Optional<Item.Builder> getKillerArrow(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoKillerArrow());
   }
 
-  public Optional<Item.Builder> getKillerSword() {
-    return this.getNexoItem(GameProperties.NEXO_KILLER_SWORD);
+  public Optional<Item.Builder> getKillerSword(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoKillerSword());
   }
 
-  public Optional<Item.Builder> getKillerHelmet() {
-    return this.getNexoItem(GameProperties.NEXO_KILLER_HELMET);
+  public Optional<Item.Builder> getKillerHelmet(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoKillerHelmet());
   }
 
-  public Optional<Item.Builder> getKillerChestplate() {
-    return this.getNexoItem(GameProperties.NEXO_KILLER_CHESTPLATE);
+  public Optional<Item.Builder> getKillerChestplate(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoKillerChestplate());
   }
 
-  public Optional<Item.Builder> getKillerLeggings() {
-    return this.getNexoItem(GameProperties.NEXO_KILLER_LEGGINGS);
+  public Optional<Item.Builder> getKillerLeggings(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoKillerLeggings());
   }
 
-  public Optional<Item.Builder> getKillerBoots() {
-    return this.getNexoItem(GameProperties.NEXO_KILLER_BOOTS);
+  public Optional<Item.Builder> getKillerBoots(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoKillerBoots());
   }
 
-  public Optional<Item.Builder> getSurvivorHelmet() {
-    return this.getNexoItem(GameProperties.NEXO_SURVIVOR_HELMET);
+  public Optional<Item.Builder> getSurvivorHelmet(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoSurvivorHelmet());
   }
 
-  public Optional<Item.Builder> getSurvivorChestplate() {
-    return this.getNexoItem(GameProperties.NEXO_SURVIVOR_CHESTPLATE);
+  public Optional<Item.Builder> getSurvivorChestplate(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoSurvivorChestplate());
   }
 
-  public Optional<Item.Builder> getSurvivorLeggings() {
-    return this.getNexoItem(GameProperties.NEXO_SURVIVOR_LEGGINGS);
+  public Optional<Item.Builder> getSurvivorLeggings(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoSurvivorLeggings());
   }
 
-  public Optional<Item.Builder> getSurvivorBoots() {
-    return this.getNexoItem(GameProperties.NEXO_SURVIVOR_BOOTS);
+  public Optional<Item.Builder> getSurvivorBoots(final GameProperties properties) {
+    return this.getNexoItem(properties.getNexoSurvivorBoots());
   }
 
   private Optional<Item.Builder> getNexoItem(final String property) {

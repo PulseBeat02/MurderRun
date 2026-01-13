@@ -30,13 +30,14 @@ import org.bukkit.entity.Item;
 
 public final class DistortTrap extends SurvivorTrap {
 
-  public DistortTrap() {
+  public DistortTrap(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "distort_trap",
-      GameProperties.DISTORT_COST,
-      ItemFactory.createGadget("distort_trap", GameProperties.DISTORT_MATERIAL, Message.DISTORT_NAME.build(), Message.DISTORT_LORE.build()),
+      properties.getDistortCost(),
+      ItemFactory.createGadget("distort_trap", properties.getDistortMaterial(), Message.DISTORT_NAME.build(), Message.DISTORT_LORE.build()),
       Message.DISTORT_ACTIVATE.build(),
-      GameProperties.DISTORT_COLOR
+      properties.getDistortColor()
     );
   }
 
@@ -44,10 +45,11 @@ public final class DistortTrap extends SurvivorTrap {
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(murderer), 0, 5, GameProperties.DISTORT_DURATION, reference);
+    final GameProperties properties = game.getProperties();
+    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(murderer), 0, 5, properties.getDistortDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.playSoundForAllParticipants(GameProperties.DISTORT_SOUND);
+    manager.playSoundForAllParticipants(properties.getDistortSound());
   }
 
   private void spawnParticle(final GamePlayer murderer) {

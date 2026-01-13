@@ -19,7 +19,6 @@ package me.brandonli.murderrun.api.event;
 
 import java.util.function.Consumer;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 public final class ApiEventSubscription<T extends MurderRunEvent> implements EventSubscription<T> {
 
@@ -43,17 +42,17 @@ public final class ApiEventSubscription<T extends MurderRunEvent> implements Eve
   }
 
   @Override
-  public @NotNull Consumer<? super T> getHandler() {
+  public Consumer<? super T> getHandler() {
     return this.handler;
   }
 
   @Override
-  public @NotNull Class<T> getEventType() {
+  public Class<T> getEventType() {
     return this.eventType;
   }
 
   @Override
-  public @NotNull Plugin getPlugin() {
+  public Plugin getPlugin() {
     return this.plugin;
   }
 

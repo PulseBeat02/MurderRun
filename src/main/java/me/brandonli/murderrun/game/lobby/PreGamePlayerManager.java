@@ -20,11 +20,9 @@ package me.brandonli.murderrun.game.lobby;
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.Iterables;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.PlayerResourcePackChecker;
@@ -56,6 +54,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class PreGamePlayerManager {
 
   private final PreGameManager manager;
+  private final Collection<Player> survivors;
   private final Collection<Player> murderers;
   private final Collection<Player> participants;
   private final CommandSender leader;
@@ -79,6 +78,7 @@ public final class PreGamePlayerManager {
     final boolean quickJoinable
   ) {
     this.manager = manager;
+    this.survivors = Collections.synchronizedSet(new HashSet<>());
     this.murderers = Collections.synchronizedSet(new HashSet<>());
     this.participants = Collections.synchronizedSet(new HashSet<>());
     this.leader = leader;
@@ -94,7 +94,9 @@ public final class PreGamePlayerManager {
 
   public void initialize() {
     final MurderRun plugin = this.manager.getPlugin();
-    this.selectionManager = new PlayerSelectionManager(plugin);
+    final PreGameManager preGameManager = this.getManager();
+    final GameProperties properties = preGameManager.getProperties();
+    this.selectionManager = new PlayerSelectionManager(plugin, properties);
     this.bossbar = new LobbyBossbar(this);
     this.scoreboard = new LobbyScoreboard(this.manager);
     this.scoreboard.updateScoreboard();
@@ -128,9 +130,11 @@ public final class PreGamePlayerManager {
   }
 
   private void giveSpecialItems(final Player player) {
-    final ItemStack sword = ItemFactory.createKillerSword();
-    final ItemStack arrow = ItemFactory.createKillerArrow();
-    final ItemStack[] gear = ItemFactory.createKillerGear();
+    final PreGameManager gameManager = this.getManager();
+    final GameProperties properties = gameManager.getProperties();
+    final ItemStack sword = ItemFactory.createKillerSword(properties);
+    final ItemStack arrow = ItemFactory.createKillerArrow(properties);
+    final ItemStack[] gear = ItemFactory.createKillerGear(properties);
     final PlayerInventory inventory = player.getInventory();
     final PersistentDataContainer container = player.getPersistentDataContainer();
     inventory.addItem(sword, arrow);
@@ -145,6 +149,7 @@ public final class PreGamePlayerManager {
   }
 
   public void removeParticipantFromLobby(final Player player) {
+    this.survivors.remove(player);
     this.murderers.remove(player);
     this.participants.remove(player);
     this.scoreboard.updateScoreboard();
@@ -156,6 +161,7 @@ public final class PreGamePlayerManager {
   }
 
   public void removeParticipantFromGameInternal(final Player player) {
+    this.survivors.remove(player);
     this.murderers.remove(player);
     this.participants.remove(player);
     this.clearInventory(player);
@@ -248,6 +254,8 @@ public final class PreGamePlayerManager {
     if (killer) {
       this.murderers.add(player);
       this.giveSpecialItems(player);
+    } else {
+      this.survivors.add(player);
     }
     this.addCurrency(player, killer);
     this.giveEmptyAbility(player);
@@ -273,9 +281,11 @@ public final class PreGamePlayerManager {
   }
 
   private void addCurrency(final Player player, final boolean killer) {
-    final int count = killer ? GameProperties.KILLER_STARTING_CURRENCY : GameProperties.SURVIVOR_STARTING_CURRENCY;
+    final PreGameManager gameManager = this.getManager();
+    final GameProperties properties = gameManager.getProperties();
+    final int count = killer ? properties.getKillerStartingCurrency() : properties.getSurvivorStartingCurrency();
     final PlayerInventory inventory = player.getInventory();
-    final ItemStack stack = ItemFactory.createCurrency(1);
+    final ItemStack stack = ItemFactory.createCurrency(properties, 1);
     for (int i = 0; i < count; i++) {
       inventory.addItem(stack);
     }
@@ -295,19 +305,43 @@ public final class PreGamePlayerManager {
     return this.isLeader(player);
   }
 
-  public void assignKiller() {
-    if (this.murderers.isEmpty()) {
-      synchronized (this.participants) {
-        final int size = this.participants.size();
-        if (size == 0) {
-          return;
+  public void assignRoles() {
+    final GameMode mode = this.manager.getMode();
+    if (mode == GameMode.DEFAULT || mode == GameMode.FREEZE_TAG) {
+      if (this.murderers.isEmpty()) {
+        synchronized (this.participants) {
+          final int size = this.participants.size();
+          if (size == 0) {
+            return;
+          }
+          final int index = RandomUtils.generateInt(size);
+          final Player random = Iterables.get(this.participants, index);
+          final Component msg = Message.KILLER_ASSIGN.build();
+          final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
+          this.setPlayerToMurderer(random);
+          random.sendMessage(raw);
         }
-        final int index = RandomUtils.generateInt(size);
-        final Player random = Iterables.get(this.participants, index);
-        final Component msg = Message.KILLER_ASSIGN.build();
-        final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
-        this.setPlayerToMurderer(random);
-        random.sendMessage(raw);
+      }
+    } else if (mode == GameMode.ONE_BOUNCE) {
+      if (this.murderers.isEmpty()) { // assign roles by default
+        synchronized (this.participants) {
+          final int size = this.participants.size();
+          if (size == 0) {
+            return;
+          }
+          final int index = RandomUtils.generateInt(size);
+          final Player random = Iterables.get(this.participants, index);
+          final Component msg = Message.SURVIVOR_ASSIGN.build();
+          final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
+          random.sendMessage(raw);
+          final List<Player> snapshot = new ArrayList<>(this.participants);
+          for (final Player player : snapshot) {
+            if (player == random) {
+              continue;
+            }
+            this.setPlayerToMurderer(player);
+          }
+        }
       }
     }
   }
@@ -315,6 +349,10 @@ public final class PreGamePlayerManager {
   public boolean isEnoughPlayers() {
     final int current = this.getCurrentPlayerCount();
     return current >= 2;
+  }
+
+  public Collection<Player> getSurvivors() {
+    return this.survivors;
   }
 
   public Collection<Player> getMurderers() {

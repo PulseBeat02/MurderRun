@@ -18,14 +18,9 @@
 package me.brandonli.murderrun.utils.gson.adapters;
 
 import com.google.gson.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import me.brandonli.murderrun.utils.gson.GsonProvider;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public final class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
@@ -35,38 +30,15 @@ public final class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDe
     throws JsonParseException {
     final String data = json.getAsString();
     final byte[] bytes = Base64Coder.decode(data);
-    return this.fromByteArray(bytes);
+    return ItemStack.deserializeBytes(bytes);
   }
 
   @Override
   public JsonElement serialize(final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
     final Gson gson = GsonProvider.getGson();
-    final byte[] bytes = this.serialize(src);
+    final byte[] bytes = src.serializeAsBytes();
     final char[] base64 = Base64Coder.encode(bytes);
     final String data = new String(base64);
     return gson.toJsonTree(data);
-  }
-
-  private ItemStack fromByteArray(final byte[] bytes) {
-    try (
-      final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-      final BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)
-    ) {
-      return (ItemStack) dataInput.readObject();
-    } catch (final IOException | ClassNotFoundException e) {
-      throw new AssertionError(e);
-    }
-  }
-
-  private byte[] serialize(final ItemStack src) {
-    try (
-      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      final BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)
-    ) {
-      dataOutput.writeObject(src);
-      return outputStream.toByteArray();
-    } catch (final IOException e) {
-      throw new AssertionError(e);
-    }
   }
 }

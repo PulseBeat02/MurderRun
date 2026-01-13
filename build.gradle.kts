@@ -19,7 +19,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
-version = "1.21.10-v1.0.0"
+version = "1.21.11-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -71,7 +71,7 @@ dependencies {
     annotationProcessor(libs.cloudAnnotations)
 
     // Provided Dependencies
-    compileOnly(libs.spigotApi)
+    compileOnly(libs.paperApi)
     compileOnly(libs.fastutil)
     compileOnly(libs.nettyAll)
     runtimeDeps.forEach(::implementation)
@@ -106,7 +106,7 @@ dependencies {
     runtimeDeps.forEach(::testImplementation)
 }
 
-val targetJavaVersion = 21
+val targetJavaVersion = 25
 java {
     val javaVersion = JavaVersion.toVersion(targetJavaVersion)
     val language = JavaLanguageVersion.of(targetJavaVersion)
@@ -175,6 +175,7 @@ tasks {
         options.release.set(targetJavaVersion)
         options.isFork = true
         options.forkOptions.memoryMaximumSize = "4g"
+        options.compilerArgs.addAll(listOf("-Xmaxerrs", "1000"))
         options.forkOptions.jvmArgs = (options.forkOptions.jvmArgs ?: mutableListOf()).apply {
             // Checker Framework Gradle Plugin forgot to include this argument for latest Checker Framework versions
             // See https://github.com/typetools/checker-framework/issues/7241
@@ -201,7 +202,7 @@ tasks {
         }
         systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("1.21.10")
+        minecraftVersion("1.21.11")
     }
 
     processResources {

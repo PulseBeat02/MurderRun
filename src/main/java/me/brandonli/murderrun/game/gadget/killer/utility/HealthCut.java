@@ -33,13 +33,14 @@ import org.bukkit.entity.Item;
 
 public final class HealthCut extends KillerGadget {
 
-  public HealthCut() {
+  public HealthCut(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "health_cut",
-      GameProperties.HEALTH_CUT_COST,
+      properties.getHealthCutCost(),
       ItemFactory.createGadget(
         "health_cut",
-        GameProperties.HEALTH_CUT_MATERIAL,
+        properties.getHealthCutMaterial(),
         Message.HEALTH_CUT_NAME.build(),
         Message.HEALTH_CUT_LORE.build()
       )
@@ -57,8 +58,9 @@ public final class HealthCut extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToLivingSurvivors(survivor -> this.setState(survivor, scheduler));
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.HEALTH_CUT_SOUND);
+    audience.playSound(properties.getHealthCutSound());
 
     return false;
   }

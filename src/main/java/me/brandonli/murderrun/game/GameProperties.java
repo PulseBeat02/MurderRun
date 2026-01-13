@@ -23,496 +23,1945 @@ import java.awt.*;
 import org.bukkit.Material;
 import org.intellij.lang.annotations.Subst;
 
-public interface GameProperties {
-  static void init() {
+public final class GameProperties {
+
+  public static final GameProperties DEFAULT = new GameProperties(GameMode.DEFAULT);
+  public static final GameProperties ONE_BOUNCE = new GameProperties(GameMode.ONE_BOUNCE);
+  public static final GameProperties FREEZE_TAG = new GameProperties(GameMode.FREEZE_TAG);
+  public static final GameProperties COMMON = new GameProperties("common"); // for others
+
+  public static void init() {
     // init bundle
   }
 
-  GameBundle GAME_BUNDLE = new GameBundle();
+  private final GameBundle bundle;
 
-  String CRAFTENGINE_CURRENCY = str("craftengine.currency");
-  String CRAFTENGINE_GHOST_BONE = str("craftengine.ghost.bone");
-  String CRAFTENGINE_KILLER_ARROW = str("craftengine.killer.arrow");
-  String CRAFTENGINE_KILLER_SWORD = str("craftengine.killer.sword");
-  String CRAFTENGINE_KILLER_HELMET = str("craftengine.killer.helmet");
-  String CRAFTENGINE_KILLER_CHESTPLATE = str("craftengine.killer.chestplate");
-  String CRAFTENGINE_KILLER_LEGGINGS = str("craftengine.killer.leggings");
-  String CRAFTENGINE_KILLER_BOOTS = str("craftengine.killer.boots");
-  String CRAFTENGINE_SURVIVOR_HELMET = str("craftengine.survivor.helmet");
-  String CRAFTENGINE_SURVIVOR_CHESTPLATE = str("craftengine.survivor.chestplate");
-  String CRAFTENGINE_SURVIVOR_LEGGINGS = str("craftengine.survivor.leggings");
-  String CRAFTENGINE_SURVIVOR_BOOTS = str("craftengine.survivor.boots");
-  String RANDOM_TELEPORT_BLACKLISTED_BLOCKS = str("random_teleport.blacklisted_blocks");
-  double VAULT_REWARD = dec("vault.reward");
-  double MOON_GRAVITY = dec("moon.gravity");
-  int MOON_DURATION = num("moon.duration");
-  String MOON_SOUND = str("moon.sound");
-  int MOON_COST = num("moon.cost");
-  Material MOON_MATERIAL = mat("moon.material");
-  double REACH_DISTANCE = dec("reach.distance");
-  int ETHERWARP_MAX_DISTANCE = num("etherwarp.max");
-  double ETHERWARP_COOLDOWN = dec("etherwarp.cooldown");
-  String GUARDIAN_ANGEL_TEXTURE_SIGNATURE = str("guardian_angel.texture.signature");
-  String GUARDIAN_ANGEL_TEXTURE_DATA = str("guardian_angel.texture.data");
-  String GRIM_REAPER_TEXTURE_SIGNATURE = str("grim_reaper.texture.signature");
-  String GRIM_REAPER_TEXTURE_DATA = str("grim_reaper.texture.data");
-  String ANGEL_SPIRIT_TEXTURE_SIGNATURE = str("angel_spirit.texture.signature");
-  String ANGEL_SPIRIT_TEXTURE_DATA = str("angel_spirit.texture.data");
-  String WEEPING_ANGEL_TEXTURE_SIGNATURE = str("weeping_angel.texture.signature");
-  String WEEPING_ANGEL_TEXTURE_DATA = str("weeping_angel.texture.data");
-  boolean GAME_UTILITIES_RANDOM = bool("game.utilities.random");
-  int GAME_UTILITIES_KILLER_GADGETS = num("game.utilities.killer.gadgets");
-  int GAME_UTILITIES_SURVIVOR_GADGETS = num("game.utilities.survivor.gadgets");
-  int GAME_UTILITIES_KILLER_ABILITIES = num("game.utilities.killer.abilities");
-  int GAME_UTILITIES_SURVIVOR_ABILITIES = num("game.utilities.survivor.abilities");
-  String PHASE_BLACKLISTED_BLOCKS = str("phase.blacklisted_blocks");
-  double PHASE_DISTANCE = dec("phase.distance");
-  double PHASE_COOLDOWN = dec("phase.cooldown");
-  double KILLER_SPRINT_TIME = dec("killer.sprint_time");
-  double SURVIVOR_SPRINT_TIME = dec("survivor.sprint_time");
-  double TRAP_VEST_VELOCITY = dec("trap_vest.velocity");
-  double SONIC_BOOM_KNOCKBACK = dec("sonicboom.knockback");
-  double SONIC_BOOM_RADIUS = dec("sonicboom.radius");
-  double SONIC_BOOM_COOLDOWN = dec("sonicboom.cooldown");
-  double CANNON_VELOCITY = dec("cannon.velocity");
-  int CANNON_FUSE = num("cannon.fuse");
-  double CANNON_COOLDOWN = dec("cannon.cooldown");
-  int ABSORPTION_LEVEL = num("absorption.level");
-  String ABILITY_GUI_SOUND = str("select.gui.sound");
-  String DISABLED_ABILITIES = str("disabled_abilities");
-  double DOUBLEJUMP_COOLDOWN = dec("doublejump.cooldown");
-  double DOUBLEJUMP_VELOCITY = dec("doublejump.velocity");
-  double KILLER_PARTICLE_RADIUS = dec("killer.particles.radius");
-  int FLASHLIGHT_DURATION = num("flashlight.duration");
-  double FLASHLIGHT_COOLDOWN = dec("flashlight.cooldown");
-  Material TRANSLOCATOR_MATERIAL = mat("translocator.material");
-  Material TRACKER_MATERIAL = mat("tracker.material");
-  Material SUPPLY_DROP_MATERIAL = mat("supply_drop.material");
-  Material SPEED_PENDANT_MATERIAL = mat("speed_pendant.material");
-  Material SMOKE_GRENADE_MATERIAL = mat("smoke_grenade.material");
-  Material SIXTH_SENSE_MATERIAL = mat("sixth_sense.material");
-  Material REWIND_MATERIAL = mat("rewind.material");
-  Material RETALIATION_MATERIAL = mat("retaliation.material");
-  Material RESURRECTION_STONE_MATERIAL = mat("resurrection_stone.material");
-  Material RANDOM_TRAP_MATERIAL = mat("random_trap.material");
-  Material RANDOM_TELEPORT_MATERIAL = mat("random_teleport.material");
-  Material PORTAL_TRAP_MATERIAL = mat("portal_trap.material");
-  Material PARSITE_MATERIAL = mat("parasite.material");
-  Material MINITURIZER_MATERIAL = mat("minitaturizer.material");
-  Material MIND_CONTROL_MATERIAL = mat("mind_control.material");
-  Material MED_KIT_MATERIAL = mat("med_kit.material");
-  Material MED_BOT_MATERIAL = mat("med_bot.material");
-  Material MAGNET_MODE_MATERIAL = mat("magnet_mode.material");
-  Material LIFE_INSURANCE_MATERIAL = mat("life_insurance.material");
-  Material KILLER_REWIND_MATERIAL = mat("killer_rewind.material");
-  Material ICE_SPIRIT_MATERIAL = mat("ice_spirit.material");
-  Material ICE_SKATIN_MATERIAL = mat("ice_skatin.material");
-  Material HORCRUX_MATERIAL = mat("horcrux.material");
-  Material FRIEND_WARP_MATERIAL = mat("friend_warp.material");
-  Material FLASHBANG_MATERIAL = mat("flashbang.material");
-  Material DRONE_MATERIAL = mat("drone.material");
-  Material DISTORTER_MATERIAL = mat("distorter.material");
-  Material DECOY_MATERIAL = mat("decoy.material");
-  Material DEADRINGER_MATERIAL = mat("deadringer.material");
-  Material CRYO_FREEZE_MATERIAL = mat("cryo_freeze.material");
-  Material CORPUS_WARP_MATERIAL = mat("corpus_warp.material");
-  Material CLOAK_MATERIAL = mat("cloak.material");
-  Material CHIPPED_MATERIAL = mat("chipped.material");
-  Material CAMERA_MATERIAL = mat("camera.material");
-  Material BUSH_MATERIAL = mat("bush.material");
-  Material BLAST_OFF_MATERIAL = mat("blastoff.material");
-  Material STAR_MATERIAL = mat("star.material");
-  Material SPAWN_MATERIAL = mat("spawn.material");
-  Material SPASM_MATERIAL = mat("spasm.material");
-  Material SMOKE_MATERIAL = mat("smoke.material");
-  Material SHOCKWAVE_MATERIAL = mat("shockwave.material");
-  Material PONY_MATERIAL = mat("pony.material");
-  Material NECK_SNAP_MATERIAL = mat("neck_snap.material");
-  Material LEVITATION_MATERIAL = mat("levitation.material");
-  Material JUMP_SCARE_MATERIAL = mat("jump_scare.material");
-  Material JEB_MATERIAL = mat("jeb.material");
-  Material HAUNT_MATERIAL = mat("haunt.material");
-  Material HACK_MATERIAL = mat("hack.material");
-  Material GLOW_MATERIAL = mat("glow.material");
-  Material GHOST_MATERIAL = mat("ghost.material");
-  Material FREEZE_MATERIAL = mat("freeze.material");
-  Material FIREWORK_MATERIAL = mat("firework.material");
-  Material FART_MATERIAL = mat("fart.material");
-  Material DISTORT_MATERIAL = mat("distort.material");
-  Material CAGE_MATERIAL = mat("cage.material");
-  Material BURROW_MATERIAL = mat("burrow.material");
-  Material BLIND_MATERIAL = mat("blind.material");
-  Material BEAR_MATERIAL = mat("bear.material");
-  Material SHIELD_MATERIAL = mat("shield.material");
-  Material KILLER_TRACKER_MATERIAL = mat("killer_tracker.material");
-  Material FLASHLIGHT_MATERIAL = mat("flashlight.material");
-  Material EXCAVATOR_MATERIAL = mat("excavator.material");
-  Material SURVIVOR_LEGGINGS_MATERIAL = mat("survivor_leggings.material");
-  Material SURVIVOR_CHESTPLATE_MATERIAL = mat("survivor_chestplate.material");
-  Material SURVIVOR_HELMET_MATERIAL = mat("survivor_helmet.material");
-  Material SURVIVOR_BOOTS_MATERIAL = mat("survivor_boots.material");
-  Material WARP_DISTORT_MATERIAL = mat("warp_distort.material");
-  Material TRAP_WRECKER_MATERIAL = mat("trap_wrecker.material");
-  Material TRAP_SEEKER_MATERIAL = mat("trap_seeker.material");
-  Material RED_ARROW_MATERIAL = mat("red_arrow.material");
-  Material QUICK_BOMB_MATERIAL = mat("quick_bomb.material");
-  Material POSION_SMOG_MATERIAL = mat("poison_smog.material");
-  Material PHANTOM_MATERIAL = mat("phantom.material");
-  Material PART_WARP_MATERIAL = mat("part_warp.material");
-  Material MURDEROUS_WARP_MATERIAL = mat("murderous_warp.material");
-  Material MIMIC_MATERIAL = mat("mimic.material");
-  Material INFRARED_VISION_MATERIAL = mat("infrared_vision.material");
-  Material ICE_PATH_MATERIAL = mat("ice_path.material");
-  Material HEAT_SEEKER_MATERIAL = mat("heat_seeker.material");
-  Material HEALTH_CUT_MATERIAL = mat("health_cut.material");
-  Material FRIGHT_MATERIAL = mat("fright.material");
-  Material FOREWARN_MATERIAL = mat("forewarn.material");
-  Material FLOOR_IS_LAVA_MATERIAL = mat("floor_is_lava.material");
-  Material FIRE_TRAIL_MATERIAL = mat("fire_trail.material");
-  Material FAKE_PART_MATERIAL = mat("fake_part.material");
-  Material EXPANDER_MATERIAL = mat("expander.material");
-  Material ENDER_SHADOWS_MATERIAL = mat("ender_shadows.material");
-  Material EMP_BLAST_MATERIAL = mat("emp_blast.material");
-  Material EAGLE_EYE_MATERIAL = mat("eagle_eye.material");
-  Material DORMAGOGG_MATERIAL = mat("dormagogg.material");
-  Material DEATH_STEED_MATERIAL = mat("death_steed.material");
-  Material DEATH_HOUND_MATERIAL = mat("death_hound.material");
-  Material CURSED_NOTE_MATERIAL = mat("cursed_note.material");
-  Material CORRUPTION_MATERIAL = mat("corruption.material");
-  Material KILLER_CAMERA_MATERIAL = mat("killer_camera.material");
-  Material BURN_THE_BODY_MATERIAL = mat("burn_the_body.material");
-  Material BLOOD_CURSE_MATERIAL = mat("blood_curse.material");
-  Material ALL_SEEING_EYE_MATERIAL = mat("all_seeing_eye.material");
-  Material PORTAL_GUN_MATERIAL = mat("portal_gun.material");
-  Material PLAYER_TRACKER_MATERIAL = mat("player_tracker.material");
-  Material HOOK_MATERIAL = mat("hook.material");
-  Color STAR_COLOR = rgb("star.color");
-  Color SPAWN_COLOR = rgb("spawn.color");
-  Color SPASM_COLOR = rgb("spasm.color");
-  Color SMOKE_COLOR = rgb("smoke.color");
-  Color SHOCKWAVE_COLOR = rgb("shockwave.color");
-  Color PONY_COLOR = rgb("pony.color");
-  Color NECK_SNAP_COLOR = rgb("neck_snap.color");
-  Color LEVITATION_COLOR = rgb("levitation.color");
-  Color JUMP_SCARE_COLOR = rgb("jump_scare.color");
-  Color JEB_COLOR = rgb("jeb.color");
-  Color HAUNT_COLOR = rgb("haunt.color");
-  Color HACK_COLOR = rgb("hack.color");
-  Color GLOW_COLOR = rgb("glow.color");
-  Color GHOST_COLOR = rgb("ghost.color");
-  Color FREEZE_COLOR = rgb("freeze.color");
-  Color FIREWORK_COLOR = rgb("firework.color");
-  Color FART_COLOR = rgb("fart.color");
-  Color DISTORT_COLOR = rgb("distort.color");
-  Color CAGE_COLOR = rgb("cage.color");
-  Color BURROW_COLOR = rgb("burrow.color");
-  Color BLIND_COLOR = rgb("blind.color");
-  Color BEAR_COLOR = rgb("bear.color");
-  String NEXO_CURRENCY = str("nexo.currency");
-  String NEXO_GHOST_BONE = str("nexo.ghost.bone");
-  String NEXO_KILLER_ARROW = str("nexo.killer.arrow");
-  int MIMIC_COST = num("mimic.cost");
-  String NEXO_KILLER_SWORD = str("nexo.killer.sword");
-  String NEXO_KILLER_HELMET = str("nexo.killer.helmet");
-  String NEXO_KILLER_CHESTPLATE = str("nexo.killer.chestplate");
-  String NEXO_KILLER_LEGGINGS = str("nexo.killer.leggings");
-  String NEXO_KILLER_BOOTS = str("nexo.killer.boots");
-  String NEXO_SURVIVOR_HELMET = str("nexo.survivor.helmet");
-  String NEXO_SURVIVOR_CHESTPLATE = str("nexo.survivor.chestplate");
-  String NEXO_SURVIVOR_LEGGINGS = str("nexo.survivor.leggings");
-  String NEXO_SURVIVOR_BOOTS = str("nexo.survivor.boots");
-  int CAR_PARTS_REQUIRED = num("car_parts.required");
-  double CAR_PART_TRUCK_RADIUS = dec("car_parts.truck_radius");
-  int MINIATURIZER_DURATION = num("minitaturizer.duration");
-  int EXPANDER_DURATION = num("expander.duration");
-  int WORLDEDIT_MAX_CHUNKS_PER_TICK = num("worldedit.chunks-per-tick");
-  int GAME_EXPIRATION_TIME = num("game.expiration_time");
-  String PLAYER_LEAVE_COMMANDS_AFTER = str("player_leave_commands_after");
-  int BLOCKS_PER_TICK = num("worldedit.blocks_per_tick");
-  double MINIATURIZER_SCALE = dec("minitaturizer.scale");
-  String MINIATURIZER_SOUND = str("minitaturizer.sound");
-  int MINIATURIZER_COST = num("minitaturizer.cost");
-  double EXPANDER_SCALE = dec("expander.scale");
-  String EXPANDER_SOUND = str("expander.sound");
-  int EXPANDER_COST = num("expander.cost");
-  String KILLER_WIN_COMMANDS_AFTER = str("killer_win_commands_after");
-  String SURVIVOR_WIN_COMMANDS_AFTER = str("survivor_win_commands_after");
-  boolean FORCE_RESOURCEPACK = bool("force_resourcepack");
-  String BUILT_IN_RESOURCES = str("built_in_resources");
-  int GAME_TIME_LIMIT = num("game.time_limit");
-  int DORMAGOGG_EFFECT_DURATION = num("dormagogg.effect.duration");
-  int DORMAGOGG_DURATION = num("dormagogg.duration");
-  String SHOP_GUI_SOUND = str("shop.gui.sound");
-  String GAME_STARTING_SOUND = str("game.start_sound");
-  String LOBBY_TIMER_SOUND = str("lobby.timer_sound");
-  int LOBBY_STARTING_TIME = num("lobby.starting_time");
-  int CAR_PARTS_COUNT = num("car_parts.count");
-  String KILLER_CANNOT_BREAK = str("killer.cannot_break");
-  int DEATH_HOUND_DESPAWN = num("death_hound.despawn");
-  int BEGINNING_STARTING_TIME = num("survivor.starting_time");
-  int SURVIVOR_STARTING_CURRENCY = num("survivor.starting_currency");
-  int KILLER_STARTING_CURRENCY = num("killer.starting_currency");
-  String DISABLED_GADGETS = str("disabled_gadgets");
-  int BEAR_DURATION = num("bear.duration");
-  String BEAR_SOUND = str("bear.sound");
-  int BLIND_DURATION = num("blind.duration");
-  String BLIND_SOUND = str("blind.sound");
-  int BURROW_DURATION = num("burrow.duration");
-  String BURROW_SOUND = str("burrow.sound");
-  int CAGE_DURATION = num("cage.duration");
-  String CAGE_SOUND = str("cage.sound");
-  int DISTORT_DURATION = num("distort.duration");
-  String DISTORT_SOUND = str("distort.sound");
-  int FART_EFFECT_DURATION = num("fart.effect.duration");
-  int FART_DURATION = num("fart.duration");
-  int FIREWORK_DURATION = num("firework.duration");
-  String FIREWORK_SOUND = str("firework.sound");
-  int FREEZE_DURATION = num("freeze.duration");
-  int FREEZE_EFFECT_DURATION = num("freeze.effect.duration");
-  String FREEZE_SOUND = str("freeze.sound");
-  int GHOST_DURATION = num("ghost.duration");
-  String GHOST_SOUND = str("ghost.sound");
-  int GLOW_DURATION = num("glow.duration");
-  String GLOW_SOUND = str("glow.sound");
-  int HACK_DURATION = num("hack.duration");
-  String HACK_SOUND = str("hack.sound");
-  int HAUNT_DURATION = num("haunt.duration");
-  String HAUNT_SOUND = str("haunt.sound");
-  int JEB_DURATION = num("jeb.duration");
-  int JEB_SHEEP_COUNT = num("jeb.sheep.count");
-  String JEB_SOUND = str("jeb.sound");
-  int JUMP_SCARE_DURATION = num("jump_scare.duration");
-  int JUMP_SCARE_EFFECT_DURATION = num("jump_scare.effect.duration");
-  int LEVITATION_DURATION = num("levitation.duration");
-  String LEVITATION_SOUND = str("levitation.sound");
-  int NECK_SNAP_DURATION = num("neck_snap.duration");
-  String NECK_SNAP_SOUND = str("neck_snap.sound");
-  double PONY_HORSE_SPEED = dec("pony.speed");
-  String PONY_SOUND = str("pony.sound");
-  double SHOCKWAVE_EXPLOSION_RADIUS = dec("shockwave.explosion.radius");
-  double SHOCKWAVE_EXPLOSION_POWER = dec("shockwave.explosion.power");
-  String SHOCKWAVE_SOUND = str("shockwave.sound");
-  int SMOKE_DURATION = num("smoke.duration");
-  String SMOKE_SOUND = str("smoke.sound");
-  int SPASM_DURATION = num("spasm.duration");
-  String SPASM_SOUND = str("spasm.sound");
-  String SPAWN_SOUND = str("spawn.sound");
-  int STAR_DURATION = num("star.duration");
-  String STAR_SOUND = str("star.sound");
-  String BLASTOFF_SOUND = str("blastoff.sound");
-  int BUSH_DURATION = num("bush.duration");
-  String BUSH_SOUND = str("bush.sound");
-  int CHIPPED_DURATION = num("chipped.duration");
-  String CHIPPED_SOUND = str("chipped.sound");
-  int CLOAK_DURATION = num("cloak.duration");
-  String CLOAK_SOUND = str("cloak.sound");
-  String CORPUS_WARP_SOUND = str("corpus_warp.sound");
-  int CRYO_FREEZE_RADIUS = num("cryo_freeze.radius");
-  String CRYO_FREEZE_SOUND = str("cryo_freeze.sound");
-  int DEADRINGER_DURATION = num("deadringer.duration");
-  String DEADRINGER_SOUND = str("deadringer.sound");
-  String DECOY_SOUND = str("decoy.sound");
-  double DISTORTER_DESTROY_RADIUS = dec("distorter.destroy.radius");
-  double DISTORTER_EFFECT_RADIUS = dec("distorter.effect.radius");
-  String DISTORTER_SOUND = str("distorter.sound");
-  int DRONE_DURATION = num("drone.duration");
-  String DRONE_SOUND = str("drone.sound");
-  double FLASHBANG_RADIUS = dec("flashbang.radius");
-  int FLASHBANG_DURATION = num("flashbang.duration");
-  double FLASHLIGHT_CONE_ANGLE = dec("flashlight.cone.angle");
-  double FLASHLIGHT_CONE_LENGTH = dec("flashlight.cone.length");
-  double FLASHLIGHT_RADIUS = dec("flashlight.radius");
-  String FRIEND_WARP_SOUND = str("friend_warp.sound");
-  int GHOSTING_WOOL_DELAY = num("ghosting.wool.delay");
-  String HORCRUX_SOUND = str("horcrux.sound");
-  int ICE_SKATIN_DURATION = num("ice_skatin.duration");
-  String ICE_SKATIN_SOUND = str("ice_skatin.sound");
-  int ICE_SPIRIT_DURATION = num("ice_spirit.duration");
-  String ICE_SPIRIT_SOUND = str("ice_spirit.sound");
-  int KILLER_REWIND_COOLDOWN = num("killer_rewind.cooldown");
-  String KILLER_REWIND_SOUND = str("killer_rewind.sound");
-  int KILLER_TRACKER_USES = num("killer_tracker.uses");
-  String KILLER_TRACKER_SOUND = str("killer_tracker.sound");
-  double LIFE_INSURANCE_RADIUS = dec("life_insurance.radius");
-  String LIFE_INSURANCE_SOUND = str("life_insurance.sound");
-  int MAGNET_MODE_MULTIPLIER = num("magnet_mode.multiplier");
-  String MAGNET_MODE_SOUND = str("magnet_mode.sound");
-  double MED_BOT_RADIUS = dec("med_bot.radius");
-  double MED_BOT_DESTROY_RADIUS = dec("med_bot.destroy.radius");
-  String MED_BOT_SOUND = str("med_bot.sound");
-  int MIND_CONTROL_DURATION = num("mind_control.duration");
-  String MIND_CONTROL_SOUND = str("mind_control.sound");
-  double PARASITE_DESTROY_RADIUS = dec("parasite.destroy.radius");
-  double PARASITE_RADIUS = dec("parasite.radius");
-  String PARASITE_SOUND = str("parasite.sound");
-  String RANDOM_TELEPORT_SOUND = str("random_teleport.sound");
-  String RESURRECTION_STONE_SOUND = str("resurrection_stone.sound");
-  int RETALIATION_MAX_AMPLIFIER = num("retaliation.max_amplifier");
-  String RETALIATION_SOUND = str("retaliation.sound");
-  int REWIND_COOLDOWN = num("rewind.cooldown");
-  double SIXTH_SENSE_RADIUS = dec("sixth_sense.radius");
-  String SIXTH_SENSE_SOUND = str("sixth_sense.sound");
-  double SMOKE_GRENADE_RADIUS = dec("smoke_grenade.radius");
-  int SMOKE_GRENADE_DURATION = num("smoke_grenade.duration");
-  String SUPPLY_DROP_MASKS = str("supply_drop.masks");
-  double TRACKER_RADIUS = dec("tracker.radius");
-  String TRACKER_SOUND = str("tracker.sound");
-  String TRANSLOCATOR_SOUND = str("translocator.sound");
-  double PART_SNIFFER_RADIUS = dec("part_sniffer.radius");
-  String ALL_SEEING_EYE_SOUND = str("all_seeing_eye.sound");
-  int ALL_SEEING_EYE_DURATION = num("all_seeing_eye.duration");
-  String BLOOD_CURSE_SOUND = str("blood_curse.sound");
-  double BURN_THE_BODY_RADIUS = dec("burn_the_body.radius");
-  String BURN_THE_BODY_SOUND = str("burn_the_body.sound");
-  double CURSED_NOTE_RADIUS = dec("cursed_note.radius");
-  double CURSED_NOTE_EFFECT_RADIUS = dec("cursed_note.effect.radius");
-  String CURSED_NOTE_SOUND = str("cursed_note.sound");
-  String DEATH_HOUND_SOUND = str("death_hound.sound");
-  String DEATH_STEED_SOUND = str("death_steed.sound");
-  String DORMAGOGG_SOUND = str("dormagogg.sound");
-  int EAGLE_EYE_DURATION = num("eagle_eye.duration");
-  String EAGLE_EYE_SOUND = str("eagle_eye.sound");
-  int EMP_BLAST_DURATION = num("emp_blast.duration");
-  String ENDER_SHADOWS_SOUND = str("ender_shadows.sound");
-  String FAKE_PART_SOUND = str("fake_part.sound");
-  String FAKE_PART_EFFECT_SOUND = str("fake_part.effect.sound");
-  double FAKE_PART_RADIUS = dec("fake_part.radius");
-  int FAKE_PART_DURATION = num("fake_part.duration");
-  String FIRE_TRAIL_SOUND = str("fire_trail.sound");
-  String FLOOR_IS_LAVA_SOUND = str("floor_is_lava.sound");
-  String FOREWARN_SOUND = str("forewarn.sound");
-  int FRIGHT_DURATION = num("fright.duration");
-  String HEALTH_CUT_SOUND = str("health_cut.sound");
-  String HEAT_SEEKER_SOUND = str("heat_seeker.sound");
-  double HEAT_SEEKER_RADIUS = dec("heat_seeker.radius");
-  String ICE_PATH_SOUND = str("ice_path.sound");
-  String INFRARED_VISION_SOUND = str("infrared_vision.sound");
-  int INFRARED_VISION_DURATION = num("infrared_vision.duration");
-  String MURDEROUS_WARP_SOUND = str("murderous_warp.sound");
-  String PART_WARP_SOUND = str("part_warp.sound");
-  String PHANTOM_SOUND = str("phantom.sound");
-  int PHANTOM_DURATION = num("phantom.duration");
-  String PLAYER_TRACKER_SOUND = str("player_tracker.sound");
-  int PLAYER_TRACKER_USES = num("player_tracker.uses");
-  String POISON_SMOG_SOUND = str("poison_smog.sound");
-  double POISON_SMOG_RADIUS = dec("poison_smog.radius");
-  int POISON_SMOG_DURATION = num("poison_smog.duration");
-  String QUICK_BOMB_SOUND = str("quick_bomb.sound");
-  int QUICK_BOMB_TICKS = num("quick_bomb_ticks");
-  double QUICK_BOMB_DAMAGE = dec("quick_bomb_damage");
-  String RED_ARROW_SOUND = str("red_arrow.sound");
-  int RED_ARROW_DURATION = num("red_arrow.duration");
-  String TRAP_SEEKER_SOUND = str("trap_seeker.sound");
-  double TRAP_SEEKER_RADIUS = dec("trap_seeker.radius");
-  String TRAP_WRECKER_SOUND = str("trap_wrecker.sound");
-  int TRAP_WRECKER_DURATION = num("trap_wrecker.duration");
-  String WARP_DISTORT_SOUND = str("warp_distort.sound");
-  String CAMERA_SOUND = str("camera.sound");
-  int HOOK_COST = num("hook.cost");
-  int ALL_SEEING_EYE_COST = num("all_seeing_eye.cost");
-  int BLOOD_CURSE_COST = num("blood_curse.cost");
-  int BURN_THE_BODY_COST = num("burn_the_body.cost");
-  int KILLER_CAMERA_COST = num("killer_camera.cost");
-  int CAMERA_COST = num("camera.cost");
-  int CORRUPTION_COST = num("corruption.cost");
-  int CURSED_NOTE_COST = num("cursed_note.cost");
-  int DEATH_HOUND_COST = num("death_hound.cost");
-  int DEATH_STEED_COST = num("death_steed.cost");
-  int DORMAGOGG_COST = num("dormagogg.cost");
-  int EAGLE_EYE_COST = num("eagle_eye.cost");
-  int EMP_BLAST_COST = num("emp_blast.cost");
-  int ENDER_SHADOWS_COST = num("ender_shadows.cost");
-  int FAKE_PART_COST = num("fake_part.cost");
-  int FIRE_TRAIL_COST = num("fire_trail.cost");
-  int FLOOR_IS_LAVA_COST = num("floor_is_lava.cost");
-  int FOREWARN_COST = num("forewarn.cost");
-  int FRIGHT_COST = num("fright.cost");
-  int HEALTH_CUT_COST = num("health_cut.cost");
-  int HEAT_SEEKER_COST = num("heat_seeker.cost");
-  int ICE_PATH_COST = num("ice_path.cost");
-  int INFRARED_VISION_COST = num("infrared_vision.cost");
-  int MURDEROUS_WARP_COST = num("murderous_warp.cost");
-  int PART_WARP_COST = num("part_warp.cost");
-  int PHANTOM_COST = num("phantom.cost");
-  int PLAYER_TRACKER_COST = num("player_tracker.cost");
-  int POISON_SMOG_COST = num("poison_smog.cost");
-  int PORTAL_GUN_COST = num("portal_gun.cost");
-  int QUICK_BOMB_COST = num("quick_bomb.cost");
-  int RED_ARROW_COST = num("red_arrow.cost");
-  int TRAP_SEEKER_COST = num("trap_seeker.cost");
-  int TRAP_WRECKER_COST = num("trap_wrecker.cost");
-  int WARP_DISTORT_COST = num("warp_distort.cost");
-  int SURVIVOR_GEAR_COST = num("survivor_gear.cost");
-  int EXCAVATOR_COST = num("excavator.cost");
-  int SHIELD_COST = num("shield.cost");
-  int BEAR_COST = num("bear.cost");
-  int BLIND_COST = num("blind.cost");
-  int BURROW_COST = num("burrow.cost");
-  int CAGE_COST = num("cage.cost");
-  int DISTORT_COST = num("distort.cost");
-  int FART_COST = num("fart.cost");
-  int FIREWORK_COST = num("firework.cost");
-  int FREEZE_COST = num("freeze.cost");
-  int GHOST_COST = num("ghost.cost");
-  int GLOW_COST = num("glow.cost");
-  int HACK_COST = num("hack.cost");
-  int HAUNT_COST = num("haunt.cost");
-  int JEB_COST = num("jeb.cost");
-  int JUMP_SCARE_COST = num("jump_scare.cost");
-  int LEVITATION_COST = num("levitation.cost");
-  int NECK_SNAP_COST = num("neck_snap.cost");
-  int PONY_COST = num("pony.cost");
-  int SHOCKWAVE_COST = num("shockwave.cost");
-  int SMOKE_COST = num("smoke.cost");
-  int SPASM_COST = num("spasm.cost");
-  int SPAWN_COST = num("spawn.cost");
-  int STAR_COST = num("star.cost");
-  int BLAST_OFF_COST = num("blast_off.cost");
-  int BUSH_COST = num("bush.cost");
-  int CHIPPED_COST = num("chipped.cost");
-  int CLOAK_COST = num("cloak.cost");
-  int CORPUS_WARP_COST = num("corpus_warp.cost");
-  int CRYO_FREEZE_COST = num("cryo_freeze.cost");
-  int DEADRINGER_COST = num("deadringer.cost");
-  int DECOY_COST = num("decoy.cost");
-  int DISTORTER_COST = num("distorter.cost");
-  int DRONE_COST = num("drone.cost");
-  int FLASHBANG_COST = num("flashbang.cost");
-  int FLASHLIGHT_COST = num("flashlight.cost");
-  int FRIEND_WARP_COST = num("friend_warp.cost");
-  int HORCRUX_COST = num("horcrux.cost");
-  int ICE_SKATIN_COST = num("ice_skatin.cost");
-  int ICE_SPIRIT_COST = num("ice_spirit.cost");
-  int KILLER_REWIND_COST = num("killer_rewind.cost");
-  int KILLER_TRACKER_COST = num("killer_tracker.cost");
-  int LIFE_INSURANCE_COST = num("life_insurance.cost");
-  int MAGNET_MODE_COST = num("magnet_mode.cost");
-  int MED_BOT_COST = num("med_bot.cost");
-  int MED_KIT_COST = num("med_kit.cost");
-  int MIND_CONTROL_COST = num("mind_control.cost");
-  int PARASITE_COST = num("parasite.cost");
-  int PORTAL_TRAP_COST = num("portal_trap.cost");
-  int RANDOM_TELEPORT_COST = num("random_teleport.cost");
-  int RANDOM_TRAP_COST = num("random_trap.cost");
-  int RESURRECTION_STONE_COST = num("resurrection_stone.cost");
-  int RETALIATION_COST = num("retaliation.cost");
-  int REWIND_COST = num("rewind.cost");
-  int SIXTH_SENSE_COST = num("sixth_sense.cost");
-  int SMOKE_GRENADE_COST = num("smoke_grenade.cost");
-  int SPEED_PENDANT_COST = num("speed_pendant.cost");
-  int SUPPLY_DROP_COST = num("supply_drop.cost");
-  int TRACKER_COST = num("tracker.cost");
-  int TRANSLOCATOR_COST = num("translocator.cost");
+  GameProperties(final GameMode mode) {
+    final String name = mode.getModeName();
+    this(name);
+  }
 
-  private static Material mat(final String key) {
-    final String material = str(key);
+  GameProperties(final String name) {
+    this.bundle = new GameBundle(name);
+  }
+
+  public int getFreezeTagReviveRadius() {
+    return this.num("freeze_tag.revive.radius");
+  }
+
+  public int getFreezeTagReviveTimer() {
+    return this.num("freeze_tag.revive.timer");
+  }
+
+  public int getFreezeTagSurvivorLives() {
+    return this.num("freeze_tag.lives");
+  }
+
+  public int getFreezeTagRevivalTime() {
+    return this.num("freeze_tag.revive.time");
+  }
+
+  public String getCraftEngineCurrency() {
+    return this.str("craftengine.currency");
+  }
+
+  public String getCraftEngineGhostBone() {
+    return this.str("craftengine.ghost.bone");
+  }
+
+  public String getCraftEngineKillerArrow() {
+    return this.str("craftengine.killer.arrow");
+  }
+
+  public String getCraftEngineKillerSword() {
+    return this.str("craftengine.killer.sword");
+  }
+
+  public String getCraftEngineKillerHelmet() {
+    return this.str("craftengine.killer.helmet");
+  }
+
+  public String getCraftEngineKillerChestplate() {
+    return this.str("craftengine.killer.chestplate");
+  }
+
+  public String getCraftEngineKillerLeggings() {
+    return this.str("craftengine.killer.leggings");
+  }
+
+  public String getCraftEngineKillerBoots() {
+    return this.str("craftengine.killer.boots");
+  }
+
+  public String getCraftEngineSurvivorHelmet() {
+    return this.str("craftengine.survivor.helmet");
+  }
+
+  public String getCraftEngineSurvivorChestplate() {
+    return this.str("craftengine.survivor.chestplate");
+  }
+
+  public String getCraftEngineSurvivorLeggings() {
+    return this.str("craftengine.survivor.leggings");
+  }
+
+  public String getCraftEngineSurvivorBoots() {
+    return this.str("craftengine.survivor.boots");
+  }
+
+  public String getRandomTeleportBlacklistedBlocks() {
+    return this.str("random_teleport.blacklisted_blocks");
+  }
+
+  public double getVaultReward() {
+    return this.dec("vault.reward");
+  }
+
+  public double getMoonGravity() {
+    return this.dec("moon.gravity");
+  }
+
+  public int getMoonDuration() {
+    return this.num("moon.duration");
+  }
+
+  public String getMoonSound() {
+    return this.str("moon.sound");
+  }
+
+  public int getMoonCost() {
+    return this.num("moon.cost");
+  }
+
+  public Material getMoonMaterial() {
+    return this.mat("moon.material");
+  }
+
+  public double getReachDistance() {
+    return this.dec("reach.distance");
+  }
+
+  public int getEtherwarpMaxDistance() {
+    return this.num("etherwarp.max");
+  }
+
+  public double getEtherwarpCooldown() {
+    return this.dec("etherwarp.cooldown");
+  }
+
+  public String getGuardianAngelTextureSignature() {
+    return this.str("guardian_angel.texture.signature");
+  }
+
+  public String getGuardianAngelTextureData() {
+    return this.str("guardian_angel.texture.data");
+  }
+
+  public String getGrimReaperTextureSignature() {
+    return this.str("grim_reaper.texture.signature");
+  }
+
+  public String getGrimReaperTextureData() {
+    return this.str("grim_reaper.texture.data");
+  }
+
+  public String getAngelSpiritTextureSignature() {
+    return this.str("angel_spirit.texture.signature");
+  }
+
+  public String getAngelSpiritTextureData() {
+    return this.str("angel_spirit.texture.data");
+  }
+
+  public String getWeepingAngelTextureSignature() {
+    return this.str("weeping_angel.texture.signature");
+  }
+
+  public String getWeepingAngelTextureData() {
+    return this.str("weeping_angel.texture.data");
+  }
+
+  public boolean getGameUtilitiesRandom() {
+    return this.bool("game.utilities.random");
+  }
+
+  public int getGameUtilitiesKillerGadgets() {
+    return this.num("game.utilities.killer.gadgets");
+  }
+
+  public int getGameUtilitiesSurvivorGadgets() {
+    return this.num("game.utilities.survivor.gadgets");
+  }
+
+  public int getGameUtilitiesKillerAbilities() {
+    return this.num("game.utilities.killer.abilities");
+  }
+
+  public int getGameUtilitiesSurvivorAbilities() {
+    return this.num("game.utilities.survivor.abilities");
+  }
+
+  public String getPhaseBlacklistedBlocks() {
+    return this.str("phase.blacklisted_blocks");
+  }
+
+  public double getPhaseDistance() {
+    return this.dec("phase.distance");
+  }
+
+  public double getPhaseCooldown() {
+    return this.dec("phase.cooldown");
+  }
+
+  public double getKillerSprintTime() {
+    return this.dec("killer.sprint_time");
+  }
+
+  public double getSurvivorSprintTime() {
+    return this.dec("survivor.sprint_time");
+  }
+
+  public double getTrapVestVelocity() {
+    return this.dec("trap_vest.velocity");
+  }
+
+  public double getSonicBoomKnockback() {
+    return this.dec("sonicboom.knockback");
+  }
+
+  public double getSonicBoomRadius() {
+    return this.dec("sonicboom.radius");
+  }
+
+  public double getSonicBoomCooldown() {
+    return this.dec("sonicboom.cooldown");
+  }
+
+  public double getCannonVelocity() {
+    return this.dec("cannon.velocity");
+  }
+
+  public int getCannonFuse() {
+    return this.num("cannon.fuse");
+  }
+
+  public double getCannonCooldown() {
+    return this.dec("cannon.cooldown");
+  }
+
+  public int getAbsorptionLevel() {
+    return this.num("absorption.level");
+  }
+
+  public String getAbilityGuiSound() {
+    return this.str("select.gui.sound");
+  }
+
+  public String getDisabledAbilities() {
+    return this.str("disabled_abilities");
+  }
+
+  public double getDoubleJumpCooldown() {
+    return this.dec("doublejump.cooldown");
+  }
+
+  public double getDoubleJumpVelocity() {
+    return this.dec("doublejump.velocity");
+  }
+
+  public double getKillerParticleRadius() {
+    return this.dec("killer.particles.radius");
+  }
+
+  public int getFlashlightDuration() {
+    return this.num("flashlight.duration");
+  }
+
+  public double getFlashlightCooldown() {
+    return this.dec("flashlight.cooldown");
+  }
+
+  public Material getTranslocatorMaterial() {
+    return this.mat("translocator.material");
+  }
+
+  public Material getTrackerMaterial() {
+    return this.mat("tracker.material");
+  }
+
+  public Material getSupplyDropMaterial() {
+    return this.mat("supply_drop.material");
+  }
+
+  public Material getSpeedPendantMaterial() {
+    return this.mat("speed_pendant.material");
+  }
+
+  public Material getSmokeGrenadeMaterial() {
+    return this.mat("smoke_grenade.material");
+  }
+
+  public Material getSixthSenseMaterial() {
+    return this.mat("sixth_sense.material");
+  }
+
+  public Material getRewindMaterial() {
+    return this.mat("rewind.material");
+  }
+
+  public Material getRetaliationMaterial() {
+    return this.mat("retaliation.material");
+  }
+
+  public Material getResurrectionStoneMaterial() {
+    return this.mat("resurrection_stone.material");
+  }
+
+  public Material getRandomTrapMaterial() {
+    return this.mat("random_trap.material");
+  }
+
+  public Material getRandomTeleportMaterial() {
+    return this.mat("random_teleport.material");
+  }
+
+  public Material getPortalTrapMaterial() {
+    return this.mat("portal_trap.material");
+  }
+
+  public Material getParsiteMaterial() {
+    return this.mat("parasite.material");
+  }
+
+  public Material getMiniturizerMaterial() {
+    return this.mat("minitaturizer.material");
+  }
+
+  public Material getMindControlMaterial() {
+    return this.mat("mind_control.material");
+  }
+
+  public Material getMedKitMaterial() {
+    return this.mat("med_kit.material");
+  }
+
+  public Material getMedBotMaterial() {
+    return this.mat("med_bot.material");
+  }
+
+  public Material getMagnetModeMaterial() {
+    return this.mat("magnet_mode.material");
+  }
+
+  public Material getLifeInsuranceMaterial() {
+    return this.mat("life_insurance.material");
+  }
+
+  public Material getKillerRewindMaterial() {
+    return this.mat("killer_rewind.material");
+  }
+
+  public Material getIceSpiritMaterial() {
+    return this.mat("ice_spirit.material");
+  }
+
+  public Material getIceSkatinMaterial() {
+    return this.mat("ice_skatin.material");
+  }
+
+  public Material getHorcruxMaterial() {
+    return this.mat("horcrux.material");
+  }
+
+  public Material getFriendWarpMaterial() {
+    return this.mat("friend_warp.material");
+  }
+
+  public Material getFlashbangMaterial() {
+    return this.mat("flashbang.material");
+  }
+
+  public Material getDroneMaterial() {
+    return this.mat("drone.material");
+  }
+
+  public Material getDistorterMaterial() {
+    return this.mat("distorter.material");
+  }
+
+  public Material getDecoyMaterial() {
+    return this.mat("decoy.material");
+  }
+
+  public Material getDeadringerMaterial() {
+    return this.mat("deadringer.material");
+  }
+
+  public Material getCryoFreezeMaterial() {
+    return this.mat("cryo_freeze.material");
+  }
+
+  public Material getCorpusWarpMaterial() {
+    return this.mat("corpus_warp.material");
+  }
+
+  public Material getCloakMaterial() {
+    return this.mat("cloak.material");
+  }
+
+  public Material getChippedMaterial() {
+    return this.mat("chipped.material");
+  }
+
+  public Material getCameraMaterial() {
+    return this.mat("camera.material");
+  }
+
+  public Material getBushMaterial() {
+    return this.mat("bush.material");
+  }
+
+  public Material getBlastOffMaterial() {
+    return this.mat("blastoff.material");
+  }
+
+  public Material getStarMaterial() {
+    return this.mat("star.material");
+  }
+
+  public Material getSpawnMaterial() {
+    return this.mat("spawn.material");
+  }
+
+  public Material getSpasmMaterial() {
+    return this.mat("spasm.material");
+  }
+
+  public Material getSmokeMaterial() {
+    return this.mat("smoke.material");
+  }
+
+  public Material getShockwaveMaterial() {
+    return this.mat("shockwave.material");
+  }
+
+  public Material getPonyMaterial() {
+    return this.mat("pony.material");
+  }
+
+  public Material getNeckSnapMaterial() {
+    return this.mat("neck_snap.material");
+  }
+
+  public Material getLevitationMaterial() {
+    return this.mat("levitation.material");
+  }
+
+  public Material getJumpScareMaterial() {
+    return this.mat("jump_scare.material");
+  }
+
+  public Material getJebMaterial() {
+    return this.mat("jeb.material");
+  }
+
+  public Material getHauntMaterial() {
+    return this.mat("haunt.material");
+  }
+
+  public Material getHackMaterial() {
+    return this.mat("hack.material");
+  }
+
+  public Material getGlowMaterial() {
+    return this.mat("glow.material");
+  }
+
+  public Material getGhostMaterial() {
+    return this.mat("ghost.material");
+  }
+
+  public Material getFreezeMaterial() {
+    return this.mat("freeze.material");
+  }
+
+  public Material getFireworkMaterial() {
+    return this.mat("firework.material");
+  }
+
+  public Material getFartMaterial() {
+    return this.mat("fart.material");
+  }
+
+  public Material getDistortMaterial() {
+    return this.mat("distort.material");
+  }
+
+  public Material getCageMaterial() {
+    return this.mat("cage.material");
+  }
+
+  public Material getBurrowMaterial() {
+    return this.mat("burrow.material");
+  }
+
+  public Material getBlindMaterial() {
+    return this.mat("blind.material");
+  }
+
+  public Material getBearMaterial() {
+    return this.mat("bear.material");
+  }
+
+  public Material getShieldMaterial() {
+    return this.mat("shield.material");
+  }
+
+  public Material getKillerTrackerMaterial() {
+    return this.mat("killer_tracker.material");
+  }
+
+  public Material getFlashlightMaterial() {
+    return this.mat("flashlight.material");
+  }
+
+  public Material getExcavatorMaterial() {
+    return this.mat("excavator.material");
+  }
+
+  public Material getSurvivorLeggingsMaterial() {
+    return this.mat("survivor_leggings.material");
+  }
+
+  public Material getSurvivorChestplateMaterial() {
+    return this.mat("survivor_chestplate.material");
+  }
+
+  public Material getSurvivorHelmetMaterial() {
+    return this.mat("survivor_helmet.material");
+  }
+
+  public Material getSurvivorBootsMaterial() {
+    return this.mat("survivor_boots.material");
+  }
+
+  public Material getWarpDistortMaterial() {
+    return this.mat("warp_distort.material");
+  }
+
+  public Material getTrapWreckerMaterial() {
+    return this.mat("trap_wrecker.material");
+  }
+
+  public Material getTrapSeekerMaterial() {
+    return this.mat("trap_seeker.material");
+  }
+
+  public Material getRedArrowMaterial() {
+    return this.mat("red_arrow.material");
+  }
+
+  public Material getQuickBombMaterial() {
+    return this.mat("quick_bomb.material");
+  }
+
+  public Material getPosionSmogMaterial() {
+    return this.mat("poison_smog.material");
+  }
+
+  public Material getPhantomMaterial() {
+    return this.mat("phantom.material");
+  }
+
+  public Material getPartWarpMaterial() {
+    return this.mat("part_warp.material");
+  }
+
+  public Material getMurderousWarpMaterial() {
+    return this.mat("murderous_warp.material");
+  }
+
+  public Material getMimicMaterial() {
+    return this.mat("mimic.material");
+  }
+
+  public Material getInfraredVisionMaterial() {
+    return this.mat("infrared_vision.material");
+  }
+
+  public Material getIcePathMaterial() {
+    return this.mat("ice_path.material");
+  }
+
+  public Material getHeatSeekerMaterial() {
+    return this.mat("heat_seeker.material");
+  }
+
+  public Material getHealthCutMaterial() {
+    return this.mat("health_cut.material");
+  }
+
+  public Material getFrightMaterial() {
+    return this.mat("fright.material");
+  }
+
+  public Material getForewarnMaterial() {
+    return this.mat("forewarn.material");
+  }
+
+  public Material getFloorIsLavaMaterial() {
+    return this.mat("floor_is_lava.material");
+  }
+
+  public Material getFireTrailMaterial() {
+    return this.mat("fire_trail.material");
+  }
+
+  public Material getFakePartMaterial() {
+    return this.mat("fake_part.material");
+  }
+
+  public Material getExpanderMaterial() {
+    return this.mat("expander.material");
+  }
+
+  public Material getEnderShadowsMaterial() {
+    return this.mat("ender_shadows.material");
+  }
+
+  public Material getEmpBlastMaterial() {
+    return this.mat("emp_blast.material");
+  }
+
+  public Material getEagleEyeMaterial() {
+    return this.mat("eagle_eye.material");
+  }
+
+  public Material getDormagoggMaterial() {
+    return this.mat("dormagogg.material");
+  }
+
+  public Material getDeathSteedMaterial() {
+    return this.mat("death_steed.material");
+  }
+
+  public Material getDeathHoundMaterial() {
+    return this.mat("death_hound.material");
+  }
+
+  public Material getCursedNoteMaterial() {
+    return this.mat("cursed_note.material");
+  }
+
+  public Material getCorruptionMaterial() {
+    return this.mat("corruption.material");
+  }
+
+  public Material getKillerCameraMaterial() {
+    return this.mat("killer_camera.material");
+  }
+
+  public Material getBurnTheBodyMaterial() {
+    return this.mat("burn_the_body.material");
+  }
+
+  public Material getBloodCurseMaterial() {
+    return this.mat("blood_curse.material");
+  }
+
+  public Material getAllSeeingEyeMaterial() {
+    return this.mat("all_seeing_eye.material");
+  }
+
+  public Material getPortalGunMaterial() {
+    return this.mat("portal_gun.material");
+  }
+
+  public Material getPlayerTrackerMaterial() {
+    return this.mat("player_tracker.material");
+  }
+
+  public Material getHookMaterial() {
+    return this.mat("hook.material");
+  }
+
+  public Color getStarColor() {
+    return this.rgb("star.color");
+  }
+
+  public Color getSpawnColor() {
+    return this.rgb("spawn.color");
+  }
+
+  public Color getSpasmColor() {
+    return this.rgb("spasm.color");
+  }
+
+  public Color getSmokeColor() {
+    return this.rgb("smoke.color");
+  }
+
+  public Color getShockwaveColor() {
+    return this.rgb("shockwave.color");
+  }
+
+  public Color getPonyColor() {
+    return this.rgb("pony.color");
+  }
+
+  public Color getNeckSnapColor() {
+    return this.rgb("neck_snap.color");
+  }
+
+  public Color getLevitationColor() {
+    return this.rgb("levitation.color");
+  }
+
+  public Color getJumpScareColor() {
+    return this.rgb("jump_scare.color");
+  }
+
+  public Color getJebColor() {
+    return this.rgb("jeb.color");
+  }
+
+  public Color getHauntColor() {
+    return this.rgb("haunt.color");
+  }
+
+  public Color getHackColor() {
+    return this.rgb("hack.color");
+  }
+
+  public Color getGlowColor() {
+    return this.rgb("glow.color");
+  }
+
+  public Color getGhostColor() {
+    return this.rgb("ghost.color");
+  }
+
+  public Color getFreezeColor() {
+    return this.rgb("freeze.color");
+  }
+
+  public Color getFireworkColor() {
+    return this.rgb("firework.color");
+  }
+
+  public Color getFartColor() {
+    return this.rgb("fart.color");
+  }
+
+  public Color getDistortColor() {
+    return this.rgb("distort.color");
+  }
+
+  public Color getCageColor() {
+    return this.rgb("cage.color");
+  }
+
+  public Color getBurrowColor() {
+    return this.rgb("burrow.color");
+  }
+
+  public Color getBlindColor() {
+    return this.rgb("blind.color");
+  }
+
+  public Color getBearColor() {
+    return this.rgb("bear.color");
+  }
+
+  public String getNexoCurrency() {
+    return this.str("nexo.currency");
+  }
+
+  public String getNexoGhostBone() {
+    return this.str("nexo.ghost.bone");
+  }
+
+  public String getNexoKillerArrow() {
+    return this.str("nexo.killer.arrow");
+  }
+
+  public int getMimicCost() {
+    return this.num("mimic.cost");
+  }
+
+  public String getNexoKillerSword() {
+    return this.str("nexo.killer.sword");
+  }
+
+  public String getNexoKillerHelmet() {
+    return this.str("nexo.killer.helmet");
+  }
+
+  public String getNexoKillerChestplate() {
+    return this.str("nexo.killer.chestplate");
+  }
+
+  public String getNexoKillerLeggings() {
+    return this.str("nexo.killer.leggings");
+  }
+
+  public String getNexoKillerBoots() {
+    return this.str("nexo.killer.boots");
+  }
+
+  public String getNexoSurvivorHelmet() {
+    return this.str("nexo.survivor.helmet");
+  }
+
+  public String getNexoSurvivorChestplate() {
+    return this.str("nexo.survivor.chestplate");
+  }
+
+  public String getNexoSurvivorLeggings() {
+    return this.str("nexo.survivor.leggings");
+  }
+
+  public String getNexoSurvivorBoots() {
+    return this.str("nexo.survivor.boots");
+  }
+
+  public int getCarPartsRequired() {
+    return this.num("car_parts.required");
+  }
+
+  public double getCarPartTruckRadius() {
+    return this.dec("car_parts.truck_radius");
+  }
+
+  public int getMiniaturizerDuration() {
+    return this.num("minitaturizer.duration");
+  }
+
+  public int getExpanderDuration() {
+    return this.num("expander.duration");
+  }
+
+  public int getWorldeditMaxChunksPerTick() {
+    return this.num("worldedit.chunks-per-tick");
+  }
+
+  public int getGameExpirationTime() {
+    return this.num("game.expiration_time");
+  }
+
+  public String getPlayerLeaveCommandsAfter() {
+    return this.str("player_leave_commands_after");
+  }
+
+  public int getBlocksPerTick() {
+    return this.num("worldedit.blocks_per_tick");
+  }
+
+  public double getMiniaturizerScale() {
+    return this.dec("minitaturizer.scale");
+  }
+
+  public String getMiniaturizerSound() {
+    return this.str("minitaturizer.sound");
+  }
+
+  public int getMiniaturizerCost() {
+    return this.num("minitaturizer.cost");
+  }
+
+  public double getExpanderScale() {
+    return this.dec("expander.scale");
+  }
+
+  public String getExpanderSound() {
+    return this.str("expander.sound");
+  }
+
+  public int getExpanderCost() {
+    return this.num("expander.cost");
+  }
+
+  public String getKillerWinCommandsAfter() {
+    return this.str("killer_win_commands_after");
+  }
+
+  public String getSurvivorWinCommandsAfter() {
+    return this.str("survivor_win_commands_after");
+  }
+
+  public boolean getForceResourcepack() {
+    return this.bool("force_resourcepack");
+  }
+
+  public String getBuiltInResources() {
+    return this.str("built_in_resources");
+  }
+
+  public int getGameTimeLimit() {
+    return this.num("game.time_limit");
+  }
+
+  public int getDormagoggEffectDuration() {
+    return this.num("dormagogg.effect.duration");
+  }
+
+  public int getDormagoggDuration() {
+    return this.num("dormagogg.duration");
+  }
+
+  public String getShopGuiSound() {
+    return this.str("shop.gui.sound");
+  }
+
+  public String getGameStartingSound() {
+    return this.str("game.start_sound");
+  }
+
+  public String getLobbyTimerSound() {
+    return this.str("lobby.timer_sound");
+  }
+
+  public int getLobbyStartingTime() {
+    return this.num("lobby.starting_time");
+  }
+
+  public int getCarPartsCount() {
+    return this.num("car_parts.count");
+  }
+
+  public String getKillerCannotBreak() {
+    return this.str("killer.cannot_break");
+  }
+
+  public int getDeathHoundDespawn() {
+    return this.num("death_hound.despawn");
+  }
+
+  public int getBeginningStartingTime() {
+    return this.num("survivor.starting_time");
+  }
+
+  public int getSurvivorStartingCurrency() {
+    return this.num("survivor.starting_currency");
+  }
+
+  public int getKillerStartingCurrency() {
+    return this.num("killer.starting_currency");
+  }
+
+  public String getDisabledGadgets() {
+    return this.str("disabled_gadgets");
+  }
+
+  public int getBearDuration() {
+    return this.num("bear.duration");
+  }
+
+  public String getBearSound() {
+    return this.str("bear.sound");
+  }
+
+  public int getBlindDuration() {
+    return this.num("blind.duration");
+  }
+
+  public String getBlindSound() {
+    return this.str("blind.sound");
+  }
+
+  public int getBurrowDuration() {
+    return this.num("burrow.duration");
+  }
+
+  public String getBurrowSound() {
+    return this.str("burrow.sound");
+  }
+
+  public int getCageDuration() {
+    return this.num("cage.duration");
+  }
+
+  public String getCageSound() {
+    return this.str("cage.sound");
+  }
+
+  public int getDistortDuration() {
+    return this.num("distort.duration");
+  }
+
+  public String getDistortSound() {
+    return this.str("distort.sound");
+  }
+
+  public int getFartEffectDuration() {
+    return this.num("fart.effect.duration");
+  }
+
+  public int getFartDuration() {
+    return this.num("fart.duration");
+  }
+
+  public int getFireworkDuration() {
+    return this.num("firework.duration");
+  }
+
+  public String getFireworkSound() {
+    return this.str("firework.sound");
+  }
+
+  public int getFreezeDuration() {
+    return this.num("freeze.duration");
+  }
+
+  public int getFreezeEffectDuration() {
+    return this.num("freeze.effect.duration");
+  }
+
+  public String getFreezeSound() {
+    return this.str("freeze.sound");
+  }
+
+  public int getGhostDuration() {
+    return this.num("ghost.duration");
+  }
+
+  public String getGhostSound() {
+    return this.str("ghost.sound");
+  }
+
+  public int getGlowDuration() {
+    return this.num("glow.duration");
+  }
+
+  public String getGlowSound() {
+    return this.str("glow.sound");
+  }
+
+  public int getHackDuration() {
+    return this.num("hack.duration");
+  }
+
+  public String getHackSound() {
+    return this.str("hack.sound");
+  }
+
+  public int getHauntDuration() {
+    return this.num("haunt.duration");
+  }
+
+  public String getHauntSound() {
+    return this.str("haunt.sound");
+  }
+
+  public int getJebDuration() {
+    return this.num("jeb.duration");
+  }
+
+  public int getJebSheepCount() {
+    return this.num("jeb.sheep.count");
+  }
+
+  public String getJebSound() {
+    return this.str("jeb.sound");
+  }
+
+  public int getJumpScareDuration() {
+    return this.num("jump_scare.duration");
+  }
+
+  public int getJumpScareEffectDuration() {
+    return this.num("jump_scare.effect.duration");
+  }
+
+  public int getLevitationDuration() {
+    return this.num("levitation.duration");
+  }
+
+  public String getLevitationSound() {
+    return this.str("levitation.sound");
+  }
+
+  public int getNeckSnapDuration() {
+    return this.num("neck_snap.duration");
+  }
+
+  public String getNeckSnapSound() {
+    return this.str("neck_snap.sound");
+  }
+
+  public double getPonyHorseSpeed() {
+    return this.dec("pony.speed");
+  }
+
+  public String getPonySound() {
+    return this.str("pony.sound");
+  }
+
+  public double getShockwaveExplosionRadius() {
+    return this.dec("shockwave.explosion.radius");
+  }
+
+  public double getShockwaveExplosionPower() {
+    return this.dec("shockwave.explosion.power");
+  }
+
+  public String getShockwaveSound() {
+    return this.str("shockwave.sound");
+  }
+
+  public int getSmokeDuration() {
+    return this.num("smoke.duration");
+  }
+
+  public String getSmokeSound() {
+    return this.str("smoke.sound");
+  }
+
+  public int getSpasmDuration() {
+    return this.num("spasm.duration");
+  }
+
+  public String getSpasmSound() {
+    return this.str("spasm.sound");
+  }
+
+  public String getSpawnSound() {
+    return this.str("spawn.sound");
+  }
+
+  public int getStarDuration() {
+    return this.num("star.duration");
+  }
+
+  public String getStarSound() {
+    return this.str("star.sound");
+  }
+
+  public String getBlastoffSound() {
+    return this.str("blastoff.sound");
+  }
+
+  public int getBushDuration() {
+    return this.num("bush.duration");
+  }
+
+  public String getBushSound() {
+    return this.str("bush.sound");
+  }
+
+  public int getChippedDuration() {
+    return this.num("chipped.duration");
+  }
+
+  public String getChippedSound() {
+    return this.str("chipped.sound");
+  }
+
+  public int getCloakDuration() {
+    return this.num("cloak.duration");
+  }
+
+  public String getCloakSound() {
+    return this.str("cloak.sound");
+  }
+
+  public String getCorpusWarpSound() {
+    return this.str("corpus_warp.sound");
+  }
+
+  public int getCryoFreezeRadius() {
+    return this.num("cryo_freeze.radius");
+  }
+
+  public String getCryoFreezeSound() {
+    return this.str("cryo_freeze.sound");
+  }
+
+  public int getDeadringerDuration() {
+    return this.num("deadringer.duration");
+  }
+
+  public String getDeadringerSound() {
+    return this.str("deadringer.sound");
+  }
+
+  public String getDecoySound() {
+    return this.str("decoy.sound");
+  }
+
+  public double getDistorterDestroyRadius() {
+    return this.dec("distorter.destroy.radius");
+  }
+
+  public double getDistorterEffectRadius() {
+    return this.dec("distorter.effect.radius");
+  }
+
+  public String getDistorterSound() {
+    return this.str("distorter.sound");
+  }
+
+  public int getDroneDuration() {
+    return this.num("drone.duration");
+  }
+
+  public String getDroneSound() {
+    return this.str("drone.sound");
+  }
+
+  public double getFlashbangRadius() {
+    return this.dec("flashbang.radius");
+  }
+
+  public int getFlashbangDuration() {
+    return this.num("flashbang.duration");
+  }
+
+  public double getFlashlightConeAngle() {
+    return this.dec("flashlight.cone.angle");
+  }
+
+  public double getFlashlightConeLength() {
+    return this.dec("flashlight.cone.length");
+  }
+
+  public double getFlashlightRadius() {
+    return this.dec("flashlight.radius");
+  }
+
+  public String getFriendWarpSound() {
+    return this.str("friend_warp.sound");
+  }
+
+  public int getGhostingWoolDelay() {
+    return this.num("ghosting.wool.delay");
+  }
+
+  public String getHorcruxSound() {
+    return this.str("horcrux.sound");
+  }
+
+  public int getIceSkatinDuration() {
+    return this.num("ice_skatin.duration");
+  }
+
+  public String getIceSkatinSound() {
+    return this.str("ice_skatin.sound");
+  }
+
+  public int getIceSpiritDuration() {
+    return this.num("ice_spirit.duration");
+  }
+
+  public String getIceSpiritSound() {
+    return this.str("ice_spirit.sound");
+  }
+
+  public int getKillerRewindCooldown() {
+    return this.num("killer_rewind.cooldown");
+  }
+
+  public String getKillerRewindSound() {
+    return this.str("killer_rewind.sound");
+  }
+
+  public int getKillerTrackerUses() {
+    return this.num("killer_tracker.uses");
+  }
+
+  public String getKillerTrackerSound() {
+    return this.str("killer_tracker.sound");
+  }
+
+  public double getLifeInsuranceRadius() {
+    return this.dec("life_insurance.radius");
+  }
+
+  public String getLifeInsuranceSound() {
+    return this.str("life_insurance.sound");
+  }
+
+  public int getMagnetModeMultiplier() {
+    return this.num("magnet_mode.multiplier");
+  }
+
+  public String getMagnetModeSound() {
+    return this.str("magnet_mode.sound");
+  }
+
+  public double getMedBotRadius() {
+    return this.dec("med_bot.radius");
+  }
+
+  public double getMedBotDestroyRadius() {
+    return this.dec("med_bot.destroy.radius");
+  }
+
+  public String getMedBotSound() {
+    return this.str("med_bot.sound");
+  }
+
+  public int getMindControlDuration() {
+    return this.num("mind_control.duration");
+  }
+
+  public String getMindControlSound() {
+    return this.str("mind_control.sound");
+  }
+
+  public double getParasiteDestroyRadius() {
+    return this.dec("parasite.destroy.radius");
+  }
+
+  public double getParasiteRadius() {
+    return this.dec("parasite.radius");
+  }
+
+  public String getParasiteSound() {
+    return this.str("parasite.sound");
+  }
+
+  public String getRandomTeleportSound() {
+    return this.str("random_teleport.sound");
+  }
+
+  public String getResurrectionStoneSound() {
+    return this.str("resurrection_stone.sound");
+  }
+
+  public int getRetaliationMaxAmplifier() {
+    return this.num("retaliation.max_amplifier");
+  }
+
+  public String getRetaliationSound() {
+    return this.str("retaliation.sound");
+  }
+
+  public int getRewindCooldown() {
+    return this.num("rewind.cooldown");
+  }
+
+  public double getSixthSenseRadius() {
+    return this.dec("sixth_sense.radius");
+  }
+
+  public String getSixthSenseSound() {
+    return this.str("sixth_sense.sound");
+  }
+
+  public double getSmokeGrenadeRadius() {
+    return this.dec("smoke_grenade.radius");
+  }
+
+  public int getSmokeGrenadeDuration() {
+    return this.num("smoke_grenade.duration");
+  }
+
+  public String getSupplyDropMasks() {
+    return this.str("supply_drop.masks");
+  }
+
+  public double getTrackerRadius() {
+    return this.dec("tracker.radius");
+  }
+
+  public String getTrackerSound() {
+    return this.str("tracker.sound");
+  }
+
+  public String getTranslocatorSound() {
+    return this.str("translocator.sound");
+  }
+
+  public double getPartSnifferRadius() {
+    return this.dec("part_sniffer.radius");
+  }
+
+  public String getAllSeeingEyeSound() {
+    return this.str("all_seeing_eye.sound");
+  }
+
+  public int getAllSeeingEyeDuration() {
+    return this.num("all_seeing_eye.duration");
+  }
+
+  public String getBloodCurseSound() {
+    return this.str("blood_curse.sound");
+  }
+
+  public double getBurnTheBodyRadius() {
+    return this.dec("burn_the_body.radius");
+  }
+
+  public String getBurnTheBodySound() {
+    return this.str("burn_the_body.sound");
+  }
+
+  public double getCursedNoteRadius() {
+    return this.dec("cursed_note.radius");
+  }
+
+  public double getCursedNoteEffectRadius() {
+    return this.dec("cursed_note.effect.radius");
+  }
+
+  public String getCursedNoteSound() {
+    return this.str("cursed_note.sound");
+  }
+
+  public String getDeathHoundSound() {
+    return this.str("death_hound.sound");
+  }
+
+  public String getDeathSteedSound() {
+    return this.str("death_steed.sound");
+  }
+
+  public String getDormagoggSound() {
+    return this.str("dormagogg.sound");
+  }
+
+  public int getEagleEyeDuration() {
+    return this.num("eagle_eye.duration");
+  }
+
+  public String getEagleEyeSound() {
+    return this.str("eagle_eye.sound");
+  }
+
+  public int getEmpBlastDuration() {
+    return this.num("emp_blast.duration");
+  }
+
+  public String getEnderShadowsSound() {
+    return this.str("ender_shadows.sound");
+  }
+
+  public String getFakePartSound() {
+    return this.str("fake_part.sound");
+  }
+
+  public String getFakePartEffectSound() {
+    return this.str("fake_part.effect.sound");
+  }
+
+  public double getFakePartRadius() {
+    return this.dec("fake_part.radius");
+  }
+
+  public int getFakePartDuration() {
+    return this.num("fake_part.duration");
+  }
+
+  public String getFireTrailSound() {
+    return this.str("fire_trail.sound");
+  }
+
+  public String getFloorIsLavaSound() {
+    return this.str("floor_is_lava.sound");
+  }
+
+  public String getForewarnSound() {
+    return this.str("forewarn.sound");
+  }
+
+  public int getFrightDuration() {
+    return this.num("fright.duration");
+  }
+
+  public String getHealthCutSound() {
+    return this.str("health_cut.sound");
+  }
+
+  public String getHeatSeekerSound() {
+    return this.str("heat_seeker.sound");
+  }
+
+  public double getHeatSeekerRadius() {
+    return this.dec("heat_seeker.radius");
+  }
+
+  public String getIcePathSound() {
+    return this.str("ice_path.sound");
+  }
+
+  public String getInfraredVisionSound() {
+    return this.str("infrared_vision.sound");
+  }
+
+  public int getInfraredVisionDuration() {
+    return this.num("infrared_vision.duration");
+  }
+
+  public String getMurderousWarpSound() {
+    return this.str("murderous_warp.sound");
+  }
+
+  public String getPartWarpSound() {
+    return this.str("part_warp.sound");
+  }
+
+  public String getPhantomSound() {
+    return this.str("phantom.sound");
+  }
+
+  public int getPhantomDuration() {
+    return this.num("phantom.duration");
+  }
+
+  public String getPlayerTrackerSound() {
+    return this.str("player_tracker.sound");
+  }
+
+  public int getPlayerTrackerUses() {
+    return this.num("player_tracker.uses");
+  }
+
+  public String getPoisonSmogSound() {
+    return this.str("poison_smog.sound");
+  }
+
+  public double getPoisonSmogRadius() {
+    return this.dec("poison_smog.radius");
+  }
+
+  public int getPoisonSmogDuration() {
+    return this.num("poison_smog.duration");
+  }
+
+  public String getQuickBombSound() {
+    return this.str("quick_bomb.sound");
+  }
+
+  public int getQuickBombTicks() {
+    return this.num("quick_bomb_ticks");
+  }
+
+  public double getQuickBombDamage() {
+    return this.dec("quick_bomb_damage");
+  }
+
+  public String getRedArrowSound() {
+    return this.str("red_arrow.sound");
+  }
+
+  public int getRedArrowDuration() {
+    return this.num("red_arrow.duration");
+  }
+
+  public String getTrapSeekerSound() {
+    return this.str("trap_seeker.sound");
+  }
+
+  public double getTrapSeekerRadius() {
+    return this.dec("trap_seeker.radius");
+  }
+
+  public String getTrapWreckerSound() {
+    return this.str("trap_wrecker.sound");
+  }
+
+  public int getTrapWreckerDuration() {
+    return this.num("trap_wrecker.duration");
+  }
+
+  public String getWarpDistortSound() {
+    return this.str("warp_distort.sound");
+  }
+
+  public String getCameraSound() {
+    return this.str("camera.sound");
+  }
+
+  public int getHookCost() {
+    return this.num("hook.cost");
+  }
+
+  public int getAllSeeingEyeCost() {
+    return this.num("all_seeing_eye.cost");
+  }
+
+  public int getBloodCurseCost() {
+    return this.num("blood_curse.cost");
+  }
+
+  public int getBurnTheBodyCost() {
+    return this.num("burn_the_body.cost");
+  }
+
+  public int getKillerCameraCost() {
+    return this.num("killer_camera.cost");
+  }
+
+  public int getCameraCost() {
+    return this.num("camera.cost");
+  }
+
+  public int getCorruptionCost() {
+    return this.num("corruption.cost");
+  }
+
+  public int getCursedNoteCost() {
+    return this.num("cursed_note.cost");
+  }
+
+  public int getDeathHoundCost() {
+    return this.num("death_hound.cost");
+  }
+
+  public int getDeathSteedCost() {
+    return this.num("death_steed.cost");
+  }
+
+  public int getDormagoggCost() {
+    return this.num("dormagogg.cost");
+  }
+
+  public int getEagleEyeCost() {
+    return this.num("eagle_eye.cost");
+  }
+
+  public int getEmpBlastCost() {
+    return this.num("emp_blast.cost");
+  }
+
+  public int getEnderShadowsCost() {
+    return this.num("ender_shadows.cost");
+  }
+
+  public int getFakePartCost() {
+    return this.num("fake_part.cost");
+  }
+
+  public int getFireTrailCost() {
+    return this.num("fire_trail.cost");
+  }
+
+  public int getFloorIsLavaCost() {
+    return this.num("floor_is_lava.cost");
+  }
+
+  public int getForewarnCost() {
+    return this.num("forewarn.cost");
+  }
+
+  public int getFrightCost() {
+    return this.num("fright.cost");
+  }
+
+  public int getHealthCutCost() {
+    return this.num("health_cut.cost");
+  }
+
+  public int getHeatSeekerCost() {
+    return this.num("heat_seeker.cost");
+  }
+
+  public int getIcePathCost() {
+    return this.num("ice_path.cost");
+  }
+
+  public int getInfraredVisionCost() {
+    return this.num("infrared_vision.cost");
+  }
+
+  public int getMurderousWarpCost() {
+    return this.num("murderous_warp.cost");
+  }
+
+  public int getPartWarpCost() {
+    return this.num("part_warp.cost");
+  }
+
+  public int getPhantomCost() {
+    return this.num("phantom.cost");
+  }
+
+  public int getPlayerTrackerCost() {
+    return this.num("player_tracker.cost");
+  }
+
+  public int getPoisonSmogCost() {
+    return this.num("poison_smog.cost");
+  }
+
+  public int getPortalGunCost() {
+    return this.num("portal_gun.cost");
+  }
+
+  public int getQuickBombCost() {
+    return this.num("quick_bomb.cost");
+  }
+
+  public int getRedArrowCost() {
+    return this.num("red_arrow.cost");
+  }
+
+  public int getTrapSeekerCost() {
+    return this.num("trap_seeker.cost");
+  }
+
+  public int getTrapWreckerCost() {
+    return this.num("trap_wrecker.cost");
+  }
+
+  public int getWarpDistortCost() {
+    return this.num("warp_distort.cost");
+  }
+
+  public int getSurvivorGearCost() {
+    return this.num("survivor_gear.cost");
+  }
+
+  public int getExcavatorCost() {
+    return this.num("excavator.cost");
+  }
+
+  public int getShieldCost() {
+    return this.num("shield.cost");
+  }
+
+  public int getBearCost() {
+    return this.num("bear.cost");
+  }
+
+  public int getBlindCost() {
+    return this.num("blind.cost");
+  }
+
+  public int getBurrowCost() {
+    return this.num("burrow.cost");
+  }
+
+  public int getCageCost() {
+    return this.num("cage.cost");
+  }
+
+  public int getDistortCost() {
+    return this.num("distort.cost");
+  }
+
+  public int getFartCost() {
+    return this.num("fart.cost");
+  }
+
+  public int getFireworkCost() {
+    return this.num("firework.cost");
+  }
+
+  public int getFreezeCost() {
+    return this.num("freeze.cost");
+  }
+
+  public int getGhostCost() {
+    return this.num("ghost.cost");
+  }
+
+  public int getGlowCost() {
+    return this.num("glow.cost");
+  }
+
+  public int getHackCost() {
+    return this.num("hack.cost");
+  }
+
+  public int getHauntCost() {
+    return this.num("haunt.cost");
+  }
+
+  public int getJebCost() {
+    return this.num("jeb.cost");
+  }
+
+  public int getJumpScareCost() {
+    return this.num("jump_scare.cost");
+  }
+
+  public int getLevitationCost() {
+    return this.num("levitation.cost");
+  }
+
+  public int getNeckSnapCost() {
+    return this.num("neck_snap.cost");
+  }
+
+  public int getPonyCost() {
+    return this.num("pony.cost");
+  }
+
+  public int getShockwaveCost() {
+    return this.num("shockwave.cost");
+  }
+
+  public int getSmokeCost() {
+    return this.num("smoke.cost");
+  }
+
+  public int getSpasmCost() {
+    return this.num("spasm.cost");
+  }
+
+  public int getSpawnCost() {
+    return this.num("spawn.cost");
+  }
+
+  public int getStarCost() {
+    return this.num("star.cost");
+  }
+
+  public int getBlastOffCost() {
+    return this.num("blast_off.cost");
+  }
+
+  public int getBushCost() {
+    return this.num("bush.cost");
+  }
+
+  public int getChippedCost() {
+    return this.num("chipped.cost");
+  }
+
+  public int getCloakCost() {
+    return this.num("cloak.cost");
+  }
+
+  public int getCorpusWarpCost() {
+    return this.num("corpus_warp.cost");
+  }
+
+  public int getCryoFreezeCost() {
+    return this.num("cryo_freeze.cost");
+  }
+
+  public int getDeadringerCost() {
+    return this.num("deadringer.cost");
+  }
+
+  public int getDecoyCost() {
+    return this.num("decoy.cost");
+  }
+
+  public int getDistorterCost() {
+    return this.num("distorter.cost");
+  }
+
+  public int getDroneCost() {
+    return this.num("drone.cost");
+  }
+
+  public int getFlashbangCost() {
+    return this.num("flashbang.cost");
+  }
+
+  public int getFlashlightCost() {
+    return this.num("flashlight.cost");
+  }
+
+  public int getFriendWarpCost() {
+    return this.num("friend_warp.cost");
+  }
+
+  public int getHorcruxCost() {
+    return this.num("horcrux.cost");
+  }
+
+  public int getIceSkatinCost() {
+    return this.num("ice_skatin.cost");
+  }
+
+  public int getIceSpiritCost() {
+    return this.num("ice_spirit.cost");
+  }
+
+  public int getKillerRewindCost() {
+    return this.num("killer_rewind.cost");
+  }
+
+  public int getKillerTrackerCost() {
+    return this.num("killer_tracker.cost");
+  }
+
+  public int getLifeInsuranceCost() {
+    return this.num("life_insurance.cost");
+  }
+
+  public int getMagnetModeCost() {
+    return this.num("magnet_mode.cost");
+  }
+
+  public int getMedBotCost() {
+    return this.num("med_bot.cost");
+  }
+
+  public int getMedKitCost() {
+    return this.num("med_kit.cost");
+  }
+
+  public int getMindControlCost() {
+    return this.num("mind_control.cost");
+  }
+
+  public int getParasiteCost() {
+    return this.num("parasite.cost");
+  }
+
+  public int getPortalTrapCost() {
+    return this.num("portal_trap.cost");
+  }
+
+  public int getRandomTeleportCost() {
+    return this.num("random_teleport.cost");
+  }
+
+  public int getRandomTrapCost() {
+    return this.num("random_trap.cost");
+  }
+
+  public int getResurrectionStoneCost() {
+    return this.num("resurrection_stone.cost");
+  }
+
+  public int getRetaliationCost() {
+    return this.num("retaliation.cost");
+  }
+
+  public int getRewindCost() {
+    return this.num("rewind.cost");
+  }
+
+  public int getSixthSenseCost() {
+    return this.num("sixth_sense.cost");
+  }
+
+  public int getSmokeGrenadeCost() {
+    return this.num("smoke_grenade.cost");
+  }
+
+  public int getSpeedPendantCost() {
+    return this.num("speed_pendant.cost");
+  }
+
+  public int getSupplyDropCost() {
+    return this.num("supply_drop.cost");
+  }
+
+  public int getTrackerCost() {
+    return this.num("tracker.cost");
+  }
+
+  public int getTranslocatorCost() {
+    return this.num("translocator.cost");
+  }
+
+  private Material mat(final String key) {
+    final String material = this.str(key);
     final Material mat = Material.getMaterial(material);
     final String error = "Invalid material for key: %s".formatted(key);
     return requireNonNull(mat, error);
   }
 
-  private static Color rgb(final String key) {
-    final String[] split = str(key).split(",");
+  private Color rgb(final String key) {
+    final String[] split = this.str(key).split(",");
     if (split.length != 3) {
       final String msg = "Invalid color format for key: %s".formatted(key);
       throw new AssertionError(msg);
@@ -523,20 +1972,20 @@ public interface GameProperties {
     return new Color(r, g, b);
   }
 
-  private static boolean bool(final String key) {
-    return GAME_BUNDLE.getBoolean(key);
+  private boolean bool(final String key) {
+    return this.bundle.getBoolean(key);
   }
 
-  private static int num(final String key) {
-    return GAME_BUNDLE.getInt(key);
+  private int num(final String key) {
+    return this.bundle.getInt(key);
   }
 
-  private static double dec(final String key) {
-    return GAME_BUNDLE.getDouble(key);
+  private double dec(final String key) {
+    return this.bundle.getDouble(key);
   }
 
   @Subst("")
-  private static String str(final String key) {
-    return GAME_BUNDLE.getString(key);
+  private String str(final String key) {
+    return this.bundle.getString(key);
   }
 }

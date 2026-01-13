@@ -34,11 +34,12 @@ import org.bukkit.entity.Item;
 
 public final class Rewind extends SurvivorGadget {
 
-  public Rewind() {
+  public Rewind(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "rewind",
-      GameProperties.REWIND_COST,
-      ItemFactory.createGadget("rewind", GameProperties.REWIND_MATERIAL, Message.REWIND_NAME.build(), Message.REWIND_LORE.build())
+      properties.getRewindCost(),
+      ItemFactory.createGadget("rewind", properties.getRewindMaterial(), Message.REWIND_NAME.build(), Message.REWIND_LORE.build())
     );
   }
 
@@ -56,7 +57,8 @@ public final class Rewind extends SurvivorGadget {
 
     final long current = System.currentTimeMillis();
     final long last = survivor.getRewindCooldown();
-    if (current - last < GameProperties.REWIND_COOLDOWN) {
+    final GameProperties properties = game.getProperties();
+    if (current - last < properties.getRewindCooldown()) {
       return true;
     }
 

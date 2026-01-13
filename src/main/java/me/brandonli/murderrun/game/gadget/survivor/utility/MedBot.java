@@ -50,11 +50,12 @@ import org.bukkit.util.EulerAngle;
 
 public final class MedBot extends SurvivorGadget {
 
-  public MedBot() {
+  public MedBot(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "med_bot",
-      GameProperties.MED_BOT_COST,
-      ItemFactory.createGadget("med_bot", GameProperties.MED_BOT_MATERIAL, Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build())
+      properties.getMedBotCost(),
+      ItemFactory.createGadget("med_bot", properties.getMedBotMaterial(), Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build())
     );
   }
 
@@ -82,8 +83,9 @@ public final class MedBot extends SurvivorGadget {
     this.handleParticles(scheduler, armorStand);
     this.handleMedBotUpdate(scheduler, manager, armorStand);
 
+    final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();
-    audience.playSound(GameProperties.MED_BOT_SOUND);
+    audience.playSound(properties.getMedBotSound());
 
     return false;
   }
@@ -108,8 +110,10 @@ public final class MedBot extends SurvivorGadget {
       return;
     }
 
+    final Game game = manager.getGame();
+    final GameProperties properties = game.getProperties();
     final double distance = origin.distanceSquared(location);
-    final double radius = GameProperties.MED_BOT_DESTROY_RADIUS;
+    final double radius = properties.getMedBotDestroyRadius();
     if (distance < radius * radius) {
       final Component message = Message.MED_BOT_DEACTIVATE.build();
       manager.sendMessageToAllLivingSurvivors(message);
@@ -121,7 +125,9 @@ public final class MedBot extends SurvivorGadget {
     final Location origin = stand.getLocation();
     final Location location = innocent.getLocation();
     final double distance = origin.distanceSquared(location);
-    final double radius = GameProperties.MED_BOT_RADIUS;
+    final Game game = innocent.getGame();
+    final GameProperties properties = game.getProperties();
+    final double radius = properties.getMedBotRadius();
     if (distance < radius * radius) {
       innocent.addPotionEffects(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20, 3));
     }

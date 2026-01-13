@@ -34,9 +34,10 @@ public final class PreGameExpirationTimer extends BukkitRunnable {
   @Override
   public void run() {
     final int current = this.seconds.incrementAndGet();
-    final int shutdownSeconds = GameProperties.GAME_EXPIRATION_TIME;
+    final PreGameManager preGameManager = this.manager.getManager();
+    final GameProperties properties = preGameManager.getProperties();
+    final int shutdownSeconds = properties.getGameExpirationTime();
     if (current >= shutdownSeconds) {
-      final PreGameManager preGameManager = this.manager.getManager();
       final GameManager gameManager = preGameManager.getGameManager();
       final String id = preGameManager.getId();
       gameManager.removeGame(id);

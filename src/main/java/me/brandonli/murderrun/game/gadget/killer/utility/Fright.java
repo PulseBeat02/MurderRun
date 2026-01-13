@@ -43,11 +43,12 @@ public final class Fright extends KillerGadget {
 
   private final Set<GamePlayer> currentlyJumpScared;
 
-  public Fright() {
+  public Fright(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "fright",
-      GameProperties.FRIGHT_COST,
-      ItemFactory.createGadget("fright", GameProperties.FRIGHT_MATERIAL, Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build())
+      properties.getFrightCost(),
+      ItemFactory.createGadget("fright", properties.getFrightMaterial(), Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build())
     );
     this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
   }
@@ -67,7 +68,9 @@ public final class Fright extends KillerGadget {
 
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
     final ItemStack before = this.setPumpkinItemStack(survivor);
-    final int duration = GameProperties.FRIGHT_DURATION;
+    final Game game = survivor.getGame();
+    final GameProperties properties = game.getProperties();
+    final int duration = properties.getFrightDuration();
     survivor.addPotionEffects(
       new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
       new PotionEffect(PotionEffectType.SLOWNESS, duration, 1)

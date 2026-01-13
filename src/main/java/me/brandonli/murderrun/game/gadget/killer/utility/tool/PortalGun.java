@@ -63,13 +63,14 @@ public final class PortalGun extends KillerGadget implements Listener {
   private final Game game;
 
   public PortalGun(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "portal_gun",
-      GameProperties.PORTAL_GUN_COST,
+      properties.getPortalGunCost(),
       ItemFactory.createPortalGun(
         ItemFactory.createGadget(
           "portal_gun",
-          GameProperties.PORTAL_GUN_MATERIAL,
+          properties.getPortalGunMaterial(),
           Message.PORTAL_GUN_NAME.build(),
           Message.PORTAL_GUN_LORE.build()
         )

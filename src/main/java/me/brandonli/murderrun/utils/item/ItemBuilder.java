@@ -19,6 +19,9 @@ package me.brandonli.murderrun.utils.item;
 
 import static java.util.Objects.requireNonNull;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -50,13 +53,12 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.components.UseCooldownComponent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
-import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemBuilder implements Builder {
 
-  private final ItemStack stack;
+  private ItemStack stack;
 
   ItemBuilder(final ItemStack stack) {
     this.stack = stack;
@@ -80,27 +82,25 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder name(final Component name) {
-    final String legacy = ComponentUtils.serializeComponentToLegacyString(name);
     final ItemMeta meta = this.meta();
-    meta.setDisplayName(legacy);
+    meta.displayName(name);
     this.stack.setItemMeta(meta);
     return this;
   }
 
   @Override
   public Builder lore(final Component lore) {
-    final List<String> legacy = ComponentUtils.serializeLoreToLegacyLore(lore);
+    final List<Component> components = ComponentUtils.wrapLoreLines(lore, 40);
     final ItemMeta meta = this.meta();
-    meta.setLore(legacy);
+    meta.lore(components);
     this.stack.setItemMeta(meta);
     return this;
   }
 
   @Override
   public Builder lore(final List<Component> lore) {
-    final List<String> legacy = ComponentUtils.serializeLoreToLegacyLore(lore);
     final ItemMeta meta = this.meta();
-    meta.setLore(legacy);
+    meta.lore(lore);
     this.stack.setItemMeta(meta);
     return this;
   }
@@ -149,7 +149,6 @@ public final class ItemBuilder implements Builder {
   @Override
   public Builder dummyAttribute() {
     final Attribute attribute = Attribute.OXYGEN_BONUS;
-    @SuppressWarnings("deprecation")
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
@@ -165,21 +164,22 @@ public final class ItemBuilder implements Builder {
     final ItemMeta meta = this.meta();
     meta.addItemFlags(
       ItemFlag.HIDE_ATTRIBUTES,
-      ItemFlag.HIDE_ADDITIONAL_TOOLTIP,
       ItemFlag.HIDE_ENCHANTS,
+      ItemFlag.HIDE_STORED_ENCHANTS,
       ItemFlag.HIDE_ARMOR_TRIM,
       ItemFlag.HIDE_UNBREAKABLE,
       ItemFlag.HIDE_DESTROYS,
       ItemFlag.HIDE_DYE,
       ItemFlag.HIDE_PLACED_ON
     );
+    final io.papermc.paper.datacomponent.item.TooltipDisplay.Builder display = TooltipDisplay.tooltipDisplay().hideTooltip(true);
     this.stack.setItemMeta(meta);
+    this.stack.setData(DataComponentTypes.TOOLTIP_DISPLAY, display);
     return this;
   }
 
   @Override
   public Builder modifier(final Attribute attribute, final double amount) {
-    @SuppressWarnings("deprecation")
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
@@ -253,7 +253,7 @@ public final class ItemBuilder implements Builder {
 
   @Override
   public Builder type(final Material material) {
-    this.stack.setType(material);
+    this.stack = this.stack.withType(material);
     return this;
   }
 
@@ -271,13 +271,13 @@ public final class ItemBuilder implements Builder {
     if (meta instanceof final SkullMeta skullMeta) {
       try {
         final UUID uuid = UUID.randomUUID();
-        final PlayerProfile profile = Bukkit.createPlayerProfile(uuid);
+        final PlayerProfile profile = Bukkit.createProfile(uuid);
         final PlayerTextures textures = profile.getTextures();
         final URI uri = URI.create(url);
         final URL urlObject = uri.toURL();
         textures.setSkin(urlObject);
         profile.setTextures(textures);
-        skullMeta.setOwnerProfile(profile);
+        skullMeta.setPlayerProfile(profile);
         this.stack.setItemMeta(skullMeta);
       } catch (final MalformedURLException e) {
         throw new AssertionError(e);

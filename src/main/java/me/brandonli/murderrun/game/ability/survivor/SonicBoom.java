@@ -49,6 +49,7 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
   private final Map<GamePlayer, Long> cooldowns;
 
   public SonicBoom(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       game,
       SONIC_BOOM_NAME,
@@ -56,7 +57,7 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
         SONIC_BOOM_NAME,
         Message.SONIC_BOOM_NAME.build(),
         Message.SONIC_BOOM_LORE.build(),
-        (int) (GameProperties.SONIC_BOOM_COOLDOWN * 20)
+        (int) (properties.getSonicBoomCooldown() * 20)
       )
     );
     this.cooldowns = new HashMap<>();
@@ -105,7 +106,9 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
       return;
     }
 
-    final int cooldown = (int) (GameProperties.SONIC_BOOM_COOLDOWN * 1000);
+    final GameProperties properties = game.getProperties();
+    final double raw = properties.getSonicBoomCooldown();
+    final int cooldown = (int) (raw * 1000);
     if (this.cooldowns.containsKey(gamePlayer)) {
       final long last = this.cooldowns.get(gamePlayer);
       final long current = System.currentTimeMillis();
@@ -118,10 +121,10 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
 
     final long current = System.currentTimeMillis();
     this.cooldowns.put(gamePlayer, current);
-    gamePlayer.setAbilityCooldowns(SONIC_BOOM_NAME, (int) (GameProperties.SONIC_BOOM_COOLDOWN * 20));
+    gamePlayer.setAbilityCooldowns(SONIC_BOOM_NAME, (int) (raw * 20));
 
-    final double radius = GameProperties.SONIC_BOOM_RADIUS;
-    final double knockbackStrength = GameProperties.SONIC_BOOM_KNOCKBACK;
+    final double radius = properties.getSonicBoomRadius();
+    final double knockbackStrength = properties.getSonicBoomKnockback();
     final Location sourceLocation = player.getLocation();
     final Vector knockbackDirection = sourceLocation.getDirection().normalize();
     final World world = player.getWorld();

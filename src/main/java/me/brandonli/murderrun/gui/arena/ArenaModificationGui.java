@@ -23,6 +23,7 @@ import static net.kyori.adventure.text.Component.empty;
 import dev.triumphteam.gui.components.InteractionModifier;
 import dev.triumphteam.gui.components.util.GuiFiller;
 import dev.triumphteam.gui.guis.GuiItem;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,12 +55,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ArenaModificationGui extends PatternGui implements Listener {
 
@@ -190,14 +191,14 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
     }
 
     final HandlerList list = BlockBreakEvent.getHandlerList();
-    final HandlerList list1 = AsyncPlayerChatEvent.getHandlerList();
+    final HandlerList list1 = AsyncChatEvent.getHandlerList();
     list.unregister(this);
     list1.unregister(this);
     this.listener.unregister();
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onPlayerChat(final AsyncPlayerChatEvent event) {
+  public void onPlayerChat(final AsyncChatEvent event) {
     final Player player = event.getPlayer();
     if (player != this.watcher) {
       return;
@@ -208,7 +209,8 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
     }
     event.setCancelled(true);
 
-    final String msg = event.getMessage();
+    final Component component = event.message();
+    final String msg = ComponentUtils.serializeComponentToPlain(component);
     if (this.listenForBreaks) {
       final String upper = msg.toUpperCase();
       final Location location = player.getLocation();
@@ -345,8 +347,12 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   private void clearWands() {
     final Player player = (Player) this.watcher;
     final PlayerInventory inv = player.getInventory();
+    @Nullable
     final ItemStack[] contents = inv.getContents();
     for (final ItemStack item : contents) {
+      if (item == null) {
+        continue;
+      }
       if (PDCUtils.isWand(item)) {
         inv.remove(item);
       }

@@ -38,6 +38,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
+/**
+ * Maintainer note: The reason why I didn't use an interface for CraftEngineManager and NexoManager because
+ * I wanted to allow servers to have both plugins and support both. And also they are subject to lots of change
+ * in the future, so having them as separate classes makes it easier to manage.
+ */
 public final class ItemFactory {
 
   private static final String ITEM_SKULL_URL =
@@ -55,7 +60,7 @@ public final class ItemFactory {
       .build();
   }
 
-  public static ItemStack[] createKillerGear() {
+  public static ItemStack[] createKillerGear(final GameProperties properties) {
     final ItemStack defaultKillerHelmet = createDefaultKillerHelmet();
     final ItemStack defaultKillerChestplate = createDefaultKillerChestplate();
     final ItemStack defaultKillerLeggings = createDefaultKillerLeggings();
@@ -64,10 +69,10 @@ public final class ItemFactory {
 
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager craftEngineManager = plugin.getCraftEngineManager();
-      final Optional<Item.Builder> helmetBuilder = craftEngineManager.getKillerHelmet();
-      final Optional<Item.Builder> chestplateBuilder = craftEngineManager.getKillerChestplate();
-      final Optional<Item.Builder> leggingsBuilder = craftEngineManager.getKillerLeggings();
-      final Optional<Item.Builder> bootsBuilder = craftEngineManager.getKillerBoots();
+      final Optional<Item.Builder> helmetBuilder = craftEngineManager.getKillerHelmet(properties);
+      final Optional<Item.Builder> chestplateBuilder = craftEngineManager.getKillerChestplate(properties);
+      final Optional<Item.Builder> leggingsBuilder = craftEngineManager.getKillerLeggings(properties);
+      final Optional<Item.Builder> bootsBuilder = craftEngineManager.getKillerBoots(properties);
       final ItemStack helmet = helmetBuilder.map(Item.Builder::build).orElse(defaultKillerHelmet);
       final ItemStack chestplate = chestplateBuilder.map(Item.Builder::build).orElse(defaultKillerChestplate);
       final ItemStack leggings = leggingsBuilder.map(Item.Builder::build).orElse(defaultKillerLeggings);
@@ -77,10 +82,10 @@ public final class ItemFactory {
 
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager nexoManager = plugin.getNexoManager();
-      final Optional<Item.Builder> helmetBuilder = nexoManager.getKillerHelmet();
-      final Optional<Item.Builder> chestplateBuilder = nexoManager.getKillerChestplate();
-      final Optional<Item.Builder> leggingsBuilder = nexoManager.getKillerLeggings();
-      final Optional<Item.Builder> bootsBuilder = nexoManager.getKillerBoots();
+      final Optional<Item.Builder> helmetBuilder = nexoManager.getKillerHelmet(properties);
+      final Optional<Item.Builder> chestplateBuilder = nexoManager.getKillerChestplate(properties);
+      final Optional<Item.Builder> leggingsBuilder = nexoManager.getKillerLeggings(properties);
+      final Optional<Item.Builder> bootsBuilder = nexoManager.getKillerBoots(properties);
       final ItemStack helmet = helmetBuilder.map(Item.Builder::build).orElse(defaultKillerHelmet);
       final ItemStack chestplate = chestplateBuilder.map(Item.Builder::build).orElse(defaultKillerChestplate);
       final ItemStack leggings = leggingsBuilder.map(Item.Builder::build).orElse(defaultKillerLeggings);
@@ -136,9 +141,9 @@ public final class ItemFactory {
     return builder.pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true);
   }
 
-  public static Item.Builder createFlashlight(final Item.Builder builder) {
+  public static Item.Builder createFlashlight(final GameProperties properties, final Item.Builder builder) {
     return builder
-      .cooldown((float) GameProperties.FLASHLIGHT_COOLDOWN, Keys.FLASHLIGHT_COOLDOWN)
+      .cooldown((float) properties.getFlashlightCooldown(), Keys.FLASHLIGHT_COOLDOWN)
       .pdc(Keys.FLASHLIGHT, PersistentDataType.BOOLEAN, true);
   }
 
@@ -146,64 +151,64 @@ public final class ItemFactory {
     return builder.pdc(Keys.FLASH_BANG, PersistentDataType.BOOLEAN, true);
   }
 
-  public static Item.Builder createSurvivorHelmet() {
-    final Item.Builder helmet = createDefaultSurvivorHelmet();
+  public static Item.Builder createSurvivorHelmet(final GameProperties properties) {
+    final Item.Builder helmet = createDefaultSurvivorHelmet(properties);
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getSurvivorHelmet().orElse(helmet);
+      return manager.getSurvivorHelmet(properties).orElse(helmet);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorHelmet().orElse(helmet);
+      return manager.getSurvivorHelmet(properties).orElse(helmet);
     }
     return helmet;
   }
 
-  public static Item.Builder createSurvivorChestplate() {
-    final Item.Builder chestplate = createDefaultSurvivorChestplate();
+  public static Item.Builder createSurvivorChestplate(final GameProperties properties) {
+    final Item.Builder chestplate = createDefaultSurvivorChestplate(properties);
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getSurvivorChestplate().orElse(chestplate);
+      return manager.getSurvivorChestplate(properties).orElse(chestplate);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorChestplate().orElse(chestplate);
+      return manager.getSurvivorChestplate(properties).orElse(chestplate);
     }
     return chestplate;
   }
 
-  public static Item.Builder createSurvivorLeggings() {
-    final Item.Builder leggings = createDefaultSurvivorLeggings();
+  public static Item.Builder createSurvivorLeggings(final GameProperties properties) {
+    final Item.Builder leggings = createDefaultSurvivorLeggings(properties);
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getSurvivorLeggings().orElse(leggings);
+      return manager.getSurvivorLeggings(properties).orElse(leggings);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorLeggings().orElse(leggings);
+      return manager.getSurvivorLeggings(properties).orElse(leggings);
     }
     return leggings;
   }
 
-  public static Item.Builder createSurvivorBoots() {
-    final Item.Builder boots = createDefaultSurvivorBoots();
+  public static Item.Builder createSurvivorBoots(final GameProperties properties) {
+    final Item.Builder boots = createDefaultSurvivorBoots(properties);
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getSurvivorBoots().orElse(boots);
+      return manager.getSurvivorBoots(properties).orElse(boots);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getSurvivorBoots().orElse(boots);
+      return manager.getSurvivorBoots(properties).orElse(boots);
     }
     return boots;
   }
 
-  public static Item.Builder createDefaultSurvivorHelmet() {
-    return Item.builder(GameProperties.SURVIVOR_HELMET_MATERIAL)
+  public static Item.Builder createDefaultSurvivorHelmet(final GameProperties properties) {
+    return Item.builder(properties.getSurvivorHelmetMaterial())
       .name(Message.SURVIVOR_HELMET.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
@@ -211,8 +216,8 @@ public final class ItemFactory {
       .hideAttributes();
   }
 
-  public static Item.Builder createDefaultSurvivorChestplate() {
-    return Item.builder(GameProperties.SURVIVOR_CHESTPLATE_MATERIAL)
+  public static Item.Builder createDefaultSurvivorChestplate(final GameProperties properties) {
+    return Item.builder(properties.getSurvivorChestplateMaterial())
       .name(Message.SURVIVOR_CHESTPLATE.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
@@ -220,8 +225,8 @@ public final class ItemFactory {
       .hideAttributes();
   }
 
-  public static Item.Builder createDefaultSurvivorLeggings() {
-    return Item.builder(GameProperties.SURVIVOR_LEGGINGS_MATERIAL)
+  public static Item.Builder createDefaultSurvivorLeggings(final GameProperties properties) {
+    return Item.builder(properties.getSurvivorLeggingsMaterial())
       .name(Message.SURVIVOR_LEGGINGS.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
@@ -229,8 +234,8 @@ public final class ItemFactory {
       .hideAttributes();
   }
 
-  public static Item.Builder createDefaultSurvivorBoots() {
-    return Item.builder(GameProperties.SURVIVOR_BOOTS_MATERIAL)
+  public static Item.Builder createDefaultSurvivorBoots(final GameProperties properties) {
+    return Item.builder(properties.getSurvivorBootsMaterial())
       .name(Message.SURVIVOR_BOOTS.build())
       .lore(Message.SURVIVOR_GEAR_LORE.build())
       .enchantment(Enchantment.PROTECTION, 3)
@@ -301,8 +306,8 @@ public final class ItemFactory {
     return Item.builder(Material.SADDLE).build();
   }
 
-  public static Item.Builder createShield() {
-    return Item.builder(GameProperties.SHIELD_MATERIAL)
+  public static Item.Builder createShield(final GameProperties properties) {
+    return Item.builder(properties.getShieldMaterial())
       .name(Message.SHIELD_NAME.build())
       .lore(Message.SHIELD_LORE.build())
       .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "shield")
@@ -314,16 +319,16 @@ public final class ItemFactory {
     return builder.pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true).durability(10);
   }
 
-  public static ItemStack createKnockBackBone() {
+  public static ItemStack createKnockBackBone(final GameProperties properties) {
     final ItemStack ghostBone = createDefaultKnockBackBone();
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getGhostBone().map(Item.Builder::build).orElse(ghostBone);
+      return manager.getGhostBone(properties).map(Item.Builder::build).orElse(ghostBone);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getGhostBone().map(Item.Builder::build).orElse(ghostBone);
+      return manager.getGhostBone(properties).map(Item.Builder::build).orElse(ghostBone);
     }
     return ghostBone;
   }
@@ -353,16 +358,16 @@ public final class ItemFactory {
       .build();
   }
 
-  public static ItemStack createCurrency(final int amount) {
+  public static ItemStack createCurrency(final GameProperties properties, final int amount) {
     final ItemStack currency = createDefaultCurrency(amount);
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getCurrency().map(Item.Builder::build).orElse(currency);
+      return manager.getCurrency(properties).map(Item.Builder::build).orElse(currency);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getCurrency().map(Item.Builder::build).orElse(currency);
+      return manager.getCurrency(properties).map(Item.Builder::build).orElse(currency);
     }
     return currency;
   }
@@ -371,16 +376,16 @@ public final class ItemFactory {
     return Item.builder(Material.NETHER_STAR).name(Message.MINEBUCKS.build()).amount(amount).model("minebucks").build();
   }
 
-  public static ItemStack createKillerArrow() {
+  public static ItemStack createKillerArrow(final GameProperties properties) {
     final ItemStack killerArrow = createDefaultKillerArrow();
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getKillerArrow().map(Item.Builder::build).orElse(killerArrow);
+      return manager.getKillerArrow(properties).map(Item.Builder::build).orElse(killerArrow);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getKillerArrow().map(Item.Builder::build).orElse(killerArrow);
+      return manager.getKillerArrow(properties).map(Item.Builder::build).orElse(killerArrow);
     }
     return killerArrow;
   }
@@ -395,16 +400,16 @@ public final class ItemFactory {
       .build();
   }
 
-  public static ItemStack createKillerSword() {
+  public static ItemStack createKillerSword(final GameProperties properties) {
     final ItemStack killerSword = createDefaultKillerSword();
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager manager = plugin.getCraftEngineManager();
-      return manager.getKillerSword().map(Item.Builder::build).orElse(killerSword);
+      return manager.getKillerSword(properties).map(Item.Builder::build).orElse(killerSword);
     }
     if (Capabilities.NEXO.isEnabled()) {
       final NexoManager manager = plugin.getNexoManager();
-      return manager.getKillerSword().map(Item.Builder::build).orElse(killerSword);
+      return manager.getKillerSword(properties).map(Item.Builder::build).orElse(killerSword);
     }
     return killerSword;
   }

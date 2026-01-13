@@ -47,23 +47,21 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class GamePlayerBlockEvent extends GameEvent {
 
-  private static final Collection<Material> BLACKLISTED_BLOCKS;
+  private final Collection<Material> blacklisted;
 
-  static {
-    BLACKLISTED_BLOCKS = new HashSet<>();
-    final String raw = GameProperties.KILLER_CANNOT_BREAK;
+  public GamePlayerBlockEvent(final Game game) {
+    super(game);
+    final GameProperties properties = game.getProperties();
+    final String raw = properties.getKillerCannotBreak();
+    this.blacklisted = new HashSet<>();
     final String[] individual = raw.split(",");
     for (final String material : individual) {
       final String upper = material.toUpperCase();
       final Material target = Material.getMaterial(upper);
       if (target != null) {
-        BLACKLISTED_BLOCKS.add(Material.valueOf(material));
+        this.blacklisted.add(Material.valueOf(material));
       }
     }
-  }
-
-  public GamePlayerBlockEvent(final Game game) {
-    super(game);
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
@@ -146,7 +144,7 @@ public final class GamePlayerBlockEvent extends GameEvent {
 
     final Block block = event.getBlock();
     final Material material = block.getType();
-    if (BLACKLISTED_BLOCKS.contains(material)) {
+    if (this.blacklisted.contains(material)) {
       event.setCancelled(true);
       return;
     }

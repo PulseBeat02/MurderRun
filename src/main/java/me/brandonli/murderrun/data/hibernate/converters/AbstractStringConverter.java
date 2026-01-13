@@ -19,7 +19,7 @@ package me.brandonli.murderrun.data.hibernate.converters;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @Converter(autoApply = true) // add annotation all subclasses
 public abstract class AbstractStringConverter<T> implements AttributeConverter<T, String> {

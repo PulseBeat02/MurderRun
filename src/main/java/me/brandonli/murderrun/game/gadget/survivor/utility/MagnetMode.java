@@ -31,13 +31,14 @@ import org.bukkit.entity.Item;
 
 public final class MagnetMode extends SurvivorGadget {
 
-  public MagnetMode() {
+  public MagnetMode(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "magnet_mode",
-      GameProperties.MAGNET_MODE_COST,
+      properties.getMagnetModeCost(),
       ItemFactory.createGadget(
         "magnet_mode",
-        GameProperties.MAGNET_MODE_MATERIAL,
+        properties.getMagnetModeMaterial(),
         Message.MAGNET_MODE_NAME.build(),
         Message.MAGNET_MODE_LORE.build()
       )
@@ -53,12 +54,13 @@ public final class MagnetMode extends SurvivorGadget {
 
     final GadgetManager gadgetManager = game.getGadgetManager();
     final double current = gadgetManager.getActivationRange();
-    gadgetManager.setActivationRange(current * GameProperties.MAGNET_MODE_MULTIPLIER);
+    final GameProperties properties = game.getProperties();
+    gadgetManager.setActivationRange(current * properties.getMagnetModeMultiplier());
 
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.MAGNET_MODE_ACTIVATE.build();
     audience.sendMessage(message);
-    audience.playSound(GameProperties.MAGNET_MODE_SOUND);
+    audience.playSound(properties.getMagnetModeSound());
 
     return false;
   }

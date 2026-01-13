@@ -42,7 +42,7 @@ import net.citizensnpcs.api.npc.NPC.Metadata;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -55,13 +55,14 @@ public final class EnderShadows extends KillerGadget {
   private static final String TEXTURE_VALUE =
     "ewogICJ0aW1lc3RhbXAiIDogMTY3Mjc3NTg4Mzk5MywKICAicHJvZmlsZUlkIiA6ICI2MDJmMjA0M2YzYjU0OGU1ODQyYjE4ZjljMDg2Y2U0ZiIsCiAgInByb2ZpbGVOYW1lIiA6ICJCb3J5c18iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTM5M2Q2NzU2M2VlNTYwMTg3NjZkMjFiMzY2OTJjYmU1NjNkYzBhOTFiYWNmYzBkYjU0YjMwYzJiOWEyNDg3MyIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9";
 
-  public EnderShadows() {
+  public EnderShadows(final Game game) {
+    final GameProperties properties = game.getProperties();
     super(
       "ender_shadows",
-      GameProperties.ENDER_SHADOWS_COST,
+      properties.getEnderShadowsCost(),
       ItemFactory.createGadget(
         "ender_shadows",
-        GameProperties.ENDER_SHADOWS_MATERIAL,
+        properties.getEnderShadowsMaterial(),
         Message.ENDER_SHADOWS_NAME.build(),
         Message.ENDER_SHADOWS_LORE.build()
       )
@@ -86,8 +87,9 @@ public final class EnderShadows extends KillerGadget {
 
     final GameExtensionManager extensionManager = game.getExtensionManager();
     final CitizensManager npcManager = extensionManager.getNPCManager();
+    final GameProperties properties = game.getProperties();
     manager.applyToLivingSurvivors(survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
-    manager.playSoundForAllParticipants(GameProperties.ENDER_SHADOWS_SOUND);
+    manager.playSoundForAllParticipants(properties.getEnderShadowsSound());
 
     return false;
   }
@@ -129,10 +131,10 @@ public final class EnderShadows extends KillerGadget {
       players.add(survivor);
       final PlayerAudience audience = survivor.getAudience();
       audience.showTitle(empty(), msg);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, true);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, true);
     } else if (players.contains(survivor)) {
       players.remove(survivor);
-      metadata.setEntityGlowing(survivor, ChatColor.RED, false);
+      metadata.setEntityGlowing(survivor, NamedTextColor.RED, false);
     }
   }
 

@@ -30,9 +30,11 @@ import me.brandonli.murderrun.game.lobby.GameManager;
 import me.brandonli.murderrun.game.lobby.PreGameManager;
 import me.brandonli.murderrun.game.lobby.PreGamePlayerManager;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.ContainerUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -123,7 +125,8 @@ public final class PlayerListGui extends PaginatedGui {
   }
 
   private ItemStack createNormalStack(final Player player) {
-    final String name = player.getDisplayName();
+    final Component component = player.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
@@ -135,7 +138,8 @@ public final class PlayerListGui extends PaginatedGui {
   }
 
   private ItemStack createKillerStack(final Player player) {
-    final String name = player.getDisplayName();
+    final Component component = player.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
@@ -147,7 +151,8 @@ public final class PlayerListGui extends PaginatedGui {
   }
 
   private ItemStack createSurvivorStack(final Player player) {
-    final String name = player.getDisplayName();
+    final Component component = player.displayName();
+    final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)

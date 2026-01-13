@@ -43,6 +43,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.capability.Capabilities;
 import me.brandonli.murderrun.game.extension.worldedit.WESpreader;
 import me.brandonli.murderrun.game.map.Schematic;
@@ -55,8 +56,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.EulerAngle;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.incendo.cloud.type.tuple.Triplet;
-import org.jetbrains.annotations.NotNull;
 
 public final class MapUtils {
 
@@ -114,9 +115,9 @@ public final class MapUtils {
     final World world = new WorldCreator(name).environment(environment).generator(generator).createWorld();
     requireNonNull(world);
 
-    final GameRule<?>[] rules = GameRule.values();
-    for (final GameRule<?> rule : rules) {
-      copyRule(copy, world, rule);
+    final Registry<@NonNull GameRule<?>> gameRuleRegistry = Registry.GAME_RULE;
+    for (final GameRule<?> gameRule : gameRuleRegistry) {
+      copyRule(copy, world, gameRule);
     }
 
     Difficulty oldDifficulty = copy.getDifficulty();
@@ -132,7 +133,8 @@ public final class MapUtils {
   }
 
   private static <T> void copyRule(final World old, final World after, final GameRule<T> rule) {
-    final String name = rule.getName();
+    final NamespacedKey key = rule.getKey();
+    final String name = key.getKey();
     if (!old.isGameRule(name)) {
       return;
     }
@@ -157,6 +159,7 @@ public final class MapUtils {
   }
 
   public static CompletableFuture<Void> performPaste(
+    final GameProperties properties,
     final com.sk89q.worldedit.world.World world,
     final Clipboard clipboard,
     final SerializableVector vector3
@@ -179,12 +182,12 @@ public final class MapUtils {
     final Collection<Operation> operations = splitClipboardOperation(world, clipboard, vector3);
     final Iterator<Operation> iterator = operations.iterator();
     final CompletableFuture<Void> future = new CompletableFuture<>();
-    final OperationRunnable runnable = new OperationRunnable(iterator, future);
+    final OperationRunnable runnable = new OperationRunnable(properties, iterator, future);
     runnable.runTaskTimer(plugin, 1L, 1L);
     return future;
   }
 
-  private static @NotNull Collection<Operation> splitClipboardOperation(
+  private static Collection<Operation> splitClipboardOperation(
     final com.sk89q.worldedit.world.World world,
     final Clipboard clipboard,
     final SerializableVector vector3
@@ -339,7 +342,7 @@ public final class MapUtils {
     buffer.get(worldBytes);
 
     final String worldName = new String(worldBytes, StandardCharsets.UTF_8);
-    final World world = Bukkit.getWorld(worldName);
+    final World world = requireNonNull(Bukkit.getWorld(worldName));
     final double x = buffer.getDouble();
     final double y = buffer.getDouble();
     final double z = buffer.getDouble();
