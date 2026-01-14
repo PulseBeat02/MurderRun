@@ -89,7 +89,7 @@ public final class ItemBuilder implements Builder {
   @Override
   public Builder name(final Component name) {
     final ItemMeta meta = this.meta();
-    meta.displayName(name.decorate(TextDecoration.ITALIC.withState(false).decoration()));
+    meta.displayName(name.decoration(TextDecoration.ITALIC, false));
     this.stack.setItemMeta(meta);
     return this;
   }
