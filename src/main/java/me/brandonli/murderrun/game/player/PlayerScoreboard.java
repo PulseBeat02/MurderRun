@@ -68,7 +68,7 @@ public final class PlayerScoreboard {
     int remaining = manager.getRemainingParts();
     if (remaining == 0) {
       final GameProperties properties = game.getProperties();
-      remaining = properties.getCarPartsCount();
+      remaining = properties.getCarPartsRequired();
     }
     return Message.SCOREBOARD_PARTS.build(remaining);
   }

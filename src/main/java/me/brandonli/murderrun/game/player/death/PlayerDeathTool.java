@@ -76,7 +76,7 @@ public final class PlayerDeathTool {
     final GameExtensionManager extensionManager = this.game.getExtensionManager();
     final CitizensManager manager = extensionManager.getNPCManager();
     final NPCRegistry registry = manager.getRegistry();
-    final Location location = player.getLocation();
+    final Location location = requireNonNull(player.getLastDeathLocation());
     final Component component = player.displayName();
     final String name = ComponentUtils.serializeComponentToLegacyString(component);
     final NPC npc = registry.createNPC(EntityType.PLAYER, name);

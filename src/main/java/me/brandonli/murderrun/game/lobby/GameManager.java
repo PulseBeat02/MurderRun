@@ -64,7 +64,7 @@ public final class GameManager {
       final GameStatus status = game.getStatus();
       final GameStatus.Status actual = status.getStatus();
       if (actual != GameStatus.Status.NOT_STARTED) {
-        player.setHealth(0.0);
+        player.setHealth(0);
       }
 
       return true;

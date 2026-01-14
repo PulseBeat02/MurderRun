@@ -114,9 +114,9 @@ public final class PartsManager {
   public int getRemainingParts() {
     final Game game = this.map.getGame();
     final GameProperties properties = game.getProperties();
-    final int start = properties.getCarPartsCount();
+    final int start = properties.getCarPartsCount(); // total parts spawned
     final int taken = start - this.parts.size();
-    final int required = properties.getCarPartsRequired();
+    final int required = properties.getCarPartsRequired(); // total parts needed
     return Math.max(0, required - taken);
   }
 }

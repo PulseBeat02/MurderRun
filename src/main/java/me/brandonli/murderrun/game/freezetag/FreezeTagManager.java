@@ -163,7 +163,7 @@ public final class FreezeTagManager {
     survivor.setAlive(false);
     survivor.setWalkSpeed(0.2f);
     survivor.setFlySpeed(0.1f);
-    survivor.setHealth(0.0);
+    survivor.setHealth(0);
     survivor.setFreezeTicks(0);
 
     final Component message = Message.FREEZE_TAG_DIED.build();
@@ -188,7 +188,7 @@ public final class FreezeTagManager {
 
     final Location location = requireNonNull(survivor.getDeathLocation());
     final World world = location.getWorld();
-    final Location spawn = location.add(0, 2, 0);
+    final Location spawn = location.add(-1, 2, 0);
     final TextDisplay display = world.spawn(spawn, TextDisplay.class);
     display.setAlignment(TextDisplay.TextAlignment.CENTER);
     display.setBillboard(Display.Billboard.CENTER);
