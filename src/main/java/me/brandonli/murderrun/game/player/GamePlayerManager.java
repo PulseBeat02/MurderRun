@@ -104,9 +104,11 @@ public final class GamePlayerManager implements PlayerManagerHelper {
   }
 
   @Override
-  public void resetAllPlayers() {
+  public void shutdown() {
     final PlayerResetTool manager = new PlayerResetTool(this);
     manager.configure();
+    this.movementManager.cleanup();
+    this.lightManager.cleanup();
   }
 
   @Override

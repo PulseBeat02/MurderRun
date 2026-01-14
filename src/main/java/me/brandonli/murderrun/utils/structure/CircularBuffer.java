@@ -44,6 +44,9 @@ public final class CircularBuffer<T> implements Iterable<T> {
   }
 
   public T getOldest() {
+    if (this.buffer.isEmpty()) {
+      throw new IllegalStateException("Cannot get oldest element from empty buffer");
+    }
     return this.buffer.getFirst();
   }
 

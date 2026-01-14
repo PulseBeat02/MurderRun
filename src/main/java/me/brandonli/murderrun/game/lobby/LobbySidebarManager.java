@@ -54,6 +54,7 @@ public final class LobbySidebarManager {
 
   public void delete() {
     this.handleScoreboardUpdate(FastBoard::delete);
+    this.boards.clear();
   }
 
   private void handleScoreboardUpdate(final Consumer<FastBoard> consumer) {

@@ -134,7 +134,7 @@ public final class Game {
     if (this.freezeTagManager != null) {
       this.freezeTagManager.shutdown();
     }
-    this.playerManager.resetAllPlayers();
+    this.playerManager.shutdown();
     this.map.shutdown();
     this.mapSchematicIO.resetMap();
     this.callback.onGameFinish(this, code);

@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.lobby.Lobby;
@@ -45,6 +44,7 @@ import org.bukkit.World;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class MapSchematicIO {
 
@@ -52,18 +52,24 @@ public final class MapSchematicIO {
   private final UUID uuid;
   private final Collection<NPC> npcs;
   private final PreGameManager manager;
+  private final Collection<Chunk> loaded;
+
+  private @Nullable Thread shutdownHook;
 
   public MapSchematicIO(final PreGameManager manager, final GameSettings settings, final UUID uuid) {
     this.manager = manager;
     this.settings = settings;
     this.uuid = uuid;
     this.npcs = new HashSet<>();
+    this.loaded = new HashSet<>();
   }
 
   public void resetMap() {
     this.removeCitizensNPCs();
+    this.unloadChunks();
     this.unloadWorld();
-    this.deleteWorld();
+    this.deleteWorldAsync();
+    this.removeShutdownHook();
   }
 
   // special reset for shutdown
@@ -74,9 +80,23 @@ public final class MapSchematicIO {
   }
 
   private void addShutdownHook() {
-    final Runtime runtime = Runtime.getRuntime();
     final Thread thread = new Thread(this::deleteWorld);
+    final Runtime runtime = Runtime.getRuntime();
     runtime.addShutdownHook(thread);
+    this.shutdownHook = thread;
+  }
+
+  private void removeShutdownHook() {
+    if (this.shutdownHook != null) {
+      try {
+        final Runtime runtime = Runtime.getRuntime();
+        final Thread shutdownHook = requireNonNull(this.shutdownHook); // checker...
+        runtime.removeShutdownHook(shutdownHook);
+        this.shutdownHook = null;
+      } catch (final IllegalStateException ignored) {
+        // JVM already shutting down, hook will run naturally
+      }
+    }
   }
 
   private void deleteWorld() {
@@ -88,6 +108,19 @@ public final class MapSchematicIO {
     if (Files.exists(world)) {
       IOUtils.deleteExistingDirectory(world);
     }
+  }
+
+  private void deleteWorldAsync() {
+    final String name = this.uuid.toString();
+    final Path path = IOUtils.getPluginDataFolderPath();
+    final Path pluginParent = requireNonNull(path.getParent());
+    final Path moreParent = requireNonNull(pluginParent.getParent());
+    final Path world = moreParent.resolve(name);
+    CompletableFuture.runAsync(() -> {
+      if (Files.exists(world)) {
+        IOUtils.deleteExistingDirectory(world);
+      }
+    });
   }
 
   private void unloadWorld() {
@@ -137,21 +170,25 @@ public final class MapSchematicIO {
       for (int z = minZ; z <= maxZ; z++) {
         final Chunk chunk = world.getChunkAt(x, z);
         chunk.setForceLoaded(true);
+        this.loaded.add(chunk);
       }
     }
   }
 
-  public CompletableFuture<Void> pasteMap() {
-    return CompletableFuture.completedFuture(null)
-      .thenRun(MapUtils::enableExtent)
-      .thenRun(this::copyCitizensNPCs)
-      .thenRun(this::createWorld)
-      .thenCompose(v -> this.pasteLobbySchematic())
-      .thenCompose(v -> this.pasteArenaSchematic())
-      .thenRun(this::pasteCitizensNPCs)
-      .exceptionally(e -> {
-        throw new AssertionError(e);
-      });
+  private void unloadChunks() {
+    for (final Chunk chunk : this.loaded) {
+      chunk.setForceLoaded(false);
+    }
+    this.loaded.clear();
+  }
+
+  public void pasteMap() {
+    MapUtils.enableExtent();
+    this.copyCitizensNPCs();
+    this.createWorld();
+    this.pasteLobbySchematic();
+    this.pasteArenaSchematic();
+    this.pasteCitizensNPCs();
   }
 
   private void removeCitizensNPCs() {
@@ -218,8 +255,7 @@ public final class MapSchematicIO {
     final SerializableVector vector3 = schematic.getOrigin();
     final Clipboard clipboard = schematic.getClipboard();
     final com.sk89q.worldedit.world.World world = this.getWorld();
-    final GameProperties properties = this.manager.getProperties();
-    return MapUtils.performPaste(properties, world, clipboard, vector3);
+    return MapUtils.performPaste(world, clipboard, vector3);
   }
 
   private com.sk89q.worldedit.world.World getWorld() {

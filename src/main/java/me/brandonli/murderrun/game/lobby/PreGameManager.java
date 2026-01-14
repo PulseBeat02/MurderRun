@@ -19,7 +19,6 @@ package me.brandonli.murderrun.game.lobby;
 
 import java.util.Collection;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.*;
@@ -61,14 +60,14 @@ public final class PreGameManager {
     this.uuid = UUID.randomUUID();
   }
 
-  public CompletableFuture<Void> initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
+  public void initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
     this.properties = this.mode.getProperties();
     this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.events = new PreGameEvents(this);
     this.mapSchematicIO = new MapSchematicIO(this, this.settings, this.uuid);
     this.events.registerEvents();
     this.manager.initialize();
-    return this.mapSchematicIO.pasteMap();
+    this.mapSchematicIO.pasteMap();
   }
 
   public void startGame() {

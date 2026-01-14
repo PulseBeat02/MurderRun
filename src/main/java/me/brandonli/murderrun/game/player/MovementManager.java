@@ -104,4 +104,8 @@ public final class MovementManager {
 
     return true;
   }
+
+  public void cleanup() {
+    this.playerLocations.clear();
+  }
 }

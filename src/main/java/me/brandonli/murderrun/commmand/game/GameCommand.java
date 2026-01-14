@@ -161,9 +161,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     ) {
       return;
     }
-    manager
-      .createGame(sender, id, mode, arenaName, lobbyName, min, max, quickJoinable)
-      .thenRun(() -> audience.sendMessage(Message.GAME_CREATED.build()));
+    manager.createGame(sender, id, mode, arenaName, lobbyName, min, max, quickJoinable);
+    audience.sendMessage(Message.GAME_CREATED.build());
   }
 
   @Permission("murderrun.command.game.cancel")
@@ -386,16 +385,16 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    this.sanitizer.checkIfNoQuickJoinableGame(sender, manager).thenAccept(value -> {
-        if (value) {
-          return;
-        }
-        final PreGameManager data = requireNonNull(manager.getGame(sender));
-        final PreGamePlayerManager playerManager = data.getPlayerManager();
-        final CommandSender leader = playerManager.getLeader();
-        this.invites.removeInvite(leader, sender);
-        this.sendJoinMessage(sender, (data));
-      });
+    final boolean available = this.sanitizer.checkIfNoQuickJoinableGame(sender, manager);
+    if (available) {
+      return;
+    }
+
+    final PreGameManager data = requireNonNull(manager.getGame(sender));
+    final PreGamePlayerManager playerManager = data.getPlayerManager();
+    final CommandSender leader = playerManager.getLeader();
+    this.invites.removeInvite(leader, sender);
+    this.sendJoinMessage(sender, (data));
   }
 
   @Permission("murderrun.command.game.gui")

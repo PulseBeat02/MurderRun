@@ -60,4 +60,8 @@ public final class LightManager {
       }
     });
   }
+
+  public void cleanup() {
+    this.canSee.clear();
+  }
 }

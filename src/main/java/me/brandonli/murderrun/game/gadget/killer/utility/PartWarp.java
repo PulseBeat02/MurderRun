@@ -77,9 +77,15 @@ public final class PartWarp extends KillerGadget {
   }
 
   public CarPart getRandomCarPart(final List<CarPart> shuffled) {
+    if (shuffled.isEmpty()) {
+      throw new IllegalStateException("No car parts available to warp");
+    }
     CarPart chosen = shuffled.getFirst();
     while (chosen.isPickedUp()) {
       shuffled.remove(chosen);
+      if (shuffled.isEmpty()) {
+        throw new IllegalStateException("All car parts are already picked up");
+      }
       chosen = shuffled.getFirst();
     }
     return chosen;

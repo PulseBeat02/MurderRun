@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 import com.alessiodp.parties.api.Parties;
 import com.alessiodp.parties.api.interfaces.PartiesAPI;
 import com.alessiodp.parties.api.interfaces.Party;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
@@ -66,10 +67,21 @@ public final class GameEventsPlayerListener implements GameEventsListener {
       }
     }
 
-    if (idToRemove != null && preToRemove != null) { // checker
+    if (idToRemove != null && preToRemove != null) {
+      final PreGamePlayerManager playerManager = preToRemove.getPlayerManager();
+      this.removePlayersFromIndex(playerManager);
       manager.removeGame(preToRemove);
       games.remove(idToRemove);
       this.sendRequeueMessage(preToRemove);
+    }
+  }
+
+  private void removePlayersFromIndex(final PreGamePlayerManager playerManager) {
+    final Collection<Player> participants = playerManager.getParticipants();
+    for (final Player player : participants) {
+      final UUID uuid = player.getUniqueId();
+      final Map<UUID, PreGameManager> playerToGame = this.manager.getPlayerToGame();
+      playerToGame.remove(uuid);
     }
   }
 

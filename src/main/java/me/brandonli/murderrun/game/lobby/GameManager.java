@@ -18,7 +18,6 @@
 package me.brandonli.murderrun.game.lobby;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
@@ -40,10 +39,12 @@ public final class GameManager {
 
   private final MurderRun plugin;
   private final Map<String, PreGameManager> games;
+  private final Map<UUID, PreGameManager> playerToGame;
   private final AtomicBoolean creation;
 
   public GameManager(final MurderRun plugin) {
     this.games = new ConcurrentHashMap<>();
+    this.playerToGame = new ConcurrentHashMap<>();
     this.plugin = plugin;
     this.creation = new AtomicBoolean(false);
   }
@@ -53,7 +54,8 @@ public final class GameManager {
   }
 
   public boolean leaveGame(final Player player) {
-    final PreGameManager preGameManager = this.getGameAsParticipant(player);
+    final UUID uuid = player.getUniqueId();
+    final PreGameManager preGameManager = this.playerToGame.remove(uuid);
     if (preGameManager != null) {
       final PreGamePlayerManager manager = preGameManager.getPlayerManager();
       manager.removeParticipantFromLobby(player);
@@ -72,6 +74,10 @@ public final class GameManager {
   }
 
   public @Nullable PreGameManager getGameAsParticipant(final CommandSender participant) {
+    if (participant instanceof final Player player) {
+      final UUID uuid = player.getUniqueId();
+      return this.playerToGame.get(uuid);
+    }
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
@@ -98,16 +104,16 @@ public final class GameManager {
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
       if (!playerManager.isGameFull() && !playerManager.isLocked()) {
-        final PreGameManager preGameManager = playerManager.getManager();
-        final GameMode mode = preGameManager.getMode();
         playerManager.addParticipantToLobby(player, false);
+        final UUID uuid = player.getUniqueId();
+        this.playerToGame.put(uuid, manager);
         return true;
       }
     }
     return false;
   }
 
-  public CompletableFuture<Void> createGame(
+  public void createGame(
     final CommandSender leader,
     final String id,
     final GameMode mode,
@@ -118,12 +124,12 @@ public final class GameManager {
     final boolean quickJoinable
   ) {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
-    return this.createClampedGame(leader, id, mode, arenaName, lobbyName, min, max, quickJoinable, listener)
-      .thenAccept(manager -> this.addGameToRegistry(id, manager))
-      .thenRun(() -> this.autoJoinIfLeaderPlayer(leader, id));
+    final PreGameManager game = this.createClampedGame(leader, id, mode, arenaName, lobbyName, min, max, quickJoinable, listener);
+    this.addGameToRegistry(id, game);
+    this.autoJoinIfLeaderPlayer(leader, id);
   }
 
-  private CompletableFuture<PreGameManager> createClampedGame(
+  private PreGameManager createClampedGame(
     final CommandSender leader,
     final String id,
     final GameMode mode,
@@ -139,7 +145,8 @@ public final class GameManager {
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
     final PreGameManager manager = new PreGameManager(this.plugin, this, id, mode, listener);
     this.setSettings(manager, arenaName, lobbyName);
-    return manager.initialize(leader, finalMin, finalMax, quickJoinable).thenApply(ignored -> manager);
+    manager.initialize(leader, finalMin, finalMax, quickJoinable);
+    return manager;
   }
 
   private void sendGameCreationMessage(final CommandSender leader) {
@@ -178,22 +185,29 @@ public final class GameManager {
     final PreGameManager manager = this.games.get(id);
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
+      final Collection<Player> participants = playerManager.getParticipants();
+      for (final Player player : participants) {
+        final UUID uuid = player.getUniqueId();
+        this.playerToGame.remove(uuid);
+      }
       final Game game = manager.getGame();
       game.finishGame(GameResult.INTERRUPTED);
       playerManager.forceShutdown();
       manager.shutdown(true);
       this.games.remove(id);
+      final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
+      shutdownManager.removeGame(manager);
     }
   }
 
-  public CompletableFuture<Boolean> quickJoinGame(final Player player) {
+  public boolean quickJoinGame(final Player player) {
     final QuickJoinConfigurationMapper config = this.plugin.getQuickJoinConfiguration();
     final AudienceProvider provider = this.plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
     final Audience audience = audiences.sender(player);
     if (!config.isEnabled()) {
       audience.sendMessage(Message.GAME_NONE.build());
-      return CompletableFuture.completedFuture(false);
+      return false;
     }
 
     final Collection<PreGameManager> values = this.games.values();
@@ -203,13 +217,13 @@ public final class GameManager {
       if (join) {
         final String id = manager.getId();
         this.joinGame(player, id);
-        return CompletableFuture.completedFuture(true);
+        return true;
       }
     }
 
     if (this.creation.get()) {
       audience.sendMessage(Message.GAME_QUICKJOIN_CREATION_LOAD.build());
-      return CompletableFuture.completedFuture(false);
+      return false;
     }
 
     final UUID random = UUID.randomUUID();
@@ -217,7 +231,7 @@ public final class GameManager {
     final List<String[]> pairs = config.getLobbyArenaPairs();
     if (pairs.isEmpty()) {
       audience.sendMessage(Message.GAME_NONE.build());
-      return CompletableFuture.completedFuture(false);
+      return false;
     }
 
     this.creation.set(true);
@@ -230,13 +244,10 @@ public final class GameManager {
 
     final GameMode[] modes = config.getGameModes();
     final GameMode mode = RandomUtils.getRandomElement(modes);
-    return this.createGame(player, raw, mode, arena, lobby, min, max, true)
-      .thenRun(() -> this.creation.set(false))
-      .thenApply(manager -> true)
-      .exceptionally(e -> {
-        this.creation.set(false);
-        throw new AssertionError(e);
-      });
+    this.createGame(player, raw, mode, arena, lobby, min, max, true);
+    this.creation.set(false);
+
+    return true;
   }
 
   public MurderRun getPlugin() {
@@ -245,5 +256,9 @@ public final class GameManager {
 
   public Map<String, PreGameManager> getGames() {
     return this.games;
+  }
+
+  public Map<UUID, PreGameManager> getPlayerToGame() {
+    return this.playerToGame;
   }
 }

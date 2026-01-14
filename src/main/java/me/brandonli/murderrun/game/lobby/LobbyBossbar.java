@@ -68,5 +68,6 @@ public final class LobbyBossbar {
     for (final Audience audience : this.players) {
       audience.hideBossBar(this.bar);
     }
+    this.players.clear();
   }
 }

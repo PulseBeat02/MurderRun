@@ -18,7 +18,6 @@
 package me.brandonli.murderrun.commmand.game;
 
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameMode;
@@ -71,7 +70,7 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public CompletableFuture<Boolean> checkIfNoQuickJoinableGame(final Player sender, final GameManager manager) {
+  public boolean checkIfNoQuickJoinableGame(final Player sender, final GameManager manager) {
     return manager.quickJoinGame(sender);
   }
 
