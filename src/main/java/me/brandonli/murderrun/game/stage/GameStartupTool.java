@@ -31,6 +31,7 @@ import me.brandonli.murderrun.game.GameTimer;
 import me.brandonli.murderrun.game.GameTimerUpdater;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.map.GameMap;
+import me.brandonli.murderrun.game.map.ambience.EventsManager;
 import me.brandonli.murderrun.game.map.part.PartsManager;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
@@ -166,6 +167,13 @@ public final class GameStartupTool {
     this.playMusic();
     this.startTimer();
     this.setGameStatus();
+    this.startEvents();
+  }
+
+  private void startEvents() {
+    final GameMap map = this.game.getMap();
+    final EventsManager manager = new EventsManager(map);
+    manager.start();
   }
 
   private void setGameStatus() {

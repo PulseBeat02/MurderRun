@@ -156,4 +156,8 @@ public final class GameScheduler {
     final Location location = item.getLocation();
     world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(color, 2));
   }
+
+  public Game getGame() {
+    return this.game;
+  }
 }

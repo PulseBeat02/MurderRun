@@ -100,7 +100,10 @@ public final class PlayerStartupTool {
     final Item.Builder item = flashlight.getStackBuilder();
     final ItemStack stack = item.build();
     final PlayerInventory inventory = player.getInventory();
-    inventory.addItem(stack);
+    final Game game = player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    scheduler.scheduleTask(() -> inventory.addItem(stack), 10L, reference);
   }
 
   public void handleMurderer(final GamePlayer gamePlayer) {

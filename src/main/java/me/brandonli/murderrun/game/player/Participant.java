@@ -26,10 +26,7 @@ import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
@@ -48,6 +45,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface Participant {
+  void setPlayerWeather(WeatherType type);
+
   Player getInternalPlayer();
 
   void disableJump(final GameScheduler scheduler, final long ticks);

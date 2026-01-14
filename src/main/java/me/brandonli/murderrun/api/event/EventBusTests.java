@@ -22,6 +22,7 @@ import me.brandonli.murderrun.api.event.contract.GameStatusEvent;
 import me.brandonli.murderrun.api.event.contract.ability.AbilityUseEvent;
 import me.brandonli.murderrun.api.event.contract.arena.ArenaEvent;
 import me.brandonli.murderrun.api.event.contract.arena.ArenaModificationType;
+import me.brandonli.murderrun.api.event.contract.event.RandomGameEvent;
 import me.brandonli.murderrun.api.event.contract.gadget.GadgetUseEvent;
 import me.brandonli.murderrun.api.event.contract.gadget.TrapActivateEvent;
 import me.brandonli.murderrun.api.event.contract.lobby.LobbyEvent;
@@ -32,6 +33,7 @@ import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameStatus;
 import me.brandonli.murderrun.game.ability.AbilityRegistry;
 import me.brandonli.murderrun.game.gadget.GadgetRegistry;
+import me.brandonli.murderrun.game.map.ambience.SmiteEvent;
 import me.brandonli.murderrun.game.player.GamePlayer;
 
 public final class EventBusTests {
@@ -64,5 +66,6 @@ public final class EventBusTests {
     eventBus.post(StatisticsEvent.class, StatisticsType.TOTAL_WINS, 1);
     eventBus.post(StatisticsEvent.class, StatisticsType.WIN_LOSS_RATIO, 1);
     eventBus.post(GameStatusEvent.class, new GameStatus(null), new Game(null));
+    eventBus.post(RandomGameEvent.class, new SmiteEvent(), new Game(null));
   }
 }

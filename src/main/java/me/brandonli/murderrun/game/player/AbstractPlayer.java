@@ -58,6 +58,11 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public abstract class AbstractPlayer implements Participant {
 
   @Override
+  public void setPlayerWeather(final WeatherType type) {
+    this.apply(player -> player.setPlayerWeather(type));
+  }
+
+  @Override
   public void disableJump(final GameScheduler scheduler, final long ticks) {
     final StrictPlayerReference reference = StrictPlayerReference.of(this);
     final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.JUMP_STRENGTH));

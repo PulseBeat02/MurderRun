@@ -104,6 +104,11 @@ public final class GamePlayerManager implements PlayerManagerHelper {
   }
 
   @Override
+  public int getTotalPlayers() {
+    return this.lookupMap.size();
+  }
+
+  @Override
   public void shutdown() {
     final PlayerResetTool manager = new PlayerResetTool(this);
     manager.configure();

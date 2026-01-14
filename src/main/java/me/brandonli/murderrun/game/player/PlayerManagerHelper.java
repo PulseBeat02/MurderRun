@@ -43,6 +43,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 
 public interface PlayerManagerHelper {
+  int getTotalPlayers();
+
   void shutdown();
 
   default void applyToSurvivors(final Consumer<GamePlayer> consumer) {

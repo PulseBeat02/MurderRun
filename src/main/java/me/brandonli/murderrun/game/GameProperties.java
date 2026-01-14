@@ -45,6 +45,10 @@ public final class GameProperties {
     this.bundle = new GameBundle(name);
   }
 
+  public boolean isRandomEventsEnabled() {
+    return this.bool("game.random_events.enabled");
+  }
+
   public int getFreezeTagReviveRadius() {
     return this.num("freeze_tag.revive.radius");
   }
