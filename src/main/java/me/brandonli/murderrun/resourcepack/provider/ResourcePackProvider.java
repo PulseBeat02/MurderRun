@@ -66,7 +66,7 @@ public abstract class ResourcePackProvider implements PackProvider {
     final Stream<ResourcePackInfo> existing = Stream.of(this.getMainResourceInfo(), this.cacheProvidedResourcesExceptionally()).flatMap(
       Optional::stream
     );
-    final List<ResourcePackInfo> infos = Stream.concat(customPacks, existing).toList();
+    final List<ResourcePackInfo> infos = Stream.concat(existing, customPacks).toList();
     final Component message = Message.RESOURCEPACK_PROMPT.build();
     final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
     final GameProperties properties = GameProperties.COMMON;

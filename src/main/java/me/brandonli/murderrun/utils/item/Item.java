@@ -51,6 +51,8 @@ public interface Item {
 
     Builder name(final Component name);
 
+    Builder nameWithItalics(final Component name);
+
     Builder lore(final Component lore);
 
     Builder lore(final List<Component> lore);

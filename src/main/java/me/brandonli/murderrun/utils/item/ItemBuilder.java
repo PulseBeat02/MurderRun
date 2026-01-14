@@ -20,8 +20,6 @@ package me.brandonli.murderrun.utils.item;
 import static java.util.Objects.requireNonNull;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import io.papermc.paper.datacomponent.DataComponentTypes;
-import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -32,6 +30,7 @@ import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.item.Item.Builder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -81,9 +80,16 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
+  public Builder nameWithItalics(final Component name) {
+    final ItemMeta meta = this.meta();
+    this.stack.setItemMeta(meta);
+    return this;
+  }
+
+  @Override
   public Builder name(final Component name) {
     final ItemMeta meta = this.meta();
-    meta.displayName(name);
+    meta.displayName(name.decorate(TextDecoration.ITALIC.withState(false).decoration()));
     this.stack.setItemMeta(meta);
     return this;
   }
@@ -168,13 +174,8 @@ public final class ItemBuilder implements Builder {
       ItemFlag.HIDE_STORED_ENCHANTS,
       ItemFlag.HIDE_ARMOR_TRIM,
       ItemFlag.HIDE_UNBREAKABLE,
-      ItemFlag.HIDE_DESTROYS,
-      ItemFlag.HIDE_DYE,
-      ItemFlag.HIDE_PLACED_ON
+      ItemFlag.HIDE_DYE
     );
-    final io.papermc.paper.datacomponent.item.TooltipDisplay.Builder display = TooltipDisplay.tooltipDisplay().hideTooltip(true);
-    this.stack.setItemMeta(meta);
-    this.stack.setData(DataComponentTypes.TOOLTIP_DISPLAY, display);
     return this;
   }
 
