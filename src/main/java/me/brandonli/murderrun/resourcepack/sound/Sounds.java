@@ -19,14 +19,15 @@ package me.brandonli.murderrun.resourcepack.sound;
 
 import static net.kyori.adventure.key.Key.key;
 
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import net.kyori.adventure.key.Key;
 
 public final class Sounds {
 
-  private static final Set<SoundResource> ALL = new HashSet<>();
+  private static final Set<SoundResource> ALL = Collections.synchronizedSet(new LinkedHashSet<>());
 
   private Sounds() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");

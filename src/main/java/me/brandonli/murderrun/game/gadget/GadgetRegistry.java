@@ -24,6 +24,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
@@ -50,7 +51,7 @@ public final class GadgetRegistry {
   private final AtomicBoolean frozen;
 
   private GadgetRegistry() {
-    this.gadgetRegistry = new HashMap<>();
+    this.gadgetRegistry = new ConcurrentHashMap<>();
     this.frozen = new AtomicBoolean(true);
     this.disabled = this.getDisabledGadgets();
     this.load();

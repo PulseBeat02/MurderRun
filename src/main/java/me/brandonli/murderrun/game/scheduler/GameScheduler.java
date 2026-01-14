@@ -17,8 +17,8 @@
  */
 package me.brandonli.murderrun.game.scheduler;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import me.brandonli.murderrun.MurderRun;
@@ -43,7 +43,7 @@ public final class GameScheduler {
   public GameScheduler(final Game game) {
     this.game = game;
     this.plugin = game.getPlugin();
-    this.tasks = new HashSet<>();
+    this.tasks = ConcurrentHashMap.newKeySet();
   }
 
   public void cancelAllTasks() {
@@ -59,12 +59,16 @@ public final class GameScheduler {
   }
 
   public void cancelTask(final int taskId) {
+    BukkitTask toRemove = null;
     for (final BukkitTask task : this.tasks) {
       if (task.getTaskId() == taskId) {
         task.cancel();
-        this.tasks.remove(task);
+        toRemove = task;
         break;
       }
+    }
+    if (toRemove != null) {
+      this.tasks.remove(toRemove);
     }
   }
 

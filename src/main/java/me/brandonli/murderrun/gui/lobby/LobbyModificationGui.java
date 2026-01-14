@@ -24,6 +24,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
@@ -69,8 +70,8 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   private volatile Location first;
   private volatile Location second;
   private volatile String lobbyName;
-  private volatile boolean listenForBreaks;
-  private volatile boolean listenForName;
+  private final AtomicBoolean listenForBreaks;
+  private final AtomicBoolean listenForName;
 
   public LobbyModificationGui(final MurderRun plugin, final Player watcher, final boolean editMode) {
     this(plugin, watcher, "None", watcher.getLocation(), watcher.getLocation(), watcher.getLocation(), editMode);
@@ -96,6 +97,8 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
     this.spawn = spawn;
     this.lobbyName = lobbyName;
     this.editMode = editMode;
+    this.listenForBreaks = new AtomicBoolean(false);
+    this.listenForName = new AtomicBoolean(false);
   }
 
   public void registerEvents() {
@@ -129,7 +132,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
-    if (this.listenForBreaks || this.listenForName) {
+    if (this.listenForBreaks.get() || this.listenForName.get()) {
       return;
     }
     final HandlerList list = BlockBreakEvent.getHandlerList();
@@ -143,14 +146,14 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
       return;
     }
 
-    if (!this.listenForName) {
+    if (!this.listenForName.get()) {
       return;
     }
     event.setCancelled(true);
 
     final Component component = event.message();
     final String msg = ComponentUtils.serializeComponentToPlain(component);
-    if (this.listenForBreaks) {
+    if (this.listenForBreaks.get()) {
       final String upper = msg.toUpperCase();
       final Location location = player.getLocation();
       if (upper.equals("SKIP")) {
@@ -160,7 +163,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
     }
 
     this.lobbyName = msg;
-    this.listenForName = false;
+    this.listenForName.set(false);
     this.showAsync();
   }
 
@@ -180,7 +183,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
       return;
     }
 
-    if (!this.listenForBreaks) {
+    if (!this.listenForBreaks.get()) {
       return;
     }
     event.setCancelled(true);
@@ -205,8 +208,8 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
       case 0 -> this.audience.sendMessage(Message.CREATE_LOBBY_GUI_EDIT_SECOND.build());
       case 1 -> this.audience.sendMessage(Message.CREATE_LOBBY_GUI_EDIT_SPAWN.build());
       case 2 -> {
-        this.listenForBreaks = false;
-        this.listenForName = false;
+        this.listenForBreaks.set(false);
+        this.listenForName.set(false);
         this.showAsync();
       }
       default -> throw new IllegalStateException();
@@ -277,7 +280,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   }
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
-    this.listenForBreaks = true;
+    this.listenForBreaks.set(true);
     this.watcher.closeInventory();
     final Component msg = Message.CREATE_LOBBY_GUI_EDIT_FIRST.build();
     this.audience.sendMessage(msg);
@@ -294,7 +297,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   }
 
   private void listenForMessage(final InventoryClickEvent event) {
-    this.listenForName = true;
+    this.listenForName.set(true);
     this.watcher.closeInventory();
     final Component msg = Message.CREATE_LOBBY_GUI_EDIT_NAME.build();
     this.audience.sendMessage(msg);

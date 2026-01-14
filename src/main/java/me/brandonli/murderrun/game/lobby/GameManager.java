@@ -19,6 +19,7 @@ package me.brandonli.murderrun.game.lobby;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.commmand.GameShutdownManager;
@@ -42,7 +43,7 @@ public final class GameManager {
   private final AtomicBoolean creation;
 
   public GameManager(final MurderRun plugin) {
-    this.games = new HashMap<>();
+    this.games = new ConcurrentHashMap<>();
     this.plugin = plugin;
     this.creation = new AtomicBoolean(false);
   }

@@ -17,8 +17,8 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.trap;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import me.brandonli.murderrun.game.Game;
@@ -49,7 +49,7 @@ public final class SpasmTrap extends SurvivorTrap {
       Message.SPASM_ACTIVATE.build(),
       properties.getSpasmColor()
     );
-    this.states = new HashMap<>();
+    this.states = new ConcurrentHashMap<>();
   }
 
   @Override

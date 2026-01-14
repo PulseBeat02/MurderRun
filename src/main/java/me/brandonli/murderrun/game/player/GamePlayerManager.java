@@ -20,6 +20,7 @@ package me.brandonli.murderrun.game.player;
 import static java.util.Objects.requireNonNull;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import me.brandonli.murderrun.game.Game;
@@ -48,7 +49,7 @@ public final class GamePlayerManager implements PlayerManagerHelper {
     this.movementManager = new MovementManager(game);
     this.sprintManager = new SprintManager(game);
     this.lightManager = new LightManager(game);
-    this.lookupMap = new HashMap<>();
+    this.lookupMap = new ConcurrentHashMap<>();
   }
 
   public void start(final Collection<Player> murderers, final Collection<Player> participants) {

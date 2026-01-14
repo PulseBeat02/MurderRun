@@ -18,14 +18,14 @@
 package me.brandonli.murderrun.game.extension.papi;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import me.brandonli.murderrun.game.statistics.PlayerStatistics;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PAPIPlaceholderParser {
 
-  private static final Collection<PAPIPlaceholder> PLACEHOLDERS = new HashSet<>();
+  private static final Collection<PAPIPlaceholder> PLACEHOLDERS = ConcurrentHashMap.newKeySet();
 
   private static final PAPIPlaceholder FASTEST_WIN_KILLER = of("fastest_win_killer", checkValue(PlayerStatistics::getFastestWinKiller));
   private static final PAPIPlaceholder FASTEST_WIN_SURVIVOR = of(

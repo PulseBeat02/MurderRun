@@ -28,7 +28,6 @@ import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.registry.BlockMaterial;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.utils.RandomUtils;
@@ -98,7 +97,7 @@ public final class TerrainDropAnalyzer {
     final BlockVector3 corner2 = BukkitAdapter.asBlockVector(this.corners[1]);
     final BlockVector3 min = corner1.getMinimum(corner2);
     final BlockVector3 max = corner1.getMaximum(corner2);
-    final Queue<BlockVector3> queue = new ConcurrentLinkedQueue<>();
+    final Queue<BlockVector3> queue = new ArrayDeque<>();
     final Set<BlockVector3> visited = new HashSet<>();
     final List<BlockVector3> valid = new ArrayList<>();
     queue.add(start);

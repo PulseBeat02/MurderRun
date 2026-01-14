@@ -18,10 +18,10 @@
 package me.brandonli.murderrun.game.player;
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameStatus;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
@@ -39,7 +39,7 @@ public final class MovementManager {
 
   public MovementManager(final Game game) {
     this.game = game;
-    this.playerLocations = new HashMap<>();
+    this.playerLocations = new ConcurrentHashMap<>();
   }
 
   public void start() {

@@ -26,6 +26,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.arena.ArenaManager;
@@ -75,9 +77,9 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
 
   private WandListener listener;
   private final ArenaCreation creation;
-  private volatile boolean listenForBreaks;
-  private volatile boolean listenForName;
-  private volatile boolean listenForItems;
+  private final AtomicBoolean listenForBreaks;
+  private final AtomicBoolean listenForName;
+  private final AtomicBoolean listenForItems;
 
   public ArenaModificationGui(final MurderRun plugin, final Player watcher, final boolean editMode) {
     this(
@@ -88,7 +90,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
       watcher.getLocation(),
       watcher.getLocation(),
       watcher.getLocation(),
-      Collections.synchronizedSet(new HashSet<>()),
+      ConcurrentHashMap.newKeySet(),
       editMode
     );
   }
@@ -110,7 +112,9 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
     this.audience = this.getAudience(plugin, watcher);
     this.plugin = plugin;
     this.watcher = watcher;
-    this.listenForBreaks = false;
+    this.listenForBreaks = new AtomicBoolean(false);
+    this.listenForName = new AtomicBoolean(false);
+    this.listenForItems = new AtomicBoolean(false);
     this.editMode = editMode;
     this.currentMode = new AtomicInteger(0);
     if (!editMode) {
@@ -186,7 +190,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
-    if (this.listenForBreaks || this.listenForName || this.listenForItems) {
+    if (this.listenForBreaks.get() || this.listenForName.get() || this.listenForItems.get()) {
       return;
     }
 
@@ -204,14 +208,14 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
       return;
     }
 
-    if (!this.listenForName) {
+    if (!this.listenForName.get()) {
       return;
     }
     event.setCancelled(true);
 
     final Component component = event.message();
     final String msg = ComponentUtils.serializeComponentToPlain(component);
-    if (this.listenForBreaks) {
+    if (this.listenForBreaks.get()) {
       final String upper = msg.toUpperCase();
       final Location location = player.getLocation();
       if (upper.equals("SKIP")) {
@@ -220,18 +224,18 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
       }
     }
 
-    if (this.listenForItems) {
+    if (this.listenForItems.get()) {
       final String upper = msg.toUpperCase();
       if (upper.equals("DONE")) {
-        this.listenForName = false;
-        this.listenForItems = false;
+        this.listenForName.set(false);
+        this.listenForItems.set(false);
         this.showAsync();
         return;
       }
     }
 
     this.creation.setArenaName(msg);
-    this.listenForName = false;
+    this.listenForName.set(false);
     this.showAsync();
   }
 
@@ -251,7 +255,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
       return;
     }
 
-    if (!this.listenForBreaks) {
+    if (!this.listenForBreaks.get()) {
       return;
     }
     event.setCancelled(true);
@@ -272,8 +276,8 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   }
 
   private void giveWandStack(final InventoryClickEvent event) {
-    this.listenForName = true;
-    this.listenForItems = true;
+    this.listenForName.set(true);
+    this.listenForItems.set(true);
     this.watcher.closeInventory();
 
     final Player player = (Player) this.watcher;
@@ -384,8 +388,8 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
       case 1 -> this.audience.sendMessage(Message.CREATE_ARENA_GUI_EDIT_TRUCK.build());
       case 2 -> this.audience.sendMessage(Message.CREATE_ARENA_GUI_EDIT_SPAWN.build());
       case 3 -> {
-        this.listenForBreaks = false;
-        this.listenForName = false;
+        this.listenForBreaks.set(false);
+        this.listenForName.set(false);
         this.showAsync();
       }
       default -> throw new IllegalStateException();
@@ -421,8 +425,8 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
     this.currentMode.set(0);
-    this.listenForBreaks = true;
-    this.listenForName = true;
+    this.listenForBreaks.set(true);
+    this.listenForName.set(true);
     this.watcher.closeInventory();
     final Component msg = Message.CREATE_ARENA_GUI_EDIT_FIRST.build();
     this.audience.sendMessage(msg);
@@ -440,7 +444,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   }
 
   private void listenForMessage(final InventoryClickEvent event) {
-    this.listenForName = true;
+    this.listenForName.set(true);
     this.watcher.closeInventory();
     final Component msg = Message.CREATE_ARENA_GUI_EDIT_NAME.build();
     this.audience.sendMessage(msg);

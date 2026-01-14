@@ -18,6 +18,7 @@
 package me.brandonli.murderrun.game.gadget.killer.utility;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.killer.KillerGadget;
@@ -50,7 +51,7 @@ public final class Fright extends KillerGadget {
       properties.getFrightCost(),
       ItemFactory.createGadget("fright", properties.getFrightMaterial(), Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build())
     );
-    this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
+    this.currentlyJumpScared = ConcurrentHashMap.newKeySet();
   }
 
   @Override

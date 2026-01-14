@@ -22,9 +22,9 @@ import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.TextColor.color;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.player.GamePlayer;
@@ -58,9 +58,9 @@ public final class FreezeTagManager {
 
   public FreezeTagManager(final Game game) {
     this.game = game;
-    this.revivalTimers = new HashMap<>();
-    this.hologramTasks = new HashMap<>();
-    this.holograms = new HashMap<>();
+    this.revivalTimers = new ConcurrentHashMap<>();
+    this.hologramTasks = new ConcurrentHashMap<>();
+    this.holograms = new ConcurrentHashMap<>();
     this.startReviveUpdateTask(game);
   }
 

@@ -18,9 +18,9 @@
 package me.brandonli.murderrun.game.ability.killer;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameStatus;
@@ -72,7 +72,7 @@ public final class Phase extends KillerAbility implements Listener {
         this.blacklisted.add(Material.valueOf(material));
       }
     }
-    this.cooldowns = new HashMap<>();
+    this.cooldowns = new ConcurrentHashMap<>();
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

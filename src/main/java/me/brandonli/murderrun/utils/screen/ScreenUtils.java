@@ -24,9 +24,9 @@ import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.manager.player.PlayerManager;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerCamera;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.MurderRun;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -50,7 +50,7 @@ public final class ScreenUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  private static final Set<Player> TRACKED_PLAYERS = new HashSet<>();
+  private static final Set<Player> TRACKED_PLAYERS = ConcurrentHashMap.newKeySet();
   private static final ScreenListener SCREEN_LISTENER = new ScreenListener(TRACKED_PLAYERS);
 
   public static void init(final MurderRun plugin) {

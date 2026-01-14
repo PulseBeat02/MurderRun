@@ -26,6 +26,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.arena.ArenaManager;
@@ -77,17 +78,20 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private int max;
   private boolean quickJoin;
 
-  private volatile boolean noCancel;
-  private volatile boolean listenForId;
-  private volatile boolean listenForMin;
-  private volatile boolean listenForMax;
+  private final AtomicBoolean noCancel;
+  private final AtomicBoolean listenForId;
+  private final AtomicBoolean listenForMin;
+  private final AtomicBoolean listenForMax;
 
   public GameCreationGui(final MurderRun plugin, final Player watcher) {
     super(Message.CREATE_GAME_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = watcher;
     this.audience = this.getAudience(plugin, watcher);
-    this.noCancel = true;
+    this.noCancel = new AtomicBoolean(true);
+    this.listenForId = new AtomicBoolean(false);
+    this.listenForMin = new AtomicBoolean(false);
+    this.listenForMax = new AtomicBoolean(false);
   }
 
   public void registerEvents() {
@@ -104,7 +108,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
   }
 
   private void unregisterEvents(final InventoryCloseEvent event) {
-    if (this.noCancel) {
+    if (this.noCancel.get()) {
       return;
     }
 
@@ -139,24 +143,24 @@ public final class GameCreationGui extends PatternGui implements Listener {
       return;
     }
 
-    if (!this.listenForId && !this.listenForMin && !this.listenForMax) {
+    if (!this.listenForId.get() && !this.listenForMin.get() && !this.listenForMax.get()) {
       return;
     }
     event.setCancelled(true);
 
     final Component component = event.message();
     final String msg = ComponentUtils.serializeComponentToPlain(component);
-    if (this.listenForId) {
+    if (this.listenForId.get()) {
       this.id = msg;
-      this.listenForId = false;
+      this.listenForId.set(false);
     }
 
-    if (this.listenForMin) {
-      this.listenForMin = this.parsePlayerCount(msg, true);
+    if (this.listenForMin.get()) {
+      this.listenForMin.set(this.parsePlayerCount(msg, true));
     }
 
-    if (this.listenForMax) {
-      this.listenForMax = this.parsePlayerCount(msg, false);
+    if (this.listenForMax.get()) {
+      this.listenForMax.set(this.parsePlayerCount(msg, false));
     }
 
     this.showAsync(player);
@@ -172,10 +176,8 @@ public final class GameCreationGui extends PatternGui implements Listener {
 
     if (isMin) {
       this.min = wrapped;
-      this.listenForMin = false;
     } else {
       this.max = wrapped;
-      this.listenForMax = false;
     }
 
     return false;
@@ -244,21 +246,21 @@ public final class GameCreationGui extends PatternGui implements Listener {
   }
 
   private void listenForMax(final InventoryClickEvent event) {
-    this.listenForMax = true;
+    this.listenForMax.set(true);
     this.watcher.closeInventory();
     final Component msg = Message.GAME_CREATE_EDIT_MAX.build();
     this.audience.sendMessage(msg);
   }
 
   private void listenForMin(final InventoryClickEvent event) {
-    this.listenForMin = true;
+    this.listenForMin.set(true);
     this.watcher.closeInventory();
     final Component msg = Message.GAME_CREATE_EDIT_MIN.build();
     this.audience.sendMessage(msg);
   }
 
   private void listenForIdMessage(final InventoryClickEvent event) {
-    this.listenForId = true;
+    this.listenForId.set(true);
     this.watcher.closeInventory();
     final Component msg = Message.GAME_CREATE_EDIT_ID.build();
     this.audience.sendMessage(msg);
@@ -285,7 +287,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
 
     player.performCommand(cmd);
 
-    this.noCancel = false;
+    this.noCancel.set(false);
   }
 
   private String constructCommand() {

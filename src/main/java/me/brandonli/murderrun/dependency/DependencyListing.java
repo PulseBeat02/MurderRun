@@ -18,12 +18,13 @@
 package me.brandonli.murderrun.dependency;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.utils.versioning.ServerEnvironment;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class DependencyListing {
 
-  private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new HashMap<>();
+  private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new ConcurrentHashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
     "Citizens-2.0.40-b4061",

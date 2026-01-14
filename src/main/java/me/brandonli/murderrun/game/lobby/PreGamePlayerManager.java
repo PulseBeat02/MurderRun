@@ -21,6 +21,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.Iterables;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
@@ -78,9 +79,9 @@ public final class PreGamePlayerManager {
     final boolean quickJoinable
   ) {
     this.manager = manager;
-    this.survivors = Collections.synchronizedSet(new HashSet<>());
-    this.murderers = Collections.synchronizedSet(new HashSet<>());
-    this.participants = Collections.synchronizedSet(new HashSet<>());
+    this.survivors = ConcurrentHashMap.newKeySet();
+    this.murderers = ConcurrentHashMap.newKeySet();
+    this.participants = ConcurrentHashMap.newKeySet();
     this.leader = leader;
     this.min = min;
     this.max = max;
@@ -104,13 +105,11 @@ public final class PreGamePlayerManager {
   }
 
   public void forceShutdown() {
-    synchronized (this.participants) {
-      for (final Player player : this.participants) {
-        this.clearInventory(player);
-        this.removePersistentData(player);
-        this.teleportToMainWorld(player);
-        player.setLevel(0);
-      }
+    for (final Player player : this.participants) {
+      this.clearInventory(player);
+      this.removePersistentData(player);
+      this.teleportToMainWorld(player);
+      player.setLevel(0);
     }
   }
 

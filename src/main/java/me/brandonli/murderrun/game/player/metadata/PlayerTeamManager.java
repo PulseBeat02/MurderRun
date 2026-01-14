@@ -23,6 +23,7 @@ import static net.kyori.adventure.text.Component.empty;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams.NameTagVisibility;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.utils.GlowUtils;
 import net.kyori.adventure.text.Component;
@@ -38,8 +39,8 @@ public final class PlayerTeamManager {
 
   public PlayerTeamManager(final GamePlayer watcher) {
     this.watcher = watcher;
-    this.entityTeams = new HashMap<>();
-    this.states = new HashMap<>();
+    this.entityTeams = new ConcurrentHashMap<>();
+    this.states = new ConcurrentHashMap<>();
   }
 
   public void destroyAllTeams() {

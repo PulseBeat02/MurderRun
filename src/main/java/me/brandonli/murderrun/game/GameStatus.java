@@ -38,9 +38,9 @@ public final class GameStatus {
   }
 
   public void setStatus(final Status status) {
+    this.status.set(status);
     final ApiEventBus eventBus = EventBusProvider.getBus();
     eventBus.post(GameStatusEvent.class, this, this.game);
-    this.status.set(status);
   }
 
   public enum Status {

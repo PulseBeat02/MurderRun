@@ -17,8 +17,8 @@
  */
 package me.brandonli.murderrun.commmand.game;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,7 +27,7 @@ public final class InviteManager {
   private final Map<Player, PlayerInviteManager> invites;
 
   public InviteManager() {
-    this.invites = new HashMap<>();
+    this.invites = new ConcurrentHashMap<>();
   }
 
   public void invitePlayer(final CommandSender sender, final Player receiver) {

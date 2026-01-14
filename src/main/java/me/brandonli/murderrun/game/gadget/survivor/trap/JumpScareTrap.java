@@ -17,9 +17,8 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.trap;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.player.GamePlayer;
@@ -57,7 +56,7 @@ public final class JumpScareTrap extends SurvivorTrap {
       Message.JUMP_SCARE_ACTIVATE.build(),
       properties.getJumpScareColor()
     );
-    this.currentlyJumpScared = Collections.synchronizedSet(new HashSet<>());
+    this.currentlyJumpScared = ConcurrentHashMap.newKeySet();
   }
 
   @Override

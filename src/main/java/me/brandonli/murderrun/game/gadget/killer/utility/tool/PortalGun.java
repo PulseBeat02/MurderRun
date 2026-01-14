@@ -19,9 +19,9 @@ package me.brandonli.murderrun.game.gadget.killer.utility.tool;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.killer.KillerGadget;
@@ -76,7 +76,7 @@ public final class PortalGun extends KillerGadget implements Listener {
         )
       )
     );
-    this.portals = new HashMap<>();
+    this.portals = new ConcurrentHashMap<>();
     this.game = game;
   }
 

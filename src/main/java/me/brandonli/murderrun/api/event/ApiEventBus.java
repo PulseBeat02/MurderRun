@@ -210,23 +210,26 @@ public final class ApiEventBus implements EventBus {
     }
     final GeneratedEventClass handle = requireNonNull(EVENT_CACHE.get(type));
     final T event = (T) handle.newInstance(this.api, args);
+
+    final List<EventSubscription<?>> sorted;
     synchronized (this.subscriptions) {
       final Collection<Map.Entry<Class<? extends MurderRunEvent>, EventSubscription<?>>> entries = this.subscriptions.entries();
-      final List<EventSubscription<?>> sorted = entries
+      sorted = entries
         .stream()
         .filter(entry -> entry.getKey().isInstance(event))
         .map(Map.Entry::getValue)
         .filter(EventSubscription::isActive)
         .sorted(Comparator.comparingInt(EventSubscription::getPriority))
         .collect(Collectors.toList());
-      for (final EventSubscription<?> raw : sorted) {
-        @SuppressWarnings("unchecked")
-        final EventSubscription<? super T> sub = (EventSubscription<? super T>) raw;
-        final Consumer<? super T> eventHandler = sub.getHandler();
-        eventHandler.accept(event);
-        if (event instanceof final Cancellable cancellable && cancellable.isCancelled()) {
-          return true;
-        }
+    }
+
+    for (final EventSubscription<?> raw : sorted) {
+      @SuppressWarnings("unchecked")
+      final EventSubscription<? super T> sub = (EventSubscription<? super T>) raw;
+      final Consumer<? super T> eventHandler = sub.getHandler();
+      eventHandler.accept(event);
+      if (event instanceof final Cancellable cancellable && cancellable.isCancelled()) {
+        return true;
       }
     }
     return false;

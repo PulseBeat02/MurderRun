@@ -17,8 +17,8 @@
  */
 package me.brandonli.murderrun.game.ability.survivor;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameStatus;
@@ -54,7 +54,7 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
         (int) (properties.getDoubleJumpCooldown() * 20)
       )
     );
-    this.cooldowns = new HashMap<>();
+    this.cooldowns = new ConcurrentHashMap<>();
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

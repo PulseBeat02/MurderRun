@@ -20,8 +20,8 @@ package me.brandonli.murderrun.game.ability.killer;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
@@ -71,10 +71,10 @@ public final class Etherwarp extends KillerAbility implements Listener {
         (int) (properties.getEtherwarpCooldown() * 20)
       )
     );
-    this.cooldowns = new HashMap<>();
-    this.sneakingPlayers = new HashMap<>();
-    this.targetBlock = new HashMap<>();
-    this.tasks = new HashMap<>();
+    this.cooldowns = new ConcurrentHashMap<>();
+    this.sneakingPlayers = new ConcurrentHashMap<>();
+    this.targetBlock = new ConcurrentHashMap<>();
+    this.tasks = new ConcurrentHashMap<>();
   }
 
   @EventHandler(priority = EventPriority.LOWEST)

@@ -76,27 +76,30 @@ public final class QuickJoinConfigurationMapper {
     }
   }
 
-  public synchronized void shutdown() {
+  public void shutdown() {
     ExecutorUtils.shutdownExecutorGracefully(this.service);
   }
 
-  public synchronized MurderRun getPlugin() {
+  public MurderRun getPlugin() {
     return this.plugin;
   }
 
-  public synchronized void deserialize() {
+  public void deserialize() {
     this.readLock.lock();
-    final Path path = IOUtils.getPluginDataFolderPath();
-    final Path configPath = path.resolve(CONFIGURATION_YAML);
-    final File configFile = configPath.toFile();
-    final FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-    this.plugin.saveConfig();
-    this.enabled = this.getEnabled(config);
-    this.minPlayers = this.getMinPlayers(config);
-    this.maxPlayers = this.getMaxPlayers(config);
-    this.lobbyArenaPairs = this.getLobbyArenaPairs(config);
-    this.gameModes = this.getGameModes(config);
-    this.readLock.unlock();
+    try {
+      final Path path = IOUtils.getPluginDataFolderPath();
+      final Path configPath = path.resolve(CONFIGURATION_YAML);
+      final File configFile = configPath.toFile();
+      final FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+      this.plugin.saveConfig();
+      this.enabled = this.getEnabled(config);
+      this.minPlayers = this.getMinPlayers(config);
+      this.maxPlayers = this.getMaxPlayers(config);
+      this.lobbyArenaPairs = this.getLobbyArenaPairs(config);
+      this.gameModes = this.getGameModes(config);
+    } finally {
+      this.readLock.unlock();
+    }
   }
 
   public GameMode[] getGameModes(final FileConfiguration config) {
@@ -136,40 +139,68 @@ public final class QuickJoinConfigurationMapper {
     return arenaManager.getArena(arena) != null && lobbyManager.getLobby(lobby) != null;
   }
 
-  public synchronized void serialize() {
+  public void serialize() {
     CompletableFuture.runAsync(this::internalSerialize, this.service);
   }
 
   private void internalSerialize() {
     this.writeLock.lock();
-    final List<List<String>> back = this.lobbyArenaPairs.stream().map(List::of).toList();
-    final FileConfiguration config = this.plugin.getConfig();
-    config.set(ENABLED_FIELD, this.enabled);
-    config.set(MIN_PLAYERS_FIELD, this.minPlayers);
-    config.set(MAX_PLAYERS_FIELD, this.maxPlayers);
-    config.set(ARENA_LOBBY_PAIRS_FIELD, back);
-    config.set(GAME_MODES, this.gameModes);
-    this.plugin.saveConfig();
-    this.writeLock.unlock();
+    try {
+      final List<List<String>> back = this.lobbyArenaPairs.stream().map(List::of).toList();
+      final FileConfiguration config = this.plugin.getConfig();
+      config.set(ENABLED_FIELD, this.enabled);
+      config.set(MIN_PLAYERS_FIELD, this.minPlayers);
+      config.set(MAX_PLAYERS_FIELD, this.maxPlayers);
+      config.set(ARENA_LOBBY_PAIRS_FIELD, back);
+      config.set(GAME_MODES, this.gameModes);
+      this.plugin.saveConfig();
+    } finally {
+      this.writeLock.unlock();
+    }
   }
 
-  public synchronized boolean isEnabled() {
-    return this.enabled;
+  public boolean isEnabled() {
+    this.readLock.lock();
+    try {
+      return this.enabled;
+    } finally {
+      this.readLock.unlock();
+    }
   }
 
-  public synchronized int getMinPlayers() {
-    return this.minPlayers;
+  public int getMinPlayers() {
+    this.readLock.lock();
+    try {
+      return this.minPlayers;
+    } finally {
+      this.readLock.unlock();
+    }
   }
 
-  public synchronized int getMaxPlayers() {
-    return this.maxPlayers;
+  public int getMaxPlayers() {
+    this.readLock.lock();
+    try {
+      return this.maxPlayers;
+    } finally {
+      this.readLock.unlock();
+    }
   }
 
-  public synchronized List<String[]> getLobbyArenaPairs() {
-    return this.lobbyArenaPairs;
+  public List<String[]> getLobbyArenaPairs() {
+    this.readLock.lock();
+    try {
+      return this.lobbyArenaPairs;
+    } finally {
+      this.readLock.unlock();
+    }
   }
 
-  public synchronized GameMode[] getGameModes() {
-    return this.gameModes;
+  public GameMode[] getGameModes() {
+    this.readLock.lock();
+    try {
+      return this.gameModes;
+    } finally {
+      this.readLock.unlock();
+    }
   }
 }

@@ -17,8 +17,8 @@
  */
 package me.brandonli.murderrun.game.player;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
@@ -34,7 +34,7 @@ public final class LightManager {
 
   public LightManager(final Game game) {
     this.game = game;
-    this.canSee = new HashSet<>();
+    this.canSee = ConcurrentHashMap.newKeySet();
   }
 
   public void startLightChecks() {

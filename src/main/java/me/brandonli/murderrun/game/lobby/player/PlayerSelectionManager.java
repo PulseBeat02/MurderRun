@@ -19,8 +19,8 @@ package me.brandonli.murderrun.game.lobby.player;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameProperties;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ public final class PlayerSelectionManager {
 
   public PlayerSelectionManager(final MurderRun plugin, final GameProperties properties) {
     this.plugin = plugin;
-    this.selections = new HashMap<>();
+    this.selections = new ConcurrentHashMap<>();
     this.properties = properties;
   }
 

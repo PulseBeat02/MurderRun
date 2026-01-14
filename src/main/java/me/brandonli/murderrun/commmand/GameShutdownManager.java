@@ -18,7 +18,7 @@
 package me.brandonli.murderrun.commmand;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
@@ -31,7 +31,7 @@ public final class GameShutdownManager {
   private final Collection<PreGameManager> currentGames;
 
   public GameShutdownManager() {
-    this.currentGames = new HashSet<>();
+    this.currentGames = ConcurrentHashMap.newKeySet();
   }
 
   public void forceShutdown() {
