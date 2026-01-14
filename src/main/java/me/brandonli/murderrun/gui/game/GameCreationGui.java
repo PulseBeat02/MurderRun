@@ -64,7 +64,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GameCreationGui extends PatternGui implements Listener {
 
-  private static final List<String> CREATE_GAME_PATTERN = List.of("111111111", "123456781", "111111111", "111191111");
+  private static final List<String> CREATE_GAME_PATTERN = List.of("000000000", "012345670", "000000000", "000809000");
 
   private final MurderRun plugin;
   private final Player watcher;
@@ -77,6 +77,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private int min;
   private int max;
   private boolean quickJoin;
+  private int mode;
 
   private final AtomicBoolean noCancel;
   private final AtomicBoolean listenForId;
@@ -125,10 +126,11 @@ public final class GameCreationGui extends PatternGui implements Listener {
   }
 
   private void createPane() {
-    this.map('1', this.createBorderStack());
-    this.map('2', this.createLobbyStack());
-    this.map('3', this.createArenaStack());
-    this.map('4', this.createEditIdStack());
+    this.map('0', this.createBorderStack());
+    this.map('1', this.createLobbyStack());
+    this.map('2', this.createArenaStack());
+    this.map('3', this.createEditIdStack());
+    this.map('4', this.createEditModeStack());
     this.map('5', this.createEditMinStack());
     this.map('6', this.createEditMaxStack());
     this.map('7', this.createQuickJoinStack());
@@ -190,6 +192,35 @@ public final class GameCreationGui extends PatternGui implements Listener {
       this.open(player);
       return null;
     });
+  }
+
+  private GuiItem createEditModeStack() {
+    final Material type = this.getEditModeMaterial();
+    return new GuiItem(
+      Item.builder(type).name(Message.GAME_CREATE_EDIT_MODE_DISPLAY.build()).lore(Message.GAME_CREATE_EDIT_MODE_LORE.build()).build(),
+      this::handleGameModeClick
+    );
+  }
+
+  private void handleGameModeClick(final InventoryClickEvent event) {
+    if (this.mode + 1 > 2) {
+      this.mode = 0;
+    } else {
+      this.mode++;
+    }
+    final ItemStack stack = requireNonNull(event.getCurrentItem());
+    final Material type = this.getEditModeMaterial();
+    final ItemStack dupe = stack.withType(type);
+    event.setCurrentItem(dupe);
+  }
+
+  private Material getEditModeMaterial() {
+    return switch (this.mode) {
+      case 0 -> Material.FIREWORK_STAR; // DEFAULT
+      case 1 -> Material.BLUE_ICE; // FREEZE TAG
+      case 2 -> Material.DIAMOND_SWORD; // ONE BOUNCE
+      default -> throw new IllegalStateException("Unexpected value");
+    };
   }
 
   private GuiItem createQuickJoinStack() {
@@ -293,7 +324,14 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private String constructCommand() {
     final String lobbyName = this.lobby.getName();
     final String arenaName = this.arena.getName();
-    return "murder game create %s %s %s %s %s %s".formatted(arenaName, lobbyName, this.id, this.min, this.max, this.quickJoin);
+    final String mode =
+      switch (this.mode) {
+        case 0 -> "default";
+        case 1 -> "freeze_tag";
+        case 2 -> "one_bounce";
+        default -> throw new IllegalStateException("Unexpected value");
+      };
+    return "murder game create %s %s %s %s %s %s %s".formatted(arenaName, lobbyName, this.id, mode, this.min, this.max, this.quickJoin);
   }
 
   private boolean checkMissingProperty() {
