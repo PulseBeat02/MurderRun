@@ -17,25 +17,54 @@
  */
 package me.brandonli.murderrun.game.player;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import fr.mrmicky.fastboard.adventure.FastBoard;
+import java.util.concurrent.atomic.AtomicReference;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
+import me.brandonli.murderrun.game.GameSettings;
+import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.map.GameMap;
 import me.brandonli.murderrun.game.map.part.PartsManager;
+import me.brandonli.murderrun.game.scheduler.GameScheduler;
+import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Location;
+import org.bukkit.util.Vector;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class PlayerScoreboard {
 
   private final GamePlayer gamePlayer;
   private final FastBoard board;
+  private final AtomicReference<Component> distance;
 
   public PlayerScoreboard(final GamePlayer gamePlayer) {
     this.gamePlayer = gamePlayer;
     this.board = this.createSidebar(gamePlayer);
+    this.distance = new AtomicReference<>(empty());
+    this.startScheduler();
+  }
+
+  private void startScheduler() {
+    final Game game = this.gamePlayer.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    final Runnable update = () -> {
+      final Location current = this.gamePlayer.getLocation();
+      final GameSettings settings = game.getSettings();
+      final Arena arena = requireNonNull(settings.getArena());
+      final Location truck = arena.getTruck();
+      final int dist = (int) Math.ceil(current.distance(truck));
+      final String dir = this.getDirection(truck, current);
+      final Component component = Message.SCOREBOARD_TRUCK_SURVIVOR.build(dir, dist);
+      this.distance.set(component);
+      this.updateSidebar();
+    };
+    final LoosePlayerReference reference = LoosePlayerReference.of(this.gamePlayer);
+    scheduler.scheduleRepeatedTask(update, 0L, 20L, reference);
   }
 
   private FastBoard createSidebar(@UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
@@ -52,13 +81,53 @@ public final class PlayerScoreboard {
     }
 
     this.board.updateTitle(this.generateTitleComponent());
-    this.board.updateLines(
-        empty(),
-        this.generateRoleComponent(),
-        this.generateObjectiveComponent(),
-        empty(),
-        this.generatePartsComponent()
-      );
+
+    final boolean killer = this.gamePlayer instanceof Killer;
+    if (killer) {
+      this.board.updateLines(
+          empty(),
+          this.generateRoleComponent(),
+          this.generateObjectiveComponent(),
+          empty(),
+          this.generatePartsComponent()
+        );
+    } else {
+      this.board.updateLines(
+          empty(),
+          this.generateRoleComponent(),
+          this.generateObjectiveComponent(),
+          this.distance.get(),
+          empty(),
+          this.generatePartsComponent()
+        );
+    }
+  }
+
+  private String getDirection(final Location truck, final Location current) {
+    final double tx = truck.getX() - current.getX();
+    final double tz = truck.getZ() - current.getZ();
+    if (tx == 0 && tz == 0) {
+      return ".";
+    }
+
+    final Vector toTruck = new Vector(tx, 0, tz);
+    final Vector normalized = toTruck.normalize();
+    final Vector direction = current.getDirection();
+    final Vector facing = direction.clone();
+    facing.setY(0);
+    if (facing.lengthSquared() == 0) {
+      return ".";
+    }
+    facing.normalize();
+
+    final Vector right = new Vector(-facing.getZ(), 0, facing.getX());
+    final double forwardDot = facing.dot(normalized);
+    final double rightDot = right.dot(normalized);
+    if (Math.abs(forwardDot) >= Math.abs(rightDot)) {
+      return forwardDot > 0 ? "↑" : "↓";
+    } else {
+      return rightDot > 0 ? "→" : "←";
+    }
   }
 
   public Component generatePartsComponent() {

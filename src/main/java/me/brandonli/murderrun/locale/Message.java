@@ -23,6 +23,7 @@ import java.util.List;
 import net.kyori.adventure.text.Component;
 
 public interface Message extends LocaleTools {
+  BiComponent<Sender, String, Integer> SCOREBOARD_TRUCK_SURVIVOR = direct("murderrun.game.scoreboard.truck.survivor", null, null);
   NullComponent<Sender> GAME_CREATE_EDIT_MODE_LORE = direct("murderrun.gui.game.create.edit.mode.lore");
   NullComponent<Sender> GAME_CREATE_EDIT_MODE_DISPLAY = direct("murderrun.gui.game.create.edit.mode.title");
   NullComponent<Sender> RESOURCE_PACK_ACTIVATE = direct("murderrun.game.resources");
