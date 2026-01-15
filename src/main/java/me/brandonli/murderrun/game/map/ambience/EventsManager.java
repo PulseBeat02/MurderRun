@@ -39,8 +39,8 @@ public final class EventsManager {
     new WeatherEvent()
   );
 
-  private static final int BASE_INTERVAL_SECONDS = 120;
-  private static final int MIN_INTERVAL_SECONDS = 15;
+  private static final int BASE_INTERVAL_SECONDS = 300;
+  private static final int MIN_INTERVAL_SECONDS = 120;
 
   private final GameMap map;
 
