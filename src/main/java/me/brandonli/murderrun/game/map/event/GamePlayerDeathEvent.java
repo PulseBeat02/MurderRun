@@ -41,11 +41,13 @@ import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -119,8 +121,12 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
     final GameMode mode = game.getMode();
     if (gamePlayer.isAlive() && mode == GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor) {
-      if (this.handleFreezeTagDeath(event, survivor, game, manager)) {
-        return;
+      final DamageSource source = event.getDamageSource();
+      final DamageType type = source.getDamageType();
+      if (type != DamageType.OUT_OF_WORLD) { // corpse out of world not revivable
+        if (this.handleFreezeTagDeath(event, survivor, game, manager)) {
+          return;
+        }
       }
     }
 
@@ -141,10 +147,9 @@ public final class GamePlayerDeathEvent extends GameEvent {
     world.strikeLightningEffect(current);
 
     final PlayerAudience audience = gamePlayer.getAudience();
-    audience.showTitle(
-      text("9").font(key("murderrun", "fill")).color(TextColor.fromHexString("#000000")),
-      Message.GAME_PLAYER_DEATH.build()
-    );
+    final Key fillKey = key("murderrun", "fill");
+    final TextColor color = TextColor.fromHexString("#FF0000");
+    audience.showTitle(text("8").font(fillKey).color(color), Message.GAME_PLAYER_DEATH.build());
 
     final MurderRun plugin = game.getPlugin();
     final StatisticsManager statistics = plugin.getStatisticsManager();

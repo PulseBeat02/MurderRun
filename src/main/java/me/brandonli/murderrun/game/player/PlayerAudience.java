@@ -66,6 +66,10 @@ public final class PlayerAudience {
     this.playSound(key.getKey());
   }
 
+  public void playSound(final SoundResource key, final float volume) {
+    this.playSound(key.getKey(), Source.MASTER, volume, 1.0f);
+  }
+
   public void playSound(final Key key) {
     this.playSound(key, Source.MASTER, 1.0f, 1.0f);
   }
@@ -80,6 +84,10 @@ public final class PlayerAudience {
 
   public void showTitle(final Component title, final Component subtitle) {
     this.audience.showTitle(title(title, subtitle));
+  }
+
+  public void showTitle(final Component title, final Component subtitle, final int in, final int stay, final int out) {
+    this.audience.showTitle(title(title, subtitle, in, stay, out));
   }
 
   public void showBossBar(

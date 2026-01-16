@@ -55,6 +55,7 @@ public final class GameEventManager {
     eventList.add(new GameEntityDeathEvent(this.game));
     eventList.add(new GamePlayerArmorEvent(this.game));
     eventList.add(new GamePlayerClickEvent(this.game));
+    eventList.add(new GamePlayerDamageEvent(this.game));
 
     final GameMode mode = this.game.getMode();
     if (mode == GameMode.FREEZE_TAG) {

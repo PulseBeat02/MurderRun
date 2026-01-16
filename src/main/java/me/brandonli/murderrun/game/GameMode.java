@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public enum GameMode {
-  DEFAULT("default"),
-  ONE_BOUNCE("one_bounce"),
-  FREEZE_TAG("freeze_tag");
+  DEFAULT("default", "Default"),
+  ONE_BOUNCE("one_bounce", "One Bounce"),
+  FREEZE_TAG("freeze_tag", "Freeze Tag");
 
   private static final Map<String, GameMode> KEY_LOOKUP = Map.of(
     DEFAULT.modeName,
@@ -39,9 +39,15 @@ public enum GameMode {
   private static Map<GameMode, GameProperties> PROPERTIES_LOOKUP;
 
   private final String modeName;
+  private final String displayName;
 
-  GameMode(final String modeName) {
+  GameMode(final String modeName, final String displayName) {
     this.modeName = modeName;
+    this.displayName = displayName;
+  }
+
+  public String getDisplayName() {
+    return this.displayName;
   }
 
   public String getModeName() {

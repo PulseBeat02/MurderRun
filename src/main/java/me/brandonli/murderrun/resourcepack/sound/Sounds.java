@@ -50,6 +50,7 @@ public final class Sounds {
   public static final SoundResource PORTAL = of("portal");
   public static final SoundResource HEARTBEAT = of("heartbeat");
   public static final SoundResource AMBIENCE = of("ambience");
+  public static final SoundResource BREATHING = of("breathing");
 
   private static SoundResource of(final String name) {
     final Key key = key(Keys.NAMESPACE, name);

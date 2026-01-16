@@ -66,7 +66,7 @@ public final class PlayerScoreboard {
       this.updateSidebar();
     };
     final LoosePlayerReference reference = LoosePlayerReference.of(this.gamePlayer);
-    scheduler.scheduleRepeatedTask(update, 0L, 10L, reference);
+    scheduler.scheduleRepeatedTask(update, 0L, 5L, reference);
   }
 
   private FastBoard createSidebar(@UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
@@ -148,7 +148,7 @@ public final class PlayerScoreboard {
   private Component generateModeComponent() {
     final Game game = this.gamePlayer.getGame();
     final GameMode mode = game.getMode();
-    final String name = mode.getModeName();
+    final String name = mode.getDisplayName();
     return Message.GAME_SCOREBOARD_MODE.build(name);
   }
 

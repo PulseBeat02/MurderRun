@@ -88,7 +88,7 @@ public final class LobbyScoreboard {
 
   private Component generateModeComponent() {
     final GameMode mode = this.manager.getMode();
-    final String name = mode.getModeName();
+    final String name = mode.getDisplayName();
     return Message.LOBBY_SCOREBOARD_MODE.build(name);
   }
 

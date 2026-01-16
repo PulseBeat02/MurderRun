@@ -193,6 +193,8 @@ public final class FreezeTagManager {
     display.setAlignment(TextDisplay.TextAlignment.CENTER);
     display.setBillboard(Display.Billboard.CENTER);
     display.setBackgroundColor(Color.fromRGB(0xc0c0c0));
+    display.setSeeThrough(true);
+    display.setLineWidth(Integer.MAX_VALUE);
     this.holograms.put(uuid, display);
 
     final GameScheduler scheduler = this.game.getScheduler();

@@ -229,7 +229,7 @@ public final class GameStartupTool {
     final Consumer<GamePlayer> sound = gamePlayer -> {
       final Key key = Sounds.AMBIENCE.getKey();
       final PlayerAudience audience = gamePlayer.getAudience();
-      audience.playSound(key, Source.MASTER, 0.05f, 1.0f);
+      audience.playSound(key, Source.MASTER, 0.2f, 1.0f);
     };
     final NullReference reference = NullReference.of();
     scheduler.scheduleTask(() -> manager.applyToAllParticipants(sound), 5 * 20L, reference);
