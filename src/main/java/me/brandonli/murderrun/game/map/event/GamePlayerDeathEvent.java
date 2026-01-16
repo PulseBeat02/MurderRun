@@ -18,7 +18,9 @@
 package me.brandonli.murderrun.game.map.event;
 
 import static java.util.Objects.requireNonNull;
+import static net.kyori.adventure.key.Key.key;
 import static net.kyori.adventure.text.Component.empty;
+import static net.kyori.adventure.text.Component.text;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -28,10 +30,7 @@ import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameResult;
 import me.brandonli.murderrun.game.freezetag.FreezeTagManager;
-import me.brandonli.murderrun.game.player.GamePlayer;
-import me.brandonli.murderrun.game.player.GamePlayerManager;
-import me.brandonli.murderrun.game.player.Killer;
-import me.brandonli.murderrun.game.player.Survivor;
+import me.brandonli.murderrun.game.player.*;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.death.PlayerDeathTool;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
@@ -43,7 +42,9 @@ import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -131,7 +132,19 @@ public final class GamePlayerDeathEvent extends GameEvent {
     event.setKeepInventory(true);
     event.deathMessage(null);
     deathManager.runDeathTasks();
-    this.playDeathSoundEffect();
+
+    final GameScheduler scheduler = game.getScheduler();
+    final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
+    scheduler.scheduleTask(this::playDeathSoundEffect, 10L, reference);
+
+    final World world = current.getWorld();
+    world.strikeLightningEffect(current);
+
+    final PlayerAudience audience = gamePlayer.getAudience();
+    audience.showTitle(
+      text("a").font(key("murderrun", "fill")).color(TextColor.fromHexString("#000000")),
+      Message.GAME_PLAYER_DEATH.build()
+    );
 
     final MurderRun plugin = game.getPlugin();
     final StatisticsManager statistics = plugin.getStatisticsManager();

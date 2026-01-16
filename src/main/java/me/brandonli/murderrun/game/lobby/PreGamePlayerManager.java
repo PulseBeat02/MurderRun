@@ -214,7 +214,7 @@ public final class PreGamePlayerManager {
   public void addParticipantToLobby(final Player player, final boolean killer) {
     final MurderRun plugin = this.manager.getPlugin();
     final PlayerPrepareRunnable task = new PlayerPrepareRunnable(player, killer);
-    task.runTaskTimer(plugin, 0L, 20L);
+    task.runTaskTimer(plugin, 0L, 1L);
   }
 
   private class PlayerPrepareRunnable extends BukkitRunnable {

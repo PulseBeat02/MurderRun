@@ -1,1 +1,4 @@
-- Implement modes properly
+- Add blood overlay when taking damage, and heavy breathing
+- Fix one bounce not promoting killers
+- Fix killer not getting sword
+- Fix survivor sometimes stuck after death

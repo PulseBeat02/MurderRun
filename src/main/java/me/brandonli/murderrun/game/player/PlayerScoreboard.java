@@ -66,7 +66,7 @@ public final class PlayerScoreboard {
       this.updateSidebar();
     };
     final LoosePlayerReference reference = LoosePlayerReference.of(this.gamePlayer);
-    scheduler.scheduleRepeatedTask(update, 0L, 20L, reference);
+    scheduler.scheduleRepeatedTask(update, 0L, 10L, reference);
   }
 
   private FastBoard createSidebar(@UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {

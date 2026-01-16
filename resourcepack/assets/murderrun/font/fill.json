@@ -1,0 +1,94 @@
+{
+    "providers": [
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.1.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "1"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.2.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "2"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.3.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "3"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.4.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "4"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.5.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "5"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.6.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "6"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.7.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "7"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.8.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "8"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/0.9.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "9"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "murderrun:font/filter/1.0.png",
+            "ascent":4000,
+            "height":8000,
+            "chars": [
+                "a"
+            ]
+        }
+    ]
+}

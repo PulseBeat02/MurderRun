@@ -1,3 +1,3 @@
-OGG Format Specifications
+OGG Vorbis Format Specifications
 - 16500 Hz
 - 64k kbps

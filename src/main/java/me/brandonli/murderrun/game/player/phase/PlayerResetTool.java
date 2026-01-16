@@ -21,6 +21,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
+import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.map.MapUtils;
 import org.bukkit.GameMode;
@@ -52,6 +53,7 @@ public final class PlayerResetTool {
     metadata.setWorldBorderEffect(false);
     metadata.shutdown();
     audience.removeAllBossBars();
+    audience.stopSound(Sounds.AMBIENCE);
     gamePlayer.removeAllPotionEffects();
     gamePlayer.teleport(location);
     gamePlayer.clearInventory();

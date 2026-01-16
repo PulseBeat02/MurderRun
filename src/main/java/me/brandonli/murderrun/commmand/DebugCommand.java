@@ -71,10 +71,10 @@ public final class DebugCommand implements AnnotationCommandFeature {
       () -> {
         other.performCommand("murder game quick-join");
         sender.performCommand("murder game set murderer %s".formatted(sender.getName()));
-        sender.performCommand("murder game start");
       },
-      5 * 20L
+      3 * 20L
     );
+    scheduler.runTaskLater(this.plugin, () -> sender.performCommand("murder game start"), 5 * 20L);
   }
 
   @Permission("murderrun.command.debug.start-multiple")
@@ -93,10 +93,10 @@ public final class DebugCommand implements AnnotationCommandFeature {
         other.performCommand("murder game quick-join");
         other1.performCommand("murder game quick-join");
         sender.performCommand("murder game set murderer %s".formatted(sender.getName()));
-        sender.performCommand("murder game start");
       },
-      5 * 20L
+      3 * 20L
     );
+    scheduler.runTaskLater(this.plugin, () -> sender.performCommand("murder game start"), 5 * 20L);
   }
 
   @Permission("murderrun.command.debug.gadget")
