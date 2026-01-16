@@ -24,8 +24,10 @@ import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.*;
 import me.brandonli.murderrun.game.lobby.event.PreGameEvents;
 import me.brandonli.murderrun.game.map.MapSchematicIO;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public final class PreGameManager {
 
@@ -74,8 +76,16 @@ public final class PreGameManager {
     final Collection<Player> players = this.manager.getParticipants();
     final Collection<Player> killers = this.manager.getMurderers();
     this.manager.assignRoles();
-    this.game.startGame(this.properties, this.mode, this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
-    this.shutdown(false);
+
+    final BukkitScheduler scheduler = Bukkit.getScheduler();
+    scheduler.runTaskLater(
+      plugin,
+      () -> {
+        this.game.startGame(this.properties, this.mode, this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
+        this.shutdown(false);
+      },
+      5L
+    );
   }
 
   public void shutdown(final boolean forced) {

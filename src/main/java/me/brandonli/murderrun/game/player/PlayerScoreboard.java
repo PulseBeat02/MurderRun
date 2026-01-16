@@ -21,13 +21,12 @@ import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import fr.mrmicky.fastboard.adventure.FastBoard;
-
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import me.brandonli.murderrun.game.Game;
-import me.brandonli.murderrun.game.GameProperties;
-import me.brandonli.murderrun.game.GameSettings;
+import me.brandonli.murderrun.game.*;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.map.GameMap;
 import me.brandonli.murderrun.game.map.part.PartsManager;
@@ -87,27 +86,79 @@ public final class PlayerScoreboard {
 
     final boolean killer = this.gamePlayer instanceof Killer;
 
-    final List<Component> order = new ArrayList<>();
+    final List<Component> lines = new ArrayList<>();
+    lines.add(this.generateDateComponent());
+    lines.add(empty());
+    lines.add(this.generateModeComponent());
+    lines.add(this.generateRoleComponent());
+    lines.add(empty());
+    lines.add(this.generatePartsComponent());
+    lines.add(this.generateTimeComponent());
 
-
-    if (killer) {
-      this.board.updateLines(
-          empty(),
-          this.generateRoleComponent(),
-          this.generateObjectiveComponent(),
-          empty(),
-          this.generatePartsComponent()
-        );
-    } else {
-      this.board.updateLines(
-          empty(),
-          this.generateRoleComponent(),
-          this.generateObjectiveComponent(),
-          this.distance.get(),
-          empty(),
-          this.generatePartsComponent()
-        );
+    if (!killer) {
+      lines.add(this.distance.get());
     }
+
+    lines.add(empty());
+    lines.add(this.generateArenaComponent());
+    lines.add(empty());
+    lines.add(this.generateFooterComponent());
+
+    this.board.updateLines(lines);
+    //    if (killer) {
+    //      this.board.updateLines(
+    //          empty(),
+    //          this.generateRoleComponent(),
+    //          this.generateObjectiveComponent(),
+    //          empty(),
+    //          this.generatePartsComponent()
+    //        );
+    //    } else {
+    //      this.board.updateLines(
+    //          empty(),
+    //          this.generateRoleComponent(),
+    //          this.generateObjectiveComponent(),
+    //          this.distance.get(),
+    //          empty(),
+    //          this.generatePartsComponent()
+    //        );
+    //    }
+  }
+
+  private Component generateFooterComponent() {
+    return Message.GAME_SCOREBOARD_DOMAIN.build();
+  }
+
+  private Component generateArenaComponent() {
+    final Game game = this.gamePlayer.getGame();
+    final GameSettings settings = game.getSettings();
+    final Arena arena = requireNonNull(settings.getArena());
+    final String name = arena.getName();
+    return Message.GAME_SCOREBOARD_MAP.build(name);
+  }
+
+  private Component generateTimeComponent() {
+    final Game game = this.gamePlayer.getGame();
+    final GameTimer timer = game.getTimeManager();
+    final long ms = timer.getTimeLeft();
+    final int seconds = (int) Math.ceil(ms / 1000.0);
+    return Message.GAME_SCOREBOARD_TIME.build(seconds);
+  }
+
+  private Component generateModeComponent() {
+    final Game game = this.gamePlayer.getGame();
+    final GameMode mode = game.getMode();
+    final String name = mode.getModeName();
+    return Message.GAME_SCOREBOARD_MODE.build(name);
+  }
+
+  private Component generateDateComponent() {
+    final ZoneId zoneId = ZoneId.systemDefault();
+    final LocalDate now = LocalDate.now(zoneId);
+    final int day = now.getDayOfMonth();
+    final int month = now.getMonthValue();
+    final int year = now.getYear();
+    return Message.GAME_SCOREBOARD_DATE.build(day, month, year);
   }
 
   private String getDirection(final Location truck, final Location current) {

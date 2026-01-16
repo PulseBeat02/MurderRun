@@ -23,6 +23,11 @@ import java.util.List;
 import net.kyori.adventure.text.Component;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> GAME_SCOREBOARD_DOMAIN = direct("murderrun.game.scoreboard.domain");
+  TriComponent<Sender, Integer, Integer, Integer> GAME_SCOREBOARD_DATE = direct("murderrun.game.scoreboard.date", null, null, null);
+  UniComponent<Sender, String> GAME_SCOREBOARD_MAP = direct("murderrun.game.scoreboard.map", null);
+  UniComponent<Sender, Integer> GAME_SCOREBOARD_TIME = direct("murderrun.game.scoreboard.time", null);
+  UniComponent<Sender, String> GAME_SCOREBOARD_MODE = direct("murderrun.game.scoreboard.mode", null);
   TriComponent<Sender, Integer, Integer, Integer> LOBBY_SCOREBOARD_DATE = direct("murderrun.lobby.scoreboard.date", null, null, null);
   NullComponent<Sender> LOBBY_LEAVE_LORE = direct("murderrun.game.lobby.leave.lore");
   NullComponent<Sender> LOBBY_LEAVE_NAME = direct("murderrun.game.lobby.leave.name");

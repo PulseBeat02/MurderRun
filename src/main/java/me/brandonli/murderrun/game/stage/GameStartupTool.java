@@ -41,12 +41,16 @@ import me.brandonli.murderrun.game.scheduler.reference.NullReference;
 import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
+import me.brandonli.murderrun.utils.item.Item;
+import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class GameStartupTool {
 
@@ -57,11 +61,33 @@ public final class GameStartupTool {
   }
 
   public void start() {
+    this.clearSurvivorLeave();
+    this.clearKillerLeave();
+    this.clearSurvivorCurrency();
     this.teleportInnocentPlayers();
     this.announceHidePhase();
-    this.clearSurvivorNetherStars();
     this.setEnvironment();
     this.runFutureTask();
+  }
+
+  private void clearKillerLeave() {
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    final Item.Builder builder = ItemFactory.createLeaveItem();
+    final ItemStack leaveItem = builder.build();
+    manager.applyToKillers(player -> {
+      final PlayerInventory inventory = player.getInventory();
+      inventory.remove(leaveItem);
+    });
+  }
+
+  private void clearSurvivorLeave() {
+    final GamePlayerManager manager = this.game.getPlayerManager();
+    final Item.Builder builder = ItemFactory.createLeaveItem();
+    final ItemStack leaveItem = builder.build();
+    manager.applyToSurvivors(player -> {
+      final PlayerInventory inventory = player.getInventory();
+      inventory.remove(leaveItem);
+    });
   }
 
   private void setEnvironment() {
@@ -99,19 +125,35 @@ public final class GameStartupTool {
     manager.sendMessageToAllParticipants(title);
   }
 
-  private void clearSurvivorNetherStars() {
+  private void clearSurvivorCurrency() {
     final GamePlayerManager manager = this.game.getPlayerManager();
+    final GameProperties properties = this.game.getProperties();
+    final ItemStack stack = ItemFactory.createCurrency(properties, 1);
     manager.applyToSurvivors(player -> {
       final PlayerInventory inventory = player.getInventory();
-      inventory.remove(Material.NETHER_STAR);
+      @Nullable
+      final ItemStack[] slots = inventory.getContents();
+      for (final ItemStack itemStack : slots) {
+        if (itemStack != null && itemStack.isSimilar(stack)) {
+          inventory.remove(itemStack);
+        }
+      }
     });
   }
 
-  private void clearKillerNetherStars() {
+  private void clearKillerCurrency() {
     final GamePlayerManager manager = this.game.getPlayerManager();
+    final GameProperties properties = this.game.getProperties();
+    final ItemStack stack = ItemFactory.createCurrency(properties, 1);
     manager.applyToKillers(player -> {
       final PlayerInventory inventory = player.getInventory();
-      inventory.remove(Material.NETHER_STAR);
+      @Nullable
+      final ItemStack[] slots = inventory.getContents();
+      for (final ItemStack itemStack : slots) {
+        if (itemStack != null && itemStack.isSimilar(stack)) {
+          inventory.remove(itemStack);
+        }
+      }
     });
   }
 
@@ -159,7 +201,7 @@ public final class GameStartupTool {
   }
 
   private void futureTask() {
-    this.clearKillerNetherStars();
+    this.clearKillerCurrency();
     this.teleportMurderers();
     this.announceReleasePhase();
     this.playReleaseSoundEffect();

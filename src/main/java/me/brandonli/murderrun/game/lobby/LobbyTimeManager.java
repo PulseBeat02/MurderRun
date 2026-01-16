@@ -93,6 +93,7 @@ public final class LobbyTimeManager {
 
     if (seconds == 0) {
       this.manager.startGame();
+      this.timer.cancel();
     }
   }
 
