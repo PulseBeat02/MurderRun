@@ -48,6 +48,9 @@ public final class TerrainDropAnalyzer {
       if (!name.contains("DOOR")) {
         continue;
       }
+      if (material.isLegacy()) {
+        continue;
+      }
       final BlockType type = BukkitAdapter.asBlockType(material);
       if (type != null) {
         DOOR_TYPES.add(type);

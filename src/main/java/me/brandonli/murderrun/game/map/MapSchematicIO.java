@@ -241,7 +241,6 @@ public final class MapSchematicIO {
   }
 
   private void copyCitizensNPCs() {
-
     final NPCRegistry registry = CitizensAPI.getNPCRegistry();
     final Collection<NPC> snapshot = new HashSet<>();
     for (final NPC npc : registry) {

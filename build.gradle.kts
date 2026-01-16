@@ -1,8 +1,5 @@
-import org.gradle.kotlin.dsl.add
-import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.get
+import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 import xyz.jpenilla.runtask.task.AbstractRun
-import java.io.ByteArrayOutputStream
 
 plugins {
     java
@@ -12,8 +9,9 @@ plugins {
     id("xyz.jpenilla.run-paper") version "3.0.2"
     id("org.checkerframework") version "0.6.61"
     id("com.diffplug.spotless") version "7.0.0.BETA4"
-    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.3.1"
+    id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
     id("com.github.node-gradle.node") version "7.1.0"
+    id("xyz.jpenilla.gremlin-gradle") version "0.0.9"
 }
 
 apply(plugin = "org.checkerframework")
@@ -46,11 +44,7 @@ repositories {
 }
 
 val runtimeDeps = listOf(
-    libs.adventureApi,
     libs.adventurePlatformBukkit,
-    libs.adventureTextMinimessage,
-    libs.adventureTextSerializerPlain,
-    libs.adventureTextSerializerLegacy,
     libs.cloudAnnotations,
     libs.cloudPaper,
     libs.cloudMinecraftExtras,
@@ -65,18 +59,28 @@ val runtimeDeps = listOf(
     libs.triumphGui
 )
 
+configurations {
+    named("compileOnly") {
+        extendsFrom(configurations.getByName("runtimeDownload"))
+    }
+    named("testImplementation") {
+        extendsFrom(configurations.getByName("runtimeDownload"))
+    }
+}
+
 dependencies {
 
     // Annotation Processors
     annotationProcessor(libs.cloudAnnotations)
 
+    // Implementation Dependencies
+    implementation(libs.gremlinRuntime)
+    runtimeDeps.forEach(::runtimeDownload)
+
     // Provided Dependencies
     compileOnly(libs.paperApi)
     compileOnly(libs.fastutil)
     compileOnly(libs.nettyAll)
-    runtimeDeps.forEach(::implementation)
-
-    // Plugin Extensions
     compileOnly(libs.placeholderapi)
     compileOnly(libs.protocolLib)
     compileOnly(libs.libsDisguises)
@@ -92,10 +96,11 @@ dependencies {
     compileOnly(libs.nexo)
     compileOnly(libs.craftEngineCore)
     compileOnly(libs.craftEngineBukkit)
-    compileOnly(libs.adventureApi)
     compileOnly(libs.creativeSerializerMinecraft)
     compileOnly(libs.packetEvents)
-    compileOnly(libs.vaultApi)
+    compileOnly(libs.vaultApi) {
+        exclude(group = "org.bukkit", module = "bukkit")
+    }
 
     // Testing Dependencies
     testImplementation(libs.nettyAll)
@@ -144,24 +149,32 @@ val zipDemo by tasks.registering(Zip::class) {
     destinationDirectory.set(layout.buildDirectory.dir("tmp/demo-setup"))
 }
 
+paperPluginYaml {
+    name = "MurderRun"
+    version = "${project.version}"
+    description = "Pulse's MurderRun Plugin"
+    authors = listOf("PulseBeat_02")
+    apiVersion = "1.21"
+    prefix = "Murder Run"
+    main = "me.brandonli.murderrun.MurderRun"
+    loader = "me.brandonli.murderrun.MurderRunLoader"
+    dependencies.server("WorldEdit", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("Citizens", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("LibsDisguises", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("PlaceholderAPI", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("Parties", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("Nexo", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("CraftEngine", PaperPluginYaml.Load.BEFORE, false)
+}
+
 tasks {
 
-    bukkitPluginYaml {
-        name = "MurderRun"
-        version = "${project.version}"
-        description = "Pulse's MurderRun Plugin"
-        authors = listOf("PulseBeat_02")
-        apiVersion = "1.21"
-        prefix = "Murder Run"
-        main = "me.brandonli.murderrun.MurderRun"
-        softDepend = listOf(
-            "WorldEdit",
-            "Citizens",
-            "LibsDisguises",
-            "PlaceholderAPI",
-            "Parties",
-            "Nexo",
-            "CraftEngine")
+    shadowJar {
+        relocate("xyz.jpenilla", "me.brandonli.murderrun.libraries")
+    }
+
+    jar {
+        enabled = false
     }
 
     withType<Test> {
