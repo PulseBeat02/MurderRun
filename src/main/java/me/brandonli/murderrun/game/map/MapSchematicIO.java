@@ -187,8 +187,8 @@ public final class MapSchematicIO {
     MapUtils.enableExtent();
     this.copyCitizensNPCs();
     this.createWorld();
-    this.pasteLobbySchematic().join();
-    this.pasteArenaSchematic(); // let it run in background
+    this.pasteLobbySchematic();
+    this.pasteArenaSchematic();
     this.pasteCitizensNPCs();
   }
 

@@ -21,6 +21,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.Iterables;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameMode;
@@ -43,13 +44,17 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PreGamePlayerManager {
@@ -210,20 +215,54 @@ public final class PreGamePlayerManager {
   }
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
-    this.participants.add(player);
-    this.bossbar.addPlayer(player);
-    this.scoreboard.addPlayer(player);
-    this.scoreboard.updateScoreboard();
-    this.clearInventory(player);
-    this.teleportPlayerToLobby(player);
-    this.giveItems(player, killer);
-    this.loadResourcePack(player);
-    this.checkIfEnoughPlayers();
-    if (this.lobbyTimeManager != null) {
-      this.lobbyTimeManager.resetTime();
+    final MurderRun plugin = this.manager.getPlugin();
+    final PlayerPrepareRunnable task = new PlayerPrepareRunnable(player, killer);
+    task.runTaskTimer(plugin, 0L, 20L);
+  }
+
+  private class PlayerPrepareRunnable extends BukkitRunnable {
+
+    private final Player player;
+    private final boolean killer;
+
+    public PlayerPrepareRunnable(final Player player, final boolean killer) {
+      this.player = player;
+      this.killer = killer;
     }
-    if (this.expirationTimer != null) {
-      this.expirationTimer.cancel();
+
+    @Override
+    public void run() {
+      if (!this.waitUntilReady()) {
+        return;
+      }
+      PreGamePlayerManager.this.participants.add(this.player);
+      PreGamePlayerManager.this.bossbar.addPlayer(this.player);
+      PreGamePlayerManager.this.scoreboard.addPlayer(this.player);
+      PreGamePlayerManager.this.scoreboard.updateScoreboard();
+      PreGamePlayerManager.this.clearInventory(this.player);
+      PreGamePlayerManager.this.teleportPlayerToLobby(this.player);
+      PreGamePlayerManager.this.giveItems(this.player, this.killer);
+      PreGamePlayerManager.this.loadResourcePack(this.player);
+      PreGamePlayerManager.this.checkIfEnoughPlayers();
+      if (PreGamePlayerManager.this.lobbyTimeManager != null) {
+        PreGamePlayerManager.this.lobbyTimeManager.resetTime();
+      }
+      if (PreGamePlayerManager.this.expirationTimer != null) {
+        PreGamePlayerManager.this.expirationTimer.cancel();
+      }
+      this.cancel();
+    }
+
+    private boolean waitUntilReady() {
+      final GameSettings settings = PreGamePlayerManager.this.manager.getSettings();
+      final Lobby lobby = requireNonNull(settings.getLobby());
+      final Location spawn = lobby.getLobbySpawn();
+      final Block block = spawn.getBlock();
+      final int x = block.getX();
+      final int z = block.getZ();
+      final World world = block.getWorld();
+      final Block under = world.getHighestBlockAt(x, z);
+      return under.isSolid(); // any block will do as long as it's solid, showing it loaded
     }
   }
 
