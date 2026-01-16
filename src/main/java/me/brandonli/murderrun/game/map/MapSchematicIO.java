@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameSettings;
 import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.lobby.Lobby;
@@ -41,7 +42,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -200,14 +203,40 @@ public final class MapSchematicIO {
   }
 
   private void pasteCitizensNPCs() {
-    final String name = this.uuid.toString();
-    final World world = requireNonNull(Bukkit.getWorld(name));
-    for (final NPC npc : this.npcs) {
-      final Location location = npc.getStoredLocation();
-      final Location clone = location.clone();
-      clone.setWorld(world);
-      clone.add(0, 3, 0);
-      npc.teleport(clone, PlayerTeleportEvent.TeleportCause.PLUGIN);
+    final MurderRun plugin = this.manager.getPlugin();
+    final CitizensPrepareRunnable task = new CitizensPrepareRunnable();
+    task.runTaskTimer(plugin, 0L, 20L);
+  }
+
+  private class CitizensPrepareRunnable extends BukkitRunnable {
+
+    @Override
+    public void run() {
+      if (!this.waitUntilReady()) {
+        return;
+      }
+      final String name = MapSchematicIO.this.uuid.toString();
+      final World world = requireNonNull(Bukkit.getWorld(name));
+      for (final NPC npc : MapSchematicIO.this.npcs) {
+        final Location location = npc.getStoredLocation();
+        final Location clone = location.clone();
+        clone.setWorld(world);
+        clone.add(0, 3, 0);
+        npc.teleport(clone, PlayerTeleportEvent.TeleportCause.PLUGIN);
+      }
+      this.cancel();
+    }
+
+    private boolean waitUntilReady() {
+      final GameSettings settings = MapSchematicIO.this.manager.getSettings();
+      final Lobby lobby = requireNonNull(settings.getLobby());
+      final Location spawn = lobby.getLobbySpawn();
+      final Block block = spawn.getBlock();
+      final int x = block.getX();
+      final int z = block.getZ();
+      final World world = block.getWorld();
+      final Block under = world.getHighestBlockAt(x, z);
+      return under.isSolid(); // any block will do as long as it's solid, showing it loaded
     }
   }
 
