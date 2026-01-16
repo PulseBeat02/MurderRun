@@ -33,7 +33,6 @@ public final class ServerEnvironment {
 
   static {
     final ServerVersion version = getVersion();
-    System.out.println(version.name());
     MINECRAFT_PACKAGE = requireNonNull(VERSION_MAP.get(version));
   }
 

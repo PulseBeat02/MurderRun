@@ -164,7 +164,6 @@ public final class MapUtils {
   ) {
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.FASTASYNCWORLDEDIT.isEnabled()) { // use normal paste
-      System.out.println("Using FastAsyncWorldEdit paste method.");
       final Region region = clipboard.getRegion();
       final BlockVector3 vec = vector3.getVector3();
       final ForwardExtentCopy op = new ForwardExtentCopy(clipboard, region, world, vec);
