@@ -135,14 +135,14 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
     final GameScheduler scheduler = game.getScheduler();
     final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
-    scheduler.scheduleTask(this::playDeathSoundEffect, 10L, reference);
+    scheduler.scheduleTask(this::playDeathSoundEffect, 20L, reference);
 
     final World world = current.getWorld();
     world.strikeLightningEffect(current);
 
     final PlayerAudience audience = gamePlayer.getAudience();
     audience.showTitle(
-      text("a").font(key("murderrun", "fill")).color(TextColor.fromHexString("#000000")),
+      text("9").font(key("murderrun", "fill")).color(TextColor.fromHexString("#000000")),
       Message.GAME_PLAYER_DEATH.build()
     );
 

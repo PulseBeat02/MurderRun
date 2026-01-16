@@ -23,10 +23,7 @@ import com.google.common.collect.Iterables;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.MurderRun;
-import me.brandonli.murderrun.game.GameMode;
-import me.brandonli.murderrun.game.GameProperties;
-import me.brandonli.murderrun.game.GameSettings;
-import me.brandonli.murderrun.game.PlayerResourcePackChecker;
+import me.brandonli.murderrun.game.*;
 import me.brandonli.murderrun.game.lobby.player.PlayerSelectionManager;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
@@ -131,16 +128,26 @@ public final class PreGamePlayerManager {
   }
 
   private void giveSpecialItems(final Player player) {
-    final PreGameManager gameManager = this.getManager();
-    final GameProperties properties = gameManager.getProperties();
-    final ItemStack sword = ItemFactory.createKillerSword(properties);
-    final ItemStack arrow = ItemFactory.createKillerArrow(properties);
-    final ItemStack[] gear = ItemFactory.createKillerGear(properties);
-    final PlayerInventory inventory = player.getInventory();
-    final PersistentDataContainer container = player.getPersistentDataContainer();
-    inventory.addItem(sword, arrow);
-    inventory.setArmorContents(gear);
-    container.set(Keys.KILLER_ROLE, PersistentDataType.BOOLEAN, true);
+    final MurderRun plugin = this.manager.getPlugin();
+    final BukkitScheduler scheduler = Bukkit.getScheduler();
+    scheduler.runTaskLater(
+      plugin,
+      () -> {
+        final PreGameManager gameManager = this.getManager();
+        final GameProperties properties = gameManager.getProperties();
+        final ItemStack sword = ItemFactory.createKillerSword(properties);
+        final ItemStack arrow = ItemFactory.createKillerArrow(properties);
+        final ItemStack[] gear = ItemFactory.createKillerGear(properties);
+        final PlayerInventory inventory = player.getInventory();
+        final PersistentDataContainer container = player.getPersistentDataContainer();
+        inventory.setArmorContents(gear);
+        inventory.setItem(1, sword);
+        inventory.setItem(2, arrow);
+        this.addCurrency(player, true);
+        container.set(Keys.KILLER_ROLE, PersistentDataType.BOOLEAN, true);
+      },
+      10L
+    );
   }
 
   public void setPlayerToInnocent(final Player innocent) {
@@ -291,10 +298,10 @@ public final class PreGamePlayerManager {
       this.giveSpecialItems(player);
     } else {
       this.survivors.add(player);
+      this.addCurrency(player, false);
     }
     this.giveEmptyAbility(player);
     this.giveLeaveItem(player);
-    this.addCurrency(player, killer);
   }
 
   private void giveLeaveItem(final Player player) {

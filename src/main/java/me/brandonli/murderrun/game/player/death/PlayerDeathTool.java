@@ -152,7 +152,9 @@ public final class PlayerDeathTool {
     }
 
     final Location location = stand.getStoredLocation();
-    final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 10, 0.5, 0.5, 0.5, new DustOptions(Color.RED, 4));
+    final Location clone = location.clone();
+    final Location result = clone.add(-1, 0.5, 0);
+    final World world = requireNonNull(result.getWorld());
+    world.spawnParticle(Particle.DUST, result, 5, 0.25, 0.25, 0.25, new DustOptions(Color.RED, 4));
   }
 }
