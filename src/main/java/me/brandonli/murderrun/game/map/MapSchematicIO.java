@@ -241,7 +241,13 @@ public final class MapSchematicIO {
   }
 
   private void copyCitizensNPCs() {
+
     final NPCRegistry registry = CitizensAPI.getNPCRegistry();
+    final Collection<NPC> snapshot = new HashSet<>();
+    for (final NPC npc : registry) {
+      snapshot.add(npc);
+    }
+
     final Lobby lobby = requireNonNull(this.settings.getLobby());
     final Location[] corners = lobby.getCorners();
     final Location first = corners[0];
@@ -249,7 +255,7 @@ public final class MapSchematicIO {
     final BoundingBox boundingBox = BoundingBox.of(first, second);
     final World realWorld = requireNonNull(first.getWorld());
     final String realName = realWorld.getName();
-    for (final NPC npc : registry) {
+    for (final NPC npc : snapshot) { // avoid concurrent modification
       final Location location = npc.getStoredLocation();
       if (location == null) {
         continue;
