@@ -60,7 +60,7 @@ public final class PlayerInventoryClickEvent implements Listener {
     }
 
     final int slot = event.getSlot();
-    if (slot != 8) {
+    if (slot != 0 && slot != 1) { // ability, leave slot
       return;
     }
 

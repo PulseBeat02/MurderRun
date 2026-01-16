@@ -20,6 +20,8 @@ package me.brandonli.murderrun.game.lobby;
 import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collection;
 import me.brandonli.murderrun.game.GameMode;
 import me.brandonli.murderrun.game.GameProperties;
@@ -62,15 +64,26 @@ public final class LobbyScoreboard {
   public void updateScoreboard() {
     this.boards.updateTitle(this.generateTitleComponent());
     this.boards.updateLines(
+        this.generateDateComponent(),
         empty(),
-        this.generateModeComponent(),
         this.generateArenaComponent(),
         this.generatePlayerComponent(),
         empty(),
         this.generateTimerComponent(),
         empty(),
+        this.generateModeComponent(),
+        empty(),
         this.generateFooterComponent()
       );
+  }
+
+  private Component generateDateComponent() {
+    final ZoneId zoneId = ZoneId.systemDefault();
+    final LocalDate now = LocalDate.now(zoneId);
+    final int day = now.getDayOfMonth();
+    final int month = now.getMonthValue();
+    final int year = now.getYear();
+    return Message.LOBBY_SCOREBOARD_DATE.build(day, month, year);
   }
 
   private Component generateModeComponent() {

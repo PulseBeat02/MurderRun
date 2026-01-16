@@ -292,15 +292,23 @@ public final class PreGamePlayerManager {
     } else {
       this.survivors.add(player);
     }
-    this.addCurrency(player, killer);
     this.giveEmptyAbility(player);
+    this.giveLeaveItem(player);
+    this.addCurrency(player, killer);
+  }
+
+  private void giveLeaveItem(final Player player) {
+    final Item.Builder builder = ItemFactory.createLeaveItem();
+    final ItemStack stack = builder.build();
+    final PlayerInventory inventory = player.getInventory();
+    inventory.setItem(1, stack);
   }
 
   private void giveEmptyAbility(final Player player) {
     final Item.Builder builder = ItemFactory.createEmptyAbility();
     final ItemStack stack = builder.build();
     final PlayerInventory inventory = player.getInventory();
-    inventory.setItem(8, stack);
+    inventory.setItem(0, stack);
   }
 
   private void clearInventory(final Player player) {

@@ -266,6 +266,14 @@ public final class ItemFactory {
     return builder.potionColor(Color.RED).potion(PotionType.STRONG_HEALING);
   }
 
+  public static Item.Builder createLeaveItem() {
+    return Item.builder(Material.RED_DYE)
+      .name(Message.LOBBY_LEAVE_NAME.build())
+      .lore(Message.LOBBY_LEAVE_LORE.build())
+      .pdc(Keys.LEAVE, PersistentDataType.BOOLEAN, true)
+      .hideAttributes();
+  }
+
   public static Item.Builder createEmptyAbility() {
     return Item.builder(Material.DIAMOND)
       .name(Message.EMPTY_ABILITY_NAME.build())

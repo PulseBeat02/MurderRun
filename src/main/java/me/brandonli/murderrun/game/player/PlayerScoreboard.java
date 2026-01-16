@@ -21,6 +21,9 @@ import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import fr.mrmicky.fastboard.adventure.FastBoard;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
@@ -83,6 +86,10 @@ public final class PlayerScoreboard {
     this.board.updateTitle(this.generateTitleComponent());
 
     final boolean killer = this.gamePlayer instanceof Killer;
+
+    final List<Component> order = new ArrayList<>();
+
+
     if (killer) {
       this.board.updateLines(
           empty(),

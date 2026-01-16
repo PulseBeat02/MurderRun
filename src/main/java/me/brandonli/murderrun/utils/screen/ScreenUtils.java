@@ -67,10 +67,12 @@ public final class ScreenUtils {
     TRACKED_PLAYERS.add(player);
     final PlayerInventory inv = player.getInventory();
     final GameMode gm = player.getGameMode();
+    // spotless:off
     @Nullable
     final ItemStack[] invIs1 = inv.getContents();
     @Nullable
     final ItemStack[] invIs2 = inv.getArmorContents();
+    // spotless:on
     final double invHealth = player.getHealthScale();
     final int invFood = player.getFoodLevel();
     final GameMode invGM = player.getGameMode();

@@ -31,6 +31,10 @@ public final class PDCUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
+  public static boolean isLeaveItem(final ItemStack stack) {
+    return attributeExists(stack, Keys.LEAVE, PersistentDataType.BOOLEAN);
+  }
+
   public static boolean isCarPart(final ItemStack stack) {
     return attributeExists(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
   }

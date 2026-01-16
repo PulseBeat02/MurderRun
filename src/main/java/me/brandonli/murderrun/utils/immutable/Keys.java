@@ -27,6 +27,7 @@ public final class Keys {
 
   public static final String NAMESPACE = "murderrun";
 
+  public static NamespacedKey LEAVE = createNamespacedPluginKey("leave");
   public static NamespacedKey SPECIAL_SWORD = createNamespacedPluginKey("sword");
   public static NamespacedKey CAR_PART_UUID = createNamespacedPluginKey("car-part-uuid");
   public static NamespacedKey GADGET_KEY_NAME = createNamespacedPluginKey("gadget");

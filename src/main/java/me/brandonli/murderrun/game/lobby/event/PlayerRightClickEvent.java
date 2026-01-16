@@ -20,6 +20,7 @@ package me.brandonli.murderrun.game.lobby.event;
 import java.util.Collection;
 import me.brandonli.murderrun.game.lobby.PreGameManager;
 import me.brandonli.murderrun.game.lobby.PreGamePlayerManager;
+import me.brandonli.murderrun.utils.PDCUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -53,6 +54,10 @@ public final class PlayerRightClickEvent implements Listener {
     final ItemStack item = event.getItem();
     if (item == null) {
       return;
+    }
+
+    if (PDCUtils.isLeaveItem(item)) {
+      player.performCommand("murder game leave");
     }
 
     player.setCooldown(item, 0);
