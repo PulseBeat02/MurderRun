@@ -85,8 +85,10 @@ public final class GamePlayerDeathEvent extends GameEvent {
       if (corpse != null && corpse.getEntity() != null) {
         final Entity entity = corpse.getEntity();
         final Location corpseLocation = entity.getLocation();
-        event.setRespawnLocation(corpseLocation);
-        scheduler.scheduleTask(() -> player.teleport(corpseLocation), 5L, reference);
+        final Location clone = corpseLocation.clone();
+        final Location adjusted = clone.add(-1, 0, 0);
+        event.setRespawnLocation(adjusted);
+        scheduler.scheduleTask(() -> player.teleport(adjusted), 5L, reference);
       }
     }
 

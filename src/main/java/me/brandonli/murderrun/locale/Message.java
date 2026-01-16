@@ -23,6 +23,7 @@ import java.util.List;
 import net.kyori.adventure.text.Component;
 
 public interface Message extends LocaleTools {
+  NullComponent<Sender> FREEZE_TAG_REVIVED_REVIVER = direct("murderrun.game.freezetag.reviving.done");
   NullComponent<Sender> GAME_PLAYER_DEATH = direct("murderrun.game.death");
   NullComponent<Sender> GAME_SCOREBOARD_DOMAIN = direct("murderrun.game.scoreboard.domain");
   TriComponent<Sender, Integer, Integer, Integer> GAME_SCOREBOARD_DATE = direct("murderrun.game.scoreboard.date", null, null, null);

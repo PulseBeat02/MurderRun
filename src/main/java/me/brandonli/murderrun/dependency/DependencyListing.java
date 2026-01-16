@@ -27,8 +27,8 @@ public final class DependencyListing {
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS = new ConcurrentHashMap<>();
   private static final Dependency CITIZENS = new UrlDependency(
     "Citizens",
-    "Citizens-2.0.40-b4061",
-    "https://ci.citizensnpcs.co/job/Citizens2/4066/artifact/dist/target/Citizens-2.0.41-b4066.jar"
+    "Citizens-2.0.40-b4070",
+    "https://ci.citizensnpcs.co/job/Citizens2/4070/artifact/dist/target/Citizens-2.0.41-b4070.jar"
   );
 
   private static final Dependency WORLD_EDIT = new UrlDependency(

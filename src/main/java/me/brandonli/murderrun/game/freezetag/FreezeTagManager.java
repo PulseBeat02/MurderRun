@@ -50,6 +50,9 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class FreezeTagManager {
 
+  private static final int TOTAL_BARS = 10;
+  private static final int GRAY_COLOR = 0x444444;
+
   private final Game game;
   private final Map<UUID, BukkitTask> revivalTimers;
   private final Map<UUID, BukkitTask> hologramTasks;
@@ -106,10 +109,12 @@ public final class FreezeTagManager {
     this.startHologramTask(survivor);
   }
 
-  public void unfreezeSurvivor(final Survivor survivor) {
+  private void unfreezeSurvivor(final Survivor survivor) {
     if (!survivor.isFrozen()) {
       return;
     }
+
+    final UUID reviverId = survivor.getRevivingPlayer();
 
     survivor.setFrozen(false);
     survivor.setRevivingPlayer(null);
@@ -132,8 +137,15 @@ public final class FreezeTagManager {
       deathManager.setCorpse(null);
     }
 
-    final Component message = Message.FREEZE_TAG_REVIVED.build();
-    survivor.getAudience().sendMessage(message);
+    final PlayerAudience survivorAudience = survivor.getAudience();
+    survivorAudience.sendMessage(Message.FREEZE_TAG_REVIVED.build());
+    if (reviverId != null) {
+      final GamePlayerManager manager = this.game.getPlayerManager();
+      final GamePlayer reviver = manager.getGamePlayer(reviverId);
+      final PlayerAudience reviverAudience = reviver.getAudience();
+      reviverAudience.sendMessage(Message.FREEZE_TAG_REVIVED_REVIVER.build());
+      reviverAudience.showTitle(empty(), empty());
+    }
   }
 
   private void startRevivalTimer(final Survivor survivor) {
@@ -192,7 +204,7 @@ public final class FreezeTagManager {
     final TextDisplay display = world.spawn(spawn, TextDisplay.class);
     display.setAlignment(TextDisplay.TextAlignment.CENTER);
     display.setBillboard(Display.Billboard.CENTER);
-    display.setBackgroundColor(Color.fromRGB(0xc0c0c0));
+    display.setBackgroundColor(Color.fromRGB(0x000000));
     display.setSeeThrough(true);
     display.setLineWidth(Integer.MAX_VALUE);
     this.holograms.put(uuid, display);
@@ -288,6 +300,7 @@ public final class FreezeTagManager {
       final GamePlayer reviver = manager.getGamePlayer(reviverId);
       final PlayerAudience reviverAudience = reviver.getAudience();
       reviverAudience.sendMessage(message);
+      reviverAudience.showTitle(empty(), empty());
     }
   }
 
@@ -327,36 +340,32 @@ public final class FreezeTagManager {
       return;
     }
 
-    final long remaining = revivalTimeSeconds - elapsed;
-    final String raw = String.valueOf(remaining);
-    final Component progressText = Message.FREEZE_TAG_REVIVING_PROGRESS.build(raw);
-
     final Component bar = createProgressBar((double) elapsed, revivalTimeSeconds);
     final PlayerAudience frozenAudience = frozen.getAudience();
     final PlayerAudience reviverAudience = reviverPlayer.getAudience();
-    frozenAudience.showTitle(bar, progressText);
-    reviverAudience.showTitle(bar, progressText);
+    frozenAudience.showTitle(empty(), bar);
+    reviverAudience.showTitle(empty(), bar);
   }
-
-  private static final int TOTAL_BARS = 10;
-  private static final int GRAY_COLOR = 0x444444;
 
   private static Component createProgressBar(final double elapsed, final double revivalTimeSeconds) {
     final double fraction = Math.min(1.0, Math.max(0.0, elapsed / revivalTimeSeconds));
-    final int filledBlocks = (int) Math.round(fraction * TOTAL_BARS);
     Component bar = empty();
     final int startR = 0xFF, startG = 0x00, startB = 0x00;
     final int endR = 0x00, endG = 0xFF, endB = 0x00;
+    final int grayR = (GRAY_COLOR >> 16) & 0xFF;
+    final int grayG = (GRAY_COLOR >> 8) & 0xFF;
+    final int grayB = GRAY_COLOR & 0xFF;
     for (int i = 0; i < TOTAL_BARS; i++) {
-      if (i < filledBlocks) {
-        final double t = (double) i / (double) (TOTAL_BARS - 1);
-        final int r = (int) Math.round(startR + (endR - startR) * t);
-        final int g = (int) Math.round(startG + (endG - startG) * t);
-        final int b = (int) Math.round(startB + (endB - startB) * t);
-        bar = bar.append(text("█").color(color(r, g, b)));
-      } else {
-        bar = bar.append(text("█").color(color(GRAY_COLOR)));
-      }
+      double blockFill = fraction * TOTAL_BARS - i;
+      blockFill = Math.max(0.0, Math.min(1.0, blockFill));
+      final double posT = (TOTAL_BARS == 1) ? 0.0 : (double) i / (double) (TOTAL_BARS - 1);
+      final int baseR = (int) Math.round(startR + (endR - startR) * posT);
+      final int baseG = (int) Math.round(startG + (endG - startG) * posT);
+      final int baseB = (int) Math.round(startB + (endB - startB) * posT);
+      final int r = (int) Math.round(grayR + (baseR - grayR) * blockFill);
+      final int g = (int) Math.round(grayG + (baseG - grayG) * blockFill);
+      final int b = (int) Math.round(grayB + (baseB - grayB) * blockFill);
+      bar = bar.append(text("█").color(color(r, g, b)));
     }
     return bar;
   }
