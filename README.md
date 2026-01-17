@@ -18,7 +18,8 @@
 ---
 
 > [!NOTE]
-> Murder Run requires Java 25 and Paper in order to run!
+> Murder Run requires Java 25 and Paper in order to run! You also need to install [WorldEdit](https://enginehub.org/worldedit/),
+> [Citizens](https://citizensnpcs.co/), and [PacketEvents](https://github.com/retrooper/packetevents/)!
 
 If you are familiar with the game Dead by Daylight (DBD), you will be familiar with Murder Run. Murder Run is based off
 the concept in DBD, an advanced game-mode revolving around two groups: killers and survivors. In a desolate map, survivors

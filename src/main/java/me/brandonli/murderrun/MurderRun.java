@@ -101,7 +101,7 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onLoad() {
-    this.loadDependencies();
+    //    this.loadDependencies(); let users handle dependencies
   }
 
   @Override

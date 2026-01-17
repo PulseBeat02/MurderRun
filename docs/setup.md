@@ -6,9 +6,10 @@ start-up, and it will break. Make sure to choose **Paper 1.21.11** for now. Supp
 fast as possible.
 ```
 
-To set up Murder Run, you will need two things:
-1) A Minecraft Paper-Based Server
-2) A Murder Run Plugin JAR
+To set up Murder Run, you will need to do three things:
+1) Download a Minecraft Paper-Based Server
+2) Download [WorldEdit](https://enginehub.org/worldedit/), [Citizens](https://citizensnpcs.co/), and [PacketEvents](https://github.com/retrooper/packetevents/)
+3) Download the Murder Run Plugin JAR
 
 ## Setting up a Paper-Based Server
 In order to get a Minecraft Paper-based Server, you need to download either Paper, or any other Paper-fork
@@ -35,11 +36,10 @@ Murder Run JAR Releases
 ```
 
 ## Dependencies
-Murder Run has three essential dependencies, [WorldEdit](https://enginehub.org/worldedit), [Citizens](https://citizensnpcs.co/),
-and [PacketEvents](https://github.com/retrooper/packetevents). All are necessary in order for the plugin to function.
-Murder Run will automatically download these plugins for you on start-up, but in the case that they aren't downloaded
-for some reason, make sure to download all three plugins and drop them into the plugins folder so Murder Run is able
-to load.
+Murder Run has three essential dependencies, [WorldEdit](https://enginehub.org/worldedit/), [Citizens](https://citizensnpcs.co/),
+and [PacketEvents](https://github.com/retrooper/packetevents/). All are necessary in order for the plugin to function.
+
+You MUST download these dependencies before loading Murder Run.
 
 ```{figure} images/citizens.png
 Citizens Plugin

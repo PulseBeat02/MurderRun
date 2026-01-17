@@ -158,8 +158,9 @@ paperPluginYaml {
     prefix = "Murder Run"
     main = "me.brandonli.murderrun.MurderRun"
     loader = "me.brandonli.murderrun.MurderRunLoader"
-    dependencies.server("WorldEdit", PaperPluginYaml.Load.BEFORE, false)
-    dependencies.server("Citizens", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("WorldEdit", PaperPluginYaml.Load.BEFORE, true)
+    dependencies.server("Citizens", PaperPluginYaml.Load.BEFORE, true)
+    dependencies.server("packetevents", PaperPluginYaml.Load.BEFORE, true);
     dependencies.server("LibsDisguises", PaperPluginYaml.Load.BEFORE, false)
     dependencies.server("PlaceholderAPI", PaperPluginYaml.Load.BEFORE, false)
     dependencies.server("Parties", PaperPluginYaml.Load.BEFORE, false)
