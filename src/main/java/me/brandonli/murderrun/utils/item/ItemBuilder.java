@@ -57,7 +57,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ItemBuilder implements Builder {
 
-  private ItemStack stack;
+  private final ItemStack stack;
 
   ItemBuilder(final ItemStack stack) {
     this.stack = stack;
@@ -253,8 +253,9 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
+  @SuppressWarnings("deprecation")
   public Builder type(final Material material) {
-    this.stack = this.stack.withType(material);
+    this.stack.setType(material);
     return this;
   }
 

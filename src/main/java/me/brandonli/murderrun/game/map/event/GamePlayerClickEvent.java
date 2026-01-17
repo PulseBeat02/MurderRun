@@ -59,7 +59,7 @@ public final class GamePlayerClickEvent extends GameEvent {
     final GameStatus.Status gameStatus = status.getStatus();
     if (gamePlayer instanceof Killer && gameStatus == GameStatus.Status.SURVIVORS_RELEASED) {
       final int slot = event.getSlot();
-      if (slot == 8) {
+      if (slot == 0) {
         event.setCancelled(true);
       }
       return;

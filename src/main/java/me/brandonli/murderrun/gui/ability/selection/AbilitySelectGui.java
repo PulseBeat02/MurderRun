@@ -131,7 +131,7 @@ public final class AbilitySelectGui extends PaginatedGui {
     final Item.Builder actual = ability.getStackBuilder();
     final ItemStack actualStack = actual.build();
     final ItemStack clone = actualStack.clone();
-    inventory.setItem(8, clone);
+    inventory.setItem(0, clone);
   }
 
   private GuiItem createCloseStack() {
