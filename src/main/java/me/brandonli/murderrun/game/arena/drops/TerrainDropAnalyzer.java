@@ -66,7 +66,8 @@ public final class TerrainDropAnalyzer {
   private final Location[] corners;
   private final Location spawn;
 
-  public TerrainDropAnalyzer(final MurderRun plugin, final Location[] corners, final Location spawn) {
+  public TerrainDropAnalyzer(
+      final MurderRun plugin, final Location[] corners, final Location spawn) {
     this.plugin = plugin;
     this.corners = corners;
     this.spawn = spawn;
@@ -118,7 +119,8 @@ public final class TerrainDropAnalyzer {
             final BlockVector3 current = requireNonNull(queue.poll());
             final Set<BlockVector3> neighbors = TerrainDropAnalyzer.this.getNeighbors(current);
             for (final BlockVector3 neighbor : neighbors) {
-              if (!TerrainDropAnalyzer.this.checkValidNeighbor(neighbor, session, visited, min, max)) {
+              if (!TerrainDropAnalyzer.this.checkValidNeighbor(
+                  neighbor, session, visited, min, max)) {
                 continue;
               }
               queue.add(neighbor);
@@ -138,12 +140,11 @@ public final class TerrainDropAnalyzer {
   }
 
   private boolean checkValidNeighbor(
-    final BlockVector3 neighbor,
-    final EditSession session,
-    final Set<BlockVector3> visited,
-    final BlockVector3 min,
-    final BlockVector3 max
-  ) {
+      final BlockVector3 neighbor,
+      final EditSession session,
+      final Set<BlockVector3> visited,
+      final BlockVector3 min,
+      final BlockVector3 max) {
     if (visited.contains(neighbor)) {
       return false;
     }

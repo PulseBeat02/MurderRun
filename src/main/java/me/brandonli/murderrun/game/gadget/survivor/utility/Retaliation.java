@@ -39,15 +39,13 @@ public final class Retaliation extends SurvivorGadget {
   public Retaliation(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "retaliation",
-      properties.getRetaliationCost(),
-      ItemFactory.createGadget(
         "retaliation",
-        properties.getRetaliationMaterial(),
-        Message.RETALIATION_NAME.build(),
-        Message.RETALIATION_LORE.build()
-      )
-    );
+        properties.getRetaliationCost(),
+        ItemFactory.createGadget(
+            "retaliation",
+            properties.getRetaliationMaterial(),
+            Message.RETALIATION_NAME.build(),
+            Message.RETALIATION_LORE.build()));
   }
 
   @Override
@@ -60,7 +58,8 @@ public final class Retaliation extends SurvivorGadget {
     final GamePlayerManager manager = game.getPlayerManager();
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.checkForDeadPlayers(manager, player), 0, 4 * 20L, reference);
 
     final GameProperties properties = game.getProperties();
     final Component message = Message.RETALIATION_ACTIVATE.build();
@@ -83,9 +82,9 @@ public final class Retaliation extends SurvivorGadget {
     final GameProperties properties = game.getProperties();
     final int effectLevel = Math.min(level, properties.getRetaliationMaxAmplifier());
     player.addPotionEffects(
-      new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
-      new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),
-      new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel)
-    );
+        new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, effectLevel),
+        new PotionEffect(
+            PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, effectLevel),
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, effectLevel));
   }
 }

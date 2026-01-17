@@ -69,7 +69,8 @@ public final class PlayerScoreboard {
     scheduler.scheduleRepeatedTask(update, 0L, 5L, reference);
   }
 
-  private FastBoard createSidebar(@UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
+  private FastBoard createSidebar(
+      @UnderInitialization PlayerScoreboard this, final GamePlayer gamePlayer) {
     return gamePlayer.applyFunction(FastBoard::new);
   }
 
@@ -202,12 +203,16 @@ public final class PlayerScoreboard {
 
   private Component generateObjectiveComponent() {
     final boolean killer = this.gamePlayer instanceof Killer;
-    return killer ? Message.SCOREBOARD_OBJECTIVE_KILLER.build() : Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
+    return killer
+        ? Message.SCOREBOARD_OBJECTIVE_KILLER.build()
+        : Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
   }
 
   private Component generateRoleComponent() {
     final boolean killer = this.gamePlayer instanceof Killer;
-    return killer ? Message.SCOREBOARD_ROLE_KILLER.build() : Message.SCOREBOARD_ROLE_SURVIVOR.build();
+    return killer
+        ? Message.SCOREBOARD_ROLE_KILLER.build()
+        : Message.SCOREBOARD_ROLE_SURVIVOR.build();
   }
 
   private Component generateTitleComponent() {

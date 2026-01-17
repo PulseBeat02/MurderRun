@@ -58,7 +58,8 @@ public final class GameCommand implements AnnotationCommandFeature {
   private InviteManager invites;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.sanitizer = new GameInputSanitizer(this);
@@ -71,17 +72,14 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Command(value = "murder game party <arenaName> <lobbyName>", requiredSender = Player.class)
   @SuppressWarnings("all") // checker
   public void startPartyGame(
-    final Player player,
-    @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
-    @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName
-  ) {
+      final Player player,
+      @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
+      @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName) {
     final Audience audience = this.audiences.sender(player);
 
-    if (
-      this.sanitizer.checkIfPartyCapabilityDisabled(player, audience) ||
-      this.sanitizer.checkIfPartyInvalid(player, audience) ||
-      this.sanitizer.checkIfPartyNotLeader(player, audience)
-    ) {
+    if (this.sanitizer.checkIfPartyCapabilityDisabled(player, audience)
+        || this.sanitizer.checkIfPartyInvalid(player, audience)
+        || this.sanitizer.checkIfPartyNotLeader(player, audience)) {
       return;
     }
 
@@ -92,7 +90,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final int min = 2;
     final int max = members.size();
     final boolean quickJoinable = false;
-    final String command = "murder game create %s %s %s %s %s %s".formatted(arenaName, lobbyName, id, min, max, quickJoinable);
+    final String command = "murder game create %s %s %s %s %s %s"
+        .formatted(arenaName, lobbyName, id, min, max, quickJoinable);
     player.performCommand(command);
 
     final String joinCommand = "murder game join %s".formatted(id);
@@ -103,13 +102,12 @@ public final class GameCommand implements AnnotationCommandFeature {
       player1.performCommand(joinCommand);
     };
 
-    members
-      .stream()
-      .map(manager::getBukkitUuid)
-      .filter(StreamUtils.notEquals(uuid))
-      .map(Bukkit::getPlayer)
-      .filter(Objects::nonNull)
-      .forEach(consumer);
+    members.stream()
+        .map(manager::getBukkitUuid)
+        .filter(StreamUtils.notEquals(uuid))
+        .map(Bukkit::getPlayer)
+        .filter(Objects::nonNull)
+        .forEach(consumer);
   }
 
   @Permission("murderrun.command.game.start")
@@ -119,12 +117,10 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.sender(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
-      this.sanitizer.checkIfGameAlreadyStarted(audience, data) ||
-      this.sanitizer.checkIfNotEnoughPlayers(audience, data)
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
+        || this.sanitizer.checkIfGameAlreadyStarted(audience, data)
+        || this.sanitizer.checkIfNotEnoughPlayers(audience, data)) {
       return;
     }
     data.startGame();
@@ -136,29 +132,25 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.game.create")
   @CommandDescription("murderrun.command.game.create.info")
   @Command(
-    value = "murder game create <arenaName> <lobbyName> <id> <mode> <min> <max> <quickJoinable>",
-    requiredSender = CommandSender.class
-  )
+      value = "murder game create <arenaName> <lobbyName> <id> <mode> <min> <max> <quickJoinable>",
+      requiredSender = CommandSender.class)
   public void createGame(
-    final CommandSender sender,
-    @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
-    @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName,
-    @Quoted final String id,
-    final GameMode mode,
-    final int min,
-    final int max,
-    final boolean quickJoinable
-  ) {
+      final CommandSender sender,
+      @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
+      @Argument(suggestions = "lobby-suggestions") @Quoted final String lobbyName,
+      @Quoted final String id,
+      final GameMode mode,
+      final int min,
+      final int max,
+      final boolean quickJoinable) {
     final Audience audience = this.audiences.sender(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager temp = manager.getGameAsParticipant(sender);
-    if (
-      this.sanitizer.checkIfAlreadyInGame(audience, temp) ||
-      this.sanitizer.checkIfArenaValid(audience, arenaName) ||
-      this.sanitizer.checkIfLobbyValid(audience, lobbyName) ||
-      this.sanitizer.checkIfGameIdExists(audience, id) ||
-      this.sanitizer.checkIfInvalidPlayerCounts(audience, min, max)
-    ) {
+    if (this.sanitizer.checkIfAlreadyInGame(audience, temp)
+        || this.sanitizer.checkIfArenaValid(audience, arenaName)
+        || this.sanitizer.checkIfLobbyValid(audience, lobbyName)
+        || this.sanitizer.checkIfGameIdExists(audience, id)
+        || this.sanitizer.checkIfInvalidPlayerCounts(audience, min, max)) {
       return;
     }
     manager.createGame(sender, id, mode, arenaName, lobbyName, min, max, quickJoinable);
@@ -172,7 +164,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))) {
       return;
     }
 
@@ -197,12 +190,10 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
-      this.sanitizer.checkIfNotSamePlayer(audience, sender, invite) ||
-      this.sanitizer.checkIfInvitedAlreadyInGame(audience, invite, data)
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
+        || this.sanitizer.checkIfNotSamePlayer(audience, sender, invite)
+        || this.sanitizer.checkIfInvitedAlreadyInGame(audience, invite, data)) {
       return;
     }
     this.invites.invitePlayer(sender, invite);
@@ -225,7 +216,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager temp = manager.getGame(sender);
-    if (this.sanitizer.checkIfAlreadyInGame(audience, temp) || this.sanitizer.checkIfNotInvited(audience, sender, id)) {
+    if (this.sanitizer.checkIfAlreadyInGame(audience, temp)
+        || this.sanitizer.checkIfNotInvited(audience, sender, id)) {
       return;
     }
 
@@ -289,11 +281,9 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
-      this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, data)
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
+        || this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, data)) {
       return;
     }
     manager.leaveGame(kick);
@@ -315,9 +305,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) || this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, requireNonNull(data))
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfOwnerOfCurrentGame(sender, audience, requireNonNull(data))) {
       return;
     }
     manager.leaveGame(sender);
@@ -333,11 +322,9 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
-      this.sanitizer.checkIfGameHasStarted(audience, data)
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
+        || this.sanitizer.checkIfGameHasStarted(audience, data)) {
       return;
     }
 
@@ -357,11 +344,9 @@ public final class GameCommand implements AnnotationCommandFeature {
     final Audience audience = this.audiences.player(sender);
     final GameManager manager = this.plugin.getGameManager();
     final PreGameManager data = manager.getGame(sender);
-    if (
-      this.sanitizer.checkIfInNoGame(audience, data) ||
-      this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data)) ||
-      this.sanitizer.checkIfGameHasStarted(audience, data)
-    ) {
+    if (this.sanitizer.checkIfInNoGame(audience, data)
+        || this.sanitizer.checkIfNotOwner(sender, audience, requireNonNull(data))
+        || this.sanitizer.checkIfGameHasStarted(audience, data)) {
       return;
     }
 
@@ -408,13 +393,15 @@ public final class GameCommand implements AnnotationCommandFeature {
   }
 
   @Suggestions("arena-suggestions")
-  public List<String> arenaSuggestions(final CommandContext<CommandSender> context, final String input) {
+  public List<String> arenaSuggestions(
+      final CommandContext<CommandSender> context, final String input) {
     final ArenaManager manager = this.plugin.getArenaManager();
     return new ArrayList<>(manager.getArenaNames());
   }
 
   @Suggestions("lobby-suggestions")
-  public List<String> lobbySuggestions(final CommandContext<CommandSender> context, final String input) {
+  public List<String> lobbySuggestions(
+      final CommandContext<CommandSender> context, final String input) {
     final LobbyManager manager = this.plugin.getLobbyManager();
     return new ArrayList<>(manager.getLobbyNames());
   }

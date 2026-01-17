@@ -25,7 +25,8 @@ public enum Locale {
   ZH_HK,
   ES_ES;
 
-  private static final Map<String, Locale> LOOKUP_TABLE = Map.of("EN_US", EN_US, "ZH_CN", ZH_CN, "ZH_HK", ZH_HK, "ES_ES", ES_ES);
+  private static final Map<String, Locale> LOOKUP_TABLE =
+      Map.of("EN_US", EN_US, "ZH_CN", ZH_CN, "ZH_HK", ZH_HK, "ES_ES", ES_ES);
 
   public static Locale fromString(final String locale) {
     final String upper = locale.toUpperCase();

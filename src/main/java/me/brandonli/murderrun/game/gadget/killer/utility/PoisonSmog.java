@@ -44,15 +44,13 @@ public final class PoisonSmog extends KillerGadget {
   public PoisonSmog(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "poison_smog",
-      properties.getPoisonSmogCost(),
-      ItemFactory.createGadget(
         "poison_smog",
-        properties.getPosionSmogMaterial(),
-        Message.POISON_SMOG_NAME.build(),
-        Message.POISON_SMOG_LORE.build()
-      )
-    );
+        properties.getPoisonSmogCost(),
+        ItemFactory.createGadget(
+            "poison_smog",
+            properties.getPosionSmogMaterial(),
+            Message.POISON_SMOG_NAME.build(),
+            Message.POISON_SMOG_LORE.build()));
   }
 
   @Override
@@ -69,12 +67,11 @@ public final class PoisonSmog extends KillerGadget {
     final NullReference reference = NullReference.of();
     final GameProperties properties = game.getProperties();
     scheduler.scheduleRepeatedTask(
-      () -> this.handleSmog(world, location, manager),
-      0,
-      2 * 20L,
-      properties.getPoisonSmogDuration(),
-      reference
-    );
+        () -> this.handleSmog(world, location, manager),
+        0,
+        2 * 20L,
+        properties.getPoisonSmogDuration(),
+        reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(properties.getPoisonSmogSound());
@@ -82,7 +79,8 @@ public final class PoisonSmog extends KillerGadget {
     return false;
   }
 
-  private void handleSmog(final World world, final Location location, final GamePlayerManager manager) {
+  private void handleSmog(
+      final World world, final Location location, final GamePlayerManager manager) {
     this.spawnSmogParticles(world, location);
     this.handleSurvivors(manager, location);
   }

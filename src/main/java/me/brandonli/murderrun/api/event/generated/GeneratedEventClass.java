@@ -50,7 +50,8 @@ public final class GeneratedEventClass {
       final TypeDescription eventType = new TypeDescription.ForLoadedType(eventClass);
       final String implName = this.getImplementationName(eventClass);
       final Method[] methods = this.getInterfaceMethods(eventClass);
-      final Class<? extends SimpleMurderRunEvent> implClass = this.createClass(eventClass, implName, eventType, methods);
+      final Class<? extends SimpleMurderRunEvent> implClass =
+          this.createClass(eventClass, implName, eventType, methods);
       this.constructor = this.createHandle(implClass);
       this.setters = new MethodHandle[methods.length];
       this.createSetters(methods, implClass);
@@ -60,7 +61,9 @@ public final class GeneratedEventClass {
   }
 
   @SuppressWarnings("all") // checker
-  private void createSetters(final Method[] methods, final Class<? extends SimpleMurderRunEvent> implClass) throws Throwable {
+  private void createSetters(
+      final Method[] methods, final Class<? extends SimpleMurderRunEvent> implClass)
+      throws Throwable {
     final Object object = this.constructor.invoke((Object) null);
     final SimpleMurderRunEvent event = (SimpleMurderRunEvent) object;
     final MethodHandles.Lookup lookup = event.mhl();
@@ -68,26 +71,28 @@ public final class GeneratedEventClass {
       final Method m = methods[i];
       final String name = m.getName();
       final Class<?> returnType = m.getReturnType();
-      final MethodType methodType = MethodType.methodType(Void.TYPE, SimpleMurderRunEvent.class, Object.class);
+      final MethodType methodType =
+          MethodType.methodType(Void.TYPE, SimpleMurderRunEvent.class, Object.class);
       this.setters[i] = lookup.findSetter(implClass, name, returnType).asType(methodType);
     }
   }
 
   private MethodHandle createHandle(final Class<? extends SimpleMurderRunEvent> implClass)
-    throws NoSuchMethodException, IllegalAccessException {
+      throws NoSuchMethodException, IllegalAccessException {
     return MethodHandles.publicLookup()
-      .in(implClass)
-      .findConstructor(implClass, MethodType.methodType(Void.TYPE, MurderRun.class))
-      .asType(MethodType.methodType(SimpleMurderRunEvent.class, MurderRun.class));
+        .in(implClass)
+        .findConstructor(implClass, MethodType.methodType(Void.TYPE, MurderRun.class))
+        .asType(MethodType.methodType(SimpleMurderRunEvent.class, MurderRun.class));
   }
 
   private Class<? extends SimpleMurderRunEvent> createClass(
-    final Class<? extends MurderRunEvent> eventClass,
-    final String implName,
-    final TypeDescription eventType,
-    final Method[] methods
-  ) throws NoSuchMethodException {
-    final DynamicType.Builder<SimpleMurderRunEvent> builder = this.constructBuilder(eventClass, implName, eventType, methods);
+      final Class<? extends MurderRunEvent> eventClass,
+      final String implName,
+      final TypeDescription eventType,
+      final Method[] methods)
+      throws NoSuchMethodException {
+    final DynamicType.Builder<SimpleMurderRunEvent> builder =
+        this.constructBuilder(eventClass, implName, eventType, methods);
     final Class<GeneratedEventClass> current = GeneratedEventClass.class;
     final ClassLoader loader = current.getClassLoader();
     final DynamicType.Unloaded<SimpleMurderRunEvent> built = builder.make();
@@ -96,59 +101,57 @@ public final class GeneratedEventClass {
   }
 
   private DynamicType.Builder<SimpleMurderRunEvent> constructBuilder(
-    final Class<? extends MurderRunEvent> eventClass,
-    final String implName,
-    final TypeDescription eventType,
-    final Method[] methods
-  ) throws NoSuchMethodException {
+      final Class<? extends MurderRunEvent> eventClass,
+      final String implName,
+      final TypeDescription eventType,
+      final Method[] methods)
+      throws NoSuchMethodException {
     DynamicType.Builder<SimpleMurderRunEvent> builder = this.createBuilder(implName, eventType);
     builder = this.applyMethods(methods, builder);
     builder = this.applyCancellable(eventClass, builder);
     return builder;
   }
 
-  private DynamicType.Builder<SimpleMurderRunEvent> createBuilder(final String implName, final TypeDescription eventType)
-    throws NoSuchMethodException {
+  private DynamicType.Builder<SimpleMurderRunEvent> createBuilder(
+      final String implName, final TypeDescription eventType) throws NoSuchMethodException {
     return new ByteBuddy(ClassFileVersion.JAVA_V8)
-      .subclass(SimpleMurderRunEvent.class, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
-      .name(implName)
-      .implement(eventType)
-      .method(named("getEventType").and(returns(Class.class)).and(takesArguments(0)))
-      .intercept(FixedValue.value(eventType))
-      .method(named("mhl").and(returns(MethodHandles.Lookup.class)).and(takesArguments(0)))
-      .intercept(MethodCall.invoke(MethodHandles.class.getMethod("lookup")))
-      .withToString();
+        .subclass(
+            SimpleMurderRunEvent.class, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
+        .name(implName)
+        .implement(eventType)
+        .method(named("getEventType").and(returns(Class.class)).and(takesArguments(0)))
+        .intercept(FixedValue.value(eventType))
+        .method(named("mhl").and(returns(MethodHandles.Lookup.class)).and(takesArguments(0)))
+        .intercept(MethodCall.invoke(MethodHandles.class.getMethod("lookup")))
+        .withToString();
   }
 
   private DynamicType.Builder<SimpleMurderRunEvent> applyCancellable(
-    final Class<? extends MurderRunEvent> eventClass,
-    DynamicType.Builder<SimpleMurderRunEvent> builder
-  ) {
+      final Class<? extends MurderRunEvent> eventClass,
+      DynamicType.Builder<SimpleMurderRunEvent> builder) {
     final boolean cancellable = Cancellable.class.isAssignableFrom(eventClass);
     final FieldAccessor.OwnerTypeLocatable fieldAccessor = FieldAccessor.ofField("cancelled");
     if (cancellable) {
       builder = builder
-        .defineField("cancelled", Boolean.TYPE, Visibility.PRIVATE)
-        .method(named("isCancelled"))
-        .intercept(fieldAccessor)
-        .method(named("setCancelled"))
-        .intercept(fieldAccessor);
+          .defineField("cancelled", Boolean.TYPE, Visibility.PRIVATE)
+          .method(named("isCancelled"))
+          .intercept(fieldAccessor)
+          .method(named("setCancelled"))
+          .intercept(fieldAccessor);
     }
     return builder;
   }
 
   private DynamicType.Builder<SimpleMurderRunEvent> applyMethods(
-    final Method[] methods,
-    DynamicType.Builder<SimpleMurderRunEvent> builder
-  ) {
+      final Method[] methods, DynamicType.Builder<SimpleMurderRunEvent> builder) {
     for (final Method method : methods) {
       final String name = method.getName();
       final Class<?> returnType = method.getReturnType();
       final FieldAccessor.OwnerTypeLocatable fieldAccessor = FieldAccessor.ofField(name);
       builder = builder
-        .defineField(name, returnType, Visibility.PRIVATE)
-        .method(named(name).and(returns(returnType)))
-        .intercept(fieldAccessor);
+          .defineField(name, returnType, Visibility.PRIVATE)
+          .method(named(name).and(returns(returnType)))
+          .intercept(fieldAccessor);
     }
     return builder;
   }
@@ -156,10 +159,10 @@ public final class GeneratedEventClass {
   @SuppressWarnings("all") // checker
   private Method[] getInterfaceMethods(final Class<? extends MurderRunEvent> eventClass) {
     return Arrays.stream(eventClass.getMethods())
-      .filter(m -> m.isAnnotationPresent(Param.class))
-      .filter(m -> !m.isAnnotationPresent(NonInvokable.class))
-      .sorted(Comparator.comparingInt(m -> m.getAnnotation(Param.class).value()))
-      .toArray(Method[]::new);
+        .filter(m -> m.isAnnotationPresent(Param.class))
+        .filter(m -> !m.isAnnotationPresent(NonInvokable.class))
+        .sorted(Comparator.comparingInt(m -> m.getAnnotation(Param.class).value()))
+        .toArray(Method[]::new);
   }
 
   private String getImplementationName(final Class<? extends MurderRunEvent> eventClass) {

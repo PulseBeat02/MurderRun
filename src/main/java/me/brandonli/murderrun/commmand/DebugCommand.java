@@ -51,7 +51,8 @@ public final class DebugCommand implements AnnotationCommandFeature {
   private BukkitAudiences audiences;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
@@ -67,13 +68,12 @@ public final class DebugCommand implements AnnotationCommandFeature {
     final Player other = requireNonNull(Bukkit.getPlayer("Player1"));
     sender.performCommand("murder game quick-join");
     scheduler.runTaskLater(
-      this.plugin,
-      () -> {
-        other.performCommand("murder game quick-join");
-        sender.performCommand("murder game set murderer %s".formatted(sender.getName()));
-      },
-      3 * 20L
-    );
+        this.plugin,
+        () -> {
+          other.performCommand("murder game quick-join");
+          sender.performCommand("murder game set murderer %s".formatted(sender.getName()));
+        },
+        3 * 20L);
     scheduler.runTaskLater(this.plugin, () -> sender.performCommand("murder game start"), 5 * 20L);
   }
 
@@ -88,25 +88,27 @@ public final class DebugCommand implements AnnotationCommandFeature {
     final Player other1 = requireNonNull(Bukkit.getPlayer("Player2"));
     sender.performCommand("murder game quick-join");
     scheduler.runTaskLater(
-      this.plugin,
-      () -> {
-        other.performCommand("murder game quick-join");
-        other1.performCommand("murder game quick-join");
-        sender.performCommand("murder game set murderer %s".formatted(sender.getName()));
-      },
-      3 * 20L
-    );
+        this.plugin,
+        () -> {
+          other.performCommand("murder game quick-join");
+          other1.performCommand("murder game quick-join");
+          sender.performCommand("murder game set murderer %s".formatted(sender.getName()));
+        },
+        3 * 20L);
     scheduler.runTaskLater(this.plugin, () -> sender.performCommand("murder game start"), 5 * 20L);
   }
 
   @Permission("murderrun.command.debug.gadget")
   @Command(value = "murder debug gadget <gadgetName>", requiredSender = Player.class)
-  public void debugGadget(final Player sender, @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
+  public void debugGadget(
+      final Player sender,
+      @Argument(suggestions = "gadget-suggestions") @Quoted final String gadgetName) {
     if (!MurderRun.isDevelopmentToolsEnabled()) {
       return;
     }
     final Audience audience = this.audiences.player(sender);
-    final List<MerchantRecipe> allGadgets = TradingUtils.parseGadgetRecipes(GameProperties.DEFAULT, gadgetName);
+    final List<MerchantRecipe> allGadgets =
+        TradingUtils.parseGadgetRecipes(GameProperties.DEFAULT, gadgetName);
     if (this.checkIfInvalidGadget(audience, allGadgets)) {
       return;
     }
@@ -128,7 +130,8 @@ public final class DebugCommand implements AnnotationCommandFeature {
   }
 
   @Suggestions("gadget-suggestions")
-  public Stream<String> suggestTrades(final CommandContext<CommandSender> context, final String input) {
+  public Stream<String> suggestTrades(
+      final CommandContext<CommandSender> context, final String input) {
     return TradingUtils.getGadgetTradeSuggestions();
   }
 }

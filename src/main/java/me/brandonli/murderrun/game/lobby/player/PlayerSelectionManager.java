@@ -39,7 +39,8 @@ public final class PlayerSelectionManager {
   }
 
   public void addSelection(final Player player, final boolean killer) {
-    final PlayerSelection selection = new PlayerSelection(this.plugin, this.properties, player, killer);
+    final PlayerSelection selection =
+        new PlayerSelection(this.plugin, this.properties, player, killer);
     this.selections.put(player, selection);
   }
 

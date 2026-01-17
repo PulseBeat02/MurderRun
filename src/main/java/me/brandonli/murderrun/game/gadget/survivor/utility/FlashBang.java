@@ -53,17 +53,13 @@ public final class FlashBang extends SurvivorGadget implements Listener {
   public FlashBang(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "flash_bang",
-      properties.getFlashbangCost(),
-      ItemFactory.createFlashBang(
-        ItemFactory.createGadget(
-          "flash_bang",
-          properties.getFlashbangMaterial(),
-          Message.FLASHBANG_NAME.build(),
-          Message.FLASHBANG_LORE.build()
-        )
-      )
-    );
+        "flash_bang",
+        properties.getFlashbangCost(),
+        ItemFactory.createFlashBang(ItemFactory.createGadget(
+            "flash_bang",
+            properties.getFlashbangMaterial(),
+            Message.FLASHBANG_NAME.build(),
+            Message.FLASHBANG_LORE.build())));
     this.game = game;
   }
 
@@ -97,7 +93,8 @@ public final class FlashBang extends SurvivorGadget implements Listener {
     }
 
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
+    world.spawnParticle(
+        Particle.DUST, location, 25, 0.5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
 
     final GameProperties properties = this.game.getProperties();
     final GamePlayerManager manager = this.game.getPlayerManager();
@@ -108,9 +105,8 @@ public final class FlashBang extends SurvivorGadget implements Listener {
       if (distance < radius * radius) {
         final int duration = properties.getFlashbangDuration();
         killer.addPotionEffects(
-          new PotionEffect(PotionEffectType.BLINDNESS, duration, 0),
-          new PotionEffect(PotionEffectType.SLOWNESS, duration, 4)
-        );
+            new PotionEffect(PotionEffectType.BLINDNESS, duration, 0),
+            new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));
       }
     });
 

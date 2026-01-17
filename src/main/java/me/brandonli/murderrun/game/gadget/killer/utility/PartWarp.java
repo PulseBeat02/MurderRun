@@ -40,15 +40,13 @@ public final class PartWarp extends KillerGadget {
   public PartWarp(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "part_warp",
-      properties.getPartWarpCost(),
-      ItemFactory.createGadget(
         "part_warp",
-        properties.getPartWarpMaterial(),
-        Message.PART_WARP_NAME.build(),
-        Message.PART_WARP_LORE.build()
-      )
-    );
+        properties.getPartWarpCost(),
+        ItemFactory.createGadget(
+            "part_warp",
+            properties.getPartWarpMaterial(),
+            Message.PART_WARP_NAME.build(),
+            Message.PART_WARP_LORE.build()));
   }
 
   @Override

@@ -37,15 +37,13 @@ public final class TrapWrecker extends KillerGadget {
   public TrapWrecker(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "trap_wrecker",
-      properties.getTrapWreckerCost(),
-      ItemFactory.createGadget(
         "trap_wrecker",
-        properties.getTrapWreckerMaterial(),
-        Message.TRAP_WRECKER_NAME.build(),
-        Message.TRAP_WRECKER_LORE.build()
-      )
-    );
+        properties.getTrapWreckerCost(),
+        ItemFactory.createGadget(
+            "trap_wrecker",
+            properties.getTrapWreckerMaterial(),
+            Message.TRAP_WRECKER_NAME.build(),
+            Message.TRAP_WRECKER_LORE.build()));
   }
 
   @Override

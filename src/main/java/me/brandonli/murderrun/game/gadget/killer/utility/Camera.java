@@ -34,15 +34,13 @@ public final class Camera extends KillerGadget {
   public Camera(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "killer_camera",
-      properties.getKillerCameraCost(),
-      ItemFactory.createGadget(
         "killer_camera",
-        properties.getKillerCameraMaterial(),
-        Message.KILLER_CAMERA_NAME.build(),
-        Message.KILLER_CAMERA_LORE.build()
-      )
-    );
+        properties.getKillerCameraCost(),
+        ItemFactory.createGadget(
+            "killer_camera",
+            properties.getKillerCameraMaterial(),
+            Message.KILLER_CAMERA_NAME.build(),
+            Message.KILLER_CAMERA_LORE.build()));
   }
 
   @Override

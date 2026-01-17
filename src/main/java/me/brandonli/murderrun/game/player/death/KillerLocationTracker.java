@@ -48,14 +48,17 @@ public final class KillerLocationTracker {
     final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> manager.applyToKillers(this::spawnParticlesWhenClose), 0, 20L, reference);
-    scheduler.scheduleRepeatedTask(() -> manager.applyToKillers(this::spawnParticleTrail), 0, 1L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> manager.applyToKillers(this::spawnParticlesWhenClose), 0, 20L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> manager.applyToKillers(this::spawnParticleTrail), 0, 1L, reference);
   }
 
   private void spawnParticleTrail(final GamePlayer killer) {
     final Location murdererLocation = killer.getLocation();
     final World killerWorld = requireNonNull(murdererLocation.getWorld());
-    killerWorld.spawnParticle(Particle.DUST, murdererLocation, 3, 0.2, 0.2, 0.2, new DustOptions(Color.RED, 2));
+    killerWorld.spawnParticle(
+        Particle.DUST, murdererLocation, 3, 0.2, 0.2, 0.2, new DustOptions(Color.RED, 2));
   }
 
   private void spawnParticlesWhenClose(final GamePlayer murdererPlayer) {
@@ -108,19 +111,31 @@ public final class KillerLocationTracker {
     }
   }
 
-  private void sendCloseEffects(final PlayerAudience audience, final GameScheduler scheduler, final StrictPlayerReference reference) {
+  private void sendCloseEffects(
+      final PlayerAudience audience,
+      final GameScheduler scheduler,
+      final StrictPlayerReference reference) {
     audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 10L, reference);
+    scheduler.scheduleTask(
+        () -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 10L, reference);
   }
 
-  private void sendVeryCloseEffects(final GameScheduler scheduler, final PlayerAudience audience, final StrictPlayerReference reference) {
+  private void sendVeryCloseEffects(
+      final GameScheduler scheduler,
+      final PlayerAudience audience,
+      final StrictPlayerReference reference) {
     scheduler.scheduleTask(() -> audience.playSound(Sounds.HEARTBEAT), 9L, reference);
     audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 4L, reference);
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 8L, reference);
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION1.build()), 10L, reference);
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 14L, reference);
-    scheduler.scheduleTask(() -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 18L, reference);
+    scheduler.scheduleTask(
+        () -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 4L, reference);
+    scheduler.scheduleTask(
+        () -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 8L, reference);
+    scheduler.scheduleTask(
+        () -> audience.setActionBar(Message.HEARTBEAT_ACTION1.build()), 10L, reference);
+    scheduler.scheduleTask(
+        () -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 14L, reference);
+    scheduler.scheduleTask(
+        () -> audience.setActionBar(Message.HEARTBEAT_ACTION3.build()), 18L, reference);
   }
 
   public Game getGame() {

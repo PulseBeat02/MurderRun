@@ -107,8 +107,7 @@ public final class PlayerDeathTool {
 
   private void summonCarParts(final Player player) {
     final PlayerInventory inventory = player.getInventory();
-    @Nullable
-    final ItemStack[] slots = inventory.getContents();
+    final @Nullable ItemStack[] slots = inventory.getContents();
     for (final ItemStack slot : slots) {
       if (slot == null) {
         continue;
@@ -135,7 +134,8 @@ public final class PlayerDeathTool {
     final NullReference reference = NullReference.of();
     final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> manager.applyToDeceased(this::spawnParticleOnCorpse), 0, 20L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> manager.applyToDeceased(this::spawnParticleOnCorpse), 0, 20L, reference);
   }
 
   private void spawnParticleOnCorpse(final GamePlayer gamePlayer) {

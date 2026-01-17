@@ -48,15 +48,13 @@ public final class ResurrectionStone extends SurvivorGadget {
   public ResurrectionStone(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "resurrection_stone",
-      properties.getResurrectionStoneCost(),
-      ItemFactory.createGadget(
         "resurrection_stone",
-        properties.getResurrectionStoneMaterial(),
-        Message.RESURRECTION_STONE_NAME.build(),
-        Message.RESURRECTION_STONE_LORE.build()
-      )
-    );
+        properties.getResurrectionStoneCost(),
+        ItemFactory.createGadget(
+            "resurrection_stone",
+            properties.getResurrectionStoneMaterial(),
+            Message.RESURRECTION_STONE_NAME.build(),
+            Message.RESURRECTION_STONE_LORE.build()));
   }
 
   @Override
@@ -97,7 +95,8 @@ public final class ResurrectionStone extends SurvivorGadget {
 
   private void spawnParticles(final Location location) {
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
+    world.spawnParticle(
+        Particle.DUST, location, 5, 0.5, 0.5, 0.5, new DustOptions(Color.YELLOW, 4));
     location.add(0, 0.5, 0);
   }
 

@@ -48,7 +48,8 @@ public final class SchedulingExtent extends AbstractBufferingExtent {
   }
 
   @Override
-  public <T extends BlockStateHolder<T>> boolean setBlock(final BlockVector3 position, final T block) {
+  public <T extends BlockStateHolder<T>> boolean setBlock(
+      final BlockVector3 position, final T block) {
     this.buffer.remove(position);
     this.buffer.put(position, block.toBaseBlock());
     return true;

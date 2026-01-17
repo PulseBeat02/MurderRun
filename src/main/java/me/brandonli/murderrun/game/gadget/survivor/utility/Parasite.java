@@ -43,10 +43,13 @@ public final class Parasite extends SurvivorGadget {
   public Parasite(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "parasite",
-      properties.getParasiteCost(),
-      ItemFactory.createGadget("parasite", properties.getParsiteMaterial(), Message.PARASITE_NAME.build(), Message.PARASITE_LORE.build())
-    );
+        "parasite",
+        properties.getParasiteCost(),
+        ItemFactory.createGadget(
+            "parasite",
+            properties.getParsiteMaterial(),
+            Message.PARASITE_NAME.build(),
+            Message.PARASITE_LORE.build()));
     this.removed = new HashSet<>();
   }
 
@@ -71,7 +74,8 @@ public final class Parasite extends SurvivorGadget {
     manager.applyToKillers(killer -> this.checkActivationDistance(killer, manager, item));
   }
 
-  private void checkActivationDistance(final GamePlayer player, final GamePlayerManager manager, final Item item) {
+  private void checkActivationDistance(
+      final GamePlayer player, final GamePlayerManager manager, final Item item) {
     final Location origin = item.getLocation();
     final Location location = player.getLocation();
     final double distance = origin.distanceSquared(location);
@@ -87,10 +91,9 @@ public final class Parasite extends SurvivorGadget {
       this.removed.add(id);
     } else if (distance < radius * radius) {
       player.addPotionEffects(
-        new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 0),
-        new PotionEffect(PotionEffectType.POISON, 10 * 20, 0),
-        new PotionEffect(PotionEffectType.WEAKNESS, 10 * 20, 0)
-      );
+          new PotionEffect(PotionEffectType.SLOWNESS, 10 * 20, 0),
+          new PotionEffect(PotionEffectType.POISON, 10 * 20, 0),
+          new PotionEffect(PotionEffectType.WEAKNESS, 10 * 20, 0));
     }
   }
 }

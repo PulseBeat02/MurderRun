@@ -42,15 +42,13 @@ public final class IceSkatin extends SurvivorGadget {
   public IceSkatin(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "ice_skatin",
-      properties.getIceSkatinCost(),
-      ItemFactory.createGadget(
         "ice_skatin",
-        properties.getIceSkatinMaterial(),
-        Message.ICE_SKATIN_NAME.build(),
-        Message.ICE_SKATIN_LORE.build()
-      )
-    );
+        properties.getIceSkatinCost(),
+        ItemFactory.createGadget(
+            "ice_skatin",
+            properties.getIceSkatinMaterial(),
+            Message.ICE_SKATIN_NAME.build(),
+            Message.ICE_SKATIN_LORE.build()));
   }
 
   @Override

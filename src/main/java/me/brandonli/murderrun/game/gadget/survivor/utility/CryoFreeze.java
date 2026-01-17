@@ -40,15 +40,13 @@ public final class CryoFreeze extends SurvivorGadget {
   public CryoFreeze(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "cryo_freeze",
-      properties.getCryoFreezeCost(),
-      ItemFactory.createGadget(
         "cryo_freeze",
-        properties.getCryoFreezeMaterial(),
-        Message.CRYO_FREEZE_NAME.build(),
-        Message.CRYO_FREEZE_LORE.build()
-      )
-    );
+        properties.getCryoFreezeCost(),
+        ItemFactory.createGadget(
+            "cryo_freeze",
+            properties.getCryoFreezeMaterial(),
+            Message.CRYO_FREEZE_NAME.build(),
+            Message.CRYO_FREEZE_LORE.build()));
   }
 
   @Override

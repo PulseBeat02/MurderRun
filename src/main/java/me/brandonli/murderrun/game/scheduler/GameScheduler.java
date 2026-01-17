@@ -73,40 +73,43 @@ public final class GameScheduler {
   }
 
   public BukkitTask scheduleConditionalTask(
-    final Runnable runnable,
-    final long delay,
-    final long period,
-    final BooleanSupplier condition,
-    final Reference<?> reference
-  ) {
+      final Runnable runnable,
+      final long delay,
+      final long period,
+      final BooleanSupplier condition,
+      final Reference<?> reference) {
     final ConditionalTask task = new ConditionalTask(this.game, runnable, condition, reference);
     return this.scheduleTask(task, delay, period);
   }
 
-  public BukkitTask scheduleTask(final Runnable runnable, final long delay, final Reference<?> reference) {
+  public BukkitTask scheduleTask(
+      final Runnable runnable, final long delay, final Reference<?> reference) {
     final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference);
     return this.scheduleTask(task, delay, -1);
   }
 
-  public BukkitTask scheduleRepeatedTask(final Runnable runnable, final long delay, final long period, final Reference<?> reference) {
+  public BukkitTask scheduleRepeatedTask(
+      final Runnable runnable, final long delay, final long period, final Reference<?> reference) {
     final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference);
     return this.scheduleTask(task, delay, period);
   }
 
   public BukkitTask scheduleRepeatedTask(
-    final Runnable runnable,
-    final long delay,
-    final long period,
-    final long duration,
-    final Reference<?> reference
-  ) {
-    final TemporaryRepeatedTask task = new TemporaryRepeatedTask(this.game, runnable, period, duration, reference);
+      final Runnable runnable,
+      final long delay,
+      final long period,
+      final long duration,
+      final Reference<?> reference) {
+    final TemporaryRepeatedTask task =
+        new TemporaryRepeatedTask(this.game, runnable, period, duration, reference);
     return this.scheduleTask(task, delay, period);
   }
 
-  public BukkitTask scheduleCountdownTask(final Consumer<Integer> tasks, final int seconds, final Reference<?> reference) {
+  public BukkitTask scheduleCountdownTask(
+      final Consumer<Integer> tasks, final int seconds, final Reference<?> reference) {
     final Runnable dummy = () -> {};
-    final CountdownTask countdownTask = new CountdownTask(this.game, dummy, seconds, tasks, reference);
+    final CountdownTask countdownTask =
+        new CountdownTask(this.game, dummy, seconds, tasks, reference);
     return this.scheduleTask(countdownTask, 0, 20);
   }
 
@@ -128,8 +131,11 @@ public final class GameScheduler {
     return this.scheduleConditionalTask(task, 0, 20L, item::isDead, reference);
   }
 
-  private BukkitTask scheduleTask(final GameScheduledTask task, final long delay, final long period) {
-    final BukkitTask bukkitTask = (period > 0) ? task.runTaskTimer(this.plugin, delay, period) : task.runTaskLater(this.plugin, delay);
+  private BukkitTask scheduleTask(
+      final GameScheduledTask task, final long delay, final long period) {
+    final BukkitTask bukkitTask = (period > 0)
+        ? task.runTaskTimer(this.plugin, delay, period)
+        : task.runTaskLater(this.plugin, delay);
     this.tasks.add(bukkitTask);
     return bukkitTask;
   }

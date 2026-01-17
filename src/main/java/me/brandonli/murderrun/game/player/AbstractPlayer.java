@@ -74,10 +74,10 @@ public abstract class AbstractPlayer implements Participant {
   public void disableWalkNoFOVEffects(final GameScheduler scheduler, final long ticks) {
     final StrictPlayerReference reference = StrictPlayerReference.of(this);
     this.apply(player -> {
-        final float before = player.getWalkSpeed();
-        player.setWalkSpeed(0.0f);
-        scheduler.scheduleTask(() -> player.setWalkSpeed(before), ticks, reference);
-      });
+      final float before = player.getWalkSpeed();
+      player.setWalkSpeed(0.0f);
+      scheduler.scheduleTask(() -> player.setWalkSpeed(before), ticks, reference);
+    });
   }
 
   @Override
@@ -88,9 +88,9 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void apply(final Consumer<Player> consumer) {
     this.applyFunction(player -> {
-        consumer.accept(player);
-        return null;
-      });
+      consumer.accept(player);
+      return null;
+    });
   }
 
   @Override
@@ -107,10 +107,10 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void addPotionEffects(final PotionEffect... effects) {
     this.apply(player -> {
-        for (final PotionEffect effect : effects) {
-          player.addPotionEffect(effect);
-        }
-      });
+      for (final PotionEffect effect : effects) {
+        player.addPotionEffect(effect);
+      }
+    });
   }
 
   @Override
@@ -136,12 +136,12 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void removeAllPotionEffects() {
     this.apply(player -> {
-        final Collection<PotionEffect> effects = player.getActivePotionEffects();
-        for (final PotionEffect effect : effects) {
-          final PotionEffectType type = effect.getType();
-          player.removePotionEffect(type);
-        }
-      });
+      final Collection<PotionEffect> effects = player.getActivePotionEffects();
+      for (final PotionEffect effect : effects) {
+        final PotionEffectType type = effect.getType();
+        player.removePotionEffect(type);
+      }
+    });
   }
 
   @Override
@@ -343,16 +343,16 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public <T> void spawnParticle(
-    final Particle particle,
-    final Location location,
-    final int count,
-    final double offsetX,
-    final double offsetY,
-    final double offsetZ,
-    final double extra,
-    final @Nullable T data
-  ) {
-    this.apply(player -> player.spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, data));
+      final Particle particle,
+      final Location location,
+      final int count,
+      final double offsetX,
+      final double offsetY,
+      final double offsetZ,
+      final double extra,
+      final @Nullable T data) {
+    this.apply(player ->
+        player.spawnParticle(particle, location, count, offsetX, offsetY, offsetZ, extra, data));
   }
 
   @Override
@@ -368,8 +368,7 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public void setAbilityCooldowns(final String ability, final int seconds) {
     final PlayerInventory inventory = this.getInventory();
-    @Nullable
-    final ItemStack[] items = inventory.getContents();
+    final @Nullable ItemStack[] items = inventory.getContents();
     for (final ItemStack item : items) {
       if (item == null) {
         continue;
@@ -377,7 +376,8 @@ public abstract class AbstractPlayer implements Participant {
       if (!PDCUtils.isAbility(item)) {
         continue;
       }
-      final String abilityName = PDCUtils.getPersistentDataAttribute(item, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+      final String abilityName = PDCUtils.getPersistentDataAttribute(
+          item, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
       if (!ability.equals(abilityName)) {
         return;
       }
@@ -388,8 +388,7 @@ public abstract class AbstractPlayer implements Participant {
   @Override
   public boolean hasAbility(final String ability) {
     final PlayerInventory inventory = this.getInventory();
-    @Nullable
-    final ItemStack[] items = inventory.getContents();
+    final @Nullable ItemStack[] items = inventory.getContents();
     for (final ItemStack item : items) {
       if (item == null) {
         continue;
@@ -397,7 +396,8 @@ public abstract class AbstractPlayer implements Participant {
       if (!PDCUtils.isAbility(item)) {
         continue;
       }
-      final String abilityName = PDCUtils.getPersistentDataAttribute(item, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+      final String abilityName = PDCUtils.getPersistentDataAttribute(
+          item, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
       if (ability.equals(abilityName)) {
         return true;
       }

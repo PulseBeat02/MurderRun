@@ -33,7 +33,11 @@ public final class ApiEventSubscription<T extends MurderRunEvent> implements Eve
   private Consumer<? super T> handler;
   private boolean active;
 
-  public ApiEventSubscription(final Plugin plugin, final Class<T> eventType, final Consumer<? super T> handler, final int priority) {
+  public ApiEventSubscription(
+      final Plugin plugin,
+      final Class<T> eventType,
+      final Consumer<? super T> handler,
+      final int priority) {
     this.plugin = plugin;
     this.eventType = eventType;
     this.handler = handler;

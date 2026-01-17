@@ -70,13 +70,12 @@ public final class Arena implements Serializable {
   public Arena() {}
 
   public Arena(
-    final Schematic schematic,
-    final String name,
-    final Location[] corners,
-    final Location[] carPartLocations,
-    final Location spawn,
-    final Location truck
-  ) {
+      final Schematic schematic,
+      final String name,
+      final Location[] corners,
+      final Location[] carPartLocations,
+      final Location spawn,
+      final Location truck) {
     this.schematic = schematic;
     this.name = name;
     this.corners = corners;
@@ -176,6 +175,7 @@ public final class Arena implements Serializable {
         }
       }
     }
-    return new Arena(this.schematic, this.name, newCorners, newCarPartLocations, newSpawn, newTruck);
+    return new Arena(
+        this.schematic, this.name, newCorners, newCarPartLocations, newSpawn, newTruck);
   }
 }

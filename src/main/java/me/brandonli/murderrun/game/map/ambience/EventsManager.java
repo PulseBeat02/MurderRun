@@ -32,12 +32,8 @@ import me.brandonli.murderrun.utils.RandomUtils;
 
 public final class EventsManager {
 
-  private static final Collection<RandomEvent> RANDOM_EVENTS = Set.of(
-    new PotionEffectEvent(),
-    new SmiteEvent(),
-    new SoundEvent(),
-    new WeatherEvent()
-  );
+  private static final Collection<RandomEvent> RANDOM_EVENTS =
+      Set.of(new PotionEffectEvent(), new SmiteEvent(), new SoundEvent(), new WeatherEvent());
 
   private static final int BASE_INTERVAL_SECONDS = 300;
   private static final int MIN_INTERVAL_SECONDS = 120;
@@ -65,7 +61,8 @@ public final class EventsManager {
     final NullReference reference = NullReference.of();
     final Game game = scheduler.getGame();
     final Runnable task = this.getRandomizationLogic(game, maxIntervalSeconds);
-    final int initialIntervalSeconds = RandomUtils.generateInt(MIN_INTERVAL_SECONDS, maxIntervalSeconds + 1);
+    final int initialIntervalSeconds =
+        RandomUtils.generateInt(MIN_INTERVAL_SECONDS, maxIntervalSeconds + 1);
     final long ticks = initialIntervalSeconds * 20L;
     scheduler.scheduleTask(task, ticks, reference);
   }
@@ -86,7 +83,8 @@ public final class EventsManager {
       private void scheduleNextEvent(final int maxIntervalSeconds) {
         final Game game = EventsManager.this.map.getGame();
         final GameScheduler scheduler = game.getScheduler();
-        final int nextIntervalSeconds = RandomUtils.generateInt(MIN_INTERVAL_SECONDS, maxIntervalSeconds + 1);
+        final int nextIntervalSeconds =
+            RandomUtils.generateInt(MIN_INTERVAL_SECONDS, maxIntervalSeconds + 1);
         final long ticks = nextIntervalSeconds * 20L;
         final NullReference reference = NullReference.of();
         scheduler.scheduleTask(this, ticks, reference);

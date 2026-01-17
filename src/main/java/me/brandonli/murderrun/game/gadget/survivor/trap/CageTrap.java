@@ -38,7 +38,8 @@ import org.incendo.cloud.type.tuple.Triplet;
 
 public final class CageTrap extends SurvivorTrap {
 
-  private static final Set<BlockFace> FACES = Set.of(BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH);
+  private static final Set<BlockFace> FACES =
+      Set.of(BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH);
   private static final List<Triplet<Integer, Integer, Integer>> CAGE_TRAP_VECTORS;
 
   static {
@@ -49,12 +50,15 @@ public final class CageTrap extends SurvivorTrap {
   public CageTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "cage_trap",
-      properties.getCageCost(),
-      ItemFactory.createGadget("cage_trap", properties.getCageMaterial(), Message.CAGE_NAME.build(), Message.CAGE_LORE.build()),
-      Message.CAGE_ACTIVATE.build(),
-      properties.getCageColor()
-    );
+        "cage_trap",
+        properties.getCageCost(),
+        ItemFactory.createGadget(
+            "cage_trap",
+            properties.getCageMaterial(),
+            Message.CAGE_NAME.build(),
+            Message.CAGE_LORE.build()),
+        Message.CAGE_ACTIVATE.build(),
+        properties.getCageColor());
   }
 
   @Override

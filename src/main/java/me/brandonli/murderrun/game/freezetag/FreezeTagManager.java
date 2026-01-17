@@ -73,18 +73,16 @@ public final class FreezeTagManager {
     final NullReference reference = NullReference.of();
     final GamePlayerManager manager = game.getPlayerManager();
     this.reviveUpdateTask = scheduler.scheduleRepeatedTask(
-      () ->
-        manager
-          .getSurvivors()
-          .filter(GamePlayer::isAlive)
-          .map(p -> (Survivor) p)
-          .filter(Survivor::isFrozen)
-          .filter(s -> s.getRevivingPlayer() != null)
-          .forEach(this::updateRevive),
-      0L,
-      20L,
-      reference
-    );
+        () -> manager
+            .getSurvivors()
+            .filter(GamePlayer::isAlive)
+            .map(p -> (Survivor) p)
+            .filter(Survivor::isFrozen)
+            .filter(s -> s.getRevivingPlayer() != null)
+            .forEach(this::updateRevive),
+        0L,
+        20L,
+        reference);
   }
 
   public void freezeSurvivor(final Survivor survivor) {
@@ -158,14 +156,13 @@ public final class FreezeTagManager {
     final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
 
     final BukkitTask task = scheduler.scheduleTask(
-      () -> {
-        if (survivor.isFrozen()) {
-          this.killFrozenSurvivor(survivor);
-        }
-      },
-      reviveTimer,
-      reference
-    );
+        () -> {
+          if (survivor.isFrozen()) {
+            this.killFrozenSurvivor(survivor);
+          }
+        },
+        reviveTimer,
+        reference);
 
     this.revivalTimers.put(uuid, task);
   }
@@ -211,7 +208,8 @@ public final class FreezeTagManager {
 
     final GameScheduler scheduler = this.game.getScheduler();
     final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
-    final BukkitTask task = scheduler.scheduleRepeatedTask(() -> this.updateHologram(survivor), 0L, 10L, reference);
+    final BukkitTask task =
+        scheduler.scheduleRepeatedTask(() -> this.updateHologram(survivor), 0L, 10L, reference);
     this.hologramTasks.put(uuid, task);
   }
 
@@ -347,7 +345,8 @@ public final class FreezeTagManager {
     reviverAudience.showTitle(empty(), bar);
   }
 
-  private static Component createProgressBar(final double elapsed, final double revivalTimeSeconds) {
+  private static Component createProgressBar(
+      final double elapsed, final double revivalTimeSeconds) {
     final double fraction = Math.min(1.0, Math.max(0.0, elapsed / revivalTimeSeconds));
     Component bar = empty();
     final int startR = 0xFF, startG = 0x00, startB = 0x00;
@@ -397,7 +396,9 @@ public final class FreezeTagManager {
 
   public boolean checkAllSurvivorsFrozen() {
     final GamePlayerManager manager = this.game.getPlayerManager();
-    return manager.getSurvivors().filter(GamePlayer::isAlive).allMatch(survivor -> ((Survivor) survivor).isFrozen());
+    return manager.getSurvivors().filter(GamePlayer::isAlive).allMatch(survivor -> ((Survivor)
+            survivor)
+        .isFrozen());
   }
 
   public void shutdown() {

@@ -47,7 +47,8 @@ public final class PlayerAudience {
     this.bars = new HashMap<>();
   }
 
-  private Audience getAudience(@UnderInitialization PlayerAudience this, final Game game, final UUID uuid) {
+  private Audience getAudience(
+      @UnderInitialization PlayerAudience this, final Game game, final UUID uuid) {
     final MurderRun plugin = game.getPlugin();
     final AudienceProvider handler = plugin.getAudience();
     final BukkitAudiences audiences = handler.retrieve();
@@ -86,17 +87,21 @@ public final class PlayerAudience {
     this.audience.showTitle(title(title, subtitle));
   }
 
-  public void showTitle(final Component title, final Component subtitle, final int in, final int stay, final int out) {
+  public void showTitle(
+      final Component title,
+      final Component subtitle,
+      final int in,
+      final int stay,
+      final int out) {
     this.audience.showTitle(title(title, subtitle, in, stay, out));
   }
 
   public void showBossBar(
-    final String id,
-    final Component name,
-    final float progress,
-    final BossBar.Color color,
-    final BossBar.Overlay overlay
-  ) {
+      final String id,
+      final Component name,
+      final float progress,
+      final BossBar.Color color,
+      final BossBar.Overlay overlay) {
     final BossBar bar = bossBar(name, progress, color, overlay);
     this.bars.put(id, bar);
     this.audience.showBossBar(bar);
@@ -117,7 +122,8 @@ public final class PlayerAudience {
     this.audience.stopSound(named(key));
   }
 
-  public void playSound(final Key key, final Source category, final float volume, final float pitch) {
+  public void playSound(
+      final Key key, final Source category, final float volume, final float pitch) {
     this.audience.playSound(sound(key, category, volume, pitch));
   }
 

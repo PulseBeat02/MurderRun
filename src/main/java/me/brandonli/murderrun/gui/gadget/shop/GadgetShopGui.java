@@ -58,8 +58,15 @@ public final class GadgetShopGui extends PaginatedGui {
   private final Player viewer;
   private final GameProperties properties;
 
-  public GadgetShopGui(final MurderRun plugin, final GameProperties properties, final Player viewer, final List<String> gadgets) {
-    super(ContainerUtils.createChestContainer(Message.SHOP_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
+  public GadgetShopGui(
+      final MurderRun plugin,
+      final GameProperties properties,
+      final Player viewer,
+      final List<String> gadgets) {
+    super(
+        ContainerUtils.createChestContainer(Message.SHOP_GUI_TITLE.build(), 6),
+        45,
+        InteractionModifier.VALUES);
     this.plugin = plugin;
     this.viewer = viewer;
     this.properties = properties;
@@ -70,13 +77,12 @@ public final class GadgetShopGui extends PaginatedGui {
   @SuppressWarnings("all") // checker
   private void createPaginatedPane(final List<String> gadgets) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
-    gadgets
-      .stream()
-      .map(registry::getGadget)
-      .filter(Objects::nonNull)
-      .map(TradingUtils::getModifiedLoreWithCost)
-      .map(stack -> new GuiItem(stack, this::handleClick))
-      .forEach(this::addItem);
+    gadgets.stream()
+        .map(registry::getGadget)
+        .filter(Objects::nonNull)
+        .map(TradingUtils::getModifiedLoreWithCost)
+        .map(stack -> new GuiItem(stack, this::handleClick))
+        .forEach(this::addItem);
   }
 
   private void createNavigationPane() {
@@ -92,7 +98,8 @@ public final class GadgetShopGui extends PaginatedGui {
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private void handleClick(final InventoryClickEvent event) {
@@ -102,7 +109,8 @@ public final class GadgetShopGui extends PaginatedGui {
       return;
     }
 
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     final Gadget gadget = data != null ? registry.getGadget(data) : null;
     if (gadget == null) {
       return;
@@ -131,15 +139,21 @@ public final class GadgetShopGui extends PaginatedGui {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.viewer));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.viewer));
   }
 
   private GuiItem createForwardStack() {
-    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(), event -> this.next());
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+        event -> this.next());
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(), event -> this.previous());
+    return new GuiItem(
+        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+        event -> this.previous());
   }
 
   private void playSound(final HumanEntity entity) {

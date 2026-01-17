@@ -169,13 +169,12 @@ public final class ItemBuilder implements Builder {
   public Builder hideAttributes() {
     final ItemMeta meta = this.meta();
     meta.addItemFlags(
-      ItemFlag.HIDE_ATTRIBUTES,
-      ItemFlag.HIDE_ENCHANTS,
-      ItemFlag.HIDE_STORED_ENCHANTS,
-      ItemFlag.HIDE_ARMOR_TRIM,
-      ItemFlag.HIDE_UNBREAKABLE,
-      ItemFlag.HIDE_DYE
-    );
+        ItemFlag.HIDE_ATTRIBUTES,
+        ItemFlag.HIDE_ENCHANTS,
+        ItemFlag.HIDE_STORED_ENCHANTS,
+        ItemFlag.HIDE_ARMOR_TRIM,
+        ItemFlag.HIDE_UNBREAKABLE,
+        ItemFlag.HIDE_DYE);
     return this;
   }
 
@@ -192,7 +191,8 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public <P, C> Builder pdc(final NamespacedKey key, final PersistentDataType<P, C> type, final C value) {
+  public <P, C> Builder pdc(
+      final NamespacedKey key, final PersistentDataType<P, C> type, final C value) {
     PDCUtils.setPersistentDataAttribute(this.stack, key, type, value);
     return this;
   }

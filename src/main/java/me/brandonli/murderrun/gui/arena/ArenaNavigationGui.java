@@ -45,7 +45,8 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class ArenaNavigationGui extends PatternGui {
 
-  private static final List<String> NAVIGTATION_ARENA_PATTERN = List.of("111111111", "111314111", "111111111", "111121111");
+  private static final List<String> NAVIGTATION_ARENA_PATTERN =
+      List.of("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final Player watcher;
@@ -71,11 +72,16 @@ public final class ArenaNavigationGui extends PatternGui {
   }
 
   private GuiItem createModifyStack() {
-    return new GuiItem(Item.builder(Material.YELLOW_BANNER).name(Message.MANAGE_ARENA_GUI_EDIT.build()).build(), this::createListingsMenu);
+    return new GuiItem(
+        Item.builder(Material.YELLOW_BANNER)
+            .name(Message.MANAGE_ARENA_GUI_EDIT.build())
+            .build(),
+        this::createListingsMenu);
   }
 
   private void createListingsMenu(final InventoryClickEvent event) {
-    final ArenaListGui gui = new ArenaListGui(this.plugin, this.watcher, this::handleArenaClickEvent);
+    final ArenaListGui gui =
+        new ArenaListGui(this.plugin, this.watcher, this::handleArenaClickEvent);
     gui.update();
     gui.open(this.watcher);
   }
@@ -103,14 +109,19 @@ public final class ArenaNavigationGui extends PatternGui {
       return;
     }
 
-    final ArenaModificationGui gui = new ArenaModificationGui(this.plugin, player, name, spawn, truck, first, second, copy, true);
+    final ArenaModificationGui gui = new ArenaModificationGui(
+        this.plugin, player, name, spawn, truck, first, second, copy, true);
     gui.registerEvents();
     gui.update();
     gui.open(this.watcher);
   }
 
   private GuiItem createArenaStack() {
-    return new GuiItem(Item.builder(Material.GREEN_BANNER).name(Message.MANAGE_ARENA_GUI_CREATE.build()).build(), this::createArenaMenu);
+    return new GuiItem(
+        Item.builder(Material.GREEN_BANNER)
+            .name(Message.MANAGE_ARENA_GUI_CREATE.build())
+            .build(),
+        this::createArenaMenu);
   }
 
   private void createArenaMenu(final InventoryClickEvent event) {
@@ -121,10 +132,13 @@ public final class ArenaNavigationGui extends PatternGui {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.watcher));
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 }

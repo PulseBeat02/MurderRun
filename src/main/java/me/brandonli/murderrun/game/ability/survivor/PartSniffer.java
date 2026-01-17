@@ -40,10 +40,13 @@ public final class PartSniffer extends SurvivorAbility {
 
   public PartSniffer(final Game game) {
     super(
-      game,
-      PART_SNIFFER_NAME,
-      ItemFactory.createAbility(PART_SNIFFER_NAME, Message.PART_SNIFFER_NAME.build(), Message.PART_SNIFFER_LORE.build(), 1)
-    );
+        game,
+        PART_SNIFFER_NAME,
+        ItemFactory.createAbility(
+            PART_SNIFFER_NAME,
+            Message.PART_SNIFFER_NAME.build(),
+            Message.PART_SNIFFER_LORE.build(),
+            1));
   }
 
   @Override
@@ -57,7 +60,8 @@ public final class PartSniffer extends SurvivorAbility {
       final Survivor survivor = (Survivor) participant;
       final StrictPlayerReference reference = StrictPlayerReference.of(survivor);
       final GameScheduler scheduler = game.getScheduler();
-      scheduler.scheduleRepeatedTask(() -> this.handleTrapSniffing(game, survivor), 0, 2 * 20L, reference);
+      scheduler.scheduleRepeatedTask(
+          () -> this.handleTrapSniffing(game, survivor), 0, 2 * 20L, reference);
     });
   }
 

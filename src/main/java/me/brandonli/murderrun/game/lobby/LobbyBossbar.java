@@ -45,7 +45,8 @@ public final class LobbyBossbar {
     this.players = new HashSet<>();
   }
 
-  private BossBar createBossbar(@UnderInitialization LobbyBossbar this, final PreGamePlayerManager playerManager) {
+  private BossBar createBossbar(
+      @UnderInitialization LobbyBossbar this, final PreGamePlayerManager playerManager) {
     final PreGameManager manager = playerManager.getManager();
     final GameSettings settings = manager.getSettings();
     final Arena arena = requireNonNull(settings.getArena());

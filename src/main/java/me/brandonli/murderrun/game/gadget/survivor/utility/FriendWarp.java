@@ -35,15 +35,13 @@ public final class FriendWarp extends SurvivorGadget {
   public FriendWarp(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "friend_warp",
-      properties.getFriendWarpCost(),
-      ItemFactory.createGadget(
         "friend_warp",
-        properties.getFriendWarpMaterial(),
-        Message.FRIEND_WARP_NAME.build(),
-        Message.FRIEND_WARP_LORE.build()
-      )
-    );
+        properties.getFriendWarpCost(),
+        ItemFactory.createGadget(
+            "friend_warp",
+            properties.getFriendWarpMaterial(),
+            Message.FRIEND_WARP_NAME.build(),
+            Message.FRIEND_WARP_LORE.build()));
   }
 
   @Override
@@ -75,7 +73,8 @@ public final class FriendWarp extends SurvivorGadget {
     return false;
   }
 
-  private GamePlayer getRandomSurvivorNotSame(final GamePlayerManager manager, final GamePlayer gamePlayer) {
+  private GamePlayer getRandomSurvivorNotSame(
+      final GamePlayerManager manager, final GamePlayer gamePlayer) {
     GamePlayer random = manager.getRandomAliveInnocentPlayer();
     while (random == gamePlayer) {
       random = manager.getRandomAliveInnocentPlayer();

@@ -32,7 +32,8 @@ public final class GadgetRightClickPacket {
   private final GamePlayer player;
   private final ItemStack itemStack;
 
-  public GadgetRightClickPacket(final Game game, final GamePlayer player, final ItemStack itemStack) {
+  public GadgetRightClickPacket(
+      final Game game, final GamePlayer player, final ItemStack itemStack) {
     this.game = game;
     this.player = player;
     this.itemStack = itemStack;

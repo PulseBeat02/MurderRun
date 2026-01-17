@@ -31,8 +31,7 @@ import me.brandonli.murderrun.utils.IOUtils;
 
 public final class FileServerHandler extends ChannelInboundHandlerAdapter {
 
-  private static final String RESPONSE_HEADERS_TEMPLATE =
-    """
+  private static final String RESPONSE_HEADERS_TEMPLATE = """
     HTTP/1.1 200 OK\r
     Content-Type: application/octet-stream\r
     Content-Length: %s\r

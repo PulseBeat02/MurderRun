@@ -43,10 +43,13 @@ public final class IcePath extends KillerGadget {
   public IcePath(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "ice_path",
-      properties.getIcePathCost(),
-      ItemFactory.createGadget("ice_path", properties.getIcePathMaterial(), Message.ICE_PATH_NAME.build(), Message.ICE_PATH_LORE.build())
-    );
+        "ice_path",
+        properties.getIcePathCost(),
+        ItemFactory.createGadget(
+            "ice_path",
+            properties.getIcePathMaterial(),
+            Message.ICE_PATH_NAME.build(),
+            Message.ICE_PATH_LORE.build()));
   }
 
   @Override
@@ -87,18 +90,18 @@ public final class IcePath extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
     scheduler.scheduleTask(
-      () -> {
-        final Collection<Entry<@KeyFor("blocksToRestore") Location, Material>> entries = blocksToRestore.entrySet();
-        for (final Map.Entry<Location, Material> entry : entries) {
-          final Location blockLocation = entry.getKey();
-          final Block block = blockLocation.getBlock();
-          final Material material = entry.getValue();
-          block.setType(material);
-          block.getState().update(true);
-        }
-      },
-      2 * 20L,
-      reference
-    );
+        () -> {
+          final Collection<Entry<@KeyFor("blocksToRestore") Location, Material>> entries =
+              blocksToRestore.entrySet();
+          for (final Map.Entry<Location, Material> entry : entries) {
+            final Location blockLocation = entry.getKey();
+            final Block block = blockLocation.getBlock();
+            final Material material = entry.getValue();
+            block.setType(material);
+            block.getState().update(true);
+          }
+        },
+        2 * 20L,
+        reference);
   }
 }

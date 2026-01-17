@@ -51,15 +51,13 @@ public final class EMPBlast extends KillerGadget {
   public EMPBlast(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "emp_grenade",
-      properties.getEmpBlastCost(),
-      ItemFactory.createGadget(
         "emp_grenade",
-        properties.getEmpBlastMaterial(),
-        Message.EMP_BLAST_NAME.build(),
-        Message.EMP_BLAST_LORE.build()
-      )
-    );
+        properties.getEmpBlastCost(),
+        ItemFactory.createGadget(
+            "emp_grenade",
+            properties.getEmpBlastMaterial(),
+            Message.EMP_BLAST_NAME.build(),
+            Message.EMP_BLAST_LORE.build()));
   }
 
   @Override
@@ -101,7 +99,8 @@ public final class EMPBlast extends KillerGadget {
     audience.sendMessage(msg);
   }
 
-  private void removeAllSurvivorGadgets(final Collection<Entity> entities, final GadgetLoadingMechanism mechanism) {
+  private void removeAllSurvivorGadgets(
+      final Collection<Entity> entities, final GadgetLoadingMechanism mechanism) {
     for (final Entity entity : entities) {
       if (!(entity instanceof final Item item)) {
         continue;

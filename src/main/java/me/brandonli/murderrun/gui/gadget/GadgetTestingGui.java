@@ -42,9 +42,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class GadgetTestingGui extends PaginatedGui {
 
-  private static final Collection<ItemStack> SORTED_SURVIVOR_ITEMS = TradingUtils.getGadgetShopItems(true);
-  private static final Collection<ItemStack> SORTED_KILLER_ITEMS = TradingUtils.getGadgetShopItems(false);
-  private static final Iterable<ItemStack> COMBINED_GADGETS = Iterables.concat(SORTED_SURVIVOR_ITEMS, SORTED_KILLER_ITEMS);
+  private static final Collection<ItemStack> SORTED_SURVIVOR_ITEMS =
+      TradingUtils.getGadgetShopItems(true);
+  private static final Collection<ItemStack> SORTED_KILLER_ITEMS =
+      TradingUtils.getGadgetShopItems(false);
+  private static final Iterable<ItemStack> COMBINED_GADGETS =
+      Iterables.concat(SORTED_SURVIVOR_ITEMS, SORTED_KILLER_ITEMS);
 
   public static void init() {
     // copy ItemStack fields
@@ -53,7 +56,10 @@ public final class GadgetTestingGui extends PaginatedGui {
   private final Player viewer;
 
   public GadgetTestingGui(final Player viewer) {
-    super(ContainerUtils.createChestContainer(Message.GADGET_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
+    super(
+        ContainerUtils.createChestContainer(Message.GADGET_GUI_TITLE.build(), 6),
+        45,
+        InteractionModifier.VALUES);
     this.viewer = viewer;
     this.createPaginatedPane();
     this.createNavigationPane();
@@ -77,7 +83,8 @@ public final class GadgetTestingGui extends PaginatedGui {
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private void handleClick(final InventoryClickEvent event) {
@@ -87,7 +94,8 @@ public final class GadgetTestingGui extends PaginatedGui {
       return;
     }
 
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     final Gadget gadget = data != null ? registry.getGadget(data) : null;
     if (gadget == null) {
       return;
@@ -99,14 +107,22 @@ public final class GadgetTestingGui extends PaginatedGui {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.GADGET_GUI_CANCEL.build()).build(), event -> this.close(this.viewer));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.GADGET_GUI_CANCEL.build()).build(),
+        event -> this.close(this.viewer));
   }
 
   private GuiItem createForwardStack() {
-    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.GADGET_GUI_FORWARD.build()).build(), event -> this.next());
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL)
+            .name(Message.GADGET_GUI_FORWARD.build())
+            .build(),
+        event -> this.next());
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.GADGET_GUI_BACK.build()).build(), event -> this.previous());
+    return new GuiItem(
+        Item.builder(Material.RED_WOOL).name(Message.GADGET_GUI_BACK.build()).build(),
+        event -> this.previous());
   }
 }

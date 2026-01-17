@@ -90,8 +90,10 @@ public final class PlayerStartupTool {
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
     final PlayerAudience audience = player.getAudience();
-    scheduler.scheduleTask(() -> audience.sendMessage(Message.FLASHLIGHT_TIP.build()), 15 * 20L, reference);
-    scheduler.scheduleTask(() -> audience.sendMessage(Message.SPRINT_TIP.build()), 45 * 20L, reference);
+    scheduler.scheduleTask(
+        () -> audience.sendMessage(Message.FLASHLIGHT_TIP.build()), 15 * 20L, reference);
+    scheduler.scheduleTask(
+        () -> audience.sendMessage(Message.SPRINT_TIP.build()), 45 * 20L, reference);
   }
 
   private void giveFlashlight(final GamePlayer player) {
@@ -109,10 +111,9 @@ public final class PlayerStartupTool {
   public void handleMurderer(final GamePlayer gamePlayer) {
     this.handleAll(gamePlayer);
     gamePlayer.addPotionEffects(
-      new PotionEffect(PotionEffectType.NIGHT_VISION, PotionEffect.INFINITE_DURATION, 1),
-      new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 4),
-      new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4)
-    );
+        new PotionEffect(PotionEffectType.NIGHT_VISION, PotionEffect.INFINITE_DURATION, 1),
+        new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 4),
+        new PotionEffect(PotionEffectType.RESISTANCE, PotionEffect.INFINITE_DURATION, 4));
     gamePlayer.setGameMode(GameMode.SURVIVAL);
   }
 }

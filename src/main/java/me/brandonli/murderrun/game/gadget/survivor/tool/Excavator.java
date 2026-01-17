@@ -29,17 +29,13 @@ public final class Excavator extends SurvivorGadget {
   public Excavator(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "excavator",
-      properties.getExcavatorCost(),
-      ItemFactory.createExcavator(
-        ItemFactory.createGadget(
-          "excavator",
-          properties.getExcavatorMaterial(),
-          Message.EXCAVATOR_NAME.build(),
-          Message.EXCAVATOR_LORE.build()
-        )
-      )
-    );
+        "excavator",
+        properties.getExcavatorCost(),
+        ItemFactory.createExcavator(ItemFactory.createGadget(
+            "excavator",
+            properties.getExcavatorMaterial(),
+            Message.EXCAVATOR_NAME.build(),
+            Message.EXCAVATOR_LORE.build())));
   }
 
   @Override

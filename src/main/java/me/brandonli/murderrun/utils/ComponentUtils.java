@@ -38,8 +38,10 @@ import org.bukkit.entity.Player;
 
 public final class ComponentUtils {
 
-  private static final LegacyComponentSerializer LEGACY_SERIALIZER = BukkitComponentSerializer.legacy();
-  private static final PlainTextComponentSerializer PLAIN_SERIALIZER = PlainTextComponentSerializer.plainText();
+  private static final LegacyComponentSerializer LEGACY_SERIALIZER =
+      BukkitComponentSerializer.legacy();
+  private static final PlainTextComponentSerializer PLAIN_SERIALIZER =
+      PlainTextComponentSerializer.plainText();
   private static final Pattern PATTERN = Pattern.compile("(?i)§[0-9A-FK-OR]");
 
   private ComponentUtils() {
@@ -47,9 +49,8 @@ public final class ComponentUtils {
   }
 
   public static Component createLocationComponent(
-    final LocaleTools.TriComponent<Sender, Integer, Integer, Integer> function,
-    final Location location
-  ) {
+      final LocaleTools.TriComponent<Sender, Integer, Integer, Integer> function,
+      final Location location) {
     final int x = location.getBlockX();
     final int y = location.getBlockY();
     final int z = location.getBlockZ();

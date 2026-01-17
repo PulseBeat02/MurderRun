@@ -52,15 +52,13 @@ public final class Corruption extends KillerGadget {
   public Corruption(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "corruption",
-      properties.getCorruptionCost(),
-      ItemFactory.createGadget(
         "corruption",
-        properties.getCorruptionMaterial(),
-        Message.CORRUPTION_NAME.build(),
-        Message.CORRUPTION_LORE.build()
-      )
-    );
+        properties.getCorruptionCost(),
+        ItemFactory.createGadget(
+            "corruption",
+            properties.getCorruptionMaterial(),
+            Message.CORRUPTION_NAME.build(),
+            Message.CORRUPTION_LORE.build()));
   }
 
   @Override

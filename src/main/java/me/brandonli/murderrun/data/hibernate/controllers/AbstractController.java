@@ -31,7 +31,8 @@ public abstract class AbstractController<T extends HibernateSerializable> implem
   private final HibernateIdentifierManager manager;
   private final int index;
 
-  public AbstractController(final HibernateIdentifierManager manager, final SessionFactory factory, final int index) {
+  public AbstractController(
+      final HibernateIdentifierManager manager, final SessionFactory factory, final int index) {
     this.factory = factory;
     this.manager = manager;
     this.index = index;

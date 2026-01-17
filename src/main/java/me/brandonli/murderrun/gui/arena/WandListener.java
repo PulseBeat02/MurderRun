@@ -54,11 +54,10 @@ public final class WandListener implements Listener {
   private final BiConsumer<Player, Location> add;
 
   public WandListener(
-    final MurderRun plugin,
-    final Collection<Location> locations,
-    final BiConsumer<Player, Location> remove,
-    final BiConsumer<Player, Location> add
-  ) {
+      final MurderRun plugin,
+      final Collection<Location> locations,
+      final BiConsumer<Player, Location> remove,
+      final BiConsumer<Player, Location> add) {
     this.plugin = plugin;
     this.locations = locations;
     this.remove = remove;
@@ -100,12 +99,12 @@ public final class WandListener implements Listener {
   private void sendGlowingPackets(final Player player, final ItemStack item) {
     if (PDCUtils.isWand(item)) {
       this.locations.forEach(loc -> {
-          final Slime slime = GlowUtils.setBlockGlowing(player, loc, true);
-          if (slime == null) {
-            return;
-          }
-          slime.setSize(2);
-        });
+        final Slime slime = GlowUtils.setBlockGlowing(player, loc, true);
+        if (slime == null) {
+          return;
+        }
+        slime.setSize(2);
+      });
     } else {
       this.locations.forEach(loc -> GlowUtils.setBlockGlowing(player, loc, false));
     }

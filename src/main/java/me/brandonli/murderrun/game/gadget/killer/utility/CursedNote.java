@@ -53,15 +53,13 @@ public final class CursedNote extends KillerGadget {
   public CursedNote(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "cursed_note",
-      properties.getCursedNoteCost(),
-      ItemFactory.createGadget(
         "cursed_note",
-        properties.getCursedNoteMaterial(),
-        Message.CURSED_NOTE_NAME.build(),
-        Message.CURSED_NOTE_LORE.build()
-      )
-    );
+        properties.getCursedNoteCost(),
+        ItemFactory.createGadget(
+            "cursed_note",
+            properties.getCursedNoteMaterial(),
+            Message.CURSED_NOTE_NAME.build(),
+            Message.CURSED_NOTE_LORE.build()));
   }
 
   @Override
@@ -104,14 +102,16 @@ public final class CursedNote extends KillerGadget {
     }
   }
 
-  private void scheduleItemTask(final Game game, final CarPart part, final Item cursed, final GameScheduler scheduler) {
+  private void scheduleItemTask(
+      final Game game, final CarPart part, final Item cursed, final GameScheduler scheduler) {
     final Item item = part.getItem();
     item.setPickupDelay(Integer.MAX_VALUE);
     part.setCursed(cursed);
 
     final BooleanSupplier condition = () -> !part.isCursed();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleConditionalTask(() -> this.handleSurvivorCurse(game, part), 0, 60L, condition, reference);
+    scheduler.scheduleConditionalTask(
+        () -> this.handleSurvivorCurse(game, part), 0, 60L, condition, reference);
   }
 
   private Item spawnCursedNote(final GameSettings settings) {

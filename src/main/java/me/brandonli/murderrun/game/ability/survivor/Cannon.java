@@ -48,15 +48,11 @@ public final class Cannon extends SurvivorAbility implements Listener {
   public Cannon(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      game,
-      CANNON_NAME,
-      ItemFactory.createAbility(
+        game,
         CANNON_NAME,
-        Message.CANNON_NAME.build(),
-        Message.CANNON_LORE.build(),
-        (int) (properties.getCannonCooldown() * 20)
-      )
-    );
+        ItemFactory.createAbility(
+            CANNON_NAME, Message.CANNON_NAME.build(), Message.CANNON_LORE.build(), (int)
+                (properties.getCannonCooldown() * 20)));
     this.cooldowns = new ConcurrentHashMap<>();
   }
 

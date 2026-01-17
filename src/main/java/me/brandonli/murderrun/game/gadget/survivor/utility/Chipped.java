@@ -36,10 +36,13 @@ public final class Chipped extends SurvivorGadget {
   public Chipped(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "chipped",
-      properties.getChippedCost(),
-      ItemFactory.createGadget("chipped", properties.getChippedMaterial(), Message.CHIPPED_NAME.build(), Message.CHIPPED_LORE.build())
-    );
+        "chipped",
+        properties.getChippedCost(),
+        ItemFactory.createGadget(
+            "chipped",
+            properties.getChippedMaterial(),
+            Message.CHIPPED_NAME.build(),
+            Message.CHIPPED_LORE.build()));
   }
 
   @Override
@@ -61,11 +64,13 @@ public final class Chipped extends SurvivorGadget {
     return false;
   }
 
-  private void setOtherSurvivorsGlowing(final GamePlayerManager manager, final MetadataManager metadata, final GameScheduler scheduler) {
+  private void setOtherSurvivorsGlowing(
+      final GamePlayerManager manager,
+      final MetadataManager metadata,
+      final GameScheduler scheduler) {
     final Game game = manager.getGame();
     final GameProperties properties = game.getProperties();
-    manager.applyToLivingSurvivors(innocent ->
-      metadata.setEntityGlowing(scheduler, innocent, NamedTextColor.GREEN, properties.getChippedDuration())
-    );
+    manager.applyToLivingSurvivors(innocent -> metadata.setEntityGlowing(
+        scheduler, innocent, NamedTextColor.GREEN, properties.getChippedDuration()));
   }
 }

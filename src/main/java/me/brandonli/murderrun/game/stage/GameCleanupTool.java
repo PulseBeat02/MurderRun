@@ -87,14 +87,14 @@ public final class GameCleanupTool {
     final Component separator = Message.WINNER_SEPARATOR.build();
     final Component win = innocents ? this.getSurvivorWinComponent() : this.getKillerWinComponent();
     return separator
-      .appendNewline()
-      .append(win)
-      .appendNewline()
-      .append(this.getKillComponent())
-      .appendNewline()
-      .append(this.getPartComponent())
-      .appendNewline()
-      .append(separator);
+        .appendNewline()
+        .append(win)
+        .appendNewline()
+        .append(this.getKillComponent())
+        .appendNewline()
+        .append(this.getPartComponent())
+        .appendNewline()
+        .append(separator);
   }
 
   private Component getPartComponent() {
@@ -212,12 +212,12 @@ public final class GameCleanupTool {
       final Firework firework = world.spawn(spawn, Firework.class);
       final FireworkMeta meta = firework.getFireworkMeta();
       final FireworkEffect effect = FireworkEffect.builder()
-        .withColor(Color.fromRGB(255, 0, 0))
-        .withFade(Color.fromRGB(0, 255, 0))
-        .with(FireworkEffect.Type.BALL)
-        .withTrail()
-        .withFlicker()
-        .build();
+          .withColor(Color.fromRGB(255, 0, 0))
+          .withFade(Color.fromRGB(0, 255, 0))
+          .with(FireworkEffect.Type.BALL)
+          .withTrail()
+          .withFlicker()
+          .build();
       meta.addEffect(effect);
       meta.setPower(2);
       firework.setFireworkMeta(meta);
@@ -245,7 +245,9 @@ public final class GameCleanupTool {
 
   private void executeCommands(final boolean survivor) {
     final GameProperties properties = this.game.getProperties();
-    final String chain = survivor ? properties.getSurvivorWinCommandsAfter() : properties.getKillerWinCommandsAfter();
+    final String chain = survivor
+        ? properties.getSurvivorWinCommandsAfter()
+        : properties.getKillerWinCommandsAfter();
     if (chain.equalsIgnoreCase("none")) {
       return;
     }

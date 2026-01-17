@@ -50,15 +50,13 @@ public final class TrapSeeker extends KillerGadget {
   public TrapSeeker(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "trap_seeker",
-      properties.getTrapSeekerCost(),
-      ItemFactory.createGadget(
         "trap_seeker",
-        properties.getTrapSeekerMaterial(),
-        Message.TRAP_SEEKER_NAME.build(),
-        Message.TRAP_SEEKER_LORE.build()
-      )
-    );
+        properties.getTrapSeekerCost(),
+        ItemFactory.createGadget(
+            "trap_seeker",
+            properties.getTrapSeekerMaterial(),
+            Message.TRAP_SEEKER_NAME.build(),
+            Message.TRAP_SEEKER_LORE.build()));
   }
 
   @Override

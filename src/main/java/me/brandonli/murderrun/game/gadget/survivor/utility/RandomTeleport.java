@@ -45,15 +45,13 @@ public final class RandomTeleport extends SurvivorGadget {
   public RandomTeleport(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "random_teleport",
-      properties.getRandomTeleportCost(),
-      ItemFactory.createGadget(
         "random_teleport",
-        properties.getRandomTeleportMaterial(),
-        Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
-        Message.TP_ME_AWAY_FROM_HERE_LORE.build()
-      )
-    );
+        properties.getRandomTeleportCost(),
+        ItemFactory.createGadget(
+            "random_teleport",
+            properties.getRandomTeleportMaterial(),
+            Message.TP_ME_AWAY_FROM_HERE_NAME.build(),
+            Message.TP_ME_AWAY_FROM_HERE_LORE.build()));
     this.blacklisted = new HashSet<>();
     final String raw = properties.getRandomTeleportBlacklistedBlocks();
     final String[] individual = raw.split(",");

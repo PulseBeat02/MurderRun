@@ -55,8 +55,15 @@ public final class AbilitySelectGui extends PaginatedGui {
   private final MurderRun plugin;
   private final GameProperties properties;
 
-  public AbilitySelectGui(final MurderRun plugin, final GameProperties properties, final Player viewer, final List<String> abilities) {
-    super(ContainerUtils.createChestContainer(Message.SELECT_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
+  public AbilitySelectGui(
+      final MurderRun plugin,
+      final GameProperties properties,
+      final Player viewer,
+      final List<String> abilities) {
+    super(
+        ContainerUtils.createChestContainer(Message.SELECT_GUI_TITLE.build(), 6),
+        45,
+        InteractionModifier.VALUES);
     this.plugin = plugin;
     this.viewer = viewer;
     this.properties = properties;
@@ -67,14 +74,13 @@ public final class AbilitySelectGui extends PaginatedGui {
   @SuppressWarnings("all") // checker
   private void addAbilityItems(final List<String> abilities) {
     final AbilityRegistry registry = AbilityRegistry.getRegistry();
-    abilities
-      .stream()
-      .map(registry::getAbility)
-      .filter(Objects::nonNull)
-      .map(Ability::getStackBuilder)
-      .map(Item.Builder::build)
-      .map(stack -> new GuiItem(stack, this::handleClick))
-      .forEach(this::addItem);
+    abilities.stream()
+        .map(registry::getAbility)
+        .filter(Objects::nonNull)
+        .map(Ability::getStackBuilder)
+        .map(Item.Builder::build)
+        .map(stack -> new GuiItem(stack, this::handleClick))
+        .forEach(this::addItem);
   }
 
   private void createNavigationPane() {
@@ -90,7 +96,8 @@ public final class AbilitySelectGui extends PaginatedGui {
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private void handleClick(final InventoryClickEvent event) {
@@ -100,7 +107,8 @@ public final class AbilitySelectGui extends PaginatedGui {
       return;
     }
 
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+    final String data = PDCUtils.getPersistentDataAttribute(
+        stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
     final Ability ability = data != null ? registry.getAbility(data) : null;
     if (ability == null) {
       return;
@@ -108,8 +116,7 @@ public final class AbilitySelectGui extends PaginatedGui {
 
     final HumanEntity entity = event.getWhoClicked();
     final PlayerInventory inventory = entity.getInventory();
-    @Nullable
-    final ItemStack[] contents = inventory.getContents();
+    final @Nullable ItemStack[] contents = inventory.getContents();
     for (final ItemStack content : contents) {
       if (content == null) {
         continue;
@@ -128,15 +135,23 @@ public final class AbilitySelectGui extends PaginatedGui {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SELECT_GUI_CANCEL.build()).build(), event -> this.close(this.viewer));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SELECT_GUI_CANCEL.build()).build(),
+        event -> this.close(this.viewer));
   }
 
   private GuiItem createForwardStack() {
-    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.SELECT_GUI_FORWARD.build()).build(), event -> this.next());
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL)
+            .name(Message.SELECT_GUI_FORWARD.build())
+            .build(),
+        event -> this.next());
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.SELECT_GUI_BACK.build()).build(), event -> this.previous());
+    return new GuiItem(
+        Item.builder(Material.RED_WOOL).name(Message.SELECT_GUI_BACK.build()).build(),
+        event -> this.previous());
   }
 
   private void playSound(final HumanEntity entity) {

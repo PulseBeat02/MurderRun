@@ -37,15 +37,13 @@ public final class Miniaturizer extends SurvivorGadget {
   public Miniaturizer(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "miniaturizer",
-      properties.getMiniaturizerCost(),
-      ItemFactory.createGadget(
         "miniaturizer",
-        properties.getMiniturizerMaterial(),
-        Message.MINIATURIZER_NAME.build(),
-        Message.MINIATURIZER_LORE.build()
-      )
-    );
+        properties.getMiniaturizerCost(),
+        ItemFactory.createGadget(
+            "miniaturizer",
+            properties.getMiniturizerMaterial(),
+            Message.MINIATURIZER_NAME.build(),
+            Message.MINIATURIZER_LORE.build()));
   }
 
   @Override

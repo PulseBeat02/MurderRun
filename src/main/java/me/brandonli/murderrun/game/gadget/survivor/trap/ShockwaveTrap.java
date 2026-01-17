@@ -36,17 +36,15 @@ public final class ShockwaveTrap extends SurvivorTrap {
   public ShockwaveTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "shockwave_trap",
-      properties.getShockwaveCost(),
-      ItemFactory.createGadget(
         "shockwave_trap",
-        properties.getShockwaveMaterial(),
-        Message.SHOCKWAVE_NAME.build(),
-        Message.SHOCKWAVE_LORE.build()
-      ),
-      Message.SHOCKWAVE_ACTIVATE.build(),
-      properties.getShockwaveColor()
-    );
+        properties.getShockwaveCost(),
+        ItemFactory.createGadget(
+            "shockwave_trap",
+            properties.getShockwaveMaterial(),
+            Message.SHOCKWAVE_NAME.build(),
+            Message.SHOCKWAVE_LORE.build()),
+        Message.SHOCKWAVE_ACTIVATE.build(),
+        properties.getShockwaveColor());
   }
 
   @Override

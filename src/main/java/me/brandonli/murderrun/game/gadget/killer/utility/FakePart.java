@@ -45,15 +45,13 @@ public final class FakePart extends KillerGadget {
   public FakePart(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "fake_part",
-      properties.getFakePartCost(),
-      ItemFactory.createGadget(
         "fake_part",
-        properties.getFakePartMaterial(),
-        Message.FAKE_PART_NAME.build(),
-        Message.FAKE_PART_LORE.build()
-      )
-    );
+        properties.getFakePartCost(),
+        ItemFactory.createGadget(
+            "fake_part",
+            properties.getFakePartMaterial(),
+            Message.FAKE_PART_NAME.build(),
+            Message.FAKE_PART_LORE.build()));
   }
 
   @Override
@@ -81,11 +79,19 @@ public final class FakePart extends KillerGadget {
     return false;
   }
 
-  private void handlePlayers(final GameScheduler scheduler, final GamePlayerManager manager, final GamePlayer killer, final Item item) {
+  private void handlePlayers(
+      final GameScheduler scheduler,
+      final GamePlayerManager manager,
+      final GamePlayer killer,
+      final Item item) {
     manager.applyToLivingSurvivors(survivor -> this.checkNear(scheduler, survivor, killer, item));
   }
 
-  private void checkNear(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer, final Item item) {
+  private void checkNear(
+      final GameScheduler scheduler,
+      final GamePlayer survivor,
+      final GamePlayer killer,
+      final Item item) {
     final Location origin = item.getLocation();
     final Location location = survivor.getLocation();
     final double distance = origin.distanceSquared(location);
@@ -101,7 +107,11 @@ public final class FakePart extends KillerGadget {
     }
   }
 
-  private void handleDebuff(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer, final Item item) {
+  private void handleDebuff(
+      final GameScheduler scheduler,
+      final GamePlayer survivor,
+      final GamePlayer killer,
+      final Item item) {
     final Game game = survivor.getGame();
     final GameProperties properties = game.getProperties();
     final int duration = properties.getFakePartDuration();

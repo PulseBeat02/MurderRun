@@ -46,17 +46,15 @@ public final class FireworkTrap extends SurvivorTrap {
   public FireworkTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "firework_trap",
-      properties.getFireworkCost(),
-      ItemFactory.createGadget(
         "firework_trap",
-        properties.getFireworkMaterial(),
-        Message.FIREWORK_NAME.build(),
-        Message.FIREWORK_LORE.build()
-      ),
-      Message.FIREWORK_ACTIVATE.build(),
-      properties.getFireworkColor()
-    );
+        properties.getFireworkCost(),
+        ItemFactory.createGadget(
+            "firework_trap",
+            properties.getFireworkMaterial(),
+            Message.FIREWORK_NAME.build(),
+            Message.FIREWORK_LORE.build()),
+        Message.FIREWORK_ACTIVATE.build(),
+        properties.getFireworkColor());
   }
 
   @Override
@@ -70,7 +68,8 @@ public final class FireworkTrap extends SurvivorTrap {
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
     final GameProperties properties = game.getProperties();
-    scheduler.scheduleRepeatedTask(() -> this.spawnFirework(location), 0, 5, properties.getFireworkDuration(), reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.spawnFirework(location), 0, 5, properties.getFireworkDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(properties.getFireworkSound());
@@ -106,7 +105,13 @@ public final class FireworkTrap extends SurvivorTrap {
     final List<Color> primary = this.generateRandomColors();
     final List<Color> fade = this.generateRandomColors();
     final Type type = this.getRandomType();
-    return FireworkEffect.builder().with(type).flicker(true).trail(true).withColor(primary).withFade(fade).build();
+    return FireworkEffect.builder()
+        .with(type)
+        .flicker(true)
+        .trail(true)
+        .withColor(primary)
+        .withFade(fade)
+        .build();
   }
 
   private Type getRandomType() {

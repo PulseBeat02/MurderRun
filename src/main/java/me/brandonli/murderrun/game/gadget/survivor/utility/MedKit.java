@@ -29,12 +29,13 @@ public final class MedKit extends SurvivorGadget {
   public MedKit(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "med_kit",
-      properties.getMedKitCost(),
-      ItemFactory.createMedKit(
-        ItemFactory.createGadget("med_kit", properties.getMedKitMaterial(), Message.MED_KIT_NAME.build(), Message.MED_KIT_LORE.build())
-      )
-    );
+        "med_kit",
+        properties.getMedKitCost(),
+        ItemFactory.createMedKit(ItemFactory.createGadget(
+            "med_kit",
+            properties.getMedKitMaterial(),
+            Message.MED_KIT_NAME.build(),
+            Message.MED_KIT_LORE.build())));
   }
 
   @Override

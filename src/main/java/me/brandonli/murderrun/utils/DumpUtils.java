@@ -62,8 +62,13 @@ public class DumpUtils {
   private static String uploadDump(final String dump) throws IOException, InterruptedException {
     final URI uri = URI.create(FILE_ENDPOINT_URL);
     final HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(dump);
-    final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Content-Type", "text/plain").POST(bodyPublisher).build();
-    final HttpResponse.BodyHandler<String> responseBodyHandler = HttpResponse.BodyHandlers.ofString();
+    final HttpRequest request = HttpRequest.newBuilder()
+        .uri(uri)
+        .header("Content-Type", "text/plain")
+        .POST(bodyPublisher)
+        .build();
+    final HttpResponse.BodyHandler<String> responseBodyHandler =
+        HttpResponse.BodyHandlers.ofString();
     final HttpResponse<String> response = HTTP_CLIENT.send(request, responseBodyHandler);
     if (response.statusCode() == 200) {
       return response.body();
@@ -107,7 +112,8 @@ public class DumpUtils {
 
     dump.append("\n=== JVM Properties ===\n");
     final Properties properties = System.getProperties();
-    properties.forEach((key, value) -> dump.append(key).append(": ").append(value).append("\n"));
+    properties.forEach(
+        (key, value) -> dump.append(key).append(": ").append(value).append("\n"));
 
     dump.append("\n=== Thread Information ===\n");
     final Map<Thread, StackTraceElement[]> stackTraces = Thread.getAllStackTraces();

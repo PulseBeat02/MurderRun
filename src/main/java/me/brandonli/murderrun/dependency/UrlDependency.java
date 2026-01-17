@@ -34,14 +34,16 @@ public final class UrlDependency extends PluginDependency {
 
   @Override
   public Path download() {
-    try (final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build()) {
+    try (final HttpClient client =
+        HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build()) {
       final String name = this.getVersion();
       final String jar = name + ".jar";
       final Path parent = this.getParentDirectory();
       final Path finalPath = parent.resolve(jar);
       final URI uri = URI.create(this.url);
       final HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
-      final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(finalPath);
+      final HttpResponse.BodyHandler<Path> bodyHandler =
+          HttpResponse.BodyHandlers.ofFile(finalPath);
       final HttpResponse<Path> result = client.sendAsync(request, bodyHandler).join();
       return result.body();
     }

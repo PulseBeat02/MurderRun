@@ -34,7 +34,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public final class CentralGui extends PatternGui {
 
-  private static final List<String> CENTRAL_GUI_PATTERN = List.of("111111111", "111345111", "111111111", "111121111");
+  private static final List<String> CENTRAL_GUI_PATTERN =
+      List.of("111111111", "111345111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final Player watcher;
@@ -61,19 +62,28 @@ public final class CentralGui extends PatternGui {
   }
 
   private GuiItem createBackground() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private GuiItem createCloseButton() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.watcher));
   }
 
   private GuiItem createGameButton() {
-    return new GuiItem(Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(), this::handleGameClick);
+    return new GuiItem(
+        Item.builder(Material.RED_BANNER).name(Message.CENTRAL_GUI_GAME.build()).build(),
+        this::handleGameClick);
   }
 
   private GuiItem createArenaButton() {
-    return new GuiItem(Item.builder(Material.YELLOW_BANNER).name(Message.CENTRAL_GUI_ARENA.build()).build(), this::handleArenaClick);
+    return new GuiItem(
+        Item.builder(Material.YELLOW_BANNER)
+            .name(Message.CENTRAL_GUI_ARENA.build())
+            .build(),
+        this::handleArenaClick);
   }
 
   private void handleGameClick(final InventoryClickEvent event) {
@@ -90,7 +100,11 @@ public final class CentralGui extends PatternGui {
   }
 
   private GuiItem createLobbyButton() {
-    return new GuiItem(Item.builder(Material.WHITE_BANNER).name(Message.CENTRAL_GUI_LOBBY.build()).build(), this::handleLobbyClick);
+    return new GuiItem(
+        Item.builder(Material.WHITE_BANNER)
+            .name(Message.CENTRAL_GUI_LOBBY.build())
+            .build(),
+        this::handleLobbyClick);
   }
 
   private void handleLobbyClick(final InventoryClickEvent event) {

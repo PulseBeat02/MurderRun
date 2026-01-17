@@ -35,15 +35,14 @@ public final class PreGameEvents {
   public PreGameEvents(final PreGameManager manager) {
     this.manager = manager;
     this.events = Set.of(
-      new PlayerItemDropListener(manager),
-      new PlayerDamagePreventionListener(manager),
-      new PlayerLeaveListener(manager),
-      new PlayerBlockModifyListener(manager),
-      new PlayerProjectileListener(manager),
-      new PlayerArmorEvent(manager),
-      new PlayerRightClickEvent(manager),
-      new PlayerInventoryClickEvent(manager)
-    );
+        new PlayerItemDropListener(manager),
+        new PlayerDamagePreventionListener(manager),
+        new PlayerLeaveListener(manager),
+        new PlayerBlockModifyListener(manager),
+        new PlayerProjectileListener(manager),
+        new PlayerArmorEvent(manager),
+        new PlayerRightClickEvent(manager),
+        new PlayerInventoryClickEvent(manager));
   }
 
   public void registerEvents() {

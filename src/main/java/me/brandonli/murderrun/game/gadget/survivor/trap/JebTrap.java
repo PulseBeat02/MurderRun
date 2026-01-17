@@ -42,12 +42,15 @@ public final class JebTrap extends SurvivorTrap {
   public JebTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "jeb_trap",
-      properties.getJebCost(),
-      ItemFactory.createGadget("jeb_trap", properties.getJebMaterial(), Message.JEB_NAME.build(), Message.JEB_LORE.build()),
-      Message.JEB_ACTIVATE.build(),
-      properties.getJebColor()
-    );
+        "jeb_trap",
+        properties.getJebCost(),
+        ItemFactory.createGadget(
+            "jeb_trap",
+            properties.getJebMaterial(),
+            Message.JEB_NAME.build(),
+            Message.JEB_LORE.build()),
+        Message.JEB_ACTIVATE.build(),
+        properties.getJebColor());
   }
 
   @Override
@@ -62,7 +65,8 @@ public final class JebTrap extends SurvivorTrap {
 
     final NullReference reference = NullReference.of();
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.spawnRainbowParticles(location), 0, 5, properties.getJebDuration(), reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.spawnRainbowParticles(location), 0, 5, properties.getJebDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(properties.getJebSound());

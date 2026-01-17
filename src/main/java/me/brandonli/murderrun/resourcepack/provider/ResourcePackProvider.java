@@ -63,9 +63,9 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   public void cachePack() {
     final Stream<ResourcePackInfo> customPacks = this.getCustomPackInfo().stream();
-    final Stream<ResourcePackInfo> existing = Stream.of(this.getMainResourceInfo(), this.cacheProvidedResourcesExceptionally()).flatMap(
-      Optional::stream
-    );
+    final Stream<ResourcePackInfo> existing = Stream.of(
+            this.getMainResourceInfo(), this.cacheProvidedResourcesExceptionally())
+        .flatMap(Optional::stream);
     final List<ResourcePackInfo> infos = Stream.concat(existing, customPacks).toList();
     final Component message = Message.RESOURCEPACK_PROMPT.build();
     final ResourcePackRequest.Builder builder = ResourcePackRequest.resourcePackRequest();
@@ -78,7 +78,8 @@ public abstract class ResourcePackProvider implements PackProvider {
     final String url = this.getFinalUrl();
     final URI uri = URI.create(url);
     final String hash = IOUtils.getSHA1Hash(uri);
-    final ResourcePackInfo info = ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
+    final ResourcePackInfo info =
+        ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
     return Optional.of(info);
   }
 
@@ -110,7 +111,7 @@ public abstract class ResourcePackProvider implements PackProvider {
       return Optional.ofNullable(info);
     } catch (final AssertionError e) {
       final String msg =
-        "Timed-out while retrieving resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
+          "Timed-out while retrieving resource pack hash! Consider changing the resource pack provider if currently set to MC_PACK_HOSTING!";
       throw new AssertionError(msg);
     }
   }

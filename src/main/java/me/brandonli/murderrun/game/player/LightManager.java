@@ -27,7 +27,8 @@ import org.bukkit.potion.PotionEffectType;
 
 public final class LightManager {
 
-  private static final PotionEffect DARKNESS = new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 1);
+  private static final PotionEffect DARKNESS =
+      new PotionEffect(PotionEffectType.BLINDNESS, PotionEffect.INFINITE_DURATION, 1);
 
   private final Game game;
   private final Set<GamePlayer> canSee;

@@ -25,7 +25,11 @@ public final class ConditionalTask extends GameScheduledTask {
 
   private final BooleanSupplier condition;
 
-  public ConditionalTask(final Game game, final Runnable runnable, final BooleanSupplier condition, final Reference<?> reference) {
+  public ConditionalTask(
+      final Game game,
+      final Runnable runnable,
+      final BooleanSupplier condition,
+      final Reference<?> reference) {
     super(game, runnable, reference);
     this.condition = condition;
   }

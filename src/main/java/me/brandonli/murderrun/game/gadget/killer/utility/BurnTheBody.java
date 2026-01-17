@@ -41,15 +41,13 @@ public final class BurnTheBody extends KillerGadget {
   public BurnTheBody(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "burn_the_body",
-      properties.getBurnTheBodyCost(),
-      ItemFactory.createGadget(
         "burn_the_body",
-        properties.getBurnTheBodyMaterial(),
-        Message.BURN_THE_BODY_NAME.build(),
-        Message.BURN_THE_BODY_LORE.build()
-      )
-    );
+        properties.getBurnTheBodyCost(),
+        ItemFactory.createGadget(
+            "burn_the_body",
+            properties.getBurnTheBodyMaterial(),
+            Message.BURN_THE_BODY_NAME.build(),
+            Message.BURN_THE_BODY_LORE.build()));
   }
 
   @Override
@@ -80,10 +78,12 @@ public final class BurnTheBody extends KillerGadget {
     return false;
   }
 
-  private void destroyBody(final GameScheduler scheduler, final GamePlayer victim, final Location deathLocation) {
+  private void destroyBody(
+      final GameScheduler scheduler, final GamePlayer victim, final Location deathLocation) {
     final World world = requireNonNull(deathLocation.getWorld());
     final StrictPlayerReference reference = StrictPlayerReference.of(victim);
-    scheduler.scheduleRepeatedTask(() -> this.summonEffects(deathLocation, world), 0, 20L, 5 * 20L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.summonEffects(deathLocation, world), 0, 20L, 5 * 20L, reference);
     scheduler.scheduleTask(() -> this.handleBurnTasks(victim), 5 * 20L, reference);
   }
 

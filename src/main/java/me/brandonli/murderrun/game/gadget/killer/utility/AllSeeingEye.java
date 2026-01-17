@@ -37,15 +37,13 @@ public final class AllSeeingEye extends KillerGadget {
   public AllSeeingEye(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "all_seeing_eye",
-      properties.getAllSeeingEyeCost(),
-      ItemFactory.createGadget(
         "all_seeing_eye",
-        properties.getAllSeeingEyeMaterial(),
-        Message.ALL_SEEING_EYE_NAME.build(),
-        Message.ALL_SEEING_EYE_LORE.build()
-      )
-    );
+        properties.getAllSeeingEyeCost(),
+        ItemFactory.createGadget(
+            "all_seeing_eye",
+            properties.getAllSeeingEyeMaterial(),
+            Message.ALL_SEEING_EYE_NAME.build(),
+            Message.ALL_SEEING_EYE_LORE.build()));
   }
 
   @Override
@@ -64,7 +62,8 @@ public final class AllSeeingEye extends KillerGadget {
     final int duration = properties.getAllSeeingEyeDuration();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(random);
-    random.apply(target -> scheduler.scheduleRepeatedTask(() -> player.setSpectatorTarget(target), 0, 10, duration, reference));
+    random.apply(target -> scheduler.scheduleRepeatedTask(
+        () -> player.setSpectatorTarget(target), 0, 10, duration, reference));
     scheduler.scheduleTask(() -> this.resetPlayerState(player, before), duration, reference);
 
     final PlayerAudience audience = player.getAudience();

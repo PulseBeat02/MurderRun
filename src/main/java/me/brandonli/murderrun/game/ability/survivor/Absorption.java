@@ -29,7 +29,11 @@ import org.bukkit.potion.PotionEffectType;
 public final class Absorption extends SurvivorAbility {
 
   public Absorption(final Game game) {
-    super(game, "absorption", ItemFactory.createAbility("absorption", Message.ABSORPTION_NAME.build(), Message.ABSORPTION_LORE.build(), 1));
+    super(
+        game,
+        "absorption",
+        ItemFactory.createAbility(
+            "absorption", Message.ABSORPTION_NAME.build(), Message.ABSORPTION_LORE.build(), 1));
   }
 
   @Override
@@ -46,7 +50,8 @@ public final class Absorption extends SurvivorAbility {
       if (this.invokeEvent(participant)) {
         return;
       }
-      participant.addPotionEffects(PotionEffectType.ABSORPTION.createEffect(PotionEffect.INFINITE_DURATION, level));
+      participant.addPotionEffects(
+          PotionEffectType.ABSORPTION.createEffect(PotionEffect.INFINITE_DURATION, level));
     });
   }
 }

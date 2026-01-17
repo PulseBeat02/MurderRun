@@ -178,7 +178,8 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void loadDependencies() {
-    final Optional<UnsupportedOperationException> exception = this.installDependenciesExceptionally();
+    final Optional<UnsupportedOperationException> exception =
+        this.installDependenciesExceptionally();
     if (exception.isPresent()) {
       final Server server = Bukkit.getServer();
       final PluginManager manager = server.getPluginManager();

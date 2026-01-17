@@ -32,17 +32,15 @@ public final class CrashTrap extends SurvivorTrap {
 
   public CrashTrap() {
     super(
-      "crash_trap",
-      Integer.MAX_VALUE,
-      ItemFactory.createGadget(
         "crash_trap",
-        Material.STRUCTURE_VOID,
-        text("Crash Trap", RED),
-        text("Crashes the client (wtf, use at your own risk)", RED)
-      ),
-      empty(),
-      Color.RED
-    );
+        Integer.MAX_VALUE,
+        ItemFactory.createGadget(
+            "crash_trap",
+            Material.STRUCTURE_VOID,
+            text("Crash Trap", RED),
+            text("Crashes the client (wtf, use at your own risk)", RED)),
+        empty(),
+        Color.RED);
   }
 
   @Override

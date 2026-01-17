@@ -95,23 +95,23 @@ public final class FreezeTagReviveEvent extends GameEvent {
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
     return manager
-      .getSurvivors()
-      .filter(s -> s instanceof Survivor)
-      .map(s -> (Survivor) s)
-      .filter(Survivor::isFrozen)
-      .filter(s -> survivor.getUUID().equals(s.getRevivingPlayer()))
-      .findFirst();
+        .getSurvivors()
+        .filter(s -> s instanceof Survivor)
+        .map(s -> (Survivor) s)
+        .filter(Survivor::isFrozen)
+        .filter(s -> survivor.getUUID().equals(s.getRevivingPlayer()))
+        .findFirst();
   }
 
   private Optional<Survivor> findNearbyFrozenSurvivor(final Location location) {
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
     return manager
-      .getSurvivors()
-      .filter(s -> s instanceof Survivor)
-      .map(s -> (Survivor) s)
-      .filter(Survivor::isFrozen)
-      .filter(s -> this.freezeTagManager.isNearCorpse(location, s))
-      .findFirst();
+        .getSurvivors()
+        .filter(s -> s instanceof Survivor)
+        .map(s -> (Survivor) s)
+        .filter(Survivor::isFrozen)
+        .filter(s -> this.freezeTagManager.isNearCorpse(location, s))
+        .findFirst();
   }
 }

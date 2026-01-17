@@ -68,10 +68,8 @@ public final class ScreenUtils {
     final PlayerInventory inv = player.getInventory();
     final GameMode gm = player.getGameMode();
     // spotless:off
-    @Nullable
-    final ItemStack[] invIs1 = inv.getContents();
-    @Nullable
-    final ItemStack[] invIs2 = inv.getArmorContents();
+    final @Nullable ItemStack[] invIs1 = inv.getContents();
+    final @Nullable ItemStack[] invIs2 = inv.getArmorContents();
     // spotless:on
     final double invHealth = player.getHealthScale();
     final int invFood = player.getFoodLevel();
@@ -94,32 +92,32 @@ public final class ScreenUtils {
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.scheduleSyncDelayedTask(
-      plugin,
-      () -> {
-        player.teleport(clone);
-        inv.setContents(invIs1);
-        inv.setArmorContents(invIs2);
-        player.setHealthScale(invHealth);
-        player.setFoodLevel(invFood);
-        player.setGameMode(invGM);
-        player.setAllowFlight(invAllowFlight);
-        player.setFlying(invFlight);
-        player.setExp(invExp);
-        player.setVelocity(invVelocity);
-        attributes.forEach((attribute, value1) -> {
-          final double value = value1;
-          final AttributeInstance instance = player.getAttribute(attribute);
-          if (instance != null) {
-            instance.setBaseValue(value);
-          }
-        });
-        TRACKED_PLAYERS.remove(player);
-      },
-      5L
-    );
+        plugin,
+        () -> {
+          player.teleport(clone);
+          inv.setContents(invIs1);
+          inv.setArmorContents(invIs2);
+          player.setHealthScale(invHealth);
+          player.setFoodLevel(invFood);
+          player.setGameMode(invGM);
+          player.setAllowFlight(invAllowFlight);
+          player.setFlying(invFlight);
+          player.setExp(invExp);
+          player.setVelocity(invVelocity);
+          attributes.forEach((attribute, value1) -> {
+            final double value = value1;
+            final AttributeInstance instance = player.getAttribute(attribute);
+            if (instance != null) {
+              instance.setBaseValue(value);
+            }
+          });
+          TRACKED_PLAYERS.remove(player);
+        },
+        5L);
   }
 
-  private static Location applyMiddleManLogic(final Player player, final CameraEffect type, final PlayerInventory inv, final GameMode gm) {
+  private static Location applyMiddleManLogic(
+      final Player player, final CameraEffect type, final PlayerInventory inv, final GameMode gm) {
     final Player.Spigot spigot = player.spigot();
     final Location location = player.getLocation();
     final Location clone = location.clone();

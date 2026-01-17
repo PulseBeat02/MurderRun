@@ -38,15 +38,13 @@ public final class QuickBomb extends KillerGadget {
   public QuickBomb(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "quick_bomb",
-      properties.getQuickBombCost(),
-      ItemFactory.createGadget(
         "quick_bomb",
-        properties.getQuickBombMaterial(),
-        Message.QUICK_BOMB_NAME.build(),
-        Message.QUICK_BOMB_LORE.build()
-      )
-    );
+        properties.getQuickBombCost(),
+        ItemFactory.createGadget(
+            "quick_bomb",
+            properties.getQuickBombMaterial(),
+            Message.QUICK_BOMB_NAME.build(),
+            Message.QUICK_BOMB_LORE.build()));
   }
 
   @Override

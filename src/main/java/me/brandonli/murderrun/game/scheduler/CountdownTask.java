@@ -28,12 +28,11 @@ public final class CountdownTask extends GameScheduledTask {
   private final Consumer<Integer> tasks;
 
   public CountdownTask(
-    final Game game,
-    final Runnable runnable,
-    final int seconds,
-    final Consumer<Integer> tasks,
-    final Reference<?> reference
-  ) {
+      final Game game,
+      final Runnable runnable,
+      final int seconds,
+      final Consumer<Integer> tasks,
+      final Reference<?> reference) {
     super(game, runnable, reference);
     this.seconds = new AtomicInteger(seconds + 1);
     this.tasks = tasks;

@@ -34,15 +34,13 @@ public final class MagnetMode extends SurvivorGadget {
   public MagnetMode(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "magnet_mode",
-      properties.getMagnetModeCost(),
-      ItemFactory.createGadget(
         "magnet_mode",
-        properties.getMagnetModeMaterial(),
-        Message.MAGNET_MODE_NAME.build(),
-        Message.MAGNET_MODE_LORE.build()
-      )
-    );
+        properties.getMagnetModeCost(),
+        ItemFactory.createGadget(
+            "magnet_mode",
+            properties.getMagnetModeMaterial(),
+            Message.MAGNET_MODE_NAME.build(),
+            Message.MAGNET_MODE_LORE.build()));
   }
 
   @Override

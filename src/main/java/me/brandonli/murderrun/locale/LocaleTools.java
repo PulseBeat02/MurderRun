@@ -31,31 +31,33 @@ public interface LocaleTools {
     return () -> MANAGER.render(translatable(key));
   }
 
-  static <T> UniComponent<Sender, T> direct(final String key, final @Nullable Function<T, String> function) {
+  static <T> UniComponent<Sender, T> direct(
+      final String key, final @Nullable Function<T, String> function) {
     return arg -> MANAGER.render(translatable(key, createFinalText(arg, function)));
   }
 
   static <T, U> BiComponent<Sender, T, U> direct(
-    final String key,
-    final @Nullable Function<T, String> function1,
-    final @Nullable Function<U, String> function2
-  ) {
-    return (arg1, arg2) -> MANAGER.render(translatable(key, createFinalText(arg1, function1), createFinalText(arg2, function2)));
+      final String key,
+      final @Nullable Function<T, String> function1,
+      final @Nullable Function<U, String> function2) {
+    return (arg1, arg2) -> MANAGER.render(
+        translatable(key, createFinalText(arg1, function1), createFinalText(arg2, function2)));
   }
 
   static <T, U, V> TriComponent<Sender, T, U, V> direct(
-    final String key,
-    final @Nullable Function<T, String> function1,
-    final @Nullable Function<U, String> function2,
-    final @Nullable Function<V, String> function3
-  ) {
-    return (arg1, arg2, arg3) ->
-      MANAGER.render(
-        translatable(key, createFinalText(arg1, function1), createFinalText(arg2, function2), createFinalText(arg3, function3))
-      );
+      final String key,
+      final @Nullable Function<T, String> function1,
+      final @Nullable Function<U, String> function2,
+      final @Nullable Function<V, String> function3) {
+    return (arg1, arg2, arg3) -> MANAGER.render(translatable(
+        key,
+        createFinalText(arg1, function1),
+        createFinalText(arg2, function2),
+        createFinalText(arg3, function3)));
   }
 
-  static <T> Component createFinalText(final T argument, final @Nullable Function<T, String> function) {
+  static <T> Component createFinalText(
+      final T argument, final @Nullable Function<T, String> function) {
     if (argument == null) {
       return text("");
     }

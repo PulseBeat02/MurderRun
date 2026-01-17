@@ -35,8 +35,11 @@ import org.bukkit.WorldCreator;
 public final class LocationAdapter implements JsonDeserializer<Location>, JsonSerializer<Location> {
 
   @Override
-  public Location deserialize(final JsonElement jsonString, final Type type, final JsonDeserializationContext jsonDeserializationContext)
-    throws JsonParseException {
+  public Location deserialize(
+      final JsonElement jsonString,
+      final Type type,
+      final JsonDeserializationContext jsonDeserializationContext)
+      throws JsonParseException {
     final JsonObject obj = (JsonObject) jsonString;
     final JsonElement world = obj.get("world");
     final JsonElement x = obj.get("x");
@@ -65,7 +68,10 @@ public final class LocationAdapter implements JsonDeserializer<Location>, JsonSe
   }
 
   @Override
-  public JsonElement serialize(final Location location, final Type type, final JsonSerializationContext jsonSerializationContext) {
+  public JsonElement serialize(
+      final Location location,
+      final Type type,
+      final JsonSerializationContext jsonSerializationContext) {
     final JsonObject obj = new JsonObject();
     final World world = requireNonNull(location.getWorld());
     final String name = world.getName();

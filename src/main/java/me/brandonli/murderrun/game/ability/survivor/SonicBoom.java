@@ -51,15 +51,11 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
   public SonicBoom(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      game,
-      SONIC_BOOM_NAME,
-      ItemFactory.createAbility(
+        game,
         SONIC_BOOM_NAME,
-        Message.SONIC_BOOM_NAME.build(),
-        Message.SONIC_BOOM_LORE.build(),
-        (int) (properties.getSonicBoomCooldown() * 20)
-      )
-    );
+        ItemFactory.createAbility(
+            SONIC_BOOM_NAME, Message.SONIC_BOOM_NAME.build(), Message.SONIC_BOOM_LORE.build(), (int)
+                (properties.getSonicBoomCooldown() * 20)));
     this.cooldowns = new ConcurrentHashMap<>();
   }
 
@@ -130,15 +126,20 @@ public final class SonicBoom extends SurvivorAbility implements Listener {
     final World world = player.getWorld();
     final Vector velocity = knockbackDirection.multiply(knockbackStrength);
 
-    final Collection<Entity> entities = world.getNearbyEntities(sourceLocation, radius, radius, radius);
-    entities
-      .stream()
-      .filter(entity -> !entity.equals(player))
-      .forEach(entity -> this.launchPlayers(entity, sourceLocation, knockbackDirection, velocity));
+    final Collection<Entity> entities =
+        world.getNearbyEntities(sourceLocation, radius, radius, radius);
+    entities.stream()
+        .filter(entity -> !entity.equals(player))
+        .forEach(
+            entity -> this.launchPlayers(entity, sourceLocation, knockbackDirection, velocity));
     world.spawnParticle(Particle.SONIC_BOOM, sourceLocation, 50);
   }
 
-  private void launchPlayers(final Entity entity, final Location sourceLocation, final Vector knockbackDirection, final Vector velocity) {
+  private void launchPlayers(
+      final Entity entity,
+      final Location sourceLocation,
+      final Vector knockbackDirection,
+      final Vector velocity) {
     final Location targetLocation = entity.getLocation();
     final Vector vector = targetLocation.toVector();
     final Vector sourceVector = sourceLocation.toVector();

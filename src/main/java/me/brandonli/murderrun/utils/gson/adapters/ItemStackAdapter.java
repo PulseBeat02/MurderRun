@@ -23,18 +23,21 @@ import me.brandonli.murderrun.utils.gson.GsonProvider;
 import org.bukkit.inventory.ItemStack;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-public final class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
+public final class ItemStackAdapter
+    implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
 
   @Override
-  public ItemStack deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
-    throws JsonParseException {
+  public ItemStack deserialize(
+      final JsonElement json, final Type typeOfT, final JsonDeserializationContext context)
+      throws JsonParseException {
     final String data = json.getAsString();
     final byte[] bytes = Base64Coder.decode(data);
     return ItemStack.deserializeBytes(bytes);
   }
 
   @Override
-  public JsonElement serialize(final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
+  public JsonElement serialize(
+      final ItemStack src, final Type typeOfSrc, final JsonSerializationContext context) {
     final Gson gson = GsonProvider.getGson();
     final byte[] bytes = src.serializeAsBytes();
     final char[] base64 = Base64Coder.encode(bytes);

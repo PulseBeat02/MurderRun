@@ -60,13 +60,12 @@ public final class ArenaCreation implements Serializable {
   private volatile Collection<Location> itemLocations;
 
   public ArenaCreation(
-    final String arenaName,
-    final Location spawn,
-    final Location truck,
-    final Location first,
-    final Location second,
-    final Collection<Location> itemLocations
-  ) {
+      final String arenaName,
+      final Location spawn,
+      final Location truck,
+      final Location first,
+      final Location second,
+      final Collection<Location> itemLocations) {
     this.arenaName = arenaName;
     this.spawn = spawn;
     this.truck = truck;

@@ -60,7 +60,8 @@ import org.incendo.cloud.type.tuple.Triplet;
 
 public final class MapUtils {
 
-  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS = Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
+  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS =
+      Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
   private static final Properties SERVER_PROPERTIES = new Properties();
 
@@ -111,7 +112,8 @@ public final class MapUtils {
   public static World createVoidWorld(final String name, final World copy) {
     final ChunkGenerator generator = new FastChunkGenerator();
     final World.Environment environment = copy.getEnvironment();
-    final World world = new WorldCreator(name).environment(environment).generator(generator).createWorld();
+    final World world =
+        new WorldCreator(name).environment(environment).generator(generator).createWorld();
     requireNonNull(world);
 
     final Registry<@NonNull GameRule<?>> gameRuleRegistry = Registry.GAME_RULE;
@@ -149,7 +151,8 @@ public final class MapUtils {
     final boolean enabled = Boolean.parseBoolean(property);
     if (enabled) { // disabled always
       System.setProperty(WE_SPREADER, "true");
-      final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class); // special case
+      final MurderRun plugin =
+          (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class); // special case
       final WESpreader spreader = new WESpreader(plugin);
       spreader.load();
       return true;
@@ -158,10 +161,9 @@ public final class MapUtils {
   }
 
   public static CompletableFuture<Void> performPaste(
-    final com.sk89q.worldedit.world.World world,
-    final Clipboard clipboard,
-    final SerializableVector vector3
-  ) {
+      final com.sk89q.worldedit.world.World world,
+      final Clipboard clipboard,
+      final SerializableVector vector3) {
     final MurderRun plugin = (MurderRun) JavaPlugin.getProvidingPlugin(MurderRun.class);
     if (Capabilities.FASTASYNCWORLDEDIT.isEnabled()) { // use normal paste
       final Region region = clipboard.getRegion();
@@ -186,10 +188,9 @@ public final class MapUtils {
   }
 
   private static Collection<Operation> splitClipboardOperation(
-    final com.sk89q.worldedit.world.World world,
-    final Clipboard clipboard,
-    final SerializableVector vector3
-  ) {
+      final com.sk89q.worldedit.world.World world,
+      final Clipboard clipboard,
+      final SerializableVector vector3) {
     final BlockVector3 dimensions = clipboard.getDimensions();
     final int width = dimensions.x();
     final int height = dimensions.y();
@@ -229,16 +230,15 @@ public final class MapUtils {
     final String path = schematic.getSchematicPath();
     final File legacyPath = new File(path);
     final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(legacyPath));
-    try (
-      final InputStream stream = new FileInputStream(legacyPath);
-      final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
-      final ClipboardReader reader = format.getReader(fast)
-    ) {
+    try (final InputStream stream = new FileInputStream(legacyPath);
+        final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
+        final ClipboardReader reader = format.getReader(fast)) {
       return reader.read();
     }
   }
 
-  public static String performSchematicWrite(final Clipboard clipboard, final String name, final boolean arena) throws IOException {
+  public static String performSchematicWrite(
+      final Clipboard clipboard, final String name, final boolean arena) throws IOException {
     final String folder = arena ? "arenas" : "lobbies";
     final Path data = IOUtils.getPluginDataFolderPath();
     final Path parent = data.resolve("schematics");
@@ -247,25 +247,25 @@ public final class MapUtils {
 
     final Path file = folderPath.resolve(name);
     final BuiltInClipboardFormat format = BuiltInClipboardFormat.SPONGE_V3_SCHEMATIC;
-    try (
-      final OutputStream stream = Files.newOutputStream(file);
-      final OutputStream fast = new FastBufferedOutputStream(stream);
-      final ClipboardWriter writer = format.getWriter(fast)
-    ) {
+    try (final OutputStream stream = Files.newOutputStream(file);
+        final OutputStream fast = new FastBufferedOutputStream(stream);
+        final ClipboardWriter writer = format.getWriter(fast)) {
       writer.write(clipboard);
     }
     final Path absolute = file.toAbsolutePath();
     return absolute.toString();
   }
 
-  public static Clipboard performForwardExtentCopy(final Location[] corners) throws WorldEditException {
+  public static Clipboard performForwardExtentCopy(final Location[] corners)
+      throws WorldEditException {
     final CuboidRegion region = MapUtils.createRegion(corners);
     final BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
     final com.sk89q.worldedit.world.World world = region.getWorld();
     final WorldEdit instance = WorldEdit.getInstance();
     try (final EditSession session = instance.newEditSession(world)) {
       final BlockVector3 min = region.getMinimumPoint();
-      final ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(session, region, clipboard, min);
+      final ForwardExtentCopy forwardExtentCopy =
+          new ForwardExtentCopy(session, region, clipboard, min);
       forwardExtentCopy.setCopyingEntities(true);
       Operations.complete(forwardExtentCopy);
       return clipboard;
@@ -300,7 +300,7 @@ public final class MapUtils {
   public static double[] generateFriendlyRandomXZ(final Location first, final Location second) {
     final double x = first.getX() + (second.getX() - first.getX()) * generateFriendlyDouble();
     final double z = first.getZ() + (second.getZ() - first.getZ()) * generateFriendlyDouble();
-    return new double[] { x, z };
+    return new double[] {x, z};
   }
 
   private static double generateFriendlyDouble() {

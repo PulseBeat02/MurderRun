@@ -42,7 +42,8 @@ import org.incendo.cloud.annotations.Permission;
 public final class ShopCommand implements AnnotationCommandFeature {
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final NPCShopEvent event = new NPCShopEvent(plugin);
     final NPCSelectEvent selectEvent = new NPCSelectEvent(plugin);
     final Server server = plugin.getServer();
@@ -77,9 +78,15 @@ public final class ShopCommand implements AnnotationCommandFeature {
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     final GameProperties properties = GameProperties.COMMON;
     if (survivor) {
-      trait.setSkinPersistent("Angel Spirit", properties.getAngelSpiritTextureSignature(), properties.getAngelSpiritTextureData());
+      trait.setSkinPersistent(
+          "Angel Spirit",
+          properties.getAngelSpiritTextureSignature(),
+          properties.getAngelSpiritTextureData());
     } else {
-      trait.setSkinPersistent("Weeping Angel", properties.getWeepingAngelTextureSignature(), properties.getWeepingAngelTextureData());
+      trait.setSkinPersistent(
+          "Weeping Angel",
+          properties.getWeepingAngelTextureSignature(),
+          properties.getWeepingAngelTextureData());
     }
     npc.spawn(location);
 
@@ -113,9 +120,15 @@ public final class ShopCommand implements AnnotationCommandFeature {
     final SkinTrait trait = npc.getOrAddTrait(SkinTrait.class);
     final GameProperties properties = GameProperties.COMMON;
     if (survivor) {
-      trait.setSkinPersistent("Guardian Angel", properties.getGuardianAngelTextureSignature(), properties.getGuardianAngelTextureData());
+      trait.setSkinPersistent(
+          "Guardian Angel",
+          properties.getGuardianAngelTextureSignature(),
+          properties.getGuardianAngelTextureData());
     } else {
-      trait.setSkinPersistent("Grim Reaper", properties.getGrimReaperTextureSignature(), properties.getGrimReaperTextureData());
+      trait.setSkinPersistent(
+          "Grim Reaper",
+          properties.getGrimReaperTextureSignature(),
+          properties.getGrimReaperTextureData());
     }
     npc.spawn(location);
 

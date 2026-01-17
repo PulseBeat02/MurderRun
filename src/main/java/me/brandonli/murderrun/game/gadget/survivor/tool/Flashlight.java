@@ -57,18 +57,15 @@ public final class Flashlight extends SurvivorGadget implements Listener {
   public Flashlight(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "flashlight",
-      properties.getFlashlightCost(),
-      ItemFactory.createFlashlight(
-        properties,
-        ItemFactory.createGadget(
-          "flashlight",
-          properties.getFlashlightMaterial(),
-          Message.FLASHLIGHT_NAME.build(),
-          Message.FLASHLIGHT_LORE.build()
-        )
-      )
-    );
+        "flashlight",
+        properties.getFlashlightCost(),
+        ItemFactory.createFlashlight(
+            properties,
+            ItemFactory.createGadget(
+                "flashlight",
+                properties.getFlashlightMaterial(),
+                Message.FLASHLIGHT_NAME.build(),
+                Message.FLASHLIGHT_LORE.build())));
     this.game = game;
   }
 
@@ -144,19 +141,22 @@ public final class Flashlight extends SurvivorGadget implements Listener {
     final double maxAngle = Math.toRadians(properties.getFlashlightConeAngle());
     for (double t = 0; t < properties.getFlashlightConeLength(); t += 0.5) {
       for (double angle = -maxAngle; angle <= maxAngle; angle += increment) {
-        final Location particleLocation = this.getParticleLocation(direction, handLocation, t, angle);
+        final Location particleLocation =
+            this.getParticleLocation(direction, handLocation, t, angle);
         manager.applyToAllParticipants(participant -> {
           if (participant == player) {
             return;
           }
-          participant.spawnParticle(Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
+          participant.spawnParticle(
+              Particle.DUST, particleLocation, 1, 0, 0, 0, 0, new DustOptions(Color.YELLOW, 3));
         });
         manager.applyToKillers(killer -> this.applyPotionEffects(killer, particleLocation));
       }
     }
   }
 
-  private Location getParticleLocation(final Vector direction, final Location handLocation, final double t, final double angle) {
+  private Location getParticleLocation(
+      final Vector direction, final Location handLocation, final double t, final double angle) {
     final Vector copy = direction.clone();
     final Vector offset = copy.multiply(t);
     offset.rotateAroundY(angle);
@@ -171,7 +171,8 @@ public final class Flashlight extends SurvivorGadget implements Listener {
     final GameProperties properties = this.game.getProperties();
     final double radius = properties.getFlashlightRadius();
     if (distance < radius * radius) {
-      killer.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));
+      killer.addPotionEffects(
+          new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, Integer.MAX_VALUE));
     }
   }
 }

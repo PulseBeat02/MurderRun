@@ -25,7 +25,8 @@ public final class MergedReference<U, V> extends SchedulerReference<List<Referen
     super(List.of(first, second));
   }
 
-  public static <A, B> MergedReference<A, B> of(final Reference<A> first, final Reference<B> second) {
+  public static <A, B> MergedReference<A, B> of(
+      final Reference<A> first, final Reference<B> second) {
     return new MergedReference<>(first, second);
   }
 

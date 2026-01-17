@@ -35,10 +35,13 @@ public final class RandomTrap extends SurvivorGadget {
   public RandomTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "random_trap",
-      properties.getRandomTrapCost(),
-      ItemFactory.createGadget("random_trap", properties.getRandomTrapMaterial(), Message.RANDOM_NAME.build(), Message.RANDOM_LORE.build())
-    );
+        "random_trap",
+        properties.getRandomTrapCost(),
+        ItemFactory.createGadget(
+            "random_trap",
+            properties.getRandomTrapMaterial(),
+            Message.RANDOM_NAME.build(),
+            Message.RANDOM_LORE.build()));
   }
 
   @Override

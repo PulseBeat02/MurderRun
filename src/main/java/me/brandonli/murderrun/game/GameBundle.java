@@ -64,13 +64,12 @@ public final class GameBundle {
     return Double.parseDouble(raw);
   }
 
-  private ResourceBundle loadGadgetProperties(@UnderInitialization GameBundle this, final Path resourcePath) {
+  private ResourceBundle loadGadgetProperties(
+      @UnderInitialization GameBundle this, final Path resourcePath) {
     try {
       this.checkExistence(resourcePath);
-      try (
-        final InputStream in = Files.newInputStream(resourcePath);
-        final FastBufferedInputStream fast = new FastBufferedInputStream(in)
-      ) {
+      try (final InputStream in = Files.newInputStream(resourcePath);
+          final FastBufferedInputStream fast = new FastBufferedInputStream(in)) {
         final ResourceBundle bundle = new PropertyResourceBundle(fast);
         final PropertyFixerManager fixer = new PropertyFixerManager();
         fixer.registerGamePropertiesFixer();
@@ -82,7 +81,8 @@ public final class GameBundle {
     }
   }
 
-  private void checkExistence(@UnderInitialization GameBundle this, final Path resourcePath) throws IOException {
+  private void checkExistence(@UnderInitialization GameBundle this, final Path resourcePath)
+      throws IOException {
     if (IOUtils.createFile(resourcePath)) {
       final String file = requireNonNull(this.file);
       try (final InputStream in = IOUtils.getResourceAsStream(file)) {

@@ -31,12 +31,15 @@ public final class BearTrap extends SurvivorTrap {
   public BearTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "bear_trap",
-      properties.getBearCost(),
-      ItemFactory.createGadget("bear_trap", properties.getBearMaterial(), Message.BEAR_NAME.build(), Message.BEAR_LORE.build()),
-      Message.BEAR_ACTIVATE.build(),
-      properties.getBearColor()
-    );
+        "bear_trap",
+        properties.getBearCost(),
+        ItemFactory.createGadget(
+            "bear_trap",
+            properties.getBearMaterial(),
+            Message.BEAR_NAME.build(),
+            Message.BEAR_LORE.build()),
+        Message.BEAR_ACTIVATE.build(),
+        properties.getBearColor());
   }
 
   @Override

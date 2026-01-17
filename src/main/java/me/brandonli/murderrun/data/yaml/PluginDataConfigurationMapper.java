@@ -143,11 +143,13 @@ public final class PluginDataConfigurationMapper {
   }
 
   private ProviderMethod getProviderMethod(final FileConfiguration config) {
-    return ProviderMethod.fromString(requireNonNull(config.getString(PACK_PROVIDER_FIELD, "MC_PACK_HOSTING")));
+    return ProviderMethod.fromString(
+        requireNonNull(config.getString(PACK_PROVIDER_FIELD, "MC_PACK_HOSTING")));
   }
 
   private RelationalDataMethod getRelationalDataMethod(final FileConfiguration config) {
-    return RelationalDataMethod.fromString(requireNonNull(config.getString(RELATIONAL_DATA_FIELD, "JSON")));
+    return RelationalDataMethod.fromString(
+        requireNonNull(config.getString(RELATIONAL_DATA_FIELD, "JSON")));
   }
 
   public synchronized Locale getLocale() {

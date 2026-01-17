@@ -39,10 +39,13 @@ public final class Mimic extends KillerGadget {
   public Mimic(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "mimic",
-      properties.getMimicCost(),
-      ItemFactory.createGadget("mimic", properties.getMimicMaterial(), Message.MIMIC_NAME.build(), Message.MIMIC_LORE.build())
-    );
+        "mimic",
+        properties.getMimicCost(),
+        ItemFactory.createGadget(
+            "mimic",
+            properties.getMimicMaterial(),
+            Message.MIMIC_NAME.build(),
+            Message.MIMIC_LORE.build()));
   }
 
   @Override
@@ -59,8 +62,7 @@ public final class Mimic extends KillerGadget {
     disguiseManager.disguisePlayerAsOtherPlayer(player, survivor);
 
     final PlayerInventory otherInventory = survivor.getInventory();
-    @Nullable
-    final ItemStack[] armor = otherInventory.getArmorContents();
+    final @Nullable ItemStack[] armor = otherInventory.getArmorContents();
     final PlayerInventory thisInventory = player.getInventory();
     thisInventory.setArmorContents(armor);
 

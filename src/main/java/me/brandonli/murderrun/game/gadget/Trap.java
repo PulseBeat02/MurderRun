@@ -32,12 +32,11 @@ public abstract class Trap extends AbstractGadget {
   private final Color color;
 
   public Trap(
-    final String name,
-    final int cost,
-    final me.brandonli.murderrun.utils.item.Item.Builder builder,
-    final Component announcement,
-    final Color color
-  ) {
+      final String name,
+      final int cost,
+      final me.brandonli.murderrun.utils.item.Item.Builder builder,
+      final Component announcement,
+      final Color color) {
     super(name, cost, builder);
     this.announcement = announcement;
     this.color = color;

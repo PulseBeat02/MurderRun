@@ -44,17 +44,13 @@ public final class Translocator extends SurvivorGadget {
   public Translocator(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "translocator",
-      properties.getTranslocatorCost(),
-      ItemFactory.createTranslocator(
-        ItemFactory.createGadget(
-          "translocator",
-          properties.getTranslocatorMaterial(),
-          Message.TRANSLOCATOR_NAME.build(),
-          Message.TRANSLOCATOR_LORE.build()
-        )
-      )
-    );
+        "translocator",
+        properties.getTranslocatorCost(),
+        ItemFactory.createTranslocator(ItemFactory.createGadget(
+            "translocator",
+            properties.getTranslocatorMaterial(),
+            Message.TRANSLOCATOR_NAME.build(),
+            Message.TRANSLOCATOR_LORE.build())));
   }
 
   @Override
@@ -70,7 +66,8 @@ public final class Translocator extends SurvivorGadget {
       return true;
     }
 
-    final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
+    final byte[] data = requireNonNull(PDCUtils.getPersistentDataAttribute(
+        stack, Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY));
     final Location location = MapUtils.byteArrayToLocation(data);
     player.teleport(location);
 
@@ -94,10 +91,10 @@ public final class Translocator extends SurvivorGadget {
     final ItemStack stack = item.getItemStack();
     final byte[] bytes = MapUtils.locationToByteArray(location);
     Item.builder(stack)
-      .lore(Message.TRANSLOCATOR_LORE1.build())
-      .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
-      .model(null)
-      .type(Material.LEVER);
+        .lore(Message.TRANSLOCATOR_LORE1.build())
+        .pdc(Keys.TRANSLOCATOR, PersistentDataType.BYTE_ARRAY, bytes)
+        .model(null)
+        .type(Material.LEVER);
 
     return true;
   }

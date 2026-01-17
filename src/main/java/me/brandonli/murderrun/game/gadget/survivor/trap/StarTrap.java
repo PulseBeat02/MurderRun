@@ -32,12 +32,15 @@ public final class StarTrap extends SurvivorTrap {
   public StarTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "star_trap",
-      properties.getStarCost(),
-      ItemFactory.createGadget("star_trap", properties.getStarMaterial(), Message.STAR_NAME.build(), Message.STAR_LORE.build()),
-      Message.STAR_ACTIVATE.build(),
-      properties.getStarColor()
-    );
+        "star_trap",
+        properties.getStarCost(),
+        ItemFactory.createGadget(
+            "star_trap",
+            properties.getStarMaterial(),
+            Message.STAR_NAME.build(),
+            Message.STAR_LORE.build()),
+        Message.STAR_ACTIVATE.build(),
+        properties.getStarColor());
   }
 
   @Override
@@ -53,9 +56,8 @@ public final class StarTrap extends SurvivorTrap {
     final GameProperties properties = game.getProperties();
     final int duration = properties.getStarDuration();
     player.addPotionEffects(
-      new PotionEffect(PotionEffectType.SPEED, duration, 2),
-      new PotionEffect(PotionEffectType.RESISTANCE, duration, 2),
-      new PotionEffect(PotionEffectType.REGENERATION, duration, 2)
-    );
+        new PotionEffect(PotionEffectType.SPEED, duration, 2),
+        new PotionEffect(PotionEffectType.RESISTANCE, duration, 2),
+        new PotionEffect(PotionEffectType.REGENERATION, duration, 2));
   }
 }

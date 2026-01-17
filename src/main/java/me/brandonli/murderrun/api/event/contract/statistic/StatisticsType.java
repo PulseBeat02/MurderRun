@@ -20,7 +20,8 @@ package me.brandonli.murderrun.api.event.contract.statistic;
 public final class StatisticsType<T extends Number> {
 
   public static final StatisticsType<Long> FASTEST_KILLER_WIN = of("FASTEST_KILLER_WIN", Long.TYPE);
-  public static final StatisticsType<Long> FASTEST_SURVIVOR_WIN = of("FASTEST_SURVIVOR_WIN", Long.TYPE);
+  public static final StatisticsType<Long> FASTEST_SURVIVOR_WIN =
+      of("FASTEST_SURVIVOR_WIN", Long.TYPE);
   public static final StatisticsType<Integer> TOTAL_KILLS = of("TOTAL_KILLS", Integer.TYPE);
   public static final StatisticsType<Integer> TOTAL_DEATHS = of("TOTAL_DEATHS", Integer.TYPE);
   public static final StatisticsType<Integer> TOTAL_WINS = of("TOTAL_WINS", Integer.TYPE);

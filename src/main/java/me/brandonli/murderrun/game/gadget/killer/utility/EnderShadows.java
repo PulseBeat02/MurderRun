@@ -51,22 +51,20 @@ import org.bukkit.entity.Item;
 public final class EnderShadows extends KillerGadget {
 
   private static final String TEXTURE_SIGNATURE =
-    "JJLyJh0n4sr4EwvWlIHu6Rz+eiCv6gIte/HZa4z1XH0CSnUBcrKXfIlzaLKo24k6OmJMysIRRtGVjhBYpyTe0ggCdFSibp6hDOfH1j/BR8ZmJkBn4ylpZZZmc4fxqsEc04AuxhkAUkGqpseirS2p44eQb60CyVwCf8kfh4sSSvmgaORx+aEENpwALbx6aUBJ2DRlzBRtftTo3kSTWnyKJznbQyMQcFHyCXHuT96gfavJ1acavZtFcMw/xBpZM4X36Z8jR9srOF2W3y0RttyJkMR7xuWaidVg7X17GoRDkChsnK0KdawkWD+u/LVZM2mzdOSqKKHXMle2qLCLdWYTrmCufT+t/G6BrvyEtmflnP81ciVbfA7utpKH6XDzEKpA4mRIHtIRIfctO2ltTbWft5/VhXWqB+dgBuOErdUtW9qkGlg5au5LK/laDgTTQprnpq8Hd287X4AL2aAghMPCcTfIrE0Wnd2n6JbkIrXx5kA4F8K2f+N78TkXhGbbtMh1ktNzNvZXi47PFijuqalBPhhaAjCOJiWQx5b6PoCg6FWXhdZxC8ndCPB2xHtiqOKUWnCLkhBBtg/Lj+WETVvUP/GLjbMzKxljMycZHHxq9fZlWvnFtOnoiTWrljVUO5oLnR5bO0+MelTb7vN3pswLU2qO71okwCndfMhvXEnhZTs=";
+      "JJLyJh0n4sr4EwvWlIHu6Rz+eiCv6gIte/HZa4z1XH0CSnUBcrKXfIlzaLKo24k6OmJMysIRRtGVjhBYpyTe0ggCdFSibp6hDOfH1j/BR8ZmJkBn4ylpZZZmc4fxqsEc04AuxhkAUkGqpseirS2p44eQb60CyVwCf8kfh4sSSvmgaORx+aEENpwALbx6aUBJ2DRlzBRtftTo3kSTWnyKJznbQyMQcFHyCXHuT96gfavJ1acavZtFcMw/xBpZM4X36Z8jR9srOF2W3y0RttyJkMR7xuWaidVg7X17GoRDkChsnK0KdawkWD+u/LVZM2mzdOSqKKHXMle2qLCLdWYTrmCufT+t/G6BrvyEtmflnP81ciVbfA7utpKH6XDzEKpA4mRIHtIRIfctO2ltTbWft5/VhXWqB+dgBuOErdUtW9qkGlg5au5LK/laDgTTQprnpq8Hd287X4AL2aAghMPCcTfIrE0Wnd2n6JbkIrXx5kA4F8K2f+N78TkXhGbbtMh1ktNzNvZXi47PFijuqalBPhhaAjCOJiWQx5b6PoCg6FWXhdZxC8ndCPB2xHtiqOKUWnCLkhBBtg/Lj+WETVvUP/GLjbMzKxljMycZHHxq9fZlWvnFtOnoiTWrljVUO5oLnR5bO0+MelTb7vN3pswLU2qO71okwCndfMhvXEnhZTs=";
   private static final String TEXTURE_VALUE =
-    "ewogICJ0aW1lc3RhbXAiIDogMTY3Mjc3NTg4Mzk5MywKICAicHJvZmlsZUlkIiA6ICI2MDJmMjA0M2YzYjU0OGU1ODQyYjE4ZjljMDg2Y2U0ZiIsCiAgInByb2ZpbGVOYW1lIiA6ICJCb3J5c18iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTM5M2Q2NzU2M2VlNTYwMTg3NjZkMjFiMzY2OTJjYmU1NjNkYzBhOTFiYWNmYzBkYjU0YjMwYzJiOWEyNDg3MyIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9";
+      "ewogICJ0aW1lc3RhbXAiIDogMTY3Mjc3NTg4Mzk5MywKICAicHJvZmlsZUlkIiA6ICI2MDJmMjA0M2YzYjU0OGU1ODQyYjE4ZjljMDg2Y2U0ZiIsCiAgInByb2ZpbGVOYW1lIiA6ICJCb3J5c18iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTM5M2Q2NzU2M2VlNTYwMTg3NjZkMjFiMzY2OTJjYmU1NjNkYzBhOTFiYWNmYzBkYjU0YjMwYzJiOWEyNDg3MyIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9";
 
   public EnderShadows(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "ender_shadows",
-      properties.getEnderShadowsCost(),
-      ItemFactory.createGadget(
         "ender_shadows",
-        properties.getEnderShadowsMaterial(),
-        Message.ENDER_SHADOWS_NAME.build(),
-        Message.ENDER_SHADOWS_LORE.build()
-      )
-    );
+        properties.getEnderShadowsCost(),
+        ItemFactory.createGadget(
+            "ender_shadows",
+            properties.getEnderShadowsMaterial(),
+            Message.ENDER_SHADOWS_NAME.build(),
+            Message.ENDER_SHADOWS_LORE.build()));
   }
 
   @Override
@@ -88,19 +86,19 @@ public final class EnderShadows extends KillerGadget {
     final GameExtensionManager extensionManager = game.getExtensionManager();
     final CitizensManager npcManager = extensionManager.getNPCManager();
     final GameProperties properties = game.getProperties();
-    manager.applyToLivingSurvivors(survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
+    manager.applyToLivingSurvivors(
+        survivor -> this.handleAllSurvivors(npcManager, scheduler, killer, survivor, spawn));
     manager.playSoundForAllParticipants(properties.getEnderShadowsSound());
 
     return false;
   }
 
   private void handleAllSurvivors(
-    final CitizensManager manager,
-    final GameScheduler scheduler,
-    final Killer killer,
-    final GamePlayer survivor,
-    final Location spawn
-  ) {
+      final CitizensManager manager,
+      final GameScheduler scheduler,
+      final Killer killer,
+      final GamePlayer survivor,
+      final Location spawn) {
     final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.ENDER_SHADOWS_ACTIVATE.build();
     audience.sendMessage(msg);
@@ -108,19 +106,24 @@ public final class EnderShadows extends KillerGadget {
     final Entity shadow = this.getNPCEntity(manager, spawn);
     final StrictPlayerReference survivorRef = StrictPlayerReference.of(survivor);
     final StrictPlayerReference killerRef = StrictPlayerReference.of(killer);
-    final MergedReference<Participant, Participant> merged = MergedReference.of(survivorRef, killerRef);
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivorTeleport(killer, survivor, shadow), 2 * 20L, 20L, merged);
+    final MergedReference<Participant, Participant> merged =
+        MergedReference.of(survivorRef, killerRef);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleSurvivorTeleport(killer, survivor, shadow), 2 * 20L, 20L, merged);
 
-    final Location[] old = { survivor.getLocation() };
-    scheduler.scheduleRepeatedTask(() -> this.teleportShadow(survivor, shadow, old), 0, 10 * 20L, survivorRef);
+    final Location[] old = {survivor.getLocation()};
+    scheduler.scheduleRepeatedTask(
+        () -> this.teleportShadow(survivor, shadow, old), 0, 10 * 20L, survivorRef);
   }
 
-  private void teleportShadow(final GamePlayer survivor, final Entity shadow, final Location[] old) {
+  private void teleportShadow(
+      final GamePlayer survivor, final Entity shadow, final Location[] old) {
     shadow.teleport(old[0]);
     old[0] = survivor.getLocation();
   }
 
-  private void handleSurvivorTeleport(final Killer killer, final GamePlayer survivor, final Entity shadow) {
+  private void handleSurvivorTeleport(
+      final Killer killer, final GamePlayer survivor, final Entity shadow) {
     final Collection<GamePlayer> players = killer.getEnderShadowsGlowing();
     final Component msg = Message.ENDER_SHADOWS_EFFECT.build();
     final MetadataManager metadata = killer.getMetadataManager();

@@ -152,8 +152,7 @@ public final class GamePlayerThrowEvent extends GameEvent {
 
   private boolean checkIfPlayerStillHasCarPart(final Player thrower) {
     final PlayerInventory inventory = thrower.getInventory();
-    @Nullable
-    final ItemStack[] contents = inventory.getContents();
+    final @Nullable ItemStack[] contents = inventory.getContents();
     for (final ItemStack slot : contents) {
       if (slot == null) {
         continue;

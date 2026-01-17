@@ -139,7 +139,8 @@ public final class PlayerStatistics implements Serializable {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (this.totalLosses != 0) {
       final float recalculatedWinLossRatio = (float) this.totalWins / this.totalLosses;
-      if (bus.post(StatisticsEvent.class, StatisticsType.WIN_LOSS_RATIO, recalculatedWinLossRatio)) {
+      if (bus.post(
+          StatisticsEvent.class, StatisticsType.WIN_LOSS_RATIO, recalculatedWinLossRatio)) {
         return;
       }
       this.winLossRatio = recalculatedWinLossRatio;

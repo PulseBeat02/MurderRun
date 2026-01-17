@@ -54,17 +54,13 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
   public SmokeGrenade(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "smoke_bomb",
-      properties.getSmokeGrenadeCost(),
-      ItemFactory.createSmokeGrenade(
-        ItemFactory.createGadget(
-          "smoke_bomb",
-          properties.getSmokeGrenadeMaterial(),
-          Message.SMOKE_BOMB_NAME.build(),
-          Message.SMOKE_BOMB_LORE.build()
-        )
-      )
-    );
+        "smoke_bomb",
+        properties.getSmokeGrenadeCost(),
+        ItemFactory.createSmokeGrenade(ItemFactory.createGadget(
+            "smoke_bomb",
+            properties.getSmokeGrenadeMaterial(),
+            Message.SMOKE_BOMB_NAME.build(),
+            Message.SMOKE_BOMB_LORE.build())));
     this.game = game;
   }
 
@@ -97,7 +93,8 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
     final GameProperties properties = this.game.getProperties();
     final int duration = properties.getSmokeGrenadeDuration();
     final NullReference reference = NullReference.of();
-    final Runnable task = () -> world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
+    final Runnable task = () ->
+        world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(Color.GRAY, 4));
     scheduler.scheduleRepeatedTask(task, 0, 1, duration, reference);
 
     final GamePlayerManager manager = this.game.getPlayerManager();
@@ -106,7 +103,8 @@ public final class SmokeGrenade extends SurvivorGadget implements Listener {
       final double distance = playerLocation.distanceSquared(location);
       final double radius = properties.getSmokeGrenadeRadius();
       if (distance < radius * radius) {
-        player.addPotionEffects(new PotionEffect(PotionEffectType.BLINDNESS, duration, Integer.MAX_VALUE));
+        player.addPotionEffects(
+            new PotionEffect(PotionEffectType.BLINDNESS, duration, Integer.MAX_VALUE));
       }
     });
 

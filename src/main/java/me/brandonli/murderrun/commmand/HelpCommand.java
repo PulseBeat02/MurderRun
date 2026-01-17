@@ -42,7 +42,8 @@ public final class HelpCommand implements AnnotationCommandFeature {
   private BukkitAudiences bukkitAudiences;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.bukkitAudiences = handler.retrieve();
     this.manager = parser.manager();
@@ -56,23 +57,34 @@ public final class HelpCommand implements AnnotationCommandFeature {
     bundle.put(MESSAGE_DESCRIPTION, manager.getProperty("murderrun.command.game.help.description"));
     bundle.put(MESSAGE_ARGUMENTS, manager.getProperty("murderrun.command.game.help.arguments"));
     bundle.put(MESSAGE_OPTIONAL, manager.getProperty("murderrun.command.game.help.optional"));
-    bundle.put(MESSAGE_SHOWING_RESULTS_FOR_QUERY, manager.getProperty("murderrun.command.game.help.search_query"));
-    bundle.put(MESSAGE_NO_RESULTS_FOR_QUERY, manager.getProperty("murderrun.command.game.help.none_query"));
-    bundle.put(MESSAGE_AVAILABLE_COMMANDS, manager.getProperty("murderrun.command.game.help.available_commands"));
-    bundle.put(MESSAGE_CLICK_TO_SHOW_HELP, manager.getProperty("murderrun.command.game.help.show_help"));
-    bundle.put(MESSAGE_PAGE_OUT_OF_RANGE, manager.getProperty("murderrun.command.game.help.page_invalid"));
-    bundle.put(MESSAGE_CLICK_FOR_NEXT_PAGE, manager.getProperty("murderrun.command.game.help.next_page"));
-    bundle.put(MESSAGE_CLICK_FOR_PREVIOUS_PAGE, manager.getProperty("murderrun.command.game.help.previous_page"));
+    bundle.put(
+        MESSAGE_SHOWING_RESULTS_FOR_QUERY,
+        manager.getProperty("murderrun.command.game.help.search_query"));
+    bundle.put(
+        MESSAGE_NO_RESULTS_FOR_QUERY,
+        manager.getProperty("murderrun.command.game.help.none_query"));
+    bundle.put(
+        MESSAGE_AVAILABLE_COMMANDS,
+        manager.getProperty("murderrun.command.game.help.available_commands"));
+    bundle.put(
+        MESSAGE_CLICK_TO_SHOW_HELP, manager.getProperty("murderrun.command.game.help.show_help"));
+    bundle.put(
+        MESSAGE_PAGE_OUT_OF_RANGE, manager.getProperty("murderrun.command.game.help.page_invalid"));
+    bundle.put(
+        MESSAGE_CLICK_FOR_NEXT_PAGE, manager.getProperty("murderrun.command.game.help.next_page"));
+    bundle.put(
+        MESSAGE_CLICK_FOR_PREVIOUS_PAGE,
+        manager.getProperty("murderrun.command.game.help.previous_page"));
     return bundle;
   }
 
   private void setupHelp() {
     this.minecraftHelp = MinecraftHelp.<CommandSender>builder()
-      .commandManager(this.manager)
-      .audienceProvider(this.bukkitAudiences::sender)
-      .commandPrefix("/murder help")
-      .messages(this.constructHelpMap())
-      .build();
+        .commandManager(this.manager)
+        .audienceProvider(this.bukkitAudiences::sender)
+        .commandPrefix("/murder help")
+        .messages(this.constructHelpMap())
+        .build();
   }
 
   public CommandManager<CommandSender> getManager() {

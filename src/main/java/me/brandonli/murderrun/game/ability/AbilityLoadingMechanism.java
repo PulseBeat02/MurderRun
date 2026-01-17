@@ -61,28 +61,37 @@ public final class AbilityLoadingMechanism {
     }
   }
 
-  private Set<Ability> getKillerAbilities(@UnderInitialization AbilityLoadingMechanism this, final Map<String, Ability> gameAbilities) {
+  private Set<Ability> getKillerAbilities(
+      @UnderInitialization AbilityLoadingMechanism this, final Map<String, Ability> gameAbilities) {
     final Collection<Ability> abilities = gameAbilities.values();
-    return abilities.stream().filter(StreamUtils.isInstanceOf(KillerAbility.class)).collect(Collectors.toSet());
+    return abilities.stream()
+        .filter(StreamUtils.isInstanceOf(KillerAbility.class))
+        .collect(Collectors.toSet());
   }
 
-  private Set<Ability> getSurvivorAbilities(@UnderInitialization AbilityLoadingMechanism this, final Map<String, Ability> gameAbilities) {
+  private Set<Ability> getSurvivorAbilities(
+      @UnderInitialization AbilityLoadingMechanism this, final Map<String, Ability> gameAbilities) {
     final Collection<Ability> abilities = gameAbilities.values();
-    return abilities.stream().filter(StreamUtils.isInstanceOf(SurvivorAbility.class)).collect(Collectors.toSet());
+    return abilities.stream()
+        .filter(StreamUtils.isInstanceOf(SurvivorAbility.class))
+        .collect(Collectors.toSet());
   }
 
   public @Nullable Ability getAbilityFromStack(final ItemStack stack) {
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+    final String data = PDCUtils.getPersistentDataAttribute(
+        stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
     return data != null ? this.gameAbilities.get(data) : null;
   }
 
   public Ability getRandomInnocentAbility() {
-    final List<Ability> abilities = this.survivorAbilities.stream().collect(StreamUtils.toShuffledList());
+    final List<Ability> abilities =
+        this.survivorAbilities.stream().collect(StreamUtils.toShuffledList());
     return abilities.getFirst();
   }
 
   public Ability getRandomKillerAbility() {
-    final List<Ability> abilities = this.killerAbilities.stream().collect(StreamUtils.toShuffledList());
+    final List<Ability> abilities =
+        this.killerAbilities.stream().collect(StreamUtils.toShuffledList());
     return abilities.getFirst();
   }
 

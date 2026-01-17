@@ -31,7 +31,8 @@ public final class GuiCommand implements AnnotationCommandFeature {
   private MurderRun plugin;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     this.plugin = plugin;
   }
 

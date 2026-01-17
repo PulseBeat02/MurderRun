@@ -49,7 +49,8 @@ public class LoreWrapper {
         // Save the current line (if not empty)
         if (currentLine.length() > 0) {
           lines.add(currentLine.toString());
-          // Compute active formatting codes from the current line so that the new line continues with them.
+          // Compute active formatting codes from the current line so that the new line continues
+          // with them.
           currentFormat = getLastColors(currentLine.toString());
         }
         // Start a new line, pre-pending the active format codes.
@@ -110,7 +111,7 @@ public class LoreWrapper {
   // A simple main method to demonstrate the wrapping functionality.
   public static void main(String[] args) {
     String miniMessage =
-      "<gray><dark_gray>THROW DOWN:</dark_gray> Makes all survivors bleed profusely permanently, leaving a trail behind for you to follow</gray>";
+        "<gray><dark_gray>THROW DOWN:</dark_gray> Makes all survivors bleed profusely permanently, leaving a trail behind for you to follow</gray>";
     int maxWidth = 40; // you can change the value to test different widths
 
     List<String> loreLines = wrapLoreLines(miniMessage, maxWidth);

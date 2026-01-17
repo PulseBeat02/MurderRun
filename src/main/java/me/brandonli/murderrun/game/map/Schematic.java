@@ -55,7 +55,8 @@ public final class Schematic implements Serializable {
     this.clipboard = schematic.clipboard;
   }
 
-  public static Schematic copyAndCreateSchematic(final String name, final Location[] corners, final boolean arena) {
+  public static Schematic copyAndCreateSchematic(
+      final String name, final Location[] corners, final boolean arena) {
     try {
       final Clipboard clipboard = MapUtils.performForwardExtentCopy(corners);
       final String path = MapUtils.performSchematicWrite(clipboard, name, arena);

@@ -19,5 +19,6 @@ package me.brandonli.murderrun.game.scheduler.reference;
 
 public interface Reference<T> {
   boolean isInvalid();
+
   T get();
 }

@@ -44,10 +44,13 @@ public final class Decoy extends SurvivorGadget {
   public Decoy(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "decoy",
-      properties.getDecoyCost(),
-      ItemFactory.createGadget("decoy", properties.getDecoyMaterial(), Message.DECOY_NAME.build(), Message.DECOY_LORE.build())
-    );
+        "decoy",
+        properties.getDecoyCost(),
+        ItemFactory.createGadget(
+            "decoy",
+            properties.getDecoyMaterial(),
+            Message.DECOY_NAME.build(),
+            Message.DECOY_LORE.build()));
   }
 
   @Override
@@ -71,7 +74,8 @@ public final class Decoy extends SurvivorGadget {
     return false;
   }
 
-  private NPC customizeNPC(final CitizensManager manager, final GamePlayer player, final String name) {
+  private NPC customizeNPC(
+      final CitizensManager manager, final GamePlayer player, final String name) {
     final NPCRegistry registry = manager.getRegistry();
     final NPC npc = registry.createNPC(EntityType.PLAYER, name);
     this.customizeNPC(npc);

@@ -57,7 +57,8 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class LobbyModificationGui extends PatternGui implements Listener {
 
-  private static final List<String> CREATE_LOBBY_PATTERN = List.of("111111111", "123411151", "111111111", "111161111");
+  private static final List<String> CREATE_LOBBY_PATTERN =
+      List.of("111111111", "123411151", "111111111", "111161111");
 
   private final MurderRun plugin;
   private final Player watcher;
@@ -73,19 +74,26 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   private final AtomicBoolean listenForBreaks;
   private final AtomicBoolean listenForName;
 
-  public LobbyModificationGui(final MurderRun plugin, final Player watcher, final boolean editMode) {
-    this(plugin, watcher, "None", watcher.getLocation(), watcher.getLocation(), watcher.getLocation(), editMode);
+  public LobbyModificationGui(
+      final MurderRun plugin, final Player watcher, final boolean editMode) {
+    this(
+        plugin,
+        watcher,
+        "None",
+        watcher.getLocation(),
+        watcher.getLocation(),
+        watcher.getLocation(),
+        editMode);
   }
 
   public LobbyModificationGui(
-    final MurderRun plugin,
-    final Player watcher,
-    final String lobbyName,
-    final Location first,
-    final Location second,
-    final Location spawn,
-    final boolean editMode
-  ) {
+      final MurderRun plugin,
+      final Player watcher,
+      final String lobbyName,
+      final Location first,
+      final Location second,
+      final Location spawn,
+      final boolean editMode) {
     super(Message.CREATE_LOBBY_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.originalName = lobbyName;
     this.audience = this.getAudience(plugin, watcher);
@@ -107,7 +115,10 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
     manager.registerEvents(this, this.plugin);
   }
 
-  private Audience getAudience(@UnderInitialization LobbyModificationGui this, final MurderRun plugin, final HumanEntity watcher) {
+  private Audience getAudience(
+      @UnderInitialization LobbyModificationGui this,
+      final MurderRun plugin,
+      final HumanEntity watcher) {
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
@@ -219,11 +230,17 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.watcher));
   }
 
   private GuiItem createApplyStack() {
-    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.CREATE_LOBBY_GUI_APPLY.build()).build(), this::createNewLobby);
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL)
+            .name(Message.CREATE_LOBBY_GUI_APPLY.build())
+            .build(),
+        this::createNewLobby);
   }
 
   private void createNewLobby(final InventoryClickEvent event) {
@@ -237,7 +254,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
     final Component msg = Message.LOBBY_CREATE_LOAD.build();
     this.audience.sendMessage(msg);
 
-    final Location[] corners = { this.first, this.second };
+    final Location[] corners = {this.first, this.second};
     final LobbyManager manager = this.plugin.getLobbyManager();
     final Location actual = MapUtils.getSafeSpawn(this.spawn);
     manager.addLobby(this.lobbyName, corners, actual);
@@ -254,7 +271,11 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
 
   private GuiItem createDeleteStack() {
     if (this.editMode) {
-      return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.CREATE_LOBBY_GUI_DELETE.build()).build(), this::deleteAndCreateLobby);
+      return new GuiItem(
+          Item.builder(Material.RED_WOOL)
+              .name(Message.CREATE_LOBBY_GUI_DELETE.build())
+              .build(),
+          this::deleteAndCreateLobby);
     } else {
       return this.createBorderStack();
     }
@@ -272,11 +293,15 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
     final Component title = Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_DISPLAY.build();
     final Component tooltip = Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE1.build();
     final Component space = empty();
-    final Component spawnMsg = ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE2, this.spawn);
-    final Component firstMsg = ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE3, this.first);
-    final Component secondMsg = ComponentUtils.createLocationComponent(Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE4, this.second);
+    final Component spawnMsg = ComponentUtils.createLocationComponent(
+        Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE2, this.spawn);
+    final Component firstMsg = ComponentUtils.createLocationComponent(
+        Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE3, this.first);
+    final Component secondMsg = ComponentUtils.createLocationComponent(
+        Message.CREATE_LOBBY_GUI_EDIT_LOCATIONS_LORE4, this.second);
     final List<Component> lore = List.of(tooltip, space, spawnMsg, firstMsg, secondMsg);
-    return new GuiItem(Item.builder(Material.ANVIL).name(title).lore(lore).build(), this::listenForBlockBreak);
+    return new GuiItem(
+        Item.builder(Material.ANVIL).name(title).lore(lore).build(), this::listenForBlockBreak);
   }
 
   private void listenForBlockBreak(final InventoryClickEvent event) {
@@ -288,12 +313,11 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
 
   private GuiItem createEditNameStack() {
     return new GuiItem(
-      Item.builder(Material.ANVIL)
-        .name(Message.CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY.build(this.lobbyName))
-        .lore(Message.CREATE_LOBBY_GUI_EDIT_NAME_LORE.build())
-        .build(),
-      this::listenForMessage
-    );
+        Item.builder(Material.ANVIL)
+            .name(Message.CREATE_LOBBY_GUI_EDIT_NAME_DISPLAY.build(this.lobbyName))
+            .lore(Message.CREATE_LOBBY_GUI_EDIT_NAME_LORE.build())
+            .build(),
+        this::listenForMessage);
   }
 
   private void listenForMessage(final InventoryClickEvent event) {
@@ -304,6 +328,7 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 }

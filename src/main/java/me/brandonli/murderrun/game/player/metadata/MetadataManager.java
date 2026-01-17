@@ -53,7 +53,8 @@ public final class MetadataManager {
     this.sidebar.updateSidebar();
   }
 
-  private WorldBorder createWorldBorder(@UnderInitialization MetadataManager this, final Participant participant) {
+  private WorldBorder createWorldBorder(
+      @UnderInitialization MetadataManager this, final Participant participant) {
     final Location location = participant.getLocation();
     final World world = requireNonNull(location.getWorld());
     final WorldBorder worldBorder = world.getWorldBorder();
@@ -76,7 +77,8 @@ public final class MetadataManager {
     this.sidebar.shutdown();
   }
 
-  public void setBlockGlowing(final Block block, final NamedTextColor color, final boolean glowing) {
+  public void setBlockGlowing(
+      final Block block, final NamedTextColor color, final boolean glowing) {
     final Location location = block.getLocation();
     if (!this.gamePlayer.isAlive()) {
       return;
@@ -84,7 +86,11 @@ public final class MetadataManager {
     this.gamePlayer.apply(player -> this.spawnSlime(color, glowing, player, location));
   }
 
-  private void spawnSlime(final NamedTextColor color, final boolean glowing, final Player player, final Location location) {
+  private void spawnSlime(
+      final NamedTextColor color,
+      final boolean glowing,
+      final Player player,
+      final Location location) {
     if (glowing) {
       final Slime slime = GlowUtils.setBlockGlowing(player, location, true);
       if (slime == null) {
@@ -100,17 +106,23 @@ public final class MetadataManager {
     }
   }
 
-  public void setEntityGlowing(final GameScheduler scheduler, final GamePlayer participant, final NamedTextColor color, final long time) {
+  public void setEntityGlowing(
+      final GameScheduler scheduler,
+      final GamePlayer participant,
+      final NamedTextColor color,
+      final long time) {
     final StrictPlayerReference reference = StrictPlayerReference.of(participant);
     this.setEntityGlowing(participant, color, true);
     scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time, reference);
   }
 
-  public void setEntityGlowing(final GamePlayer participant, final NamedTextColor color, final boolean glowing) {
+  public void setEntityGlowing(
+      final GamePlayer participant, final NamedTextColor color, final boolean glowing) {
     participant.apply(player -> this.setEntityGlowing(player, color, glowing));
   }
 
-  public void setEntityGlowing(final Entity entity, final NamedTextColor color, final boolean glowing) {
+  public void setEntityGlowing(
+      final Entity entity, final NamedTextColor color, final boolean glowing) {
     if (!this.gamePlayer.isAlive()) {
       return;
     }

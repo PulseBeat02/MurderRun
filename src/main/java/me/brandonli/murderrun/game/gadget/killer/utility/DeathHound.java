@@ -56,15 +56,13 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   public DeathHound(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "death_hound",
-      properties.getDeathHoundCost(),
-      ItemFactory.createGadget(
         "death_hound",
-        properties.getDeathHoundMaterial(),
-        Message.DEATH_HOUND_NAME.build(),
-        Message.DEATH_HOUND_LORE.build()
-      )
-    );
+        properties.getDeathHoundCost(),
+        ItemFactory.createGadget(
+            "death_hound",
+            properties.getDeathHoundMaterial(),
+            Message.DEATH_HOUND_NAME.build(),
+            Message.DEATH_HOUND_LORE.build()));
     this.game = game;
   }
 
@@ -110,7 +108,8 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
     return false;
   }
 
-  private Wolf spawnWolf(final Location location, final GamePlayer owner, final GamePlayer nearest) {
+  private Wolf spawnWolf(
+      final Location location, final GamePlayer owner, final GamePlayer nearest) {
     final World world = requireNonNull(location.getWorld());
     return world.spawn(location, Wolf.class, entity -> {
       this.customizeProperties(entity, owner, nearest);
@@ -127,24 +126,20 @@ public final class DeathHound extends KillerGadget implements Listener, Targetab
   }
 
   private void addPotionEffects(final Wolf entity) {
-    entity.addPotionEffects(
-      Set.of(
+    entity.addPotionEffects(Set.of(
         new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2),
-        new PotionEffect(PotionEffectType.WEAKNESS, PotionEffect.INFINITE_DURATION, 1)
-      )
-    );
+        new PotionEffect(PotionEffectType.WEAKNESS, PotionEffect.INFINITE_DURATION, 1)));
   }
 
-  private void customizeProperties(final Wolf entity, final GamePlayer owner, final GamePlayer target) {
+  private void customizeProperties(
+      final Wolf entity, final GamePlayer owner, final GamePlayer target) {
     entity.setTamed(true);
     entity.setAngry(true);
     entity.setVariant(Variant.BLACK);
-    owner.apply(internal ->
-      target.apply(internalTarget -> {
-        entity.setOwner(internal);
-        entity.setTarget(internalTarget);
-      })
-    );
+    owner.apply(internal -> target.apply(internalTarget -> {
+      entity.setOwner(internal);
+      entity.setTarget(internalTarget);
+    }));
   }
 
   @Override

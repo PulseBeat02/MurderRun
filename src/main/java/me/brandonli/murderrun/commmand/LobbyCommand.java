@@ -49,7 +49,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
   private String name;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
@@ -62,7 +63,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.first = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = ComponentUtils.createLocationComponent(Message.LOBBY_FIRST_CORNER, location);
+    final Component message =
+        ComponentUtils.createLocationComponent(Message.LOBBY_FIRST_CORNER, location);
     audience.sendMessage(message);
   }
 
@@ -73,7 +75,8 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.second = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = ComponentUtils.createLocationComponent(Message.LOBBY_SECOND_CORNER, location);
+    final Component message =
+        ComponentUtils.createLocationComponent(Message.LOBBY_SECOND_CORNER, location);
     audience.sendMessage(message);
   }
 
@@ -129,7 +132,7 @@ public final class LobbyCommand implements AnnotationCommandFeature {
     final Component msg = Message.LOBBY_CREATE_LOAD.build();
     audience.sendMessage(msg);
 
-    final Location[] corners = { this.first, this.second };
+    final Location[] corners = {this.first, this.second};
     final LobbyManager manager = this.plugin.getLobbyManager();
     final Location actual = MapUtils.getSafeSpawn(this.spawn);
     manager.addLobby(this.name, corners, actual);

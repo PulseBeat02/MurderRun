@@ -36,7 +36,8 @@ public final class ResourcesCommand implements AnnotationCommandFeature {
   private BukkitAudiences audiences;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;

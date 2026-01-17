@@ -32,12 +32,15 @@ public final class GhostTrap extends SurvivorTrap {
   public GhostTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "ghost_trap",
-      properties.getGhostCost(),
-      ItemFactory.createGadget("ghost_trap", properties.getGhostMaterial(), Message.GHOST_NAME.build(), Message.GHOST_LORE.build()),
-      Message.GHOST_ACTIVATE.build(),
-      properties.getGhostColor()
-    );
+        "ghost_trap",
+        properties.getGhostCost(),
+        ItemFactory.createGadget(
+            "ghost_trap",
+            properties.getGhostMaterial(),
+            Message.GHOST_NAME.build(),
+            Message.GHOST_LORE.build()),
+        Message.GHOST_ACTIVATE.build(),
+        properties.getGhostColor());
   }
 
   @Override
@@ -45,12 +48,9 @@ public final class GhostTrap extends SurvivorTrap {
     final GamePlayerManager manager = game.getPlayerManager();
     final GameProperties properties = game.getProperties();
     final int duration = properties.getGhostDuration();
-    manager.applyToLivingSurvivors(player ->
-      player.addPotionEffects(
+    manager.applyToLivingSurvivors(player -> player.addPotionEffects(
         new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1),
-        new PotionEffect(PotionEffectType.SPEED, duration, 1)
-      )
-    );
+        new PotionEffect(PotionEffectType.SPEED, duration, 1)));
     manager.playSoundForAllParticipants(properties.getGhostSound());
   }
 }

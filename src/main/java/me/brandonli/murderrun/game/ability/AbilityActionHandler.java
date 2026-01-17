@@ -117,7 +117,8 @@ public final class AbilityActionHandler implements Listener {
 
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
+    final String data = PDCUtils.getPersistentDataAttribute(
+        stack, Keys.ABILITY_KEY_NAME, PersistentDataType.STRING);
     if (data == null) {
       return;
     }

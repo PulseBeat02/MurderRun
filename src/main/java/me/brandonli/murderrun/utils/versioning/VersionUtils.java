@@ -38,7 +38,8 @@ import java.util.jar.Manifest;
 
 public final class VersionUtils {
 
-  private static final String GITHUB_API_URL = "https://api.github.com/repos/PulseBeat02/MurderRun/commits";
+  private static final String GITHUB_API_URL =
+      "https://api.github.com/repos/PulseBeat02/MurderRun/commits";
   private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
   private VersionUtils() {
@@ -84,7 +85,10 @@ public final class VersionUtils {
   private static HttpResponse<String> getGitHubResponse() throws IOException, InterruptedException {
     final URI uri = URI.create(GITHUB_API_URL);
     final HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-    final HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/vnd.github.v3+json").build();
+    final HttpRequest request = HttpRequest.newBuilder()
+        .uri(uri)
+        .header("Accept", "application/vnd.github.v3+json")
+        .build();
     return HTTP_CLIENT.send(request, handler);
   }
 

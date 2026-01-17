@@ -41,7 +41,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.PluginManager;
 
-public final class MapTeleportSkipListener extends SimplePacketListenerAbstract implements Listener {
+public final class MapTeleportSkipListener extends SimplePacketListenerAbstract
+    implements Listener {
 
   private final MurderRun plugin;
   private final Set<Player> changing;

@@ -40,12 +40,14 @@ public final class CraftEngineManager {
     final ResourcePackHost host = manager.resourcePackHost();
     if (host == null) {
       return List.of(); // must wait for CraftEngine to load first
-      // even then, CraftEngine handles pack loading on their own, and we leave them to figure it out
+      // even then, CraftEngine handles pack loading on their own, and we leave them to figure it
+      // out
     }
 
     final ResourcePackHost newHost = manager.resourcePackHost();
     final UUID random = UUID.randomUUID(); // create a fake player since we only use once
-    final CompletableFuture<List<ResourcePackDownloadData>> future = newHost.requestResourcePackDownloadLink(random);
+    final CompletableFuture<List<ResourcePackDownloadData>> future =
+        newHost.requestResourcePackDownloadLink(random);
     final List<ResourcePackDownloadData> downloadDataList = future.join();
     final Collection<ResourcePackInfo> infos = new ArrayList<>();
     for (final ResourcePackDownloadData downloadData : downloadDataList) {

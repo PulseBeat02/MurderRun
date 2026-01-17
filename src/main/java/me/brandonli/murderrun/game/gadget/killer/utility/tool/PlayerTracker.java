@@ -46,17 +46,13 @@ public final class PlayerTracker extends KillerGadget {
   public PlayerTracker(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "player_tracker",
-      properties.getPlayerTrackerCost(),
-      ItemFactory.createPlayerTracker(
-        ItemFactory.createGadget(
-          "player_tracker",
-          properties.getPlayerTrackerMaterial(),
-          Message.PLAYER_TRACKER_NAME.build(),
-          Message.PLAYER_TRACKER_LORE.build()
-        )
-      )
-    );
+        "player_tracker",
+        properties.getPlayerTrackerCost(),
+        ItemFactory.createPlayerTracker(ItemFactory.createGadget(
+            "player_tracker",
+            properties.getPlayerTrackerMaterial(),
+            Message.PLAYER_TRACKER_NAME.build(),
+            Message.PLAYER_TRACKER_LORE.build())));
   }
 
   @Override
@@ -104,7 +100,8 @@ public final class PlayerTracker extends KillerGadget {
     return count;
   }
 
-  private double getNearestSurvivorDistance(final GamePlayerManager manager, final Location origin) {
+  private double getNearestSurvivorDistance(
+      final GamePlayerManager manager, final Location origin) {
     double min = Double.MAX_VALUE;
     final Stream<GamePlayer> survivors = manager.getLivingInnocentPlayers();
     final Collection<GamePlayer> collection = survivors.toList();

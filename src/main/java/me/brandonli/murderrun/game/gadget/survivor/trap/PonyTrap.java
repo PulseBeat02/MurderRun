@@ -38,12 +38,15 @@ public final class PonyTrap extends SurvivorTrap {
   public PonyTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "pony_trap",
-      properties.getPonyCost(),
-      ItemFactory.createGadget("pony_trap", properties.getPonyMaterial(), Message.PONY_NAME.build(), Message.PONY_LORE.build()),
-      Message.PONY_ACTIVATE.build(),
-      properties.getPonyColor()
-    );
+        "pony_trap",
+        properties.getPonyCost(),
+        ItemFactory.createGadget(
+            "pony_trap",
+            properties.getPonyMaterial(),
+            Message.PONY_NAME.build(),
+            Message.PONY_LORE.build()),
+        Message.PONY_ACTIVATE.build(),
+        properties.getPonyColor());
   }
 
   @Override
@@ -73,7 +76,8 @@ public final class PonyTrap extends SurvivorTrap {
 
   private void setSpeed(final Game game, final Horse horse) {
     final GameProperties properties = game.getProperties();
-    final AttributeInstance attribute = requireNonNull(horse.getAttribute(Attribute.MOVEMENT_SPEED));
+    final AttributeInstance attribute =
+        requireNonNull(horse.getAttribute(Attribute.MOVEMENT_SPEED));
     attribute.setBaseValue(properties.getPonyHorseSpeed());
   }
 

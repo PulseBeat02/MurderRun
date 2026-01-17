@@ -44,10 +44,13 @@ public final class Bush extends SurvivorGadget {
   public Bush(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "bush",
-      properties.getBushCost(),
-      ItemFactory.createGadget("bush", properties.getBushMaterial(), Message.BUSH_NAME.build(), Message.BUSH_LORE.build())
-    );
+        "bush",
+        properties.getBushCost(),
+        ItemFactory.createGadget(
+            "bush",
+            properties.getBushMaterial(),
+            Message.BUSH_NAME.build(),
+            Message.BUSH_LORE.build()));
   }
 
   @Override
@@ -65,10 +68,10 @@ public final class Bush extends SurvivorGadget {
     final Location location = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    scheduler.scheduleRepeatedTask(() -> this.createFacingLocation(player, location), 0, 5, duration, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.createFacingLocation(player, location), 0, 5, duration, reference);
 
-    @Nullable
-    final ItemStack[] before = inventory.getArmorContents();
+    final @Nullable ItemStack[] before = inventory.getArmorContents();
     final ItemStack[] empty = new ItemStack[4];
     inventory.setArmorContents(empty);
     scheduler.scheduleTask(() -> inventory.setArmorContents(before), duration, reference);

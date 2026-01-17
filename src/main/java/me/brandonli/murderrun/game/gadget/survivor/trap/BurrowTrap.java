@@ -34,12 +34,15 @@ public final class BurrowTrap extends SurvivorTrap {
   public BurrowTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "burrow_trap",
-      properties.getBurrowCost(),
-      ItemFactory.createGadget("burrow_trap", properties.getBurrowMaterial(), Message.BURROW_NAME.build(), Message.BURROW_LORE.build()),
-      Message.BURROW_ACTIVATE.build(),
-      properties.getBurrowColor()
-    );
+        "burrow_trap",
+        properties.getBurrowCost(),
+        ItemFactory.createGadget(
+            "burrow_trap",
+            properties.getBurrowMaterial(),
+            Message.BURROW_NAME.build(),
+            Message.BURROW_LORE.build()),
+        Message.BURROW_ACTIVATE.build(),
+        properties.getBurrowColor());
   }
 
   @Override

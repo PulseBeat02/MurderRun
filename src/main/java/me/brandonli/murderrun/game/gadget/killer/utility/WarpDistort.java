@@ -36,15 +36,13 @@ public final class WarpDistort extends KillerGadget {
   public WarpDistort(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "warp_distort",
-      properties.getWarpDistortCost(),
-      ItemFactory.createGadget(
         "warp_distort",
-        properties.getWarpDistortMaterial(),
-        Message.WARP_DISTORT_NAME.build(),
-        Message.WARP_DISTORT_LORE.build()
-      )
-    );
+        properties.getWarpDistortCost(),
+        ItemFactory.createGadget(
+            "warp_distort",
+            properties.getWarpDistortMaterial(),
+            Message.WARP_DISTORT_NAME.build(),
+            Message.WARP_DISTORT_LORE.build()));
   }
 
   @Override
@@ -89,6 +87,6 @@ public final class WarpDistort extends KillerGadget {
     while (random == random2) {
       random2 = manager.getRandomAliveInnocentPlayer();
     }
-    return new GamePlayer[] { random, random2 };
+    return new GamePlayer[] {random, random2};
   }
 }

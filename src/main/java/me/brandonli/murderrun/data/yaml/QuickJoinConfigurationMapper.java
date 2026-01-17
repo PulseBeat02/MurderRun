@@ -68,7 +68,8 @@ public final class QuickJoinConfigurationMapper {
     this.saveConfiguration(plugin);
   }
 
-  public void saveConfiguration(@UnderInitialization QuickJoinConfigurationMapper this, final MurderRun plugin) {
+  public void saveConfiguration(
+      @UnderInitialization QuickJoinConfigurationMapper this, final MurderRun plugin) {
     final Path path = IOUtils.getPluginDataFolderPath();
     final Path configPath = path.resolve(CONFIGURATION_YAML);
     if (Files.notExists(configPath)) {
@@ -104,7 +105,11 @@ public final class QuickJoinConfigurationMapper {
 
   public GameMode[] getGameModes(final FileConfiguration config) {
     final List<String> modes = config.getStringList(GAME_MODES);
-    return modes.stream().map(GameMode::fromString).filter(Optional::isPresent).map(Optional::get).toArray(GameMode[]::new);
+    return modes.stream()
+        .map(GameMode::fromString)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .toArray(GameMode[]::new);
   }
 
   private boolean getEnabled(final FileConfiguration config) {
@@ -124,8 +129,12 @@ public final class QuickJoinConfigurationMapper {
       return List.of();
     }
     @SuppressWarnings("unchecked")
-    final List<List<String>> pairs = (List<List<String>>) config.getList(ARENA_LOBBY_PAIRS_FIELD, List.of());
-    return requireNonNull(pairs).stream().map(pair -> pair.toArray(new String[0])).filter(this::isValidParameters).toList();
+    final List<List<String>> pairs =
+        (List<List<String>>) config.getList(ARENA_LOBBY_PAIRS_FIELD, List.of());
+    return requireNonNull(pairs).stream()
+        .map(pair -> pair.toArray(new String[0]))
+        .filter(this::isValidParameters)
+        .toList();
   }
 
   public boolean isValidParameters(final String[] pair) {
@@ -146,7 +155,8 @@ public final class QuickJoinConfigurationMapper {
   private void internalSerialize() {
     this.writeLock.lock();
     try {
-      final List<List<String>> back = this.lobbyArenaPairs.stream().map(List::of).toList();
+      final List<List<String>> back =
+          this.lobbyArenaPairs.stream().map(List::of).toList();
       final FileConfiguration config = this.plugin.getConfig();
       config.set(ENABLED_FIELD, this.enabled);
       config.set(MIN_PLAYERS_FIELD, this.minPlayers);

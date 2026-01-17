@@ -67,12 +67,11 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
   }
 
   public void addArena(
-    final String name,
-    final Location[] corners,
-    final Location[] itemLocations,
-    final Location spawn,
-    final Location truck
-  ) {
+      final String name,
+      final Location[] corners,
+      final Location[] itemLocations,
+      final Location spawn,
+      final Location truck) {
     final ApiEventBus bus = EventBusProvider.getBus();
     final Schematic schematic = Schematic.copyAndCreateSchematic(name, corners, true);
     final Arena arena = new Arena(schematic, name, corners, itemLocations, spawn, truck);

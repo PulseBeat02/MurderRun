@@ -42,15 +42,13 @@ public final class FloorIsLava extends KillerGadget {
   public FloorIsLava(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "floor_is_lava",
-      properties.getFloorIsLavaCost(),
-      ItemFactory.createGadget(
         "floor_is_lava",
-        properties.getFloorIsLavaMaterial(),
-        Message.THE_FLOOR_IS_LAVA_NAME.build(),
-        Message.THE_FLOOR_IS_LAVA_LORE.build()
-      )
-    );
+        properties.getFloorIsLavaCost(),
+        ItemFactory.createGadget(
+            "floor_is_lava",
+            properties.getFloorIsLavaMaterial(),
+            Message.THE_FLOOR_IS_LAVA_NAME.build(),
+            Message.THE_FLOOR_IS_LAVA_LORE.build()));
   }
 
   @Override
@@ -67,7 +65,8 @@ public final class FloorIsLava extends KillerGadget {
     item.remove();
 
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L, reference);
 
     final GameProperties properties = game.getProperties();
     manager.applyToAllParticipants(this::sendFloorIsLavaMessage);
@@ -76,17 +75,21 @@ public final class FloorIsLava extends KillerGadget {
     return false;
   }
 
-  private void handleSurvivors(final GamePlayerManager manager, final GameScheduler scheduler, final Killer killer) {
+  private void handleSurvivors(
+      final GamePlayerManager manager, final GameScheduler scheduler, final Killer killer) {
     manager.applyToLivingSurvivors(survivor -> this.handleMovement(scheduler, survivor, killer));
   }
 
-  private void handleMovement(final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
+  private void handleMovement(
+      final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
     final Location previous = player.getLocation();
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
-    scheduler.scheduleTask(() -> this.handleLocationChecking(previous, player, killer), 3 * 20L, reference);
+    scheduler.scheduleTask(
+        () -> this.handleLocationChecking(previous, player, killer), 3 * 20L, reference);
   }
 
-  private void handleLocationChecking(final Location previous, final GamePlayer player, final Killer killer) {
+  private void handleLocationChecking(
+      final Location previous, final GamePlayer player, final Killer killer) {
     final Location newLocation = player.getLocation();
     final Collection<GamePlayer> glowing = killer.getFloorIsLavaGlowing();
     final MetadataManager metadata = killer.getMetadataManager();
@@ -100,7 +103,9 @@ public final class FloorIsLava extends KillerGadget {
   }
 
   private boolean checkLocationSame(final Location first, final Location second) {
-    return (first.getBlockX() == second.getBlockX() && first.getBlockY() == second.getBlockY() && first.getBlockZ() == second.getBlockZ());
+    return (first.getBlockX() == second.getBlockX()
+        && first.getBlockY() == second.getBlockY()
+        && first.getBlockZ() == second.getBlockZ());
   }
 
   private void sendFloorIsLavaMessage(final Participant participant) {

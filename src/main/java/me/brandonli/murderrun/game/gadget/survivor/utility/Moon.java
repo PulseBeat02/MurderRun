@@ -50,10 +50,13 @@ public final class Moon extends SurvivorGadget implements Listener {
   public Moon(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "moon",
-      properties.getMoonCost(),
-      ItemFactory.createGadget("moon", properties.getMoonMaterial(), Message.MOON_NAME.build(), Message.MOON_LORE.build())
-    );
+        "moon",
+        properties.getMoonCost(),
+        ItemFactory.createGadget(
+            "moon",
+            properties.getMoonMaterial(),
+            Message.MOON_NAME.build(),
+            Message.MOON_LORE.build()));
     this.game = game;
     this.activated = new AtomicBoolean(false);
   }
@@ -77,11 +80,13 @@ public final class Moon extends SurvivorGadget implements Listener {
 
     final GameScheduler scheduler = game.getScheduler();
     manager.applyToAllParticipants(participant -> {
-      final AttributeInstance attribute = requireNonNull(participant.getAttribute(Attribute.GRAVITY));
+      final AttributeInstance attribute =
+          requireNonNull(participant.getAttribute(Attribute.GRAVITY));
       attribute.setBaseValue(gravity);
 
       final StrictPlayerReference reference = StrictPlayerReference.of(participant);
-      scheduler.scheduleTask(() -> participant.resetAttribute(Attribute.GRAVITY), duration, reference);
+      scheduler.scheduleTask(
+          () -> participant.resetAttribute(Attribute.GRAVITY), duration, reference);
 
       final PlayerAudience audience = participant.getAudience();
       audience.sendMessage(Message.MOON_ACTIVATE.build());

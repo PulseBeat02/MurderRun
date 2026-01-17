@@ -39,15 +39,13 @@ public final class FireTrail extends KillerGadget {
   public FireTrail(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "fire_trail",
-      properties.getFireTrailCost(),
-      ItemFactory.createGadget(
         "fire_trail",
-        properties.getFireTrailMaterial(),
-        Message.FIRE_TRAIL_NAME.build(),
-        Message.FIRE_TRAIL_LORE.build()
-      )
-    );
+        properties.getFireTrailCost(),
+        ItemFactory.createGadget(
+            "fire_trail",
+            properties.getFireTrailMaterial(),
+            Message.FIRE_TRAIL_NAME.build(),
+            Message.FIRE_TRAIL_LORE.build()));
   }
 
   @Override
@@ -57,7 +55,8 @@ public final class FireTrail extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    player.addPotionEffects(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
+    player.addPotionEffects(
+        new PotionEffect(PotionEffectType.FIRE_RESISTANCE, PotionEffect.INFINITE_DURATION, 1));
 
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();

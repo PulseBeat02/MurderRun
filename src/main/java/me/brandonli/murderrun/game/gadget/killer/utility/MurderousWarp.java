@@ -35,15 +35,13 @@ public final class MurderousWarp extends KillerGadget {
   public MurderousWarp(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "murderous_warp",
-      properties.getMurderousWarpCost(),
-      ItemFactory.createGadget(
         "murderous_warp",
-        properties.getMurderousWarpMaterial(),
-        Message.MURDEROUS_WARP_NAME.build(),
-        Message.MURDEROUS_WARP_LORE.build()
-      )
-    );
+        properties.getMurderousWarpCost(),
+        ItemFactory.createGadget(
+            "murderous_warp",
+            properties.getMurderousWarpMaterial(),
+            Message.MURDEROUS_WARP_NAME.build(),
+            Message.MURDEROUS_WARP_LORE.build()));
   }
 
   @Override

@@ -41,15 +41,13 @@ public final class HeatSeeker extends KillerGadget {
   public HeatSeeker(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "heat_seeker",
-      properties.getHeatSeekerCost(),
-      ItemFactory.createGadget(
         "heat_seeker",
-        properties.getHeatSeekerMaterial(),
-        Message.HEAT_SEEKER_NAME.build(),
-        Message.HEAT_SEEKER_LORE.build()
-      )
-    );
+        properties.getHeatSeekerCost(),
+        ItemFactory.createGadget(
+            "heat_seeker",
+            properties.getHeatSeekerMaterial(),
+            Message.HEAT_SEEKER_NAME.build(),
+            Message.HEAT_SEEKER_LORE.build()));
   }
 
   @Override
@@ -66,7 +64,8 @@ public final class HeatSeeker extends KillerGadget {
 
     final StrictPlayerReference reference = StrictPlayerReference.of(killer);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.scheduleTasks(manager, killer), 0, 2 * 20L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.scheduleTasks(manager, killer), 0, 2 * 20L, reference);
 
     final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();

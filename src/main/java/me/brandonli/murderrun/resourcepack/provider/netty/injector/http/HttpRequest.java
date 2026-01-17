@@ -57,7 +57,8 @@ public final class HttpRequest {
   }
 
   private static HttpRequest parse(final InputStream stream) {
-    try (final InputStreamReader reader = new InputStreamReader(stream); final BufferedReader bufferedReader = new BufferedReader(reader)) {
+    try (final InputStreamReader reader = new InputStreamReader(stream);
+        final BufferedReader bufferedReader = new BufferedReader(reader)) {
       final String request = bufferedReader.readLine();
       final String line = request == null ? "" : request;
       final Map<String, String> headers = readHeaders(bufferedReader);

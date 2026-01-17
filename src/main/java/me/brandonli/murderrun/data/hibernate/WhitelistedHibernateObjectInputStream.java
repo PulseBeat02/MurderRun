@@ -32,7 +32,8 @@ public final class WhitelistedHibernateObjectInputStream extends ObjectInputStre
   }
 
   @Override
-  protected Class<?> resolveClass(final ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+  protected Class<?> resolveClass(final ObjectStreamClass desc)
+      throws IOException, ClassNotFoundException {
     final String name = desc.getName();
     if (!WHITELISTED_CLASSES.contains(name)) {
       final String msg = "Unauthorized deserialization attempt for class: %s".formatted(name);

@@ -38,15 +38,13 @@ public final class KillerRewind extends SurvivorGadget {
   public KillerRewind(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "killer_rewind",
-      properties.getKillerRewindCost(),
-      ItemFactory.createGadget(
         "killer_rewind",
-        properties.getKillerRewindMaterial(),
-        Message.MURDERER_REWIND_NAME.build(),
-        Message.MURDERER_REWIND_LORE.build()
-      )
-    );
+        properties.getKillerRewindCost(),
+        ItemFactory.createGadget(
+            "killer_rewind",
+            properties.getKillerRewindMaterial(),
+            Message.MURDERER_REWIND_NAME.build(),
+            Message.MURDERER_REWIND_LORE.build()));
   }
 
   @Override

@@ -48,10 +48,10 @@ public final class TrapVest extends SurvivorAbility {
 
   public TrapVest(final Game game) {
     super(
-      game,
-      TRAP_VEST_NAME,
-      ItemFactory.createAbility(TRAP_VEST_NAME, Message.TRAP_VEST_NAME.build(), Message.TRAP_VEST_LORE.build(), 1)
-    );
+        game,
+        TRAP_VEST_NAME,
+        ItemFactory.createAbility(
+            TRAP_VEST_NAME, Message.TRAP_VEST_NAME.build(), Message.TRAP_VEST_LORE.build(), 1));
   }
 
   @Override
@@ -66,7 +66,8 @@ public final class TrapVest extends SurvivorAbility {
         return;
       }
       final DeathManager deathManager = participant.getDeathManager();
-      final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleTrapVest(participant), false);
+      final PlayerDeathTask task =
+          new PlayerDeathTask(() -> this.handleTrapVest(participant), false);
       deathManager.addDeathTask(task);
     });
   }
@@ -108,10 +109,9 @@ public final class TrapVest extends SurvivorAbility {
         final Gadget gadget = mechanism.getGadgetFromStack(stack);
         if (gadget instanceof SurvivorTrap) {
           final Vector velocity = new Vector(
-            (RandomUtils.generateDouble() - 0.5) * multiplier,
-            RandomUtils.generateDouble() * multiplier,
-            (RandomUtils.generateDouble() - 0.5) * multiplier
-          );
+              (RandomUtils.generateDouble() - 0.5) * multiplier,
+              RandomUtils.generateDouble() * multiplier,
+              (RandomUtils.generateDouble() - 0.5) * multiplier);
           droppedItem.setVelocity(velocity);
         }
       }

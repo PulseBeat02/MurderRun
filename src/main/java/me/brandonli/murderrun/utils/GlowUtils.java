@@ -45,27 +45,36 @@ public final class GlowUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static void setEntityGlowing(final Player watcher, final Entity entity, final boolean glowing) {
-    final byte flags = (byte) ((entity.getFireTicks() > 0 ? 0x01 : 0) |
-      (entity instanceof final Player player && player.isSneaking() ? 0x02 : 0) |
-      (entity instanceof final Player player && player.isSprinting() ? 0x08 : 0) |
-      (entity instanceof final LivingEntity livingEntity && livingEntity.isSwimming() ? 0x10 : 0) |
-      (entity instanceof final LivingEntity livingEntity && livingEntity.isInvisible() ? 0x20 : 0) |
-      (glowing ? 0x40 : 0) |
-      (entity instanceof final LivingEntity livingEntity && livingEntity.isGliding() ? 0x80 : 0));
+  public static void setEntityGlowing(
+      final Player watcher, final Entity entity, final boolean glowing) {
+    final byte flags = (byte) ((entity.getFireTicks() > 0 ? 0x01 : 0)
+        | (entity instanceof final Player player && player.isSneaking() ? 0x02 : 0)
+        | (entity instanceof final Player player && player.isSprinting() ? 0x08 : 0)
+        | (entity instanceof final LivingEntity livingEntity && livingEntity.isSwimming()
+            ? 0x10
+            : 0)
+        | (entity instanceof final LivingEntity livingEntity && livingEntity.isInvisible()
+            ? 0x20
+            : 0)
+        | (glowing ? 0x40 : 0)
+        | (entity instanceof final LivingEntity livingEntity && livingEntity.isGliding()
+            ? 0x80
+            : 0));
     final EntityData<?> entityData = new EntityData<>(0, EntityDataTypes.BYTE, flags);
     final List<EntityData<?>> metadata = new ArrayList<>();
     metadata.add(entityData);
 
     final int id = entity.getEntityId();
-    final WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(id, metadata);
+    final WrapperPlayServerEntityMetadata packet =
+        new WrapperPlayServerEntityMetadata(id, metadata);
 
     final PacketEventsAPI<?> packetEvents = PacketEvents.getAPI();
     final PlayerManager manager = packetEvents.getPlayerManager();
     manager.sendPacket(watcher, packet);
   }
 
-  public static @Nullable Slime setBlockGlowing(final Player watcher, final Location target, final boolean glowing) {
+  public static @Nullable Slime setBlockGlowing(
+      final Player watcher, final Location target, final boolean glowing) {
     final Block block = target.getBlock();
     final World world = block.getWorld();
     final Location blockLocation = block.getLocation();

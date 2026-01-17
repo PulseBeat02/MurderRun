@@ -28,7 +28,8 @@ public final class ContainerUtils {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  private static final InventoryProvider.Chest INVENTORY_PROVIDER = (title, owner, rows) -> Bukkit.createInventory(owner, rows, title);
+  private static final InventoryProvider.Chest INVENTORY_PROVIDER =
+      (title, owner, rows) -> Bukkit.createInventory(owner, rows, title);
 
   public static GuiContainer.Chest createChestContainer(final Component title, final int rows) {
     return new GuiContainer.Chest(title, INVENTORY_PROVIDER, rows);

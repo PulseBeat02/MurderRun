@@ -36,15 +36,13 @@ public final class HealthCut extends KillerGadget {
   public HealthCut(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "health_cut",
-      properties.getHealthCutCost(),
-      ItemFactory.createGadget(
         "health_cut",
-        properties.getHealthCutMaterial(),
-        Message.HEALTH_CUT_NAME.build(),
-        Message.HEALTH_CUT_LORE.build()
-      )
-    );
+        properties.getHealthCutCost(),
+        ItemFactory.createGadget(
+            "health_cut",
+            properties.getHealthCutMaterial(),
+            Message.HEALTH_CUT_NAME.build(),
+            Message.HEALTH_CUT_LORE.build()));
   }
 
   @Override

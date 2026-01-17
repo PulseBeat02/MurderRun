@@ -35,10 +35,13 @@ public final class Cloak extends SurvivorGadget {
   public Cloak(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "cloak",
-      properties.getCloakCost(),
-      ItemFactory.createGadget("cloak", properties.getCloakMaterial(), Message.CLOAK_NAME.build(), Message.CLOAK_LORE.build())
-    );
+        "cloak",
+        properties.getCloakCost(),
+        ItemFactory.createGadget(
+            "cloak",
+            properties.getCloakMaterial(),
+            Message.CLOAK_NAME.build(),
+            Message.CLOAK_LORE.build()));
   }
 
   @Override
@@ -50,9 +53,8 @@ public final class Cloak extends SurvivorGadget {
 
     final GameProperties properties = game.getProperties();
     final GamePlayerManager manager = game.getPlayerManager();
-    manager.applyToLivingSurvivors(survivor ->
-      survivor.addPotionEffects(new PotionEffect(PotionEffectType.INVISIBILITY, properties.getCloakDuration(), 0))
-    );
+    manager.applyToLivingSurvivors(survivor -> survivor.addPotionEffects(
+        new PotionEffect(PotionEffectType.INVISIBILITY, properties.getCloakDuration(), 0)));
 
     final Component message = Message.CLOAK_ACTIVATE.build();
     manager.sendMessageToAllLivingSurvivors(message);

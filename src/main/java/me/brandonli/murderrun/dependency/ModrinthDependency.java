@@ -36,19 +36,19 @@ public final class ModrinthDependency extends PluginDependency {
     try (final HttpClient client = HttpClient.newHttpClient()) {
       final String name = this.getName();
       final HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create("https://api.modrinth.com/v2/project/%s/version".formatted(name)))
-        .header("User-Agent", "PulseBeat02/murderrun")
-        .header("Accept", "application/json")
-        .GET()
-        .build();
+          .uri(URI.create("https://api.modrinth.com/v2/project/%s/version".formatted(name)))
+          .header("User-Agent", "PulseBeat02/murderrun")
+          .header("Accept", "application/json")
+          .GET()
+          .build();
       return client
-        .sendAsync(request, HttpResponse.BodyHandlers.ofString())
-        .thenApplyAsync(HttpResponse::body)
-        .thenApplyAsync(this::findValidFile)
-        .exceptionally(e -> {
-          throw new AssertionError(e);
-        })
-        .join();
+          .sendAsync(request, HttpResponse.BodyHandlers.ofString())
+          .thenApplyAsync(HttpResponse::body)
+          .thenApplyAsync(this::findValidFile)
+          .exceptionally(e -> {
+            throw new AssertionError(e);
+          })
+          .join();
     }
   }
 
@@ -85,7 +85,8 @@ public final class ModrinthDependency extends PluginDependency {
     try (final HttpClient client = HttpClient.newHttpClient()) {
       final URI uri = URI.create(fileUrl);
       final HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
-      final HttpResponse.BodyHandler<Path> bodyHandler = HttpResponse.BodyHandlers.ofFile(finalPath);
+      final HttpResponse.BodyHandler<Path> bodyHandler =
+          HttpResponse.BodyHandlers.ofFile(finalPath);
       return client.sendAsync(request, bodyHandler).thenApplyAsync(HttpResponse::body);
     }
   }

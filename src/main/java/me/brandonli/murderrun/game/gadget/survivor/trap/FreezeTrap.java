@@ -31,12 +31,15 @@ public final class FreezeTrap extends SurvivorTrap {
   public FreezeTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "freeze_trap",
-      properties.getFreezeCost(),
-      ItemFactory.createGadget("freeze_trap", properties.getFreezeMaterial(), Message.FREEZE_NAME.build(), Message.FREEZE_LORE.build()),
-      Message.FREEZE_ACTIVATE.build(),
-      properties.getFreezeColor()
-    );
+        "freeze_trap",
+        properties.getFreezeCost(),
+        ItemFactory.createGadget(
+            "freeze_trap",
+            properties.getFreezeMaterial(),
+            Message.FREEZE_NAME.build(),
+            Message.FREEZE_LORE.build()),
+        Message.FREEZE_ACTIVATE.build(),
+        properties.getFreezeColor());
   }
 
   @Override

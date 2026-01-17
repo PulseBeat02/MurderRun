@@ -17,15 +17,15 @@
  */
 package me.brandonli.murderrun.game.ability.survivor;
 //
-//import io.github.pulsebeat02.murderrun.game.Game;
-//import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
-//import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
-//import org.bukkit.Location;
-//import org.bukkit.World;
-//import org.bukkit.entity.TextDisplay;
-//import org.bukkit.entity.Zombie;
+// import io.github.pulsebeat02.murderrun.game.Game;
+// import io.github.pulsebeat02.murderrun.game.player.GamePlayer;
+// import io.github.pulsebeat02.murderrun.game.scheduler.GameScheduler;
+// import org.bukkit.Location;
+// import org.bukkit.World;
+// import org.bukkit.entity.TextDisplay;
+// import org.bukkit.entity.Zombie;
 //
-//public final class SadieAbility implements Ability {
+// public final class SadieAbility implements Ability {
 //
 //  @Override
 //  public boolean checkActivation() {
@@ -57,4 +57,4 @@ package me.brandonli.murderrun.game.ability.survivor;
 //  public Runnable getTask() {
 //    return null;
 //  }
-//}
+// }

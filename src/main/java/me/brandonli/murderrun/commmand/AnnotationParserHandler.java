@@ -46,26 +46,27 @@ public final class AnnotationParserHandler {
   }
 
   private AnnotationParser<CommandSender> getAnnotationParser(
-    @UnderInitialization AnnotationParserHandler this,
-    final CommandManager<CommandSender> manager
-  ) {
+      @UnderInitialization AnnotationParserHandler this,
+      final CommandManager<CommandSender> manager) {
     final Class<CommandSender> sender = CommandSender.class;
     final AnnotationParser<CommandSender> parser = new AnnotationParser<>(manager, sender);
     parser.descriptionMapper(RichDescription::translatable);
     return parser;
   }
 
-  private CommandManager<CommandSender> getCommandManager(@UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
-    final ExecutionCoordinator<CommandSender> coordinator = ExecutionCoordinator.simpleCoordinator();
-    final LegacyPaperCommandManager<CommandSender> manager = LegacyPaperCommandManager.createNative(plugin, coordinator);
+  private CommandManager<CommandSender> getCommandManager(
+      @UnderInitialization AnnotationParserHandler this, final MurderRun plugin) {
+    final ExecutionCoordinator<CommandSender> coordinator =
+        ExecutionCoordinator.simpleCoordinator();
+    final LegacyPaperCommandManager<CommandSender> manager =
+        LegacyPaperCommandManager.createNative(plugin, coordinator);
     this.registerBrigadierCapability(manager);
     return manager;
   }
 
   private void registerBrigadierCapability(
-    @UnderInitialization AnnotationParserHandler this,
-    final LegacyPaperCommandManager<CommandSender> manager
-  ) {
+      @UnderInitialization AnnotationParserHandler this,
+      final LegacyPaperCommandManager<CommandSender> manager) {
     if (manager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
       manager.registerBrigadier();
     }
@@ -78,7 +79,8 @@ public final class AnnotationParserHandler {
   public void registerCommands() {
     try {
       final ScanResult result = ClassGraphUtils.getCachedScanResult();
-      final List<Class<?>> features = result.getClassesImplementing(AnnotationCommandFeature.class).loadClasses();
+      final List<Class<?>> features =
+          result.getClassesImplementing(AnnotationCommandFeature.class).loadClasses();
       final MethodHandles.Lookup lookup = MethodHandles.lookup();
       final MethodType type = MethodType.methodType(void.class);
       for (final Class<?> feature : features) {

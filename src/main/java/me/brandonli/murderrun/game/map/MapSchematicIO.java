@@ -59,7 +59,8 @@ public final class MapSchematicIO {
 
   private @Nullable Thread shutdownHook;
 
-  public MapSchematicIO(final PreGameManager manager, final GameSettings settings, final UUID uuid) {
+  public MapSchematicIO(
+      final PreGameManager manager, final GameSettings settings, final UUID uuid) {
     this.manager = manager;
     this.settings = settings;
     this.uuid = uuid;

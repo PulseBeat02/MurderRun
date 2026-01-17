@@ -45,28 +45,26 @@ public final class JumpScareTrap extends SurvivorTrap {
   public JumpScareTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "jump_scare_trap",
-      properties.getJumpScareCost(),
-      ItemFactory.createGadget(
         "jump_scare_trap",
-        properties.getJumpScareMaterial(),
-        Message.JUMP_SCARE_NAME.build(),
-        Message.JUMP_SCARE_LORE.build()
-      ),
-      Message.JUMP_SCARE_ACTIVATE.build(),
-      properties.getJumpScareColor()
-    );
+        properties.getJumpScareCost(),
+        ItemFactory.createGadget(
+            "jump_scare_trap",
+            properties.getJumpScareMaterial(),
+            Message.JUMP_SCARE_NAME.build(),
+            Message.JUMP_SCARE_LORE.build()),
+        Message.JUMP_SCARE_ACTIVATE.build(),
+        properties.getJumpScareColor());
     this.currentlyJumpScared = ConcurrentHashMap.newKeySet();
   }
 
   @Override
-  public void onTrapActivate(final Game game, final GamePlayer murderer, final org.bukkit.entity.Item item) {
+  public void onTrapActivate(
+      final Game game, final GamePlayer murderer, final org.bukkit.entity.Item item) {
     final GameProperties properties = game.getProperties();
     final int duration = properties.getJumpScareEffectDuration();
     murderer.addPotionEffects(
-      new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
-      new PotionEffect(PotionEffectType.SLOWNESS, duration, 1)
-    );
+        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
 
     final PlayerAudience audience = murderer.getAudience();
     audience.playSound(Sounds.JUMP_SCARE);
@@ -81,7 +79,8 @@ public final class JumpScareTrap extends SurvivorTrap {
     final ItemStack before = this.getHelmet(murderer);
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
-    scheduler.scheduleTask(() -> this.setBackHelmet(murderer, before), properties.getJumpScareDuration(), reference);
+    scheduler.scheduleTask(
+        () -> this.setBackHelmet(murderer, before), properties.getJumpScareDuration(), reference);
     this.currentlyJumpScared.add(murderer);
   }
 

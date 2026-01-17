@@ -25,13 +25,12 @@ public enum ProviderMethod {
   ON_SERVER;
 
   private static final Map<String, ProviderMethod> LOOKUP_TABLE = Map.of(
-    "MC_PACK_HOSTING",
-    MC_PACK_HOSTING,
-    "LOCALLY_HOSTED_DAEMON",
-    LOCALLY_HOSTED_DAEMON,
-    "ON_SERVER",
-    ON_SERVER
-  );
+      "MC_PACK_HOSTING",
+      MC_PACK_HOSTING,
+      "LOCALLY_HOSTED_DAEMON",
+      LOCALLY_HOSTED_DAEMON,
+      "ON_SERVER",
+      ON_SERVER);
 
   public static ProviderMethod fromString(final String locale) {
     final String upper = locale.toUpperCase();

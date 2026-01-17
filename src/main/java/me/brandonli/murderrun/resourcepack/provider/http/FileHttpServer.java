@@ -46,24 +46,23 @@ public final class FileHttpServer {
   public void start() {
     final CountDownLatch latch = new CountDownLatch(1);
     CompletableFuture.runAsync(
-      () -> {
-        try {
-          final ServerBootstrap b = this.initializeServerBootstrap();
-          final ChannelFuture before = this.addServerListener(b, latch);
-          final ChannelFuture f = before.sync();
-          final Channel channel = f.channel();
-          final ChannelFuture closeFuture = channel.closeFuture();
-          closeFuture.sync();
-        } catch (final InterruptedException e) {
-          final Thread current = Thread.currentThread();
-          current.interrupt();
-          throw new AssertionError(e);
-        } finally {
-          this.stop();
-        }
-      },
-      this.service
-    );
+        () -> {
+          try {
+            final ServerBootstrap b = this.initializeServerBootstrap();
+            final ChannelFuture before = this.addServerListener(b, latch);
+            final ChannelFuture f = before.sync();
+            final Channel channel = f.channel();
+            final ChannelFuture closeFuture = channel.closeFuture();
+            closeFuture.sync();
+          } catch (final InterruptedException e) {
+            final Thread current = Thread.currentThread();
+            current.interrupt();
+            throw new AssertionError(e);
+          } finally {
+            this.stop();
+          }
+        },
+        this.service);
     try {
       latch.await();
     } catch (final InterruptedException e) {
@@ -85,7 +84,9 @@ public final class FileHttpServer {
     final ServerBootstrap b = new ServerBootstrap();
     this.bossGroup = new NioEventLoopGroup();
     this.workerGroup = new NioEventLoopGroup();
-    b.group(this.bossGroup, this.workerGroup).channel(NioServerSocketChannel.class).childHandler(initializer);
+    b.group(this.bossGroup, this.workerGroup)
+        .channel(NioServerSocketChannel.class)
+        .childHandler(initializer);
     return b;
   }
 

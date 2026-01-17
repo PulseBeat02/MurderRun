@@ -75,12 +75,14 @@ public final class HibernateIdentifierManager {
     }
   }
 
-  public synchronized Long[] deserialize(@UnderInitialization HibernateIdentifierManager this, final Path path, final Lock read) {
+  public synchronized Long[] deserialize(
+      @UnderInitialization HibernateIdentifierManager this, final Path path, final Lock read) {
     if (IOUtils.createFile(path)) {
-      return new Long[] { -1L, -1L, -1L };
+      return new Long[] {-1L, -1L, -1L};
     }
     read.lock();
-    try (final InputStream fis = Files.newInputStream(path); final ObjectInputStream ois = new WhitelistedHibernateObjectInputStream(fis)) {
+    try (final InputStream fis = Files.newInputStream(path);
+        final ObjectInputStream ois = new WhitelistedHibernateObjectInputStream(fis)) {
       return (Long[]) ois.readObject();
     } catch (final IOException | ClassNotFoundException e) {
       throw new AssertionError(e);

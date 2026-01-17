@@ -61,7 +61,8 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   private Collection<Location> itemLocations;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider handler = plugin.getAudience();
     this.audiences = handler.retrieve();
     this.plugin = plugin;
@@ -123,8 +124,8 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location blockLoc = block.getLocation();
     final Audience audience = this.audiences.player(sender);
     final Component msg = this.itemLocations.remove(blockLoc)
-      ? ComponentUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc)
-      : Message.ARENA_ITEM_REMOVE_ERROR.build();
+        ? ComponentUtils.createLocationComponent(Message.ARENA_ITEM_REMOVE, blockLoc)
+        : Message.ARENA_ITEM_REMOVE_ERROR.build();
     audience.sendMessage(msg);
   }
 
@@ -191,20 +192,22 @@ public final class ArenaCommand implements AnnotationCommandFeature {
   @Command(value = "murder arena create", requiredSender = Player.class)
   public void createArena(final Player sender) {
     final Audience audience = this.audiences.player(sender);
-    if (
-      this.handleNullCorner(audience) || this.handleNullSpawn(audience) || this.handleNullTruck(audience) || this.handleNullName(audience)
-    ) {
+    if (this.handleNullCorner(audience)
+        || this.handleNullSpawn(audience)
+        || this.handleNullTruck(audience)
+        || this.handleNullName(audience)) {
       return;
     }
 
     final Component loadMsg = Message.ARENA_CREATE_LOAD.build();
     audience.sendMessage(loadMsg);
 
-    final Location[] corners = new Location[] { this.first, this.second };
+    final Location[] corners = new Location[] {this.first, this.second};
     final Location[] locations = this.itemLocations.toArray(new Location[0]);
     final CompletableFuture<Location[]> future;
     if (locations.length == 0) {
-      final TerrainDropAnalyzer analyzer = new TerrainDropAnalyzer(this.plugin, corners, this.spawn);
+      final TerrainDropAnalyzer analyzer =
+          new TerrainDropAnalyzer(this.plugin, corners, this.spawn);
       future = analyzer.getRandomDrops();
     } else {
       future = CompletableFuture.completedFuture(locations);
@@ -296,7 +299,8 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.first = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
+    final Component message =
+        ComponentUtils.createLocationComponent(Message.ARENA_FIRST_CORNER, location);
     audience.sendMessage(message);
   }
 
@@ -307,7 +311,8 @@ public final class ArenaCommand implements AnnotationCommandFeature {
     final Location location = sender.getLocation();
     this.second = location;
     final Audience audience = this.audiences.player(sender);
-    final Component message = ComponentUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
+    final Component message =
+        ComponentUtils.createLocationComponent(Message.ARENA_SECOND_CORNER, location);
     audience.sendMessage(message);
   }
 }

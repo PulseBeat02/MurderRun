@@ -114,32 +114,31 @@ public final class GameManager {
   }
 
   public void createGame(
-    final CommandSender leader,
-    final String id,
-    final GameMode mode,
-    final String arenaName,
-    final String lobbyName,
-    final int min,
-    final int max,
-    final boolean quickJoinable
-  ) {
+      final CommandSender leader,
+      final String id,
+      final GameMode mode,
+      final String arenaName,
+      final String lobbyName,
+      final int min,
+      final int max,
+      final boolean quickJoinable) {
     final GameEventsListener listener = new GameEventsPlayerListener(this);
-    final PreGameManager game = this.createClampedGame(leader, id, mode, arenaName, lobbyName, min, max, quickJoinable, listener);
+    final PreGameManager game = this.createClampedGame(
+        leader, id, mode, arenaName, lobbyName, min, max, quickJoinable, listener);
     this.addGameToRegistry(id, game);
     this.autoJoinIfLeaderPlayer(leader, id);
   }
 
   private PreGameManager createClampedGame(
-    final CommandSender leader,
-    final String id,
-    final GameMode mode,
-    final String arenaName,
-    final String lobbyName,
-    final int min,
-    final int max,
-    final boolean quickJoinable,
-    final GameEventsListener listener
-  ) {
+      final CommandSender leader,
+      final String id,
+      final GameMode mode,
+      final String arenaName,
+      final String lobbyName,
+      final int min,
+      final int max,
+      final boolean quickJoinable,
+      final GameEventsListener listener) {
     this.sendGameCreationMessage(leader);
     final int finalMin = Math.clamp(min, 2, Integer.MAX_VALUE);
     final int finalMax = Math.clamp(max, finalMin, Integer.MAX_VALUE);
@@ -213,7 +212,9 @@ public final class GameManager {
     final Collection<PreGameManager> values = this.games.values();
     for (final PreGameManager manager : values) {
       final PreGamePlayerManager preGamePlayerManager = manager.getPlayerManager();
-      final boolean join = preGamePlayerManager.isQuickJoinable() && !preGamePlayerManager.isGameFull() && !preGamePlayerManager.isLocked();
+      final boolean join = preGamePlayerManager.isQuickJoinable()
+          && !preGamePlayerManager.isGameFull()
+          && !preGamePlayerManager.isLocked();
       if (join) {
         final String id = manager.getId();
         this.joinGame(player, id);

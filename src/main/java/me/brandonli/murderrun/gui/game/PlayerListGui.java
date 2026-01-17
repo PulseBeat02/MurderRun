@@ -50,7 +50,10 @@ public final class PlayerListGui extends PaginatedGui {
   private final GameManager manager;
 
   public PlayerListGui(final Player watcher, final GameManager manager) {
-    super(ContainerUtils.createChestContainer(Message.PLAYER_LIST_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
+    super(
+        ContainerUtils.createChestContainer(Message.PLAYER_LIST_GUI_TITLE.build(), 6),
+        45,
+        InteractionModifier.VALUES);
     this.watcher = watcher;
     this.manager = manager;
     this.updatePane();
@@ -66,7 +69,9 @@ public final class PlayerListGui extends PaginatedGui {
 
   public void updatePane() {
     this.clearPageItems();
-    this.getPlayerStacks().stream().map(stack -> new GuiItem(stack, this::handlePlayerClick)).forEach(this::addItem);
+    this.getPlayerStacks().stream()
+        .map(stack -> new GuiItem(stack, this::handlePlayerClick))
+        .forEach(this::addItem);
   }
 
   private void handlePlayerClick(final InventoryClickEvent event) {
@@ -112,7 +117,9 @@ public final class PlayerListGui extends PaginatedGui {
     final List<ItemStack> items = new ArrayList<>();
     for (final Player player : online) {
       final PreGameManager preGameManager = this.manager.getGame(player);
-      final ItemStack stack = preGameManager == null ? this.createNormalStack(player) : this.getInGameStack(player, preGameManager);
+      final ItemStack stack = preGameManager == null
+          ? this.createNormalStack(player)
+          : this.getInGameStack(player, preGameManager);
       items.add(stack);
     }
     return items;
@@ -121,7 +128,9 @@ public final class PlayerListGui extends PaginatedGui {
   private ItemStack getInGameStack(final Player player, final PreGameManager triplet) {
     final PreGamePlayerManager manager = triplet.getPlayerManager();
     final Collection<Player> killers = manager.getMurderers();
-    return killers.contains(player) ? this.createKillerStack(player) : this.createSurvivorStack(player);
+    return killers.contains(player)
+        ? this.createKillerStack(player)
+        : this.createSurvivorStack(player);
   }
 
   private ItemStack createNormalStack(final Player player) {
@@ -130,11 +139,11 @@ public final class PlayerListGui extends PaginatedGui {
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
-      .name(Message.INVITE_PLAYER_GUI_DISPLAY.build(name))
-      .lore(Message.INVITE_PLAYER_GUI_LORE_NORMAL.build())
-      .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
-      .head(player)
-      .build();
+        .name(Message.INVITE_PLAYER_GUI_DISPLAY.build(name))
+        .lore(Message.INVITE_PLAYER_GUI_LORE_NORMAL.build())
+        .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
+        .head(player)
+        .build();
   }
 
   private ItemStack createKillerStack(final Player player) {
@@ -143,11 +152,11 @@ public final class PlayerListGui extends PaginatedGui {
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
-      .name(Message.INVITE_PLAYER_GUI_KILLER.build(name))
-      .lore(Message.INVITE_PLAYER_GUI_LORE.build())
-      .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
-      .head(player)
-      .build();
+        .name(Message.INVITE_PLAYER_GUI_KILLER.build(name))
+        .lore(Message.INVITE_PLAYER_GUI_LORE.build())
+        .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
+        .head(player)
+        .build();
   }
 
   private ItemStack createSurvivorStack(final Player player) {
@@ -156,22 +165,28 @@ public final class PlayerListGui extends PaginatedGui {
     final UUID uuid = player.getUniqueId();
     final String raw = uuid.toString();
     return Item.builder(Material.PLAYER_HEAD)
-      .name(Message.INVITE_PLAYER_GUI_SURVIVOR.build(name))
-      .lore(Message.INVITE_PLAYER_GUI_LORE.build())
-      .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
-      .head(player)
-      .build();
+        .name(Message.INVITE_PLAYER_GUI_SURVIVOR.build(name))
+        .lore(Message.INVITE_PLAYER_GUI_LORE.build())
+        .pdc(Keys.PLAYER_UUID, PersistentDataType.STRING, raw)
+        .head(player)
+        .build();
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.watcher));
   }
 
   private GuiItem createForwardStack() {
-    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(), event -> this.next());
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+        event -> this.next());
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(), event -> this.previous());
+    return new GuiItem(
+        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+        event -> this.previous());
   }
 }

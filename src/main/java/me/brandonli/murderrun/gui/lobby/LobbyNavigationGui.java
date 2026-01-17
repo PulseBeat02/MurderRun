@@ -41,7 +41,8 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class LobbyNavigationGui extends PatternGui {
 
-  private static final List<String> NAVIGATION_LOBBY_PATTERN = List.of("111111111", "111314111", "111111111", "111121111");
+  private static final List<String> NAVIGATION_LOBBY_PATTERN =
+      List.of("111111111", "111314111", "111111111", "111121111");
 
   private final MurderRun plugin;
   private final Player watcher;
@@ -67,11 +68,16 @@ public final class LobbyNavigationGui extends PatternGui {
   }
 
   private GuiItem createModifyStack() {
-    return new GuiItem(Item.builder(Material.YELLOW_BANNER).name(Message.MANAGE_LOBBY_GUI_EDIT.build()).build(), this::createListingsMenu);
+    return new GuiItem(
+        Item.builder(Material.YELLOW_BANNER)
+            .name(Message.MANAGE_LOBBY_GUI_EDIT.build())
+            .build(),
+        this::createListingsMenu);
   }
 
   private void createListingsMenu(final InventoryClickEvent event) {
-    final LobbyListGui gui = new LobbyListGui(this.plugin, this.watcher, this::handleLobbyClickEvent);
+    final LobbyListGui gui =
+        new LobbyListGui(this.plugin, this.watcher, this::handleLobbyClickEvent);
     gui.update();
     gui.open(this.watcher);
   }
@@ -99,14 +105,19 @@ public final class LobbyNavigationGui extends PatternGui {
     final Location[] corners = lobby.getCorners();
     final Location first = corners[0];
     final Location second = corners[1];
-    final LobbyModificationGui gui = new LobbyModificationGui(this.plugin, this.watcher, name, first, second, spawn, true);
+    final LobbyModificationGui gui =
+        new LobbyModificationGui(this.plugin, this.watcher, name, first, second, spawn, true);
     gui.registerEvents();
     gui.update();
     gui.open(this.watcher);
   }
 
   private GuiItem createLobbyStack() {
-    return new GuiItem(Item.builder(Material.GREEN_BANNER).name(Message.MANAGE_LOBBY_GUI_CREATE.build()).build(), this::createLobbyMenu);
+    return new GuiItem(
+        Item.builder(Material.GREEN_BANNER)
+            .name(Message.MANAGE_LOBBY_GUI_CREATE.build())
+            .build(),
+        this::createLobbyMenu);
   }
 
   private void createLobbyMenu(final InventoryClickEvent event) {
@@ -117,10 +128,13 @@ public final class LobbyNavigationGui extends PatternGui {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.watcher));
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 }

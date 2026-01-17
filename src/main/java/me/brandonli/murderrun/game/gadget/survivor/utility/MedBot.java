@@ -53,10 +53,13 @@ public final class MedBot extends SurvivorGadget {
   public MedBot(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "med_bot",
-      properties.getMedBotCost(),
-      ItemFactory.createGadget("med_bot", properties.getMedBotMaterial(), Message.MED_BOT_NAME.build(), Message.MED_BOT_LORE.build())
-    );
+        "med_bot",
+        properties.getMedBotCost(),
+        ItemFactory.createGadget(
+            "med_bot",
+            properties.getMedBotMaterial(),
+            Message.MED_BOT_NAME.build(),
+            Message.MED_BOT_LORE.build()));
   }
 
   @Override
@@ -90,9 +93,11 @@ public final class MedBot extends SurvivorGadget {
     return false;
   }
 
-  private void handleMedBotUpdate(final GameScheduler scheduler, final GamePlayerManager manager, final ArmorStand stand) {
+  private void handleMedBotUpdate(
+      final GameScheduler scheduler, final GamePlayerManager manager, final ArmorStand stand) {
     final Consumer<GamePlayer> consumer = survivor -> this.handleInnocentEffects(survivor, stand);
-    final Consumer<GamePlayer> killerConsumer = killer -> this.handleKillerDestroy(manager, killer, stand);
+    final Consumer<GamePlayer> killerConsumer =
+        killer -> this.handleKillerDestroy(manager, killer, stand);
     final Runnable task = () -> {
       manager.applyToLivingSurvivors(consumer);
       manager.applyToKillers(killerConsumer);
@@ -101,7 +106,8 @@ public final class MedBot extends SurvivorGadget {
     scheduler.scheduleRepeatedTask(task, 0, 5L, reference);
   }
 
-  private void handleKillerDestroy(final GamePlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
+  private void handleKillerDestroy(
+      final GamePlayerManager manager, final GamePlayer killer, final ArmorStand stand) {
     final Location origin = stand.getLocation();
     final Location location = killer.getLocation();
     final World first = stand.getWorld();
@@ -141,7 +147,8 @@ public final class MedBot extends SurvivorGadget {
   private void handleVerticalMotion(final GameScheduler scheduler, final ArmorStand stand) {
     final AtomicDouble lastYOffset = new AtomicDouble();
     final AtomicLong currentTick = new AtomicLong();
-    final Runnable task = () -> lastYOffset.set(this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
+    final Runnable task = () -> lastYOffset.set(
+        this.moveVerticallyOneIteration(stand, currentTick.getAndIncrement(), lastYOffset.get()));
     final EntityReference reference = EntityReference.of(stand);
     scheduler.scheduleRepeatedTask(task, 0, 1, reference);
   }
@@ -157,7 +164,8 @@ public final class MedBot extends SurvivorGadget {
     world.spawnParticle(Particle.DUST, location, 5, 8, 8, 8, new DustOptions(Color.PURPLE, 4));
   }
 
-  private double moveVerticallyOneIteration(final ArmorStand stand, final long current, final double lastYOffset) {
+  private double moveVerticallyOneIteration(
+      final ArmorStand stand, final long current, final double lastYOffset) {
     final double yOffset = Math.sin(Math.toRadians(current * 5.0d));
     stand.teleport(stand.getLocation().add(0, (yOffset - lastYOffset), 0));
     return yOffset;

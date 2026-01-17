@@ -38,15 +38,13 @@ public final class Deadringer extends SurvivorGadget {
   public Deadringer(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "deadringer",
-      properties.getDeadringerCost(),
-      ItemFactory.createGadget(
         "deadringer",
-        properties.getDeadringerMaterial(),
-        Message.DEADRINGER_NAME.build(),
-        Message.DEADRINGER_LORE.build()
-      )
-    );
+        properties.getDeadringerCost(),
+        ItemFactory.createGadget(
+            "deadringer",
+            properties.getDeadringerMaterial(),
+            Message.DEADRINGER_NAME.build(),
+            Message.DEADRINGER_LORE.build()));
   }
 
   @Override
@@ -60,9 +58,8 @@ public final class Deadringer extends SurvivorGadget {
     final int duration = properties.getDeadringerDuration();
     player.setInvulnerable(true);
     player.addPotionEffects(
-      new PotionEffect(PotionEffectType.SPEED, duration, 1, true, false),
-      new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1, true, false)
-    );
+        new PotionEffect(PotionEffectType.SPEED, duration, 1, true, false),
+        new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1, true, false));
 
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);

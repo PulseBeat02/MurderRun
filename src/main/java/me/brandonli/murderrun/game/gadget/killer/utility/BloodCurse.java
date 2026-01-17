@@ -43,15 +43,13 @@ public final class BloodCurse extends KillerGadget {
   public BloodCurse(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "blood_curse",
-      properties.getBloodCurseCost(),
-      ItemFactory.createGadget(
         "blood_curse",
-        properties.getBloodCurseMaterial(),
-        Message.BLOOD_CURSE_NAME.build(),
-        Message.BLOOD_CURSE_LORE.build()
-      )
-    );
+        properties.getBloodCurseCost(),
+        ItemFactory.createGadget(
+            "blood_curse",
+            properties.getBloodCurseMaterial(),
+            Message.BLOOD_CURSE_NAME.build(),
+            Message.BLOOD_CURSE_LORE.build()));
   }
 
   @Override
@@ -63,7 +61,8 @@ public final class BloodCurse extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final GamePlayerManager manager = game.getPlayerManager();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> manager.applyToLivingSurvivors(this::setBloodBlock), 0, 7L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> manager.applyToLivingSurvivors(this::setBloodBlock), 0, 7L, reference);
 
     final GameProperties properties = game.getProperties();
     manager.playSoundForAllParticipants(properties.getBloodCurseSound());

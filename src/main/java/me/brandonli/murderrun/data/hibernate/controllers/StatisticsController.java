@@ -23,7 +23,8 @@ import org.hibernate.SessionFactory;
 
 public final class StatisticsController extends AbstractController<StatisticsManager> {
 
-  public StatisticsController(final HibernateIdentifierManager manager, final SessionFactory factory) {
+  public StatisticsController(
+      final HibernateIdentifierManager manager, final SessionFactory factory) {
     super(manager, factory, HibernateIdentifierManager.STATISTICS_MANAGER_INDEX);
   }
 

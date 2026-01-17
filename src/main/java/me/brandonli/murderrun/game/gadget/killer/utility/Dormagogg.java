@@ -60,15 +60,13 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   public Dormagogg(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "dormagogg",
-      properties.getDormagoggCost(),
-      ItemFactory.createGadget(
         "dormagogg",
-        properties.getDormagoggMaterial(),
-        Message.DORMAGOGG_NAME.build(),
-        Message.DORMAGOGG_LORE.build()
-      )
-    );
+        properties.getDormagoggCost(),
+        ItemFactory.createGadget(
+            "dormagogg",
+            properties.getDormagoggMaterial(),
+            Message.DORMAGOGG_NAME.build(),
+            Message.DORMAGOGG_LORE.build()));
     this.game = game;
   }
 
@@ -160,7 +158,8 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
   }
 
   private void customizeAttributes(final Zombie zombie) {
-    zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
+    zombie.addPotionEffect(
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
     if (zombie instanceof final Ageable ageable) {
       ageable.setBaby();
     }

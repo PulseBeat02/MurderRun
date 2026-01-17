@@ -40,10 +40,13 @@ public final class Horcrux extends SurvivorGadget {
   public Horcrux(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "horcrux",
-      properties.getHorcruxCost(),
-      ItemFactory.createGadget("horcrux", properties.getHorcruxMaterial(), Message.HORCRUX_NAME.build(), Message.HORCRUX_LORE.build())
-    );
+        "horcrux",
+        properties.getHorcruxCost(),
+        ItemFactory.createGadget(
+            "horcrux",
+            properties.getHorcruxMaterial(),
+            Message.HORCRUX_NAME.build(),
+            Message.HORCRUX_LORE.build()));
   }
 
   @Override
@@ -69,7 +72,8 @@ public final class Horcrux extends SurvivorGadget {
     return false;
   }
 
-  private void createDeathTask(final Item item, final GamePlayer player, final Location respawnPoint) {
+  private void createDeathTask(
+      final Item item, final GamePlayer player, final Location respawnPoint) {
     if (item.isValid()) {
       item.remove();
     }

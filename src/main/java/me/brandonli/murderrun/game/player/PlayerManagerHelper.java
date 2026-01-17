@@ -92,52 +92,52 @@ public interface PlayerManagerHelper {
 
   default void sendMessageToAllDeceased(final Component message) {
     this.applyToDeceased(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.sendMessage(message);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
   }
 
   default void sendMessageToAllParticipants(final Component message) {
     this.applyToAllParticipants(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.sendMessage(message);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
   }
 
   default void sendMessageToAllLivingSurvivors(final Component message) {
     this.applyToLivingSurvivors(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.sendMessage(message);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
   }
 
   default void showTitleForAllInnocents(final Component title, final Component subtitle) {
     this.applyToSurvivors(innocent -> {
-        final PlayerAudience audience = innocent.getAudience();
-        audience.showTitle(title, subtitle);
-      });
+      final PlayerAudience audience = innocent.getAudience();
+      audience.showTitle(title, subtitle);
+    });
   }
 
   default void showTitleForAllMurderers(final Component title, final Component subtitle) {
     this.applyToKillers(murderer -> {
-        final PlayerAudience audience = murderer.getAudience();
-        audience.showTitle(title, subtitle);
-      });
+      final PlayerAudience audience = murderer.getAudience();
+      audience.showTitle(title, subtitle);
+    });
   }
 
   default void showTitleForAllParticipants(final Component title, final Component subtitle) {
     this.applyToAllParticipants(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.showTitle(title, subtitle);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.showTitle(title, subtitle);
+    });
   }
 
   default void playSoundForAllParticipants(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     this.applyToAllParticipants(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.playSound(key);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.playSound(key);
+    });
   }
 
   private SoundResource getRandomKey(final SoundResource... keys) {
@@ -149,9 +149,9 @@ public interface PlayerManagerHelper {
   default void playSoundForAllParticipants(final String... keys) {
     final Key key = this.getRandomKey(keys);
     this.applyToAllParticipants(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.playSound(key);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.playSound(key);
+    });
   }
 
   private Key getRandomKey(final String... keys) {
@@ -164,27 +164,28 @@ public interface PlayerManagerHelper {
   default void playSoundForAllMurderers(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     this.applyToKillers(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.playSound(key);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.playSound(key);
+    });
   }
 
   default void playSoundForAllInnocents(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     this.applyToSurvivors(innocent -> {
-        final PlayerAudience audience = innocent.getAudience();
-        audience.playSound(key);
-      });
+      final PlayerAudience audience = innocent.getAudience();
+      audience.playSound(key);
+    });
   }
 
   default void stopSoundsForAllParticipants(final SoundResource key) {
     this.applyToAllParticipants(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.stopSound(key);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.stopSound(key);
+    });
   }
 
-  default void playSoundForAllParticipantsAtLocation(final Location origin, final SoundResource... keys) {
+  default void playSoundForAllParticipantsAtLocation(
+      final Location origin, final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     final Key id = key.getKey();
     final String raw = id.asString();
@@ -194,13 +195,14 @@ public interface PlayerManagerHelper {
 
   default void updateBossBarForAllParticipants(final String id, final float progress) {
     this.applyToAllParticipants(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.updateBossBar(id, progress);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.updateBossBar(id, progress);
+    });
   }
 
   default GamePlayer getRandomAliveInnocentPlayer() {
-    final List<GamePlayer> list = this.getSurvivors().filter(GamePlayer::isAlive).collect(StreamUtils.toShuffledList());
+    final List<GamePlayer> list =
+        this.getSurvivors().filter(GamePlayer::isAlive).collect(StreamUtils.toShuffledList());
     if (list.isEmpty()) {
       throw new IllegalStateException("No alive innocent players available");
     }
@@ -208,58 +210,65 @@ public interface PlayerManagerHelper {
   }
 
   default @Nullable GamePlayer getRandomDeadPlayer() {
-    final List<GamePlayer> list =
-      this.getDeceasedSurvivors().filter(StreamUtils.isInstanceOf(Survivor.class)).collect(StreamUtils.toShuffledList());
+    final List<GamePlayer> list = this.getDeceasedSurvivors()
+        .filter(StreamUtils.isInstanceOf(Survivor.class))
+        .collect(StreamUtils.toShuffledList());
     return list.isEmpty() ? null : list.getFirst();
   }
 
-  default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final NamedTextColor color, final long duration) {
+  default void setEntityGlowingForAliveInnocents(
+      final GamePlayer entity, final NamedTextColor color, final long duration) {
     final Game game = this.getGame();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(entity);
     this.setEntityGlowingForAliveInnocents(entity, color);
-    scheduler.scheduleTask(() -> this.removeEntityGlowingForAliveInnocents(entity, color), duration, reference);
+    scheduler.scheduleTask(
+        () -> this.removeEntityGlowingForAliveInnocents(entity, color), duration, reference);
   }
 
-  default void setEntityGlowingForAliveInnocents(final GamePlayer entity, final NamedTextColor color) {
+  default void setEntityGlowingForAliveInnocents(
+      final GamePlayer entity, final NamedTextColor color) {
     this.applyToLivingSurvivors(innocent -> {
-        final MetadataManager metadata = innocent.getMetadataManager();
-        entity.apply(target -> metadata.setEntityGlowing(target, color, true));
-      });
+      final MetadataManager metadata = innocent.getMetadataManager();
+      entity.apply(target -> metadata.setEntityGlowing(target, color, true));
+    });
   }
 
-  default void removeEntityGlowingForAliveInnocents(final GamePlayer entity, final NamedTextColor color) {
+  default void removeEntityGlowingForAliveInnocents(
+      final GamePlayer entity, final NamedTextColor color) {
     this.applyToLivingSurvivors(innocent -> {
-        final MetadataManager metadata = innocent.getMetadataManager();
-        entity.apply(target -> metadata.setEntityGlowing(target, color, false));
-      });
+      final MetadataManager metadata = innocent.getMetadataManager();
+      entity.apply(target -> metadata.setEntityGlowing(target, color, false));
+    });
   }
 
   default void showBossBarForAllParticipants(
-    final String id,
-    final Component name,
-    final float progress,
-    final BossBar.Color color,
-    final BossBar.Overlay overlay
-  ) {
+      final String id,
+      final Component name,
+      final float progress,
+      final BossBar.Color color,
+      final BossBar.Overlay overlay) {
     this.applyToAllParticipants(player -> {
-        final PlayerAudience audience = player.getAudience();
-        audience.removeAllBossBars();
-        audience.showBossBar(id, name, progress, color, overlay);
-      });
+      final PlayerAudience audience = player.getAudience();
+      audience.removeAllBossBars();
+      audience.showBossBar(id, name, progress, color, overlay);
+    });
   }
 
   @SuppressWarnings("all") // checker
   default Optional<@PolyNull Killer> getKillerWithMostKills() {
-    return this.getKillers().map(Killer.class::cast).filter(Objects::nonNull).max(Comparator.comparingInt(Killer::getKills));
+    return this.getKillers()
+        .map(Killer.class::cast)
+        .filter(Objects::nonNull)
+        .max(Comparator.comparingInt(Killer::getKills));
   }
 
   @SuppressWarnings("all") // checker
   default Optional<@PolyNull Survivor> getSurvivorWithMostCarPartsRetrieved() {
     return this.getSurvivors()
-      .map(Survivor.class::cast)
-      .filter(Objects::nonNull)
-      .max(Comparator.comparingInt(Survivor::getCarPartsRetrieved));
+        .map(Survivor.class::cast)
+        .filter(Objects::nonNull)
+        .max(Comparator.comparingInt(Survivor::getCarPartsRetrieved));
   }
 
   default @Nullable GamePlayer getNearestKiller(final Location origin) {
@@ -272,7 +281,8 @@ public interface PlayerManagerHelper {
     return this.getNearestGamePlayer0(origin, survivors);
   }
 
-  private @Nullable GamePlayer getNearestGamePlayer0(final Location origin, final Stream<GamePlayer> survivors) {
+  private @Nullable GamePlayer getNearestGamePlayer0(
+      final Location origin, final Stream<GamePlayer> survivors) {
     double min = Double.MAX_VALUE;
     GamePlayer nearest = null;
     final World target = origin.getWorld();

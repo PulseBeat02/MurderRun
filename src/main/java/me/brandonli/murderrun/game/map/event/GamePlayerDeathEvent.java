@@ -80,7 +80,9 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
 
     final GameMode mode = game.getMode();
-    if (mode == GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor && survivor.isFrozen()) {
+    if (mode == GameMode.FREEZE_TAG
+        && gamePlayer instanceof final Survivor survivor
+        && survivor.isFrozen()) {
       final NPC corpse = deathManager.getCorpse();
       if (corpse != null && corpse.getEntity() != null) {
         final Entity entity = corpse.getEntity();
@@ -122,7 +124,9 @@ public final class GamePlayerDeathEvent extends GameEvent {
     }
 
     final GameMode mode = game.getMode();
-    if (gamePlayer.isAlive() && mode == GameMode.FREEZE_TAG && gamePlayer instanceof final Survivor survivor) {
+    if (gamePlayer.isAlive()
+        && mode == GameMode.FREEZE_TAG
+        && gamePlayer instanceof final Survivor survivor) {
       final DamageSource source = event.getDamageSource();
       final DamageType type = source.getDamageType();
       if (type != DamageType.OUT_OF_WORLD) { // corpse out of world not revivable
@@ -150,8 +154,18 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
     final PlayerAudience audience = gamePlayer.getAudience();
     final Key fillKey = key("murderrun", "fill");
-    final TextColor color = TextColor.fromHexString("#FF0000");
-    audience.showTitle(text("8").font(fillKey).color(color), Message.GAME_PLAYER_DEATH.build());
+    final TextColor red = TextColor.fromHexString("#FF0000");
+    final TextColor black = TextColor.fromHexString("#000000");
+    audience.showTitle(text("8").font(fillKey).color(red), empty(), 0, 4 * 20, 0);
+    scheduler.scheduleTask(
+        () -> audience.showTitle(
+            text("8").font(fillKey).color(black),
+            Message.GAME_PLAYER_DEATH.build(),
+            0,
+            5 * 20,
+            3 * 20),
+        3 * 20L,
+        reference); // some fade
 
     final MurderRun plugin = game.getPlugin();
     final StatisticsManager statistics = plugin.getStatisticsManager();
@@ -184,11 +198,10 @@ public final class GamePlayerDeathEvent extends GameEvent {
   }
 
   private boolean handleFreezeTagDeath(
-    final PlayerDeathEvent event,
-    final Survivor survivor,
-    final Game game,
-    final GamePlayerManager manager
-  ) {
+      final PlayerDeathEvent event,
+      final Survivor survivor,
+      final Game game,
+      final GamePlayerManager manager) {
     final GameProperties properties = game.getProperties();
     final int maxLives = properties.getFreezeTagSurvivorLives();
     final int lives = survivor.getFreezeTagLives();
@@ -214,18 +227,17 @@ public final class GamePlayerDeathEvent extends GameEvent {
         final GameScheduler scheduler = game.getScheduler();
         final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
         scheduler.scheduleTask(
-          () -> {
-            this.freezeTagManager.freezeSurvivor(survivor);
-            if (this.freezeTagManager.checkAllSurvivorsFrozen()) {
-              final Component message = Message.FREEZE_TAG_ALL_FROZEN.build();
-              manager.sendMessageToAllParticipants(message);
-              game.finishGame(GameResult.MURDERERS);
-            }
-            survivor.teleport(requireNonNull(survivor.getDeathLocation()));
-          },
-          10L,
-          reference
-        );
+            () -> {
+              this.freezeTagManager.freezeSurvivor(survivor);
+              if (this.freezeTagManager.checkAllSurvivorsFrozen()) {
+                final Component message = Message.FREEZE_TAG_ALL_FROZEN.build();
+                manager.sendMessageToAllParticipants(message);
+                game.finishGame(GameResult.MURDERERS);
+              }
+              survivor.teleport(requireNonNull(survivor.getDeathLocation()));
+            },
+            10L,
+            reference);
       }
       return true;
     }

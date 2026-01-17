@@ -42,7 +42,8 @@ public final class SprintManager {
     final GameProperties properties = this.game.getProperties();
     final int time = (int) (properties.getSurvivorSprintTime() * 20);
     final int period = time / 14;
-    scheduler.scheduleRepeatedTask(() -> manager.applyToLivingSurvivors(this::applySprintLogic), 1L, period, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> manager.applyToLivingSurvivors(this::applySprintLogic), 1L, period, reference);
   }
 
   public void startKillerSprintingCheckTask() {
@@ -52,7 +53,8 @@ public final class SprintManager {
     final GameProperties properties = this.game.getProperties();
     final int time = (int) (properties.getKillerSprintTime() * 20);
     final int period = time / 14;
-    scheduler.scheduleRepeatedTask(() -> manager.applyToLivingKillers(this::applySprintLogic), 1L, period, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> manager.applyToLivingKillers(this::applySprintLogic), 1L, period, reference);
   }
 
   private void applySprintLogic(final GamePlayer killer) {

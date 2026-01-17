@@ -41,12 +41,15 @@ public final class FartTrap extends SurvivorTrap {
   public FartTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "fart_trap",
-      properties.getFartCost(),
-      ItemFactory.createGadget("fart_trap", properties.getFartMaterial(), Message.FART_NAME.build(), Message.FART_LORE.build()),
-      Message.FART_ACTIVATE.build(),
-      properties.getFartColor()
-    );
+        "fart_trap",
+        properties.getFartCost(),
+        ItemFactory.createGadget(
+            "fart_trap",
+            properties.getFartMaterial(),
+            Message.FART_NAME.build(),
+            Message.FART_LORE.build()),
+        Message.FART_ACTIVATE.build(),
+        properties.getFartColor());
   }
 
   @Override
@@ -54,14 +57,14 @@ public final class FartTrap extends SurvivorTrap {
     final GameProperties properties = game.getProperties();
     final int duration = properties.getFartEffectDuration();
     murderer.addPotionEffects(
-      new PotionEffect(PotionEffectType.SLOWNESS, duration, 4),
-      new PotionEffect(PotionEffectType.NAUSEA, duration, 1)
-    );
+        new PotionEffect(PotionEffectType.SLOWNESS, duration, 4),
+        new PotionEffect(PotionEffectType.NAUSEA, duration, 1));
 
     final GameScheduler scheduler = game.getScheduler();
     final Location location = murderer.getLocation();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, properties.getFartDuration(), reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.spawnParticles(location), 0, 5, properties.getFartDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(Sounds.FART);
@@ -69,6 +72,7 @@ public final class FartTrap extends SurvivorTrap {
 
   private void spawnParticles(final Location location) {
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 10, 2, 2, 2, new DustOptions(org.bukkit.Color.GREEN, 4));
+    world.spawnParticle(
+        Particle.DUST, location, 10, 2, 2, 2, new DustOptions(org.bukkit.Color.GREEN, 4));
   }
 }

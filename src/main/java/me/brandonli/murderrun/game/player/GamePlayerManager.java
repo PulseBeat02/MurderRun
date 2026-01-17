@@ -62,7 +62,8 @@ public final class GamePlayerManager implements PlayerManagerHelper {
     this.deathManager.spawnParticles();
   }
 
-  private void assignPlayerRoles(final Collection<Player> murderers, final Collection<Player> participants) {
+  private void assignPlayerRoles(
+      final Collection<Player> murderers, final Collection<Player> participants) {
     this.createMurderers(murderers);
     this.createInnocents(murderers, participants);
   }
@@ -81,7 +82,8 @@ public final class GamePlayerManager implements PlayerManagerHelper {
     }
   }
 
-  private void createInnocents(final Collection<Player> murderers, final Collection<Player> participants) {
+  private void createInnocents(
+      final Collection<Player> murderers, final Collection<Player> participants) {
     final Set<UUID> uuids = this.createMurdererUuids(murderers);
     for (final Player player : participants) {
       final UUID uuid = player.getUniqueId();

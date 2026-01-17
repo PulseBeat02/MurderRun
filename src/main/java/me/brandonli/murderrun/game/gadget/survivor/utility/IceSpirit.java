@@ -58,15 +58,13 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
   public IceSpirit(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "ice_spirit",
-      properties.getIceSpiritCost(),
-      ItemFactory.createGadget(
         "ice_spirit",
-        properties.getIceSpiritMaterial(),
-        Message.ICE_SPIRIT_NAME.build(),
-        Message.ICE_SPIRIT_LORE.build()
-      )
-    );
+        properties.getIceSpiritCost(),
+        ItemFactory.createGadget(
+            "ice_spirit",
+            properties.getIceSpiritMaterial(),
+            Message.ICE_SPIRIT_NAME.build(),
+            Message.ICE_SPIRIT_LORE.build()));
     this.game = game;
   }
 
@@ -148,7 +146,8 @@ public final class IceSpirit extends SurvivorGadget implements Listener, Targeta
 
   private void customizeAttributes(final Zombie zombie) {
     zombie.setInvulnerable(true);
-    zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
+    zombie.addPotionEffect(
+        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
     zombie.setBaby();
   }
 

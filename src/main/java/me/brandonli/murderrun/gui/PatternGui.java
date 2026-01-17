@@ -33,7 +33,8 @@ public class PatternGui extends Gui {
 
   private final Map<Character, GuiItem> pattern;
 
-  public PatternGui(final Component title, final int rows, final Set<InteractionModifier> interactionModifiers) {
+  public PatternGui(
+      final Component title, final int rows, final Set<InteractionModifier> interactionModifiers) {
     super(ContainerUtils.createChestContainer(title, rows), interactionModifiers);
     this.pattern = new HashMap<>();
   }

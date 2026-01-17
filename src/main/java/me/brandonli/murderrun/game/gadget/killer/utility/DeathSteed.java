@@ -44,15 +44,13 @@ public final class DeathSteed extends KillerGadget {
   public DeathSteed(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "death_steed",
-      properties.getDeathSteedCost(),
-      ItemFactory.createGadget(
         "death_steed",
-        properties.getDeathSteedMaterial(),
-        Message.DEATH_STEED_NAME.build(),
-        Message.DEATH_STEED_LORE.build()
-      )
-    );
+        properties.getDeathSteedCost(),
+        ItemFactory.createGadget(
+            "death_steed",
+            properties.getDeathSteedMaterial(),
+            Message.DEATH_STEED_NAME.build(),
+            Message.DEATH_STEED_LORE.build()));
   }
 
   @Override

@@ -90,7 +90,8 @@ public final class PartsManager {
     final World world = requireNonNull(location.getWorld());
     final Location clone = location.clone();
     final Location particleLocation = clone.add(0, 1, 0);
-    world.spawnParticle(Particle.DUST, particleLocation, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 2));
+    world.spawnParticle(
+        Particle.DUST, particleLocation, 4, 0.2, 1, 0.2, new DustOptions(Color.YELLOW, 2));
   }
 
   public GameMap getMap() {
@@ -107,7 +108,8 @@ public final class PartsManager {
   }
 
   public @Nullable CarPart getCarPartItemStack(final ItemStack stack) {
-    final String uuid = PDCUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
+    final String uuid =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.CAR_PART_UUID, PersistentDataType.STRING);
     return uuid == null ? null : this.parts.get(uuid);
   }
 

@@ -64,15 +64,13 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
   public SupplyDrop(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "supply_drop",
-      properties.getSupplyDropCost(),
-      ItemFactory.createGadget(
         "supply_drop",
-        properties.getSupplyDropMaterial(),
-        Message.SUPPLY_DROP_NAME.build(),
-        Message.SUPPLY_DROP_LORE.build()
-      )
-    );
+        properties.getSupplyDropCost(),
+        ItemFactory.createGadget(
+            "supply_drop",
+            properties.getSupplyDropMaterial(),
+            Message.SUPPLY_DROP_NAME.build(),
+            Message.SUPPLY_DROP_LORE.build()));
     this.game = game;
   }
 
@@ -87,7 +85,8 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     final Location spawnLocation = location.add(0, 100, 0);
     final World world = requireNonNull(spawnLocation.getWorld());
     final BlockData data = Material.CHEST.createBlockData();
-    final FallingBlock chest = world.spawn(spawnLocation, FallingBlock.class, block -> block.setBlockData(data));
+    final FallingBlock chest =
+        world.spawn(spawnLocation, FallingBlock.class, block -> block.setBlockData(data));
     final PersistentDataContainer container = chest.getPersistentDataContainer();
     container.set(Keys.AIR_DROP, PersistentDataType.BOOLEAN, true);
 

@@ -95,7 +95,8 @@ public final class GadgetActionHandler implements Listener {
       return;
     }
 
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     if (data == null) {
       return;
     }
@@ -128,7 +129,8 @@ public final class GadgetActionHandler implements Listener {
     final Game game = this.manager.getGame();
     final Item item = event.getItemDrop();
     final ItemStack stack = item.getItemStack();
-    final String data = PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
+    final String data =
+        PDCUtils.getPersistentDataAttribute(stack, Keys.GADGET_KEY_NAME, PersistentDataType.STRING);
     if (data == null) {
       return;
     }
@@ -162,9 +164,11 @@ public final class GadgetActionHandler implements Listener {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final GameStatus status = game.getStatus();
     final GameStatus.Status gameStatus = status.getStatus();
-    final boolean invalidKiller = gamePlayer instanceof Killer && gameStatus != GameStatus.Status.KILLERS_RELEASED;
-    final boolean invalidSurvivor =
-      gamePlayer instanceof Survivor && (gameStatus == GameStatus.Status.NOT_STARTED || gameStatus == GameStatus.Status.FINISHED);
+    final boolean invalidKiller =
+        gamePlayer instanceof Killer && gameStatus != GameStatus.Status.KILLERS_RELEASED;
+    final boolean invalidSurvivor = gamePlayer instanceof Survivor
+        && (gameStatus == GameStatus.Status.NOT_STARTED
+            || gameStatus == GameStatus.Status.FINISHED);
     return invalidKiller || invalidSurvivor;
   }
 
@@ -214,7 +218,8 @@ public final class GadgetActionHandler implements Listener {
     final Location origin = player.getLocation();
     final World world = requireNonNull(origin.getWorld());
     final double range = this.manager.getActivationRange();
-    final Collection<Entity> entities = world.getNearbyEntities(origin, range, range, range, this::checkEntityPredicate);
+    final Collection<Entity> entities =
+        world.getNearbyEntities(origin, range, range, range, this::checkEntityPredicate);
     final boolean isSurvivor = player instanceof Survivor;
     double min = Double.MAX_VALUE;
     Gadget closest = null;
@@ -227,7 +232,8 @@ public final class GadgetActionHandler implements Listener {
       final ItemStack stack = item.getItemStack();
       final GadgetLoadingMechanism mechanism = this.manager.getMechanism();
       final Gadget gadget = mechanism.getGadgetFromStack(stack);
-      final boolean activate = isSurvivor ? gadget instanceof KillerDevice : gadget instanceof SurvivorDevice;
+      final boolean activate =
+          isSurvivor ? gadget instanceof KillerDevice : gadget instanceof SurvivorDevice;
       if (!activate) {
         continue;
       }
@@ -252,5 +258,6 @@ public final class GadgetActionHandler implements Listener {
     return PDCUtils.isGadget(stack);
   }
 
-  record GadgetSearchResult(@Nullable Gadget gadget, @Nullable Item item) {}
+  record GadgetSearchResult(
+      @Nullable Gadget gadget, @Nullable Item item) {}
 }

@@ -51,10 +51,16 @@ public final class GamePlayerDamageEvent extends GameEvent {
       return;
     }
 
+    final double health = player.getHealth();
+    final double damage = event.getFinalDamage();
+    final double finalHealth = health - damage;
+    if (finalHealth <= 0.0) {
+      return;
+    }
+
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    final double health = gamePlayer.getHealth();
     final int opacity = mapHealthToOpacity(health, 2.0);
     final String raw = String.valueOf(opacity);
     if (opacity > 2) {

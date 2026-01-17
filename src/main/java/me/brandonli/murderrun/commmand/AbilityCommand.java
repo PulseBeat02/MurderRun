@@ -41,7 +41,8 @@ public final class AbilityCommand implements AnnotationCommandFeature {
   private MurderRun plugin;
 
   @Override
-  public void registerFeature(final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
+  public void registerFeature(
+      final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider audienceProvider = plugin.getAudience();
     this.plugin = plugin;
     this.audiences = audienceProvider.retrieve();
@@ -59,7 +60,9 @@ public final class AbilityCommand implements AnnotationCommandFeature {
   @Command("murder ability retrieve <abilityName>")
   @Permission("murderrun.command.ability.retrieve")
   @CommandDescription("murderrun.command.ability.retrieve.info")
-  public void retrieveAbility(final Player sender, @Argument(suggestions = "ability-suggestions") @Quoted final String abilityName) {
+  public void retrieveAbility(
+      final Player sender,
+      @Argument(suggestions = "ability-suggestions") @Quoted final String abilityName) {
     final List<ItemStack> recipes = TradingUtils.parseAbilityRecipes(abilityName);
     final Audience audience = this.audiences.player(sender);
     if (recipes.isEmpty()) {
@@ -81,7 +84,8 @@ public final class AbilityCommand implements AnnotationCommandFeature {
   }
 
   @Suggestions("ability-suggestions")
-  public Stream<String> suggestGadgets(final CommandContext<CommandSender> ctx, final String input) {
+  public Stream<String> suggestGadgets(
+      final CommandContext<CommandSender> ctx, final String input) {
     return TradingUtils.getAbilityTradeSuggestions();
   }
 }

@@ -130,7 +130,8 @@ public final class IOUtils {
       final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
       urlConnection.setConnectTimeout(1000);
       urlConnection.setReadTimeout(1000);
-      try (final InputStream stream = urlConnection.getInputStream(); final InputStream fast = new FastBufferedInputStream(stream)) {
+      try (final InputStream stream = urlConnection.getInputStream();
+          final InputStream fast = new FastBufferedInputStream(stream)) {
         final byte[] bytes = fast.readAllBytes();
         final HashCode code = function.hashBytes(bytes);
         final byte[] hash = code.asBytes();
@@ -155,7 +156,8 @@ public final class IOUtils {
     try {
       @SuppressWarnings("deprecation")
       final HashFunction function = Hashing.sha1();
-      try (final InputStream stream = Files.newInputStream(path); final InputStream fast = new FastBufferedInputStream(stream)) {
+      try (final InputStream stream = Files.newInputStream(path);
+          final InputStream fast = new FastBufferedInputStream(stream)) {
         final byte[] bytes = fast.readAllBytes();
         final HashCode code = function.hashBytes(bytes);
         final byte[] hash = code.asBytes();
@@ -193,7 +195,8 @@ public final class IOUtils {
   public static String generateFileHash(final Path path) throws IOException {
     @SuppressWarnings("deprecation")
     final HashFunction function = Hashing.sha1();
-    try (final InputStream fileStream = Files.newInputStream(path); final InputStream stream = new FastBufferedInputStream(fileStream)) {
+    try (final InputStream fileStream = Files.newInputStream(path);
+        final InputStream stream = new FastBufferedInputStream(fileStream)) {
       final byte[] bytes = stream.readAllBytes();
       final HashCode code = function.hashBytes(bytes);
       return code.toString();
@@ -233,12 +236,14 @@ public final class IOUtils {
     return path.toAbsolutePath();
   }
 
-  public static Path createTemporaryPath(final String prefix, final String suffix) throws IOException {
+  public static Path createTemporaryPath(final String prefix, final String suffix)
+      throws IOException {
     final String os = System.getProperty("os.name").toLowerCase();
 
     if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
       final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwx------");
-      final FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(permissions);
+      final FileAttribute<Set<PosixFilePermission>> attr =
+          PosixFilePermissions.asFileAttribute(permissions);
       return Files.createTempFile(prefix, suffix, attr);
     } else {
       final File parent = new File("murderrun");
@@ -264,11 +269,9 @@ public final class IOUtils {
 
   public static void unzip(final Path src, final Path dest) throws IOException {
     long totalSize = 0;
-    try (
-      final InputStream fis = Files.newInputStream(src);
-      final FastBufferedInputStream fast = new FastBufferedInputStream(fis);
-      final ZipInputStream zis = new ZipInputStream(fast)
-    ) {
+    try (final InputStream fis = Files.newInputStream(src);
+        final FastBufferedInputStream fast = new FastBufferedInputStream(fis);
+        final ZipInputStream zis = new ZipInputStream(fast)) {
       ZipEntry entry;
       while ((entry = zis.getNextEntry()) != null) {
         final String name = entry.getName();
@@ -310,44 +313,41 @@ public final class IOUtils {
   }
 
   public static void zip(final Path src, final Path dest) throws IOException {
-    try (
-      final OutputStream fis = Files.newOutputStream(dest);
-      final FastBufferedOutputStream fast = new FastBufferedOutputStream(fis);
-      final ZipOutputStream zip = new ZipOutputStream(fast)
-    ) {
+    try (final OutputStream fis = Files.newOutputStream(dest);
+        final FastBufferedOutputStream fast = new FastBufferedOutputStream(fis);
+        final ZipOutputStream zip = new ZipOutputStream(fast)) {
       {
-        Files.walkFileTree(
-          src,
-          new SimpleFileVisitor<>() {
-            @Override
-            public @NonNull FileVisitResult preVisitDirectory(final @NonNull Path dir, final @NonNull BasicFileAttributes attrs)
+        Files.walkFileTree(src, new SimpleFileVisitor<>() {
+          @Override
+          public @NonNull FileVisitResult preVisitDirectory(
+              final @NonNull Path dir, final @NonNull BasicFileAttributes attrs)
               throws IOException {
-              final Path rel = src.relativize(dir);
-              final String relName = rel.toString();
-              if (!relName.isEmpty()) {
-                final String replaced = relName.replace("\\", "/");
-                final String entryName = replaced + "/";
-                final ZipEntry entry = new ZipEntry(entryName);
-                zip.putNextEntry(entry);
-                zip.closeEntry();
-              }
-              return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public @NonNull FileVisitResult visitFile(final @NonNull Path file, final @NonNull BasicFileAttributes attrs)
-              throws IOException {
-              final Path rel = src.relativize(file);
-              final String relName = rel.toString();
+            final Path rel = src.relativize(dir);
+            final String relName = rel.toString();
+            if (!relName.isEmpty()) {
               final String replaced = relName.replace("\\", "/");
-              final ZipEntry entry = new ZipEntry(replaced);
+              final String entryName = replaced + "/";
+              final ZipEntry entry = new ZipEntry(entryName);
               zip.putNextEntry(entry);
-              Files.copy(file, zip);
               zip.closeEntry();
-              return FileVisitResult.CONTINUE;
             }
+            return FileVisitResult.CONTINUE;
           }
-        );
+
+          @Override
+          public @NonNull FileVisitResult visitFile(
+              final @NonNull Path file, final @NonNull BasicFileAttributes attrs)
+              throws IOException {
+            final Path rel = src.relativize(file);
+            final String relName = rel.toString();
+            final String replaced = relName.replace("\\", "/");
+            final ZipEntry entry = new ZipEntry(replaced);
+            zip.putNextEntry(entry);
+            Files.copy(file, zip);
+            zip.closeEntry();
+            return FileVisitResult.CONTINUE;
+          }
+        });
       }
     }
   }

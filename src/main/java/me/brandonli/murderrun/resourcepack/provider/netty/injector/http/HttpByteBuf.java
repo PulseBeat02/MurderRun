@@ -40,13 +40,15 @@ public final class HttpByteBuf {
     return new HttpByteBuf(buffer);
   }
 
-  public static HttpByteBuf buildHttpBuffer(final ChannelHandlerContext ctx, final HttpByteBufConsumer block) {
+  public static HttpByteBuf buildHttpBuffer(
+      final ChannelHandlerContext ctx, final HttpByteBufConsumer block) {
     final HttpByteBuf httpByteBuf = httpBuffer(ctx);
     block.accept(httpByteBuf);
     return httpByteBuf;
   }
 
-  public void writeStatusLine(final String protocolVersion, final int statusCode, final String statusMessage) {
+  public void writeStatusLine(
+      final String protocolVersion, final int statusCode, final String statusMessage) {
     final String status = "HTTP/%s %d %s%n".formatted(protocolVersion, statusCode, statusMessage);
     this.inner.writeCharSequence(status, StandardCharsets.US_ASCII);
   }

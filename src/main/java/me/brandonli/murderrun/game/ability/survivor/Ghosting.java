@@ -46,7 +46,11 @@ public final class Ghosting extends SurvivorAbility {
   private static final String GHOSTING_NAME = "ghosting";
 
   public Ghosting(final Game game) {
-    super(game, GHOSTING_NAME, ItemFactory.createAbility(GHOSTING_NAME, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build(), 1));
+    super(
+        game,
+        GHOSTING_NAME,
+        ItemFactory.createAbility(
+            GHOSTING_NAME, Message.GHOSTING_NAME.build(), Message.GHOSTING_LORE.build(), 1));
   }
 
   @Override
@@ -62,7 +66,8 @@ public final class Ghosting extends SurvivorAbility {
       }
       final Survivor survivor = (Survivor) participant;
       final DeathManager deathManager = participant.getDeathManager();
-      final PlayerDeathTask task = new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
+      final PlayerDeathTask task =
+          new PlayerDeathTask(() -> this.handleGhosting(game, survivor), false);
       deathManager.addDeathTask(task);
     });
   }
@@ -87,7 +92,8 @@ public final class Ghosting extends SurvivorAbility {
     gamePlayer.setCanPickupCarPart(false);
     gamePlayer.setCanPlaceBlocks(true);
     gamePlayer.setInvulnerable(true);
-    gamePlayer.addPotionEffects(PotionEffectType.INVISIBILITY.createEffect(PotionEffect.INFINITE_DURATION, 1));
+    gamePlayer.addPotionEffects(
+        PotionEffectType.INVISIBILITY.createEffect(PotionEffect.INFINITE_DURATION, 1));
   }
 
   private void createWoolSetting(final Game game, final GamePlayer player) {
@@ -96,7 +102,8 @@ public final class Ghosting extends SurvivorAbility {
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
     final LoosePlayerReference reference = LoosePlayerReference.of(player);
     final GameProperties properties = game.getProperties();
-    scheduler.scheduleRepeatedTask(() -> inventory.addItem(wool), 1L, properties.getGhostingWoolDelay(), reference);
+    scheduler.scheduleRepeatedTask(
+        () -> inventory.addItem(wool), 1L, properties.getGhostingWoolDelay(), reference);
   }
 
   private void giveWhiteBone(final GamePlayer player) {

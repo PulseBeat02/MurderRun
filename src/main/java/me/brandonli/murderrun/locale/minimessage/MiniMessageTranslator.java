@@ -32,8 +32,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class MiniMessageTranslator implements Translator {
 
-  private static final PlainTextComponentSerializer PLAIN_TEST_SERIALIZER = PlainTextComponentSerializer.plainText();
-  private static final Collection<String> SPECIAL_PLACEHOLDERS = List.of("$GAME_ID$", "$ARENA_ID$", "$LOBBY_ID$", "$URL$");
+  private static final PlainTextComponentSerializer PLAIN_TEST_SERIALIZER =
+      PlainTextComponentSerializer.plainText();
+  private static final Collection<String> SPECIAL_PLACEHOLDERS =
+      List.of("$GAME_ID$", "$ARENA_ID$", "$LOBBY_ID$", "$URL$");
 
   private final MiniMessage miniMessage;
 
@@ -46,12 +48,14 @@ public abstract class MiniMessageTranslator implements Translator {
   }
 
   @Override
-  public @Nullable MessageFormat translate(final @NonNull String key, final @NonNull Locale locale) {
+  public @Nullable MessageFormat translate(
+      final @NonNull String key, final @NonNull Locale locale) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public @Nullable Component translate(final TranslatableComponent component, final @NonNull Locale locale) {
+  public @Nullable Component translate(
+      final TranslatableComponent component, final @NonNull Locale locale) {
     final String key = component.key();
     final String miniMessageString = requireNonNull(this.getMiniMessageString(key, locale));
     final String content = this.checkIfSpecialString(miniMessageString, component);
@@ -59,7 +63,8 @@ public abstract class MiniMessageTranslator implements Translator {
     final boolean empty = args.isEmpty();
     final MiniMessage parser = MiniMessage.miniMessage();
     final ArgumentTag tag = new ArgumentTag(args);
-    final Component resultingComponent = empty ? parser.deserialize(content) : parser.deserialize(content, tag);
+    final Component resultingComponent =
+        empty ? parser.deserialize(content) : parser.deserialize(content, tag);
     final List<Component> children = component.children();
     return children.isEmpty() ? resultingComponent : resultingComponent.children(children);
   }

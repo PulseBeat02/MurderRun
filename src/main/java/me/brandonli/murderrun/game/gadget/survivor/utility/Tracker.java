@@ -36,10 +36,13 @@ public final class Tracker extends SurvivorGadget {
   public Tracker(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "tracker",
-      properties.getTrackerCost(),
-      ItemFactory.createGadget("tracker", properties.getTrackerMaterial(), Message.TRACKER_NAME.build(), Message.TRACKER_LORE.build())
-    );
+        "tracker",
+        properties.getTrackerCost(),
+        ItemFactory.createGadget(
+            "tracker",
+            properties.getTrackerMaterial(),
+            Message.TRACKER_NAME.build(),
+            Message.TRACKER_LORE.build()));
   }
 
   @Override

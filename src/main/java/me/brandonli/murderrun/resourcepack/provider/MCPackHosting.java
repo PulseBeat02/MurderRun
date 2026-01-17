@@ -81,16 +81,17 @@ public final class MCPackHosting extends ResourcePackProvider {
 
   private void uploadPackPost(final Path zip) throws IOException, InterruptedException {
     final byte[] fileBytes = Files.readAllBytes(zip);
-    final HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofByteArray(fileBytes);
+    final HttpRequest.BodyPublisher bodyPublisher =
+        HttpRequest.BodyPublishers.ofByteArray(fileBytes);
     final URI uri = URI.create(WEBSITE_URL);
     final HttpRequest request = HttpRequest.newBuilder()
-      .uri(uri)
-      .header("Content-Type", "application/json")
-      .header("Accept", "*/*")
-      .header("Accept-Encoding", "gzip, deflate, br, zstd")
-      .header("Accept-Language", "en-US,en;q=0.9")
-      .POST(bodyPublisher)
-      .build();
+        .uri(uri)
+        .header("Content-Type", "application/json")
+        .header("Accept", "*/*")
+        .header("Accept-Encoding", "gzip, deflate, br, zstd")
+        .header("Accept-Language", "en-US,en;q=0.9")
+        .POST(bodyPublisher)
+        .build();
     final HttpResponse.BodyHandler<String> bodyHandlers = HttpResponse.BodyHandlers.ofString();
     final HttpResponse<String> response = HTTP_CLIENT.send(request, bodyHandlers);
     final int status = response.statusCode();

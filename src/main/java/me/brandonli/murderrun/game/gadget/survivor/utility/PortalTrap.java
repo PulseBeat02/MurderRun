@@ -43,10 +43,13 @@ public final class PortalTrap extends SurvivorGadget {
   public PortalTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "portal_trap",
-      properties.getPortalTrapCost(),
-      ItemFactory.createGadget("portal_trap", properties.getPortalTrapMaterial(), Message.PORTAL_NAME.build(), Message.PORTAL_LORE.build())
-    );
+        "portal_trap",
+        properties.getPortalTrapCost(),
+        ItemFactory.createGadget(
+            "portal_trap",
+            properties.getPortalTrapMaterial(),
+            Message.PORTAL_NAME.build(),
+            Message.PORTAL_LORE.build()));
   }
 
   @Override
@@ -88,7 +91,8 @@ public final class PortalTrap extends SurvivorGadget {
     return closest;
   }
 
-  private Collection<Item> getTrapItemStackEntities(final Location location, final World world, final double range) {
+  private Collection<Item> getTrapItemStackEntities(
+      final Location location, final World world, final double range) {
     final Collection<Entity> entities = world.getNearbyEntities(location, range, range, range);
     final Collection<Item> trapEntities = new ArrayList<>();
     for (final Entity entity : entities) {

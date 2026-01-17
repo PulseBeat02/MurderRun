@@ -41,15 +41,13 @@ public final class RedArrow extends KillerGadget {
   public RedArrow(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "red_arrow",
-      properties.getRedArrowCost(),
-      ItemFactory.createGadget(
         "red_arrow",
-        properties.getRedArrowMaterial(),
-        Message.RED_ARROW_NAME.build(),
-        Message.RED_ARROW_LORE.build()
-      )
-    );
+        properties.getRedArrowCost(),
+        ItemFactory.createGadget(
+            "red_arrow",
+            properties.getRedArrowMaterial(),
+            Message.RED_ARROW_NAME.build(),
+            Message.RED_ARROW_LORE.build()));
   }
 
   @Override
@@ -63,7 +61,8 @@ public final class RedArrow extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
     final GameProperties properties = game.getProperties();
-    scheduler.scheduleRepeatedTask(() -> this.handleSurvivors(manager), 0, properties.getRedArrowDuration(), reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleSurvivors(manager), 0, properties.getRedArrowDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
     final Component message = Message.RED_ARROW_ACTIVATE.build();

@@ -37,10 +37,13 @@ public final class Expander extends KillerGadget {
   public Expander(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "expander",
-      properties.getExpanderCost(),
-      ItemFactory.createGadget("expander", properties.getExpanderMaterial(), Message.EXPANDER_NAME.build(), Message.EXPANDER_LORE.build())
-    );
+        "expander",
+        properties.getExpanderCost(),
+        ItemFactory.createGadget(
+            "expander",
+            properties.getExpanderMaterial(),
+            Message.EXPANDER_NAME.build(),
+            Message.EXPANDER_LORE.build()));
   }
 
   @Override

@@ -32,7 +32,11 @@ public final class Reach extends KillerAbility {
   public static final String REACH_NAME = "reach";
 
   public Reach(final Game game) {
-    super(game, REACH_NAME, ItemFactory.createAbility(REACH_NAME, Message.REACH_NAME.build(), Message.REACH_LORE.build(), 1));
+    super(
+        game,
+        REACH_NAME,
+        ItemFactory.createAbility(
+            REACH_NAME, Message.REACH_NAME.build(), Message.REACH_LORE.build(), 1));
   }
 
   @Override
@@ -48,7 +52,8 @@ public final class Reach extends KillerAbility {
       if (this.invokeEvent(participant)) {
         return;
       }
-      final AttributeInstance instance = requireNonNull(participant.getAttribute(Attribute.BLOCK_INTERACTION_RANGE));
+      final AttributeInstance instance =
+          requireNonNull(participant.getAttribute(Attribute.BLOCK_INTERACTION_RANGE));
       instance.setBaseValue(reach);
     });
   }

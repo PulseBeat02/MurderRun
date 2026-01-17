@@ -165,7 +165,8 @@ public final class GadgetRegistry {
     }
   }
 
-  private MethodHandle getMethodHandleClass(final Class<?> clazz) throws NoSuchMethodException, IllegalAccessException {
+  private MethodHandle getMethodHandleClass(final Class<?> clazz)
+      throws NoSuchMethodException, IllegalAccessException {
     final MethodHandles.Lookup lookup = MethodHandles.lookup();
     try {
       final MethodType type = MethodType.methodType(Void.TYPE);

@@ -33,12 +33,15 @@ public final class DistortTrap extends SurvivorTrap {
   public DistortTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "distort_trap",
-      properties.getDistortCost(),
-      ItemFactory.createGadget("distort_trap", properties.getDistortMaterial(), Message.DISTORT_NAME.build(), Message.DISTORT_LORE.build()),
-      Message.DISTORT_ACTIVATE.build(),
-      properties.getDistortColor()
-    );
+        "distort_trap",
+        properties.getDistortCost(),
+        ItemFactory.createGadget(
+            "distort_trap",
+            properties.getDistortMaterial(),
+            Message.DISTORT_NAME.build(),
+            Message.DISTORT_LORE.build()),
+        Message.DISTORT_ACTIVATE.build(),
+        properties.getDistortColor());
   }
 
   @Override
@@ -46,7 +49,8 @@ public final class DistortTrap extends SurvivorTrap {
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
     final GameProperties properties = game.getProperties();
-    scheduler.scheduleRepeatedTask(() -> this.spawnParticle(murderer), 0, 5, properties.getDistortDuration(), reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.spawnParticle(murderer), 0, 5, properties.getDistortDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(properties.getDistortSound());

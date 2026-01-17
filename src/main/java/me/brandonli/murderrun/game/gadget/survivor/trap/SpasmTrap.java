@@ -43,12 +43,15 @@ public final class SpasmTrap extends SurvivorTrap {
   public SpasmTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "spasm_trap",
-      properties.getSpasmCost(),
-      ItemFactory.createGadget("spasm_trap", properties.getSpasmMaterial(), Message.SPASM_NAME.build(), Message.SPASM_LORE.build()),
-      Message.SPASM_ACTIVATE.build(),
-      properties.getSpasmColor()
-    );
+        "spasm_trap",
+        properties.getSpasmCost(),
+        ItemFactory.createGadget(
+            "spasm_trap",
+            properties.getSpasmMaterial(),
+            Message.SPASM_NAME.build(),
+            Message.SPASM_LORE.build()),
+        Message.SPASM_ACTIVATE.build(),
+        properties.getSpasmColor());
     this.states = new ConcurrentHashMap<>();
   }
 
@@ -57,7 +60,8 @@ public final class SpasmTrap extends SurvivorTrap {
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
     final GameProperties properties = game.getProperties();
-    scheduler.scheduleRepeatedTask(() -> this.alternateHead(murderer), 0, 5, properties.getSpasmDuration(), reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.alternateHead(murderer), 0, 5, properties.getSpasmDuration(), reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants(properties.getSpasmSound());

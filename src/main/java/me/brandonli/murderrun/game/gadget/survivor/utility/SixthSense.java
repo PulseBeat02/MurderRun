@@ -41,15 +41,13 @@ public final class SixthSense extends SurvivorGadget {
   public SixthSense(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "sixth_sense",
-      properties.getSixthSenseCost(),
-      ItemFactory.createGadget(
         "sixth_sense",
-        properties.getSixthSenseMaterial(),
-        Message.SIXTH_SENSE_NAME.build(),
-        Message.SIXTH_SENSE_LORE.build()
-      )
-    );
+        properties.getSixthSenseCost(),
+        ItemFactory.createGadget(
+            "sixth_sense",
+            properties.getSixthSenseMaterial(),
+            Message.SIXTH_SENSE_NAME.build(),
+            Message.SIXTH_SENSE_LORE.build()));
   }
 
   @Override
@@ -66,7 +64,8 @@ public final class SixthSense extends SurvivorGadget {
 
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
-    scheduler.scheduleRepeatedTask(() -> this.handleKillers(manager, survivor), 0, 2 * 20L, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.handleKillers(manager, survivor), 0, 2 * 20L, reference);
 
     final GameProperties properties = game.getProperties();
     final PlayerAudience audience = player.getAudience();

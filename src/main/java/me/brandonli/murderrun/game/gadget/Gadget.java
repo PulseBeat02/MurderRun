@@ -24,7 +24,9 @@ import me.brandonli.murderrun.utils.item.Item;
 
 public interface Gadget {
   void onGadgetNearby(final GadgetNearbyPacket packet);
+
   boolean onGadgetRightClick(final GadgetRightClickPacket packet);
+
   boolean onGadgetDrop(final GadgetDropPacket packet);
 
   Item.Builder getStackBuilder();

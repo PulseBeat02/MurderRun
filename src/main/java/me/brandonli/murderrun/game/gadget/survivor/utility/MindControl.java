@@ -43,15 +43,13 @@ public final class MindControl extends SurvivorGadget {
   public MindControl(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "mind_control",
-      properties.getMindControlCost(),
-      ItemFactory.createGadget(
         "mind_control",
-        properties.getMindControlMaterial(),
-        Message.MIND_CONTROL_NAME.build(),
-        Message.MIND_CONTROL_LORE.build()
-      )
-    );
+        properties.getMindControlCost(),
+        ItemFactory.createGadget(
+            "mind_control",
+            properties.getMindControlMaterial(),
+            Message.MIND_CONTROL_NAME.build(),
+            Message.MIND_CONTROL_LORE.build()));
   }
 
   @Override
@@ -83,7 +81,8 @@ public final class MindControl extends SurvivorGadget {
 
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();
-    scheduler.scheduleRepeatedTask(() -> this.applyMindControlEffects(player, nearest), 0L, 1L, duration, reference);
+    scheduler.scheduleRepeatedTask(
+        () -> this.applyMindControlEffects(player, nearest), 0L, 1L, duration, reference);
     scheduler.scheduleTask(() -> this.resetPlayer(survivor, origin), duration, reference);
 
     final String targetName = nearest.getDisplayName();

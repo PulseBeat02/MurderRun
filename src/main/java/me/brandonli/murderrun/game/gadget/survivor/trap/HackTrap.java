@@ -36,12 +36,15 @@ public final class HackTrap extends SurvivorTrap {
   public HackTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "hack_trap",
-      properties.getHackCost(),
-      ItemFactory.createGadget("hack_trap", properties.getHackMaterial(), Message.HACK_NAME.build(), Message.HACK_LORE.build()),
-      Message.HACK_ACTIVATE.build(),
-      properties.getHackColor()
-    );
+        "hack_trap",
+        properties.getHackCost(),
+        ItemFactory.createGadget(
+            "hack_trap",
+            properties.getHackMaterial(),
+            Message.HACK_NAME.build(),
+            Message.HACK_LORE.build()),
+        Message.HACK_ACTIVATE.build(),
+        properties.getHackColor());
   }
 
   @Override
@@ -62,8 +65,7 @@ public final class HackTrap extends SurvivorTrap {
   }
 
   private @Nullable ItemStack getSword(final PlayerInventory inventory) {
-    @Nullable
-    final ItemStack[] slots = inventory.getContents();
+    final @Nullable ItemStack[] slots = inventory.getContents();
     ItemStack find = null;
     for (final ItemStack stack : slots) {
       if (stack == null) {

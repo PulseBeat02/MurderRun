@@ -23,9 +23,11 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Unmodifiable;
 
 public interface EventBus {
-  <T extends MurderRunEvent> EventSubscription<T> subscribe(Plugin plugin, Class<T> eventType, Consumer<? super T> handler);
+  <T extends MurderRunEvent> EventSubscription<T> subscribe(
+      Plugin plugin, Class<T> eventType, Consumer<? super T> handler);
 
-  <T extends MurderRunEvent> EventSubscription<T> subscribe(Plugin plugin, Class<T> eventType, Consumer<? super T> handler, int priority);
+  <T extends MurderRunEvent> EventSubscription<T> subscribe(
+      Plugin plugin, Class<T> eventType, Consumer<? super T> handler, int priority);
 
   <T extends MurderRunEvent> void unsubscribe(EventSubscription<T> subscription);
 
@@ -36,7 +38,9 @@ public interface EventBus {
   @Unmodifiable
   Set<EventSubscription<?>> getSubscriptions(Plugin plugin);
 
-  <T extends MurderRunEvent> @Unmodifiable Set<EventSubscription<T>> getSubscriptions(Plugin plugin, Class<T> eventType);
+  <T extends MurderRunEvent> @Unmodifiable Set<EventSubscription<T>> getSubscriptions(
+      Plugin plugin, Class<T> eventType);
 
-  <T extends MurderRunEvent> @Unmodifiable Set<EventSubscription<?>> getAllSubscriptions(Plugin plugin, Class<T> eventType);
+  <T extends MurderRunEvent> @Unmodifiable Set<EventSubscription<?>> getAllSubscriptions(
+      Plugin plugin, Class<T> eventType);
 }

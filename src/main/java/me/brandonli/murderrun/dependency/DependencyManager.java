@@ -34,7 +34,8 @@ public final class DependencyManager {
   public void installDependencies() {
     final DependencyListing listing = DependencyListing.getCurrentListing();
     if (listing == null) {
-      throw new UnsupportedOperationException("The current server version isn't supported by this plugin!");
+      throw new UnsupportedOperationException(
+          "The current server version isn't supported by this plugin!");
     }
 
     final Collection<Dependency> dependencies = listing.getDependencies();

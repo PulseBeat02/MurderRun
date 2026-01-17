@@ -115,7 +115,8 @@ public final class AbilityRegistry {
     return this.abilityRegistry.values().stream().map(Pair::first).toList();
   }
 
-  public Map<String, Ability> getUsedAbilities(final AbilityManager manager, final MurderRun plugin) {
+  public Map<String, Ability> getUsedAbilities(
+      final AbilityManager manager, final MurderRun plugin) {
     final Game game = manager.getGame();
     final Server server = plugin.getServer();
     final PluginManager pluginManager = server.getPluginManager();
@@ -165,7 +166,8 @@ public final class AbilityRegistry {
     }
   }
 
-  private MethodHandle getMethodHandleClass(final Class<?> clazz) throws NoSuchMethodException, IllegalAccessException {
+  private MethodHandle getMethodHandleClass(final Class<?> clazz)
+      throws NoSuchMethodException, IllegalAccessException {
     final MethodHandles.Lookup lookup = MethodHandles.lookup();
     try {
       final MethodType type = MethodType.methodType(Void.TYPE);

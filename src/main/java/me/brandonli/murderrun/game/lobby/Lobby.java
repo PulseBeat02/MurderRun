@@ -59,7 +59,11 @@ public final class Lobby implements Serializable {
 
   public Lobby() {}
 
-  public Lobby(final Schematic schematic, final String name, final Location[] corners, final Location lobbySpawn) {
+  public Lobby(
+      final Schematic schematic,
+      final String name,
+      final Location[] corners,
+      final Location lobbySpawn) {
     this.schematic = schematic;
     this.name = name;
     this.corners = corners;

@@ -74,10 +74,16 @@ public final class ByteBuddyBukkitInjector {
 
   private void injectIntoConnectionMethod() throws ClassNotFoundException {
     final ClassLoader classLoader = requireNonNull(this.clazz.getClassLoader());
-    final ElementMatcher.Junction<NamedElement> matcher = ElementMatchers.named("configureSerialization");
+    final ElementMatcher.Junction<NamedElement> matcher =
+        ElementMatchers.named("configureSerialization");
     final Advice advice = Advice.to(ConnectionInterceptor.class);
     final ClassReloadingStrategy classLoadingStrategy = ClassReloadingStrategy.fromInstalledAgent();
-    new ByteBuddy().rebase(this.clazz).method(matcher).intercept(advice).make().load(classLoader, classLoadingStrategy);
+    new ByteBuddy()
+        .rebase(this.clazz)
+        .method(matcher)
+        .intercept(advice)
+        .make()
+        .load(classLoader, classLoadingStrategy);
   }
 
   private void injectClassesIntoClassLoader() throws ClassNotFoundException {
@@ -88,7 +94,8 @@ public final class ByteBuddyBukkitInjector {
   private void setZipProperty() {
     final Path absolute = this.path.toAbsolutePath();
     final String property = absolute.toString();
-    System.setProperty(INJECTOR_SYSTEM_PROPERTY, property); // get around bytebuddy issues with passing args
+    System.setProperty(
+        INJECTOR_SYSTEM_PROPERTY, property); // get around bytebuddy issues with passing args
   }
 
   private Map<TypeDescription, byte[]> getInjections() {

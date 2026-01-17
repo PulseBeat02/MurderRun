@@ -39,10 +39,9 @@ public final class SpreadOperation implements Operation {
   private BukkitTask task;
 
   public SpreadOperation(
-    final MurderRun plugin,
-    final BiFunction<BlockVector3, BaseBlock, Void> placeFunction,
-    final Iterator<Map.Entry<BlockVector3, BaseBlock>> it
-  ) {
+      final MurderRun plugin,
+      final BiFunction<BlockVector3, BaseBlock, Void> placeFunction,
+      final Iterator<Map.Entry<BlockVector3, BaseBlock>> it) {
     final GameProperties properties = GameProperties.COMMON;
     this.blocksPerTick = properties.getBlocksPerTick();
     this.plugin = plugin;

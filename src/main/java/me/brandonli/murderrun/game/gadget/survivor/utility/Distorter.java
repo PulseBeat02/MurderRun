@@ -42,15 +42,13 @@ public final class Distorter extends SurvivorGadget {
   public Distorter(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "distorter",
-      properties.getDistorterCost(),
-      ItemFactory.createGadget(
         "distorter",
-        properties.getDistorterMaterial(),
-        Message.DISTORTER_NAME.build(),
-        Message.DISTORTER_LORE.build()
-      )
-    );
+        properties.getDistorterCost(),
+        ItemFactory.createGadget(
+            "distorter",
+            properties.getDistorterMaterial(),
+            Message.DISTORTER_NAME.build(),
+            Message.DISTORTER_LORE.build()));
     this.removed = new HashSet<>();
   }
 
@@ -75,7 +73,8 @@ public final class Distorter extends SurvivorGadget {
     manager.applyToKillers(killer -> this.applyDistortionEffect(manager, killer, item));
   }
 
-  private void applyDistortionEffect(final GamePlayerManager manager, final GamePlayer killer, final Item item) {
+  private void applyDistortionEffect(
+      final GamePlayerManager manager, final GamePlayer killer, final Item item) {
     final Location location = killer.getLocation();
     final Location origin = item.getLocation();
     final double distance = location.distanceSquared(origin);

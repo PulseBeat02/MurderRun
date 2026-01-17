@@ -67,7 +67,8 @@ public final class HibernateManager {
     }
   }
 
-  private SessionFactory constructSessionFactory(@UnderInitialization HibernateManager this, final MurderRun plugin) {
+  private SessionFactory constructSessionFactory(
+      @UnderInitialization HibernateManager this, final MurderRun plugin) {
     try (final HibernateContextCloseable closeable = new HibernateContextCloseable()) {
       closeable.setContextClassLoader();
       final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
@@ -77,23 +78,24 @@ public final class HibernateManager {
     }
   }
 
-  private SessionFactory constructSession(@UnderInitialization HibernateManager this, final PluginDataConfigurationMapper mapper) {
+  private SessionFactory constructSession(
+      @UnderInitialization HibernateManager this, final PluginDataConfigurationMapper mapper) {
     return new Configuration()
-      .setProperty(Environment.JAKARTA_JDBC_DRIVER, mapper.getDatabaseDriver())
-      .setProperty(Environment.JAKARTA_JDBC_USER, mapper.getDatabaseUsername())
-      .setProperty(Environment.JAKARTA_JDBC_PASSWORD, mapper.getDatabasePassword())
-      .setProperty(Environment.HBM2DDL_AUTO, mapper.getDatabaseHbm2ddl())
-      .setProperty(Environment.SHOW_SQL, mapper.isDatabaseShowSql())
-      .setProperty(Environment.JAKARTA_JDBC_URL, mapper.getDatabaseUrl())
-      .setProperty(Environment.AUTOCOMMIT, true)
-      .setProperty(Environment.AUTO_CLOSE_SESSION, true)
-      .addAnnotatedClass(ArenaManager.class)
-      .addAnnotatedClass(LobbyManager.class)
-      .addAnnotatedClass(StatisticsManager.class)
-      .addAnnotatedClass(Arena.class)
-      .addAnnotatedClass(Lobby.class)
-      .addAnnotatedClass(PlayerStatistics.class)
-      .buildSessionFactory();
+        .setProperty(Environment.JAKARTA_JDBC_DRIVER, mapper.getDatabaseDriver())
+        .setProperty(Environment.JAKARTA_JDBC_USER, mapper.getDatabaseUsername())
+        .setProperty(Environment.JAKARTA_JDBC_PASSWORD, mapper.getDatabasePassword())
+        .setProperty(Environment.HBM2DDL_AUTO, mapper.getDatabaseHbm2ddl())
+        .setProperty(Environment.SHOW_SQL, mapper.isDatabaseShowSql())
+        .setProperty(Environment.JAKARTA_JDBC_URL, mapper.getDatabaseUrl())
+        .setProperty(Environment.AUTOCOMMIT, true)
+        .setProperty(Environment.AUTO_CLOSE_SESSION, true)
+        .addAnnotatedClass(ArenaManager.class)
+        .addAnnotatedClass(LobbyManager.class)
+        .addAnnotatedClass(StatisticsManager.class)
+        .addAnnotatedClass(Arena.class)
+        .addAnnotatedClass(Lobby.class)
+        .addAnnotatedClass(PlayerStatistics.class)
+        .buildSessionFactory();
   }
 
   public MurderRun getPlugin() {

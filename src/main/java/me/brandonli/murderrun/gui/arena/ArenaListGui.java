@@ -50,8 +50,12 @@ public final class ArenaListGui extends PaginatedGui {
   private final Player watcher;
   private final Consumer<InventoryClickEvent> consumer;
 
-  public ArenaListGui(final MurderRun plugin, final Player watcher, final Consumer<InventoryClickEvent> consumer) {
-    super(ContainerUtils.createChestContainer(Message.CHOOSE_ARENA_GUI_TITLE.build(), 6), 45, InteractionModifier.VALUES);
+  public ArenaListGui(
+      final MurderRun plugin, final Player watcher, final Consumer<InventoryClickEvent> consumer) {
+    super(
+        ContainerUtils.createChestContainer(Message.CHOOSE_ARENA_GUI_TITLE.build(), 6),
+        45,
+        InteractionModifier.VALUES);
     this.plugin = plugin;
     this.watcher = watcher;
     this.consumer = consumer;
@@ -66,7 +70,9 @@ public final class ArenaListGui extends PaginatedGui {
 
   private void updatePane() {
     this.clearPageItems();
-    this.getArenas().stream().map(stack -> new GuiItem(stack, this.consumer::accept)).forEach(this::addItem);
+    this.getArenas().stream()
+        .map(stack -> new GuiItem(stack, this.consumer::accept))
+        .forEach(this::addItem);
   }
 
   private void createNavigationPane() {
@@ -82,7 +88,8 @@ public final class ArenaListGui extends PaginatedGui {
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 
   private List<ItemStack> getArenas() {
@@ -101,19 +108,30 @@ public final class ArenaListGui extends PaginatedGui {
 
   private ItemStack constructArenaItem(final String name, final Location spawn) {
     final Component title = Message.CHOOSE_ARENA_GUI_ARENA_DISPLAY.build(name);
-    final Component lore = ComponentUtils.createLocationComponent(Message.CHOOSE_ARENA_GUI_ARENA_LORE, spawn);
-    return Item.builder(Material.WHITE_BANNER).name(title).lore(lore).pdc(Keys.ARENA_NAME, PersistentDataType.STRING, name).build();
+    final Component lore =
+        ComponentUtils.createLocationComponent(Message.CHOOSE_ARENA_GUI_ARENA_LORE, spawn);
+    return Item.builder(Material.WHITE_BANNER)
+        .name(title)
+        .lore(lore)
+        .pdc(Keys.ARENA_NAME, PersistentDataType.STRING, name)
+        .build();
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.watcher));
   }
 
   private GuiItem createForwardStack() {
-    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(), event -> this.next());
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL).name(Message.SHOP_GUI_FORWARD.build()).build(),
+        event -> this.next());
   }
 
   private GuiItem createBackStack() {
-    return new GuiItem(Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(), event -> this.previous());
+    return new GuiItem(
+        Item.builder(Material.RED_WOOL).name(Message.SHOP_GUI_BACK.build()).build(),
+        event -> this.previous());
   }
 }

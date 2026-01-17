@@ -30,7 +30,12 @@ import net.kyori.adventure.text.Component;
 
 public abstract class SurvivorTrap extends Trap implements SurvivorDevice {
 
-  public SurvivorTrap(final String name, final int cost, final Item.Builder item, final Component announcement, final Color color) {
+  public SurvivorTrap(
+      final String name,
+      final int cost,
+      final Item.Builder item,
+      final Component announcement,
+      final Color color) {
     super(name, cost, item, announcement, color);
   }
 

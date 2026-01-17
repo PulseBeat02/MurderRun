@@ -37,10 +37,13 @@ public final class Rewind extends SurvivorGadget {
   public Rewind(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "rewind",
-      properties.getRewindCost(),
-      ItemFactory.createGadget("rewind", properties.getRewindMaterial(), Message.REWIND_NAME.build(), Message.REWIND_LORE.build())
-    );
+        "rewind",
+        properties.getRewindCost(),
+        ItemFactory.createGadget(
+            "rewind",
+            properties.getRewindMaterial(),
+            Message.REWIND_NAME.build(),
+            Message.REWIND_LORE.build()));
   }
 
   @Override

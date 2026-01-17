@@ -76,7 +76,10 @@ public final class VersionChecker implements Listener {
     final BukkitAudiences audiences = audienceProvider.retrieve();
     final Audience audience = audiences.player(player);
     final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.runTaskLater(this.plugin, () -> audience.sendMessage(Message.PLUGIN_OUTDATED.build(this.difference, this.latest)), 10L);
+    scheduler.runTaskLater(
+        this.plugin,
+        () -> audience.sendMessage(Message.PLUGIN_OUTDATED.build(this.difference, this.latest)),
+        10L);
   }
 
   public String getCurrent() {

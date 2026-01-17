@@ -35,7 +35,11 @@ public final class Gamble extends KillerAbility {
   public static final String GAMBLE_NAME = "gamble";
 
   public Gamble(final Game game) {
-    super(game, GAMBLE_NAME, ItemFactory.createAbility(GAMBLE_NAME, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build(), 1));
+    super(
+        game,
+        GAMBLE_NAME,
+        ItemFactory.createAbility(
+            GAMBLE_NAME, Message.GAMBLE_NAME.build(), Message.GAMBLE_LORE.build(), 1));
   }
 
   @Override
@@ -51,14 +55,17 @@ public final class Gamble extends KillerAbility {
       if (this.invokeEvent(participant)) {
         return;
       }
-      playerManager.applyToLivingSurvivors(survivor -> this.applyGamble(mechanism, survivor, participant));
+      playerManager.applyToLivingSurvivors(
+          survivor -> this.applyGamble(mechanism, survivor, participant));
     });
   }
 
-  private void applyGamble(final GadgetLoadingMechanism mechanism, final GamePlayer survivor, final GamePlayer killer) {
+  private void applyGamble(
+      final GadgetLoadingMechanism mechanism, final GamePlayer survivor, final GamePlayer killer) {
     final DeathManager manager = survivor.getDeathManager();
     final Gadget random = mechanism.getRandomKillerGadget();
-    final PlayerDeathTask task = new PlayerDeathTask(() -> this.giveKillerItem(killer, random), false);
+    final PlayerDeathTask task =
+        new PlayerDeathTask(() -> this.giveKillerItem(killer, random), false);
     manager.addDeathTask(task);
   }
 

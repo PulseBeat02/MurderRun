@@ -40,17 +40,15 @@ public final class LevitationTrap extends SurvivorTrap {
   public LevitationTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "levitation_trap",
-      properties.getLevitationCost(),
-      ItemFactory.createGadget(
         "levitation_trap",
-        properties.getLevitationMaterial(),
-        Message.LEVITATION_NAME.build(),
-        Message.LEVITATION_LORE.build()
-      ),
-      Message.LEVITATION_ACTIVATE.build(),
-      properties.getLevitationColor()
-    );
+        properties.getLevitationCost(),
+        ItemFactory.createGadget(
+            "levitation_trap",
+            properties.getLevitationMaterial(),
+            Message.LEVITATION_NAME.build(),
+            Message.LEVITATION_LORE.build()),
+        Message.LEVITATION_ACTIVATE.build(),
+        properties.getLevitationColor());
   }
 
   @Override
@@ -76,6 +74,7 @@ public final class LevitationTrap extends SurvivorTrap {
   private void spawnParticles(final GamePlayer player) {
     final Location location = player.getLocation();
     final World world = requireNonNull(location.getWorld());
-    world.spawnParticle(Particle.DUST, location, 10, 1, 1, 1, new DustOptions(org.bukkit.Color.PURPLE, 3));
+    world.spawnParticle(
+        Particle.DUST, location, 10, 1, 1, 1, new DustOptions(org.bukkit.Color.PURPLE, 3));
   }
 }

@@ -71,12 +71,11 @@ public final class PreGamePlayerManager {
   private boolean locked;
 
   public PreGamePlayerManager(
-    final PreGameManager manager,
-    final CommandSender leader,
-    final int min,
-    final int max,
-    final boolean quickJoinable
-  ) {
+      final PreGameManager manager,
+      final CommandSender leader,
+      final int min,
+      final int max,
+      final boolean quickJoinable) {
     this.manager = manager;
     this.survivors = ConcurrentHashMap.newKeySet();
     this.murderers = ConcurrentHashMap.newKeySet();
@@ -131,23 +130,22 @@ public final class PreGamePlayerManager {
     final MurderRun plugin = this.manager.getPlugin();
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.runTaskLater(
-      plugin,
-      () -> {
-        final PreGameManager gameManager = this.getManager();
-        final GameProperties properties = gameManager.getProperties();
-        final ItemStack sword = ItemFactory.createKillerSword(properties);
-        final ItemStack arrow = ItemFactory.createKillerArrow(properties);
-        final ItemStack[] gear = ItemFactory.createKillerGear(properties);
-        final PlayerInventory inventory = player.getInventory();
-        final PersistentDataContainer container = player.getPersistentDataContainer();
-        inventory.setArmorContents(gear);
-        inventory.setItem(1, sword);
-        inventory.setItem(2, arrow);
-        this.addCurrency(player, true);
-        container.set(Keys.KILLER_ROLE, PersistentDataType.BOOLEAN, true);
-      },
-      10L
-    );
+        plugin,
+        () -> {
+          final PreGameManager gameManager = this.getManager();
+          final GameProperties properties = gameManager.getProperties();
+          final ItemStack sword = ItemFactory.createKillerSword(properties);
+          final ItemStack arrow = ItemFactory.createKillerArrow(properties);
+          final ItemStack[] gear = ItemFactory.createKillerGear(properties);
+          final PlayerInventory inventory = player.getInventory();
+          final PersistentDataContainer container = player.getPersistentDataContainer();
+          inventory.setArmorContents(gear);
+          inventory.setItem(1, sword);
+          inventory.setItem(2, arrow);
+          this.addCurrency(player, true);
+          container.set(Keys.KILLER_ROLE, PersistentDataType.BOOLEAN, true);
+        },
+        10L);
   }
 
   public void setPlayerToInnocent(final Player innocent) {
@@ -206,16 +204,15 @@ public final class PreGamePlayerManager {
     final BukkitAudiences audiences = provider.retrieve();
     final Audience audience = audiences.player(player);
     scheduler.runTaskLater(
-      plugin,
-      () -> {
-        final PlayerResourcePackChecker checker = plugin.getPlayerResourcePackChecker();
-        if (!checker.isLoaded(player)) {
-          this.setResourcePack(player);
-        }
-        audience.sendMessage(Message.RESOURCE_PACK_ACTIVATE.build());
-      },
-      2 * 20L
-    );
+        plugin,
+        () -> {
+          final PlayerResourcePackChecker checker = plugin.getPlayerResourcePackChecker();
+          if (!checker.isLoaded(player)) {
+            this.setResourcePack(player);
+          }
+          audience.sendMessage(Message.RESOURCE_PACK_ACTIVATE.build());
+        },
+        2 * 20L);
   }
 
   public void addParticipantToLobby(final Player player, final boolean killer) {
@@ -333,7 +330,8 @@ public final class PreGamePlayerManager {
   private void addCurrency(final Player player, final boolean killer) {
     final PreGameManager gameManager = this.getManager();
     final GameProperties properties = gameManager.getProperties();
-    final int count = killer ? properties.getKillerStartingCurrency() : properties.getSurvivorStartingCurrency();
+    final int count =
+        killer ? properties.getKillerStartingCurrency() : properties.getSurvivorStartingCurrency();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = ItemFactory.createCurrency(properties, 1);
     for (int i = 0; i < count; i++) {

@@ -131,8 +131,7 @@ public final class GameStartupTool {
     final ItemStack stack = ItemFactory.createCurrency(properties, 1);
     manager.applyToSurvivors(player -> {
       final PlayerInventory inventory = player.getInventory();
-      @Nullable
-      final ItemStack[] slots = inventory.getContents();
+      final @Nullable ItemStack[] slots = inventory.getContents();
       for (final ItemStack itemStack : slots) {
         if (itemStack != null && itemStack.isSimilar(stack)) {
           inventory.remove(itemStack);
@@ -147,8 +146,7 @@ public final class GameStartupTool {
     final ItemStack stack = ItemFactory.createCurrency(properties, 1);
     manager.applyToKillers(player -> {
       final PlayerInventory inventory = player.getInventory();
-      @Nullable
-      final ItemStack[] slots = inventory.getContents();
+      final @Nullable ItemStack[] slots = inventory.getContents();
       for (final ItemStack itemStack : slots) {
         if (itemStack != null && itemStack.isSimilar(stack)) {
           inventory.remove(itemStack);

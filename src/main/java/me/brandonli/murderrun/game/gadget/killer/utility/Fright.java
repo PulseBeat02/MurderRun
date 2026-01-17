@@ -47,10 +47,13 @@ public final class Fright extends KillerGadget {
   public Fright(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "fright",
-      properties.getFrightCost(),
-      ItemFactory.createGadget("fright", properties.getFrightMaterial(), Message.FRIGHT_NAME.build(), Message.FRIGHT_LORE.build())
-    );
+        "fright",
+        properties.getFrightCost(),
+        ItemFactory.createGadget(
+            "fright",
+            properties.getFrightMaterial(),
+            Message.FRIGHT_NAME.build(),
+            Message.FRIGHT_LORE.build()));
     this.currentlyJumpScared = ConcurrentHashMap.newKeySet();
   }
 
@@ -73,9 +76,8 @@ public final class Fright extends KillerGadget {
     final GameProperties properties = game.getProperties();
     final int duration = properties.getFrightDuration();
     survivor.addPotionEffects(
-      new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
-      new PotionEffect(PotionEffectType.SLOWNESS, duration, 1)
-    );
+        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, duration, 1));
 
     final PlayerAudience audience = survivor.getAudience();
     audience.playSound(Sounds.JUMP_SCARE);

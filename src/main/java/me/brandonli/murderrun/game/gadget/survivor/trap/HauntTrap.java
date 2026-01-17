@@ -36,12 +36,15 @@ public final class HauntTrap extends SurvivorTrap {
   public HauntTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "haunt_trap",
-      properties.getHauntCost(),
-      ItemFactory.createGadget("haunt_trap", properties.getHauntMaterial(), Message.HAUNT_NAME.build(), Message.HAUNT_LORE.build()),
-      Message.HAUNT_ACTIVATE.build(),
-      properties.getHauntColor()
-    );
+        "haunt_trap",
+        properties.getHauntCost(),
+        ItemFactory.createGadget(
+            "haunt_trap",
+            properties.getHauntMaterial(),
+            Message.HAUNT_NAME.build(),
+            Message.HAUNT_LORE.build()),
+        Message.HAUNT_ACTIVATE.build(),
+        properties.getHauntColor());
   }
 
   @Override
@@ -49,10 +52,9 @@ public final class HauntTrap extends SurvivorTrap {
     final GameProperties properties = game.getProperties();
     final int duration = properties.getHauntDuration();
     murderer.addPotionEffects(
-      new PotionEffect(PotionEffectType.NAUSEA, duration, 10),
-      new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
-      new PotionEffect(PotionEffectType.SLOWNESS, duration, 4)
-    );
+        new PotionEffect(PotionEffectType.NAUSEA, duration, 10),
+        new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
+        new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));
 
     final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();

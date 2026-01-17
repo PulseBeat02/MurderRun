@@ -36,10 +36,13 @@ public final class Phantom extends KillerGadget {
   public Phantom(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "phantom",
-      properties.getPhantomCost(),
-      ItemFactory.createGadget("phantom", properties.getPhantomMaterial(), Message.PHANTOM_NAME.build(), Message.PHANTOM_LORE.build())
-    );
+        "phantom",
+        properties.getPhantomCost(),
+        ItemFactory.createGadget(
+            "phantom",
+            properties.getPhantomMaterial(),
+            Message.PHANTOM_NAME.build(),
+            Message.PHANTOM_LORE.build()));
   }
 
   @Override
@@ -56,7 +59,8 @@ public final class Phantom extends KillerGadget {
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
     final GameProperties properties = game.getProperties();
-    scheduler.scheduleTask(() -> this.setDefault(player, old), properties.getPhantomDuration(), reference);
+    scheduler.scheduleTask(
+        () -> this.setDefault(player, old), properties.getPhantomDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(properties.getPhantomSound());

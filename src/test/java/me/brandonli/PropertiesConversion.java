@@ -27,7 +27,8 @@ public final class PropertiesConversion {
 
   public static void main(final String[] args) throws IOException {
     final String dir = System.getProperty("user.dir");
-    final Path path = Path.of(dir, "src/main/java", "me/brandonli/murderrun", "game/GameProperties.java");
+    final Path path =
+        Path.of(dir, "src/main/java", "me/brandonli/murderrun", "game/GameProperties.java");
     final List<String> lines = Files.readAllLines(path);
     final int start = 32;
     final int end = 504;

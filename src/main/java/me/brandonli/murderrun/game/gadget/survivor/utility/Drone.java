@@ -36,10 +36,13 @@ public final class Drone extends SurvivorGadget {
   public Drone(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "drone",
-      properties.getDroneCost(),
-      ItemFactory.createGadget("drone", properties.getDroneMaterial(), Message.DRONE_NAME.build(), Message.DRONE_LORE.build())
-    );
+        "drone",
+        properties.getDroneCost(),
+        ItemFactory.createGadget(
+            "drone",
+            properties.getDroneMaterial(),
+            Message.DRONE_NAME.build(),
+            Message.DRONE_LORE.build()));
   }
 
   @Override
@@ -59,7 +62,8 @@ public final class Drone extends SurvivorGadget {
     final GameProperties properties = game.getProperties();
     final GameScheduler scheduler = game.getScheduler();
     final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    scheduler.scheduleTask(() -> this.resetPlayer(player, origin), properties.getDroneDuration(), reference);
+    scheduler.scheduleTask(
+        () -> this.resetPlayer(player, origin), properties.getDroneDuration(), reference);
 
     final PlayerAudience audience = player.getAudience();
     audience.playSound(properties.getDroneSound());

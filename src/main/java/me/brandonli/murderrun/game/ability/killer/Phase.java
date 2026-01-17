@@ -53,15 +53,11 @@ public final class Phase extends KillerAbility implements Listener {
   public Phase(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      game,
-      PHASE_NAME,
-      ItemFactory.createAbility(
+        game,
         PHASE_NAME,
-        Message.PHASE_NAME.build(),
-        Message.PHASE_LORE.build(),
-        (int) (properties.getPhaseCooldown() * 20)
-      )
-    );
+        ItemFactory.createAbility(
+            PHASE_NAME, Message.PHASE_NAME.build(), Message.PHASE_LORE.build(), (int)
+                (properties.getPhaseCooldown() * 20)));
     this.blacklisted = new HashSet<>();
     final String raw = properties.getPhaseBlacklistedBlocks();
     final String[] individual = raw.split(",");
@@ -175,7 +171,8 @@ public final class Phase extends KillerAbility implements Listener {
     return !feetType.isSolid() && !headType.isSolid() && belowFeetType.isSolid();
   }
 
-  private boolean isIsPathClear(final double maxDistance, final Location eyeLocation, final Vector direction) {
+  private boolean isIsPathClear(
+      final double maxDistance, final Location eyeLocation, final Vector direction) {
     boolean isPathClear = true;
     for (int i = 1; i <= maxDistance; i++) {
       final Location clone = eyeLocation.clone();
@@ -192,7 +189,8 @@ public final class Phase extends KillerAbility implements Listener {
     return isPathClear;
   }
 
-  private @Nullable Location getLocation(final double maxDistance, final Location eyeLocation, final Vector direction) {
+  private @Nullable Location getLocation(
+      final double maxDistance, final Location eyeLocation, final Vector direction) {
     Location targetLocation = null;
     for (int i = 1; i <= maxDistance; i++) {
       final Location clone = eyeLocation.clone();

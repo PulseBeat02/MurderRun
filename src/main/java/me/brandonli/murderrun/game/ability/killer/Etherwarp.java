@@ -62,15 +62,11 @@ public final class Etherwarp extends KillerAbility implements Listener {
   public Etherwarp(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      game,
-      ETHERWARP_NAME,
-      ItemFactory.createAbility(
+        game,
         ETHERWARP_NAME,
-        Message.ETHERWARP_NAME.build(),
-        Message.ETHERWARP_LORE.build(),
-        (int) (properties.getEtherwarpCooldown() * 20)
-      )
-    );
+        ItemFactory.createAbility(
+            ETHERWARP_NAME, Message.ETHERWARP_NAME.build(), Message.ETHERWARP_LORE.build(), (int)
+                (properties.getEtherwarpCooldown() * 20)));
     this.cooldowns = new ConcurrentHashMap<>();
     this.sneakingPlayers = new ConcurrentHashMap<>();
     this.targetBlock = new ConcurrentHashMap<>();

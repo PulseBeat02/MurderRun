@@ -67,15 +67,14 @@ public final class Game {
   }
 
   public void startGame(
-    final GameProperties properties,
-    final GameMode mode,
-    final GameSettings settings,
-    final Collection<Player> murderers,
-    final Collection<Player> participants,
-    final GameEventsListener callback,
-    final MapSchematicIO mapSchematicIO,
-    final UUID uuid
-  ) {
+      final GameProperties properties,
+      final GameMode mode,
+      final GameSettings settings,
+      final Collection<Player> murderers,
+      final Collection<Player> participants,
+      final GameEventsListener callback,
+      final MapSchematicIO mapSchematicIO,
+      final UUID uuid) {
     this.gameID = uuid;
     this.mode = mode;
     this.status.setStatus(GameStatus.Status.SURVIVORS_RELEASED);

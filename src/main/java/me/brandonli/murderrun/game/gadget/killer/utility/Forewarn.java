@@ -41,10 +41,13 @@ public final class Forewarn extends KillerGadget {
   public Forewarn(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "forewarn",
-      properties.getForewarnCost(),
-      ItemFactory.createGadget("forewarn", properties.getForewarnMaterial(), Message.FOREWARN_NAME.build(), Message.FOREWARN_LORE.build())
-    );
+        "forewarn",
+        properties.getForewarnCost(),
+        ItemFactory.createGadget(
+            "forewarn",
+            properties.getForewarnMaterial(),
+            Message.FOREWARN_NAME.build(),
+            Message.FOREWARN_LORE.build()));
   }
 
   @Override

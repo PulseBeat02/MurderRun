@@ -34,15 +34,13 @@ public final class CorpusWarp extends SurvivorGadget {
   public CorpusWarp(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "corpus_warp",
-      properties.getCorpusWarpCost(),
-      ItemFactory.createGadget(
         "corpus_warp",
-        properties.getCorpusWarpMaterial(),
-        Message.CORPUS_WARP_NAME.build(),
-        Message.CORPUS_WARP_LORE.build()
-      )
-    );
+        properties.getCorpusWarpCost(),
+        ItemFactory.createGadget(
+            "corpus_warp",
+            properties.getCorpusWarpMaterial(),
+            Message.CORPUS_WARP_NAME.build(),
+            Message.CORPUS_WARP_LORE.build()));
   }
 
   @Override

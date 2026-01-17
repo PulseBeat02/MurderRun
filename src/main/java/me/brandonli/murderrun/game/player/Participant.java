@@ -182,15 +182,14 @@ public interface Participant {
   void sendEquipmentChange(final EquipmentSlot slot, final ItemStack item);
 
   <T> void spawnParticle(
-    final Particle particle,
-    final Location location,
-    final int count,
-    final double offsetX,
-    final double offsetY,
-    final double offsetZ,
-    final double extra,
-    final @Nullable T data
-  );
+      final Particle particle,
+      final Location location,
+      final int count,
+      final double offsetX,
+      final double offsetY,
+      final double offsetZ,
+      final double extra,
+      final @Nullable T data);
 
   int getCooldown(final ItemStack item);
 

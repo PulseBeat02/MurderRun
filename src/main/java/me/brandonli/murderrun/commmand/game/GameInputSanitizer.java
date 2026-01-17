@@ -74,7 +74,11 @@ public final class GameInputSanitizer {
     return manager.quickJoinGame(sender);
   }
 
-  public boolean checkIfGameFull(final Player sender, final Audience audience, final GameManager manager, final PreGameManager game) {
+  public boolean checkIfGameFull(
+      final Player sender,
+      final Audience audience,
+      final GameManager manager,
+      final PreGameManager game) {
     final String id = game.getId();
     final boolean success = manager.joinGame(sender, id);
     if (!success) {
@@ -104,7 +108,8 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfNotOwner(final CommandSender sender, final Audience audience, final PreGameManager data) {
+  public boolean checkIfNotOwner(
+      final CommandSender sender, final Audience audience, final PreGameManager data) {
     final PreGamePlayerManager manager = data.getPlayerManager();
     if (!manager.isLeader(sender)) {
       audience.sendMessage(Message.GAME_NOT_OWNER_ERROR.build());
@@ -141,7 +146,8 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfAlreadyInGame(final Audience audience, final @Nullable PreGameManager temp) {
+  public boolean checkIfAlreadyInGame(
+      final Audience audience, final @Nullable PreGameManager temp) {
     if (temp != null) {
       audience.sendMessage(Message.GAME_CREATE_ERROR.build());
       return true;
@@ -171,7 +177,8 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfNotSamePlayer(final Audience audience, final Player sender, final Player invite) {
+  public boolean checkIfNotSamePlayer(
+      final Audience audience, final Player sender, final Player invite) {
     if (sender == invite) {
       audience.sendMessage(Message.GAME_INVITE_ERROR.build());
       return true;
@@ -179,7 +186,8 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfOwnerOfCurrentGame(final CommandSender sender, final Audience audience, final PreGameManager temp) {
+  public boolean checkIfOwnerOfCurrentGame(
+      final CommandSender sender, final Audience audience, final PreGameManager temp) {
     final PreGamePlayerManager manager = temp.getPlayerManager();
     if (manager.isLeader(sender)) {
       audience.sendMessage(Message.GAME_LEAVE_ERROR.build());
@@ -188,7 +196,8 @@ public final class GameInputSanitizer {
     return false;
   }
 
-  public boolean checkIfInvitedAlreadyInGame(final Audience audience, final Player invite, final PreGameManager data) {
+  public boolean checkIfInvitedAlreadyInGame(
+      final Audience audience, final Player invite, final PreGameManager data) {
     final MurderRun plugin = this.command.getPlugin();
     final GameManager manager = plugin.getGameManager();
     final PreGameManager otherPlayerData = manager.getGame(invite);

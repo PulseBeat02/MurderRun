@@ -32,12 +32,15 @@ public final class BlindTrap extends SurvivorTrap {
   public BlindTrap(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "blind_trap",
-      properties.getBlindCost(),
-      ItemFactory.createGadget("blind_trap", properties.getBlindMaterial(), Message.BLIND_NAME.build(), Message.BLIND_LORE.build()),
-      Message.BLIND_ACTIVATE.build(),
-      properties.getBlindColor()
-    );
+        "blind_trap",
+        properties.getBlindCost(),
+        ItemFactory.createGadget(
+            "blind_trap",
+            properties.getBlindMaterial(),
+            Message.BLIND_NAME.build(),
+            Message.BLIND_LORE.build()),
+        Message.BLIND_ACTIVATE.build(),
+        properties.getBlindColor());
   }
 
   @Override

@@ -46,17 +46,13 @@ public final class KillerTracker extends SurvivorGadget {
   public KillerTracker(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "killer_tracker",
-      properties.getKillerTrackerCost(),
-      ItemFactory.createKillerTracker(
-        ItemFactory.createGadget(
-          "killer_tracker",
-          properties.getKillerTrackerMaterial(),
-          Message.KILLER_TRACKER_NAME.build(),
-          Message.KILLER_TRACKER_LORE.build()
-        )
-      )
-    );
+        "killer_tracker",
+        properties.getKillerTrackerCost(),
+        ItemFactory.createKillerTracker(ItemFactory.createGadget(
+            "killer_tracker",
+            properties.getKillerTrackerMaterial(),
+            Message.KILLER_TRACKER_NAME.build(),
+            Message.KILLER_TRACKER_LORE.build())));
   }
 
   @Override

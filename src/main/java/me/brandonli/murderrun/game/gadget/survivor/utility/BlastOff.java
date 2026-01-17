@@ -42,15 +42,13 @@ public final class BlastOff extends SurvivorGadget {
   public BlastOff(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "blast_off",
-      properties.getBlastOffCost(),
-      ItemFactory.createGadget(
         "blast_off",
-        properties.getBlastOffMaterial(),
-        Message.BLAST_OFF_NAME.build(),
-        Message.BLAST_OFF_LORE.build()
-      )
-    );
+        properties.getBlastOffCost(),
+        ItemFactory.createGadget(
+            "blast_off",
+            properties.getBlastOffMaterial(),
+            Message.BLAST_OFF_NAME.build(),
+            Message.BLAST_OFF_LORE.build()));
   }
 
   @Override

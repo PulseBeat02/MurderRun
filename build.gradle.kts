@@ -8,9 +8,8 @@ plugins {
     id("com.gradleup.shadow") version "9.3.1"
     id("xyz.jpenilla.run-paper") version "3.0.2"
     id("org.checkerframework") version "0.6.61"
-    id("com.diffplug.spotless") version "7.0.0.BETA4"
+    id("com.diffplug.spotless") version "8.1.0"
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
-    id("com.github.node-gradle.node") version "7.1.0"
     id("xyz.jpenilla.gremlin-gradle") version "0.0.9"
 }
 
@@ -234,10 +233,6 @@ tasks {
         }
     }
 
-    spotlessInternalRegisterDependencies {
-        dependsOn("nodeSetup", "npmSetup")
-    }
-
     sourceSets {
         main {
             java.srcDir("src/main/java")
@@ -249,12 +244,7 @@ tasks {
         java {
             importOrder()
             removeUnusedImports()
-            prettier(mapOf("prettier" to "3.3.3", "prettier-plugin-java" to "2.6.4"))
-                .config(mapOf("parser" to "java",
-                    "tabWidth" to 2,
-                    "plugins" to listOf("prettier-plugin-java"),
-                    "printWidth" to 140))
-                .nodeExecutable(provider { setupNodeEnvironment() })
+            palantirJavaFormat().style("GOOGLE")
             licenseHeaderFile("HEADER")
         }
     }
@@ -265,12 +255,6 @@ tasks {
             "-AsuppressWarnings=uninitialized",
             "-Astubs=${project.file("checker-framework")}"
         )
-    }
-
-    node {
-        download = true
-        version = "22.12.0"
-        workDir = file("build/nodejs")
     }
 
 //    fun getCurrentGitCommit(): String {
@@ -310,11 +294,4 @@ publishing {
             from(components["java"])
         }
     }
-}
-
-fun setupNodeEnvironment(): File {
-    val npmExec = if (windows) "node.exe" else "bin/node"
-    val folder = node.resolvedNodeDir.get()
-    val executable = folder.file(npmExec).asFile
-    return executable
 }

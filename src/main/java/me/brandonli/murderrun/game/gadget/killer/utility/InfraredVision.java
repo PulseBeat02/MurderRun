@@ -39,15 +39,13 @@ public final class InfraredVision extends KillerGadget {
   public InfraredVision(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "infrared_vision",
-      properties.getInfraredVisionCost(),
-      ItemFactory.createGadget(
         "infrared_vision",
-        properties.getInfraredVisionMaterial(),
-        Message.INFRARED_VISION_NAME.build(),
-        Message.INFRARED_VISION_LORE.build()
-      )
-    );
+        properties.getInfraredVisionCost(),
+        ItemFactory.createGadget(
+            "infrared_vision",
+            properties.getInfraredVisionMaterial(),
+            Message.INFRARED_VISION_NAME.build(),
+            Message.INFRARED_VISION_LORE.build()));
   }
 
   @Override
@@ -66,14 +64,16 @@ public final class InfraredVision extends KillerGadget {
     return false;
   }
 
-  private void setSurvivorGlow(final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
+  private void setSurvivorGlow(
+      final GameScheduler scheduler, final GamePlayer survivor, final GamePlayer killer) {
     final PlayerAudience audience = survivor.getAudience();
     final Component msg = Message.INFRARED_VISION_ACTIVATE.build();
     final Component title = Message.INFRARED_VISION_ACTIVATE_TITLE.build();
     final MetadataManager metadata = killer.getMetadataManager();
     final Game game = killer.getGame();
     final GameProperties properties = game.getProperties();
-    metadata.setEntityGlowing(scheduler, survivor, NamedTextColor.RED, properties.getInfraredVisionDuration());
+    metadata.setEntityGlowing(
+        scheduler, survivor, NamedTextColor.RED, properties.getInfraredVisionDuration());
     audience.sendMessage(msg);
     audience.showTitle(empty(), title);
   }

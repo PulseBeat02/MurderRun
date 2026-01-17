@@ -70,7 +70,8 @@ public final class MovementManager {
     return this.playerLocations.get(player);
   }
 
-  private boolean checkReady(final CircularBuffer<Entry<Location, Long>> buffer, final long current) {
+  private boolean checkReady(
+      final CircularBuffer<Entry<Location, Long>> buffer, final long current) {
     final Entry<Location, Long> oldest = buffer.getOldest();
     final long value = oldest.getValue();
     final long difference = current - value;

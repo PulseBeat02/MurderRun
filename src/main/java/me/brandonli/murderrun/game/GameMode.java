@@ -28,13 +28,7 @@ public enum GameMode {
   FREEZE_TAG("freeze_tag", "Freeze Tag");
 
   private static final Map<String, GameMode> KEY_LOOKUP = Map.of(
-    DEFAULT.modeName,
-    DEFAULT,
-    ONE_BOUNCE.modeName,
-    ONE_BOUNCE,
-    FREEZE_TAG.modeName,
-    FREEZE_TAG
-  );
+      DEFAULT.modeName, DEFAULT, ONE_BOUNCE.modeName, ONE_BOUNCE, FREEZE_TAG.modeName, FREEZE_TAG);
 
   private static Map<GameMode, GameProperties> PROPERTIES_LOOKUP;
 
@@ -57,13 +51,12 @@ public enum GameMode {
   public GameProperties getProperties() {
     if (PROPERTIES_LOOKUP == null) { // lazily load the properties
       PROPERTIES_LOOKUP = Map.of(
-        DEFAULT,
-        new GameProperties(DEFAULT),
-        ONE_BOUNCE,
-        new GameProperties(ONE_BOUNCE),
-        FREEZE_TAG,
-        new GameProperties(FREEZE_TAG)
-      );
+          DEFAULT,
+          new GameProperties(DEFAULT),
+          ONE_BOUNCE,
+          new GameProperties(ONE_BOUNCE),
+          FREEZE_TAG,
+          new GameProperties(FREEZE_TAG));
     }
     return requireNonNull(PROPERTIES_LOOKUP.get(this));
   }

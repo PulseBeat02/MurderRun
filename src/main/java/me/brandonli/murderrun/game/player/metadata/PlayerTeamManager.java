@@ -71,22 +71,19 @@ public final class PlayerTeamManager {
 
     final String entryName = this.getEntryName(entity);
     final String watcherName = this.watcher.getName();
-    final WrapperPlayServerTeams.TeamMode removeEntitiesMode = WrapperPlayServerTeams.TeamMode.REMOVE_ENTITIES;
+    final WrapperPlayServerTeams.TeamMode removeEntitiesMode =
+        WrapperPlayServerTeams.TeamMode.REMOVE_ENTITIES;
     final WrapperPlayServerTeams removeEntitiesPacket = new WrapperPlayServerTeams(
-      team,
-      removeEntitiesMode,
-      (WrapperPlayServerTeams.ScoreBoardTeamInfo) null,
-      entryName,
-      watcherName
-    );
+        team,
+        removeEntitiesMode,
+        (WrapperPlayServerTeams.ScoreBoardTeamInfo) null,
+        entryName,
+        watcherName);
     this.watcher.sendPacket(removeEntitiesPacket);
 
     final WrapperPlayServerTeams.TeamMode removeMode = WrapperPlayServerTeams.TeamMode.REMOVE;
     final WrapperPlayServerTeams removePacket = new WrapperPlayServerTeams(
-      team,
-      removeMode,
-      (WrapperPlayServerTeams.ScoreBoardTeamInfo) null
-    );
+        team, removeMode, (WrapperPlayServerTeams.ScoreBoardTeamInfo) null);
     this.watcher.sendPacket(removePacket);
 
     this.states.remove(team);
@@ -103,27 +100,24 @@ public final class PlayerTeamManager {
     final Component prefix = empty();
     final Component suffix = empty();
     final NameTagVisibility visibility = NameTagVisibility.ALWAYS;
-    final WrapperPlayServerTeams.CollisionRule collision = WrapperPlayServerTeams.CollisionRule.NEVER;
+    final WrapperPlayServerTeams.CollisionRule collision =
+        WrapperPlayServerTeams.CollisionRule.NEVER;
     final WrapperPlayServerTeams.OptionData data = WrapperPlayServerTeams.OptionData.ALL;
 
-    final WrapperPlayServerTeams.ScoreBoardTeamInfo teamInfo = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-      display,
-      prefix,
-      suffix,
-      visibility,
-      collision,
-      color,
-      data
-    );
+    final WrapperPlayServerTeams.ScoreBoardTeamInfo teamInfo =
+        new WrapperPlayServerTeams.ScoreBoardTeamInfo(
+            display, prefix, suffix, visibility, collision, color, data);
     final WrapperPlayServerTeams packet = new WrapperPlayServerTeams(teamName, teamMode, teamInfo);
     this.watcher.sendPacket(packet);
 
     final WrapperPlayServerTeams.TeamMode addMode = WrapperPlayServerTeams.TeamMode.ADD_ENTITIES;
-    final WrapperPlayServerTeams addPacket = new WrapperPlayServerTeams(teamName, addMode, teamInfo, entryName, watcherName);
+    final WrapperPlayServerTeams addPacket =
+        new WrapperPlayServerTeams(teamName, addMode, teamInfo, entryName, watcherName);
     this.watcher.sendPacket(addPacket);
 
     final WrapperPlayServerTeams.TeamMode updateMode = WrapperPlayServerTeams.TeamMode.UPDATE;
-    final WrapperPlayServerTeams updatePacket = new WrapperPlayServerTeams(teamName, updateMode, teamInfo);
+    final WrapperPlayServerTeams updatePacket =
+        new WrapperPlayServerTeams(teamName, updateMode, teamInfo);
     this.watcher.sendPacket(updatePacket);
 
     this.states.put(teamName, color);

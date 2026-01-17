@@ -31,7 +31,8 @@ public enum LobbyTrade {
 
   static {
     final LobbyTrade[] trades = LobbyTrade.values();
-    LOOKUP_TABLE = Stream.of(trades).collect(Collectors.toMap(Enum::name, UnaryOperator.identity()));
+    LOOKUP_TABLE =
+        Stream.of(trades).collect(Collectors.toMap(Enum::name, UnaryOperator.identity()));
   }
 
   private final ItemStack cost;

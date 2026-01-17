@@ -30,11 +30,12 @@ public final class SpeedPendant extends SurvivorGadget {
   public SpeedPendant(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "speed_pendant",
-      properties.getSpeedPendantCost(),
-      ItemFactory.createSpeedPendant(
-        ItemFactory.createGadget("speed_pendant", properties.getSpeedPendantMaterial(), Message.SPEED_PENDANT_NAME.build(), empty())
-      )
-    );
+        "speed_pendant",
+        properties.getSpeedPendantCost(),
+        ItemFactory.createSpeedPendant(ItemFactory.createGadget(
+            "speed_pendant",
+            properties.getSpeedPendantMaterial(),
+            Message.SPEED_PENDANT_NAME.build(),
+            empty())));
   }
 }

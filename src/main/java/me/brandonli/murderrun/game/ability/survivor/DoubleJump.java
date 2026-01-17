@@ -45,15 +45,13 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
   public DoubleJump(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      game,
-      DOUBLE_JUMP_NAME,
-      ItemFactory.createAbility(
+        game,
         DOUBLE_JUMP_NAME,
-        Message.DOUBLE_JUMP_NAME.build(),
-        Message.DOUBLE_JUMP_LORE.build(),
-        (int) (properties.getDoubleJumpCooldown() * 20)
-      )
-    );
+        ItemFactory.createAbility(
+            DOUBLE_JUMP_NAME,
+            Message.DOUBLE_JUMP_NAME.build(),
+            Message.DOUBLE_JUMP_LORE.build(),
+            (int) (properties.getDoubleJumpCooldown() * 20)));
     this.cooldowns = new ConcurrentHashMap<>();
   }
 
@@ -133,7 +131,8 @@ public final class DoubleJump extends SurvivorAbility implements Listener {
 
     final GameStatus status = game.getStatus();
     final GameStatus.Status currentStatus = status.getStatus();
-    if (currentStatus == GameStatus.Status.NOT_STARTED || currentStatus == GameStatus.Status.FINISHED) {
+    if (currentStatus == GameStatus.Status.NOT_STARTED
+        || currentStatus == GameStatus.Status.FINISHED) {
       return;
     }
 

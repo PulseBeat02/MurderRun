@@ -48,15 +48,13 @@ public final class LifeInsurance extends SurvivorGadget {
   public LifeInsurance(final Game game) {
     final GameProperties properties = game.getProperties();
     super(
-      "life_insurance",
-      properties.getLifeInsuranceCost(),
-      ItemFactory.createGadget(
         "life_insurance",
-        properties.getLifeInsuranceMaterial(),
-        Message.LIFE_INSURANCE_NAME.build(),
-        Message.LIFE_INSURANCE_LORE.build()
-      )
-    );
+        properties.getLifeInsuranceCost(),
+        ItemFactory.createGadget(
+            "life_insurance",
+            properties.getLifeInsuranceMaterial(),
+            Message.LIFE_INSURANCE_NAME.build(),
+            Message.LIFE_INSURANCE_LORE.build()));
   }
 
   @Override
@@ -78,7 +76,8 @@ public final class LifeInsurance extends SurvivorGadget {
     final World world = requireNonNull(first.getWorld());
 
     final GameScheduler scheduler = game.getScheduler();
-    final Consumer<GamePlayer> consumer = killer -> this.checkKillerDistance(killer, survivor, world, first, second);
+    final Consumer<GamePlayer> consumer =
+        killer -> this.checkKillerDistance(killer, survivor, world, first, second);
     final Runnable internalTask = () -> manager.applyToKillers(consumer);
     final NullReference reference = NullReference.of();
     final BukkitTask task = scheduler.scheduleRepeatedTask(internalTask, 0, 10L, reference);
@@ -95,12 +94,11 @@ public final class LifeInsurance extends SurvivorGadget {
   }
 
   private void checkKillerDistance(
-    final GamePlayer killer,
-    final Survivor player,
-    final World world,
-    final Location first,
-    final Location second
-  ) {
+      final GamePlayer killer,
+      final Survivor player,
+      final World world,
+      final Location first,
+      final Location second) {
     final Location origin = player.getLocation();
     final Location killerLocation = killer.getLocation();
     final double distance = killerLocation.distanceSquared(origin);

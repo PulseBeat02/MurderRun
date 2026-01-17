@@ -28,7 +28,8 @@ public final class ServerEnvironment {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  private static final Map<ServerVersion, String> VERSION_MAP = Map.of(ServerVersion.V_1_21_11, "v1_21_R7");
+  private static final Map<ServerVersion, String> VERSION_MAP =
+      Map.of(ServerVersion.V_1_21_11, "v1_21_R7");
   private static final String MINECRAFT_PACKAGE;
 
   static {

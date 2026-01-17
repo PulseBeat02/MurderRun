@@ -65,11 +65,9 @@ public final class ScreenListener implements Listener {
   }
 
   private boolean equalLocations(final Location loc1, final Location loc2) {
-    return (
-      Objects.equals(loc1.getWorld(), loc2.getWorld()) &&
-      loc1.getX() == loc2.getX() &&
-      loc1.getY() == loc2.getY() &&
-      loc1.getZ() == loc2.getZ()
-    );
+    return (Objects.equals(loc1.getWorld(), loc2.getWorld())
+        && loc1.getX() == loc2.getX()
+        && loc1.getY() == loc2.getY()
+        && loc1.getZ() == loc2.getZ());
   }
 }

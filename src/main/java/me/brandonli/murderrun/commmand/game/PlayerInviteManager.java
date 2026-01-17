@@ -35,7 +35,10 @@ public final class PlayerInviteManager {
 
   private Set<CommandSender> createExpiringCache(@UnderInitialization PlayerInviteManager this) {
     final Duration duration = Duration.ofMinutes(5);
-    final Map<CommandSender, Boolean> map = CacheBuilder.newBuilder().expireAfterWrite(duration).<CommandSender, Boolean>build().asMap();
+    final Map<CommandSender, Boolean> map = CacheBuilder.newBuilder()
+        .expireAfterWrite(duration)
+        .<CommandSender, Boolean>build()
+        .asMap();
     return Collections.newSetFromMap(map);
   }
 

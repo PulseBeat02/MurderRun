@@ -46,12 +46,11 @@ public final class PreGameManager {
   private PreGameEvents events;
 
   public PreGameManager(
-    final MurderRun plugin,
-    final GameManager manager,
-    final String id,
-    final GameMode mode,
-    final GameEventsListener callback
-  ) {
+      final MurderRun plugin,
+      final GameManager manager,
+      final String id,
+      final GameMode mode,
+      final GameEventsListener callback) {
     this.plugin = plugin;
     this.gameManager = manager;
     this.callback = callback;
@@ -62,7 +61,8 @@ public final class PreGameManager {
     this.uuid = UUID.randomUUID();
   }
 
-  public void initialize(final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
+  public void initialize(
+      final CommandSender leader, final int min, final int max, final boolean quickJoinable) {
     this.properties = this.mode.getProperties();
     this.manager = new PreGamePlayerManager(this, leader, min, max, quickJoinable);
     this.events = new PreGameEvents(this);
@@ -79,13 +79,20 @@ public final class PreGameManager {
 
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.runTaskLater(
-      plugin,
-      () -> {
-        this.game.startGame(this.properties, this.mode, this.settings, killers, players, this.callback, this.mapSchematicIO, this.uuid);
-        this.shutdown(false);
-      },
-      5L
-    );
+        plugin,
+        () -> {
+          this.game.startGame(
+              this.properties,
+              this.mode,
+              this.settings,
+              killers,
+              players,
+              this.callback,
+              this.mapSchematicIO,
+              this.uuid);
+          this.shutdown(false);
+        },
+        5L);
   }
 
   public void shutdown(final boolean forced) {

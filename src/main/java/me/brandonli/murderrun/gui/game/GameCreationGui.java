@@ -64,7 +64,8 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GameCreationGui extends PatternGui implements Listener {
 
-  private static final List<String> CREATE_GAME_PATTERN = List.of("000000000", "012345670", "000000000", "000809000");
+  private static final List<String> CREATE_GAME_PATTERN =
+      List.of("000000000", "012345670", "000000000", "000809000");
 
   private final MurderRun plugin;
   private final Player watcher;
@@ -101,7 +102,10 @@ public final class GameCreationGui extends PatternGui implements Listener {
     manager.registerEvents(this, this.plugin);
   }
 
-  private Audience getAudience(@UnderInitialization GameCreationGui this, final MurderRun plugin, final HumanEntity watcher) {
+  private Audience getAudience(
+      @UnderInitialization GameCreationGui this,
+      final MurderRun plugin,
+      final HumanEntity watcher) {
     final AudienceProvider provider = plugin.getAudience();
     final BukkitAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
@@ -197,9 +201,11 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private GuiItem createEditModeStack() {
     final Material type = this.getEditModeMaterial();
     return new GuiItem(
-      Item.builder(type).name(Message.GAME_CREATE_EDIT_MODE_DISPLAY.build()).lore(Message.GAME_CREATE_EDIT_MODE_LORE.build()).build(),
-      this::handleGameModeClick
-    );
+        Item.builder(type)
+            .name(Message.GAME_CREATE_EDIT_MODE_DISPLAY.build())
+            .lore(Message.GAME_CREATE_EDIT_MODE_LORE.build())
+            .build(),
+        this::handleGameModeClick);
   }
 
   private void handleGameModeClick(final InventoryClickEvent event) {
@@ -226,12 +232,11 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private GuiItem createQuickJoinStack() {
     final Material type = this.getQuickJoinMaterial();
     return new GuiItem(
-      Item.builder(type)
-        .name(Message.GAME_CREATE_EDIT_QUICK_JOIN_DISPLAY.build())
-        .lore(Message.GAME_CREATE_EDIT_QUICK_JOIN_LORE.build())
-        .build(),
-      this::handleQuickJoinClick
-    );
+        Item.builder(type)
+            .name(Message.GAME_CREATE_EDIT_QUICK_JOIN_DISPLAY.build())
+            .lore(Message.GAME_CREATE_EDIT_QUICK_JOIN_LORE.build())
+            .build(),
+        this::handleQuickJoinClick);
   }
 
   private void handleQuickJoinClick(final InventoryClickEvent event) {
@@ -248,32 +253,29 @@ public final class GameCreationGui extends PatternGui implements Listener {
 
   private GuiItem createEditMinStack() {
     return new GuiItem(
-      Item.builder(Material.ANVIL)
-        .name(Message.GAME_CREATE_EDIT_MIN_DISPLAY.build(this.min))
-        .lore(Message.GAME_CREATE_EDIT_MIN_LORE.build())
-        .build(),
-      this::listenForMin
-    );
+        Item.builder(Material.ANVIL)
+            .name(Message.GAME_CREATE_EDIT_MIN_DISPLAY.build(this.min))
+            .lore(Message.GAME_CREATE_EDIT_MIN_LORE.build())
+            .build(),
+        this::listenForMin);
   }
 
   private GuiItem createEditMaxStack() {
     return new GuiItem(
-      Item.builder(Material.ANVIL)
-        .name(Message.GAME_CREATE_EDIT_MAX_DISPLAY.build(this.max))
-        .lore(Message.GAME_CREATE_EDIT_MAX_LORE.build())
-        .build(),
-      this::listenForMax
-    );
+        Item.builder(Material.ANVIL)
+            .name(Message.GAME_CREATE_EDIT_MAX_DISPLAY.build(this.max))
+            .lore(Message.GAME_CREATE_EDIT_MAX_LORE.build())
+            .build(),
+        this::listenForMax);
   }
 
   private GuiItem createEditIdStack() {
     return new GuiItem(
-      Item.builder(Material.ANVIL)
-        .name(Message.GAME_CREATE_EDIT_ID_DISPLAY.build(this.id))
-        .lore(Message.GAME_CREATE_EDIT_ID_LORE.build())
-        .build(),
-      this::listenForIdMessage
-    );
+        Item.builder(Material.ANVIL)
+            .name(Message.GAME_CREATE_EDIT_ID_DISPLAY.build(this.id))
+            .lore(Message.GAME_CREATE_EDIT_ID_LORE.build())
+            .build(),
+        this::listenForIdMessage);
   }
 
   private void listenForMax(final InventoryClickEvent event) {
@@ -298,11 +300,17 @@ public final class GameCreationGui extends PatternGui implements Listener {
   }
 
   private GuiItem createCloseStack() {
-    return new GuiItem(Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(), event -> this.close(this.watcher));
+    return new GuiItem(
+        Item.builder(Material.BARRIER).name(Message.SHOP_GUI_CANCEL.build()).build(),
+        event -> this.close(this.watcher));
   }
 
   private GuiItem createApplyStack() {
-    return new GuiItem(Item.builder(Material.GREEN_WOOL).name(Message.CREATE_GAME_GUI_APPLY.build()).build(), this::createNewGame);
+    return new GuiItem(
+        Item.builder(Material.GREEN_WOOL)
+            .name(Message.CREATE_GAME_GUI_APPLY.build())
+            .build(),
+        this::createNewGame);
   }
 
   private void createNewGame(final InventoryClickEvent event) {
@@ -325,43 +333,48 @@ public final class GameCreationGui extends PatternGui implements Listener {
     final String lobbyName = this.lobby.getName();
     final String arenaName = this.arena.getName();
     final String mode =
-      switch (this.mode) {
-        case 0 -> "default";
-        case 1 -> "freeze_tag";
-        case 2 -> "one_bounce";
-        default -> throw new IllegalStateException("Unexpected value");
-      };
-    return "murder game create %s %s %s %s %s %s %s".formatted(arenaName, lobbyName, this.id, mode, this.min, this.max, this.quickJoin);
+        switch (this.mode) {
+          case 0 -> "default";
+          case 1 -> "freeze_tag";
+          case 2 -> "one_bounce";
+          default -> throw new IllegalStateException("Unexpected value");
+        };
+    return "murder game create %s %s %s %s %s %s %s"
+        .formatted(arenaName, lobbyName, this.id, mode, this.min, this.max, this.quickJoin);
   }
 
   private boolean checkMissingProperty() {
-    return (this.lobby == null || this.arena == null || this.id == null || this.min < 2 || this.max < 2 || this.min > this.max);
+    return (this.lobby == null
+        || this.arena == null
+        || this.id == null
+        || this.min < 2
+        || this.max < 2
+        || this.min > this.max);
   }
 
   private GuiItem createArenaStack() {
     final String name = this.arena == null ? "" : this.arena.getName();
     return new GuiItem(
-      Item.builder(Material.ANVIL)
-        .name(Message.CREATE_GAME_GUI_ARENA_DISPLAY.build(name))
-        .lore(Message.CREATE_GAME_GUI_ARENA_LORE.build())
-        .build(),
-      this::chooseArena
-    );
+        Item.builder(Material.ANVIL)
+            .name(Message.CREATE_GAME_GUI_ARENA_DISPLAY.build(name))
+            .lore(Message.CREATE_GAME_GUI_ARENA_LORE.build())
+            .build(),
+        this::chooseArena);
   }
 
   private GuiItem createLobbyStack() {
     final String name = this.lobby == null ? "" : this.lobby.getName();
     return new GuiItem(
-      Item.builder(Material.ANVIL)
-        .name(Message.CREATE_GAME_GUI_LOBBY_DISPLAY.build(name))
-        .lore(Message.CREATE_GAME_GUI_LOBBY_LORE.build())
-        .build(),
-      this::chooseLobby
-    );
+        Item.builder(Material.ANVIL)
+            .name(Message.CREATE_GAME_GUI_LOBBY_DISPLAY.build(name))
+            .lore(Message.CREATE_GAME_GUI_LOBBY_LORE.build())
+            .build(),
+        this::chooseLobby);
   }
 
   private void chooseLobby(final InventoryClickEvent event) {
-    final LobbyListGui gui = new LobbyListGui(this.plugin, this.watcher, this::handleLobbyClickEvent);
+    final LobbyListGui gui =
+        new LobbyListGui(this.plugin, this.watcher, this::handleLobbyClickEvent);
     gui.update();
     gui.open(this.watcher);
   }
@@ -382,7 +395,8 @@ public final class GameCreationGui extends PatternGui implements Listener {
   }
 
   private void chooseArena(final InventoryClickEvent event) {
-    final ArenaListGui gui = new ArenaListGui(this.plugin, this.watcher, this::handleArenaClickEvent);
+    final ArenaListGui gui =
+        new ArenaListGui(this.plugin, this.watcher, this::handleArenaClickEvent);
     gui.update();
     gui.open(this.watcher);
   }
@@ -403,6 +417,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
   }
 
   private GuiItem createBorderStack() {
-    return new GuiItem(Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
+    return new GuiItem(
+        Item.builder(Material.GRAY_STAINED_GLASS_PANE).name(empty()).build());
   }
 }

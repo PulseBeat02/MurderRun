@@ -41,7 +41,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public final class TradingUtils {
 
-  private static final Comparator<ItemStack> ITEM_STACK_COMPARATOR = Comparator.comparing(TradingUtils::compareStackName);
+  private static final Comparator<ItemStack> ITEM_STACK_COMPARATOR =
+      Comparator.comparing(TradingUtils::compareStackName);
 
   private TradingUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -85,8 +86,8 @@ public final class TradingUtils {
     final Collection<Ability> abilities = registry.getAbilities();
     final Set<ItemStack> items = new TreeSet<>(ITEM_STACK_COMPARATOR);
     for (final Ability ability : abilities) {
-      final boolean add =
-        (isSurvivorAbilities && ability instanceof SurvivorAbility) || (!isSurvivorAbilities && ability instanceof KillerAbility);
+      final boolean add = (isSurvivorAbilities && ability instanceof SurvivorAbility)
+          || (!isSurvivorAbilities && ability instanceof KillerAbility);
       if (add) {
         final Item.Builder builder = requireNonNull(ability.getStackBuilder());
         final ItemStack stack = builder.build();
@@ -96,7 +97,8 @@ public final class TradingUtils {
     return items;
   }
 
-  public static MerchantRecipe createGadgetRecipe(final GameProperties properties, final Gadget gadget) {
+  public static MerchantRecipe createGadgetRecipe(
+      final GameProperties properties, final Gadget gadget) {
     final int cost = gadget.getPrice();
     final Item.Builder stack = requireNonNull(gadget.getStackBuilder());
     final ItemStack itemStack = stack.build();
@@ -107,7 +109,8 @@ public final class TradingUtils {
     return recipe;
   }
 
-  public static Optional<MerchantRecipe> getRecipeByResult(final GameProperties properties, final ItemStack item) {
+  public static Optional<MerchantRecipe> getRecipeByResult(
+      final GameProperties properties, final ItemStack item) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final Collection<Gadget> gadgets = registry.getGadgets();
     MerchantRecipe target = null;
@@ -123,11 +126,9 @@ public final class TradingUtils {
 
   private static boolean matchesResult(final MerchantRecipe recipe, final ItemStack clickedItem) {
     final ItemStack recipeItem = recipe.getResult();
-    return (
-      recipeItem.isSimilar(clickedItem) &&
-      recipeItem.getType() == clickedItem.getType() &&
-      recipeItem.hasItemMeta() == clickedItem.hasItemMeta()
-    );
+    return (recipeItem.isSimilar(clickedItem)
+        && recipeItem.getType() == clickedItem.getType()
+        && recipeItem.hasItemMeta() == clickedItem.hasItemMeta());
   }
 
   private static String compareStackName(final ItemStack stack) {
@@ -154,7 +155,8 @@ public final class TradingUtils {
     return recipes;
   }
 
-  public static List<MerchantRecipe> parseGadgetRecipes(final GameProperties properties, final String... args) {
+  public static List<MerchantRecipe> parseGadgetRecipes(
+      final GameProperties properties, final String... args) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
     final List<MerchantRecipe> recipes = new ArrayList<>();
     for (final String arg : args) {
@@ -173,7 +175,8 @@ public final class TradingUtils {
     final Collection<Gadget> gadgets = registry.getGadgets();
     final Set<ItemStack> items = new TreeSet<>(ITEM_STACK_COMPARATOR);
     for (final Gadget gadget : gadgets) {
-      final boolean add = (isSurvivorGadgets && gadget instanceof SurvivorDevice) || (!isSurvivorGadgets && gadget instanceof KillerDevice);
+      final boolean add = (isSurvivorGadgets && gadget instanceof SurvivorDevice)
+          || (!isSurvivorGadgets && gadget instanceof KillerDevice);
       if (add) {
         final ItemStack stack = getModifiedLoreWithCost(gadget);
         items.add(stack);

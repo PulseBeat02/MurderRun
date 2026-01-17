@@ -46,7 +46,7 @@ import org.bukkit.potion.PotionType;
 public final class ItemFactory {
 
   private static final String ITEM_SKULL_URL =
-    "http://textures.minecraft.net/texture/6e39fa3aeff671667571d6541f685ccd6c9c4185f5d3a5af5872ec9879a2044";
+      "http://textures.minecraft.net/texture/6e39fa3aeff671667571d6541f685ccd6c9c4185f5d3a5af5872ec9879a2044";
 
   private ItemFactory() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -54,10 +54,10 @@ public final class ItemFactory {
 
   public static ItemStack createItemLocationWand() {
     return Item.builder(Material.BLAZE_ROD)
-      .name(Message.ITEM_ARENA_NAME.build())
-      .lore(Message.ITEM_ARENA_LORE.build())
-      .pdc(Keys.ITEM_WAND, PersistentDataType.BOOLEAN, true)
-      .build();
+        .name(Message.ITEM_ARENA_NAME.build())
+        .lore(Message.ITEM_ARENA_LORE.build())
+        .pdc(Keys.ITEM_WAND, PersistentDataType.BOOLEAN, true)
+        .build();
   }
 
   public static ItemStack[] createKillerGear(final GameProperties properties) {
@@ -70,14 +70,18 @@ public final class ItemFactory {
     if (Capabilities.CRAFTENGINE.isEnabled()) {
       final CraftEngineManager craftEngineManager = plugin.getCraftEngineManager();
       final Optional<Item.Builder> helmetBuilder = craftEngineManager.getKillerHelmet(properties);
-      final Optional<Item.Builder> chestplateBuilder = craftEngineManager.getKillerChestplate(properties);
-      final Optional<Item.Builder> leggingsBuilder = craftEngineManager.getKillerLeggings(properties);
+      final Optional<Item.Builder> chestplateBuilder =
+          craftEngineManager.getKillerChestplate(properties);
+      final Optional<Item.Builder> leggingsBuilder =
+          craftEngineManager.getKillerLeggings(properties);
       final Optional<Item.Builder> bootsBuilder = craftEngineManager.getKillerBoots(properties);
       final ItemStack helmet = helmetBuilder.map(Item.Builder::build).orElse(defaultKillerHelmet);
-      final ItemStack chestplate = chestplateBuilder.map(Item.Builder::build).orElse(defaultKillerChestplate);
-      final ItemStack leggings = leggingsBuilder.map(Item.Builder::build).orElse(defaultKillerLeggings);
+      final ItemStack chestplate =
+          chestplateBuilder.map(Item.Builder::build).orElse(defaultKillerChestplate);
+      final ItemStack leggings =
+          leggingsBuilder.map(Item.Builder::build).orElse(defaultKillerLeggings);
       final ItemStack boots = bootsBuilder.map(Item.Builder::build).orElse(defaultKillerBoots);
-      return new ItemStack[] { boots, leggings, chestplate, helmet };
+      return new ItemStack[] {boots, leggings, chestplate, helmet};
     }
 
     if (Capabilities.NEXO.isEnabled()) {
@@ -87,42 +91,49 @@ public final class ItemFactory {
       final Optional<Item.Builder> leggingsBuilder = nexoManager.getKillerLeggings(properties);
       final Optional<Item.Builder> bootsBuilder = nexoManager.getKillerBoots(properties);
       final ItemStack helmet = helmetBuilder.map(Item.Builder::build).orElse(defaultKillerHelmet);
-      final ItemStack chestplate = chestplateBuilder.map(Item.Builder::build).orElse(defaultKillerChestplate);
-      final ItemStack leggings = leggingsBuilder.map(Item.Builder::build).orElse(defaultKillerLeggings);
+      final ItemStack chestplate =
+          chestplateBuilder.map(Item.Builder::build).orElse(defaultKillerChestplate);
+      final ItemStack leggings =
+          leggingsBuilder.map(Item.Builder::build).orElse(defaultKillerLeggings);
       final ItemStack boots = bootsBuilder.map(Item.Builder::build).orElse(defaultKillerBoots);
-      return new ItemStack[] { boots, leggings, chestplate, helmet };
+      return new ItemStack[] {boots, leggings, chestplate, helmet};
     }
 
-    return new ItemStack[] { defaultKillerBoots, defaultKillerLeggings, defaultKillerChestplate, defaultKillerHelmet };
+    return new ItemStack[] {
+      defaultKillerBoots, defaultKillerLeggings, defaultKillerChestplate, defaultKillerHelmet
+    };
   }
 
   private static ItemStack createDefaultKillerBoots() {
     return Item.builder(Material.LEATHER_BOOTS)
-      .name(Message.KILLER_BOOTS.build())
-      .dye(Color.RED)
-      .enchantment(Enchantment.PROTECTION, 3)
-      .build();
+        .name(Message.KILLER_BOOTS.build())
+        .dye(Color.RED)
+        .enchantment(Enchantment.PROTECTION, 3)
+        .build();
   }
 
   private static ItemStack createDefaultKillerLeggings() {
     return Item.builder(Material.LEATHER_LEGGINGS)
-      .name(Message.KILLER_LEGGINGS.build())
-      .dye(Color.RED)
-      .enchantment(Enchantment.PROTECTION, 3)
-      .build();
+        .name(Message.KILLER_LEGGINGS.build())
+        .dye(Color.RED)
+        .enchantment(Enchantment.PROTECTION, 3)
+        .build();
   }
 
   private static ItemStack createDefaultKillerHelmet() {
-    return Item.builder(Material.PLAYER_HEAD).name(Message.KILLER_HELMET.build()).head(ITEM_SKULL_URL).build();
+    return Item.builder(Material.PLAYER_HEAD)
+        .name(Message.KILLER_HELMET.build())
+        .head(ITEM_SKULL_URL)
+        .build();
   }
 
   private static ItemStack createDefaultKillerChestplate() {
     return Item.builder(Material.LEATHER_CHESTPLATE)
-      .name(Message.KILLER_CHESTPLATE.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
-      .dye(Color.RED)
-      .enchantment(Enchantment.PROTECTION, 3)
-      .build();
+        .name(Message.KILLER_CHESTPLATE.build())
+        .lore(Message.SURVIVOR_GEAR_LORE.build())
+        .dye(Color.RED)
+        .enchantment(Enchantment.PROTECTION, 3)
+        .build();
   }
 
   public static Item.Builder createPlayerTracker(final Item.Builder builder) {
@@ -141,10 +152,11 @@ public final class ItemFactory {
     return builder.pdc(Keys.SMOKE_GRENADE, PersistentDataType.BOOLEAN, true);
   }
 
-  public static Item.Builder createFlashlight(final GameProperties properties, final Item.Builder builder) {
+  public static Item.Builder createFlashlight(
+      final GameProperties properties, final Item.Builder builder) {
     return builder
-      .cooldown((float) properties.getFlashlightCooldown(), Keys.FLASHLIGHT_COOLDOWN)
-      .pdc(Keys.FLASHLIGHT, PersistentDataType.BOOLEAN, true);
+        .cooldown((float) properties.getFlashlightCooldown(), Keys.FLASHLIGHT_COOLDOWN)
+        .pdc(Keys.FLASHLIGHT, PersistentDataType.BOOLEAN, true);
   }
 
   public static Item.Builder createFlashBang(final Item.Builder builder) {
@@ -209,53 +221,56 @@ public final class ItemFactory {
 
   public static Item.Builder createDefaultSurvivorHelmet(final GameProperties properties) {
     return Item.builder(properties.getSurvivorHelmetMaterial())
-      .name(Message.SURVIVOR_HELMET.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
-      .enchantment(Enchantment.PROTECTION, 3)
-      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_helmet")
-      .hideAttributes();
+        .name(Message.SURVIVOR_HELMET.build())
+        .lore(Message.SURVIVOR_GEAR_LORE.build())
+        .enchantment(Enchantment.PROTECTION, 3)
+        .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_helmet")
+        .hideAttributes();
   }
 
   public static Item.Builder createDefaultSurvivorChestplate(final GameProperties properties) {
     return Item.builder(properties.getSurvivorChestplateMaterial())
-      .name(Message.SURVIVOR_CHESTPLATE.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
-      .enchantment(Enchantment.PROTECTION, 3)
-      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_chestplate")
-      .hideAttributes();
+        .name(Message.SURVIVOR_CHESTPLATE.build())
+        .lore(Message.SURVIVOR_GEAR_LORE.build())
+        .enchantment(Enchantment.PROTECTION, 3)
+        .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_chestplate")
+        .hideAttributes();
   }
 
   public static Item.Builder createDefaultSurvivorLeggings(final GameProperties properties) {
     return Item.builder(properties.getSurvivorLeggingsMaterial())
-      .name(Message.SURVIVOR_LEGGINGS.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
-      .enchantment(Enchantment.PROTECTION, 3)
-      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_leggings")
-      .hideAttributes();
+        .name(Message.SURVIVOR_LEGGINGS.build())
+        .lore(Message.SURVIVOR_GEAR_LORE.build())
+        .enchantment(Enchantment.PROTECTION, 3)
+        .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_leggings")
+        .hideAttributes();
   }
 
   public static Item.Builder createDefaultSurvivorBoots(final GameProperties properties) {
     return Item.builder(properties.getSurvivorBootsMaterial())
-      .name(Message.SURVIVOR_BOOTS.build())
-      .lore(Message.SURVIVOR_GEAR_LORE.build())
-      .enchantment(Enchantment.PROTECTION, 3)
-      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_boots")
-      .hideAttributes();
+        .name(Message.SURVIVOR_BOOTS.build())
+        .lore(Message.SURVIVOR_GEAR_LORE.build())
+        .enchantment(Enchantment.PROTECTION, 3)
+        .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "survivor_boots")
+        .hideAttributes();
   }
 
   public static Item.Builder createPortalGun(final Item.Builder builder) {
     final UUID uuid = UUID.randomUUID();
     final String data = uuid.toString();
     return builder
-      .pdc(Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true)
-      .pdc(Keys.UUID, PersistentDataType.STRING, data)
-      .enchantment(Enchantment.INFINITY, 1)
-      .unbreakable()
-      .hideAttributes();
+        .pdc(Keys.PORTAL_GUN, PersistentDataType.BOOLEAN, true)
+        .pdc(Keys.UUID, PersistentDataType.STRING, data)
+        .enchantment(Enchantment.INFINITY, 1)
+        .unbreakable()
+        .hideAttributes();
   }
 
   public static Item.Builder createHook(final Item.Builder builder) {
-    return builder.pdc(Keys.HOOK, PersistentDataType.BOOLEAN, true).unbreakable().hideAttributes();
+    return builder
+        .pdc(Keys.HOOK, PersistentDataType.BOOLEAN, true)
+        .unbreakable()
+        .hideAttributes();
   }
 
   public static Item.Builder createSpeedPendant(final Item.Builder builder) {
@@ -268,46 +283,49 @@ public final class ItemFactory {
 
   public static Item.Builder createLeaveItem() {
     return Item.builder(Material.RED_DYE)
-      .name(Message.LOBBY_LEAVE_NAME.build())
-      .lore(Message.LOBBY_LEAVE_LORE.build())
-      .pdc(Keys.LEAVE, PersistentDataType.BOOLEAN, true)
-      .hideAttributes();
+        .name(Message.LOBBY_LEAVE_NAME.build())
+        .lore(Message.LOBBY_LEAVE_LORE.build())
+        .pdc(Keys.LEAVE, PersistentDataType.BOOLEAN, true)
+        .hideAttributes();
   }
 
   public static Item.Builder createEmptyAbility() {
     return Item.builder(Material.DIAMOND)
-      .name(Message.EMPTY_ABILITY_NAME.build())
-      .lore(Message.EMPTY_ABILITY_LORE.build())
-      .model("emptyability")
-      .pdc(Keys.ABILITY_KEY_NAME, PersistentDataType.STRING, "empty_ability")
-      .hideAttributes();
+        .name(Message.EMPTY_ABILITY_NAME.build())
+        .lore(Message.EMPTY_ABILITY_LORE.build())
+        .model("emptyability")
+        .pdc(Keys.ABILITY_KEY_NAME, PersistentDataType.STRING, "empty_ability")
+        .hideAttributes();
   }
 
-  public static Item.Builder createAbility(final String pdcName, final Component itemName, final Component itemLore, final int cooldown) {
+  public static Item.Builder createAbility(
+      final String pdcName,
+      final Component itemName,
+      final Component itemLore,
+      final int cooldown) {
     final String texture = pdcName.replace("_", "");
     final NamespacedKey key = new NamespacedKey("murderrun", pdcName);
     return Item.builder(Material.FISHING_ROD)
-      .name(itemName)
-      .lore(itemLore)
-      .model(texture)
-      .pdc(Keys.ABILITY_KEY_NAME, PersistentDataType.STRING, pdcName)
-      .cooldown(cooldown, key)
-      .hideAttributes();
+        .name(itemName)
+        .lore(itemLore)
+        .model(texture)
+        .pdc(Keys.ABILITY_KEY_NAME, PersistentDataType.STRING, pdcName)
+        .cooldown(cooldown, key)
+        .hideAttributes();
   }
 
   public static Item.Builder createGadget(
-    final String pdcName,
-    final Material material,
-    final Component itemName,
-    final Component itemLore
-  ) {
+      final String pdcName,
+      final Material material,
+      final Component itemName,
+      final Component itemLore) {
     final String texture = pdcName.replace("_", "");
     return Item.builder(material)
-      .name(itemName)
-      .lore(itemLore)
-      .model(texture)
-      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName)
-      .hideAttributes();
+        .name(itemName)
+        .lore(itemLore)
+        .model(texture)
+        .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, pdcName)
+        .hideAttributes();
   }
 
   public static ItemStack createSaddle() {
@@ -316,11 +334,11 @@ public final class ItemFactory {
 
   public static Item.Builder createShield(final GameProperties properties) {
     return Item.builder(properties.getShieldMaterial())
-      .name(Message.SHIELD_NAME.build())
-      .lore(Message.SHIELD_LORE.build())
-      .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "shield")
-      .hideAttributes()
-      .durability(5);
+        .name(Message.SHIELD_NAME.build())
+        .lore(Message.SHIELD_LORE.build())
+        .pdc(Keys.GADGET_KEY_NAME, PersistentDataType.STRING, "shield")
+        .hideAttributes()
+        .durability(5);
   }
 
   public static Item.Builder createExcavator(final Item.Builder builder) {
@@ -359,11 +377,11 @@ public final class ItemFactory {
     final int random = RandomUtils.generateInt(1, 6);
     final String name = "car_part_%s".formatted(random);
     return Item.builder(Material.DIAMOND)
-      .name(Message.CAR_PART_ITEM_NAME.build())
-      .lore(Message.CAR_PART_ITEM_LORE.build())
-      .model(name)
-      .pdc(Keys.CAR_PART_UUID, PersistentDataType.STRING, uuid)
-      .build();
+        .name(Message.CAR_PART_ITEM_NAME.build())
+        .lore(Message.CAR_PART_ITEM_LORE.build())
+        .model(name)
+        .pdc(Keys.CAR_PART_UUID, PersistentDataType.STRING, uuid)
+        .build();
   }
 
   public static ItemStack createCurrency(final GameProperties properties, final int amount) {
@@ -381,7 +399,11 @@ public final class ItemFactory {
   }
 
   public static ItemStack createDefaultCurrency(final int amount) {
-    return Item.builder(Material.NETHER_STAR).name(Message.MINEBUCKS.build()).amount(amount).model("minebucks").build();
+    return Item.builder(Material.NETHER_STAR)
+        .name(Message.MINEBUCKS.build())
+        .amount(amount)
+        .model("minebucks")
+        .build();
   }
 
   public static ItemStack createKillerArrow(final GameProperties properties) {
@@ -400,12 +422,12 @@ public final class ItemFactory {
 
   public static ItemStack createDefaultKillerArrow() {
     return Item.builder(Material.ARROW)
-      .name(Message.ARROW_NAME.build())
-      .lore(Message.ARROW_LORE.build())
-      .enchantment(Enchantment.VANISHING_CURSE, 1)
-      .model("laser")
-      .hideAttributes()
-      .build();
+        .name(Message.ARROW_NAME.build())
+        .lore(Message.ARROW_LORE.build())
+        .enchantment(Enchantment.VANISHING_CURSE, 1)
+        .model("laser")
+        .hideAttributes()
+        .build();
   }
 
   public static ItemStack createKillerSword(final GameProperties properties) {
@@ -424,14 +446,14 @@ public final class ItemFactory {
 
   private static ItemStack createDefaultKillerSword() {
     return Item.builder(Material.DIAMOND_SWORD)
-      .name(Message.KILLER_SWORD.build())
-      .model("sword")
-      .modifier(Attribute.ATTACK_DAMAGE, 8)
-      .pdc(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true)
-      .pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true)
-      .enchantment(Enchantment.VANISHING_CURSE, 1)
-      .unbreakable()
-      .hideAttributes()
-      .build();
+        .name(Message.KILLER_SWORD.build())
+        .model("sword")
+        .modifier(Attribute.ATTACK_DAMAGE, 8)
+        .pdc(Keys.SPECIAL_SWORD, PersistentDataType.BOOLEAN, true)
+        .pdc(Keys.CAN_BREAK_BLOCKS, PersistentDataType.BOOLEAN, true)
+        .enchantment(Enchantment.VANISHING_CURSE, 1)
+        .unbreakable()
+        .hideAttributes()
+        .build();
   }
 }

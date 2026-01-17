@@ -57,7 +57,8 @@ public final class TranslationManager {
     this.translator = new PluginTranslator(ADVENTURE_KEY, this.bundle);
   }
 
-  private String getPropertiesPath(@UnderInitialization TranslationManager this, final MurderRun plugin) {
+  private String getPropertiesPath(
+      @UnderInitialization TranslationManager this, final MurderRun plugin) {
     final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
     final me.brandonli.murderrun.locale.Locale locale = mapper.getLocale();
     final String name = locale.name();
@@ -65,7 +66,8 @@ public final class TranslationManager {
     return "locale/murderrun_%s.properties".formatted(lower);
   }
 
-  private ResourceBundle getBundle(@UnderInitialization TranslationManager this, final String propertiesPath) {
+  private ResourceBundle getBundle(
+      @UnderInitialization TranslationManager this, final String propertiesPath) {
     final Path resource = this.copyResourceToFolder(propertiesPath);
     try (final Reader reader = Files.newBufferedReader(resource)) {
       final ResourceBundle bundle = new PropertyResourceBundle(reader);
@@ -78,7 +80,8 @@ public final class TranslationManager {
     }
   }
 
-  private Path copyResourceToFolder(@UnderInitialization TranslationManager this, final String propertiesPath) {
+  private Path copyResourceToFolder(
+      @UnderInitialization TranslationManager this, final String propertiesPath) {
     final Path folder = IOUtils.getPluginDataFolderPath();
     final Path locale = folder.resolve(propertiesPath);
     if (Files.notExists(locale)) {
@@ -88,7 +91,10 @@ public final class TranslationManager {
     return locale;
   }
 
-  private void copyLocaleProperties(@UnderInitialization TranslationManager this, final String propertiesPath, final Path locale) {
+  private void copyLocaleProperties(
+      @UnderInitialization TranslationManager this,
+      final String propertiesPath,
+      final Path locale) {
     try (final InputStream stream = IOUtils.getResourceAsStream(propertiesPath)) {
       Files.copy(stream, locale, StandardCopyOption.REPLACE_EXISTING);
     } catch (final IOException e) {

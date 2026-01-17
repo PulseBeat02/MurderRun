@@ -49,15 +49,15 @@ public final class ArenaCreationManager implements Serializable, HibernateSerial
   }
 
   public void addArena(
-    final UUID uuid,
-    final String arenaName,
-    final Location spawn,
-    final Location truck,
-    final Location first,
-    final Location second,
-    final Collection<Location> itemLocations
-  ) {
-    final ArenaCreation creation = new ArenaCreation(arenaName, spawn, truck, first, second, itemLocations);
+      final UUID uuid,
+      final String arenaName,
+      final Location spawn,
+      final Location truck,
+      final Location first,
+      final Location second,
+      final Collection<Location> itemLocations) {
+    final ArenaCreation creation =
+        new ArenaCreation(arenaName, spawn, truck, first, second, itemLocations);
     this.arenas.put(uuid, creation);
   }
 
