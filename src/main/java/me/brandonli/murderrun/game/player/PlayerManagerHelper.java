@@ -104,6 +104,20 @@ public interface PlayerManagerHelper {
     });
   }
 
+  default void sendMessageToAllMurderers(final Component message) {
+    this.applyToKillers(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
+  }
+
+  default void sendMessageToAllSurvivors(final Component message) {
+    this.applyToSurvivors(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.sendMessage(message);
+    });
+  }
+
   default void sendMessageToAllLivingSurvivors(final Component message) {
     this.applyToLivingSurvivors(player -> {
       final PlayerAudience audience = player.getAudience();

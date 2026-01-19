@@ -101,7 +101,7 @@ public final class FreezeTagManager {
 
     final Component message = Message.FREEZE_TAG_FROZEN.build();
     final PlayerAudience provider = survivor.getAudience();
-    provider.showTitle(empty(), message);
+    provider.sendMessage(message);
 
     this.startRevivalTimer(survivor);
     this.startHologramTask(survivor);

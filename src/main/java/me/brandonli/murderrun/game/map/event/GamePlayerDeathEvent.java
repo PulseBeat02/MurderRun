@@ -156,11 +156,14 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final Key fillKey = key("murderrun", "fill");
     final TextColor red = TextColor.fromHexString("#FF0000");
     final TextColor black = TextColor.fromHexString("#000000");
-    audience.showTitle(text("8").font(fillKey).color(red), empty(), 0, 4 * 20, 0);
+    audience.showTitle(
+        "screen", text("8").font(fillKey).color(red), empty(), Integer.MAX_VALUE, 0, 4 * 20, 0);
     scheduler.scheduleTask(
         () -> audience.showTitle(
+            "screen",
             text("8").font(fillKey).color(black),
             Message.GAME_PLAYER_DEATH.build(),
+            Integer.MAX_VALUE,
             0,
             5 * 20,
             3 * 20),

@@ -159,7 +159,7 @@ public final class PlayerScoreboard {
     final int day = now.getDayOfMonth();
     final int month = now.getMonthValue();
     final int year = now.getYear();
-    return Message.GAME_SCOREBOARD_DATE.build(day, month, year);
+    return Message.GAME_SCOREBOARD_DATE.build(month, day, year);
   }
 
   private String getDirection(final Location truck, final Location current) {

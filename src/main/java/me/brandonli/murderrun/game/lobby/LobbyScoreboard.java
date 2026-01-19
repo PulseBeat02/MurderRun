@@ -83,7 +83,7 @@ public final class LobbyScoreboard {
     final int day = now.getDayOfMonth();
     final int month = now.getMonthValue();
     final int year = now.getYear();
-    return Message.LOBBY_SCOREBOARD_DATE.build(day, month, year);
+    return Message.LOBBY_SCOREBOARD_DATE.build(month, day, year);
   }
 
   private Component generateModeComponent() {

@@ -39,6 +39,8 @@ public final class MetadataManager {
   private final GamePlayer gamePlayer;
   private final PlayerTeamManager manager;
   private final WorldBorder shadyWorldBorder;
+  private final Map<Location, String> blockLayerIds;
+  private final Map<UUID, String> entityLayerIds;
 
   private PlayerScoreboard sidebar;
 
@@ -46,6 +48,8 @@ public final class MetadataManager {
     this.gamePlayer = gamePlayer;
     this.shadyWorldBorder = this.createWorldBorder(gamePlayer);
     this.manager = new PlayerTeamManager(gamePlayer);
+    this.blockLayerIds = new HashMap<>();
+    this.entityLayerIds = new HashMap<>();
   }
 
   public void start() {
@@ -96,13 +100,18 @@ public final class MetadataManager {
       if (slime == null) {
         return;
       }
-      this.manager.setEntityGlow(slime, color);
+      final String layer = this.manager.addGlowLayer(slime, color);
+      this.blockLayerIds.put(location, layer);
     } else {
       final Slime slime = GlowUtils.setBlockGlowing(player, location, false);
       if (slime == null) {
         return;
       }
-      this.manager.removeEntityGlow(slime);
+      final String layer = this.blockLayerIds.remove(location);
+      if (layer == null) {
+        return;
+      }
+      this.manager.removeGlowLayer(slime, layer);
     }
   }
 
@@ -127,9 +136,16 @@ public final class MetadataManager {
       return;
     }
     if (glowing) {
-      this.manager.setEntityGlow(entity, color);
+      final String layer = this.manager.addGlowLayer(entity, color);
+      final UUID uuid = entity.getUniqueId();
+      this.entityLayerIds.put(uuid, layer);
     } else {
-      this.manager.removeEntityGlow(entity);
+      final UUID uuid = entity.getUniqueId();
+      final String layer = this.entityLayerIds.remove(uuid);
+      if (layer == null) {
+        return;
+      }
+      this.manager.removeGlowLayer(entity, layer);
     }
   }
 

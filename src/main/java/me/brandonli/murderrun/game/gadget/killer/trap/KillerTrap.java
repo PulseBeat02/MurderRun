@@ -17,8 +17,6 @@
  */
 package me.brandonli.murderrun.game.gadget.killer.trap;
 
-import static net.kyori.adventure.text.Component.empty;
-
 import java.awt.Color;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.gadget.Trap;
@@ -42,12 +40,11 @@ public abstract class KillerTrap extends Trap implements KillerDevice {
   @Override
   public void onGadgetNearby(final GadgetNearbyPacket packet) {
     super.onGadgetNearby(packet);
-    final Component announcement = empty();
     final Component subtitle = this.getAnnouncement();
     if (subtitle != null) {
       final Game game = packet.getGame();
       final GamePlayerManager manager = game.getPlayerManager();
-      manager.showTitleForAllMurderers(announcement, subtitle);
+      manager.sendMessageToAllMurderers(subtitle);
     }
   }
 }

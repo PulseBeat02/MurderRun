@@ -71,7 +71,8 @@ public final class GamePlayerDamageEvent extends GameEvent {
     final PlayerAudience audience = gamePlayer.getAudience();
     final Key key = key("murderrun", "fill");
     final TextColor color = TextColor.fromHexString("#FF0000");
-    audience.showTitle(text(raw).font(key).color(color), empty(), 0, 12 * 20, 8 * 20);
+    audience.showTitle(
+        "screen", text(raw).font(key).color(color), empty(), Integer.MAX_VALUE, 0, 12 * 20, 8 * 20);
   }
 
   // create distribution
