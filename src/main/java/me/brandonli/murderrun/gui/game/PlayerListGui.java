@@ -89,7 +89,7 @@ public final class PlayerListGui extends PaginatedGui {
       return;
     }
 
-    final PreGameManager manager = this.manager.getGame(player);
+    final PreGameManager manager = this.manager.getGameAsParticipant(player);
     final String name = player.getName();
     final Player owner = (Player) this.watcher;
     if (manager == null) {
@@ -116,7 +116,7 @@ public final class PlayerListGui extends PaginatedGui {
     final Collection<? extends Player> online = Bukkit.getOnlinePlayers();
     final List<ItemStack> items = new ArrayList<>();
     for (final Player player : online) {
-      final PreGameManager preGameManager = this.manager.getGame(player);
+      final PreGameManager preGameManager = this.manager.getGameAsParticipant(player);
       final ItemStack stack = preGameManager == null
           ? this.createNormalStack(player)
           : this.getInGameStack(player, preGameManager);
