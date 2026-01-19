@@ -24,6 +24,7 @@ import io.papermc.paper.plugin.loader.PluginLoader;
 import java.nio.file.Path;
 import java.util.Set;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.jpenilla.gremlin.runtime.DependencyCache;
 import xyz.jpenilla.gremlin.runtime.DependencyResolver;
@@ -33,22 +34,25 @@ import xyz.jpenilla.gremlin.runtime.logging.GremlinLogger;
 import xyz.jpenilla.gremlin.runtime.logging.Slf4jGremlinLogger;
 import xyz.jpenilla.gremlin.runtime.platformsupport.PaperClasspathAppender;
 
+@SuppressWarnings("UnstableApiUsage")
 public final class MurderRunLoader implements PluginLoader {
+
+  private static final Path LIBRARY_PATH = Path.of("libraries/murderrun");
+  private static final String LOGGER_NAME = "Gremlin (Murder Run)";
 
   @Override
   @SuppressWarnings("UnstableApiUsage")
   public void classloader(final @NonNull PluginClasspathBuilder classpathBuilder) {
-    final Path libs = Path.of("libraries/murderrun");
     final Class<?> clazz = this.getClass();
     final ClassLoader classLoader = requireNonNull(clazz.getClassLoader());
     final DependencySet deps = DependencySet.readDefault(classLoader);
-    final DependencyCache cache = new DependencyCache(libs);
-    final org.slf4j.Logger logger = LoggerFactory.getLogger("Gremlin");
+    final DependencyCache cache = new DependencyCache(LIBRARY_PATH);
+    final Logger logger = LoggerFactory.getLogger(LOGGER_NAME);
     final GremlinLogger gremlinLogger = new Slf4jGremlinLogger(logger);
     try (final DependencyResolver downloader = new DependencyResolver(gremlinLogger)) {
+      final PaperClasspathAppender appender = new PaperClasspathAppender(classpathBuilder);
       final ResolvedDependencySet resolvedDeps = downloader.resolve(deps, cache);
       final Set<Path> jars = resolvedDeps.jarFiles();
-      final PaperClasspathAppender appender = new PaperClasspathAppender(classpathBuilder);
       appender.append(jars);
     }
     cache.cleanup();

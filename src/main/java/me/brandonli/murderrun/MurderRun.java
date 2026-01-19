@@ -21,7 +21,6 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.PacketEventsAPI;
 import dev.triumphteam.gui.TriumphGui;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.api.event.ApiEventBus;
 import me.brandonli.murderrun.api.event.EventBusProvider;
@@ -32,7 +31,6 @@ import me.brandonli.murderrun.data.RelationalDataProvider;
 import me.brandonli.murderrun.data.yaml.ConfigurationManager;
 import me.brandonli.murderrun.data.yaml.PluginDataConfigurationMapper;
 import me.brandonli.murderrun.data.yaml.QuickJoinConfigurationMapper;
-import me.brandonli.murderrun.dependency.DependencyManager;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.PlayerResourcePackChecker;
 import me.brandonli.murderrun.game.ability.AbilityRegistry;
@@ -61,10 +59,7 @@ import me.brandonli.murderrun.utils.map.MapTeleportSkipListener;
 import me.brandonli.murderrun.utils.screen.ScreenUtils;
 import me.brandonli.murderrun.utils.versioning.VersionChecker;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MurderRun extends JavaPlugin {
@@ -146,10 +141,11 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void startMiscListeners() {
-    if (false) { // we use TeamCity now, not GitHub releases
-      this.versionChecker = new VersionChecker(this);
-      this.versionChecker.start();
-    }
+    // we use TeamCity for version checking now
+    // if (false) {
+    //   this.versionChecker = new VersionChecker(this);
+    //   this.versionChecker.start();
+    // }
     this.mapTeleportSkipListener = new MapTeleportSkipListener(this);
     this.mapTeleportSkipListener.start();
   }
@@ -175,29 +171,6 @@ public final class MurderRun extends JavaPlugin {
     this.audience.console(Message.LOAD_SCHEMATICS.build());
     final SchematicLoader loader = new SchematicLoader(this);
     loader.loadSchematics();
-  }
-
-  private void loadDependencies() {
-    final Optional<UnsupportedOperationException> exception =
-        this.installDependenciesExceptionally();
-    if (exception.isPresent()) {
-      final Server server = Bukkit.getServer();
-      final PluginManager manager = server.getPluginManager();
-      final UnsupportedOperationException e = exception.get();
-      manager.disablePlugin(this);
-      throw new AssertionError(e);
-    }
-  }
-
-  private Optional<UnsupportedOperationException> installDependenciesExceptionally() {
-    try {
-      final DependencyManager manager = new DependencyManager();
-      manager.installDependencies();
-      this.setupPacketEvents();
-    } catch (final UnsupportedOperationException e) {
-      return Optional.of(e);
-    }
-    return Optional.empty();
   }
 
   private void setupPacketEvents() {

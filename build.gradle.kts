@@ -81,7 +81,6 @@ dependencies {
     compileOnly(libs.fastutil)
     compileOnly(libs.nettyAll)
     compileOnly(libs.placeholderapi)
-    compileOnly(libs.protocolLib)
     compileOnly(libs.libsDisguises)
     compileOnly(libs.worldeditCore)
     compileOnly(libs.worldeditBukkit)
