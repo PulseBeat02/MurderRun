@@ -19,10 +19,10 @@ package me.brandonli.murderrun.game;
 
 public final class GameTimer {
 
-  private long startTime;
-  private long endTime;
-  private long elapsedTime;
-  private long totalTime;
+  private volatile long startTime;
+  private volatile long endTime;
+  private volatile long elapsedTime;
+  private volatile long totalTime;
 
   public void startTimer(final Game game) {
     final GameProperties properties = game.getProperties();

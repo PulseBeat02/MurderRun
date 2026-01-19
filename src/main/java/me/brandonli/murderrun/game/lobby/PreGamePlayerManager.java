@@ -68,7 +68,8 @@ public final class PreGamePlayerManager {
 
   private LobbyScoreboard scoreboard;
   private LobbyBossbar bossbar;
-  private boolean locked;
+
+  private volatile boolean locked;
 
   public PreGamePlayerManager(
       final PreGameManager manager,

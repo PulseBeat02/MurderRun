@@ -75,7 +75,7 @@ public final class PlayerStatistics implements Serializable {
 
   public PlayerStatistics() {}
 
-  public void insertFastestWinKiller(final long win) {
+  public synchronized void insertFastestWinKiller(final long win) {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(StatisticsEvent.class, StatisticsType.FASTEST_KILLER_WIN, win)) {
       return;
@@ -83,7 +83,7 @@ public final class PlayerStatistics implements Serializable {
     this.fastestWinKiller = Math.min(this.fastestWinKiller, win);
   }
 
-  public void insertFastestWinSurvivor(final long win) {
+  public synchronized void insertFastestWinSurvivor(final long win) {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(StatisticsEvent.class, StatisticsType.FASTEST_SURVIVOR_WIN, win)) {
       return;
@@ -91,7 +91,7 @@ public final class PlayerStatistics implements Serializable {
     this.fastestWinSurvivor = Math.min(this.fastestWinSurvivor, win);
   }
 
-  public void incrementTotalKills() {
+  public synchronized void incrementTotalKills() {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_KILLS, 1)) {
       return;
@@ -99,7 +99,7 @@ public final class PlayerStatistics implements Serializable {
     this.totalKills++;
   }
 
-  public void incrementTotalDeaths() {
+  public synchronized void incrementTotalDeaths() {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_DEATHS, 1)) {
       return;
@@ -107,7 +107,7 @@ public final class PlayerStatistics implements Serializable {
     this.totalDeaths++;
   }
 
-  public void incrementTotalWins() {
+  public synchronized void incrementTotalWins() {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_WINS, 1)) {
       return;
@@ -117,7 +117,7 @@ public final class PlayerStatistics implements Serializable {
     this.incrementTotalGames();
   }
 
-  public void incrementTotalLosses() {
+  public synchronized void incrementTotalLosses() {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_LOSSES, 1)) {
       return;
@@ -127,7 +127,7 @@ public final class PlayerStatistics implements Serializable {
     this.incrementTotalGames();
   }
 
-  public void incrementTotalGames() {
+  private synchronized void incrementTotalGames() {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(StatisticsEvent.class, StatisticsType.TOTAL_GAMES, 1)) {
       return;
@@ -135,7 +135,7 @@ public final class PlayerStatistics implements Serializable {
     this.totalGames++;
   }
 
-  public void calculateWinLossRatio() {
+  private synchronized void calculateWinLossRatio() {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (this.totalLosses != 0) {
       final float recalculatedWinLossRatio = (float) this.totalWins / this.totalLosses;

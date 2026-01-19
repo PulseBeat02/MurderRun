@@ -59,8 +59,8 @@ public final class MovementManager {
     manager.applyToAllParticipants(player -> {
       final Location location = player.getLocation();
       final long timestamp = System.currentTimeMillis();
-      this.playerLocations.putIfAbsent(player, new CircularBuffer<>(BUFFER_SIZE));
-      final CircularBuffer<Entry<Location, Long>> entries = this.playerLocations.get(player);
+      final CircularBuffer<Entry<Location, Long>> entries =
+          this.playerLocations.computeIfAbsent(player, _ -> new CircularBuffer<>(BUFFER_SIZE));
       final SimpleEntry<Location, Long> entry = new SimpleEntry<>(location, timestamp);
       entries.add(entry);
     });

@@ -34,8 +34,8 @@ public final class FileHttpServer {
   private final Path filePath;
   private final ExecutorService service;
 
-  private EventLoopGroup bossGroup;
-  private EventLoopGroup workerGroup;
+  private volatile EventLoopGroup bossGroup;
+  private volatile EventLoopGroup workerGroup;
 
   public FileHttpServer(final int port, final Path filePath) {
     this.port = port;

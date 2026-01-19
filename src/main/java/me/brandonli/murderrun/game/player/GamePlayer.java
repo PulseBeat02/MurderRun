@@ -40,11 +40,11 @@ public class GamePlayer extends AbstractPlayer {
   private DeathManager deathManager;
   private PlayerAudience audience;
 
-  private long lastPortalUse;
-  private boolean canDismount;
-  private boolean canSpectatorTeleport;
-  private boolean alive;
-  private boolean loggingOut;
+  private volatile long lastPortalUse;
+  private volatile boolean canDismount;
+  private volatile boolean canSpectatorTeleport;
+  private volatile boolean alive;
+  private volatile boolean loggingOut;
 
   public GamePlayer(final Game game, final UUID uuid) {
     this.game = game;

@@ -25,10 +25,10 @@ import org.bukkit.entity.Item;
 
 public final class Killer extends GamePlayer {
 
-  private boolean ignoreTraps;
-  private boolean forceMine;
-  private long killerCooldown;
-  private int kills;
+  private volatile boolean ignoreTraps;
+  private volatile boolean forceMine;
+  private volatile long killerCooldown;
+  private volatile int kills;
 
   private final Collection<GamePlayer> forewarnGlowing;
   private final Collection<GamePlayer> heatSeekerGlowing;

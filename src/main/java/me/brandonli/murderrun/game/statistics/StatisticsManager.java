@@ -20,9 +20,9 @@ package me.brandonli.murderrun.game.statistics;
 import jakarta.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.data.hibernate.converters.UUIDConverter;
 import me.brandonli.murderrun.data.hibernate.identifier.HibernateSerializable;
 import me.brandonli.murderrun.game.player.GamePlayer;
@@ -48,7 +48,7 @@ public final class StatisticsManager implements Serializable, HibernateSerializa
   private final Map<UUID, PlayerStatistics> map;
 
   public StatisticsManager() {
-    this.map = new HashMap<>();
+    this.map = new ConcurrentHashMap<>();
   }
 
   public PlayerStatistics getOrCreatePlayerStatistic(final GamePlayer player) {

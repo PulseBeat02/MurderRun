@@ -29,19 +29,19 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Survivor extends GamePlayer {
 
-  private boolean canPickupCarPart;
-  private boolean canPlaceBlocks;
-  private boolean carPart;
-  private boolean canSee;
-  private boolean heardSound;
-  private boolean frozen;
+  private volatile boolean canPickupCarPart;
+  private volatile boolean canPlaceBlocks;
+  private volatile boolean carPart;
+  private volatile boolean canSee;
+  private volatile boolean heardSound;
+  private volatile boolean frozen;
 
-  private long rewindCooldown;
-  private long frozenTime;
-  private long reviveStartTime;
+  private volatile long rewindCooldown;
+  private volatile long frozenTime;
+  private volatile long reviveStartTime;
 
-  private int carPartsRetrieved;
-  private int freezeTagLives;
+  private volatile int carPartsRetrieved;
+  private volatile int freezeTagLives;
 
   private @Nullable UUID revivingPlayer;
 

@@ -53,8 +53,8 @@ public abstract class ResourcePackProvider implements PackProvider {
   private final ProviderMethod method;
   private final MurderRun plugin;
 
-  private ResourcePackRequest cached;
-  private String url;
+  private volatile ResourcePackRequest cached;
+  private volatile String url;
 
   public ResourcePackProvider(final MurderRun plugin, final ProviderMethod method) {
     this.plugin = plugin;
