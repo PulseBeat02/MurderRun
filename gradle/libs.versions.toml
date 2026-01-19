@@ -28,7 +28,7 @@ nexo = "1.17.0"
 creativeApi = "1.11.9"
 packetEvents = "2.11.1"
 vaultApi = "1.7"
-craftEngine = "0.0.66"
+craftEngine = "0.0.67"
 gremlinRuntime = "0.0.9"
 
 [libraries]
