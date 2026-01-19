@@ -57,7 +57,7 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
     this.lobbies = new HashMap<>();
   }
 
-  public void addInternalLobby(final Lobby lobby) {
+  public synchronized void addInternalLobby(final Lobby lobby) {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(LobbyEvent.class, lobby, LobbyModificationType.CREATION)) {
       return;
@@ -66,7 +66,8 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
     this.lobbies.put(name, lobby);
   }
 
-  public void addLobby(final String name, final Location[] corners, final Location spawn) {
+  public synchronized void addLobby(
+      final String name, final Location[] corners, final Location spawn) {
     final ApiEventBus bus = EventBusProvider.getBus();
     final Schematic schematic = Schematic.copyAndCreateSchematic(name, corners, false);
     final Lobby lobby = new Lobby(schematic, name, corners, spawn);
@@ -76,7 +77,7 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
     this.lobbies.put(name, lobby);
   }
 
-  public void removeLobby(final String name) {
+  public synchronized void removeLobby(final String name) {
     final Lobby lobby = this.lobbies.get(name);
     if (lobby == null) {
       return;
@@ -92,15 +93,15 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
     this.lobbies.remove(name);
   }
 
-  public @Nullable Lobby getLobby(final String name) {
+  public synchronized @Nullable Lobby getLobby(final String name) {
     return this.lobbies.get(name);
   }
 
-  public Map<String, Lobby> getLobbies() {
+  public synchronized Map<String, Lobby> getLobbies() {
     return this.lobbies;
   }
 
-  public Set<@KeyFor("this.lobbies") String> getLobbyNames() {
+  public synchronized Set<@KeyFor("this.lobbies") String> getLobbyNames() {
     return this.lobbies.keySet();
   }
 

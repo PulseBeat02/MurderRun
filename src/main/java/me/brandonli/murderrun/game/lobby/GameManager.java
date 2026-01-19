@@ -99,7 +99,7 @@ public final class GameManager {
     return null;
   }
 
-  public boolean joinGame(final Player player, final String id) {
+  public synchronized boolean joinGame(final Player player, final String id) {
     final PreGameManager manager = this.games.get(id);
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
@@ -155,7 +155,7 @@ public final class GameManager {
     audience.sendMessage(Message.GAME_CREATION_LOAD.build());
   }
 
-  private void addGameToRegistry(final String id, final PreGameManager manager) {
+  private synchronized void addGameToRegistry(final String id, final PreGameManager manager) {
     final GameShutdownManager shutdownManager = this.plugin.getGameShutdownManager();
     if (this.games.containsKey(id)) {
       this.removeGame(id);
@@ -180,7 +180,7 @@ public final class GameManager {
     settings.setLobby(lobbyObj);
   }
 
-  public void removeGame(final String id) {
+  public synchronized void removeGame(final String id) {
     final PreGameManager manager = this.games.get(id);
     if (manager != null) {
       final PreGamePlayerManager playerManager = manager.getPlayerManager();
@@ -222,33 +222,34 @@ public final class GameManager {
       }
     }
 
-    if (this.creation.get()) {
+    if (!this.creation.compareAndSet(false, true)) {
       audience.sendMessage(Message.GAME_QUICKJOIN_CREATION_LOAD.build());
       return false;
     }
 
-    final UUID random = UUID.randomUUID();
-    final String raw = random.toString();
-    final List<String[]> pairs = config.getLobbyArenaPairs();
-    if (pairs.isEmpty()) {
-      audience.sendMessage(Message.GAME_NONE.build());
-      return false;
+    try {
+      final UUID random = UUID.randomUUID();
+      final String raw = random.toString();
+      final List<String[]> pairs = config.getLobbyArenaPairs();
+      if (pairs.isEmpty()) {
+        audience.sendMessage(Message.GAME_NONE.build());
+        return false;
+      }
+
+      final String[] rand = RandomUtils.getRandomElement(pairs);
+      final String arena = rand[0];
+      final String lobby = rand[1];
+      final int min = config.getMinPlayers();
+      final int max = config.getMaxPlayers();
+
+      final GameMode[] modes = config.getGameModes();
+      final GameMode mode = RandomUtils.getRandomElement(modes);
+      this.createGame(player, raw, mode, arena, lobby, min, max, true);
+
+      return true;
+    } finally {
+      this.creation.set(false);
     }
-
-    this.creation.set(true);
-
-    final String[] rand = RandomUtils.getRandomElement(pairs);
-    final String arena = rand[0];
-    final String lobby = rand[1];
-    final int min = config.getMinPlayers();
-    final int max = config.getMaxPlayers();
-
-    final GameMode[] modes = config.getGameModes();
-    final GameMode mode = RandomUtils.getRandomElement(modes);
-    this.createGame(player, raw, mode, arena, lobby, min, max, true);
-    this.creation.set(false);
-
-    return true;
   }
 
   public MurderRun getPlugin() {

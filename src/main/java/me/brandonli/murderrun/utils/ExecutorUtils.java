@@ -33,18 +33,17 @@ public final class ExecutorUtils {
       final boolean await = service.awaitTermination(5, TimeUnit.SECONDS);
       if (!await) {
         final List<Runnable> tasks = service.shutdownNow();
-        if (tasks.isEmpty()) {
-          return true;
+        if (!tasks.isEmpty()) {
+          final String msg = createExecutorShutdownErrorMessage(tasks);
+          throw new AssertionError(msg);
         }
-        final String msg = createExecutorShutdownErrorMessage(tasks);
-        throw new AssertionError(msg);
       }
+      return true;
     } catch (final InterruptedException e) {
       final Thread current = Thread.currentThread();
       current.interrupt(); // yeah... we're fucked
       throw new AssertionError(e);
     }
-    return false;
   }
 
   private static String createExecutorShutdownErrorMessage(final List<Runnable> tasks) {

@@ -30,7 +30,7 @@ public enum GameMode {
   private static final Map<String, GameMode> KEY_LOOKUP = Map.of(
       DEFAULT.modeName, DEFAULT, ONE_BOUNCE.modeName, ONE_BOUNCE, FREEZE_TAG.modeName, FREEZE_TAG);
 
-  private static Map<GameMode, GameProperties> PROPERTIES_LOOKUP;
+  private static volatile Map<GameMode, GameProperties> PROPERTIES_LOOKUP;
 
   private final String modeName;
   private final String displayName;
@@ -49,16 +49,22 @@ public enum GameMode {
   }
 
   public GameProperties getProperties() {
-    if (PROPERTIES_LOOKUP == null) { // lazily load the properties
-      PROPERTIES_LOOKUP = Map.of(
-          DEFAULT,
-          new GameProperties(DEFAULT),
-          ONE_BOUNCE,
-          new GameProperties(ONE_BOUNCE),
-          FREEZE_TAG,
-          new GameProperties(FREEZE_TAG));
+    Map<GameMode, GameProperties> result = PROPERTIES_LOOKUP;
+    if (result == null) { // lazily load the properties with proper double-checked locking
+      synchronized (GameMode.class) {
+        result = PROPERTIES_LOOKUP;
+        if (result == null) {
+          PROPERTIES_LOOKUP = result = Map.of(
+              DEFAULT,
+              new GameProperties(DEFAULT),
+              ONE_BOUNCE,
+              new GameProperties(ONE_BOUNCE),
+              FREEZE_TAG,
+              new GameProperties(FREEZE_TAG));
+        }
+      }
     }
-    return requireNonNull(PROPERTIES_LOOKUP.get(this));
+    return requireNonNull(result.get(this));
   }
 
   public static Optional<GameMode> fromString(final String modeName) {

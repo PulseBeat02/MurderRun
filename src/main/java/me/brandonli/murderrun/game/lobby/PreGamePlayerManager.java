@@ -120,7 +120,7 @@ public final class PreGamePlayerManager {
     this.locked = false;
   }
 
-  public void setPlayerToMurderer(final Player murderer) {
+  public synchronized void setPlayerToMurderer(final Player murderer) {
     this.removeParticipantFromLobby(murderer);
     this.addParticipantToLobby(murderer, true);
     this.selectionManager.removeSelection(murderer);
@@ -148,13 +148,13 @@ public final class PreGamePlayerManager {
         10L);
   }
 
-  public void setPlayerToInnocent(final Player innocent) {
+  public synchronized void setPlayerToInnocent(final Player innocent) {
     this.removeParticipantFromLobby(innocent);
     this.addParticipantToLobby(innocent, false);
     this.selectionManager.removeSelection(innocent);
   }
 
-  public void removeParticipantFromLobby(final Player player) {
+  public synchronized void removeParticipantFromLobby(final Player player) {
     this.survivors.remove(player);
     this.murderers.remove(player);
     this.participants.remove(player);
@@ -166,7 +166,7 @@ public final class PreGamePlayerManager {
     this.checkGameShutdownTimer();
   }
 
-  public void removeParticipantFromGameInternal(final Player player) {
+  public synchronized void removeParticipantFromGameInternal(final Player player) {
     this.survivors.remove(player);
     this.murderers.remove(player);
     this.participants.remove(player);
@@ -353,42 +353,38 @@ public final class PreGamePlayerManager {
     return this.isLeader(player);
   }
 
-  public void assignRoles() {
+  public synchronized void assignRoles() {
     final GameMode mode = this.manager.getMode();
     if (mode == GameMode.DEFAULT || mode == GameMode.FREEZE_TAG) {
       if (this.murderers.isEmpty()) {
-        synchronized (this.participants) {
-          final int size = this.participants.size();
-          if (size == 0) {
-            return;
-          }
-          final int index = RandomUtils.generateInt(size);
-          final Player random = Iterables.get(this.participants, index);
-          final Component msg = Message.KILLER_ASSIGN.build();
-          final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
-          this.setPlayerToMurderer(random);
-          random.sendMessage(raw);
+        final int size = this.participants.size();
+        if (size == 0) {
+          return;
         }
+        final int index = RandomUtils.generateInt(size);
+        final Player random = Iterables.get(this.participants, index);
+        final Component msg = Message.KILLER_ASSIGN.build();
+        final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
+        this.setPlayerToMurderer(random);
+        random.sendMessage(raw);
       }
     } else if (mode == GameMode.ONE_BOUNCE) {
       if (this.murderers.isEmpty()) { // assign roles by default
-        synchronized (this.participants) {
-          final int size = this.participants.size();
-          if (size == 0) {
-            return;
+        final int size = this.participants.size();
+        if (size == 0) {
+          return;
+        }
+        final int index = RandomUtils.generateInt(size);
+        final Player random = Iterables.get(this.participants, index);
+        final Component msg = Message.SURVIVOR_ASSIGN.build();
+        final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
+        random.sendMessage(raw);
+        final List<Player> snapshot = new ArrayList<>(this.participants);
+        for (final Player player : snapshot) {
+          if (player == random) {
+            continue;
           }
-          final int index = RandomUtils.generateInt(size);
-          final Player random = Iterables.get(this.participants, index);
-          final Component msg = Message.SURVIVOR_ASSIGN.build();
-          final String raw = ComponentUtils.serializeComponentToLegacyString(msg);
-          random.sendMessage(raw);
-          final List<Player> snapshot = new ArrayList<>(this.participants);
-          for (final Player player : snapshot) {
-            if (player == random) {
-              continue;
-            }
-            this.setPlayerToMurderer(player);
-          }
+          this.setPlayerToMurderer(player);
         }
       }
     }

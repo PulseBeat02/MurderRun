@@ -34,7 +34,7 @@ public final class GameShutdownManager {
     this.currentGames = ConcurrentHashMap.newKeySet();
   }
 
-  public void forceShutdown() {
+  public synchronized void forceShutdown() {
     for (final PreGameManager preGameManager : this.currentGames) {
       final Game game = preGameManager.getGame();
       final GameStatus status = game.getStatus();
@@ -48,14 +48,14 @@ public final class GameShutdownManager {
     this.currentGames.clear();
   }
 
-  public void addGame(final PreGameManager game) {
+  public synchronized void addGame(final PreGameManager game) {
     this.currentGames.add(game);
   }
 
-  public void removeGame(final PreGameManager game) {
+  public synchronized void removeGame(final PreGameManager game) {
     final MurderRun plugin = game.getPlugin();
     final AtomicBoolean disabling = plugin.isDisabling();
-    if (disabling.get()) {
+    if (!disabling.get()) {
       this.currentGames.remove(game);
     }
   }

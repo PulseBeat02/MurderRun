@@ -57,7 +57,7 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     this.arenas = new HashMap<>();
   }
 
-  public void addInternalArena(final Arena arena) {
+  public synchronized void addInternalArena(final Arena arena) {
     final ApiEventBus bus = EventBusProvider.getBus();
     if (bus.post(ArenaEvent.class, arena, ArenaModificationType.CREATION)) {
       return;
@@ -66,7 +66,7 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     this.arenas.put(name, arena);
   }
 
-  public void addArena(
+  public synchronized void addArena(
       final String name,
       final Location[] corners,
       final Location[] itemLocations,
@@ -81,11 +81,11 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     this.arenas.put(name, arena);
   }
 
-  public @Nullable Arena getArena(final String name) {
+  public synchronized @Nullable Arena getArena(final String name) {
     return this.arenas.get(name);
   }
 
-  public void removeArena(final String name) {
+  public synchronized void removeArena(final String name) {
     final Arena arena = this.arenas.get(name);
     if (arena == null) {
       return;
@@ -101,11 +101,11 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
     this.arenas.remove(name);
   }
 
-  public Map<String, Arena> getArenas() {
+  public synchronized Map<String, Arena> getArenas() {
     return this.arenas;
   }
 
-  public Set<@KeyFor("this.arenas") String> getArenaNames() {
+  public synchronized Set<@KeyFor("this.arenas") String> getArenaNames() {
     return this.arenas.keySet();
   }
 
