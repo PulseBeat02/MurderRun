@@ -172,10 +172,6 @@ tasks {
         relocate("xyz.jpenilla", "me.brandonli.murderrun.libraries")
     }
 
-    jar {
-        enabled = false
-    }
-
     withType<Test> {
         failOnNoDiscoveredTests = false
     }
