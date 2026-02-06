@@ -10,7 +10,7 @@ plugins {
     id("com.diffplug.spotless") version "8.2.1"
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
     id("xyz.jpenilla.gremlin-gradle") version "0.0.9"
-    id("org.checkerframework") version "1.0.1"
+    id("org.checkerframework") version "1.0.2"
 }
 
 apply(plugin = "org.checkerframework")
