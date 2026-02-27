@@ -5,7 +5,7 @@ plugins {
     java
     `java-library`
     `maven-publish`
-    id("com.gradleup.shadow") version "9.3.1"
+    id("com.gradleup.shadow") version "9.3.2"
     id("xyz.jpenilla.run-paper") version "3.0.2"
     id("com.diffplug.spotless") version "8.2.1"
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
