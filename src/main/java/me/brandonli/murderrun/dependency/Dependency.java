@@ -19,6 +19,7 @@ package me.brandonli.murderrun.dependency;
 
 import java.nio.file.Path;
 
+@Deprecated
 public interface Dependency {
   String getName();
 

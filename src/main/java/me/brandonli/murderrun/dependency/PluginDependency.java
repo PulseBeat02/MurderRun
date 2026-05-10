@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 import java.nio.file.Path;
 import me.brandonli.murderrun.utils.IOUtils;
 
+@Deprecated
 public abstract class PluginDependency implements Dependency {
 
   private final String name;

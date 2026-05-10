@@ -23,6 +23,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Path;
 
+@Deprecated
 public final class UrlDependency extends PluginDependency {
 
   private final String url;

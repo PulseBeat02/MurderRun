@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.Optional;
 
+@Deprecated
 public class ModrinthVersion {
 
   private final String name;

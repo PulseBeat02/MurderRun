@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+@Deprecated
 public final class ModrinthDependency extends PluginDependency {
 
   public ModrinthDependency(final String name, final String version) {

@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.utils.versioning.ServerEnvironment;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@Deprecated
 public final class DependencyListing {
 
   private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS =

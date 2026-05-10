@@ -16,7 +16,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
-version = "1.21.11-v1.0.0"
+version = "26.1.2-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -205,12 +205,12 @@ tasks {
             url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
             // wait for LibDisguises to update
             // url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
-            url("https://ci.extendedclip.com/job/PlaceholderAPI/212/artifact/build/libs/PlaceholderAPI-2.11.7-DEV-212.jar")
+            url("https://ci.extendedclip.com/job/PlaceholderAPI/265/artifact/build/libs/PlaceholderAPI-2.12.3-DEV-265.jar")
             url("https://cdn.modrinth.com/data/rHRYOOoq/versions/yBAIVDGP/Parties-3.2.9.jar")
         }
         systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.1.2")
     }
 
     processResources {

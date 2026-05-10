@@ -19,6 +19,7 @@ package me.brandonli.murderrun.dependency;
 
 import java.util.Set;
 
+@Deprecated
 public final class ModrinthFile {
 
   private static final Set<String> VALID_LOADERS = Set.of("bukkit", "spigot", "paper");

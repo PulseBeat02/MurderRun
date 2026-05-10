@@ -24,6 +24,7 @@ import java.net.http.HttpResponse;
 import java.nio.file.Path;
 import me.brandonli.murderrun.utils.IOUtils;
 
+@Deprecated
 public final class JenkinsDependency extends PluginDependency {
 
   private final String url;

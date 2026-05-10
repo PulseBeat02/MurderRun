@@ -29,6 +29,7 @@ import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+@Deprecated
 public final class DependencyManager {
 
   public void installDependencies() {
