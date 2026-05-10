@@ -31,10 +31,6 @@ on the TeamCity CI [here](https://ci.brandonli.me/repository/download/murderrun/
 which are created pretty frequently. You should always use the latest Murder Run JAR, as it contains many more bug fixes 
 and version compatability than the previous.
 
-```{figure} images/jar.png
-Murder Run JAR Releases
-```
-
 ## Dependencies
 Murder Run has three essential dependencies, [WorldEdit](https://enginehub.org/worldedit/), [Citizens](https://citizensnpcs.co/),
 and [PacketEvents](https://github.com/retrooper/packetevents/). All are necessary in order for the plugin to function.
