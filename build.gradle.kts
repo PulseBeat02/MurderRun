@@ -152,7 +152,7 @@ paperPluginYaml {
     version = "${project.version}"
     description = "Pulse's MurderRun Plugin"
     authors = listOf("PulseBeat_02")
-    apiVersion = "1.21"
+    apiVersion = "26.1.2"
     prefix = "Murder Run"
     main = "me.brandonli.murderrun.MurderRun"
     loader = "me.brandonli.murderrun.MurderRunLoader"
