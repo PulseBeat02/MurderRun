@@ -24,7 +24,10 @@ import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.utils.item.Item;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.momirealms.craftengine.bukkit.item.BukkitItemManager;
-import net.momirealms.craftengine.core.item.CustomItem;
+import net.momirealms.craftengine.bukkit.plugin.BukkitCraftEngine;
+import net.momirealms.craftengine.bukkit.plugin.user.FakeBukkitServerPlayer;
+import net.momirealms.craftengine.core.item.BuildableItem;
+import net.momirealms.craftengine.core.item.ItemBuildContext;
 import net.momirealms.craftengine.core.pack.PackManager;
 import net.momirealms.craftengine.core.pack.host.ResourcePackDownloadData;
 import net.momirealms.craftengine.core.pack.host.ResourcePackHost;
@@ -45,9 +48,10 @@ public final class CraftEngineManager {
     }
 
     final ResourcePackHost newHost = manager.resourcePackHost();
-    final UUID random = UUID.randomUUID(); // create a fake player since we only use once
+    final BukkitCraftEngine craftEngine = (BukkitCraftEngine) engine;
+    final FakeBukkitServerPlayer fake = new FakeBukkitServerPlayer(craftEngine);
     final CompletableFuture<List<ResourcePackDownloadData>> future =
-        newHost.requestResourcePackDownloadLink(random);
+        newHost.requestResourcePackDownloadLink(fake); // create a fake player since we only use onc
     final List<ResourcePackDownloadData> downloadDataList = future.join();
     final Collection<ResourcePackInfo> infos = new ArrayList<>();
     for (final ResourcePackDownloadData downloadData : downloadDataList) {
@@ -116,12 +120,13 @@ public final class CraftEngineManager {
       final String path = split[1];
       final BukkitItemManager manager = BukkitItemManager.instance();
       final Key key = Key.of(namespace, path);
-      final Optional<CustomItem<ItemStack>> optional = manager.getCustomItem(key);
+      final Optional<? extends BuildableItem> optional = manager.getBuildableItem(key);
       if (optional.isEmpty()) {
         return Optional.empty();
       }
-      final CustomItem<ItemStack> customItem = optional.get();
-      final ItemStack item = customItem.buildItemStack();
+      final BuildableItem customItem = optional.get();
+      final ItemStack item =
+          (ItemStack) customItem.buildItem(ItemBuildContext.EMPTY).platformItem();
       final Item.Builder builder1 = Item.builder(item);
       return Optional.of(builder1);
     }
