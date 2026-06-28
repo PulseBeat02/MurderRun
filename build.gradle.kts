@@ -7,7 +7,7 @@ plugins {
     `maven-publish`
     id("com.gradleup.shadow") version "9.4.3"
     id("xyz.jpenilla.run-paper") version "3.0.2"
-    id("com.diffplug.spotless") version "8.6.0"
+    id("com.diffplug.spotless") version "8.7.0"
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
     id("xyz.jpenilla.gremlin-gradle") version "0.0.9"
     id("org.checkerframework") version "1.0.2"
