@@ -130,7 +130,8 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   }
 
   public void registerEvents() {
-    final Server server = this.plugin.getServer();
+    final MurderRun plugin = requireNonNull(this.plugin);
+    final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     final Collection<Location> locations = this.creation.getItemLocations();
     this.listener =

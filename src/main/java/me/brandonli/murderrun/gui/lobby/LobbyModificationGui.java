@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.gui.lobby;
 
+import static java.util.Objects.requireNonNull;
 import static net.kyori.adventure.text.Component.empty;
 
 import dev.triumphteam.gui.components.InteractionModifier;
@@ -110,7 +111,8 @@ public final class LobbyModificationGui extends PatternGui implements Listener {
   }
 
   public void registerEvents() {
-    final Server server = this.plugin.getServer();
+    final MurderRun plugin = requireNonNull(this.plugin);
+    final Server server = plugin.getServer();
     final PluginManager manager = server.getPluginManager();
     manager.registerEvents(this, this.plugin);
   }
