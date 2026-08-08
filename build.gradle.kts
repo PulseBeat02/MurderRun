@@ -6,7 +6,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.gradleup.shadow") version "9.6.0"
-    id("xyz.jpenilla.run-paper") version "3.0.2"
+    id("xyz.jpenilla.run-paper") version "3.1.0"
     id("com.diffplug.spotless") version "8.8.0"
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
     id("xyz.jpenilla.gremlin-gradle") version "0.0.9"
