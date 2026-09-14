@@ -29,11 +29,12 @@ import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
 import me.brandonli.murderrun.game.statistics.StatisticsManager;
 import me.brandonli.murderrun.gui.arena.ArenaCreationManager;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class RelationalDataProvider {
 
   private final MurderRun plugin;
-  private HibernateManager hibernate;
+  private @Nullable HibernateManager hibernate;
   private final ConfigurationManager<ArenaManager> arenas;
   private final ConfigurationManager<LobbyManager> lobbies;
   private final ConfigurationManager<StatisticsManager> statistics;
@@ -51,11 +52,12 @@ public final class RelationalDataProvider {
         this.arenaCreation = new ArenaCreationDataJSONMapper();
         break;
       case SQL:
-        this.hibernate = new HibernateManager(this.plugin);
-        this.arenas = this.hibernate.getArenaController();
-        this.lobbies = this.hibernate.getLobbyController();
-        this.statistics = this.hibernate.getStatisticsController();
-        this.arenaCreation = this.hibernate.getArenaCreationController();
+        final HibernateManager hibernate = new HibernateManager(this.plugin);
+        this.hibernate = hibernate;
+        this.arenas = hibernate.getArenaController();
+        this.lobbies = hibernate.getLobbyController();
+        this.statistics = hibernate.getStatisticsController();
+        this.arenaCreation = hibernate.getArenaCreationController();
         break;
       default:
         throw new UnsupportedOperationException("Unsupported provider method!");
@@ -75,7 +77,7 @@ public final class RelationalDataProvider {
     return this.plugin;
   }
 
-  public HibernateManager getHibernate() {
+  public @Nullable HibernateManager getHibernate() {
     return this.hibernate;
   }
 

@@ -37,6 +37,9 @@ public final class ConditionalTask extends GameScheduledTask {
   @Override
   public void run() {
     super.run();
+    if (this.isCancelled()) {
+      return;
+    }
     if (this.condition.getAsBoolean()) {
       this.cancel();
     }

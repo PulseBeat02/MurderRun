@@ -17,7 +17,7 @@
  */
 package me.brandonli;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.MockBukkit;
 
 public final class ByteBuddyTest {
 

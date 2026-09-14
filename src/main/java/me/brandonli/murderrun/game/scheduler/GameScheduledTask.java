@@ -24,21 +24,38 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameScheduledTask extends BukkitRunnable implements ScheduledTask {
 
+  private static final Runnable EMPTY_CLEANUP = () -> {};
+
   private final Game game;
   private final Runnable runnable;
   private final Reference<?> reference;
+  private final Runnable cleanup;
 
   public GameScheduledTask(final Game game, final Runnable runnable, final Reference<?> reference) {
+    this(game, runnable, reference, EMPTY_CLEANUP);
+  }
+
+  public GameScheduledTask(
+      final Game game,
+      final Runnable runnable,
+      final Reference<?> reference,
+      final Runnable cleanup) {
     this.game = game;
     this.runnable = runnable;
     this.reference = reference;
+    this.cleanup = cleanup;
   }
 
   @Override
   public void run() {
     final GameStatus status = this.game.getStatus();
     final GameStatus.Status gameStatus = status.getStatus();
-    if (gameStatus == GameStatus.Status.FINISHED || this.reference.isInvalid()) {
+    if (gameStatus == GameStatus.Status.FINISHED) {
+      this.cancel();
+      return;
+    }
+    if (this.reference.isInvalid()) {
+      this.cleanup.run();
       this.cancel();
       return;
     }

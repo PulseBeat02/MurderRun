@@ -30,6 +30,8 @@ import me.brandonli.murderrun.game.lobby.Lobby;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
 import me.brandonli.murderrun.game.statistics.PlayerStatistics;
 import me.brandonli.murderrun.game.statistics.StatisticsManager;
+import me.brandonli.murderrun.gui.arena.ArenaCreation;
+import me.brandonli.murderrun.gui.arena.ArenaCreationManager;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -95,6 +97,8 @@ public final class HibernateManager {
         .addAnnotatedClass(Arena.class)
         .addAnnotatedClass(Lobby.class)
         .addAnnotatedClass(PlayerStatistics.class)
+        .addAnnotatedClass(ArenaCreationManager.class)
+        .addAnnotatedClass(ArenaCreation.class)
         .buildSessionFactory();
   }
 

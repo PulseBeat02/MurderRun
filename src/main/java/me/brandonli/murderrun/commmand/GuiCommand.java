@@ -26,6 +26,7 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class GuiCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;

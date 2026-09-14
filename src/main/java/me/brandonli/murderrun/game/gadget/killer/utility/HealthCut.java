@@ -25,7 +25,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
@@ -71,7 +71,7 @@ public final class HealthCut extends KillerGadget {
   }
 
   private void resetState(final GamePlayer survivor, final GameScheduler scheduler) {
-    final StrictPlayerReference reference = StrictPlayerReference.of(survivor);
+    final AlivePlayerReference reference = AlivePlayerReference.of(survivor);
     final double before = survivor.getHealth();
     survivor.setHealth(2d);
     scheduler.scheduleTask(() -> survivor.setHealth(before), 5 * 20L, reference);

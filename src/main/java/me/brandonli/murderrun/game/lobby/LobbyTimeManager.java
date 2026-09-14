@@ -26,11 +26,11 @@ import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.InventoryUtils;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -44,6 +44,7 @@ public final class LobbyTimeManager {
 
   private LobbyTimer timer;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public LobbyTimeManager(final PreGameManager manager) {
     this.manager = manager;
   }
@@ -65,7 +66,7 @@ public final class LobbyTimeManager {
     final Component msg = Message.LOBBY_TIMER_CANCEL.build();
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     for (final Player player : players) {
@@ -108,7 +109,7 @@ public final class LobbyTimeManager {
   private void playTimerSound(final int seconds) {
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final PreGamePlayerManager playerManager = this.manager.getPlayerManager();
     final Collection<Player> players = playerManager.getParticipants();
     final Component message = Message.LOBBY_TIMER.build(seconds);
@@ -143,7 +144,7 @@ public final class LobbyTimeManager {
 
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final Component msg = Message.LOBBY_TIMER_SKIP.build();
     for (final Player player : players) {
       final Audience audience = audiences.player(player);

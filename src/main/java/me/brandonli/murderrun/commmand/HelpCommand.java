@@ -24,8 +24,8 @@ import java.util.Map;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.LocaleTools;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.locale.TranslationManager;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.annotation.specifier.Greedy;
@@ -35,11 +35,12 @@ import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.minecraft.extras.MinecraftHelp;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class HelpCommand implements AnnotationCommandFeature {
 
   private CommandManager<CommandSender> manager;
   private MinecraftHelp<CommandSender> minecraftHelp;
-  private BukkitAudiences bukkitAudiences;
+  private PaperAudiences bukkitAudiences;
 
   @Override
   public void registerFeature(
@@ -95,7 +96,7 @@ public final class HelpCommand implements AnnotationCommandFeature {
     return this.minecraftHelp;
   }
 
-  public BukkitAudiences getBukkitAudiences() {
+  public PaperAudiences getPaperAudiences() {
     return this.bukkitAudiences;
   }
 

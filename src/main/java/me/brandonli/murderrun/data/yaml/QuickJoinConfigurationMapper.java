@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -59,6 +60,7 @@ public final class QuickJoinConfigurationMapper {
   private List<String[]> lobbyArenaPairs;
   private GameMode[] gameModes;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public QuickJoinConfigurationMapper(final MurderRun plugin) {
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     this.plugin = plugin;
@@ -128,13 +130,23 @@ public final class QuickJoinConfigurationMapper {
     if (!this.enabled) {
       return List.of();
     }
-    @SuppressWarnings("unchecked")
-    final List<List<String>> pairs =
-        (List<List<String>>) config.getList(ARENA_LOBBY_PAIRS_FIELD, List.of());
-    return requireNonNull(pairs).stream()
-        .map(pair -> pair.toArray(new String[0]))
-        .filter(this::isValidParameters)
-        .toList();
+    final List<?> entries = requireNonNull(config.getList(ARENA_LOBBY_PAIRS_FIELD, List.of()));
+    final List<String[]> pairs = new ArrayList<>();
+    for (final Object entry : entries) {
+      if (!(entry instanceof final List<?> values)) {
+        continue;
+      }
+      final List<String> strings = new ArrayList<>();
+      for (final Object value : values) {
+        final String string = String.valueOf(value);
+        strings.add(string);
+      }
+      final String[] pair = strings.toArray(new String[0]);
+      if (this.isValidParameters(pair)) {
+        pairs.add(pair);
+      }
+    }
+    return List.copyOf(pairs);
   }
 
   public boolean isValidParameters(final String[] pair) {

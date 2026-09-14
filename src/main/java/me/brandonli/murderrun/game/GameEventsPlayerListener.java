@@ -35,8 +35,8 @@ import me.brandonli.murderrun.game.lobby.PreGameManager;
 import me.brandonli.murderrun.game.lobby.PreGamePlayerManager;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -111,7 +111,7 @@ public final class GameEventsPlayerListener implements GameEventsListener {
     final Component msg = Message.GAME_REQUEUE.build(arenaName, lobbyName);
     final MurderRun plugin = manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final Audience audience = audiences.player(uuid);
     audience.sendMessage(msg);
   }

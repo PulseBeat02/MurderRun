@@ -23,7 +23,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.Killer;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -57,7 +57,7 @@ public final class BurrowTrap extends SurvivorTrap {
     }
 
     final GameProperties properties = game.getProperties();
-    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(killer);
     final int duration = properties.getBurrowDuration();
     killer.disableJump(scheduler, duration);
     killer.disableWalkNoFOVEffects(scheduler, duration);

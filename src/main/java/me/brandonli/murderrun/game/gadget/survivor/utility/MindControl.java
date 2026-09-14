@@ -28,7 +28,7 @@ import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.Survivor;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
@@ -79,7 +79,7 @@ public final class MindControl extends SurvivorGadget {
     player.setInvulnerable(true);
     player.teleport(location);
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(
         () -> this.applyMindControlEffects(player, nearest), 0L, 1L, duration, reference);

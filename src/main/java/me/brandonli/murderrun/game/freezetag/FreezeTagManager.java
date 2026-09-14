@@ -33,8 +33,8 @@ import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.Survivor;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
+import me.brandonli.murderrun.game.scheduler.reference.OnlinePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
@@ -46,7 +46,7 @@ import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.scheduler.BukkitTask;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class FreezeTagManager {
 
@@ -57,7 +57,7 @@ public final class FreezeTagManager {
   private final Map<UUID, BukkitTask> revivalTimers;
   private final Map<UUID, BukkitTask> hologramTasks;
   private final Map<UUID, TextDisplay> holograms;
-  private BukkitTask reviveUpdateTask;
+  private @Nullable BukkitTask reviveUpdateTask;
 
   public FreezeTagManager(final Game game) {
     this.game = game;
@@ -67,8 +67,7 @@ public final class FreezeTagManager {
     this.startReviveUpdateTask(game);
   }
 
-  @SuppressWarnings("all") // checker
-  private void startReviveUpdateTask(@UnderInitialization FreezeTagManager this, final Game game) {
+  private void startReviveUpdateTask(final Game game) {
     final GameScheduler scheduler = game.getScheduler();
     final NullReference reference = NullReference.of();
     final GamePlayerManager manager = game.getPlayerManager();
@@ -153,7 +152,7 @@ public final class FreezeTagManager {
     final GameProperties properties = this.game.getProperties();
     final int reviveTimer = properties.getFreezeTagReviveTimer();
     final GameScheduler scheduler = this.game.getScheduler();
-    final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(survivor);
 
     final BukkitTask task = scheduler.scheduleTask(
         () -> {
@@ -207,7 +206,7 @@ public final class FreezeTagManager {
     this.holograms.put(uuid, display);
 
     final GameScheduler scheduler = this.game.getScheduler();
-    final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(survivor);
     final BukkitTask task =
         scheduler.scheduleRepeatedTask(() -> this.updateHologram(survivor), 0L, 10L, reference);
     this.hologramTasks.put(uuid, task);

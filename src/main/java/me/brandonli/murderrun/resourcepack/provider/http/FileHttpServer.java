@@ -19,7 +19,7 @@ package me.brandonli.murderrun.resourcepack.provider.http;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -27,6 +27,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import me.brandonli.murderrun.utils.ExecutorUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class FileHttpServer {
 
@@ -34,8 +35,8 @@ public final class FileHttpServer {
   private final Path filePath;
   private final ExecutorService service;
 
-  private volatile EventLoopGroup bossGroup;
-  private volatile EventLoopGroup workerGroup;
+  private volatile @Nullable EventLoopGroup bossGroup;
+  private volatile @Nullable EventLoopGroup workerGroup;
 
   public FileHttpServer(final int port, final Path filePath) {
     this.port = port;
@@ -82,11 +83,12 @@ public final class FileHttpServer {
   private ServerBootstrap initializeServerBootstrap() {
     final FileHttpChannelInitializer initializer = new FileHttpChannelInitializer(this);
     final ServerBootstrap b = new ServerBootstrap();
-    this.bossGroup = new NioEventLoopGroup();
-    this.workerGroup = new NioEventLoopGroup();
-    b.group(this.bossGroup, this.workerGroup)
-        .channel(NioServerSocketChannel.class)
-        .childHandler(initializer);
+    final IoHandlerFactory factory = NioIoHandler.newFactory();
+    final EventLoopGroup boss = new MultiThreadIoEventLoopGroup(factory);
+    this.bossGroup = boss;
+    final EventLoopGroup worker = new MultiThreadIoEventLoopGroup(factory);
+    this.workerGroup = worker;
+    b.group(boss, worker).channel(NioServerSocketChannel.class).childHandler(initializer);
     return b;
   }
 
@@ -123,7 +125,7 @@ public final class FileHttpServer {
     return this.service;
   }
 
-  public EventLoopGroup getBossGroup() {
+  public @Nullable EventLoopGroup getBossGroup() {
     return this.bossGroup;
   }
 
@@ -131,7 +133,7 @@ public final class FileHttpServer {
     this.bossGroup = bossGroup;
   }
 
-  public EventLoopGroup getWorkerGroup() {
+  public @Nullable EventLoopGroup getWorkerGroup() {
     return this.workerGroup;
   }
 

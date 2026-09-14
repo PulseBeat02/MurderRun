@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import me.brandonli.murderrun.data.dfu.DefaultedResourceBundle;
 import me.brandonli.murderrun.data.dfu.PropertyFixerManager;
 import me.brandonli.murderrun.utils.IOUtils;
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
@@ -68,9 +69,10 @@ public final class GameBundle {
       @UnderInitialization GameBundle this, final Path resourcePath) {
     try {
       this.checkExistence(resourcePath);
+      final ResourceBundle defaults = this.loadDefaultProperties();
       try (final InputStream in = Files.newInputStream(resourcePath);
           final FastBufferedInputStream fast = new FastBufferedInputStream(in)) {
-        final ResourceBundle bundle = new PropertyResourceBundle(fast);
+        final ResourceBundle bundle = new DefaultedResourceBundle(fast, defaults);
         final PropertyFixerManager fixer = new PropertyFixerManager();
         fixer.registerGamePropertiesFixer();
         fixer.applyFixersUpTo(bundle);
@@ -78,6 +80,14 @@ public final class GameBundle {
       }
     } catch (final IOException e) {
       throw new AssertionError(e);
+    }
+  }
+
+  private ResourceBundle loadDefaultProperties(@UnderInitialization GameBundle this)
+      throws IOException {
+    final String file = requireNonNull(this.file);
+    try (final InputStream in = IOUtils.getResourceAsStream(file)) {
+      return new PropertyResourceBundle(in);
     }
   }
 

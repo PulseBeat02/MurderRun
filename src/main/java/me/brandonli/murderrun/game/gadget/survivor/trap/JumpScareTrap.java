@@ -17,30 +17,22 @@
  */
 package me.brandonli.murderrun.game.gadget.survivor.trap;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
+import me.brandonli.murderrun.game.gadget.misc.JumpScare;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
-import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.Material;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class JumpScareTrap extends SurvivorTrap {
 
-  private final Set<GamePlayer> currentlyJumpScared;
+  private final JumpScare jumpScare;
 
   public JumpScareTrap(final Game game) {
     final GameProperties properties = game.getProperties();
@@ -54,7 +46,7 @@ public final class JumpScareTrap extends SurvivorTrap {
             Message.JUMP_SCARE_LORE.build()),
         Message.JUMP_SCARE_ACTIVATE.build(),
         properties.getJumpScareColor());
-    this.currentlyJumpScared = ConcurrentHashMap.newKeySet();
+    this.jumpScare = new JumpScare();
   }
 
   @Override
@@ -72,28 +64,8 @@ public final class JumpScareTrap extends SurvivorTrap {
     final GamePlayerManager manager = game.getPlayerManager();
     manager.playSoundForAllParticipants("entity.witch.celebrate");
 
-    if (this.currentlyJumpScared.contains(murderer)) {
-      return;
-    }
-
-    final ItemStack before = this.getHelmet(murderer);
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
-    scheduler.scheduleTask(
-        () -> this.setBackHelmet(murderer, before), properties.getJumpScareDuration(), reference);
-    this.currentlyJumpScared.add(murderer);
-  }
-
-  private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {
-    final PlayerInventory inventory = player.getInventory();
-    inventory.setHelmet(before);
-    this.currentlyJumpScared.remove(player);
-  }
-
-  private @Nullable ItemStack getHelmet(final GamePlayer player) {
-    final ItemStack stack = Item.create(Material.CARVED_PUMPKIN);
-    final PlayerInventory inventory = player.getInventory();
-    player.sendEquipmentChange(EquipmentSlot.HEAD, stack);
-    return inventory.getHelmet();
+    final int jumpScareDuration = properties.getJumpScareDuration();
+    this.jumpScare.apply(murderer, scheduler, jumpScareDuration);
   }
 }

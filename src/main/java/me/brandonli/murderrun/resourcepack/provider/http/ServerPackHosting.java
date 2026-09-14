@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.resourcepack.provider.ProviderMethod;
 import me.brandonli.murderrun.resourcepack.provider.ResourcePackProvider;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ServerPackHosting extends ResourcePackProvider {
 
@@ -31,7 +32,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
   private final String hostName;
   private final int port;
 
-  private FileHttpServer server;
+  private @Nullable FileHttpServer server;
 
   public ServerPackHosting(final MurderRun plugin, final String hostName, final int port) {
     super(plugin, ProviderMethod.LOCALLY_HOSTED_DAEMON);
@@ -69,7 +70,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
     return this.port;
   }
 
-  public FileHttpServer getServer() {
+  public @Nullable FileHttpServer getServer() {
     return this.server;
   }
 }

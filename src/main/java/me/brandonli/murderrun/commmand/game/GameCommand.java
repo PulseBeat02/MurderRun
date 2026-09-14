@@ -33,14 +33,14 @@ import me.brandonli.murderrun.game.lobby.PreGamePlayerManager;
 import me.brandonli.murderrun.gui.game.PlayerListGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.ComponentUtils;
-import me.brandonli.murderrun.utils.StreamUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.incendo.cloud.annotation.specifier.Quoted;
 import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.annotations.Argument;
@@ -50,10 +50,11 @@ import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class GameCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
-  private BukkitAudiences audiences;
+  private PaperAudiences audiences;
   private GameInputSanitizer sanitizer;
   private InviteManager invites;
 
@@ -70,7 +71,6 @@ public final class GameCommand implements AnnotationCommandFeature {
   @Permission("murderrun.command.game.party")
   @CommandDescription("murderrun.command.game.party.info")
   @Command(value = "murder game party <arenaName> <lobbyName>", requiredSender = Player.class)
-  @SuppressWarnings("all") // checker
   public void startPartyGame(
       final Player player,
       @Argument(suggestions = "arena-suggestions") @Quoted final String arenaName,
@@ -84,16 +84,46 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
 
     final PartiesManager manager = this.plugin.getPartiesManager();
-    final UUID uuid = player.getUniqueId();
     final Collection<UUID> members = manager.getPartyMembers(player);
     final UUID id = manager.getPartyId(player);
     final int min = 2;
     final int max = members.size();
     final boolean quickJoinable = false;
-    final String command = "murder game create %s %s %s %s %s %s"
-        .formatted(arenaName, lobbyName, id, min, max, quickJoinable);
+    final GameMode mode = GameMode.DEFAULT;
+    final String modeName = mode.getModeName();
+    final String command = "murder game create %s %s %s %s %s %s %s"
+        .formatted(arenaName, lobbyName, id, modeName, min, max, quickJoinable);
     player.performCommand(command);
 
+    final GameManager gameManager = this.plugin.getGameManager();
+    final String gameId = id.toString();
+    final PreGameManager created = gameManager.getGame(gameId);
+    if (created == null) {
+      return;
+    }
+
+    final PreGamePlayerManager playerManager = created.getPlayerManager();
+    final BukkitRunnable runnable = new BukkitRunnable() {
+      @Override
+      public void run() {
+        final PreGameManager current = gameManager.getGame(gameId);
+        if (current != created || !player.isOnline()) {
+          this.cancel();
+          return;
+        }
+        if (!playerManager.hasPlayer(player)) {
+          return;
+        }
+        GameCommand.this.inviteMembers(player, members, id);
+        this.cancel();
+      }
+    };
+    runnable.runTaskTimer(this.plugin, 1L, 1L);
+  }
+
+  private void inviteMembers(final Player player, final Collection<UUID> members, final UUID id) {
+    final PartiesManager manager = this.plugin.getPartiesManager();
+    final UUID uuid = player.getUniqueId();
     final String joinCommand = "murder game join %s".formatted(id);
     final Consumer<Player> consumer = player1 -> {
       final String name = player1.getName();
@@ -102,12 +132,17 @@ public final class GameCommand implements AnnotationCommandFeature {
       player1.performCommand(joinCommand);
     };
 
-    members.stream()
-        .map(manager::getBukkitUuid)
-        .filter(StreamUtils.notEquals(uuid))
-        .map(Bukkit::getPlayer)
-        .filter(Objects::nonNull)
-        .forEach(consumer);
+    for (final UUID member : members) {
+      final UUID bukkitUuid = manager.getBukkitUuid(member);
+      if (bukkitUuid.equals(uuid)) {
+        continue;
+      }
+      final Player target = Bukkit.getPlayer(bukkitUuid);
+      if (target == null) {
+        continue;
+      }
+      consumer.accept(target);
+    }
   }
 
   @Permission("murderrun.command.game.start")
@@ -410,7 +445,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     return this.plugin;
   }
 
-  public BukkitAudiences getAudiences() {
+  public PaperAudiences getAudiences() {
     return this.audiences;
   }
 

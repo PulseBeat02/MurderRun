@@ -44,7 +44,8 @@ After you create your lobby, you want to create NPC shops for the gadgets and ab
 (one NPC selling gadgets to killers, one NPC selling abilities to killers, one NPC selling gadgets to survivors, and
 one NPC selling abilities to survivors). To spawn them, run the `/murder npc spawn <ability | gadget> <killer | survivor>`
 commands. You're able to specify the skins and names via the `game.properties` and locale properties file respectively
-(see [Configuring Murder Run](configuration.md)).
+(see [Configuring Murder Run](configuration.md)). To remove an NPC you no longer want, stand next to it and run
+`/murder npc remove`, which removes the closest Murder Run NPC to you.
 ```
 
 ## Removing a Lobby

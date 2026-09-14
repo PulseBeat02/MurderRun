@@ -46,6 +46,7 @@ public class GamePlayer extends AbstractPlayer {
   private volatile boolean alive;
   private volatile boolean loggingOut;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public GamePlayer(final Game game, final UUID uuid) {
     this.game = game;
     this.uuid = uuid;

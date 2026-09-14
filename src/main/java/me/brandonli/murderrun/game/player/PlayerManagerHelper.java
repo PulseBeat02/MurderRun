@@ -27,7 +27,7 @@ import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.player.death.PlayerDeathTool;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.resourcepack.sound.SoundResource;
 import me.brandonli.murderrun.utils.RandomUtils;
 import me.brandonli.murderrun.utils.StreamUtils;
@@ -40,7 +40,6 @@ import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.PolyNull;
 
 public interface PlayerManagerHelper {
   int getTotalPlayers();
@@ -234,7 +233,7 @@ public interface PlayerManagerHelper {
       final GamePlayer entity, final NamedTextColor color, final long duration) {
     final Game game = this.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(entity);
+    final AlivePlayerReference reference = AlivePlayerReference.of(entity);
     this.setEntityGlowingForAliveInnocents(entity, color);
     scheduler.scheduleTask(
         () -> this.removeEntityGlowingForAliveInnocents(entity, color), duration, reference);
@@ -269,20 +268,18 @@ public interface PlayerManagerHelper {
     });
   }
 
-  @SuppressWarnings("all") // checker
-  default Optional<@PolyNull Killer> getKillerWithMostKills() {
-    return this.getKillers()
-        .map(Killer.class::cast)
-        .filter(Objects::nonNull)
-        .max(Comparator.comparingInt(Killer::getKills));
+  default Optional<Killer> getKillerWithMostKills() {
+    final Stream<GamePlayer> killers = this.getKillers();
+    final Stream<Killer> casted = killers.map(player -> (Killer) player);
+    final Comparator<Killer> comparator = Comparator.comparingInt(Killer::getKills);
+    return casted.max(comparator);
   }
 
-  @SuppressWarnings("all") // checker
-  default Optional<@PolyNull Survivor> getSurvivorWithMostCarPartsRetrieved() {
-    return this.getSurvivors()
-        .map(Survivor.class::cast)
-        .filter(Objects::nonNull)
-        .max(Comparator.comparingInt(Survivor::getCarPartsRetrieved));
+  default Optional<Survivor> getSurvivorWithMostCarPartsRetrieved() {
+    final Stream<GamePlayer> survivors = this.getSurvivors();
+    final Stream<Survivor> casted = survivors.map(player -> (Survivor) player);
+    final Comparator<Survivor> comparator = Comparator.comparingInt(Survivor::getCarPartsRetrieved);
+    return casted.max(comparator);
   }
 
   default @Nullable GamePlayer getNearestKiller(final Location origin) {

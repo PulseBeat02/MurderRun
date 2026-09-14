@@ -30,12 +30,13 @@ import me.brandonli.murderrun.game.capability.Capabilities;
 import me.brandonli.murderrun.game.extension.craftengine.CraftEngineManager;
 import me.brandonli.murderrun.game.extension.nexo.NexoManager;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.resourcepack.PackHashCache;
 import me.brandonli.murderrun.resourcepack.PackWrapper;
-import me.brandonli.murderrun.utils.IOUtils;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
 
 public abstract class ResourcePackProvider implements PackProvider {
 
@@ -52,13 +53,16 @@ public abstract class ResourcePackProvider implements PackProvider {
 
   private final ProviderMethod method;
   private final MurderRun plugin;
+  private final PackHashCache hashes;
 
   private volatile ResourcePackRequest cached;
   private volatile String url;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public ResourcePackProvider(final MurderRun plugin, final ProviderMethod method) {
     this.plugin = plugin;
     this.method = method;
+    this.hashes = new PackHashCache();
   }
 
   public void cachePack() {
@@ -77,7 +81,8 @@ public abstract class ResourcePackProvider implements PackProvider {
   private Optional<ResourcePackInfo> getMainResourceInfo() {
     final String url = this.getFinalUrl();
     final URI uri = URI.create(url);
-    final String hash = IOUtils.getSHA1Hash(uri);
+    final Path pack = getServerPack();
+    final String hash = this.hashes.getFileHash(pack);
     final ResourcePackInfo info =
         ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
     return Optional.of(info);
@@ -123,8 +128,24 @@ public abstract class ResourcePackProvider implements PackProvider {
       return null;
     }
     final URI uri = URI.create(url);
-    final String hash = IOUtils.getSHA1Hash(uri);
+    final String hash = this.getRemoteHash(uri);
     return ResourcePackInfo.resourcePackInfo().uri(uri).hash(hash).build();
+  }
+
+  private String getRemoteHash(final URI uri) {
+    try {
+      return this.hashes.getRemoteHash(uri);
+    } catch (final AssertionError e) {
+      final @Nullable String cached = this.hashes.getCachedRemoteHash(uri);
+      if (cached == null) {
+        throw e;
+      }
+      final MurderRun plugin = this.plugin;
+      final Logger logger = plugin.getSLF4JLogger();
+      final String msg = "Could not reach {} to verify its hash, using the previously cached hash";
+      logger.warn(msg, uri);
+      return cached;
+    }
   }
 
   public abstract String getRawUrl();

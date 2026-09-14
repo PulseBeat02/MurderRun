@@ -21,9 +21,9 @@ import java.util.concurrent.CompletableFuture;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.DumpUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.annotations.AnnotationParser;
@@ -31,9 +31,10 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class DumpCommand implements AnnotationCommandFeature {
 
-  private BukkitAudiences audiences;
+  private PaperAudiences audiences;
 
   @Override
   public void registerFeature(

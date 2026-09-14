@@ -17,7 +17,13 @@
  */
 package me.brandonli.murderrun.resourcepack.provider.netty.injector;
 
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandler;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -26,75 +32,60 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 import me.brandonli.murderrun.resourcepack.provider.netty.injector.http.ResourcePackInjector;
-import me.brandonli.murderrun.utils.versioning.ServerEnvironment;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
 public final class ReflectBukkitInjector {
 
   private static final String INJECTOR_SYSTEM_PROPERTY = "murderrun.resourcepack";
-  private static final Class<?> SERVER_CONNECTION_CLASS;
-  private static final List<ChannelFuture> CONNECTIONS;
+  private static final String CRAFT_SERVER_CLASS = "org.bukkit.craftbukkit.CraftServer";
+  private static final String MINECRAFT_SERVER_CLASS = "net.minecraft.server.MinecraftServer";
+  private static final String SERVER_CONNECTION_CLASS =
+      "net.minecraft.server.network.ServerConnectionListener";
+  private static final String GET_SERVER_METHOD = "getServer";
+  private static final String GET_CONNECTION_METHOD = "getConnection";
+  private static final String CHANNELS_FIELD = "channels";
+
+  private static final List<?> CONNECTIONS;
 
   static {
     try {
-      SERVER_CONNECTION_CLASS = getServerConnectionClass();
       CONNECTIONS = getConnections();
     } catch (final Throwable e) {
       throw new AssertionError(e);
     }
   }
 
-  private static Class<?> getServerConnectionClass() throws ClassNotFoundException {
-    try {
-      return Class.forName("net.minecraft.server.network.ServerConnection");
-    } catch (final ClassNotFoundException e) {
-      return Class.forName("net.minecraft.server.network.ServerConnectionListener");
-    }
+  private static List<?> getConnections() throws Throwable {
+    final Class<?> connectionClass = Class.forName(SERVER_CONNECTION_CLASS);
+    final Object connection = getConnectionHandle(connectionClass);
+    final VarHandle handle = getChannelsVarHandle(connectionClass);
+    return (List<?>) handle.get(connection);
   }
 
-  @SuppressWarnings("unchecked")
-  private static List<ChannelFuture> getConnections() throws Throwable {
-    final Object connection = getConnectionHandle();
-    final VarHandle handle = getConnectionsVarHandle();
-    return (List<ChannelFuture>) handle.get(connection);
-  }
-
-  private static VarHandle getConnectionsVarHandle()
+  private static VarHandle getChannelsVarHandle(final Class<?> connectionClass)
       throws IllegalAccessException, NoSuchFieldException {
     final MethodHandles.Lookup lookup = MethodHandles.lookup();
     final MethodHandles.Lookup privateLookup =
-        MethodHandles.privateLookupIn(SERVER_CONNECTION_CLASS, lookup);
-    try {
-      return privateLookup.findVarHandle(SERVER_CONNECTION_CLASS, "channels", List.class);
-    } catch (final NoSuchFieldException | IllegalAccessException e) {
-      return privateLookup.findVarHandle(SERVER_CONNECTION_CLASS, "f", List.class);
-    }
+        MethodHandles.privateLookupIn(connectionClass, lookup);
+    return privateLookup.findVarHandle(connectionClass, CHANNELS_FIELD, List.class);
   }
 
-  private static Object getConnectionHandle() throws Throwable {
+  private static Object getConnectionHandle(final Class<?> connectionClass) throws Throwable {
     final Server craftServer = Bukkit.getServer();
-    final MethodHandle getServerHandle = getServerHandle();
-    final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    final Object dedicatedServer = getServerHandle.invoke(craftServer);
-    final Class<?> dedicatedServerClass = dedicatedServer.getClass();
-    final MethodType getConnectionType = MethodType.methodType(SERVER_CONNECTION_CLASS);
-    final MethodHandle getConnectionHandle =
-        lookup.findVirtual(dedicatedServerClass, "an", getConnectionType);
-    return getConnectionHandle.invoke(dedicatedServer);
-  }
-
-  private static MethodHandle getServerHandle()
-      throws NoSuchMethodException, IllegalAccessException, ClassNotFoundException {
-    final String rev = ServerEnvironment.getNMSRevision();
-    final String craftServerClass = "org.bukkit.craftbukkit.%s.CraftServer".formatted(rev);
-    final Class<?> craftServerType = Class.forName(craftServerClass);
-    final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    final String dedicatedServerClass =
-        "net.minecraft.server.dedicated.DedicatedServer"; // both Spigot and Mojang use this
-    final Class<?> dedicatedServerClassType = Class.forName(dedicatedServerClass);
-    final MethodType methodType = MethodType.methodType(dedicatedServerClassType);
-    return lookup.findVirtual(craftServerType, "getServer", methodType);
+    final Class<?> craftServerClass = Class.forName(CRAFT_SERVER_CLASS);
+    final Class<?> minecraftServerClass = Class.forName(MINECRAFT_SERVER_CLASS);
+    final MethodHandles.Lookup lookup = MethodHandles.publicLookup();
+    final Class<?> dedicatedServerClass =
+        craftServerClass.getMethod(GET_SERVER_METHOD).getReturnType();
+    final MethodType getServerType = MethodType.methodType(dedicatedServerClass);
+    final MethodHandle getServer =
+        lookup.findVirtual(craftServerClass, GET_SERVER_METHOD, getServerType);
+    final Object minecraftServer = getServer.invoke(craftServer);
+    final MethodType getConnectionType = MethodType.methodType(connectionClass);
+    final MethodHandle getConnection =
+        lookup.findVirtual(minecraftServerClass, GET_CONNECTION_METHOD, getConnectionType);
+    return getConnection.invoke(minecraftServer);
   }
 
   private final Path path;
@@ -122,7 +113,10 @@ public final class ReflectBukkitInjector {
 
   private void install(final Consumer<Channel> channelConsumer) {
     final ChannelInboundHandler serverHandler = this.injectServerAdapter(channelConsumer);
-    for (final ChannelFuture channelFuture : CONNECTIONS) {
+    for (final Object connection : CONNECTIONS) {
+      if (!(connection instanceof final ChannelFuture channelFuture)) {
+        continue;
+      }
       final Channel channel = channelFuture.channel();
       final ChannelPipeline pipeline = channel.pipeline();
       pipeline.addFirst(serverHandler);

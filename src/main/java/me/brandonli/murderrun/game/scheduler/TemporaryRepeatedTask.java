@@ -39,6 +39,9 @@ public final class TemporaryRepeatedTask extends GameScheduledTask {
   @Override
   public void run() {
     super.run();
+    if (this.isCancelled()) {
+      return;
+    }
     final long raw = this.time.decrementAndGet();
     if (raw <= 0) {
       this.cancel();

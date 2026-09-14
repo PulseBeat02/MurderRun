@@ -28,8 +28,8 @@ import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -59,7 +59,7 @@ public final class IcePath extends KillerGadget {
     final Item item = packet.getItem();
     item.remove();
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.setIceTrail(game, player), 0, 4, 20 * 60L, reference);
 

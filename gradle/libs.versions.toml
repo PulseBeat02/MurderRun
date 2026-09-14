@@ -1,5 +1,4 @@
 [versions]
-adventurePlatformBukkit = "4.4.1"
 cloudAnnotations = "2.1.0"
 cloudPaper = "2.0.0"
 cloudMinecraftExtras = "2.0.0"
@@ -7,23 +6,23 @@ commodore = "2.2"
 fastboard = "2.2.1"
 triumphGui = "3.1.13"
 bstatsBukkit = "3.2.1"
-hibernateCore = "7.0.0.Beta1"
+hibernateCore = "7.4.8.Final"
 h2 = "2.5.250"
 byteBuddy = "1.18.13"
 byteBuddyAgent = "1.18.13"
-paperApi = "26.1.2.build.+"
-fastutil = "5.0.9"
-nettyAll = "4.1.97.Final"
+paperApi = "26.2.build.+"
+fastutil = "8.5.18"
+nettyAll = "4.2.15.Final"
 placeholderapi = "2.12.3"
 libsDisguises = "26.8.13"
 worldeditCore = "7.4.5"
 worldeditBukkit = "7.4.5"
-citizensMain = "2.0.35-SNAPSHOT"
+citizensMain = "2.0.43-SNAPSHOT"
 classGraph = "4.8.195"
-guava = "32.1.3-jre"
+guava = "33.6.0-jre"
 gson = "2.14.0"
 partiesApi = "3.2.18"
-mockBukkit = "3.133.2"
+mockBukkit = "4.116.1"
 nexo = "1.28.0"
 creativeApi = "1.14.4"
 packetEvents = "2.13.0"
@@ -32,7 +31,6 @@ craftEngine = "26.8.2"
 gremlinRuntime = "0.0.9"
 
 [libraries]
-adventurePlatformBukkit = { group = "net.kyori", name = "adventure-platform-bukkit", version.ref = "adventurePlatformBukkit" }
 cloudAnnotations = { group = "org.incendo", name = "cloud-annotations", version.ref = "cloudAnnotations" }
 cloudPaper = { group = "org.incendo", name = "cloud-paper", version.ref = "cloudPaper" }
 cloudMinecraftExtras = { group = "org.incendo", name = "cloud-minecraft-extras", version.ref = "cloudMinecraftExtras" }
@@ -45,7 +43,7 @@ h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
 byteBuddy = { group = "net.bytebuddy", name = "byte-buddy", version.ref = "byteBuddy" }
 byteBuddyAgent = { group = "net.bytebuddy", name = "byte-buddy-agent", version.ref = "byteBuddyAgent" }
 paperApi = { group = "io.papermc.paper", name = "paper-api", version.ref = "paperApi" }
-fastutil = { group = "fastutil", name = "fastutil", version.ref = "fastutil" }
+fastutil = { group = "it.unimi.dsi", name = "fastutil", version.ref = "fastutil" }
 nettyAll = { group = "io.netty", name = "netty-all", version.ref = "nettyAll" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
 libsDisguises = { group = "me.libraryaddict.disguises", name = "libsdisguises", version.ref = "libsDisguises" }
@@ -56,7 +54,7 @@ classGraph = { group = "io.github.classgraph", name = "classgraph", version.ref 
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 partiesApi = { group = "com.alessiodp.parties", name = "parties-api", version.ref = "partiesApi"}
-mockBukkit = { module = "com.github.seeseemelk:MockBukkit-v1.21", version.ref = "mockBukkit" }
+mockBukkit = { module = "org.mockbukkit.mockbukkit:mockbukkit-v26.2", version.ref = "mockBukkit" }
 nexo = { group = "com.nexomc", name = "nexo", version.ref = "nexo" }
 creativeApi = { group = "team.unnamed", name = "creative-api", version.ref = "creativeApi" }
 creativeSerializerMinecraft = { group = "team.unnamed", name = "creative-serializer-minecraft", version.ref = "creativeApi" }

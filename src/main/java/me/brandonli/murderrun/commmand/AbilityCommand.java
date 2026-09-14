@@ -23,10 +23,10 @@ import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.gui.ability.AbilityTestingGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.InventoryUtils;
 import me.brandonli.murderrun.utils.TradingUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,9 +35,10 @@ import org.incendo.cloud.annotations.*;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class AbilityCommand implements AnnotationCommandFeature {
 
-  private BukkitAudiences audiences;
+  private PaperAudiences audiences;
   private MurderRun plugin;
 
   @Override

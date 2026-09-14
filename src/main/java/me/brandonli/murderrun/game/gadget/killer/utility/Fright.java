@@ -17,32 +17,24 @@
  */
 package me.brandonli.murderrun.game.gadget.killer.utility;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.killer.KillerGadget;
+import me.brandonli.murderrun.game.gadget.misc.JumpScare;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
-import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.Material;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Fright extends KillerGadget {
 
-  private final Set<GamePlayer> currentlyJumpScared;
+  private final JumpScare jumpScare;
 
   public Fright(final Game game) {
     final GameProperties properties = game.getProperties();
@@ -54,7 +46,7 @@ public final class Fright extends KillerGadget {
             properties.getFrightMaterial(),
             Message.FRIGHT_NAME.build(),
             Message.FRIGHT_LORE.build()));
-    this.currentlyJumpScared = ConcurrentHashMap.newKeySet();
+    this.jumpScare = new JumpScare();
   }
 
   @Override
@@ -71,7 +63,6 @@ public final class Fright extends KillerGadget {
   }
 
   private void jumpScareSurvivor(final GamePlayer survivor, final GameScheduler scheduler) {
-    final ItemStack before = this.setPumpkinItemStack(survivor);
     final Game game = survivor.getGame();
     final GameProperties properties = game.getProperties();
     final int duration = properties.getFrightDuration();
@@ -81,26 +72,6 @@ public final class Fright extends KillerGadget {
 
     final PlayerAudience audience = survivor.getAudience();
     audience.playSound(Sounds.JUMP_SCARE);
-
-    if (this.currentlyJumpScared.contains(survivor)) {
-      return;
-    }
-
-    final StrictPlayerReference reference = StrictPlayerReference.of(survivor);
-    scheduler.scheduleTask(() -> this.setBackHelmet(survivor, before), 2 * 20L, reference);
-    this.currentlyJumpScared.add(survivor);
-  }
-
-  private void setBackHelmet(final GamePlayer player, final @Nullable ItemStack before) {
-    final PlayerInventory inventory = player.getInventory();
-    inventory.setHelmet(before);
-    this.currentlyJumpScared.remove(player);
-  }
-
-  private @Nullable ItemStack setPumpkinItemStack(final GamePlayer player) {
-    final ItemStack stack = Item.create(Material.CARVED_PUMPKIN);
-    final PlayerInventory inventory = player.getInventory();
-    player.sendEquipmentChange(EquipmentSlot.HEAD, stack);
-    return inventory.getHelmet();
+    this.jumpScare.apply(survivor, scheduler, 2 * 20L);
   }
 }

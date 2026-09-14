@@ -30,6 +30,7 @@ public final class GameMap {
   private TruckManager truckManager;
   private BlockWhitelistManager blockWhitelistManager;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public GameMap(final Game game) {
     this.game = game;
   }

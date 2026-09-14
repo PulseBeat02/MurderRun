@@ -27,7 +27,7 @@ import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.death.PlayerDeathTask;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.*;
@@ -81,7 +81,7 @@ public final class Horcrux extends SurvivorGadget {
   }
 
   private void startSpectatorRespawn(final GamePlayer player, final Location respawnPoint) {
-    final StrictPlayerReference ref = StrictPlayerReference.of(player);
+    final AlivePlayerReference ref = AlivePlayerReference.of(player);
     player.setGameMode(GameMode.SPECTATOR);
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
@@ -92,7 +92,7 @@ public final class Horcrux extends SurvivorGadget {
     final PlayerAudience audience = player.getAudience();
     audience.sendMessage(Message.HORCRUX_ACTIVATE.build());
     final GameScheduler scheduler = player.getGame().getScheduler();
-    final StrictPlayerReference ref = StrictPlayerReference.of(player);
+    final AlivePlayerReference ref = AlivePlayerReference.of(player);
     scheduler.scheduleTask(() -> this.executeFinalRespawn(player, respawnPoint), 10L, ref);
   }
 
@@ -104,7 +104,7 @@ public final class Horcrux extends SurvivorGadget {
 
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     scheduler.scheduleTask(() -> player.setInvulnerable(false), 3 * 20L, reference);
   }
 

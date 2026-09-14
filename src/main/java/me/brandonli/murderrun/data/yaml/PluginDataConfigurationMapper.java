@@ -66,6 +66,7 @@ public final class PluginDataConfigurationMapper {
   private String databasePassword;
   private boolean databaseShowSql;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public PluginDataConfigurationMapper(final MurderRun plugin) {
     final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     this.plugin = plugin;

@@ -27,7 +27,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.NPC;
@@ -81,7 +81,7 @@ public final class BurnTheBody extends KillerGadget {
   private void destroyBody(
       final GameScheduler scheduler, final GamePlayer victim, final Location deathLocation) {
     final World world = requireNonNull(deathLocation.getWorld());
-    final StrictPlayerReference reference = StrictPlayerReference.of(victim);
+    final AlivePlayerReference reference = AlivePlayerReference.of(victim);
     scheduler.scheduleRepeatedTask(
         () -> this.summonEffects(deathLocation, world), 0, 20L, 5 * 20L, reference);
     scheduler.scheduleTask(() -> this.handleBurnTasks(victim), 5 * 20L, reference);

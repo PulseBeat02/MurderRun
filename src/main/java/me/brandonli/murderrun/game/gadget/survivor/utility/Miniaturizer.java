@@ -25,7 +25,7 @@ import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.attribute.Attribute;
@@ -54,7 +54,7 @@ public final class Miniaturizer extends SurvivorGadget {
     final Item item = packet.getItem();
     final GameProperties properties = game.getProperties();
     final int duration = properties.getMiniaturizerDuration();
-    final StrictPlayerReference ref = StrictPlayerReference.of(player);
+    final AlivePlayerReference ref = AlivePlayerReference.of(player);
     final double scale = properties.getMiniaturizerScale();
     final AttributeInstance instance = requireNonNull(player.getAttribute(Attribute.SCALE));
     instance.setBaseValue(scale);

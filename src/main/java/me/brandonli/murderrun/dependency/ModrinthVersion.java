@@ -17,90 +17,133 @@
  */
 package me.brandonli.murderrun.dependency;
 
-import com.google.gson.Gson;
-import java.util.Arrays;
+import com.google.gson.annotations.SerializedName;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-@Deprecated
-public class ModrinthVersion {
+public final class ModrinthVersion {
 
-  private final String name;
-  private final String version_number;
-  private final String version_type;
-  private final String status;
-  private final String requested_status;
-  private final String id;
-  private final String[] game_versions;
-  private final ModrinthFile[] files;
+  private static final String LISTED = "listed";
+
+  @SerializedName("version_number")
+  private final @Nullable String versionNumber;
+
+  @SerializedName("version_type")
+  private final @Nullable String versionType;
+
+  private final @Nullable String status;
+
+  @SerializedName("date_published")
+  private final @Nullable String datePublished;
+
+  @SerializedName("game_versions")
+  private final @Nullable List<String> gameVersions;
+
+  private final @Nullable List<String> loaders;
+  private final @Nullable List<ModrinthFile> files;
 
   public ModrinthVersion(
-      final String name,
-      final String version_number,
-      final String version_type,
-      final String status,
-      final String requested_status,
-      final String id,
-      final String[] game_versions,
-      final ModrinthFile[] files) {
-    this.name = name;
-    this.version_number = version_number;
-    this.version_type = version_type;
+      final @Nullable String versionNumber,
+      final @Nullable String versionType,
+      final @Nullable String status,
+      final @Nullable String datePublished,
+      final @Nullable List<String> gameVersions,
+      final @Nullable List<String> loaders,
+      final @Nullable List<ModrinthFile> files) {
+    this.versionNumber = versionNumber;
+    this.versionType = versionType;
     this.status = status;
-    this.requested_status = requested_status;
-    this.id = id;
+    this.datePublished = datePublished;
+    this.gameVersions = gameVersions;
+    this.loaders = loaders;
     this.files = files;
-    this.game_versions = game_versions;
   }
 
-  public static ModrinthVersion[] serializeVersions(final String json) {
-    final Gson gson = new Gson(); // since using the default one will use worldedit class serializer
-    final ModrinthVersion[] versions = gson.fromJson(json, ModrinthVersion[].class);
-    return Arrays.stream(versions)
-        .filter(ModrinthVersion::isValidVersion)
-        .toArray(ModrinthVersion[]::new);
+  public boolean isCompatible(
+      final String minecraftVersion, final Collection<String> supportedLoaders) {
+    return this.isListed()
+        && this.supportsGameVersion(minecraftVersion)
+        && this.supportsAnyLoader(supportedLoaders)
+        && this.findJar().isPresent();
   }
 
-  public Optional<ModrinthFile> findFirstValidFile() {
-    return Arrays.stream(this.files).filter(ModrinthFile::isValidFile).findFirst();
+  public boolean isListed() {
+    return LISTED.equals(this.status);
   }
 
-  public boolean isValidVersion() {
-    return this.files != null && this.isListedProject();
+  public boolean supportsGameVersion(final String minecraftVersion) {
+    return this.gameVersions != null && this.gameVersions.contains(minecraftVersion);
   }
 
-  public boolean isListedProject() {
-    return this.status.equals("listed");
+  public boolean supportsAnyLoader(final Collection<String> supportedLoaders) {
+    return this.loaders != null && this.loaders.stream().anyMatch(supportedLoaders::contains);
   }
 
-  public String getName() {
-    return this.name;
+  public Optional<ModrinthFile> findJar() {
+    if (this.files == null) {
+      return Optional.empty();
+    }
+    final Optional<ModrinthFile> primary = this.files.stream()
+        .filter(ModrinthFile::isJar)
+        .filter(ModrinthFile::isPrimary)
+        .findFirst();
+    if (primary.isPresent()) {
+      return primary;
+    }
+    return this.files.stream().filter(ModrinthFile::isJar).findFirst();
   }
 
-  public String getVersionNumber() {
-    return this.version_number;
+  public int getReleasePriority() {
+    if (this.versionType == null) {
+      return 0;
+    }
+    return switch (this.versionType) {
+      case "release" -> 2;
+      case "beta" -> 1;
+      default -> 0;
+    };
   }
 
-  public String getVersionType() {
-    return this.version_type;
+  public Instant getPublished() {
+    if (this.datePublished == null) {
+      return Instant.EPOCH;
+    }
+    try {
+      return Instant.parse(this.datePublished);
+    } catch (final DateTimeParseException e) {
+      return Instant.EPOCH;
+    }
   }
 
-  public String getStatus() {
+  public @Nullable String getVersionNumber() {
+    return this.versionNumber;
+  }
+
+  public @Nullable String getVersionType() {
+    return this.versionType;
+  }
+
+  public @Nullable String getStatus() {
     return this.status;
   }
 
-  public String getRequestedStatus() {
-    return this.requested_status;
+  public @Nullable String getDatePublished() {
+    return this.datePublished;
   }
 
-  public String getId() {
-    return this.id;
+  public @Nullable List<String> getGameVersions() {
+    return this.gameVersions;
   }
 
-  public ModrinthFile[] getFiles() {
+  public @Nullable List<String> getLoaders() {
+    return this.loaders;
+  }
+
+  public @Nullable List<ModrinthFile> getFiles() {
     return this.files;
-  }
-
-  public String[] getGame_versions() {
-    return this.game_versions;
   }
 }

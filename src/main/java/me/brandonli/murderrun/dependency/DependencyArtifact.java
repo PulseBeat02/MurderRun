@@ -17,37 +17,30 @@
  */
 package me.brandonli.murderrun.dependency;
 
-import static java.util.Objects.requireNonNull;
+import java.net.URI;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.nio.file.Path;
-import me.brandonli.murderrun.utils.IOUtils;
+public final class DependencyArtifact {
 
-@Deprecated
-public abstract class PluginDependency implements Dependency {
+  private final String fileName;
+  private final URI uri;
+  private final @Nullable String sha512;
 
-  private final String name;
-  private final String version;
-  private final Path parentDirectory;
-
-  public PluginDependency(final String name, final String version) {
-    final Path data = IOUtils.getPluginDataFolderPath();
-    this.name = name;
-    this.version = version;
-    this.parentDirectory = requireNonNull(data.getParent());
+  public DependencyArtifact(final String fileName, final URI uri, final @Nullable String sha512) {
+    this.fileName = fileName;
+    this.uri = uri;
+    this.sha512 = sha512;
   }
 
-  @Override
-  public String getName() {
-    return this.name;
+  public String getFileName() {
+    return this.fileName;
   }
 
-  @Override
-  public String getVersion() {
-    return this.version;
+  public URI getUri() {
+    return this.uri;
   }
 
-  @Override
-  public Path getParentDirectory() {
-    return this.parentDirectory;
+  public @Nullable String getSha512() {
+    return this.sha512;
   }
 }

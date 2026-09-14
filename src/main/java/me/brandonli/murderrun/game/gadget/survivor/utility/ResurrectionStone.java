@@ -30,7 +30,7 @@ import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.phase.PlayerStartupTool;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.OnlinePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.NPC;
@@ -80,7 +80,7 @@ public final class ResurrectionStone extends SurvivorGadget {
       return true;
     }
 
-    final LoosePlayerReference reference = LoosePlayerReference.of(closest);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(closest);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0L, 1, 5 * 20L, reference);
     scheduler.scheduleTask(() -> this.resurrectPlayer(game, closest), 5 * 20L, reference);

@@ -88,9 +88,28 @@ public final class GameScheduler {
     return this.scheduleTask(task, delay, -1);
   }
 
+  public BukkitTask scheduleTask(
+      final Runnable runnable,
+      final long delay,
+      final Reference<?> reference,
+      final Runnable cleanup) {
+    final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference, cleanup);
+    return this.scheduleTask(task, delay, -1);
+  }
+
   public BukkitTask scheduleRepeatedTask(
       final Runnable runnable, final long delay, final long period, final Reference<?> reference) {
     final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference);
+    return this.scheduleTask(task, delay, period);
+  }
+
+  public BukkitTask scheduleRepeatedTask(
+      final Runnable runnable,
+      final long delay,
+      final long period,
+      final Reference<?> reference,
+      final Runnable cleanup) {
+    final GameScheduledTask task = new GameScheduledTask(this.game, runnable, reference, cleanup);
     return this.scheduleTask(task, delay, period);
   }
 

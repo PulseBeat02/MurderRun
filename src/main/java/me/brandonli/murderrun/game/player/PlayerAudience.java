@@ -28,11 +28,11 @@ import java.util.concurrent.atomic.AtomicLong;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.locale.AudienceProvider;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.resourcepack.sound.SoundResource;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.sound.SoundStop;
 import net.kyori.adventure.text.Component;
@@ -60,7 +60,7 @@ public final class PlayerAudience {
       @UnderInitialization PlayerAudience this, final Game game, final UUID uuid) {
     final MurderRun plugin = game.getPlugin();
     final AudienceProvider handler = plugin.getAudience();
-    final BukkitAudiences audiences = handler.retrieve();
+    final PaperAudiences audiences = handler.retrieve();
     return audiences.player(uuid);
   }
 

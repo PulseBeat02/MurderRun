@@ -28,6 +28,7 @@ public final class GameExtensionManager {
   private DisguiseManager disguiseManager;
   private CitizensManager npcManager;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public GameExtensionManager(final Game game) {
     this.game = game;
   }

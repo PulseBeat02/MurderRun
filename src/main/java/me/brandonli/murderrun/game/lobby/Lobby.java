@@ -57,8 +57,10 @@ public final class Lobby implements Serializable {
   @Column(name = "corners")
   private Location[] corners;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public Lobby() {}
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public Lobby(
       final Schematic schematic,
       final String name,

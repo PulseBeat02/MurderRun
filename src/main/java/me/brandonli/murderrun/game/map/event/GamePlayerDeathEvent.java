@@ -34,7 +34,7 @@ import me.brandonli.murderrun.game.player.*;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.death.PlayerDeathTool;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.OnlinePlayerReference;
 import me.brandonli.murderrun.game.statistics.PlayerStatistics;
 import me.brandonli.murderrun.game.statistics.StatisticsManager;
 import me.brandonli.murderrun.locale.Message;
@@ -77,7 +77,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
     final DeathManager deathManager = gamePlayer.getDeathManager();
     final GameScheduler scheduler = game.getScheduler();
-    final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(gamePlayer);
 
     final GameMode mode = game.getMode();
     if (mode == GameMode.FREEZE_TAG
@@ -146,7 +146,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
     deathManager.runDeathTasks();
 
     final GameScheduler scheduler = game.getScheduler();
-    final LoosePlayerReference reference = LoosePlayerReference.of(gamePlayer);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(gamePlayer);
     scheduler.scheduleTask(this::playDeathSoundEffect, 20L, reference);
 
     final World world = current.getWorld();
@@ -228,7 +228,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
 
       if (this.freezeTagManager != null) {
         final GameScheduler scheduler = game.getScheduler();
-        final LoosePlayerReference reference = LoosePlayerReference.of(survivor);
+        final OnlinePlayerReference reference = OnlinePlayerReference.of(survivor);
         scheduler.scheduleTask(
             () -> {
               this.freezeTagManager.freezeSurvivor(survivor);

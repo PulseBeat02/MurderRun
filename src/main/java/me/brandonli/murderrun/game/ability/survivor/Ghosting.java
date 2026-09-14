@@ -29,7 +29,7 @@ import me.brandonli.murderrun.game.player.Survivor;
 import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.death.PlayerDeathTask;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.OnlinePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
@@ -100,7 +100,7 @@ public final class Ghosting extends SurvivorAbility {
     final GameScheduler scheduler = game.getScheduler();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack wool = Item.create(Material.WHITE_WOOL);
-    final LoosePlayerReference reference = LoosePlayerReference.of(player);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(player);
     final GameProperties properties = game.getProperties();
     scheduler.scheduleRepeatedTask(
         () -> inventory.addItem(wool), 1L, properties.getGhostingWoolDelay(), reference);

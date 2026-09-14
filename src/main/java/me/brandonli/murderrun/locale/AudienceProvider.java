@@ -19,36 +19,23 @@ package me.brandonli.murderrun.locale;
 
 import me.brandonli.murderrun.MurderRun;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Server;
 
 public final class AudienceProvider {
 
-  private final BukkitAudiences audience;
+  private final PaperAudiences audience;
 
   public AudienceProvider(final MurderRun neon) {
-    this.audience = BukkitAudiences.create(neon);
+    final Server server = neon.getServer();
+    this.audience = new PaperAudiences(server);
   }
 
-  public void shutdown() {
-    if (this.audience != null) {
-      this.audience.close();
-    }
-  }
-
-  public BukkitAudiences retrieve() {
-    this.checkStatus();
+  public PaperAudiences retrieve() {
     return this.audience;
   }
 
-  private void checkStatus() {
-    if (this.audience == null) {
-      throw new AssertionError("Tried to access Adventure when the plugin was disabled!");
-    }
-  }
-
   public void console(final Component component) {
-    this.checkStatus();
     final Audience console = this.audience.console();
     console.sendMessage(component);
   }

@@ -22,7 +22,7 @@ import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.item.ItemFactory;
@@ -55,7 +55,7 @@ public final class HackTrap extends SurvivorTrap {
       return;
     }
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
     final GameProperties properties = game.getProperties();
     scheduler.scheduleTask(() -> inventory.addItem(stack), properties.getHackDuration(), reference);

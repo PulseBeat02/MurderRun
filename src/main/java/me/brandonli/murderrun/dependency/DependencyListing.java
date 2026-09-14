@@ -17,60 +17,23 @@
  */
 package me.brandonli.murderrun.dependency;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import me.brandonli.murderrun.utils.versioning.ServerEnvironment;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import java.util.List;
 
-@Deprecated
 public final class DependencyListing {
 
-  private static final Map<String, DependencyListing> DEPENDENCY_LISTINGS =
-      new ConcurrentHashMap<>();
-  private static final Dependency CITIZENS = new UrlDependency(
-      "Citizens",
-      "Citizens-2.0.40-b4070",
-      "https://ci.citizensnpcs.co/job/Citizens2/4070/artifact/dist/target/Citizens-2.0.41-b4070.jar");
+  private static final List<Dependency> DEPENDENCIES = List.of(
+      new ModrinthDependency("WorldEdit", "worldedit"),
+      new ModrinthDependency("packetevents", "packetevents"),
+      new JenkinsDependency(
+          "Citizens",
+          "https://ci.citizensnpcs.co/job/Citizens2/",
+          "Citizens-[0-9.]+-b[0-9]+\\.jar"));
 
-  private static final Dependency WORLD_EDIT = new UrlDependency(
-      "WorldEdit",
-      "worldedit-bukkit-7.4.0-rc-01",
-      "https://cdn.modrinth.com/data/1u6JkXh5/versions/1MJ3rIHu/worldedit-bukkit-7.4.0-rc-01.jar");
-
-  private static final Dependency PACKET_EVENTS = new UrlDependency(
-      "PacketEvents",
-      "packetevents-spigot-2.11.2-SNAPSHOT",
-      "https://ci.codemc.io/job/retrooper/job/packetevents/820/artifact/build/libs/packetevents-spigot-2.11.2-SNAPSHOT.jar");
-
-  private static final DependencyListing V1_21_R7 =
-      create("V1_21_R7", CITIZENS, WORLD_EDIT, PACKET_EVENTS);
-
-  private static DependencyListing create(final String revision, final Dependency... deps) {
-    final Collection<Dependency> dependencies = List.of(deps);
-    final DependencyListing listing = new DependencyListing(revision, dependencies);
-    DEPENDENCY_LISTINGS.put(listing.revision, listing);
-    return listing;
+  private DependencyListing() {
+    throw new UnsupportedOperationException("Utility class cannot be instantiated");
   }
 
-  public static @Nullable DependencyListing getCurrentListing() {
-    final String revision = ServerEnvironment.getNMSRevision();
-    final String upper = revision.toUpperCase();
-    return DEPENDENCY_LISTINGS.get(upper);
-  }
-
-  private final String revision;
-  private final Collection<Dependency> dependencies;
-
-  DependencyListing(final String revision, final Collection<Dependency> dependencies) {
-    this.revision = revision;
-    this.dependencies = dependencies;
-  }
-
-  public String getRevision() {
-    return this.revision;
-  }
-
-  public Collection<Dependency> getDependencies() {
-    return this.dependencies;
+  public static List<Dependency> getDependencies() {
+    return DEPENDENCIES;
   }
 }

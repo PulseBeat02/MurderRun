@@ -26,7 +26,6 @@ import dev.triumphteam.gui.components.util.GuiFiller;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameProperties;
@@ -34,13 +33,13 @@ import me.brandonli.murderrun.game.gadget.Gadget;
 import me.brandonli.murderrun.game.gadget.GadgetRegistry;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.*;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.sound.Sound.Source;
 import net.kyori.adventure.text.Component;
@@ -74,15 +73,17 @@ public final class GadgetShopGui extends PaginatedGui {
     this.createNavigationPane();
   }
 
-  @SuppressWarnings("all") // checker
   private void createPaginatedPane(final List<String> gadgets) {
     final GadgetRegistry registry = GadgetRegistry.getRegistry();
-    gadgets.stream()
-        .map(registry::getGadget)
-        .filter(Objects::nonNull)
-        .map(TradingUtils::getModifiedLoreWithCost)
-        .map(stack -> new GuiItem(stack, this::handleClick))
-        .forEach(this::addItem);
+    for (final String name : gadgets) {
+      final Gadget gadget = registry.getGadget(name);
+      if (gadget == null) {
+        continue;
+      }
+      final ItemStack stack = TradingUtils.getModifiedLoreWithCost(gadget);
+      final GuiItem item = new GuiItem(stack, this::handleClick);
+      this.addItem(item);
+    }
   }
 
   private void createNavigationPane() {
@@ -124,7 +125,7 @@ public final class GadgetShopGui extends PaginatedGui {
       final UUID uuid = entity.getUniqueId();
       final Component message = Message.SHOP_GUI_ERROR.build();
       final AudienceProvider provider = this.plugin.getAudience();
-      final BukkitAudiences bukkitAudiences = provider.retrieve();
+      final PaperAudiences bukkitAudiences = provider.retrieve();
       final Audience audience = bukkitAudiences.player(uuid);
       audience.sendMessage(message);
       return;
@@ -163,7 +164,7 @@ public final class GadgetShopGui extends PaginatedGui {
     final Sound sound = sound(key, source, 1.0f, 1.0f);
     final UUID uuid = entity.getUniqueId();
     final AudienceProvider provider = this.plugin.getAudience();
-    final BukkitAudiences bukkitAudiences = provider.retrieve();
+    final PaperAudiences bukkitAudiences = provider.retrieve();
     final Audience audience = bukkitAudiences.player(uuid);
     audience.playSound(sound);
   }

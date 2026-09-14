@@ -1,0 +1,8 @@
+package com.sk89q.worldedit.function.operation;
+
+import com.sk89q.worldedit.WorldEditException;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+public interface Operation {
+  @Nullable Operation resume(RunContext run) throws WorldEditException;
+}

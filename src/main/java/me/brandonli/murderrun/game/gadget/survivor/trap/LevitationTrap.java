@@ -24,7 +24,7 @@ import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -62,7 +62,7 @@ public final class LevitationTrap extends SurvivorTrap {
     murderer.addPotionEffects(new PotionEffect(PotionEffectType.LEVITATION, duration, 1));
     murderer.teleport(clone);
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> murderer.teleport(location), duration, reference);
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(murderer), 0, 5, duration, reference);

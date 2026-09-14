@@ -21,8 +21,6 @@ import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.data.yaml.PluginDataConfigurationMapper;
 import me.brandonli.murderrun.resourcepack.provider.http.ServerPackHosting;
 import me.brandonli.murderrun.resourcepack.provider.netty.NettyHosting;
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public final class PackProviderMethod {
 
@@ -45,13 +43,6 @@ public final class PackProviderMethod {
           }
           case ON_SERVER -> new NettyHosting(this.plugin);
         };
-    this.deferCaching(provider);
     return provider;
-  }
-
-  private void deferCaching(final ResourcePackProvider provider) {
-    // wait for netty because url isn't valid yet
-    final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.runTaskAsynchronously(this.plugin, provider::cachePack);
   }
 }

@@ -29,7 +29,7 @@ import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.Survivor;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.OnlinePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import me.brandonli.murderrun.utils.PDCUtils;
@@ -105,6 +105,11 @@ public final class Flashlight extends SurvivorGadget implements Listener {
     }
 
     final Game game = packet.getGame();
+    final GameProperties properties = game.getProperties();
+    if (!properties.isFlashlightEnabled()) {
+      return true;
+    }
+
     final GamePlayer player = packet.getPlayer();
     final int cooldown = player.getCooldown(stack);
     if (cooldown > 0) {
@@ -113,14 +118,13 @@ public final class Flashlight extends SurvivorGadget implements Listener {
 
     Item.builder(stack).useOneDurability();
 
-    final GameProperties properties = game.getProperties();
     final int cooldownDuration = (int) (properties.getFlashlightCooldown() * 20);
     player.setCooldown(stack, cooldownDuration);
 
     final GameScheduler scheduler = game.getScheduler();
     if (player instanceof final Survivor survivor) {
       survivor.setCanSee(true);
-      final LoosePlayerReference reference = LoosePlayerReference.of(player);
+      final OnlinePlayerReference reference = OnlinePlayerReference.of(player);
       final int duration = properties.getFlashlightDuration();
       scheduler.scheduleTask(() -> survivor.setCanSee(false), duration, reference);
     }

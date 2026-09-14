@@ -28,9 +28,9 @@ import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.RandomUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -150,7 +150,7 @@ public final class GameManager {
 
   private void sendGameCreationMessage(final CommandSender leader) {
     final AudienceProvider provider = this.plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final Audience audience = audiences.sender(leader);
     audience.sendMessage(Message.GAME_CREATION_LOAD.build());
   }
@@ -202,7 +202,7 @@ public final class GameManager {
   public boolean quickJoinGame(final Player player) {
     final QuickJoinConfigurationMapper config = this.plugin.getQuickJoinConfiguration();
     final AudienceProvider provider = this.plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final Audience audience = audiences.sender(player);
     if (!config.isEnabled()) {
       audience.sendMessage(Message.GAME_NONE.build());

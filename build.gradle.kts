@@ -16,7 +16,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
-version = "26.1.2-v1.0.0"
+version = "26.2-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -43,7 +43,6 @@ repositories {
 }
 
 val runtimeDeps = listOf(
-    libs.adventurePlatformBukkit,
     libs.cloudAnnotations,
     libs.cloudPaper,
     libs.cloudMinecraftExtras,
@@ -101,6 +100,9 @@ dependencies {
     }
 
     // Testing Dependencies
+    testImplementation(libs.paperApi)
+    testImplementation(libs.worldeditCore)
+    testImplementation(libs.worldeditBukkit)
     testImplementation(libs.nettyAll)
     testImplementation(libs.fastutil)
     testImplementation(libs.mockBukkit)
@@ -135,13 +137,13 @@ configurations.all {
 
 val windows = System.getProperty("os.name").lowercase().contains("windows")
 
-val zipPack by tasks.registering(Zip::class) {
+val zipPack = tasks.register<Zip>("zipPack") {
     from("./resourcepack")
     archiveFileName.set("pack.zip")
     destinationDirectory.set(layout.buildDirectory.dir("tmp/pack"))
 }
 
-val zipDemo by tasks.registering(Zip::class) {
+val zipDemo = tasks.register<Zip>("zipDemo") {
     from("./demo-setup")
     archiveFileName.set("demo-setup.zip")
     destinationDirectory.set(layout.buildDirectory.dir("tmp/demo-setup"))
@@ -152,16 +154,17 @@ paperPluginYaml {
     version = "${project.version}"
     description = "Pulse's MurderRun Plugin"
     authors = listOf("PulseBeat_02")
-    apiVersion = "26.1.2"
+    apiVersion = "26.2"
     prefix = "Murder Run"
     main = "me.brandonli.murderrun.MurderRun"
     loader = "me.brandonli.murderrun.MurderRunLoader"
-    dependencies.server("WorldEdit", PaperPluginYaml.Load.BEFORE, true)
-    dependencies.server("Citizens", PaperPluginYaml.Load.BEFORE, true)
-    dependencies.server("packetevents", PaperPluginYaml.Load.BEFORE, true);
+    dependencies.server("WorldEdit", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("Citizens", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("packetevents", PaperPluginYaml.Load.BEFORE, false)
     dependencies.server("LibsDisguises", PaperPluginYaml.Load.BEFORE, false)
     dependencies.server("PlaceholderAPI", PaperPluginYaml.Load.BEFORE, false)
     dependencies.server("Parties", PaperPluginYaml.Load.BEFORE, false)
+    dependencies.server("Vault", PaperPluginYaml.Load.BEFORE, false)
     dependencies.server("Nexo", PaperPluginYaml.Load.BEFORE, false)
     dependencies.server("CraftEngine", PaperPluginYaml.Load.BEFORE, false)
 }
@@ -202,15 +205,15 @@ tasks {
 
     runServer {
         downloadPlugins {
-            url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
             // wait for LibDisguises to update
             // url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
-            url("https://ci.extendedclip.com/job/PlaceholderAPI/265/artifact/build/libs/PlaceholderAPI-2.12.3-DEV-265.jar")
+            url("https://cdn.modrinth.com/data/lKEzGugV/versions/pIvQcXW8/PlaceholderAPI-2.12.3.jar")
             url("https://cdn.modrinth.com/data/rHRYOOoq/versions/yBAIVDGP/Parties-3.2.9.jar")
+            url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
         }
         systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("26.1.2")
+        minecraftVersion("26.2")
     }
 
     processResources {
@@ -245,10 +248,9 @@ tasks {
     }
 
     checkerFramework {
-        version = "3.53.1"
+        version = "4.2.3"
         checkers = listOf("org.checkerframework.checker.nullness.NullnessChecker")
         extraJavacArgs = listOf(
-            "-AsuppressWarnings=uninitialized",
             "-Astubs=${project.file("checker-framework")}"
         )
     }

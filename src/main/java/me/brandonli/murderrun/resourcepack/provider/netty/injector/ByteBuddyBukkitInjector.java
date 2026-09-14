@@ -55,7 +55,7 @@ public final class ByteBuddyBukkitInjector {
 
   private Class<?> getConnectionClass(@UnderInitialization ByteBuddyBukkitInjector this) {
     try {
-      return Class.forName("net.minecraft.network.NetworkManager");
+      return Class.forName("net.minecraft.network.Connection");
     } catch (final ClassNotFoundException e) {
       throw new AssertionError(e);
     }

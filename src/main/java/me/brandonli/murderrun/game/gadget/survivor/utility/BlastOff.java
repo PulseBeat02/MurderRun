@@ -28,7 +28,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -76,7 +76,7 @@ public final class BlastOff extends SurvivorGadget {
     scheduler.scheduleAfterDeath(() -> this.resetPlayer(killer, before), firework);
     killer.setInvulnerable(true);
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(killer);
     scheduler.scheduleTask(() -> player.setInvulnerable(false), 4 * 20L, reference);
 
     final GameProperties properties = game.getProperties();

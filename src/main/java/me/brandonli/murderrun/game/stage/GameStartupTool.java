@@ -37,8 +37,8 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import me.brandonli.murderrun.utils.item.Item;
@@ -110,7 +110,7 @@ public final class GameStartupTool {
     final GamePlayerManager manager = this.game.getPlayerManager();
     final GameScheduler scheduler = this.game.getScheduler();
     manager.applyToLivingSurvivors(player -> {
-      final StrictPlayerReference reference = StrictPlayerReference.of(player);
+      final AlivePlayerReference reference = AlivePlayerReference.of(player);
       player.setInvulnerable(true);
       player.addPotionEffects(PotionEffectType.BLINDNESS.createEffect(5 * 20, 1));
       player.addPotionEffects(PotionEffectType.NAUSEA.createEffect(3 * 20, 1));

@@ -47,12 +47,13 @@ public final class ArenaManager implements Serializable, HibernateSerializable {
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @MapKeyColumn(name = "name")
   @JoinColumn(name = "arena_manager_id")
   @Column(name = "arena")
   private final Map<String, Arena> arenas;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public ArenaManager() {
     this.arenas = new HashMap<>();
   }

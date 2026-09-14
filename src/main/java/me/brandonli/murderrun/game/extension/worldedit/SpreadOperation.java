@@ -29,6 +29,7 @@ import me.brandonli.murderrun.game.GameProperties;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class SpreadOperation implements Operation {
 
@@ -36,7 +37,7 @@ public final class SpreadOperation implements Operation {
   private final Iterator<Map.Entry<BlockVector3, BaseBlock>> it;
   private final BiFunction<BlockVector3, BaseBlock, Void> placeFunction;
   private final int blocksPerTick;
-  private BukkitTask task;
+  private @Nullable BukkitTask task;
 
   public SpreadOperation(
       final MurderRun plugin,
@@ -50,8 +51,7 @@ public final class SpreadOperation implements Operation {
   }
 
   @Override
-  @SuppressWarnings("nullness")
-  public Operation resume(final RunContext run) {
+  public @Nullable Operation resume(final RunContext run) {
     if (this.task == null && this.it.hasNext()) {
       final BukkitScheduler scheduler = Bukkit.getScheduler();
       this.task = scheduler.runTaskTimer(this.plugin, this::placeBlock, 1L, 1L);

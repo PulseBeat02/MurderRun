@@ -24,7 +24,7 @@ import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.GameMode;
@@ -57,7 +57,7 @@ public final class Phantom extends KillerGadget {
 
     final Location old = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     final GameProperties properties = game.getProperties();
     scheduler.scheduleTask(
         () -> this.setDefault(player, old), properties.getPhantomDuration(), reference);

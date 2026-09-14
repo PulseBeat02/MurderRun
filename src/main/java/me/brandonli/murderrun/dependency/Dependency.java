@@ -17,15 +17,8 @@
  */
 package me.brandonli.murderrun.dependency;
 
-import java.nio.file.Path;
-
-@Deprecated
 public interface Dependency {
   String getName();
 
-  String getVersion();
-
-  Path getParentDirectory();
-
-  Path download();
+  DependencyArtifact resolve(final DependencyClient client, final String minecraftVersion);
 }

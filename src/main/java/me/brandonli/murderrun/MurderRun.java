@@ -17,10 +17,8 @@
  */
 package me.brandonli.murderrun;
 
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.PacketEventsAPI;
 import dev.triumphteam.gui.TriumphGui;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.api.event.ApiEventBus;
 import me.brandonli.murderrun.api.event.EventBusProvider;
@@ -31,6 +29,7 @@ import me.brandonli.murderrun.data.RelationalDataProvider;
 import me.brandonli.murderrun.data.yaml.ConfigurationManager;
 import me.brandonli.murderrun.data.yaml.PluginDataConfigurationMapper;
 import me.brandonli.murderrun.data.yaml.QuickJoinConfigurationMapper;
+import me.brandonli.murderrun.dependency.DependencyManager;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.PlayerResourcePackChecker;
 import me.brandonli.murderrun.game.ability.AbilityRegistry;
@@ -59,9 +58,12 @@ import me.brandonli.murderrun.utils.map.MapTeleportSkipListener;
 import me.brandonli.murderrun.utils.screen.ScreenUtils;
 import me.brandonli.murderrun.utils.versioning.VersionChecker;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Server;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class MurderRun extends JavaPlugin {
 
   private static final int BUKKIT_STATS_SERVER_ID = 22728;
@@ -89,6 +91,7 @@ public final class MurderRun extends JavaPlugin {
   private NexoManager nexoManager;
   private VaultManager vaultManager;
 
+  private DependencyManager dependencyManager;
   private Metrics metrics;
   private AtomicBoolean disabling;
   private VersionChecker versionChecker;
@@ -96,12 +99,15 @@ public final class MurderRun extends JavaPlugin {
 
   @Override
   public void onLoad() {
-    //    this.loadDependencies(); let users handle dependencies
+    this.installDependencies();
   }
 
   @Override
   public void onDisable() {
     this.disabling = new AtomicBoolean(true);
+    if (this.audience == null) {
+      return;
+    }
     this.shutdownGames();
     this.unregisterExtensions();
     this.updatePluginData();
@@ -111,12 +117,14 @@ public final class MurderRun extends JavaPlugin {
     this.unloadEventBusApi();
     this.shutdownMiscListeners();
     this.shutdownMetrics();
-    this.shutdownAudience();
   }
 
   @Override
   public void onEnable() {
     this.disabling = new AtomicBoolean(false);
+    if (!this.enableDependencies()) {
+      return;
+    }
     this.registerAudienceHandler();
     this.initializeEventBusApi();
     this.readPluginData();
@@ -129,6 +137,27 @@ public final class MurderRun extends JavaPlugin {
     this.enableMetrics();
     this.startMiscListeners();
     this.testEventBusApi();
+  }
+
+  private void installDependencies() {
+    this.dependencyManager = new DependencyManager(this);
+    this.dependencyManager.installDependencies();
+  }
+
+  private boolean enableDependencies() {
+    this.dependencyManager.enableDependencies();
+    final Collection<String> missing = this.dependencyManager.getMissingDependencies();
+    if (missing.isEmpty()) {
+      return true;
+    }
+    final Logger logger = this.getSLF4JLogger();
+    final String msg =
+        "Murder Run requires the following plugins: {}. Install them into the plugins folder and restart the server.";
+    logger.error(msg, missing);
+    final Server server = this.getServer();
+    final PluginManager manager = server.getPluginManager();
+    manager.disablePlugin(this);
+    return false;
   }
 
   private void shutdownMiscListeners() {
@@ -171,12 +200,6 @@ public final class MurderRun extends JavaPlugin {
     this.audience.console(Message.LOAD_SCHEMATICS.build());
     final SchematicLoader loader = new SchematicLoader(this);
     loader.loadSchematics();
-  }
-
-  private void setupPacketEvents() {
-    final PacketEventsAPI<Plugin> builder = SpigotPacketEventsBuilder.build(this);
-    PacketEvents.setAPI(builder);
-    builder.load();
   }
 
   private void unregisterExtensions() {
@@ -230,12 +253,6 @@ public final class MurderRun extends JavaPlugin {
     ScreenUtils.init(this);
   }
 
-  private void shutdownAudience() {
-    if (this.audience != null) {
-      this.audience.shutdown();
-    }
-  }
-
   private void readPluginData() {
     this.configuration = new PluginDataConfigurationMapper(this);
     this.configuration.deserialize();
@@ -263,6 +280,19 @@ public final class MurderRun extends JavaPlugin {
     final PackProviderMethod packProviderMethod = new PackProviderMethod(this);
     this.provider = packProviderMethod.getProvider();
     this.provider.start();
+    this.audience.console(Message.LOAD_RESOURCEPACK_HASH.build());
+    this.cacheResourcePack();
+  }
+
+  private void cacheResourcePack() {
+    try {
+      this.provider.cachePack();
+    } catch (final RuntimeException | AssertionError e) {
+      final Logger logger = this.getSLF4JLogger();
+      final String msg =
+          "Failed to calculate the resource pack hash, players will not be sent the resource pack";
+      logger.error(msg, e);
+    }
   }
 
   private void registerCommands() {

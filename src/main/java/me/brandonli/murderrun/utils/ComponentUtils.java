@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.brandonli.murderrun.locale.LocaleTools;
 import me.brandonli.murderrun.locale.Sender;
-import net.kyori.adventure.platform.bukkit.BukkitComponentSerializer;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
@@ -39,7 +38,11 @@ import org.bukkit.entity.Player;
 public final class ComponentUtils {
 
   private static final LegacyComponentSerializer LEGACY_SERIALIZER =
-      BukkitComponentSerializer.legacy();
+      LegacyComponentSerializer.builder()
+          .character(LegacyComponentSerializer.SECTION_CHAR)
+          .hexColors()
+          .useUnusualXRepeatedCharacterHexFormat()
+          .build();
   private static final PlainTextComponentSerializer PLAIN_SERIALIZER =
       PlainTextComponentSerializer.plainText();
   private static final Pattern PATTERN = Pattern.compile("(?i)§[0-9A-FK-OR]");

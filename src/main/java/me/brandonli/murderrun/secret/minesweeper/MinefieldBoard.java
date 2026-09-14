@@ -61,6 +61,7 @@ public final class MinefieldBoard extends JPanel {
   private int allCells;
   private final JLabel statusbar;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public MinefieldBoard(final JLabel statusbar) {
     this.statusbar = statusbar;
   }

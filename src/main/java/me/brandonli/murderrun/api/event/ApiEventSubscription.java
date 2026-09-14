@@ -22,7 +22,7 @@ import org.bukkit.plugin.Plugin;
 
 public final class ApiEventSubscription<T extends MurderRunEvent> implements EventSubscription<T> {
 
-  private static final Consumer<?> ILLEGAL_HANDLER = t -> {
+  private static final Consumer<Object> ILLEGAL_HANDLER = t -> {
     throw new AssertionError("Inactive subscription");
   };
 
@@ -61,10 +61,9 @@ public final class ApiEventSubscription<T extends MurderRunEvent> implements Eve
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public void unsubscribe() {
     this.active = false;
-    this.handler = (Consumer<? super T>) ILLEGAL_HANDLER;
+    this.handler = ILLEGAL_HANDLER;
   }
 
   @Override

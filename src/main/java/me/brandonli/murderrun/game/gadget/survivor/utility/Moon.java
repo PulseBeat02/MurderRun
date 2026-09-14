@@ -28,8 +28,8 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.attribute.Attribute;
@@ -84,7 +84,7 @@ public final class Moon extends SurvivorGadget implements Listener {
           requireNonNull(participant.getAttribute(Attribute.GRAVITY));
       attribute.setBaseValue(gravity);
 
-      final StrictPlayerReference reference = StrictPlayerReference.of(participant);
+      final AlivePlayerReference reference = AlivePlayerReference.of(participant);
       scheduler.scheduleTask(
           () -> participant.resetAttribute(Attribute.GRAVITY), duration, reference);
 

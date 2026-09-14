@@ -44,7 +44,7 @@ public abstract class AbstractController<T extends HibernateSerializable> implem
     final Class<T> clazz = this.getGenericClass();
     try (final Session session = this.factory.openSession()) {
       final Transaction transaction = session.beginTransaction();
-      final T entity = session.get(clazz, id);
+      final T entity = session.find(clazz, id);
       if (id == -1 || entity == null) {
         final T defaultEntity = requireNonNull(this.createDefaultEntity());
         session.persist(defaultEntity);

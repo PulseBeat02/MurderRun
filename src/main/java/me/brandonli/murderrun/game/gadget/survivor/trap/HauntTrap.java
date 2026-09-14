@@ -23,7 +23,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Particle;
@@ -56,7 +56,7 @@ public final class HauntTrap extends SurvivorTrap {
         new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, duration, 4));
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spook(game, murderer), 0, 20L, duration, reference);
 
@@ -71,7 +71,7 @@ public final class HauntTrap extends SurvivorTrap {
     final MetadataManager metadata = gamePlayer.getMetadataManager();
     metadata.setWorldBorderEffect(true);
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(gamePlayer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(gamePlayer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleTask(() -> this.unspook(gamePlayer), 19, reference);
   }

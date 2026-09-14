@@ -45,6 +45,7 @@ public final class MCPackHosting extends ResourcePackProvider {
   private String url;
   private PackInfo info;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public MCPackHosting(final MurderRun plugin) {
     super(plugin, ProviderMethod.MC_PACK_HOSTING);
   }

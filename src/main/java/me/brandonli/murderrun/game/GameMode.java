@@ -21,6 +21,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
 import java.util.Optional;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public enum GameMode {
   DEFAULT("default", "Default"),
@@ -30,7 +31,7 @@ public enum GameMode {
   private static final Map<String, GameMode> KEY_LOOKUP = Map.of(
       DEFAULT.modeName, DEFAULT, ONE_BOUNCE.modeName, ONE_BOUNCE, FREEZE_TAG.modeName, FREEZE_TAG);
 
-  private static volatile Map<GameMode, GameProperties> PROPERTIES_LOOKUP;
+  private static volatile @Nullable Map<GameMode, GameProperties> PROPERTIES_LOOKUP;
 
   private final String modeName;
   private final String displayName;

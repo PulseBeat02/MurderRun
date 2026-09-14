@@ -55,7 +55,7 @@ public final class Game {
   private GameProperties properties;
   private FreezeTagManager freezeTagManager;
 
-  @SuppressWarnings("all") // checker
+  @SuppressWarnings("fbc")
   public Game(final MurderRun plugin) {
     this.plugin = plugin;
     this.status = new GameStatus(this);

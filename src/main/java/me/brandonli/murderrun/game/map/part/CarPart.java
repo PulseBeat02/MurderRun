@@ -36,6 +36,7 @@ public final class CarPart {
   private Item item;
   private @Nullable Item cursedNote;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public CarPart(final Location location) {
     final UUID uuid = UUID.randomUUID();
     this.uuid = uuid.toString();

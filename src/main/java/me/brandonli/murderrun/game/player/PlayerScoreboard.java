@@ -31,7 +31,7 @@ import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.map.GameMap;
 import me.brandonli.murderrun.game.map.part.PartsManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.OnlinePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -65,7 +65,7 @@ public final class PlayerScoreboard {
       this.distance.set(component);
       this.updateSidebar();
     };
-    final LoosePlayerReference reference = LoosePlayerReference.of(this.gamePlayer);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(this.gamePlayer);
     scheduler.scheduleRepeatedTask(update, 0L, 5L, reference);
   }
 

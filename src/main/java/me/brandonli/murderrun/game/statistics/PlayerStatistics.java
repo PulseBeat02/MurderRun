@@ -67,12 +67,14 @@ public final class PlayerStatistics implements Serializable {
   @Column(name = "win_loss_ratio")
   private float winLossRatio;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public PlayerStatistics(final UUID uuid) {
     this.uuid = uuid;
     this.fastestWinKiller = -1;
     this.fastestWinSurvivor = -1;
   }
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public PlayerStatistics() {}
 
   public synchronized void insertFastestWinKiller(final long win) {

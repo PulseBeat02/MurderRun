@@ -17,12 +17,12 @@
  */
 package me.brandonli;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import java.util.List;
 import me.brandonli.murderrun.game.gadget.Gadget;
+import org.mockbukkit.mockbukkit.MockBukkit;
 
 public final class TrapExampleTest {
 

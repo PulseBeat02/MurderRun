@@ -34,8 +34,12 @@ public final class ResourcePackInjector extends HttpInjector {
       final HttpByteBuf buf = HttpByteBuf.httpBuffer(ctx);
       final Path zip = this.getZipPath();
       final byte[] bytes = Files.readAllBytes(zip);
+      final int length = bytes.length;
+      final String contentLength = String.valueOf(length);
       buf.writeStatusLine("1.1", 200, "OK");
       buf.writeHeader("Content-Type", "application/zip");
+      buf.writeHeader("Content-Length", contentLength);
+      buf.writeHeader("Connection", "close");
       buf.writeBytes(bytes);
       return buf;
     } catch (final IOException e) {

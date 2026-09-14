@@ -35,13 +35,13 @@ import me.brandonli.murderrun.game.arena.drops.TerrainDropAnalyzer;
 import me.brandonli.murderrun.gui.PatternGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import me.brandonli.murderrun.utils.map.MapUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -96,6 +96,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
         editMode);
   }
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public ArenaModificationGui(
       final MurderRun plugin,
       final Player watcher,
@@ -146,7 +147,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
       final MurderRun plugin,
       final HumanEntity watcher) {
     final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
     return audiences.player(uuid);
   }

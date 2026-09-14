@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
@@ -64,7 +64,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableJump(final GameScheduler scheduler, final long ticks) {
-    final StrictPlayerReference reference = StrictPlayerReference.of(this);
+    final AlivePlayerReference reference = AlivePlayerReference.of(this);
     final AttributeInstance instance = requireNonNull(this.getAttribute(Attribute.JUMP_STRENGTH));
     instance.setBaseValue(0.0);
     scheduler.scheduleTask(() -> this.resetAttribute(Attribute.JUMP_STRENGTH), ticks, reference);
@@ -72,7 +72,7 @@ public abstract class AbstractPlayer implements Participant {
 
   @Override
   public void disableWalkNoFOVEffects(final GameScheduler scheduler, final long ticks) {
-    final StrictPlayerReference reference = StrictPlayerReference.of(this);
+    final AlivePlayerReference reference = AlivePlayerReference.of(this);
     this.apply(player -> {
       final float before = player.getWalkSpeed();
       player.setWalkSpeed(0.0f);

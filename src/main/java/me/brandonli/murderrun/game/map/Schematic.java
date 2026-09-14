@@ -44,6 +44,7 @@ public final class Schematic implements Serializable {
 
   private transient Clipboard clipboard;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public Schematic(final String schematicPath, final SerializableVector origin) {
     this.schematicPath = schematicPath;
     this.origin = origin;

@@ -26,7 +26,7 @@ import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -58,7 +58,7 @@ public final class SpasmTrap extends SurvivorTrap {
   @Override
   public void onTrapActivate(final Game game, final GamePlayer murderer, final Item item) {
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(murderer);
     final GameProperties properties = game.getProperties();
     scheduler.scheduleRepeatedTask(
         () -> this.alternateHead(murderer), 0, 5, properties.getSpasmDuration(), reference);

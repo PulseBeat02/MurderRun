@@ -32,8 +32,8 @@ import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.player.*;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.game.scheduler.reference.MergedReference;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.citizensnpcs.api.npc.MetadataStore;
@@ -104,8 +104,8 @@ public final class EnderShadows extends KillerGadget {
     audience.sendMessage(msg);
 
     final Entity shadow = this.getNPCEntity(manager, spawn);
-    final StrictPlayerReference survivorRef = StrictPlayerReference.of(survivor);
-    final StrictPlayerReference killerRef = StrictPlayerReference.of(killer);
+    final AlivePlayerReference survivorRef = AlivePlayerReference.of(survivor);
+    final AlivePlayerReference killerRef = AlivePlayerReference.of(killer);
     final MergedReference<Participant, Participant> merged =
         MergedReference.of(survivorRef, killerRef);
     scheduler.scheduleRepeatedTask(

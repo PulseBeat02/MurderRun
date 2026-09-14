@@ -22,7 +22,9 @@ import static net.kyori.adventure.text.Component.empty;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -30,6 +32,7 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import me.brandonli.murderrun.MurderRun;
+import me.brandonli.murderrun.data.dfu.DefaultedResourceBundle;
 import me.brandonli.murderrun.data.dfu.PropertyFixerManager;
 import me.brandonli.murderrun.data.yaml.PluginDataConfigurationMapper;
 import me.brandonli.murderrun.locale.minimessage.PluginTranslator;
@@ -69,12 +72,23 @@ public final class TranslationManager {
   private ResourceBundle getBundle(
       @UnderInitialization TranslationManager this, final String propertiesPath) {
     final Path resource = this.copyResourceToFolder(propertiesPath);
+    final ResourceBundle defaults = this.loadDefaultProperties(propertiesPath);
     try (final Reader reader = Files.newBufferedReader(resource)) {
-      final ResourceBundle bundle = new PropertyResourceBundle(reader);
+      final ResourceBundle bundle = new DefaultedResourceBundle(reader, defaults);
       final PropertyFixerManager fixer = new PropertyFixerManager();
       fixer.registerLocalePropertiesFixer();
       fixer.applyFixersUpTo(bundle);
       return bundle;
+    } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  private ResourceBundle loadDefaultProperties(
+      @UnderInitialization TranslationManager this, final String propertiesPath) {
+    try (final InputStream stream = IOUtils.getResourceAsStream(propertiesPath);
+        final Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+      return new PropertyResourceBundle(reader);
     } catch (final IOException e) {
       throw new AssertionError(e);
     }

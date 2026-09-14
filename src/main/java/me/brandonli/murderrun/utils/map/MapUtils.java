@@ -229,7 +229,9 @@ public final class MapUtils {
   public static Clipboard loadSchematic(final Schematic schematic) throws IOException {
     final String path = schematic.getSchematicPath();
     final Path legacyPath = Path.of(path);
-    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByPath(legacyPath));
+    final File file = legacyPath.toFile();
+    @SuppressWarnings("deprecation")
+    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(file));
     try (final InputStream stream = Files.newInputStream(legacyPath);
         final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
         final ClipboardReader reader = format.getReader(fast)) {

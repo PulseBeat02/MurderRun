@@ -29,7 +29,7 @@ import me.brandonli.murderrun.game.GameStatus;
 import me.brandonli.murderrun.game.player.*;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.item.ItemFactory;
@@ -240,7 +240,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
   private int getTask(final GamePlayer player) {
     final Game game = this.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     final EtherwarpBlockSelector selector = new EtherwarpBlockSelector(player);
     final BukkitTask task = scheduler.scheduleRepeatedTask(selector, 1L, 1L, reference);
     final int id = task.getTaskId();

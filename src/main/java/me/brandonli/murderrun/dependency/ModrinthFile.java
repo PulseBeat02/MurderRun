@@ -17,44 +17,39 @@
  */
 package me.brandonli.murderrun.dependency;
 
-import java.util.Set;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-@Deprecated
 public final class ModrinthFile {
 
-  private static final Set<String> VALID_LOADERS = Set.of("bukkit", "spigot", "paper");
-
-  private final String url;
-  private final String filename;
+  private final @Nullable String url;
+  private final @Nullable String filename;
   private final boolean primary;
-  private final long size;
+  private final @Nullable ModrinthHashes hashes;
 
   public ModrinthFile(
-      final String url, final String filename, final boolean primary, final long size) {
+      final @Nullable String url,
+      final @Nullable String filename,
+      final boolean primary,
+      final @Nullable ModrinthHashes hashes) {
     this.url = url;
     this.filename = filename;
     this.primary = primary;
-    this.size = size;
+    this.hashes = hashes;
   }
 
-  public boolean isValidFile() {
-    return this.isFileJar() && this.isBukkitPlugin();
+  public boolean isJar() {
+    return this.url != null && this.filename != null && this.filename.endsWith(".jar");
   }
 
-  public boolean isFileJar() {
-    return this.filename.endsWith(".jar");
+  public @Nullable String getSha512() {
+    return this.hashes == null ? null : this.hashes.getSha512();
   }
 
-  public boolean isBukkitPlugin() {
-    final String lower = this.filename.toLowerCase();
-    return VALID_LOADERS.stream().anyMatch(lower::contains);
-  }
-
-  public String getUrl() {
+  public @Nullable String getUrl() {
     return this.url;
   }
 
-  public String getFilename() {
+  public @Nullable String getFilename() {
     return this.filename;
   }
 
@@ -62,7 +57,7 @@ public final class ModrinthFile {
     return this.primary;
   }
 
-  public long getSize() {
-    return this.size;
+  public @Nullable ModrinthHashes getHashes() {
+    return this.hashes;
   }
 }

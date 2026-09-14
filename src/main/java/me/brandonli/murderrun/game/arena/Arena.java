@@ -67,8 +67,10 @@ public final class Arena implements Serializable {
   @Column(name = "truck")
   private Location truck;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public Arena() {}
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public Arena(
       final Schematic schematic,
       final String name,

@@ -17,78 +17,95 @@
  */
 package me.brandonli.murderrun.dependency;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.file.Path;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.Set;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-@Deprecated
-public final class ModrinthDependency extends PluginDependency {
+public final class ModrinthDependency implements Dependency {
 
-  public ModrinthDependency(final String name, final String version) {
-    super(name, version);
+  private static final String VERSIONS_URL =
+      "https://api.modrinth.com/v2/project/%s/version?game_versions=%s";
+  private static final Set<String> SUPPORTED_LOADERS =
+      Set.of("paper", "bukkit", "spigot", "folia", "purpur");
+  private static final Comparator<ModrinthVersion> PREFERENCE = Comparator.comparingInt(
+          ModrinthVersion::getReleasePriority)
+      .thenComparing(ModrinthVersion::getPublished);
+  private static final Gson GSON = new Gson();
+
+  private final String name;
+  private final String project;
+
+  public ModrinthDependency(final String name, final String project) {
+    this.name = name;
+    this.project = project;
   }
 
   @Override
-  public Path download() {
-    try (final HttpClient client = HttpClient.newHttpClient()) {
-      final String name = this.getName();
-      final HttpRequest request = HttpRequest.newBuilder()
-          .uri(URI.create("https://api.modrinth.com/v2/project/%s/version".formatted(name)))
-          .header("User-Agent", "PulseBeat02/murderrun")
-          .header("Accept", "application/json")
-          .GET()
-          .build();
-      return client
-          .sendAsync(request, HttpResponse.BodyHandlers.ofString())
-          .thenApplyAsync(HttpResponse::body)
-          .thenApplyAsync(this::findValidFile)
-          .exceptionally(e -> {
-            throw new AssertionError(e);
-          })
-          .join();
-    }
+  public String getName() {
+    return this.name;
   }
 
-  private Path findValidFile(final String json) {
-    if (json == null) {
-      throw new AssertionError("Failed to download dependency because JSON is empty!");
-    }
-
-    final ModrinthVersion[] versions = ModrinthVersion.serializeVersions(json);
-    final String target = this.getVersion();
-    for (final ModrinthVersion version : versions) {
-      final String number = version.getId();
-      if (!number.equals(target)) {
-        continue;
-      }
-
-      final Optional<ModrinthFile> file = version.findFirstValidFile();
-      if (file.isEmpty()) {
-        continue;
-      }
-
-      final ModrinthFile modrinthFile = file.get();
-      return this.downloadJar(modrinthFile).join();
-    }
-
-    throw new AssertionError("Failed to download dependency because no suitable version found!");
+  @Override
+  public DependencyArtifact resolve(final DependencyClient client, final String minecraftVersion) {
+    final URI uri = this.createVersionsUri(minecraftVersion);
+    final String json = client.getText(uri);
+    return this.parse(json, minecraftVersion);
   }
 
-  private CompletableFuture<Path> downloadJar(final ModrinthFile file) {
-    final String fileUrl = file.getUrl();
+  DependencyArtifact parse(final String json, final String minecraftVersion) {
+    final ModrinthVersion[] versions = this.deserialize(json);
+    final Optional<ModrinthVersion> best = Arrays.stream(versions)
+        .filter(version -> version.isCompatible(minecraftVersion, SUPPORTED_LOADERS))
+        .max(PREFERENCE);
+    if (best.isEmpty()) {
+      final String message =
+          "No %s build on Modrinth supports Minecraft %s".formatted(this.name, minecraftVersion);
+      throw new DependencyException(message);
+    }
+    final ModrinthVersion version = best.get();
+    final Optional<ModrinthFile> jar = version.findJar();
+    final ModrinthFile file = jar.orElseThrow();
+    final String url = file.getUrl();
     final String fileName = file.getFilename();
-    final Path parent = this.getParentDirectory();
-    final Path finalPath = parent.resolve(fileName);
-    try (final HttpClient client = HttpClient.newHttpClient()) {
-      final URI uri = URI.create(fileUrl);
-      final HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
-      final HttpResponse.BodyHandler<Path> bodyHandler =
-          HttpResponse.BodyHandlers.ofFile(finalPath);
-      return client.sendAsync(request, bodyHandler).thenApplyAsync(HttpResponse::body);
+    if (url == null || fileName == null) {
+      final String message = "Modrinth returned an incomplete file for %s".formatted(this.name);
+      throw new DependencyException(message);
+    }
+    final URI uri = this.createUri(url);
+    final @Nullable String sha512 = file.getSha512();
+    return new DependencyArtifact(fileName, uri, sha512);
+  }
+
+  private ModrinthVersion[] deserialize(final String json) {
+    try {
+      final ModrinthVersion[] versions = GSON.fromJson(json, ModrinthVersion[].class);
+      return versions == null ? new ModrinthVersion[0] : versions;
+    } catch (final JsonSyntaxException e) {
+      final String message = "Modrinth returned invalid JSON for %s".formatted(this.name);
+      throw new DependencyException(message, e);
+    }
+  }
+
+  private URI createVersionsUri(final String minecraftVersion) {
+    final String filter = "[\"%s\"]".formatted(minecraftVersion);
+    final String encoded = URLEncoder.encode(filter, StandardCharsets.UTF_8);
+    final String url = VERSIONS_URL.formatted(this.project, encoded);
+    return this.createUri(url);
+  }
+
+  private URI createUri(final String url) {
+    try {
+      return URI.create(url);
+    } catch (final IllegalArgumentException e) {
+      final String message = "Invalid URL %s for %s".formatted(url, this.name);
+      throw new DependencyException(message, e);
     }
   }
 }

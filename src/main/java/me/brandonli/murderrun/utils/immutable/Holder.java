@@ -17,9 +17,9 @@
  */
 package me.brandonli.murderrun.utils.immutable;
 
-public final class Holder<T> {
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-  private static final Holder<?> EMPTY = new Holder<>(null);
+public final class Holder<T> {
 
   private final T value;
 
@@ -31,9 +31,8 @@ public final class Holder<T> {
     return new Holder<>(value);
   }
 
-  @SuppressWarnings("unchecked")
-  public static <T> Holder<T> empty() {
-    return (Holder<T>) EMPTY;
+  public static <T> Holder<@Nullable T> empty() {
+    return new Holder<>(null);
   }
 
   public T get() {

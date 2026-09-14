@@ -45,6 +45,7 @@ public final class PreGameManager {
   private PreGamePlayerManager manager;
   private PreGameEvents events;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public PreGameManager(
       final MurderRun plugin,
       final GameManager manager,

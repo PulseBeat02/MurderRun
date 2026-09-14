@@ -25,10 +25,10 @@ import me.brandonli.murderrun.game.lobby.Lobby;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.map.MapUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -39,10 +39,11 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class LobbyCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
-  private BukkitAudiences audiences;
+  private PaperAudiences audiences;
   private Location spawn;
   private Location first;
   private Location second;

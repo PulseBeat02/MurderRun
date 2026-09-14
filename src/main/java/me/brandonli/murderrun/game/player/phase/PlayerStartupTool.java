@@ -29,7 +29,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.Item;
 import net.kyori.adventure.sound.Sound;
@@ -81,17 +81,29 @@ public final class PlayerStartupTool {
 
   public void handleInnocent(final GamePlayer gamePlayer) {
     this.handleAll(gamePlayer);
-    this.giveFlashlight(gamePlayer);
-    this.sendFlashlightTip(gamePlayer);
+    final Game game = gamePlayer.getGame();
+    final GameProperties properties = game.getProperties();
+    if (properties.isFlashlightEnabled()) {
+      this.giveFlashlight(gamePlayer);
+      this.sendFlashlightTip(gamePlayer);
+    }
+    this.sendSprintTip(gamePlayer);
   }
 
   private void sendFlashlightTip(final GamePlayer player) {
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     final PlayerAudience audience = player.getAudience();
     scheduler.scheduleTask(
         () -> audience.sendMessage(Message.FLASHLIGHT_TIP.build()), 15 * 20L, reference);
+  }
+
+  private void sendSprintTip(final GamePlayer player) {
+    final Game game = player.getGame();
+    final GameScheduler scheduler = game.getScheduler();
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
+    final PlayerAudience audience = player.getAudience();
     scheduler.scheduleTask(
         () -> audience.sendMessage(Message.SPRINT_TIP.build()), 45 * 20L, reference);
   }
@@ -104,8 +116,8 @@ public final class PlayerStartupTool {
     final PlayerInventory inventory = player.getInventory();
     final Game game = player.getGame();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
-    scheduler.scheduleTask(() -> inventory.addItem(stack), 10L, reference);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
+    scheduler.scheduleTask(() -> inventory.setItem(0, stack), 10L, reference);
   }
 
   public void handleMurderer(final GamePlayer gamePlayer) {

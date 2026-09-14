@@ -281,6 +281,10 @@ public final class GameProperties {
     return this.dec("killer.particles.radius");
   }
 
+  public boolean isFlashlightEnabled() {
+    return this.bool("flashlight.enabled");
+  }
+
   public int getFlashlightDuration() {
     return this.num("flashlight.duration");
   }

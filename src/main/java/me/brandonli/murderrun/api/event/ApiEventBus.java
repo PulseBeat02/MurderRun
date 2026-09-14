@@ -199,7 +199,6 @@ public final class ApiEventBus implements EventBus {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public <T extends MurderRunEvent> boolean post(final Class<T> type, final Object... args) {
     if (type.isAnnotationPresent(NonInvokable.class)) {
       final String name = type.getName();
@@ -207,7 +206,8 @@ public final class ApiEventBus implements EventBus {
       throw new AssertionError(msg);
     }
     final GeneratedEventClass handle = requireNonNull(EVENT_CACHE.get(type));
-    final T event = (T) handle.newInstance(this.api, args);
+    final MurderRunEvent instance = handle.newInstance(this.api, args);
+    final T event = type.cast(instance);
 
     final List<EventSubscription<?>> sorted;
     synchronized (this.subscriptions) {
@@ -243,9 +243,8 @@ public final class ApiEventBus implements EventBus {
       final Class<?> currentInterface = requireNonNull(processingQueue.poll());
       final boolean isSubtype = MurderRunEvent.class.isAssignableFrom(currentInterface);
       if (isSubtype) {
-        @SuppressWarnings("unchecked")
         final Class<? extends MurderRunEvent> castedInterface =
-            (Class<? extends MurderRunEvent>) currentInterface;
+            currentInterface.asSubclass(MurderRunEvent.class);
         final boolean alreadyAdded = parentTypes.contains(castedInterface);
         if (!alreadyAdded) {
           parentTypes.add(castedInterface);

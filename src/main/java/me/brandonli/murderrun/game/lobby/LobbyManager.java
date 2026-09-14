@@ -47,12 +47,13 @@ public final class LobbyManager implements Serializable, HibernateSerializable {
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @MapKeyColumn(name = "name")
   @JoinColumn(name = "lobby_manager_id")
   @Column(name = "lobby")
   private final Map<String, Lobby> lobbies;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public LobbyManager() {
     this.lobbies = new HashMap<>();
   }

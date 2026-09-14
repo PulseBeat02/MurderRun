@@ -19,9 +19,9 @@ package me.brandonli.murderrun.commmand;
 
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.locale.AudienceProvider;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.resourcepack.provider.ResourcePackProvider;
 import me.brandonli.murderrun.utils.ComponentUtils;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,10 +30,11 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class ResourcesCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
-  private BukkitAudiences audiences;
+  private PaperAudiences audiences;
 
   @Override
   public void registerFeature(

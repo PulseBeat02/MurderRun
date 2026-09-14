@@ -44,7 +44,6 @@ public final class StreamUtils {
     return clazz::isInstance;
   }
 
-  @SuppressWarnings("unchecked")
   public static <T> Collector<T, ?, List<T>> toShuffledList() {
     return Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), list -> {
       Collections.shuffle(list);

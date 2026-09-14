@@ -23,8 +23,8 @@ import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.demo.DemoLoader;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.incendo.cloud.annotations.AnnotationParser;
@@ -32,10 +32,11 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class DemoCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
-  private BukkitAudiences audiences;
+  private PaperAudiences audiences;
   private Set<Player> players;
 
   @Override

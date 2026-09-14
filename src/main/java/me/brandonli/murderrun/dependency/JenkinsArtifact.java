@@ -15,23 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package me.brandonli.murderrun.game.scheduler.reference;
+package me.brandonli.murderrun.dependency;
 
-import me.brandonli.murderrun.game.player.Participant;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class StrictPlayerReference extends SchedulerReference<Participant> {
+public final class JenkinsArtifact {
 
-  private StrictPlayerReference(final Participant player) {
-    super(player);
+  private final @Nullable String relativePath;
+
+  public JenkinsArtifact(final @Nullable String relativePath) {
+    this.relativePath = relativePath;
   }
 
-  public static StrictPlayerReference of(final Participant player) {
-    return new StrictPlayerReference(player);
-  }
-
-  @Override
-  public boolean isInvalid() {
-    final Participant player = this.get();
-    return player.isLoggingOut() || !player.isAlive();
+  public @Nullable String getRelativePath() {
+    return this.relativePath;
   }
 }

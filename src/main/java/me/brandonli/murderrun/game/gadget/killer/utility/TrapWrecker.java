@@ -26,7 +26,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.Killer;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
@@ -68,7 +68,7 @@ public final class TrapWrecker extends KillerGadget {
     };
 
     final GameProperties properties = game.getProperties();
-    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(killer);
     scheduler.scheduleCountdownTask(consumer, properties.getTrapWreckerDuration(), reference);
 
     final PlayerAudience audience = killer.getAudience();

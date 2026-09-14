@@ -24,8 +24,8 @@ import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -67,7 +67,7 @@ public final class Bush extends SurvivorGadget {
     final PlayerInventory inventory = player.getInventory();
     final Location location = player.getLocation();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     scheduler.scheduleRepeatedTask(
         () -> this.createFacingLocation(player, location), 0, 5, duration, reference);
 

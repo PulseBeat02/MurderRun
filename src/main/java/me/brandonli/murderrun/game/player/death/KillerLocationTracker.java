@@ -29,8 +29,8 @@ import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.Survivor;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.game.scheduler.reference.NullReference;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.resourcepack.sound.Sounds;
 import org.bukkit.*;
@@ -99,7 +99,7 @@ public final class KillerLocationTracker {
         continue;
       }
 
-      final StrictPlayerReference reference = StrictPlayerReference.of(survivorPlayer);
+      final AlivePlayerReference reference = AlivePlayerReference.of(survivorPlayer);
       audience.playSound(Sounds.HEARTBEAT);
       if (distanceSquared < halfRadiusSquared) {
         final Location clone = location.clone().add(0, 1, 0);
@@ -114,7 +114,7 @@ public final class KillerLocationTracker {
   private void sendCloseEffects(
       final PlayerAudience audience,
       final GameScheduler scheduler,
-      final StrictPlayerReference reference) {
+      final AlivePlayerReference reference) {
     audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
     scheduler.scheduleTask(
         () -> audience.setActionBar(Message.HEARTBEAT_ACTION2.build()), 10L, reference);
@@ -123,7 +123,7 @@ public final class KillerLocationTracker {
   private void sendVeryCloseEffects(
       final GameScheduler scheduler,
       final PlayerAudience audience,
-      final StrictPlayerReference reference) {
+      final AlivePlayerReference reference) {
     scheduler.scheduleTask(() -> audience.playSound(Sounds.HEARTBEAT), 9L, reference);
     audience.setActionBar(Message.HEARTBEAT_ACTION1.build());
     scheduler.scheduleTask(

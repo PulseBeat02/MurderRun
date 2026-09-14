@@ -37,11 +37,11 @@ import me.brandonli.murderrun.gui.arena.ArenaListGui;
 import me.brandonli.murderrun.gui.lobby.LobbyListGui;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -85,6 +85,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
   private final AtomicBoolean listenForMin;
   private final AtomicBoolean listenForMax;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public GameCreationGui(final MurderRun plugin, final Player watcher) {
     super(Message.CREATE_GAME_GUI_TITLE.build(), 4, InteractionModifier.VALUES);
     this.plugin = plugin;
@@ -107,7 +108,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
       final MurderRun plugin,
       final HumanEntity watcher) {
     final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final UUID uuid = watcher.getUniqueId();
     return audiences.player(uuid);
   }

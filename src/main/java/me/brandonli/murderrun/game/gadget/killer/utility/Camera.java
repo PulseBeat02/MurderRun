@@ -26,10 +26,11 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.entity.Item;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class Camera extends KillerGadget {
 
-  private CameraGadget gadget;
+  private @Nullable CameraGadget gadget;
 
   public Camera(final Game game) {
     final GameProperties properties = game.getProperties();

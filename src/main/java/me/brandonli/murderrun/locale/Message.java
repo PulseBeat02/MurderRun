@@ -92,6 +92,7 @@ public interface Message extends LocaleTools {
   NullComponent<Sender> LOAD_DATA = direct("murderrun.load.data");
   NullComponent<Sender> LOAD_LOOKUP = direct("murderrun.load.lookup");
   NullComponent<Sender> LOAD_RESOURCEPACK = direct("murderrun.load.resourcepack");
+  NullComponent<Sender> LOAD_RESOURCEPACK_HASH = direct("murderrun.load.resourcepack.hash");
   NullComponent<Sender> LOAD_COMMANDS = direct("murderrun.load.commands");
   NullComponent<Sender> LOAD_EXTENSIONS = direct("murderrun.load.extensions");
   NullComponent<Sender> LOAD_SCHEMATICS = direct("murderrun.load.schematics");
@@ -681,4 +682,6 @@ public interface Message extends LocaleTools {
       direct("murderrun.game.freezetag.reviving.progress", null);
   NullComponent<Sender> FREEZE_TAG_ALL_FROZEN = direct("murderrun.game.freezetag.all.frozen");
   NullComponent<Sender> GAME_MODE_ERROR = direct("murderrun.command.game.mode.error");
+  NullComponent<Sender> NPC_REMOVE_DONE = direct("murderrun.command.npc.remove.done");
+  NullComponent<Sender> NPC_REMOVE_ERROR = direct("murderrun.command.npc.remove.error");
 }

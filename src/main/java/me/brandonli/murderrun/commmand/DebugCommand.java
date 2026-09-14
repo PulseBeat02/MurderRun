@@ -25,9 +25,9 @@ import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.TradingUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -45,10 +45,11 @@ import org.incendo.cloud.annotations.Permission;
 import org.incendo.cloud.annotations.suggestion.Suggestions;
 import org.incendo.cloud.context.CommandContext;
 
+@SuppressWarnings("initialization.field.uninitialized")
 public final class DebugCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
-  private BukkitAudiences audiences;
+  private PaperAudiences audiences;
 
   @Override
   public void registerFeature(

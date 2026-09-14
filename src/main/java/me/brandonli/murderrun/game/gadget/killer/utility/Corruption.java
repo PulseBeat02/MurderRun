@@ -30,7 +30,7 @@ import me.brandonli.murderrun.game.player.death.DeathManager;
 import me.brandonli.murderrun.game.player.phase.PlayerResetTool;
 import me.brandonli.murderrun.game.player.phase.PlayerStartupTool;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.LoosePlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.OnlinePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.ItemFactory;
@@ -88,7 +88,7 @@ public final class Corruption extends KillerGadget {
     item.remove();
 
     final GameScheduler scheduler = game.getScheduler();
-    final LoosePlayerReference reference = LoosePlayerReference.of(closest);
+    final OnlinePlayerReference reference = OnlinePlayerReference.of(closest);
     scheduler.scheduleRepeatedTask(() -> this.spawnParticles(location), 0, 5, 5 * 20L, reference);
     scheduler.scheduleTask(() -> this.corruptPlayer(game, closest), 5 * 20L, reference);
 

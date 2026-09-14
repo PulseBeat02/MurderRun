@@ -25,12 +25,12 @@ import me.brandonli.murderrun.game.lobby.player.PlayerSelection;
 import me.brandonli.murderrun.game.lobby.player.PlayerSelectionManager;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.MetadataStore;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,7 +40,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 
 public final class NPCSelectEvent implements Listener {
 
-  private final BukkitAudiences audiences;
+  private final PaperAudiences audiences;
   private final MurderRun plugin;
 
   public NPCSelectEvent(final MurderRun plugin) {

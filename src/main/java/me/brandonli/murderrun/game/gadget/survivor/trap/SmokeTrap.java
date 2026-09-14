@@ -24,7 +24,7 @@ import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Location;
@@ -59,7 +59,7 @@ public final class SmokeTrap extends SurvivorTrap {
         new PotionEffect(PotionEffectType.BLINDNESS, duration, 1),
         new PotionEffect(PotionEffectType.SLOWNESS, duration, 2));
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(murderer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(murderer);
     final GameScheduler scheduler = game.getScheduler();
     scheduler.scheduleRepeatedTask(() -> this.spawnSmoke(murderer), 0, 1, duration, reference);
 

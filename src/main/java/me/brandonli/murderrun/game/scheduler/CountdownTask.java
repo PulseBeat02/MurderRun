@@ -41,6 +41,9 @@ public final class CountdownTask extends GameScheduledTask {
   @Override
   public void run() {
     super.run();
+    if (this.isCancelled()) {
+      return;
+    }
     final int seconds = this.seconds.decrementAndGet();
     this.tasks.accept(seconds);
     if (seconds <= 0) {

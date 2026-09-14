@@ -19,9 +19,6 @@ package me.brandonli.murderrun.utils;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.RecursiveDeleteOption;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
@@ -41,6 +38,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Set;
@@ -124,20 +123,31 @@ public final class IOUtils {
 
   public static String getSHA1Hash(final URI uri) {
     try {
-      @SuppressWarnings("deprecation")
-      final HashFunction function = Hashing.sha1();
+      final MessageDigest digest = createSha1Digest();
       final URL url = uri.toURL();
       final HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
       urlConnection.setConnectTimeout(1000);
       urlConnection.setReadTimeout(1000);
       try (final InputStream stream = urlConnection.getInputStream();
           final InputStream fast = new FastBufferedInputStream(stream)) {
-        final byte[] bytes = fast.readAllBytes();
-        final HashCode code = function.hashBytes(bytes);
-        final byte[] hash = code.asBytes();
+        final byte[] buffer = new byte[8192];
+        int read = fast.read(buffer);
+        while (read != -1) {
+          digest.update(buffer, 0, read);
+          read = fast.read(buffer);
+        }
+        final byte[] hash = digest.digest();
         return bytesToString(hash);
       }
     } catch (final IOException e) {
+      throw new AssertionError(e);
+    }
+  }
+
+  private static MessageDigest createSha1Digest() {
+    try {
+      return MessageDigest.getInstance("SHA-1");
+    } catch (final NoSuchAlgorithmException e) {
       throw new AssertionError(e);
     }
   }
@@ -154,13 +164,11 @@ public final class IOUtils {
 
   public static String getSHA1Hash(final Path path) {
     try {
-      @SuppressWarnings("deprecation")
-      final HashFunction function = Hashing.sha1();
+      final MessageDigest digest = createSha1Digest();
       try (final InputStream stream = Files.newInputStream(path);
           final InputStream fast = new FastBufferedInputStream(stream)) {
         final byte[] bytes = fast.readAllBytes();
-        final HashCode code = function.hashBytes(bytes);
-        final byte[] hash = code.asBytes();
+        final byte[] hash = digest.digest(bytes);
         return bytesToHex(hash);
       }
     } catch (final IOException e) {
@@ -193,13 +201,12 @@ public final class IOUtils {
   }
 
   public static String generateFileHash(final Path path) throws IOException {
-    @SuppressWarnings("deprecation")
-    final HashFunction function = Hashing.sha1();
+    final MessageDigest digest = createSha1Digest();
     try (final InputStream fileStream = Files.newInputStream(path);
         final InputStream stream = new FastBufferedInputStream(fileStream)) {
       final byte[] bytes = stream.readAllBytes();
-      final HashCode code = function.hashBytes(bytes);
-      return code.toString();
+      final byte[] hash = digest.digest(bytes);
+      return bytesToString(hash);
     }
   }
 

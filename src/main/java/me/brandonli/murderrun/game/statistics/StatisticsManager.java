@@ -40,13 +40,14 @@ public final class StatisticsManager implements Serializable, HibernateSerializa
   @Column(name = "id", updatable = false, nullable = false)
   private Long id;
 
-  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+  @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @MapKeyColumn(name = "uuid")
   @JoinColumn(name = "statistics_manager_id")
   @Column(name = "player_statistics")
   @Convert(converter = UUIDConverter.class, attributeName = "key.uuid")
   private final Map<UUID, PlayerStatistics> map;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public StatisticsManager() {
     this.map = new ConcurrentHashMap<>();
   }

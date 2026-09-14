@@ -25,7 +25,8 @@ import java.util.Set;
 
 public final class WhitelistedHibernateObjectInputStream extends ObjectInputStream {
 
-  private static final Set<String> WHITELISTED_CLASSES = Set.of("[Ljava.lang.Long;");
+  private static final Set<String> WHITELISTED_CLASSES =
+      Set.of("[Ljava.lang.Long;", "java.lang.Long", "java.lang.Number");
 
   public WhitelistedHibernateObjectInputStream(final InputStream in) throws IOException {
     super(in);

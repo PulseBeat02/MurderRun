@@ -28,6 +28,7 @@ public final class AbilityManager {
   private AbilityLoadingMechanism mechanism;
   private AbilityActionHandler actionHandler;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public AbilityManager(final Game game) {
     final MurderRun plugin = game.getPlugin();
     this.game = game;

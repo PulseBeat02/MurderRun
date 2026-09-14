@@ -20,8 +20,8 @@ package me.brandonli.murderrun.utils.versioning;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -73,7 +73,7 @@ public final class VersionChecker implements Listener {
       return;
     }
     final AudienceProvider audienceProvider = this.plugin.getAudience();
-    final BukkitAudiences audiences = audienceProvider.retrieve();
+    final PaperAudiences audiences = audienceProvider.retrieve();
     final Audience audience = audiences.player(player);
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     scheduler.runTaskLater(

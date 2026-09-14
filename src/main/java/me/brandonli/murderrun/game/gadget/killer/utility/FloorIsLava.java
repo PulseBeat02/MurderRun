@@ -29,7 +29,7 @@ import me.brandonli.murderrun.game.player.Participant;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
@@ -64,7 +64,7 @@ public final class FloorIsLava extends KillerGadget {
     }
     item.remove();
 
-    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(killer);
     scheduler.scheduleRepeatedTask(
         () -> this.handleSurvivors(manager, scheduler, killer), 0, 4 * 20L, reference);
 
@@ -83,7 +83,7 @@ public final class FloorIsLava extends KillerGadget {
   private void handleMovement(
       final GameScheduler scheduler, final GamePlayer player, final Killer killer) {
     final Location previous = player.getLocation();
-    final StrictPlayerReference reference = StrictPlayerReference.of(killer);
+    final AlivePlayerReference reference = AlivePlayerReference.of(killer);
     scheduler.scheduleTask(
         () -> this.handleLocationChecking(previous, player, killer), 3 * 20L, reference);
   }

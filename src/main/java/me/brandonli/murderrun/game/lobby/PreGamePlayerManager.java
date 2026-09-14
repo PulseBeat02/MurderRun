@@ -27,6 +27,7 @@ import me.brandonli.murderrun.game.*;
 import me.brandonli.murderrun.game.lobby.player.PlayerSelectionManager;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.resourcepack.provider.ResourcePackProvider;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.RandomUtils;
@@ -34,7 +35,6 @@ import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.resource.ResourcePackRequest;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -52,6 +52,15 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class PreGamePlayerManager {
+
+  private static final int KILLER_SWORD_SLOT = 0;
+  private static final int KILLER_ARROW_SLOT = 1;
+  private static final int KILLER_CURRENCY_SLOT = 2;
+
+  private static final int SURVIVOR_CURRENCY_SLOT = 0;
+
+  private static final int LEAVE_SLOT = 7;
+  private static final int ABILITY_SLOT = 8;
 
   private final PreGameManager manager;
   private final Collection<Player> survivors;
@@ -71,6 +80,7 @@ public final class PreGamePlayerManager {
 
   private volatile boolean locked;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public PreGamePlayerManager(
       final PreGameManager manager,
       final CommandSender leader,
@@ -141,8 +151,8 @@ public final class PreGamePlayerManager {
           final PlayerInventory inventory = player.getInventory();
           final PersistentDataContainer container = player.getPersistentDataContainer();
           inventory.setArmorContents(gear);
-          inventory.setItem(1, sword);
-          inventory.setItem(2, arrow);
+          inventory.setItem(KILLER_SWORD_SLOT, sword);
+          inventory.setItem(KILLER_ARROW_SLOT, arrow);
           this.addCurrency(player, true);
           container.set(Keys.KILLER_ROLE, PersistentDataType.BOOLEAN, true);
         },
@@ -202,7 +212,7 @@ public final class PreGamePlayerManager {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
     final MurderRun plugin = this.manager.getPlugin();
     final AudienceProvider provider = plugin.getAudience();
-    final BukkitAudiences audiences = provider.retrieve();
+    final PaperAudiences audiences = provider.retrieve();
     final Audience audience = audiences.player(player);
     scheduler.runTaskLater(
         plugin,
@@ -306,14 +316,14 @@ public final class PreGamePlayerManager {
     final Item.Builder builder = ItemFactory.createLeaveItem();
     final ItemStack stack = builder.build();
     final PlayerInventory inventory = player.getInventory();
-    inventory.setItem(1, stack);
+    inventory.setItem(LEAVE_SLOT, stack);
   }
 
   private void giveEmptyAbility(final Player player) {
     final Item.Builder builder = ItemFactory.createEmptyAbility();
     final ItemStack stack = builder.build();
     final PlayerInventory inventory = player.getInventory();
-    inventory.setItem(0, stack);
+    inventory.setItem(ABILITY_SLOT, stack);
   }
 
   private void clearInventory(final Player player) {
@@ -335,8 +345,22 @@ public final class PreGamePlayerManager {
         killer ? properties.getKillerStartingCurrency() : properties.getSurvivorStartingCurrency();
     final PlayerInventory inventory = player.getInventory();
     final ItemStack stack = ItemFactory.createCurrency(properties, 1);
-    for (int i = 0; i < count; i++) {
-      inventory.addItem(stack);
+    final int maxStackSize = stack.getMaxStackSize();
+    final int start = killer ? KILLER_CURRENCY_SLOT : SURVIVOR_CURRENCY_SLOT;
+    int remaining = count;
+    int slot = start;
+    while (remaining > 0 && slot < LEAVE_SLOT) {
+      final int amount = Math.min(remaining, maxStackSize);
+      final ItemStack currency = ItemFactory.createCurrency(properties, amount);
+      currency.setAmount(amount);
+      inventory.setItem(slot, currency);
+      remaining -= amount;
+      slot++;
+    }
+    if (remaining > 0) {
+      final ItemStack overflow = ItemFactory.createCurrency(properties, remaining);
+      overflow.setAmount(remaining);
+      inventory.addItem(overflow);
     }
   }
 

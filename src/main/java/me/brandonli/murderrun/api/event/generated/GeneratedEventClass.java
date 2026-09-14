@@ -38,13 +38,13 @@ import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
 import net.bytebuddy.implementation.FieldAccessor;
 import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.implementation.MethodCall;
+import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GeneratedEventClass {
 
   private final MethodHandle constructor;
   private final MethodHandle[] setters;
 
-  @SuppressWarnings("all") // checker
   public GeneratedEventClass(final Class<? extends MurderRunEvent> eventClass) {
     try {
       final TypeDescription eventType = new TypeDescription.ForLoadedType(eventClass);
@@ -52,32 +52,38 @@ public final class GeneratedEventClass {
       final Method[] methods = this.getInterfaceMethods(eventClass);
       final Class<? extends SimpleMurderRunEvent> implClass =
           this.createClass(eventClass, implName, eventType, methods);
-      this.constructor = this.createHandle(implClass);
-      this.setters = new MethodHandle[methods.length];
-      this.createSetters(methods, implClass);
+      final MethodHandle constructor = this.createHandle(implClass);
+      this.constructor = constructor;
+      this.setters = this.createSetters(constructor, methods, implClass);
     } catch (final Throwable e) {
       throw new AssertionError(e);
     }
   }
 
-  @SuppressWarnings("all") // checker
-  private void createSetters(
-      final Method[] methods, final Class<? extends SimpleMurderRunEvent> implClass)
+  private MethodHandle[] createSetters(
+      @UnderInitialization GeneratedEventClass this,
+      final MethodHandle constructor,
+      final Method[] methods,
+      final Class<? extends SimpleMurderRunEvent> implClass)
       throws Throwable {
-    final Object object = this.constructor.invoke((Object) null);
+    final Object object = constructor.invokeWithArguments((Object) null);
     final SimpleMurderRunEvent event = (SimpleMurderRunEvent) object;
     final MethodHandles.Lookup lookup = event.mhl();
+    final MethodHandle[] setters = new MethodHandle[methods.length];
     for (int i = 0; i < methods.length; i++) {
       final Method m = methods[i];
       final String name = m.getName();
       final Class<?> returnType = m.getReturnType();
       final MethodType methodType =
           MethodType.methodType(Void.TYPE, SimpleMurderRunEvent.class, Object.class);
-      this.setters[i] = lookup.findSetter(implClass, name, returnType).asType(methodType);
+      setters[i] = lookup.findSetter(implClass, name, returnType).asType(methodType);
     }
+    return setters;
   }
 
-  private MethodHandle createHandle(final Class<? extends SimpleMurderRunEvent> implClass)
+  private MethodHandle createHandle(
+      @UnderInitialization GeneratedEventClass this,
+      final Class<? extends SimpleMurderRunEvent> implClass)
       throws NoSuchMethodException, IllegalAccessException {
     return MethodHandles.publicLookup()
         .in(implClass)
@@ -86,6 +92,7 @@ public final class GeneratedEventClass {
   }
 
   private Class<? extends SimpleMurderRunEvent> createClass(
+      @UnderInitialization GeneratedEventClass this,
       final Class<? extends MurderRunEvent> eventClass,
       final String implName,
       final TypeDescription eventType,
@@ -101,6 +108,7 @@ public final class GeneratedEventClass {
   }
 
   private DynamicType.Builder<SimpleMurderRunEvent> constructBuilder(
+      @UnderInitialization GeneratedEventClass this,
       final Class<? extends MurderRunEvent> eventClass,
       final String implName,
       final TypeDescription eventType,
@@ -113,7 +121,10 @@ public final class GeneratedEventClass {
   }
 
   private DynamicType.Builder<SimpleMurderRunEvent> createBuilder(
-      final String implName, final TypeDescription eventType) throws NoSuchMethodException {
+      @UnderInitialization GeneratedEventClass this,
+      final String implName,
+      final TypeDescription eventType)
+      throws NoSuchMethodException {
     return new ByteBuddy(ClassFileVersion.JAVA_V8)
         .subclass(
             SimpleMurderRunEvent.class, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
@@ -127,6 +138,7 @@ public final class GeneratedEventClass {
   }
 
   private DynamicType.Builder<SimpleMurderRunEvent> applyCancellable(
+      @UnderInitialization GeneratedEventClass this,
       final Class<? extends MurderRunEvent> eventClass,
       DynamicType.Builder<SimpleMurderRunEvent> builder) {
     final boolean cancellable = Cancellable.class.isAssignableFrom(eventClass);
@@ -143,7 +155,9 @@ public final class GeneratedEventClass {
   }
 
   private DynamicType.Builder<SimpleMurderRunEvent> applyMethods(
-      final Method[] methods, DynamicType.Builder<SimpleMurderRunEvent> builder) {
+      @UnderInitialization GeneratedEventClass this,
+      final Method[] methods,
+      DynamicType.Builder<SimpleMurderRunEvent> builder) {
     for (final Method method : methods) {
       final String name = method.getName();
       final Class<?> returnType = method.getReturnType();
@@ -156,16 +170,24 @@ public final class GeneratedEventClass {
     return builder;
   }
 
-  @SuppressWarnings("all") // checker
-  private Method[] getInterfaceMethods(final Class<? extends MurderRunEvent> eventClass) {
+  private Method[] getInterfaceMethods(
+      @UnderInitialization GeneratedEventClass this,
+      final Class<? extends MurderRunEvent> eventClass) {
     return Arrays.stream(eventClass.getMethods())
         .filter(m -> m.isAnnotationPresent(Param.class))
         .filter(m -> !m.isAnnotationPresent(NonInvokable.class))
-        .sorted(Comparator.comparingInt(m -> m.getAnnotation(Param.class).value()))
+        .sorted(Comparator.comparingInt(GeneratedEventClass::getParamIndex))
         .toArray(Method[]::new);
   }
 
-  private String getImplementationName(final Class<? extends MurderRunEvent> eventClass) {
+  private static int getParamIndex(final Method method) {
+    final Param param = requireNonNull(method.getAnnotation(Param.class));
+    return param.value();
+  }
+
+  private String getImplementationName(
+      @UnderInitialization GeneratedEventClass this,
+      final Class<? extends MurderRunEvent> eventClass) {
     final Class<MurderRunEvent> clazz = MurderRunEvent.class;
     final Package pkg = requireNonNull(clazz.getPackage());
     final String murderRunEventPackage = pkg.getName();

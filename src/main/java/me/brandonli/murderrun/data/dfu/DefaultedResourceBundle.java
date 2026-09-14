@@ -15,23 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package me.brandonli.murderrun.game.scheduler.reference;
+package me.brandonli.murderrun.data.dfu;
 
-import me.brandonli.murderrun.game.player.Participant;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
-public final class LoosePlayerReference extends SchedulerReference<Participant> {
+public final class DefaultedResourceBundle extends PropertyResourceBundle {
 
-  private LoosePlayerReference(final Participant player) {
-    super(player);
+  public DefaultedResourceBundle(final InputStream stream, final ResourceBundle defaults)
+      throws IOException {
+    super(stream);
+    this.setParent(defaults);
   }
 
-  public static LoosePlayerReference of(final Participant player) {
-    return new LoosePlayerReference(player);
-  }
-
-  @Override
-  public boolean isInvalid() {
-    final Participant player = this.get();
-    return player.isLoggingOut();
+  public DefaultedResourceBundle(final Reader reader, final ResourceBundle defaults)
+      throws IOException {
+    super(reader);
+    this.setParent(defaults);
   }
 }

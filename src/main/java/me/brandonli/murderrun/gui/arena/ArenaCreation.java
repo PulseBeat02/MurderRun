@@ -25,7 +25,7 @@ import me.brandonli.murderrun.data.hibernate.converters.LocationConverter;
 import org.bukkit.Location;
 
 @Entity
-@Table(name = "arena")
+@Table(name = "arena_creation")
 public final class ArenaCreation implements Serializable {
 
   @Serial
@@ -48,17 +48,18 @@ public final class ArenaCreation implements Serializable {
   private volatile Location truck;
 
   @Convert(converter = LocationConverter.class)
-  @Column(name = "first")
+  @Column(name = "first_corner")
   private volatile Location first;
 
   @Convert(converter = LocationConverter.class)
-  @Column(name = "second")
+  @Column(name = "second_corner")
   private volatile Location second;
 
   @Convert(converter = LocationConverter.class)
   @Column(name = "item_locations")
   private volatile Collection<Location> itemLocations;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public ArenaCreation(
       final String arenaName,
       final Location spawn,
@@ -74,6 +75,7 @@ public final class ArenaCreation implements Serializable {
     this.itemLocations = itemLocations;
   }
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public ArenaCreation() {}
 
   public String getArenaName() {

@@ -60,7 +60,7 @@ database-options:
 
   # Hibernate internal option
   # Default is update
-  hbm2ddl: create
+  hbm2ddl: update
 
   # Database username to connect
   # Default is prod

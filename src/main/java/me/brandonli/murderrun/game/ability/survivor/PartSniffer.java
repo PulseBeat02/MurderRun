@@ -27,7 +27,7 @@ import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.Survivor;
 import me.brandonli.murderrun.game.player.metadata.MetadataManager;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -58,7 +58,7 @@ public final class PartSniffer extends SurvivorAbility {
         return;
       }
       final Survivor survivor = (Survivor) participant;
-      final StrictPlayerReference reference = StrictPlayerReference.of(survivor);
+      final AlivePlayerReference reference = AlivePlayerReference.of(survivor);
       final GameScheduler scheduler = game.getScheduler();
       scheduler.scheduleRepeatedTask(
           () -> this.handleTrapSniffing(game, survivor), 0, 2 * 20L, reference);

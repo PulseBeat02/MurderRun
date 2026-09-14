@@ -32,13 +32,13 @@ import me.brandonli.murderrun.game.ability.Ability;
 import me.brandonli.murderrun.game.ability.AbilityRegistry;
 import me.brandonli.murderrun.locale.AudienceProvider;
 import me.brandonli.murderrun.locale.Message;
+import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.utils.ContainerUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
 import me.brandonli.murderrun.utils.immutable.Keys;
 import me.brandonli.murderrun.utils.item.Item;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -71,16 +71,18 @@ public final class AbilitySelectGui extends PaginatedGui {
     this.createNavigationPane();
   }
 
-  @SuppressWarnings("all") // checker
   private void addAbilityItems(final List<String> abilities) {
     final AbilityRegistry registry = AbilityRegistry.getRegistry();
-    abilities.stream()
-        .map(registry::getAbility)
-        .filter(Objects::nonNull)
-        .map(Ability::getStackBuilder)
-        .map(Item.Builder::build)
-        .map(stack -> new GuiItem(stack, this::handleClick))
-        .forEach(this::addItem);
+    for (final String name : abilities) {
+      final Ability ability = registry.getAbility(name);
+      if (ability == null) {
+        continue;
+      }
+      final Item.Builder builder = ability.getStackBuilder();
+      final ItemStack stack = builder.build();
+      final GuiItem item = new GuiItem(stack, this::handleClick);
+      this.addItem(item);
+    }
   }
 
   private void createNavigationPane() {
@@ -131,7 +133,7 @@ public final class AbilitySelectGui extends PaginatedGui {
     final Item.Builder actual = ability.getStackBuilder();
     final ItemStack actualStack = actual.build();
     final ItemStack clone = actualStack.clone();
-    inventory.setItem(0, clone);
+    inventory.setItem(8, clone);
   }
 
   private GuiItem createCloseStack() {
@@ -161,7 +163,7 @@ public final class AbilitySelectGui extends PaginatedGui {
     final Sound sound = sound(key, source, 1.0f, 1.0f);
     final UUID uuid = entity.getUniqueId();
     final AudienceProvider provider = this.plugin.getAudience();
-    final BukkitAudiences bukkitAudiences = provider.retrieve();
+    final PaperAudiences bukkitAudiences = provider.retrieve();
     final Audience audience = bukkitAudiences.player(uuid);
     audience.playSound(sound);
   }

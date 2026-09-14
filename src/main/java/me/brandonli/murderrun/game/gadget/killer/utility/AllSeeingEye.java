@@ -25,7 +25,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.GameMode;
@@ -61,7 +61,7 @@ public final class AllSeeingEye extends KillerGadget {
     final GameProperties properties = game.getProperties();
     final int duration = properties.getAllSeeingEyeDuration();
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(random);
+    final AlivePlayerReference reference = AlivePlayerReference.of(random);
     random.apply(target -> scheduler.scheduleRepeatedTask(
         () -> player.setSpectatorTarget(target), 0, 10, duration, reference));
     scheduler.scheduleTask(() -> this.resetPlayerState(player, before), duration, reference);

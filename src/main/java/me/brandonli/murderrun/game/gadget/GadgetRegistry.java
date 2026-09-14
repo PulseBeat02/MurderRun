@@ -178,7 +178,6 @@ public final class GadgetRegistry {
     }
   }
 
-  @SuppressWarnings("all") // checker
   private Gadget invokeGadgetConstructor(final MethodHandle handle, final Game game) {
     try {
       final MethodType type = handle.type();

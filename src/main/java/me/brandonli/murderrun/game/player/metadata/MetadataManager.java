@@ -24,7 +24,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.Participant;
 import me.brandonli.murderrun.game.player.PlayerScoreboard;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.utils.GlowUtils;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
@@ -44,6 +44,7 @@ public final class MetadataManager {
 
   private PlayerScoreboard sidebar;
 
+  @SuppressWarnings("initialization.fields.uninitialized")
   public MetadataManager(final GamePlayer gamePlayer) {
     this.gamePlayer = gamePlayer;
     this.shadyWorldBorder = this.createWorldBorder(gamePlayer);
@@ -120,7 +121,7 @@ public final class MetadataManager {
       final GamePlayer participant,
       final NamedTextColor color,
       final long time) {
-    final StrictPlayerReference reference = StrictPlayerReference.of(participant);
+    final AlivePlayerReference reference = AlivePlayerReference.of(participant);
     this.setEntityGlowing(participant, color, true);
     scheduler.scheduleTask(() -> this.setEntityGlowing(participant, color, false), time, reference);
   }

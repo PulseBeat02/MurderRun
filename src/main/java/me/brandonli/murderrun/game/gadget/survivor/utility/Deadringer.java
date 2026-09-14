@@ -25,7 +25,7 @@ import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.game.player.PlayerAudience;
 import me.brandonli.murderrun.game.scheduler.GameScheduler;
-import me.brandonli.murderrun.game.scheduler.reference.StrictPlayerReference;
+import me.brandonli.murderrun.game.scheduler.reference.AlivePlayerReference;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import net.kyori.adventure.text.Component;
@@ -62,7 +62,7 @@ public final class Deadringer extends SurvivorGadget {
         new PotionEffect(PotionEffectType.INVISIBILITY, duration, 1, true, false));
 
     final GameScheduler scheduler = game.getScheduler();
-    final StrictPlayerReference reference = StrictPlayerReference.of(player);
+    final AlivePlayerReference reference = AlivePlayerReference.of(player);
     scheduler.scheduleTask(() -> player.setInvulnerable(false), duration, reference);
 
     final GamePlayerManager manager = game.getPlayerManager();
