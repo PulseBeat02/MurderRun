@@ -3,6 +3,8 @@
   "extends": [
     "config:recommended"
   ],
+  "automerge": true,
+  "ignoreTests": true,
   "packageRules": [
     {
       "matchDatasources": ["maven"],

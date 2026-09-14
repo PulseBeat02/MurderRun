@@ -145,6 +145,13 @@ public interface PlayerManagerHelper {
     });
   }
 
+  default void clearTitleForAllParticipants(final String id) {
+    this.applyToAllParticipants(player -> {
+      final PlayerAudience audience = player.getAudience();
+      audience.clearTitle(id);
+    });
+  }
+
   default void playSoundForAllParticipants(final SoundResource... keys) {
     final SoundResource key = this.getRandomKey(keys);
     this.applyToAllParticipants(player -> {

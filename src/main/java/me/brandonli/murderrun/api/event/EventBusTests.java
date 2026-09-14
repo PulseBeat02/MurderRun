@@ -19,6 +19,7 @@ package me.brandonli.murderrun.api.event;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.api.event.contract.GameStatusEvent;
@@ -80,16 +81,18 @@ public final class EventBusTests {
     eventBus.post(AbilityUseEvent.class, ability, player);
     eventBus.post(GadgetUseEvent.class, gadget, player);
     eventBus.post(TrapActivateEvent.class, gadget, player);
-    for (final Arena arena : arenas.values()) {
+    final Collection<Arena> arenaValues = arenas.values();
+    final Optional<Arena> firstArena = arenaValues.stream().findFirst();
+    firstArena.ifPresent(arena -> {
       eventBus.post(ArenaEvent.class, arena, ArenaModificationType.CREATION);
       eventBus.post(ArenaEvent.class, arena, ArenaModificationType.DELETION);
-      break;
-    }
-    for (final Lobby lobby : lobbies.values()) {
+    });
+    final Collection<Lobby> lobbyValues = lobbies.values();
+    final Optional<Lobby> firstLobby = lobbyValues.stream().findFirst();
+    firstLobby.ifPresent(lobby -> {
       eventBus.post(LobbyEvent.class, lobby, LobbyModificationType.CREATION);
       eventBus.post(LobbyEvent.class, lobby, LobbyModificationType.DELETION);
-      break;
-    }
+    });
     eventBus.post(StatisticsEvent.class, StatisticsType.FASTEST_KILLER_WIN, 1);
     eventBus.post(StatisticsEvent.class, StatisticsType.FASTEST_SURVIVOR_WIN, 1);
     eventBus.post(StatisticsEvent.class, StatisticsType.TOTAL_DEATHS, 1);

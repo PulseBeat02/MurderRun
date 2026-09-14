@@ -143,6 +143,7 @@ public final class GameCleanupTool {
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.WIN);
     manager.playSoundForAllMurderers(Sounds.LOSS);
+    manager.clearTitleForAllParticipants("screen");
     manager.showTitleForAllParticipants(title, subtitle);
   }
 
@@ -159,6 +160,7 @@ public final class GameCleanupTool {
     manager.sendMessageToAllParticipants(winner);
     manager.playSoundForAllInnocents(Sounds.LOSS);
     manager.playSoundForAllMurderers(Sounds.WIN);
+    manager.clearTitleForAllParticipants("screen");
     manager.showTitleForAllParticipants(title, subtitle);
   }
 

@@ -68,6 +68,8 @@ public final class PlayerResetTool {
     gamePlayer.setFireTicks(0);
     gamePlayer.setInvulnerable(false);
     gamePlayer.setAllowFlight(false);
+    gamePlayer.setWalkSpeed(0.2f);
+    gamePlayer.setFlySpeed(0.1f);
     gamePlayer.setGravity(true);
     gamePlayer.sendPotionEffectChangeRemove(PotionEffectType.BLINDNESS);
     gamePlayer.resetAllAttributes();

@@ -85,6 +85,8 @@ public final class HttpDependencyClient implements DependencyClient {
       final String message = "Failed to reach %s".formatted(uri);
       throw new DependencyException(message, e);
     } catch (final InterruptedException e) {
+      final Thread thread = Thread.currentThread();
+      thread.interrupt();
       final String message = "Interrupted while requesting %s".formatted(uri);
       throw new DependencyException(message, e);
     }

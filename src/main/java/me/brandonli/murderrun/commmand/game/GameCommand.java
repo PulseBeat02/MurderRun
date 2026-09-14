@@ -53,6 +53,8 @@ import org.incendo.cloud.context.CommandContext;
 @SuppressWarnings("initialization.field.uninitialized")
 public final class GameCommand implements AnnotationCommandFeature {
 
+  private static final long PARTY_INVITE_TIMEOUT = 30 * 20L;
+
   private MurderRun plugin;
   private PaperAudiences audiences;
   private GameInputSanitizer sanitizer;
@@ -97,20 +99,22 @@ public final class GameCommand implements AnnotationCommandFeature {
 
     final GameManager gameManager = this.plugin.getGameManager();
     final String gameId = id.toString();
-    final PreGameManager created = gameManager.getGame(gameId);
-    if (created == null) {
-      return;
-    }
-
-    final PreGamePlayerManager playerManager = created.getPlayerManager();
     final BukkitRunnable runnable = new BukkitRunnable() {
+
+      private long ticks;
+
       @Override
       public void run() {
-        final PreGameManager current = gameManager.getGame(gameId);
-        if (current != created || !player.isOnline()) {
+        this.ticks++;
+        if (!player.isOnline() || this.ticks > PARTY_INVITE_TIMEOUT) {
           this.cancel();
           return;
         }
+        final PreGameManager created = gameManager.getGame(gameId);
+        if (created == null) {
+          return;
+        }
+        final PreGamePlayerManager playerManager = created.getPlayerManager();
         if (!playerManager.hasPlayer(player)) {
           return;
         }
