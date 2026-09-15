@@ -48,6 +48,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
 
 public final class MapSchematicIO {
 
@@ -120,7 +121,7 @@ public final class MapSchematicIO {
     final Path pluginParent = requireNonNull(path.getParent());
     final Path moreParent = requireNonNull(pluginParent.getParent());
     final Path world = moreParent.resolve(name);
-    CompletableFuture.runAsync(() -> {
+    final CompletableFuture<Void> _ = CompletableFuture.runAsync(() -> {
       if (Files.exists(world)) {
         IOUtils.deleteExistingDirectory(world);
       }
@@ -191,8 +192,8 @@ public final class MapSchematicIO {
     MapUtils.enableExtent();
     this.copyCitizensNPCs();
     this.createWorld();
-    this.pasteLobbySchematic();
-    this.pasteArenaSchematic();
+    final CompletableFuture<Void> _ = this.pasteLobbySchematic();
+    final CompletableFuture<Void> _ = this.pasteArenaSchematic();
     this.pasteCitizensNPCs();
   }
 
@@ -291,7 +292,18 @@ public final class MapSchematicIO {
     final SerializableVector vector3 = schematic.getOrigin();
     final Clipboard clipboard = schematic.getClipboard();
     final com.sk89q.worldedit.world.World world = this.getWorld();
-    return MapUtils.performPaste(world, clipboard, vector3);
+    final CompletableFuture<Void> paste = MapUtils.performPaste(world, clipboard, vector3);
+    return paste.whenComplete((_, throwable) -> this.logPasteFailure(throwable));
+  }
+
+  private void logPasteFailure(final @Nullable Throwable throwable) {
+    if (throwable == null) {
+      return;
+    }
+    final MurderRun plugin = this.manager.getPlugin();
+    final Logger logger = plugin.getSLF4JLogger();
+    final String msg = "Failed to paste schematic for game {}";
+    logger.error(msg, this.uuid, throwable);
   }
 
   private com.sk89q.worldedit.world.World getWorld() {

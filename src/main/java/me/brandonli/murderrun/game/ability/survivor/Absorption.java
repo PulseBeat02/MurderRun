@@ -22,7 +22,6 @@ import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -43,7 +42,7 @@ public final class Absorption extends SurvivorAbility {
     final GameProperties properties = game.getProperties();
     final int level = properties.getAbsorptionLevel();
     manager.applyToAllParticipants(participant -> {
-      final PlayerInventory inventory = participant.getInventory();
+      participant.getInventory();
       if (!participant.hasAbility("absorption")) {
         return;
       }

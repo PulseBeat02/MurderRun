@@ -65,7 +65,7 @@ public final class TranslationManager {
     final PluginDataConfigurationMapper mapper = plugin.getConfiguration();
     final me.brandonli.murderrun.locale.Locale locale = mapper.getLocale();
     final String name = locale.name();
-    final String lower = name.toLowerCase();
+    final String lower = name.toLowerCase(Locale.getDefault());
     return "locale/murderrun_%s.properties".formatted(lower);
   }
 

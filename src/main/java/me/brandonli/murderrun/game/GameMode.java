@@ -19,6 +19,7 @@ package me.brandonli.murderrun.game;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -69,7 +70,7 @@ public enum GameMode {
   }
 
   public static Optional<GameMode> fromString(final String modeName) {
-    final String lower = modeName.toLowerCase();
+    final String lower = modeName.toLowerCase(Locale.getDefault());
     final GameMode mode = KEY_LOOKUP.get(lower);
     return Optional.ofNullable(mode);
   }

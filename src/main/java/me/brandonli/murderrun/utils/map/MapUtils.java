@@ -32,7 +32,6 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.util.SideEffect;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
 import java.io.*;
@@ -60,8 +59,6 @@ import org.incendo.cloud.type.tuple.Triplet;
 
 public final class MapUtils {
 
-  private static final Set<SideEffect> DISABLED_SIDE_EFFECTS =
-      Set.of(SideEffect.UPDATE, SideEffect.NEIGHBORS);
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
   private static final Properties SERVER_PROPERTIES = new Properties();
 

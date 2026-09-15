@@ -27,15 +27,18 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import org.slf4j.Logger;
 
 public final class DependencyDownloader {
 
   private static final String PARTIAL_SUFFIX = ".part";
 
   private final PluginJarScanner scanner;
+  private final Logger logger;
 
-  public DependencyDownloader(final PluginJarScanner scanner) {
+  public DependencyDownloader(final PluginJarScanner scanner, final Logger logger) {
     this.scanner = scanner;
+    this.logger = logger;
   }
 
   public Path download(
@@ -118,7 +121,9 @@ public final class DependencyDownloader {
   private void deleteQuietly(final Path path) {
     try {
       Files.deleteIfExists(path);
-    } catch (final IOException ignored) {
+    } catch (final IOException e) {
+      final String msg = "Failed to delete partial download {}";
+      this.logger.warn(msg, path, e);
     }
   }
 }

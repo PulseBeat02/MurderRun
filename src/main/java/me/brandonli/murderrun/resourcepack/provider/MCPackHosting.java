@@ -39,7 +39,6 @@ public final class MCPackHosting extends ResourcePackProvider {
 
   private static final String WEBSITE_URL = "https://mc-packs.net";
   private static final String DOWNLOAD_WEBSITE_URL = "https://download.mc-packs.net";
-  private static final String PACK_URL = "%s/pack/%s.zip";
   private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
   private String url;
@@ -69,7 +68,7 @@ public final class MCPackHosting extends ResourcePackProvider {
     try {
       this.uploadPackPost(zip);
       final String hash = IOUtils.getSHA1Hash(zip);
-      final String url = PACK_URL.formatted(DOWNLOAD_WEBSITE_URL, hash);
+      final String url = "%s/pack/%s.zip".formatted(DOWNLOAD_WEBSITE_URL, hash);
       return new PackInfo(url, 0);
     } catch (final IOException e) {
       throw new AssertionError(e);
@@ -104,11 +103,11 @@ public final class MCPackHosting extends ResourcePackProvider {
   private String updateAndRetrievePackJSON(final ReentrantReadWriteLock lock, final PackInfo info) {
     final Lock write = lock.writeLock();
     final Path path = this.getCachedFilePath();
+    write.lock();
     try (final Writer writer = Files.newBufferedWriter(path)) {
       final int loads = info.loads + 1;
       final PackInfo updated = new PackInfo(info.url, loads);
       final Gson gson = GsonProvider.getGson();
-      write.lock();
       gson.toJson(updated, writer);
       return updated.url;
     } catch (final IOException e) {

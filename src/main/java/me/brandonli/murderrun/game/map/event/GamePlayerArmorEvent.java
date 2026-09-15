@@ -64,7 +64,7 @@ public final class GamePlayerArmorEvent extends GameEvent {
     final Game game = this.getGame();
     final GamePlayerManager manager = game.getPlayerManager();
     final GamePlayer gamePlayer = manager.getGamePlayer(player);
-    if (!(gamePlayer instanceof final Killer killer)) {
+    if (!(gamePlayer instanceof Killer)) {
       return;
     }
 

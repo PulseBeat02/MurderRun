@@ -28,7 +28,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import me.brandonli.murderrun.utils.PDCUtils;
-import me.brandonli.murderrun.utils.item.Item.Builder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -55,7 +54,7 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.profile.PlayerTextures;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class ItemBuilder implements Builder {
+public final class ItemBuilder implements Item.Builder {
 
   private final ItemStack stack;
 
@@ -74,20 +73,20 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder amount(final int amount) {
+  public Item.Builder amount(final int amount) {
     this.stack.setAmount(amount);
     return this;
   }
 
   @Override
-  public Builder nameWithItalics(final Component name) {
+  public Item.Builder nameWithItalics(final Component name) {
     final ItemMeta meta = this.meta();
     this.stack.setItemMeta(meta);
     return this;
   }
 
   @Override
-  public Builder name(final Component name) {
+  public Item.Builder name(final Component name) {
     final ItemMeta meta = this.meta();
     meta.displayName(name.decoration(TextDecoration.ITALIC, false));
     this.stack.setItemMeta(meta);
@@ -95,7 +94,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder lore(final Component lore) {
+  public Item.Builder lore(final Component lore) {
     final List<Component> components = ComponentUtils.wrapLoreLines(lore, 40);
     final ItemMeta meta = this.meta();
     meta.lore(components);
@@ -104,7 +103,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder lore(final List<Component> lore) {
+  public Item.Builder lore(final List<Component> lore) {
     final ItemMeta meta = this.meta();
     meta.lore(lore);
     this.stack.setItemMeta(meta);
@@ -112,7 +111,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder durability(final int durability) {
+  public Item.Builder durability(final int durability) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final Damageable damageable) {
       final Material material = this.stack.getType();
@@ -125,7 +124,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder useOneDurability() {
+  public Item.Builder useOneDurability() {
     final ItemMeta meta = this.meta();
     if (meta instanceof final Damageable damageable) {
       final Material material = this.stack.getType();
@@ -141,7 +140,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder model(final @Nullable String data) {
+  public Item.Builder model(final @Nullable String data) {
     final ItemMeta meta = this.meta();
     NamespacedKey key = null;
     if (data != null) {
@@ -153,7 +152,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder dummyAttribute() {
+  public Item.Builder dummyAttribute() {
     final Attribute attribute = Attribute.OXYGEN_BONUS;
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
@@ -166,7 +165,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder hideAttributes() {
+  public Item.Builder hideAttributes() {
     final ItemMeta meta = this.meta();
     meta.addItemFlags(
         ItemFlag.HIDE_ATTRIBUTES,
@@ -179,7 +178,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder modifier(final Attribute attribute, final double amount) {
+  public Item.Builder modifier(final Attribute attribute, final double amount) {
     final NamespacedKey key = attribute.getKey();
     final Operation operation = Operation.ADD_NUMBER;
     final EquipmentSlotGroup group = EquipmentSlotGroup.ANY;
@@ -191,20 +190,20 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public <P, C> Builder pdc(
+  public <P, C> Item.Builder pdc(
       final NamespacedKey key, final PersistentDataType<P, C> type, final C value) {
     PDCUtils.setPersistentDataAttribute(this.stack, key, type, value);
     return this;
   }
 
   @Override
-  public Builder enchantment(final Enchantment enchantment, final int level) {
+  public Item.Builder enchantment(final Enchantment enchantment, final int level) {
     this.stack.addUnsafeEnchantment(enchantment, level);
     return this;
   }
 
   @Override
-  public Builder dye(final Color color) {
+  public Item.Builder dye(final Color color) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final LeatherArmorMeta leatherArmorMeta) {
       leatherArmorMeta.setColor(color);
@@ -214,7 +213,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder head(final Player player) {
+  public Item.Builder head(final Player player) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final SkullMeta skullMeta) {
       skullMeta.setOwningPlayer(player);
@@ -224,7 +223,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder potionColor(final Color color) {
+  public Item.Builder potionColor(final Color color) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final PotionMeta potionMeta) {
       potionMeta.setColor(color);
@@ -234,7 +233,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder potion(final PotionType type) {
+  public Item.Builder potion(final PotionType type) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final PotionMeta potionMeta) {
       potionMeta.setBasePotionType(type);
@@ -244,7 +243,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder consume(final @Nullable Consumer<ItemStack> consumer) {
+  public Item.Builder consume(final @Nullable Consumer<ItemStack> consumer) {
     if (consumer == null) {
       return this;
     }
@@ -254,13 +253,13 @@ public final class ItemBuilder implements Builder {
 
   @Override
   @SuppressWarnings("deprecation")
-  public Builder type(final Material material) {
+  public Item.Builder type(final Material material) {
     this.stack.setType(material);
     return this;
   }
 
   @Override
-  public Builder unbreakable() {
+  public Item.Builder unbreakable() {
     final ItemMeta meta = this.meta();
     meta.setUnbreakable(true);
     this.stack.setItemMeta(meta);
@@ -268,7 +267,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder head(final String url) {
+  public Item.Builder head(final String url) {
     final ItemMeta meta = this.meta();
     if (meta instanceof final SkullMeta skullMeta) {
       try {
@@ -289,7 +288,7 @@ public final class ItemBuilder implements Builder {
   }
 
   @Override
-  public Builder cooldown(final float cooldown, final @Nullable NamespacedKey group) {
+  public Item.Builder cooldown(final float cooldown, final @Nullable NamespacedKey group) {
     final ItemMeta meta = this.meta();
     final UseCooldownComponent component = meta.getUseCooldown();
     component.setCooldownSeconds(cooldown);

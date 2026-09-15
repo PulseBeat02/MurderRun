@@ -29,6 +29,7 @@ packetEvents = "2.13.0"
 vaultApi = "1.7"
 craftEngine = "26.8.2"
 gremlinRuntime = "0.0.9"
+errorprone = "2.50.0"
 
 [libraries]
 cloudAnnotations = { group = "org.incendo", name = "cloud-annotations", version.ref = "cloudAnnotations" }
@@ -63,3 +64,4 @@ vaultApi = { group = "com.github.MilkBowl", name = "VaultAPI", version.ref = "va
 craftEngineCore = { group = "net.momirealms", name = "craft-engine-core", version.ref = "craftEngine" }
 craftEngineBukkit = { group = "net.momirealms", name = "craft-engine-bukkit", version.ref = "craftEngine" }
 gremlinRuntime = { group = "xyz.jpenilla", name = "gremlin-runtime", version.ref = "gremlinRuntime" }
+errorproneCore = { group = "com.google.errorprone", name = "error_prone_core", version.ref = "errorprone" }

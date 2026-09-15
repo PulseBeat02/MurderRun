@@ -21,6 +21,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
@@ -120,9 +121,11 @@ public final class TrapSeeker extends KillerGadget {
       }
     }
 
-    for (final Item entity : set) {
+    final Iterator<Item> iterator = set.iterator();
+    while (iterator.hasNext()) {
+      final Item entity = iterator.next();
       if (!gadgets.contains(entity)) {
-        set.remove(entity);
+        iterator.remove();
         metadata.setEntityGlowing(entity, NamedTextColor.YELLOW, false);
       }
     }

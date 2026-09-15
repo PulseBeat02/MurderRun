@@ -18,8 +18,6 @@
 package me.brandonli.murderrun.commmand;
 
 import me.brandonli.murderrun.MurderRun;
-import me.brandonli.murderrun.locale.AudienceProvider;
-import me.brandonli.murderrun.locale.PaperAudiences;
 import me.brandonli.murderrun.resourcepack.provider.ResourcePackProvider;
 import me.brandonli.murderrun.utils.ComponentUtils;
 import net.kyori.adventure.resource.ResourcePackRequest;
@@ -34,13 +32,10 @@ import org.incendo.cloud.annotations.Permission;
 public final class ResourcesCommand implements AnnotationCommandFeature {
 
   private MurderRun plugin;
-  private PaperAudiences audiences;
 
   @Override
   public void registerFeature(
       final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
-    final AudienceProvider handler = plugin.getAudience();
-    this.audiences = handler.retrieve();
     this.plugin = plugin;
   }
 

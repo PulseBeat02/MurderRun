@@ -19,7 +19,10 @@ package me.brandonli.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.Splitter;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
@@ -40,6 +43,8 @@ import org.bukkit.entity.Item;
 
 public final class RandomTeleport extends SurvivorGadget {
 
+  private static final Splitter COMMA_SPLITTER = Splitter.on(',');
+
   private final Set<Material> blacklisted;
 
   public RandomTeleport(final Game game) {
@@ -54,12 +59,12 @@ public final class RandomTeleport extends SurvivorGadget {
             Message.TP_ME_AWAY_FROM_HERE_LORE.build()));
     this.blacklisted = new HashSet<>();
     final String raw = properties.getRandomTeleportBlacklistedBlocks();
-    final String[] individual = raw.split(",");
+    final List<String> individual = COMMA_SPLITTER.splitToList(raw);
     for (final String material : individual) {
-      final String upper = material.toUpperCase();
+      final String upper = material.toUpperCase(Locale.getDefault());
       final Material target = Material.getMaterial(upper);
       if (target != null) {
-        this.blacklisted.add(Material.valueOf(material));
+        this.blacklisted.add(target);
       }
     }
   }

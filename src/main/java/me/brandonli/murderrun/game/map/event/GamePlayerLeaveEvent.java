@@ -19,6 +19,8 @@ package me.brandonli.murderrun.game.map.event;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.Splitter;
+import java.util.List;
 import java.util.UUID;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.Game;
@@ -39,6 +41,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public final class GamePlayerLeaveEvent extends GameEvent {
 
+  private static final Splitter COMMA = Splitter.on(',').omitEmptyStrings();
+
   public GamePlayerLeaveEvent(final Game game) {
     super(game);
   }
@@ -58,7 +62,7 @@ public final class GamePlayerLeaveEvent extends GameEvent {
     final GameProperties properties = game.getProperties();
     final String commands = properties.getPlayerLeaveCommandsAfter();
     if (!commands.equals("none")) {
-      final String[] split = commands.split(",");
+      final List<String> split = COMMA.splitToList(commands);
       final Server server = Bukkit.getServer();
       final ConsoleCommandSender console = server.getConsoleSender();
       for (final String command : split) {

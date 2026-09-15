@@ -34,7 +34,6 @@ import me.brandonli.murderrun.utils.RandomUtils;
 import me.brandonli.murderrun.utils.item.ItemFactory;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Firework;
@@ -104,7 +103,7 @@ public final class FireworkTrap extends SurvivorTrap {
   private FireworkEffect generateRandomFireworkEffect() {
     final List<Color> primary = this.generateRandomColors();
     final List<Color> fade = this.generateRandomColors();
-    final Type type = this.getRandomType();
+    final FireworkEffect.Type type = this.getRandomType();
     return FireworkEffect.builder()
         .with(type)
         .flicker(true)
@@ -114,8 +113,8 @@ public final class FireworkTrap extends SurvivorTrap {
         .build();
   }
 
-  private Type getRandomType() {
-    final Type[] types = Type.values();
+  private FireworkEffect.Type getRandomType() {
+    final FireworkEffect.Type[] types = FireworkEffect.Type.values();
     final int index = RandomUtils.generateInt(types.length);
     return types[index];
   }

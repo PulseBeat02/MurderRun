@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.resourcepack.provider;
 
+import java.util.Locale;
 import java.util.Map;
 
 public enum ProviderMethod {
@@ -33,7 +34,7 @@ public enum ProviderMethod {
       ON_SERVER);
 
   public static ProviderMethod fromString(final String locale) {
-    final String upper = locale.toUpperCase();
+    final String upper = locale.toUpperCase(Locale.getDefault());
     return LOOKUP_TABLE.getOrDefault(upper, ProviderMethod.MC_PACK_HOSTING);
   }
 }

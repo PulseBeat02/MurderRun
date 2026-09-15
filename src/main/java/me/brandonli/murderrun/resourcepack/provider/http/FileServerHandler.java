@@ -25,20 +25,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import me.brandonli.murderrun.utils.IOUtils;
 
 public final class FileServerHandler extends ChannelInboundHandlerAdapter {
-
-  private static final String RESPONSE_HEADERS_TEMPLATE = """
-    HTTP/1.1 200 OK\r
-    Content-Type: application/octet-stream\r
-    Content-Length: %s\r
-    Content-Disposition: attachment; filename="%s"\r
-    Connection: keep-alive\r
-    \r
-    """;
 
   private final Path filePath;
 
@@ -53,7 +45,7 @@ public final class FileServerHandler extends ChannelInboundHandlerAdapter {
       final byte[] responseHeaders = this.createHeader(file);
       final byte[] fileContent = Files.readAllBytes(this.filePath);
       final ByteBuf buf = Unpooled.copiedBuffer(responseHeaders);
-      ctx.write(buf);
+      final ChannelFuture _ = ctx.write(buf);
       final ByteBuf copied = Unpooled.copiedBuffer(fileContent);
       final ChannelFuture future = ctx.writeAndFlush(copied);
       future.addListener(ChannelFutureListener.CLOSE);
@@ -63,8 +55,15 @@ public final class FileServerHandler extends ChannelInboundHandlerAdapter {
   public byte[] createHeader(final RandomAccessFile file) throws IOException {
     final long fileLength = file.length();
     final String fileName = IOUtils.getName(this.filePath);
-    final String responseHeaders = String.format(RESPONSE_HEADERS_TEMPLATE, fileLength, fileName);
-    return responseHeaders.getBytes();
+    final String responseHeaders = String.format("""
+        HTTP/1.1 200 OK\r
+        Content-Type: application/octet-stream\r
+        Content-Length: %s\r
+        Content-Disposition: attachment; filename="%s"\r
+        Connection: keep-alive\r
+        \r
+        """, fileLength, fileName);
+    return responseHeaders.getBytes(StandardCharsets.UTF_8);
   }
 
   @Override

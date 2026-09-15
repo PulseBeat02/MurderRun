@@ -129,7 +129,7 @@ public final class GamePlayerDeathEvent extends GameEvent {
         && gamePlayer instanceof final Survivor survivor) {
       final DamageSource source = event.getDamageSource();
       final DamageType type = source.getDamageType();
-      if (type != DamageType.OUT_OF_WORLD) { // corpse out of world not revivable
+      if (!type.equals(DamageType.OUT_OF_WORLD)) { // corpse out of world not revivable
         if (this.handleFreezeTagDeath(event, survivor, game, manager)) {
           return;
         }

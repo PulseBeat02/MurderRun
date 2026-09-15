@@ -34,13 +34,11 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class GameBundle {
 
-  private static final String GADGETS_PROPERTIES = "%s.game.properties";
-
   private final String file;
   private final ResourceBundle bundle;
 
   public GameBundle(final String name) {
-    this.file = GADGETS_PROPERTIES.formatted(name);
+    this.file = "%s.game.properties".formatted(name);
     final Path pluginDataFolder = IOUtils.getPluginDataFolderPath();
     final Path resourcePath = pluginDataFolder.resolve(this.file);
     this.bundle = this.loadGadgetProperties(resourcePath);

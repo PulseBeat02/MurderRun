@@ -86,21 +86,24 @@ public final class PluginDataConfigurationMapper {
 
   public synchronized void deserialize() {
     this.readLock.lock();
-    final FileConfiguration config = this.plugin.getConfig();
-    this.plugin.saveConfig();
-    this.locale = this.getLocale(config);
-    this.hostName = this.getHostName(config);
-    this.port = this.getPortServerPort(config);
-    this.providerMethod = this.getProviderMethod(config);
-    this.relationalDataMethod = this.getRelationalDataMethod(config);
-    this.databaseDriver = this.getDatabaseDriver(config);
-    this.databaseUrl = this.getDatabaseUrl(config);
-    this.databaseName = this.getDatabaseName(config);
-    this.databaseHbm2ddl = this.getDatabaseHbm2ddl(config);
-    this.databaseUsername = this.getDatabaseUsername(config);
-    this.databasePassword = this.getDatabasePassword(config);
-    this.databaseShowSql = this.getDatabaseShowSql(config);
-    this.readLock.unlock();
+    try {
+      final FileConfiguration config = this.plugin.getConfig();
+      this.plugin.saveConfig();
+      this.locale = this.getLocale(config);
+      this.hostName = this.getHostName(config);
+      this.port = this.getPortServerPort(config);
+      this.providerMethod = this.getProviderMethod(config);
+      this.relationalDataMethod = this.getRelationalDataMethod(config);
+      this.databaseDriver = this.getDatabaseDriver(config);
+      this.databaseUrl = this.getDatabaseUrl(config);
+      this.databaseName = this.getDatabaseName(config);
+      this.databaseHbm2ddl = this.getDatabaseHbm2ddl(config);
+      this.databaseUsername = this.getDatabaseUsername(config);
+      this.databasePassword = this.getDatabasePassword(config);
+      this.databaseShowSql = this.getDatabaseShowSql(config);
+    } finally {
+      this.readLock.unlock();
+    }
   }
 
   private Locale getLocale(final FileConfiguration config) {
@@ -162,18 +165,22 @@ public final class PluginDataConfigurationMapper {
   }
 
   public synchronized void serialize() {
-    CompletableFuture.runAsync(this::internalSerialize, this.service);
+    final CompletableFuture<Void> _ =
+        CompletableFuture.runAsync(this::internalSerialize, this.service);
   }
 
   private synchronized void internalSerialize() {
     this.writeLock.lock();
-    final FileConfiguration config = this.plugin.getConfig();
-    config.set(SERVER_HOST_FIELD, this.hostName);
-    config.set(SERVER_PORT_FIELD, this.port);
-    config.set(PACK_PROVIDER_FIELD, this.providerMethod.name());
-    config.set(RELATIONAL_DATA_FIELD, this.relationalDataMethod.name());
-    this.plugin.saveConfig();
-    this.writeLock.unlock();
+    try {
+      final FileConfiguration config = this.plugin.getConfig();
+      config.set(SERVER_HOST_FIELD, this.hostName);
+      config.set(SERVER_PORT_FIELD, this.port);
+      config.set(PACK_PROVIDER_FIELD, this.providerMethod.name());
+      config.set(RELATIONAL_DATA_FIELD, this.relationalDataMethod.name());
+      this.plugin.saveConfig();
+    } finally {
+      this.writeLock.unlock();
+    }
   }
 
   public synchronized boolean isDatabaseShowSql() {

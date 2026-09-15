@@ -22,10 +22,6 @@ import org.bukkit.plugin.Plugin;
 
 public final class ApiEventSubscription<T extends MurderRunEvent> implements EventSubscription<T> {
 
-  private static final Consumer<Object> ILLEGAL_HANDLER = t -> {
-    throw new AssertionError("Inactive subscription");
-  };
-
   private final Plugin plugin;
   private final Class<T> eventType;
   private final int priority;
@@ -63,7 +59,7 @@ public final class ApiEventSubscription<T extends MurderRunEvent> implements Eve
   @Override
   public void unsubscribe() {
     this.active = false;
-    this.handler = ILLEGAL_HANDLER;
+    this.handler = ApiEventSubscription::rejectInactive;
   }
 
   @Override
@@ -74,5 +70,9 @@ public final class ApiEventSubscription<T extends MurderRunEvent> implements Eve
   @Override
   public int getPriority() {
     return this.priority;
+  }
+
+  private static void rejectInactive(final Object unused) {
+    throw new AssertionError("Inactive subscription");
   }
 }

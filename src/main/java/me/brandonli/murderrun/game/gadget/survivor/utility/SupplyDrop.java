@@ -19,6 +19,8 @@ package me.brandonli.murderrun.game.gadget.survivor.utility;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.Splitter;
+import java.util.List;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.Gadget;
@@ -58,6 +60,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public final class SupplyDrop extends SurvivorGadget implements Listener {
+
+  private static final Splitter COMMA_SPLITTER = Splitter.on(',');
 
   private final Game game;
 
@@ -169,8 +173,8 @@ public final class SupplyDrop extends SurvivorGadget implements Listener {
     final int index = RandomUtils.generateInt(3);
     final GameProperties properties = this.game.getProperties();
     final String all = properties.getSupplyDropMasks();
-    final String[] masks = all.split(",");
-    final String mask = masks[index];
+    final List<String> masks = COMMA_SPLITTER.splitToList(all);
+    final String mask = masks.get(index);
     final ItemStack[] items = new ItemStack[mask.length()];
     final GadgetManager manager = this.game.getGadgetManager();
     final GadgetLoadingMechanism mechanism = manager.getMechanism();

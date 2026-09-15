@@ -27,6 +27,7 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import me.brandonli.murderrun.MurderRun;
@@ -211,7 +212,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerChat(final AsyncChatEvent event) {
     final Player player = event.getPlayer();
-    if (player != this.watcher) {
+    if (!player.equals(this.watcher)) {
       return;
     }
 
@@ -223,7 +224,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
     final Component component = event.message();
     final String msg = ComponentUtils.serializeComponentToPlain(component);
     if (this.listenForBreaks.get()) {
-      final String upper = msg.toUpperCase();
+      final String upper = msg.toUpperCase(Locale.getDefault());
       final Location location = player.getLocation();
       if (upper.equals("SKIP")) {
         this.sendProperMessage(location, true);
@@ -232,7 +233,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
     }
 
     if (this.listenForItems.get()) {
-      final String upper = msg.toUpperCase();
+      final String upper = msg.toUpperCase(Locale.getDefault());
       if (upper.equals("DONE")) {
         this.listenForName.set(false);
         this.listenForItems.set(false);
@@ -248,7 +249,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
 
   private void showAsync() {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.callSyncMethod(this.plugin, () -> {
+    final Future<?> _ = scheduler.callSyncMethod(this.plugin, () -> {
       this.update();
       this.open(this.watcher);
       return null;
@@ -258,7 +259,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerInteract(final BlockBreakEvent event) {
     final Player player = event.getPlayer();
-    if (player != this.watcher) {
+    if (!player.equals(this.watcher)) {
       return;
     }
 
@@ -339,7 +340,7 @@ public final class ArenaModificationGui extends PatternGui implements Listener {
     }
 
     final Location actual = MapUtils.getSafeSpawn(spawn);
-    future.thenAccept(items -> {
+    final CompletableFuture<Void> _ = future.thenAccept(items -> {
       final ArenaManager manager = this.plugin.getArenaManager();
       manager.addArena(name, corners, items, actual, truck);
 

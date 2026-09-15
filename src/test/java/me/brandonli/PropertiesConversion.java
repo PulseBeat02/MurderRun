@@ -17,6 +17,7 @@
  */
 package me.brandonli;
 
+import com.google.common.base.Splitter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,6 +25,9 @@ import java.util.List;
 import java.util.Locale;
 
 public final class PropertiesConversion {
+
+  private static final Splitter SPACE = Splitter.on(' ');
+  private static final Splitter UNDERSCORE = Splitter.on('_');
 
   public static void main(final String[] args) throws IOException {
     final String dir = System.getProperty("user.dir");
@@ -35,10 +39,10 @@ public final class PropertiesConversion {
     for (int i = start; i <= end; i++) {
       final String line = lines.get(i);
       final String trimmed = line.trim();
-      final String[] tokens = trimmed.split(" ");
-      final String type = tokens[0];
-      final String name = tokens[1];
-      final String value = tokens[3];
+      final List<String> tokens = SPACE.splitToList(trimmed);
+      final String type = tokens.get(0);
+      final String name = tokens.get(1);
+      final String value = tokens.get(3);
       final String methodName = constantToGetter(name);
       final String method = "public %s %s() { return %s }".formatted(type, methodName, value);
       System.out.println(method);
@@ -47,7 +51,8 @@ public final class PropertiesConversion {
 
   private static String constantToGetter(final String constantName) {
     final String clean = constantName.replaceAll("[^A-Za-z0-9_]", "");
-    final String[] parts = clean.toLowerCase(Locale.ROOT).split("_");
+    final String lower = clean.toLowerCase(Locale.ROOT);
+    final List<String> parts = UNDERSCORE.splitToList(lower);
     final StringBuilder sb = new StringBuilder("get");
     for (final String p : parts) {
       if (p.isEmpty()) {

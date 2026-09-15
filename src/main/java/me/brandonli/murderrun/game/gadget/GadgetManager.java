@@ -66,6 +66,6 @@ public final class GadgetManager {
   }
 
   public void setActivationRange(final double range) {
-    this.activationRange.getAndSet(range);
+    this.activationRange.set(range);
   }
 }

@@ -17,10 +17,7 @@
  */
 package me.brandonli.murderrun.gui.arena;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Collection;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.utils.GlowUtils;
@@ -41,10 +38,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 
 public final class WandListener implements Listener {
 
@@ -62,18 +55,6 @@ public final class WandListener implements Listener {
     this.locations = locations;
     this.remove = remove;
     this.add = add;
-  }
-
-  private Team registerTeam(@UnderInitialization WandListener this) {
-    final UUID uuid = UUID.randomUUID();
-    final String name = uuid.toString();
-    final Server server = Bukkit.getServer();
-    final ScoreboardManager manager = requireNonNull(server.getScoreboardManager());
-    final Scoreboard scoreboard = manager.getMainScoreboard();
-    final Team team = scoreboard.registerNewTeam(name);
-    team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-    team.setCanSeeFriendlyInvisibles(true);
-    return team;
   }
 
   public void registerEvents() {

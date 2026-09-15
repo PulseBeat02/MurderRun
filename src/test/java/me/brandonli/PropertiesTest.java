@@ -30,11 +30,11 @@ public final class PropertiesTest {
   public static void main(final String[] args) throws IOException {
     final Properties enUs = loadProperties("src/main/resources/locale/murderrun_en_us.properties");
     final Set<String> enUsKeys = enUs.stringPropertyNames();
-    final String pattern = "src/main/resources/locale/%s";
     final List<String> files = List.of(
         "murderrun_zh_cn.properties", "murderrun_zh_hk.properties", "murderrun_es_es.properties");
-    final List<String> set =
-        files.stream().map(file -> String.format(pattern, file)).toList();
+    final List<String> set = files.stream()
+        .map(file -> String.format("src/main/resources/locale/%s", file))
+        .toList();
     for (final String path : set) {
       final Properties properties = loadProperties(path);
       final Set<String> keys = properties.stringPropertyNames();

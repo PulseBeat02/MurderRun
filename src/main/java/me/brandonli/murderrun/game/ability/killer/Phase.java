@@ -17,8 +17,11 @@
  */
 package me.brandonli.murderrun.game.ability.killer;
 
+import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import me.brandonli.murderrun.game.Game;
@@ -46,6 +49,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public final class Phase extends KillerAbility implements Listener {
 
   private static final String PHASE_NAME = "phase";
+  private static final Splitter COMMA_SPLITTER = Splitter.on(',');
 
   private final Collection<Material> blacklisted;
   private final Map<GamePlayer, Long> cooldowns;
@@ -60,12 +64,12 @@ public final class Phase extends KillerAbility implements Listener {
                 (properties.getPhaseCooldown() * 20)));
     this.blacklisted = new HashSet<>();
     final String raw = properties.getPhaseBlacklistedBlocks();
-    final String[] individual = raw.split(",");
+    final List<String> individual = COMMA_SPLITTER.splitToList(raw);
     for (final String material : individual) {
-      final String upper = material.toUpperCase();
+      final String upper = material.toUpperCase(Locale.getDefault());
       final Material target = Material.getMaterial(upper);
       if (target != null) {
-        this.blacklisted.add(Material.valueOf(material));
+        this.blacklisted.add(target);
       }
     }
     this.cooldowns = new ConcurrentHashMap<>();

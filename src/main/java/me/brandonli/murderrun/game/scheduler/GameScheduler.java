@@ -159,12 +159,6 @@ public final class GameScheduler {
     return bukkitTask;
   }
 
-  private void waitForFall(final Runnable runnable, final Entity item) {
-    if (item.isOnGround()) {
-      runnable.run();
-    }
-  }
-
   private void waitForDeath(final Runnable runnable, final Entity entity) {
     if (!entity.isDead()) {
       runnable.run();

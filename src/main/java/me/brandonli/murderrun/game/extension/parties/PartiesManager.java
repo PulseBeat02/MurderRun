@@ -30,11 +30,9 @@ import org.bukkit.entity.Player;
 
 public final class PartiesManager {
 
-  private final MurderRun plugin;
   private final PartiesAPI api;
 
   public PartiesManager(final MurderRun plugin) {
-    this.plugin = plugin;
     this.api = Parties.getApi();
   }
 

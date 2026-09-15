@@ -21,6 +21,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.Future;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -46,7 +47,7 @@ public final class FileHttpServer {
 
   public void start() {
     final CountDownLatch latch = new CountDownLatch(1);
-    CompletableFuture.runAsync(
+    final CompletableFuture<Void> _ = CompletableFuture.runAsync(
         () -> {
           try {
             final ServerBootstrap b = this.initializeServerBootstrap();
@@ -105,10 +106,10 @@ public final class FileHttpServer {
 
   public void stop() {
     if (this.bossGroup != null) {
-      this.bossGroup.shutdownGracefully();
+      final Future<?> _ = this.bossGroup.shutdownGracefully();
     }
     if (this.workerGroup != null) {
-      this.workerGroup.shutdownGracefully();
+      final Future<?> _ = this.workerGroup.shutdownGracefully();
     }
     ExecutorUtils.shutdownExecutorGracefully(this.service);
   }

@@ -179,7 +179,7 @@ public final class GameInputSanitizer {
 
   public boolean checkIfNotSamePlayer(
       final Audience audience, final Player sender, final Player invite) {
-    if (sender == invite) {
+    if (sender.equals(invite)) {
       audience.sendMessage(Message.GAME_INVITE_ERROR.build());
       return true;
     }

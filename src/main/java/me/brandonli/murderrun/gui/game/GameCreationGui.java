@@ -26,6 +26,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.arena.Arena;
@@ -146,7 +147,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
   @EventHandler(priority = EventPriority.LOWEST)
   public void onPlayerChat(final AsyncChatEvent event) {
     final Player player = event.getPlayer();
-    if (player != this.watcher) {
+    if (!player.equals(this.watcher)) {
       return;
     }
 
@@ -192,7 +193,7 @@ public final class GameCreationGui extends PatternGui implements Listener {
 
   private void showAsync(final Player player) {
     final BukkitScheduler scheduler = Bukkit.getScheduler();
-    scheduler.callSyncMethod(this.plugin, () -> {
+    final Future<?> _ = scheduler.callSyncMethod(this.plugin, () -> {
       this.update();
       this.open(player);
       return null;

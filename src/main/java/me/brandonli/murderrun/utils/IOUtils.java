@@ -245,7 +245,7 @@ public final class IOUtils {
 
   public static Path createTemporaryPath(final String prefix, final String suffix)
       throws IOException {
-    final String os = System.getProperty("os.name").toLowerCase();
+    final String os = System.getProperty("os.name").toLowerCase(Locale.getDefault());
 
     if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
       final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwx------");

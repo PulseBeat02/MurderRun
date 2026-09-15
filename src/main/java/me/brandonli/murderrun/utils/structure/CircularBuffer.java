@@ -19,20 +19,20 @@ package me.brandonli.murderrun.utils.structure;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public final class CircularBuffer<T> implements Iterable<T> {
+public final class CircularBuffer<T extends @NonNull Object> implements Iterable<T> {
 
   private final Deque<T> buffer;
   private final int maxSize;
 
   public CircularBuffer(final int size) {
     this.maxSize = size;
-    this.buffer = new LinkedList<>();
+    this.buffer = new ArrayDeque<>();
   }
 
   public void add(final T item) {

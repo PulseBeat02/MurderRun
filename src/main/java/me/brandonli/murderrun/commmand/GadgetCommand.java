@@ -44,13 +44,11 @@ import org.incendo.cloud.context.CommandContext;
 public final class GadgetCommand implements AnnotationCommandFeature {
 
   private PaperAudiences audiences;
-  private MurderRun plugin;
 
   @Override
   public void registerFeature(
       final MurderRun plugin, final AnnotationParser<CommandSender> parser) {
     final AudienceProvider audienceProvider = plugin.getAudience();
-    this.plugin = plugin;
     this.audiences = audienceProvider.retrieve();
   }
 

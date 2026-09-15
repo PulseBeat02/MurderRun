@@ -50,7 +50,6 @@ public final class AbilityActionHandler implements Listener {
 
   public AbilityActionHandler(final AbilityManager manager) {
     final AbilityLoadingMechanism mechanism = manager.getMechanism();
-    final MurderRun plugin = manager.getPlugin();
     this.manager = manager;
     this.abilities = mechanism.getGameAbilities();
   }

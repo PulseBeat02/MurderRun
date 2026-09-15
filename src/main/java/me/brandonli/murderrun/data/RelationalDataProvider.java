@@ -45,22 +45,21 @@ public final class RelationalDataProvider {
     final RelationalDataMethod method = mapper.getRelationalDataMethod();
     this.plugin = plugin;
     switch (method) {
-      case JSON:
+      case JSON -> {
         this.arenas = new ArenaDataJSONMapper();
         this.lobbies = new LobbyDataJSONMapper();
         this.statistics = new StatisticJSONMapper();
         this.arenaCreation = new ArenaCreationDataJSONMapper();
-        break;
-      case SQL:
+      }
+      case SQL -> {
         final HibernateManager hibernate = new HibernateManager(this.plugin);
         this.hibernate = hibernate;
         this.arenas = hibernate.getArenaController();
         this.lobbies = hibernate.getLobbyController();
         this.statistics = hibernate.getStatisticsController();
         this.arenaCreation = hibernate.getArenaCreationController();
-        break;
-      default:
-        throw new UnsupportedOperationException("Unsupported provider method!");
+      }
+      default -> throw new UnsupportedOperationException("Unsupported provider method!");
     }
   }
 

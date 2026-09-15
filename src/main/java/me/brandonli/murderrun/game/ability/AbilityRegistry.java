@@ -162,7 +162,7 @@ public final class AbilityRegistry {
       final Pair<Ability, MethodHandle> pair = Pair.of(ability, handle);
       this.abilityRegistry.put(name, pair);
     } catch (final NoSuchMethodException | IllegalAccessException e) {
-      throw new AssertionError(e);
+      throw new LinkageError(e.getMessage(), e);
     }
   }
 

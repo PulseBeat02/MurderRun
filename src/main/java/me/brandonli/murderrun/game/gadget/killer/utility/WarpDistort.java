@@ -84,7 +84,7 @@ public final class WarpDistort extends KillerGadget {
   private GamePlayer[] getRandomPlayers(final GamePlayerManager manager) {
     final GamePlayer random = manager.getRandomAliveInnocentPlayer();
     GamePlayer random2 = manager.getRandomAliveInnocentPlayer();
-    while (random == random2) {
+    while (random.equals(random2)) {
       random2 = manager.getRandomAliveInnocentPlayer();
     }
     return new GamePlayer[] {random, random2};

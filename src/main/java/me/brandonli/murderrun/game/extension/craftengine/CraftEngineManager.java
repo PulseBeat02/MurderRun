@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.game.extension.craftengine;
 
+import com.google.common.base.Splitter;
 import java.net.URI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -36,6 +37,8 @@ import net.momirealms.craftengine.core.util.Key;
 import org.bukkit.inventory.ItemStack;
 
 public final class CraftEngineManager {
+
+  private static final Splitter COLON_SPLITTER = Splitter.on(':');
 
   public Collection<ResourcePackInfo> getPackInfo() {
     final CraftEngine engine = CraftEngine.instance();
@@ -115,9 +118,9 @@ public final class CraftEngineManager {
 
   private Optional<Item.Builder> getCraftEngineItem(final String property) {
     if (this.hasCraftEngineItem(property)) {
-      final String[] split = property.split(":");
-      final String namespace = split[0];
-      final String path = split[1];
+      final List<String> split = COLON_SPLITTER.splitToList(property);
+      final String namespace = split.get(0);
+      final String path = split.get(1);
       final BukkitItemManager manager = BukkitItemManager.instance();
       final Key key = Key.of(namespace, path);
       final Optional<? extends BuildableItem> optional = manager.getBuildableItem(key);

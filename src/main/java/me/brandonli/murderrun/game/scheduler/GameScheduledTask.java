@@ -24,16 +24,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameScheduledTask extends BukkitRunnable implements ScheduledTask {
 
-  private static final Runnable EMPTY_CLEANUP = () -> {};
-
   private final Game game;
   private final Runnable runnable;
   private final Reference<?> reference;
   private final Runnable cleanup;
 
   public GameScheduledTask(final Game game, final Runnable runnable, final Reference<?> reference) {
-    this(game, runnable, reference, EMPTY_CLEANUP);
+    this(game, runnable, reference, GameScheduledTask::emptyCleanup);
   }
+
+  private static void emptyCleanup() {}
 
   public GameScheduledTask(
       final Game game,

@@ -22,8 +22,6 @@ import java.util.function.Consumer;
 
 public final class PropertyFixerManager {
 
-  private static final Consumer<ResourceBundle> DEFAULT_FIXER = properties -> {};
-
   private final Map<PropertyVersion, Consumer<ResourceBundle>> fixers;
   private final Set<PropertyVersion> versionOrder;
 
@@ -33,12 +31,14 @@ public final class PropertyFixerManager {
   }
 
   public void registerGamePropertiesFixer() {
-    this.registerFixer(PropertyVersion.v1_0_0, DEFAULT_FIXER);
+    this.registerFixer(PropertyVersion.v1_0_0, PropertyFixerManager::applyDefaultFix);
   }
 
   public void registerLocalePropertiesFixer() {
-    this.registerFixer(PropertyVersion.v1_0_0, DEFAULT_FIXER);
+    this.registerFixer(PropertyVersion.v1_0_0, PropertyFixerManager::applyDefaultFix);
   }
+
+  private static void applyDefaultFix(final ResourceBundle unused) {}
 
   private void registerFixer(final PropertyVersion version, final Consumer<ResourceBundle> fixer) {
     this.fixers.put(version, fixer);

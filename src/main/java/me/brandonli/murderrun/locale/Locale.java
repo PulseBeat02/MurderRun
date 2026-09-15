@@ -29,7 +29,7 @@ public enum Locale {
       Map.of("EN_US", EN_US, "ZH_CN", ZH_CN, "ZH_HK", ZH_HK, "ES_ES", ES_ES);
 
   public static Locale fromString(final String locale) {
-    final String upper = locale.toUpperCase();
+    final String upper = locale.toUpperCase(java.util.Locale.getDefault());
     return LOOKUP_TABLE.getOrDefault(upper, EN_US);
   }
 }

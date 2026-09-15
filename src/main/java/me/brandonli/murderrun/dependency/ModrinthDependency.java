@@ -30,8 +30,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ModrinthDependency implements Dependency {
 
-  private static final String VERSIONS_URL =
-      "https://api.modrinth.com/v2/project/%s/version?game_versions=%s";
   private static final Set<String> SUPPORTED_LOADERS =
       Set.of("paper", "bukkit", "spigot", "folia", "purpur");
   private static final Comparator<ModrinthVersion> PREFERENCE = Comparator.comparingInt(
@@ -96,7 +94,8 @@ public final class ModrinthDependency implements Dependency {
   private URI createVersionsUri(final String minecraftVersion) {
     final String filter = "[\"%s\"]".formatted(minecraftVersion);
     final String encoded = URLEncoder.encode(filter, StandardCharsets.UTF_8);
-    final String url = VERSIONS_URL.formatted(this.project, encoded);
+    final String url = "https://api.modrinth.com/v2/project/%s/version?game_versions=%s"
+        .formatted(this.project, encoded);
     return this.createUri(url);
   }
 

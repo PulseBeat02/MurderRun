@@ -19,11 +19,15 @@ package me.brandonli.murderrun.game;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.Splitter;
 import java.awt.*;
+import java.util.List;
 import org.bukkit.Material;
 import org.intellij.lang.annotations.Subst;
 
 public final class GameProperties {
+
+  private static final Splitter COMMA_SPLITTER = Splitter.on(',');
 
   public static final GameProperties DEFAULT = new GameProperties(GameMode.DEFAULT);
   public static final GameProperties ONE_BOUNCE = new GameProperties(GameMode.ONE_BOUNCE);
@@ -1973,14 +1977,14 @@ public final class GameProperties {
   }
 
   private Color rgb(final String key) {
-    final String[] split = this.str(key).split(",");
-    if (split.length != 3) {
+    final List<String> split = COMMA_SPLITTER.splitToList(this.str(key));
+    if (split.size() != 3) {
       final String msg = "Invalid color format for key: %s".formatted(key);
       throw new AssertionError(msg);
     }
-    final int r = Integer.parseInt(split[0]);
-    final int g = Integer.parseInt(split[1]);
-    final int b = Integer.parseInt(split[2]);
+    final int r = Integer.parseInt(split.get(0));
+    final int g = Integer.parseInt(split.get(1));
+    final int b = Integer.parseInt(split.get(2));
     return new Color(r, g, b);
   }
 

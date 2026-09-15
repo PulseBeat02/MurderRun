@@ -236,7 +236,7 @@ public final class ApiEventBus implements EventBus {
   private Set<Class<? extends MurderRunEvent>> findParentEventTypes(
       final Class<? extends MurderRunEvent> eventType) {
     final Set<Class<? extends MurderRunEvent>> parentTypes = new HashSet<>();
-    final Queue<Class<?>> processingQueue = new LinkedList<>();
+    final Queue<Class<?>> processingQueue = new ArrayDeque<>();
     final Class<?>[] directInterfaces = eventType.getInterfaces();
     Collections.addAll(processingQueue, directInterfaces);
     while (!processingQueue.isEmpty()) {

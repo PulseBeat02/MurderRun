@@ -61,7 +61,7 @@ public abstract class MiniMessageTranslator implements Translator {
     final String content = this.checkIfSpecialString(miniMessageString, component);
     final List<? extends ComponentLike> args = component.arguments();
     final boolean empty = args.isEmpty();
-    final MiniMessage parser = MiniMessage.miniMessage();
+    final MiniMessage parser = this.miniMessage;
     final ArgumentTag tag = new ArgumentTag(args);
     final Component resultingComponent =
         empty ? parser.deserialize(content) : parser.deserialize(content, tag);

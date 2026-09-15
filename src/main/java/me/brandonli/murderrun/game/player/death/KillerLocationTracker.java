@@ -77,7 +77,7 @@ public final class KillerLocationTracker {
       final Survivor survivorPlayer = (Survivor) survivor;
       final Location location = survivorPlayer.getLocation();
       final World world = requireNonNull(location.getWorld());
-      if (killerWorld != world) {
+      if (!killerWorld.equals(world)) {
         continue;
       }
 

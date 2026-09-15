@@ -106,24 +106,6 @@ public final class PlayerScoreboard {
     lines.add(this.generateFooterComponent());
 
     this.board.updateLines(lines);
-    //    if (killer) {
-    //      this.board.updateLines(
-    //          empty(),
-    //          this.generateRoleComponent(),
-    //          this.generateObjectiveComponent(),
-    //          empty(),
-    //          this.generatePartsComponent()
-    //        );
-    //    } else {
-    //      this.board.updateLines(
-    //          empty(),
-    //          this.generateRoleComponent(),
-    //          this.generateObjectiveComponent(),
-    //          this.distance.get(),
-    //          empty(),
-    //          this.generatePartsComponent()
-    //        );
-    //    }
   }
 
   private Component generateFooterComponent() {
@@ -199,13 +181,6 @@ public final class PlayerScoreboard {
       remaining = properties.getCarPartsRequired();
     }
     return Message.SCOREBOARD_PARTS.build(remaining);
-  }
-
-  private Component generateObjectiveComponent() {
-    final boolean killer = this.gamePlayer instanceof Killer;
-    return killer
-        ? Message.SCOREBOARD_OBJECTIVE_KILLER.build()
-        : Message.SCOREBOARD_OBJECTIVE_SURVIVOR.build();
   }
 
   private Component generateRoleComponent() {

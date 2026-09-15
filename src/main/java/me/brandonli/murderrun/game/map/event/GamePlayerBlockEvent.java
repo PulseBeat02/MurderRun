@@ -17,8 +17,11 @@
  */
 package me.brandonli.murderrun.game.map.event;
 
+import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.GameStatus;
@@ -47,6 +50,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 public final class GamePlayerBlockEvent extends GameEvent {
 
+  private static final Splitter COMMA = Splitter.on(',');
+
   private final Collection<Material> blacklisted;
 
   public GamePlayerBlockEvent(final Game game) {
@@ -54,12 +59,12 @@ public final class GamePlayerBlockEvent extends GameEvent {
     final GameProperties properties = game.getProperties();
     final String raw = properties.getKillerCannotBreak();
     this.blacklisted = new HashSet<>();
-    final String[] individual = raw.split(",");
+    final List<String> individual = COMMA.splitToList(raw);
     for (final String material : individual) {
-      final String upper = material.toUpperCase();
+      final String upper = material.toUpperCase(Locale.getDefault());
       final Material target = Material.getMaterial(upper);
       if (target != null) {
-        this.blacklisted.add(Material.valueOf(material));
+        this.blacklisted.add(target);
       }
     }
   }

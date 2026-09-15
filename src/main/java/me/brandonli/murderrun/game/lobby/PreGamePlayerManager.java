@@ -99,7 +99,7 @@ public final class PreGamePlayerManager {
   }
 
   public boolean isLeader(final CommandSender sender) {
-    return this.leader == sender;
+    return this.leader.equals(sender);
   }
 
   public void initialize() {
@@ -237,7 +237,7 @@ public final class PreGamePlayerManager {
     private final Player player;
     private final boolean killer;
 
-    public PlayerPrepareRunnable(final Player player, final boolean killer) {
+    PlayerPrepareRunnable(final Player player, final boolean killer) {
       this.player = player;
       this.killer = killer;
     }
@@ -406,7 +406,7 @@ public final class PreGamePlayerManager {
         random.sendMessage(raw);
         final List<Player> snapshot = new ArrayList<>(this.participants);
         for (final Player player : snapshot) {
-          if (player == random) {
+          if (player.equals(random)) {
             continue;
           }
           this.setPlayerToMurderer(player);

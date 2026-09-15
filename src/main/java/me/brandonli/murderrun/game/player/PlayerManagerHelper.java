@@ -308,7 +308,7 @@ public interface PlayerManagerHelper {
     for (final GamePlayer survivor : collection) {
       final Location location = survivor.getLocation();
       final World world = location.getWorld();
-      if (target != world) {
+      if (!Objects.equals(target, world)) {
         continue;
       }
       final double distance = location.distanceSquared(origin);

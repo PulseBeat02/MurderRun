@@ -1,3 +1,4 @@
+import net.ltgt.gradle.errorprone.errorprone
 import xyz.jpenilla.resourcefactory.paper.PaperPluginYaml
 import xyz.jpenilla.runtask.task.AbstractRun
 
@@ -11,6 +12,7 @@ plugins {
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
     id("xyz.jpenilla.gremlin-gradle") version "0.0.9"
     id("org.checkerframework") version "1.0.2"
+    id("net.ltgt.errorprone") version "5.1.1"
 }
 
 apply(plugin = "org.checkerframework")
@@ -70,6 +72,7 @@ dependencies {
 
     // Annotation Processors
     annotationProcessor(libs.cloudAnnotations)
+    errorprone(libs.errorproneCore)
 
     // Implementation Dependencies
     implementation(libs.gremlinRuntime)
@@ -187,6 +190,7 @@ tasks {
         options.isFork = true
         options.forkOptions.memoryMaximumSize = "4g"
         options.compilerArgs.addAll(listOf("-Xmaxerrs", "1000"))
+        options.errorprone.option("UnusedMethod:ExemptingMethodAnnotations", "org.bukkit.event.EventHandler")
         options.forkOptions.jvmArgs = (options.forkOptions.jvmArgs ?: mutableListOf()).apply {
             // Checker Framework Gradle Plugin forgot to include this argument for latest Checker Framework versions
             // See https://github.com/typetools/checker-framework/issues/7241

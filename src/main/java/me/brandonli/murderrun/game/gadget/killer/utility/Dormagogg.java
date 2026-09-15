@@ -38,7 +38,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -151,18 +150,13 @@ public final class Dormagogg extends KillerGadget implements Listener, Targetabl
       this.customizeAttributes(zombie);
       this.setTargetMetadata(killer, zombie);
       this.setEquipment(zombie);
-      if (zombie instanceof final Ageable ageable) {
-        ageable.setBaby();
-      }
     });
   }
 
   private void customizeAttributes(final Zombie zombie) {
     zombie.addPotionEffect(
         new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 2));
-    if (zombie instanceof final Ageable ageable) {
-      ageable.setBaby();
-    }
+    zombie.setBaby();
   }
 
   private void setTargetMetadata(final GamePlayer killer, final Zombie zombie) {

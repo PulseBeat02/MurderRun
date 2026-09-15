@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.data;
 
+import java.util.Locale;
 import java.util.Map;
 
 public enum RelationalDataMethod {
@@ -27,7 +28,7 @@ public enum RelationalDataMethod {
       Map.of("JSON", JSON, "SQL", SQL);
 
   public static RelationalDataMethod fromString(final String locale) {
-    final String upper = locale.toUpperCase();
+    final String upper = locale.toUpperCase(Locale.getDefault());
     return LOOKUP_TABLE.getOrDefault(upper, JSON);
   }
 }

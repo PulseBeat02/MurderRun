@@ -112,7 +112,7 @@ public final class MedBot extends SurvivorGadget {
     final Location location = killer.getLocation();
     final World first = stand.getWorld();
     final World second = location.getWorld();
-    if (first != second) {
+    if (!first.equals(second)) {
       return;
     }
 

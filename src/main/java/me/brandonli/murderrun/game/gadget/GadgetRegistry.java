@@ -161,7 +161,7 @@ public final class GadgetRegistry {
       final Pair<Gadget, MethodHandle> pair = Pair.of(gadget, handle);
       this.gadgetRegistry.put(name, pair);
     } catch (final NoSuchMethodException | IllegalAccessException e) {
-      throw new AssertionError(e);
+      throw new LinkageError(e.getMessage(), e);
     }
   }
 

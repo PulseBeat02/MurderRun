@@ -27,8 +27,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class ServerPackHosting extends ResourcePackProvider {
 
-  private static final String HOST_URL = "http://%s:%s";
-
   private final String hostName;
   private final int port;
 
@@ -42,7 +40,7 @@ public final class ServerPackHosting extends ResourcePackProvider {
 
   @Override
   public String getRawUrl() {
-    return HOST_URL.formatted(this.hostName, this.port);
+    return "http://%s:%s".formatted(this.hostName, this.port);
   }
 
   @Override

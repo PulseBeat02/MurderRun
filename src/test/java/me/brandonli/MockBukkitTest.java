@@ -20,13 +20,12 @@ package me.brandonli;
 import me.brandonli.murderrun.MurderRun;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
-import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
 public final class MockBukkitTest {
 
   public static void main(final String[] args) {
     final ServerMock server = MockBukkit.mock();
-    final MurderRun plugin = MockBukkit.load(MurderRun.class);
-    final PlayerMock player = server.addPlayer();
+    MockBukkit.load(MurderRun.class);
+    server.addPlayer();
   }
 }

@@ -33,7 +33,6 @@ import javax.swing.JPanel;
 public final class MinefieldBoard extends JPanel {
 
   private static final SplittableRandom RANDOM = new SplittableRandom();
-  private static final String IMAGE_PATH_FORMAT = "/secret/%d.png";
   private static final int NUM_IMAGES = 13;
   private static final int CELL_SIZE = 15;
   private static final int COVER_FOR_CELL = 10;
@@ -78,7 +77,7 @@ public final class MinefieldBoard extends JPanel {
   private void loadImages() {
     this.img = new Image[NUM_IMAGES];
     for (int i = 0; i < NUM_IMAGES; i++) {
-      final String path = IMAGE_PATH_FORMAT.formatted(i);
+      final String path = "/secret/%d.png".formatted(i);
       final URL url = requireNonNull(MinefieldBoard.class.getResource(path));
       final ImageIcon imageIcon = new ImageIcon(url);
       this.img[i] = imageIcon.getImage();

@@ -47,7 +47,7 @@ public final class DependencyManager {
     this.plugin = plugin;
     this.logger = plugin.getSLF4JLogger();
     this.scanner = new PluginJarScanner();
-    this.downloader = new DependencyDownloader(this.scanner);
+    this.downloader = new DependencyDownloader(this.scanner, this.logger);
     this.installed = new LinkedHashMap<>();
   }
 

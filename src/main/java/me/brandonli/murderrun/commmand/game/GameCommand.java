@@ -418,7 +418,7 @@ public final class GameCommand implements AnnotationCommandFeature {
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     final CommandSender leader = playerManager.getLeader();
     this.invites.removeInvite(leader, sender);
-    this.sendJoinMessage(sender, (data));
+    this.sendJoinMessage(sender, data);
   }
 
   @Permission("murderrun.command.game.gui")

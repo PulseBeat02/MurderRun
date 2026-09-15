@@ -17,6 +17,8 @@
  */
 package me.brandonli;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,6 +28,9 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class LoreWrapper {
+
+  private static final Splitter SPACE = Splitter.on(' ');
+  private static final CharMatcher SPACE_MATCHER = CharMatcher.is(' ');
 
   public static List<String> wrapLoreLines(String miniMessageInput, int maxWidth) {
     // Parse the minimessage string into a Component
@@ -39,7 +44,8 @@ public class LoreWrapper {
     String currentFormat = "";
 
     // Split the legacy string on spaces to obtain words.
-    String[] words = legacyString.split(" ");
+    String withoutTrailing = SPACE_MATCHER.trimTrailingFrom(legacyString);
+    List<String> words = SPACE.splitToList(withoutTrailing);
     for (String word : words) {
       // If the current line is empty, then just try putting the word.
       String candidate = currentLine.length() == 0 ? word : currentLine.toString() + " " + word;

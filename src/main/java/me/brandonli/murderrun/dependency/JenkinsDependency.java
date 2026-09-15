@@ -31,8 +31,6 @@ public final class JenkinsDependency implements Dependency {
   private static final String API_PATH =
       "lastSuccessfulBuild/api/json?tree=number,artifacts[relativePath]";
   private static final String BUILD_NUMBER_PATH = "lastSuccessfulBuild/buildNumber";
-  private static final String BUILD_PATH = "%s%d/";
-  private static final String ARTIFACT_PATH = "%s%d/artifact/%s";
   private static final Pattern PAGE_ARTIFACT = Pattern.compile("artifact/([^\"'<>\\s]+)");
   private static final Gson GSON = new Gson();
 
@@ -124,7 +122,7 @@ public final class JenkinsDependency implements Dependency {
   }
 
   private String findArtifactFromPage(final DependencyClient client, final int number) {
-    final String url = BUILD_PATH.formatted(this.job, number);
+    final String url = "%s%d/".formatted(this.job, number);
     final URI uri = this.createUri(url);
     final String html = client.getText(uri);
     return this.parsePage(html, url);
@@ -146,7 +144,7 @@ public final class JenkinsDependency implements Dependency {
 
   private DependencyArtifact createArtifact(final int number, final String relativePath) {
     final String fileName = this.getFileName(relativePath);
-    final String url = ARTIFACT_PATH.formatted(this.job, number, relativePath);
+    final String url = "%s%d/artifact/%s".formatted(this.job, number, relativePath);
     final URI uri = this.createUri(url);
     return new DependencyArtifact(fileName, uri, null);
   }

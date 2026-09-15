@@ -253,7 +253,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
     private final GamePlayer player;
     private final AtomicReference<Block> reference;
 
-    public EtherwarpBlockSelector(final GamePlayer player) {
+    EtherwarpBlockSelector(final GamePlayer player) {
       this.player = player;
       this.reference = new AtomicReference<>();
     }
@@ -276,7 +276,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
         audience.setActionBar(Message.EITHERWARP_FAR.build());
         return;
       }
-      if (current != block) {
+      if (!block.equals(current)) {
         if (current != null) {
           metadata.setBlockGlowing(current, NamedTextColor.RED, false);
           metadata.setBlockGlowing(current, NamedTextColor.GREEN, false);
@@ -308,7 +308,7 @@ public final class Etherwarp extends KillerAbility implements Listener {
       Etherwarp.this.targetBlock.put(this.player, safeLocation);
     }
 
-    public AtomicReference<Block> getReference() {
+    AtomicReference<Block> getReference() {
       return this.reference;
     }
   }

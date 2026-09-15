@@ -161,7 +161,8 @@ public final class QuickJoinConfigurationMapper {
   }
 
   public void serialize() {
-    CompletableFuture.runAsync(this::internalSerialize, this.service);
+    final CompletableFuture<Void> _ =
+        CompletableFuture.runAsync(this::internalSerialize, this.service);
   }
 
   private void internalSerialize() {

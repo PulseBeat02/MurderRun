@@ -148,7 +148,7 @@ public final class Flashlight extends SurvivorGadget implements Listener {
         final Location particleLocation =
             this.getParticleLocation(direction, handLocation, t, angle);
         manager.applyToAllParticipants(participant -> {
-          if (participant == player) {
+          if (participant.equals(player)) {
             return;
           }
           participant.spawnParticle(

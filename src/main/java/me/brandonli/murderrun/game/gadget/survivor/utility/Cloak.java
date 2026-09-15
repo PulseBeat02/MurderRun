@@ -21,7 +21,6 @@ import me.brandonli.murderrun.game.Game;
 import me.brandonli.murderrun.game.GameProperties;
 import me.brandonli.murderrun.game.gadget.packet.GadgetDropPacket;
 import me.brandonli.murderrun.game.gadget.survivor.SurvivorGadget;
-import me.brandonli.murderrun.game.player.GamePlayer;
 import me.brandonli.murderrun.game.player.GamePlayerManager;
 import me.brandonli.murderrun.locale.Message;
 import me.brandonli.murderrun.utils.item.ItemFactory;
@@ -47,7 +46,6 @@ public final class Cloak extends SurvivorGadget {
   @Override
   public boolean onGadgetDrop(final GadgetDropPacket packet) {
     final Game game = packet.getGame();
-    final GamePlayer player = packet.getPlayer();
     final Item item = packet.getItem();
     item.remove();
 

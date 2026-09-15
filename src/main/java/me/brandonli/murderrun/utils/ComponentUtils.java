@@ -20,6 +20,8 @@ package me.brandonli.murderrun.utils;
 import static net.kyori.adventure.text.Component.empty;
 import static net.kyori.adventure.text.Component.text;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 import com.google.common.io.BaseEncoding;
 import java.net.URI;
 import java.util.*;
@@ -46,6 +48,8 @@ public final class ComponentUtils {
   private static final PlainTextComponentSerializer PLAIN_SERIALIZER =
       PlainTextComponentSerializer.plainText();
   private static final Pattern PATTERN = Pattern.compile("(?i)§[0-9A-FK-OR]");
+  private static final Splitter SPACE = Splitter.on(' ');
+  private static final CharMatcher SPACE_MATCHER = CharMatcher.is(' ');
 
   private ComponentUtils() {
     throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -86,7 +90,7 @@ public final class ComponentUtils {
       final URI uri = info.uri();
       final String url = uri.toASCIIString();
       final String hexHash = info.hash();
-      final String upperHexHash = hexHash.toUpperCase();
+      final String upperHexHash = hexHash.toUpperCase(Locale.getDefault());
       final byte[] hash = encoding.decode(upperHexHash);
       final UUID id = info.id();
       player.addResourcePack(id, url, hash, legacy, required);
@@ -140,7 +144,8 @@ public final class ComponentUtils {
     final List<String> lines = new ArrayList<>();
     StringBuilder currentLine = new StringBuilder();
     String currentFormat = "";
-    final String[] words = legacyString.split(" ");
+    final String withoutTrailing = SPACE_MATCHER.trimTrailingFrom(legacyString);
+    final List<String> words = SPACE.splitToList(withoutTrailing);
     for (final String word : words) {
       final String candidate = currentLine.isEmpty() ? word : currentLine + " " + word;
       if (getStrippedLength(candidate) > maxWidth) {

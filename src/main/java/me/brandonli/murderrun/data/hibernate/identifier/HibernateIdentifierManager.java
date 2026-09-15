@@ -56,7 +56,7 @@ public final class HibernateIdentifierManager {
   }
 
   public synchronized void serialize() {
-    CompletableFuture.runAsync(this::serialize0, this.service);
+    final CompletableFuture<Void> _ = CompletableFuture.runAsync(this::serialize0, this.service);
   }
 
   public synchronized void shutdown() {

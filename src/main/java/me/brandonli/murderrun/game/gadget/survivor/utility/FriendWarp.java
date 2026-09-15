@@ -76,7 +76,7 @@ public final class FriendWarp extends SurvivorGadget {
   private GamePlayer getRandomSurvivorNotSame(
       final GamePlayerManager manager, final GamePlayer gamePlayer) {
     GamePlayer random = manager.getRandomAliveInnocentPlayer();
-    while (random == gamePlayer) {
+    while (random.equals(gamePlayer)) {
       random = manager.getRandomAliveInnocentPlayer();
     }
     return random;

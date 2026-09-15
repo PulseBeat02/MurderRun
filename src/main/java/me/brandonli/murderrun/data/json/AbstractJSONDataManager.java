@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -39,7 +40,7 @@ import me.brandonli.murderrun.utils.gson.GsonProvider;
 
 public abstract class AbstractJSONDataManager<T> implements ConfigurationManager<T> {
 
-  private static final byte[] EMPTY_JSON_BYTES = "{}".getBytes();
+  private static final byte[] EMPTY_JSON_BYTES = "{}".getBytes(Charset.defaultCharset());
 
   private final transient TypeToken<T> token = new TypeToken<>(this.getClass()) {};
 
@@ -62,7 +63,8 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
     if (manager == null) {
       return;
     }
-    CompletableFuture.runAsync(() -> this.writeJson(manager), this.service);
+    final CompletableFuture<Void> _ =
+        CompletableFuture.runAsync(() -> this.writeJson(manager), this.service);
   }
 
   @Override
@@ -98,11 +100,13 @@ public abstract class AbstractJSONDataManager<T> implements ConfigurationManager
   @Override
   public synchronized T deserialize() {
     this.readLock.lock();
-    this.createFolders();
-    try (final Reader reader = Files.newBufferedReader(this.json)) {
-      final Gson gson = GsonProvider.getGson();
-      final Type type = this.token.getType();
-      return gson.fromJson(reader, type);
+    try {
+      this.createFolders();
+      try (final Reader reader = Files.newBufferedReader(this.json)) {
+        final Gson gson = GsonProvider.getGson();
+        final Type type = this.token.getType();
+        return gson.fromJson(reader, type);
+      }
     } catch (final IOException e) {
       throw new AssertionError(e);
     } finally {

@@ -49,7 +49,9 @@ public final class DumpCommand implements AnnotationCommandFeature {
   public void startDebugGame(final CommandSender sender) {
     final Audience audience = this.audiences.sender(sender);
     audience.sendMessage(Message.LOAD_DUMP.build());
-    CompletableFuture.supplyAsync(DumpUtils::createAndUploadDump).thenAccept(url -> {
+    final CompletableFuture<String> dump =
+        CompletableFuture.supplyAsync(DumpUtils::createAndUploadDump);
+    final CompletableFuture<Void> _ = dump.thenAccept(url -> {
       final Component component = Message.SEND_DUMP.build(url);
       audience.sendMessage(component);
     });
