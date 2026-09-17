@@ -1,6 +1,6 @@
 [versions]
 cloudAnnotations = "2.1.0"
-cloudPaper = "2.0.0"
+cloudPaper = "2.0.1"
 cloudMinecraftExtras = "2.0.1"
 commodore = "2.2"
 fastboard = "2.2.1"
