@@ -7,7 +7,7 @@ language: EN_US
 
 # Sets the method to host the pack that is used by the plugin
 # Valid options are ON_SERVER, LOCALLY_HOSTED_DAEMON, and MC_PACK_HOSTING
-# Default is ON_SERVER
+# Default is MC_PACK_HOSTING
 
 # ON_SERVER hosts the resource-pack without any setup required as it hosts it on the same port.
 # as the server. This is the recommended option as it requires no setup at all. Please note however
