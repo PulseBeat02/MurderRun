@@ -19,6 +19,7 @@ package me.brandonli.murderrun.utils.map;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.Splitter;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
@@ -41,6 +42,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 import me.brandonli.murderrun.MurderRun;
 import me.brandonli.murderrun.game.capability.Capabilities;
 import me.brandonli.murderrun.game.extension.worldedit.WESpreader;
@@ -61,6 +63,7 @@ public final class MapUtils {
 
   private static final String WE_SPREADER = "worldedit.spreader.enabled";
   private static final Properties SERVER_PROPERTIES = new Properties();
+  private static final Splitter PATH_SPLITTER = Splitter.on(Pattern.compile("[/\\\\]"));
 
   static {
     try {
@@ -247,10 +250,11 @@ public final class MapUtils {
     }
     // Stored paths can be absolute paths from another machine or relative to another working
     // directory, so fall back to the same file inside this server's schematics folder
-    final String[] parts = stored.split("[/\\\\]");
-    if (parts.length >= 2) {
-      final String folder = parts[parts.length - 2];
-      final String name = parts[parts.length - 1];
+    final List<String> parts = PATH_SPLITTER.splitToList(stored);
+    final int size = parts.size();
+    if (size >= 2) {
+      final String folder = parts.get(size - 2);
+      final String name = parts.get(size - 1);
       if (folder.equals("arenas") || folder.equals("lobbies")) {
         final Path data = IOUtils.getPluginDataFolderPath();
         final Path fallback = data.resolve("schematics").resolve(folder).resolve(name);
