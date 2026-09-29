@@ -82,7 +82,8 @@ public final class PlayerStatistics implements Serializable {
     if (bus.post(StatisticsEvent.class, StatisticsType.FASTEST_KILLER_WIN, win)) {
       return;
     }
-    this.fastestWinKiller = Math.min(this.fastestWinKiller, win);
+    final long current = this.fastestWinKiller;
+    this.fastestWinKiller = current > 0 ? Math.min(current, win) : win;
   }
 
   public synchronized void insertFastestWinSurvivor(final long win) {
@@ -90,7 +91,8 @@ public final class PlayerStatistics implements Serializable {
     if (bus.post(StatisticsEvent.class, StatisticsType.FASTEST_SURVIVOR_WIN, win)) {
       return;
     }
-    this.fastestWinSurvivor = Math.min(this.fastestWinSurvivor, win);
+    final long current = this.fastestWinSurvivor;
+    this.fastestWinSurvivor = current > 0 ? Math.min(current, win) : win;
   }
 
   public synchronized void incrementTotalKills() {
