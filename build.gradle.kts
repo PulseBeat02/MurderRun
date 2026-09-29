@@ -18,7 +18,7 @@ plugins {
 apply(plugin = "org.checkerframework")
 
 group = "me.brandonli"
-version = "26.2-v1.0.0"
+version = "26.3-v1.0.0"
 description = "MurderRun"
 
 repositories {
@@ -157,7 +157,7 @@ paperPluginYaml {
     version = "${project.version}"
     description = "Pulse's MurderRun Plugin"
     authors = listOf("PulseBeat_02")
-    apiVersion = "26.2"
+    apiVersion = "26.3"
     prefix = "Murder Run"
     main = "me.brandonli.murderrun.MurderRun"
     loader = "me.brandonli.murderrun.MurderRunLoader"
@@ -209,15 +209,15 @@ tasks {
 
     runServer {
         downloadPlugins {
-            // wait for LibDisguises to update
-            // url("https://ci.md-5.net/job/LibsDisguises/lastSuccessfulBuild/artifact/target/LibsDisguises.jar")
+            // LibsDisguises supports 26.3 since 26.9.24, but its CI moved from ci.md-5.net to ci.lib.co.nz.
+            // Until a stable artifact URL is wired in here, drop the jar into run/plugins manually.
             url("https://cdn.modrinth.com/data/lKEzGugV/versions/pIvQcXW8/PlaceholderAPI-2.12.3.jar")
             url("https://cdn.modrinth.com/data/rHRYOOoq/versions/yBAIVDGP/Parties-3.2.9.jar")
             url("https://github.com/MilkBowl/Vault/releases/download/1.7.3/Vault.jar")
         }
         systemProperty("murderrun.development.tools", true)
         systemProperty("net.kyori.adventure.text.warnWhenLegacyFormattingDetected", false)
-        minecraftVersion("26.2")
+        minecraftVersion("26.3")
     }
 
     processResources {
