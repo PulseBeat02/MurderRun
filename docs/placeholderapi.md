@@ -1,27 +1,17 @@
 # PlaceholderAPI Support
-Murder Run has support for [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) (PAPI) placeholders.
-Here are the placeholders supported by Murder Run.
+Murder Run has support for [PlaceholderAPI](https://modrinth.com/plugin/placeholderapi) (PAPI) placeholders. The
+placeholders are registered automatically when PlaceholderAPI is installed, so you don't need to download an expansion
+with `/papi ecloud`. Here are the placeholders supported by Murder Run.
 
-### `%%fastest_win_killer%%`
-Returns the fastest killer win for the player
+| Placeholder                          | Returns                                                                     |
+|--------------------------------------|-----------------------------------------------------------------------------|
+| `%murderrun_fastest_win_killer%`     | The player's fastest win as a killer, in seconds (`N/A` if they haven't won yet) |
+| `%murderrun_fastest_win_survivor%`   | The player's fastest win as a survivor, in seconds (`N/A` if they haven't won yet) |
+| `%murderrun_total_kills%`            | The total kills for the player                                              |
+| `%murderrun_total_deaths%`           | The total deaths for the player                                             |
+| `%murderrun_total_wins%`             | The total wins for the player                                               |
+| `%murderrun_total_losses%`           | The total losses for the player                                             |
+| `%murderrun_total_games%`            | The total games played by the player                                        |
+| `%murderrun_win_loss_ratio%`         | The win-loss ratio for the player                                           |
 
-### `%%fastest_win_survivor%%`
-Returns the fastest survivor win for the player
-
-### `%%total_kills%%`
-Returns the total kills for the player
-
-### `%%total_deaths%%`
-Returns the total deaths for the player
-
-### `%%total_wins%%`
-Returns the total wins for the player
-
-### `%%total_losses%%`
-Returns the total losses for the player
-
-### `%%total_games%%`
-Returns the total games played for the player
-
-### `%%win_loss_ratio%%`
-Returns the win-loss ration for the player
+You can test a placeholder in-game with `/papi parse me %murderrun_total_wins%`.

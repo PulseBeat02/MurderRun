@@ -8,6 +8,11 @@ it's completely free.
 ```
 
 ```{note}
+Murder Run supports **Minecraft 26.3** on [Paper](https://papermc.io/) and requires **Java 25**. See
+[Setting up a Server](setup.md) for details.
+```
+
+```{note}
 Murder Run is free and open-source software licensed under the [GNU GPLv3](https://opensource.org/license/gpl-3-0)
 License, the same license that Bukkit software and all inheritors must fall under.
 ```
@@ -20,8 +25,8 @@ the timer runs out.
 
 ![intro.png](images/intro.png)
 
-Similar to Dead by Daylight's character system, Murder Run includes many gadgets and abilities. Currently, there are 
-over 100+ gadgets and abilities combined that the player can choose from. Each gadget and ability has many configuration 
+Similar to Dead by Daylight's character system, Murder Run includes many gadgets and abilities. Currently, there are
+over 100 gadgets and abilities combined that the player can choose from. Each gadget and ability has many configuration
 options that you can configure to your own heart's desire.
 
 ---
@@ -29,4 +34,4 @@ options that you can configure to your own heart's desire.
 Murder Run contains so many features, too many to list in this one page. If you have questions about any feature, visit
 the support [Discord](https://discord.gg/cUMB6kCsh6) for help!
 
-Once you're done reading, take a look at the [setup](setup.md) or [game](creation) page!
+Once you're done reading, take a look at the [setup](setup.md) or [lobby and arena creation](creation.md) page!

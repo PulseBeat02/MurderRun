@@ -10,6 +10,7 @@ parts:
     - file: configuration.md
     - file: creation.md
     - file: game.md
+    - file: commands.md
     - file: faq.md
 - caption: Extensions 🧩
   chapters:
