@@ -128,7 +128,6 @@ public final class PreGamePlayerManager {
     }
     this.scoreboard.shutdown();
     this.bossbar.shutdown();
-    this.locked = false;
   }
 
   public synchronized void setPlayerToMurderer(final Player murderer) {
@@ -471,6 +470,10 @@ public final class PreGamePlayerManager {
 
   public boolean isLocked() {
     return this.locked;
+  }
+
+  public void lock() {
+    this.locked = true;
   }
 
   public PlayerSelectionManager getSelectionManager() {
