@@ -409,12 +409,11 @@ public final class GameCommand implements AnnotationCommandFeature {
       return;
     }
 
-    final boolean available = this.sanitizer.checkIfNoQuickJoinableGame(sender, manager);
-    if (available) {
+    if (this.sanitizer.checkIfNoQuickJoinableGame(sender, manager)) {
       return;
     }
 
-    final PreGameManager data = requireNonNull(manager.getGame(sender));
+    final PreGameManager data = requireNonNull(manager.getGameAsParticipant(sender));
     final PreGamePlayerManager playerManager = data.getPlayerManager();
     final CommandSender leader = playerManager.getLeader();
     this.invites.removeInvite(leader, sender);

@@ -395,9 +395,10 @@ public final class FreezeTagManager {
 
   public boolean checkAllSurvivorsFrozen() {
     final GamePlayerManager manager = this.game.getPlayerManager();
-    return manager.getSurvivors().filter(GamePlayer::isAlive).allMatch(survivor -> ((Survivor)
-            survivor)
-        .isFrozen());
+    return manager
+        .getSurvivors()
+        .filter(GamePlayer::isAlive)
+        .allMatch(survivor -> ((Survivor) survivor).isFrozen());
   }
 
   public void shutdown() {

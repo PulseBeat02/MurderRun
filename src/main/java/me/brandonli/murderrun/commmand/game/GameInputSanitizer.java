@@ -71,7 +71,7 @@ public final class GameInputSanitizer {
   }
 
   public boolean checkIfNoQuickJoinableGame(final Player sender, final GameManager manager) {
-    return manager.quickJoinGame(sender);
+    return !manager.quickJoinGame(sender);
   }
 
   public boolean checkIfGameFull(

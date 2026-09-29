@@ -18,9 +18,10 @@
 ---
 
 > [!NOTE]
-> Murder Run requires Java 25 and Paper in order to run! Its required plugins, [WorldEdit](https://enginehub.org/worldedit/),
-> [Citizens](https://citizensnpcs.co/), and [PacketEvents](https://github.com/retrooper/packetevents/), are downloaded
-> automatically on first start if they aren't already installed.
+> Murder Run requires **Minecraft 26.3**, **Paper**, and **Java 25** in order to run! Its required plugins,
+> [WorldEdit](https://enginehub.org/worldedit/), [Citizens](https://citizensnpcs.co/), and
+> [PacketEvents](https://github.com/retrooper/packetevents/), are downloaded automatically on first start if they aren't
+> already installed.
 
 If you are familiar with the game Dead by Daylight (DBD), you will be familiar with Murder Run. Murder Run is based off
 the concept in DBD, an advanced game-mode revolving around two groups: killers and survivors. In a desolate map, survivors
@@ -30,7 +31,7 @@ the timer runs out.
 ![intro.png](intro.png)
 
 Similar to Dead by Daylight's character system, Murder Run includes many gadgets and abilities. Currently, there are
-over 100+ gadgets and abilities combined that the player can choose from. Each gadget and ability has many configuration
+over 100 gadgets and abilities combined that the player can choose from. Each gadget and ability has many configuration
 options that you can configure to your own heart's desire. There are a ton of features in this plugin, and some of them
 are listed below.
 
@@ -50,14 +51,15 @@ are listed below.
   - Either use GUI's or Commands to Create Games
 - Integration with Several Plugins
   - Integrates with PlaceholderAPI for Custom Statistics
-    - `%%fastest_win_killer%%`, `%%fastest_win_survivor%%`, `%%total_kills%%`, `%%total_deaths%%`,
-      `%%total_wins%%`, `%%total_losses%%`, `%%total_games%%`, `%%win_loss_ratio%%`
+    - `%murderrun_fastest_win_killer%`, `%murderrun_fastest_win_survivor%`, `%murderrun_total_kills%`,
+      `%murderrun_total_deaths%`, `%murderrun_total_wins%`, `%murderrun_total_losses%`, `%murderrun_total_games%`,
+      `%murderrun_win_loss_ratio%`
   - Integrates with LibsDisguises for Custom Gadgets
   - Integrates with Parties for Custom Games
-  - Integrates with Nexo for Custom Items
+  - Integrates with Nexo and CraftEngine for Custom Items
   - Integrates with WorldEdit for Automatic Arena Instances
   - Integrates with Citizens for Custom NPCs
-  - Integrates with Vault for Economy Support
+  - Integrates with Vault for Economy Rewards
 - No Dependencies / Setup Involved, Just Drop the JAR into Plugins Folder
 - Customisable Resource Pack
   - Customisable Item Textures, Sounds

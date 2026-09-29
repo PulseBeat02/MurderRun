@@ -42,7 +42,7 @@ public final class PAPIPlaceholderParser {
       final Function<PlayerStatistics, Long> function) {
     return statistics -> {
       final long value = function.apply(statistics);
-      if (value == Long.MAX_VALUE) {
+      if (value <= 0 || value == Long.MAX_VALUE) {
         return "N/A";
       }
       return value;
