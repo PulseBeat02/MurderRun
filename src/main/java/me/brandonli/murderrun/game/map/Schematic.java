@@ -25,6 +25,7 @@ import jakarta.persistence.Convert;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
+import java.io.UncheckedIOException;
 import me.brandonli.murderrun.data.hibernate.converters.SerializableVectorConverter;
 import me.brandonli.murderrun.utils.immutable.SerializableVector;
 import me.brandonli.murderrun.utils.map.MapUtils;
@@ -82,7 +83,7 @@ public final class Schematic implements Serializable {
       try {
         this.clipboard = MapUtils.loadSchematic(this);
       } catch (final IOException e) {
-        throw new AssertionError(e);
+        throw new UncheckedIOException(e);
       }
     }
   }

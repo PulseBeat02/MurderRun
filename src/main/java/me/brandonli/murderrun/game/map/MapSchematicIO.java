@@ -289,6 +289,7 @@ public final class MapSchematicIO {
   }
 
   private CompletableFuture<Void> pasteSchematic(final Schematic schematic) {
+    schematic.loadSchematicIntoMemory();
     final SerializableVector vector3 = schematic.getOrigin();
     final Clipboard clipboard = schematic.getClipboard();
     final com.sk89q.worldedit.world.World world = this.getWorld();
