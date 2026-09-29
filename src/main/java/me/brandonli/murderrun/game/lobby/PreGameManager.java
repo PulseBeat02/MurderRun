@@ -74,6 +74,7 @@ public final class PreGameManager {
   }
 
   public void startGame() {
+    this.manager.lock();
     final Collection<Player> players = this.manager.getParticipants();
     final Collection<Player> killers = this.manager.getMurderers();
     this.manager.assignRoles();

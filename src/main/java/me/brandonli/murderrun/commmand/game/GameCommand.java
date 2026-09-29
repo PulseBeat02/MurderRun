@@ -261,7 +261,8 @@ public final class GameCommand implements AnnotationCommandFeature {
     }
 
     final PreGameManager data = requireNonNull(manager.getGame(id));
-    if (this.sanitizer.checkIfGameFull(sender, audience, manager, data)) {
+    if (this.sanitizer.checkIfGameAlreadyStarted(audience, data)
+        || this.sanitizer.checkIfGameFull(sender, audience, manager, data)) {
       return;
     }
 
