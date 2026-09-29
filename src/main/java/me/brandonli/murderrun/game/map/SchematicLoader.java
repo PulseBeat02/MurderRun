@@ -17,6 +17,7 @@
  */
 package me.brandonli.murderrun.game.map;
 
+import java.io.UncheckedIOException;
 import java.util.Collection;
 import java.util.Map;
 import me.brandonli.murderrun.MurderRun;
@@ -24,6 +25,7 @@ import me.brandonli.murderrun.game.arena.Arena;
 import me.brandonli.murderrun.game.arena.ArenaManager;
 import me.brandonli.murderrun.game.lobby.Lobby;
 import me.brandonli.murderrun.game.lobby.LobbyManager;
+import org.slf4j.Logger;
 
 public final class SchematicLoader {
 
@@ -44,7 +46,8 @@ public final class SchematicLoader {
     final Collection<Lobby> values = lobbies.values();
     for (final Lobby lobby : values) {
       final Schematic schematic = lobby.getSchematic();
-      schematic.loadSchematicIntoMemory();
+      final String name = lobby.getName();
+      this.loadSchematic(schematic, "lobby", name);
     }
   }
 
@@ -54,7 +57,20 @@ public final class SchematicLoader {
     final Collection<Arena> values = arenas.values();
     for (final Arena arena : values) {
       final Schematic schematic = arena.getSchematic();
+      final String name = arena.getName();
+      this.loadSchematic(schematic, "arena", name);
+    }
+  }
+
+  private void loadSchematic(final Schematic schematic, final String type, final String name) {
+    try {
       schematic.loadSchematicIntoMemory();
+    } catch (final UncheckedIOException e) {
+      final Logger logger = this.plugin.getSLF4JLogger();
+      final String path = schematic.getSchematicPath();
+      final String msg =
+          "Failed to load the schematic of {} {} from {}. It can't be used until the file is restored or the {} is removed";
+      logger.error(msg, type, name, path, type, e);
     }
   }
 }

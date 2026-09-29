@@ -9,6 +9,11 @@
     {
       "matchDatasources": ["maven"],
       "versioning": "semver"
+    },
+    {
+      "description": "Jupyter Book 2 removed 'jupyter-book config sphinx', which .readthedocs.yaml runs",
+      "matchPackageNames": ["jupyter-book"],
+      "allowedVersions": "<2"
     }
   ]
 }

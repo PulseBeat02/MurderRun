@@ -224,16 +224,43 @@ public final class MapUtils {
   }
 
   public static Clipboard loadSchematic(final Schematic schematic) throws IOException {
-    final String path = schematic.getSchematicPath();
-    final Path legacyPath = Path.of(path);
-    final File file = legacyPath.toFile();
+    final String stored = schematic.getSchematicPath();
+    final Path path = resolveSchematicPath(stored);
+    final File file = path.toFile();
     @SuppressWarnings("deprecation")
-    final ClipboardFormat format = requireNonNull(ClipboardFormats.findByFile(file));
-    try (final InputStream stream = Files.newInputStream(legacyPath);
+    final ClipboardFormat format = ClipboardFormats.findByFile(file);
+    if (format == null) {
+      final String message = "Unrecognized schematic format in %s".formatted(path);
+      throw new IOException(message);
+    }
+    try (final InputStream stream = Files.newInputStream(path);
         final FastBufferedInputStream fast = new FastBufferedInputStream(stream);
         final ClipboardReader reader = format.getReader(fast)) {
       return reader.read();
     }
+  }
+
+  private static Path resolveSchematicPath(final String stored) throws IOException {
+    final Path path = Path.of(stored);
+    if (Files.isRegularFile(path)) {
+      return path;
+    }
+    // Stored paths can be absolute paths from another machine or relative to another working
+    // directory, so fall back to the same file inside this server's schematics folder
+    final String[] parts = stored.split("[/\\\\]");
+    if (parts.length >= 2) {
+      final String folder = parts[parts.length - 2];
+      final String name = parts[parts.length - 1];
+      if (folder.equals("arenas") || folder.equals("lobbies")) {
+        final Path data = IOUtils.getPluginDataFolderPath();
+        final Path fallback = data.resolve("schematics").resolve(folder).resolve(name);
+        if (Files.isRegularFile(fallback)) {
+          return fallback;
+        }
+      }
+    }
+    final String message = "Schematic file %s does not exist".formatted(stored);
+    throw new FileNotFoundException(message);
   }
 
   public static String performSchematicWrite(
