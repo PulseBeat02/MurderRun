@@ -136,11 +136,11 @@ public final class AbilityRegistry {
 
   private void load() {
     final ScanResult result = ClassGraphUtils.getCachedScanResult();
-    final ClassInfoList list = result.getClassesImplementing(Ability.class);
+    final ClassInfoList list = result.getAllClassesImplementing(Ability.class);
     final ClassInfoList implementations = list.getStandardClasses();
     for (final ClassInfo info : implementations) {
       if (!info.isAbstract()) {
-        final Class<?> loaded = info.loadClass();
+        final Class<?> loaded = ClassGraphUtils.loadClass(info);
         this.handleAbilityClass(loaded);
       }
     }

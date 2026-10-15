@@ -18,7 +18,10 @@
 package me.brandonli.murderrun.utils;
 
 import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
+import java.util.List;
 
 public final class ClassGraphUtils {
 
@@ -38,6 +41,21 @@ public final class ClassGraphUtils {
 
   public static ScanResult getCachedScanResult() {
     return SCAN_RESULT;
+  }
+
+  public static Class<?> loadClass(final ClassInfo info) {
+    try {
+      return Class.forName(info.getName(), false, ClassGraphUtils.class.getClassLoader());
+    } catch (final ClassNotFoundException e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+
+  public static <T> List<Class<? extends T>> loadClasses(
+      final ClassInfoList infos, final Class<T> type) {
+    return infos.stream()
+        .<Class<? extends T>>map(info -> loadClass(info).asSubclass(type))
+        .toList();
   }
 
   public static void close() {

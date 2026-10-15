@@ -135,11 +135,11 @@ public final class GadgetRegistry {
 
   private void load() {
     final ScanResult result = ClassGraphUtils.getCachedScanResult();
-    final ClassInfoList list = result.getClassesImplementing(Gadget.class);
+    final ClassInfoList list = result.getAllClassesImplementing(Gadget.class);
     final ClassInfoList implementations = list.getStandardClasses();
     for (final ClassInfo info : implementations) {
       if (!info.isAbstract()) {
-        final Class<?> loaded = info.loadClass();
+        final Class<?> loaded = ClassGraphUtils.loadClass(info);
         this.handleGadgetClass(loaded);
       }
     }

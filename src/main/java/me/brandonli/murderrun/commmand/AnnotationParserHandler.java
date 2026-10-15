@@ -79,8 +79,9 @@ public final class AnnotationParserHandler {
   public void registerCommands() {
     try {
       final ScanResult result = ClassGraphUtils.getCachedScanResult();
-      final List<Class<?>> features =
-          result.getClassesImplementing(AnnotationCommandFeature.class).loadClasses();
+      final List<Class<? extends AnnotationCommandFeature>> features = ClassGraphUtils.loadClasses(
+          result.getAllClassesImplementing(AnnotationCommandFeature.class),
+          AnnotationCommandFeature.class);
       final MethodHandles.Lookup lookup = MethodHandles.lookup();
       final MethodType type = MethodType.methodType(void.class);
       for (final Class<?> feature : features) {

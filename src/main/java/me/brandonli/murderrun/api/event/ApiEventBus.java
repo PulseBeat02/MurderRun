@@ -56,12 +56,10 @@ public final class ApiEventBus implements EventBus {
 
   private static Set<Class<? extends MurderRunEvent>> scanClasses() {
     final ScanResult result = ClassGraphUtils.getCachedScanResult();
-    return result
-        .getClassesImplementing(MurderRunEvent.class)
-        .loadClasses(MurderRunEvent.class)
+    return ClassGraphUtils.loadClasses(
+            result.getAllClassesImplementing(MurderRunEvent.class), MurderRunEvent.class)
         .stream()
         .filter(Class::isInterface)
-        .map(clazz1 -> (Class<? extends MurderRunEvent>) clazz1)
         .collect(Collectors.toSet());
   }
 

@@ -14,6 +14,11 @@
       "description": "Jupyter Book 2 removed 'jupyter-book config sphinx', which .readthedocs.yaml runs",
       "matchPackageNames": ["jupyter-book"],
       "allowedVersions": "<2"
+    },
+    {
+      "description": "Major updates can break the API (classgraph 6 removed class loading): open a PR, never automerge",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     }
   ]
 }
