@@ -170,11 +170,6 @@ public final class MurderRun extends JavaPlugin {
   }
 
   private void startMiscListeners() {
-    // we use TeamCity for version checking now
-    // if (false) {
-    //   this.versionChecker = new VersionChecker(this);
-    //   this.versionChecker.start();
-    // }
     this.mapTeleportSkipListener = new MapTeleportSkipListener(this);
     this.mapTeleportSkipListener.start();
   }
