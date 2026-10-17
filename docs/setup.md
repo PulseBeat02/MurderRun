@@ -36,7 +36,7 @@ and how to add plugins. Please make sure that you use Java 25, as it is required
 ## Getting Murder Run
 Murder Run is like any other plugin, where you just drag and drop the JAR file into the plugins folder. There isn't any
 set up required, and Murder Run will download the necessary dependencies for you. You can find bleeding-edge releases
-on the TeamCity CI [here](https://ci.brandonli.me/repository/download/murderrun/.lastFinished/MurderRun-26.3-v1.0.0-all.jar),
+on the GitHub releases page [here](https://github.com/PulseBeat02/MurderRun/releases),
 which are created pretty frequently. You should always use the latest Murder Run JAR, as it contains many more bug fixes
 and version compatibility than the previous.
 
