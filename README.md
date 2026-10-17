@@ -41,14 +41,18 @@ are listed below.
 - 3 Different Game Modes (One Bounce, Freeze Tag, Normal)
 - Easy Lobby / Arena Creation and Customization
   - Either use GUI's or Commands to Create and Modify Arenas / Lobbies
+  - Copy Existing Arenas with One Command
 - Resets Arenas Automatically using WorldEdit
 - Customize Item Drop Locations
   - Supports Automatic Item Drop Locations
   - No Setup Required for Arenas
 - Pre-made NPC Gadget Shop with Adjustable Prices
   - Prevent Certain Gadgets from Showing Up
+- Pre-made NPC Ability Selector for Killers and Survivors
+- Option to Give Players Random Gadgets and Abilities
 - Game Creation with Quick Join System or Private Games
   - Either use GUI's or Commands to Create Games
+  - Invite, Kick, and Choose the Killers / Survivors in Your Game
 - Integration with Several Plugins
   - Integrates with PlaceholderAPI for Custom Statistics
     - `%murderrun_fastest_win_killer%`, `%murderrun_fastest_win_survivor%`, `%murderrun_total_kills%`,
@@ -61,6 +65,7 @@ are listed below.
   - Integrates with Citizens for Custom NPCs
   - Integrates with Vault for Economy Rewards
 - No Dependencies / Setup Involved, Just Drop the JAR into Plugins Folder
+  - Downloads Required Plugins (WorldEdit, Citizens, PacketEvents) Automatically
 - Customisable Resource Pack
   - Customisable Item Textures, Sounds
   - Customisable Resource Pack Provider Method
@@ -68,6 +73,7 @@ are listed below.
     - Hosted on Server Automatically
     - Gives Option to Host via Other Options
   - Caches Resource Pack for Faster Loading Times
+  - Players can Get the Resource Pack Again using `/murder resources`
 - Customisable Locale (Change / Reformat Messages)
   - Uses MiniMessage for Easy Formatting
 - Support for Multiple Languages
@@ -83,10 +89,18 @@ are listed below.
   - Ability to Set Game Timer
   - Ability to Set Extra Resource Packs
 - Customisable Alive / Dead Chat
+- Random Map Events (Lightning, Weather, Sounds, Potion Effects)
+- Heartbeat Warnings and Particles when a Killer is Close
+- Lobbies Protect Players from Damage, Block Breaking, and Item Drops
 - Allows for Multiple Killers / Survivors
 - Database Support via Hibernate (MySQL, SQLite, PostgreSQL, H2)
   - Customisable Database Properties
+  - Uses JSON Files by Default, No Database Required
+- Tracks Player Statistics (Wins, Losses, Kills, Deaths, Fastest Wins)
 - Easy Debugging and Troubleshooting
+  - Admin Menus and Commands to Get Any Gadget or Ability
+  - Upload Server Info and Logs for Support using `/murder dump`
+- Update Notifications for Server Operators
 - Documentation
 - Fast Support
 - And so much more...
