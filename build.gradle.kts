@@ -12,7 +12,7 @@ plugins {
     id("xyz.jpenilla.resource-factory-paper-convention") version "1.4.0"
     id("xyz.jpenilla.gremlin-gradle") version "0.0.9"
     id("org.checkerframework") version "1.0.2"
-    id("net.ltgt.errorprone") version "5.1.1"
+    id("net.ltgt.errorprone") version "5.2.0"
 }
 
 apply(plugin = "org.checkerframework")
